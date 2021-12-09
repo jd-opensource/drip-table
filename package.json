@@ -46,9 +46,9 @@
     "README.*",
     "dist"
   ],
-  "homepage": "https://drip-table.jd.com/",
+  "homepage": "https://drip-table.jd.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://coding.jd.com/drip/drip-table/issues"
+    "url": "https://github.com/JDFED/drip-table/issues"
   }
 }
