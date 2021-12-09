@@ -1,0 +1,53 @@
+{
+	"name": "drip-table-driver-antd",
+	"version": "1.0.0",
+  "description": "A drip-table driver based on Ant Design.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "father-build",
+    "prepare": "yarn build",
+    "postpublish": "git push --tags",
+    "lint": "yarn run eslint && yarn run tslint",
+    "lint:fix": "yarn run eslint:fix",
+    "tslint": "sh ../../bin/tslint.sh **/*.ts",
+    "tslint:commit": "sh ./bin/tslint.sh",
+    "tslint:exec": "tsc --project .tsconfig-lint.json --skipLibCheck --noEmit",
+    "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty",
+    "eslint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty --fix",
+    "eslint:commit": "eslint --format pretty"
+  },
+  "dependencies": {
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "antd": ">=4.9.4",
+    "@ant-design/icons": "^4.3.0",
+    "father-build": "1.17.2",
+    "typescript": "^4.4.2"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "antd": ">=4.9.4",
+    "@ant-design/icons": "^4.3.0"
+  },
+  "keywords": [
+    "DripTable",
+    "Render",
+    "TableRender",
+    "Drip Design",
+    "Json Schema",
+    "React"
+  ],
+  "files": [
+    "*.md",
+    "dist"
+  ],
+  "homepage": "http://drip-table.jd.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JDFED/drip-table/issues"
+  }
+}

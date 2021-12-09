@@ -5,11 +5,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn run build:drip-table",
+    "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd",
     "build:drip-table": "lerna run build --stream --scope=drip-table",
+    "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "changelog": "lerna-changelog",
     "clean": "lerna clean -y",
-    "lint": "yarn run gitlint && lerna run lint --stream --scope=drip-table",
+    "lint": "yarn run gitlint && lerna run lint --stream --scope=drip-table && lerna run lint --stream --scope=drip-table-driver-antd",
     "gitlint": "sh ./bin/gitlint.sh || exit 1"
   },
   "devDependencies": {
