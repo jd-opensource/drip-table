@@ -23,12 +23,6 @@
     "stylelint:fix": "stylelint \"src/**/*.{less,sass,scss,css,vue}\" --custom-formatter=../../node_modules/stylelint-formatter-pretty --fix",
     "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "peerDependencies": {
-    "react": ">=16.9.0"
-  },
   "dependencies": {
     "cheerio": "1.0.0-rc.3",
     "lodash": "4.17.20",
@@ -43,6 +37,9 @@
     "@types/react-window": "^1.8.5",
     "father-build": "1.17.2",
     "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0"
   },
   "keywords": [
     "DripTable",

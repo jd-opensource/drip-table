@@ -13,8 +13,6 @@
     "gitlint": "sh ./bin/gitlint.sh || exit 1"
   },
   "devDependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
     "@rollup/plugin-eslint": "^8.0.1",
     "@types/cheerio": "0.22.22",
     "@types/react-window": "^1.8.5",
