@@ -1,0 +1,14 @@
+/**
+ * This file is part of the drip-table launch.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+.virtual-table-cell {
+  box-sizing: border-box;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  overflow-wrap: break-word;
+}

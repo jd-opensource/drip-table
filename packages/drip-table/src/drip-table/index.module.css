@@ -1,0 +1,45 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+.drip-table-wrapper {
+  background: #ffffff;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.mb2 {
+  margin-bottom: .5rem;
+}
+
+.mr {
+  margin-right: 8px;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.header-container {
+  margin: 12px auto;
+}
+
+.header-container.left {
+  margin-left: 0;
+}
+
+.header-container.right {
+  margin-right: 0;
+}

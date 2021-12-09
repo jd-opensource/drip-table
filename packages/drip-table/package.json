@@ -1,0 +1,64 @@
+{
+  "name": "drip-table",
+  "version": "1.0.0",
+  "description": "A tiny and powerful enterprise-class solution for building tables.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "father-build && tsc-alias -p tsconfig.json",
+    "analyze": "ANALYZE=1 dumi dev",
+    "prepare": "yarn build",
+    "postpublish": "git push --tags",
+    "lint": "yarn run eslint && yarn run tslint && yarn run stylelint",
+    "lint:fix": "yarn run eslint:fix && yarn run stylelint:fix",
+    "tslint": "sh ../../bin/tslint.sh **/*.ts",
+    "tslint:commit": "sh ./bin/tslint.sh",
+    "tslint:exec": "tsc --project .tsconfig-lint.json --skipLibCheck --noEmit",
+    "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty",
+    "eslint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty --fix",
+    "eslint:commit": "eslint --format pretty",
+    "stylelint": "stylelint \"src/**/*.{less,sass,scss,css,vue}\" --custom-formatter=../../node_modules/stylelint-formatter-pretty",
+    "stylelint:fix": "stylelint \"src/**/*.{less,sass,scss,css,vue}\" --custom-formatter=../../node_modules/stylelint-formatter-pretty --fix",
+    "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0-rc.3",
+    "lodash": "4.17.20",
+    "lodash.get": "^4.4.2",
+    "rc-resize-observer": "^1.0.1",
+    "react-dom": "^16.9.0",
+    "react-window": "^1.8.6",
+    "viewerjs": "1.7.1"
+  },
+  "devDependencies": {
+    "@types/cheerio": "0.22.22",
+    "@types/react-window": "^1.8.5",
+    "father-build": "1.17.2",
+    "typescript": "^4.4.4"
+  },
+  "keywords": [
+    "DripTable",
+    "Render",
+    "TableRender",
+    "Drip Design",
+    "Json Schema",
+    "React"
+  ],
+  "files": [
+    "*.md",
+    "dist"
+  ],
+  "homepage": "https://drip-table.jd.com/",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://coding.jd.com/drip/drip-table/issues"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es5",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "drip-table": ["./packages/drip-table/src"]
+    }
+  },
+  "rules": {
+    "react/prop-types": 0
+  },
+  "exclude": ["node_modules", "dist"]
+}
