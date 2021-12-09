@@ -1,6 +1,6 @@
-# Drip-Table 开发文档
+# DripTable 开发文档
 
-`Drip-Table` 是动态列表解决方案的核心库，其主要能力是支持符合 `JSON Schema` 标准的数据自动渲染列表内容。
+`DripTable` 是动态列表解决方案的核心库，其主要能力是支持符合 `JSON Schema` 标准的数据自动渲染列表内容。
 
 ## 目录结构
 

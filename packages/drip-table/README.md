@@ -1,6 +1,6 @@
-# Drip-Table Development Guide
+# DripTable Development Guide
 
-`Drip-Table` is the core library of the solution for building dynamic tables. It's main ability is to render a dynamic table automatically when received data which conforms to the `JSON Schema` standard.
+`DripTable` is the core library of the solution for building dynamic tables. It's main ability is to render a dynamic table automatically when received data which conforms to the `JSON Schema` standard.
 
 ## Directory
 
