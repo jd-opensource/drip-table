@@ -5,6 +5,10 @@
 /docs-dist
 /yarn-error.log
 
+# ide
+/.idea
+/.vscode
+
 # umi
 .umi
 .umi-production
