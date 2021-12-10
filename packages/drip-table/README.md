@@ -39,15 +39,15 @@
 3. add documents of new features in `docs/drip-table` directory.
 4. add features in `docs/drip-table/changelog` file.
 5. submit code and merge into `master` branch.
-6. modify version infomation in `package.json` file.
+6. modify version information in `package.json` file.
 7. submit and push code.
 8. release new version.
 
 ### Cautions
 - Use React.memo to wrap a functional component, and compare props to update the wrapped component.
 - Merge related states instead of using too many useStates.
-- Do not use arrow functions to assgin to event functions as values directly. (Reference: [How to read an often-changing value from useCallback?](https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback))
-- Either class component or functional component while definiting a component as much as possible.
+- Do not use arrow functions to assign to event functions as values directly. (Reference: [How to read an often-changing value from useCallback?](https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback))
+- Either class component or functional component while defining a component as much as possible.
 
 ## Release
 
@@ -67,7 +67,7 @@ npm owner add [username] drip-table
 
 - Date version number(051021): Optional. The date version number is used to record the date of the modification of the project, and the modification needs to be recorded every day. Whether to modify this version number is determined by developers.
 
-- Greek letter version number(beta): Optional. This version number is used to mark which pharse of development the current software is in, and it needs to be modified when the software enters to another pharse. Whether to modify this version number is determined by the project manager.
+- Greek letter version number(beta): Optional. This version number is used to mark which phrase of development the current software is in, and it needs to be modified when the software enters to another phrase. Whether to modify this version number is determined by the project manager.
 
 ```sh
 git commit -m 'release: drip-table 1.2.3'
