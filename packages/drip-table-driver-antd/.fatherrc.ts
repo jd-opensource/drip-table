@@ -1,4 +1,4 @@
-import { IBundleOptions } from 'father-build';
+import { IBundleOptions } from 'father-build/src/types';
 
 const options: IBundleOptions = {
   cjs: { type: 'rollup' },

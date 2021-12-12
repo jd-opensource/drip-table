@@ -1,4 +1,4 @@
-import { IBundleOptions } from 'father-build';
+import { IBundleOptions } from 'father-build/src/types';
 import path from 'path';
 import eslint from '@rollup/plugin-eslint';
 
