@@ -10,8 +10,10 @@
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "changelog": "lerna-changelog",
     "clean": "lerna clean -y",
-    "lint": "yarn run gitlint && lerna run lint --stream --scope=drip-table && lerna run lint --stream --scope=drip-table-driver-antd",
-    "gitlint": "sh ./bin/gitlint.sh || exit 1"
+    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd",
+    "lint:git": "sh ./bin/gitlint.sh || exit 1",
+    "lint:drip-table": "lerna run lint --stream --scope=drip-table",
+    "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd"
   },
   "devDependencies": {
     "@rollup/plugin-eslint": "^8.0.1",
@@ -30,7 +32,7 @@
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-unicorn": "^38.0.1",
     "eslint-plugin-unused-imports": "^1.1.1",
-    "father-build": "1.17.2",
+    "father-build": "^1.20.4",
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
     "lint-staged": "10.0.7",
