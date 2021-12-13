@@ -7,7 +7,8 @@
  */
 
 import React from 'react';
-import { get } from '@/drip-table/utils';
+import { indexValue } from '@/drip-table/utils';
+
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCImageSchema extends DripTableComponentSchema {
@@ -31,7 +32,7 @@ export default class DTCImage<RecordType> extends React.PureComponent<DTCImagePr
   private get value() {
     const schema = this.props.schema;
     const dataIndex = schema.dataIndex;
-    return get(this.props.data, dataIndex, '');
+    return indexValue(this.props.data, dataIndex, '');
   }
 
   public render() {

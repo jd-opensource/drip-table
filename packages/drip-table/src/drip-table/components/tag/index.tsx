@@ -7,7 +7,8 @@
  */
 
 import React from 'react';
-import { get } from '@/drip-table/utils';
+import { indexValue } from '@/drip-table/utils';
+
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCTagSchema extends DripTableComponentSchema {
@@ -40,7 +41,7 @@ export default class DTCTag<RecordType> extends React.PureComponent<DTCTagProps<
   private get value() {
     const schema = this.props.schema;
     const dataIndex = schema.dataIndex;
-    return get(this.props.data, dataIndex, '');
+    return indexValue(this.props.data, dataIndex, '');
   }
 
   public render() {

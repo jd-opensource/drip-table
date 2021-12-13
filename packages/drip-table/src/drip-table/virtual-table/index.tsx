@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VariableSizeGrid } from 'react-window';
 import ResizeObserver from 'rc-resize-observer';
+
+import { indexValue } from '../utils';
 import { DripTableDriver, DripTableRecordTypeBase } from '../..';
 
 import styles from './index.module.css';
-import { get } from '../utils';
 
 // 根据size来控制行高
 const rowHeightMap = {
@@ -74,7 +75,7 @@ function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { drive
     const renderCell = ({ columnIndex, rowIndex, style }: { columnIndex: number; rowIndex: number; style: React.CSSProperties }) => {
       const columnItem = mergedColumns[columnIndex];
       const dataItem = rawData[rowIndex];
-      const value = columnItem.dataIndex ? get(dataItem, columnItem.dataIndex) : dataItem;
+      const value = columnItem.dataIndex ? indexValue(dataItem, columnItem.dataIndex) : dataItem;
       return (
         <div className={styles['virtual-table-cell']} style={style}>
           {
