@@ -1,0 +1,55 @@
+
+.popup-wrapper {
+  transition: height 300ms ease-in-out;
+}
+
+.popup-layer {
+  position: fixed;
+  z-index: 200;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  transition: height 300ms ease-in-out;
+  border-top: 1px solid #1890ff;
+}
+
+.popup-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-bottom: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-main {
+  flex: 1 1 auto;
+  background: #ffffff;
+  padding: 0 0 10px;
+  overflow-y: auto;
+
+  :global(.ant-tabs-nav) {
+    padding: 0 20px;
+    margin-bottom: 1px;
+  }
+}
+
+.popup-tabs {
+  height: 100%;
+
+  :global(.ant-tabs-content) {
+    height: 100%;
+  }
+}
+
+.json-edit-tab {
+  height: 100%;
+
+  > div {
+    height: 100%;
+  }
+}

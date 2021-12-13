@@ -1,0 +1,400 @@
+/**
+ * This file is part of the jd-mkt5 launch.
+ * @link     : https://ace.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+.__dumi-default-layout[data-route="/"] .__dumi-default-layout-footer-meta {
+  display: none;
+}
+
+.__dumi-index-root + .__dumi-default-layout-footer-meta {
+  display: none;
+}
+
+.__dumi-default-layout[data-route="/"] {
+  padding: 72px 0 32px 0;
+}
+
+.home-container {
+  position: relative;
+}
+
+.home-container svg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 10em;
+  z-index: 5;
+  transition: all .3s ease-in-out;
+  overflow: hidden;
+}
+
+.home-container svg g {
+  transition: all .3s ease-in-out;
+}
+
+.home-container svg g > use { animation: move-forever 12s linear infinite; }
+.home-container svg g > use:nth-child(1) { animation-delay: -1s; }
+.home-container svg g > use:nth-child(2) { animation-delay: -2s; animation-duration: 5s; }
+.home-container svg g > use:nth-child(3) { animation-delay: -4s; animation-duration: 4s; }
+
+@keyframes move-forever {
+  0% { transform: translate(-90px, 0); }
+  100% { transform: translate(85px, 0); }
+}
+
+.home-container-banner {
+  height: 700px;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  overflow: hidden;
+}
+
+.home-container-banner-text {
+  margin-top: 0;
+}
+
+.home-container-banner-text h1,
+.home-container-feature-text h1,
+.home-container-features h1 {
+  margin: 0 0 16px;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 56px;
+  text-transform: uppercase;
+  background: -webkit-linear-gradient(left, #6a83ff, #01e6f8);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-container-banner-text p,
+.home-container-feature-text p {
+  color: #7cbbff;
+}
+
+.home-container-banner-text a:last-child button,
+.home-container-feature-text a:last-child button {
+  background: #007bff !important;
+  color: #ffffff !important;
+}
+
+.home-container-banner-text button,
+.home-container-feature-text button {
+  margin-right: 16px;
+  padding: 0 32px;
+  height: 44px;
+  font-size: 16px;
+  background: transparent;
+  border: 1px solid #007bff !important;
+  color: #007bff !important;
+  border-radius: 22px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: none;
+  transition: all .3s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; /* 初始状态 透明度为0 */
+  }
+
+  50% {
+    opacity: 0; /* 中间状态 透明度为0 */
+  }
+
+  100% {
+    opacity: 1; /* 结尾状态 透明度为1 */
+  }
+}
+
+.home-container-banner-table {
+  margin-top: -195px;
+  width: 600px;
+  height: 350px;
+  border-radius: 10px;
+  background-image: url('https://storage.360buyimg.com/imgtools/eec125447e-e24fa9a0-41f4-11ec-bf12-d7e468206312.png');
+  position: relative;
+}
+
+.table-image {
+  background-color: #00beb9;
+  width: 231px;
+  height: 140px;
+  z-index: -1;
+  position: absolute;
+  top: 70px;
+  left: 260px;
+  border-radius: 3px;
+}
+
+.table-image div {
+  width: 210px;
+  height: 120px;
+  margin: 10px 10px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.table-image div ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  width: 30px;
+  height: 80%;
+}
+
+.table-image div ul li {
+  width: 100%;
+  height: 20%;
+  background-color: #f1f1f1;
+}
+
+.table-image div ul:first-child {
+  width: 50px;
+  height: 80%;
+}
+
+.table-image div ul:first-child li {
+  width: 100%;
+  background-color: #f1f1f1;
+}
+
+.table-image div ul li:first-child {
+  background-color: rgb(61, 61, 61);
+}
+
+.home-container-banner-table::after {
+  background-image: linear-gradient(-220deg, #1d3ede, #01e6f8);
+  border-radius: 50% 0 50% 50%;
+  position: absolute;
+  content: "";
+  height: 600px;
+  width: 1000px;
+  z-index: -2;
+  margin-top: -6%;
+  margin-left: -100%;
+}
+
+.home-container-banner-table::before {
+  background-image: linear-gradient(to right, #e8eefc, #e6fafe);
+  border-radius: 50% 0 50% 50%;
+  position: absolute;
+  content: "";
+  height: 600px;
+  width: 1000px;
+  z-index: -2;
+  margin-top: -5%;
+  margin-left: -12%;
+}
+
+.home-container-banner-table-title {
+  height: 17%;
+  width: 96%;
+  background-color: rgba(255, 255, 255, .3);
+  margin: 3% auto;
+  border-radius: 6px;
+  animation-name: fadeIn; /* 动画名称 */
+  animation-duration: 1s; /* 动画持续时间 */
+  animation-iteration-count: 1; /* 动画次数 */
+  animation-delay: 0s; /* 延迟时间 */
+}
+
+.home-container-banner-table-content {
+  height: 17%;
+  width: 96%;
+  background-image: linear-gradient(302deg, #94a6ec 0%, #f4f6ff 100%);
+  margin: 3% auto;
+  border-radius: 6px;
+}
+
+.home-container-feature {
+  height: 700px;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 150px;
+}
+
+.home-container-feature-table {
+  background-image: url('https://storage.360buyimg.com/imgtools/5e1a6d77c3-9499ed10-5801-11ec-9296-d7123996e7ed.gif');
+  width: 650px;
+  height: 350px;
+  background-size: 650px 350px;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  margin-top: -10%;
+}
+
+.home-container-feature-table::after {
+  background-image: linear-gradient(to right, #e8eefc, #e6fafe);
+  border-radius: 20% 20% 40% 40%;
+  position: absolute;
+  content: "";
+  height: 600px;
+  width: 800px;
+  z-index: -1;
+  margin-top: -5%;
+  margin-left: -4%;
+}
+
+.home-container-feature-text {
+  width: 586px;
+  margin-top: -200px;
+}
+
+.home-container-features h1 {
+  text-align: center;
+}
+
+.home-container-features-content {
+  display: flex;
+  justify-content: space-around;
+  height: 188px;
+}
+
+.home-container-features-drip-table {
+  width: 500px;
+  text-align: center;
+}
+
+.home-container-features-drip-table > h1 {
+  font-size: 30px;
+}
+
+.container-table-content1 {
+  animation-name: fadeIn; /* 动画名称 */
+  animation-duration: 1.5s; /* 动画持续时间 */
+  animation-iteration-count: 1; /* 动画次数 */
+  animation-delay: 0s; /* 延迟时间 */
+}
+
+.container-table-content2 {
+  animation-name: fadeIn; /* 动画名称 */
+  animation-duration: 2s; /* 动画持续时间 */
+  animation-iteration-count: 1; /* 动画次数 */
+  animation-delay: 0s; /* 延迟时间 */
+}
+
+.container-table-content3 {
+  animation-name: fadeIn; /* 动画名称 */
+  animation-duration: 2.5s; /* 动画持续时间 */
+  animation-iteration-count: 1; /* 动画次数 */
+  animation-delay: 0s; /* 延迟时间 */
+}
+
+.home-content {
+  height: 680px;
+  background-image: url('https://img13.360buyimg.com/imagetools/jfs/t1/199878/17/16005/504968/61834c87E3f2e93bf/76bb26ebe6106862.png');
+}
+
+.__dumi-default-layout-content {
+  width: 100%;
+}
+
+.__dumi-default-layout-footer {
+  width: 100%;
+  height: 100px;
+  background-color: #1f232d;
+}
+
+.home-carousel {
+  width: 100%;
+}
+
+.home-carousel-title {
+  width: 100%;
+  text-align: center;
+}
+
+.home-carousel-title h1 {
+  font-size: 34px;
+}
+
+.home-carousel-title p {
+  color: rgb(100, 100, 100);
+}
+
+.home-carousel .carousel-button {
+  width: 300px;
+  background-color: #ededed;
+  border-radius: 48px;
+  display: flex;
+  position: relative;
+  left: 50%;
+  margin-left: -150px;
+  margin-bottom: 20px;
+}
+
+.carousel-button div {
+  z-index: 99;
+  border-radius: 48px;
+  width: 50%;
+  text-align: center;
+  line-height: 48px;
+  height: 48px;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.carousel-content {
+  width: 100%;
+  height: 792px;
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-repeat: no-repeat;
+}
+
+.carousel-content .drip-table-generator {
+  width: 1200px;
+  box-shadow: 0 4px 30px 0 rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  position: relative;
+  left: 50%;
+  margin-left: -600px;
+}
+
+.carousel-button i {
+  transition: 1s;
+  position: absolute;
+  border-radius: 48px;
+  left: 0;
+  display: inline-block;
+  background-color: #ffffff;
+  width: 150px;
+  height: 48px;
+  box-shadow: 0 2px 8px #0000001a;
+}
+
+.carousel-button .carousel-checked {
+  left: 150px;
+}
+
+.home-footer {
+  width: 960px;
+  margin: 72px auto 32px auto;
+  padding-top: 24px;
+  border-top: 1px solid #ebedf1;
+  text-align: center;
+  color: #b0b1ba;
+  font-size: 15px;
+}
