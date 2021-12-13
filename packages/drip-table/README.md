@@ -34,14 +34,13 @@
 ## Development
 
 ### Steps
-1. create a new branch that names to express the features simply.
-2. coding in local branch.
+
+1. Fork.
+2. Create a new branch that names to express the features simply.
 3. add documents of new features in `docs/drip-table` directory.
 4. add features in `docs/drip-table/changelog` file.
-5. submit code and merge into `master` branch.
-6. modify version information in `package.json` file.
-7. submit and push code.
-8. release new version.
+5. Commit.
+6. Create pull request.
 
 ### Cautions
 - Use React.memo to wrap a functional component, and compare props to update the wrapped component.
