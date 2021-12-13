@@ -1,0 +1,113 @@
+.layout {
+  &-left {
+    &-wrapper {
+      min-width: 280px;
+      width: 280px;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-right: 1px solid rgb(243, 244, 246);
+
+      .group-title {
+        border-bottom: 1px solid #eeeeee;
+        padding-top: .5rem;
+        padding-bottom: .25rem;
+        padding-left: .5rem;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+      }
+    }
+
+    &-title {
+      border-bottom: 1px solid #eeeeee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .5rem;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 500;
+    }
+
+    &-components-container {
+      padding: .75rem;
+
+      table {
+        width: 100%;
+
+        .components-line {
+          &__gutter {
+            height: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.component {
+  &-container {
+    width: 100%;
+    padding: 8px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+
+    & > div {
+      height: 28px;
+      border-radius: 4px;
+      vertical-align: top;
+      padding: 4px;
+      font-weight: bold;
+      align-items: center;
+      color: var(--drip-table-primary-color);
+      display: flex;
+      justify-content: space-between;
+      border-width: 1px;
+      background-color: var(--drip-table-background-color);
+      border: 4px solid transparent;
+    }
+
+    & > div:hover {
+      color: rgb(255, 255, 255);
+      background-color: var(--drip-table-primary-color);
+      box-shadow:
+        rgb(255, 255, 255) 0 0 0 0,
+        var(--drip-table-border-color) 0 0 0 3px,
+        rgba(0, 0, 0, 0%) 0 0 0 0;
+      cursor: pointer;
+      border: 4px solid var(--drip-table-border-color);
+
+      .component-icon {
+        fill: rgb(255, 255, 255);
+      }
+    }
+  }
+
+  &-icon {
+    fill: var(--drip-table-primary-color);
+    height: 20px;
+    width: 24px;
+    display: inline-block;
+    vertical-align: top;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      margin: 1px;
+    }
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+
+  span {
+    line-height: 20px;
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: top;
+  }
+}

@@ -1,0 +1,15 @@
+.trigger {
+  border: 1px solid #999999;
+  display: inline-block;
+  padding: 2px;
+  border-radius: 2px;
+  user-select: none;
+  width: 90px;
+  height: 32px;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #ffffff inset;
+}
+
+:global(.rc-color-picker-wrap) {
+  display: flex !important;
+}

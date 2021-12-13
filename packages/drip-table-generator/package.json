@@ -1,0 +1,68 @@
+{
+  "name": "drip-table-generator",
+  "version": "1.0.0",
+  "description": "A visualization tool for generating schema of drip-table.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "father-build && tsc-alias -p tsconfig.json",
+    "analyze": "ANALYZE=1 dumi dev",
+    "prepare": "yarn build",
+    "postpublish": "git push --tags",
+    "lint": "yarn run eslint && yarn run tslint && yarn run stylelint",
+    "lint:fix": "yarn run eslint:fix && yarn run stylelint:fix",
+    "tslint": "sh ../../bin/tslint.sh **/*.ts",
+    "tslint:commit": "sh ./bin/tslint.sh",
+    "tslint:exec": "tsc --project .tsconfig-lint.json --skipLibCheck --noEmit",
+    "eslint": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty",
+    "eslint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx,json}\" --format pretty --fix",
+    "eslint:commit": "eslint --format pretty",
+    "stylelint": "stylelint \"src/**/*.{less,sass,scss,css,vue}\" --custom-formatter=../../node_modules/stylelint-formatter-pretty",
+    "stylelint:fix": "stylelint \"src/**/*.{less,sass,scss,css,vue}\" --custom-formatter=../../node_modules/stylelint-formatter-pretty --fix",
+    "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.2.1",
+    "cheerio": "1.0.0-rc.3",
+    "lodash": "^4.4.2",
+    "rc-color-picker": "^1.2.6",
+    "typescript": "^4.4.2",
+    "viewerjs": "^1.10.0"
+  },
+  "devDependencies": {
+    "drip-table": "link:../drip-table",
+    "drip-table-driver-antd": "link:../drip-table-driver-antd",
+    "babel-plugin-import": "1.13.0",
+    "father-build": "^1.20.4",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "tsc-alias": "^1.4.2",
+    "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^4.3.0",
+    "drip-table": ">=1.0.0",
+    "drip-table-driver-antd": ">=1.0.0",
+    "antd": ">=4.9.4",
+    "react": ">=16.9.0"
+  },
+  "keywords": [
+    "DripTableGenerator",
+    "TableGenerator",
+    "Generator",
+    "DripTable",
+    "Drip Design",
+    "React",
+    "Json Schema"
+  ],
+  "files": [
+    "README.*",
+    "dist"
+  ],
+  "homepage": "https://drip-table.jd.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JDFED/drip-table/issues"
+  }
+}

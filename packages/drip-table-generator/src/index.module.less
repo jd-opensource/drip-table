@@ -1,0 +1,45 @@
+* {
+  font-size: 14px;
+
+  --drip-table-primary-color: rgb(59, 130, 246);
+  --drip-table-background-color: rgb(239, 246, 255);
+  --drip-table-border-color: rgba(59, 130, 246, .5);
+}
+
+.wrapper {
+  display: flex;
+  overflow-x: auto;
+}
+
+.layout {
+  &-right {
+    &-wrapper {
+      width: calc(100% - 280px);
+      height: 100%;
+      border-left: 1px solid rgb(243, 244, 246);
+      margin-left: -1px;
+      min-width: 442px;
+      overflow-x: auto;
+
+      &.preview {
+        height: auto;
+        overflow-y: auto;
+      }
+    }
+
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border-bottom: 1px solid #eeeeee;
+      padding: .5rem;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 500;
+
+      & > span {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

@@ -5,15 +5,17 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd",
+    "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd && yarn run build:drip-table-generator",
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
+    "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
     "changelog": "lerna-changelog",
     "clean": "lerna clean -y",
-    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd",
+    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator",
     "lint:git": "sh ./bin/gitlint.sh || exit 1",
     "lint:drip-table": "lerna run lint --stream --scope=drip-table",
-    "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd"
+    "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd",
+    "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator"
   },
   "devDependencies": {
     "@rollup/plugin-eslint": "^8.0.1",
