@@ -25,8 +25,7 @@
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.3",
-    "lodash": "4.17.20",
-    "lodash.get": "^4.4.2",
+    "lodash": "^4.17.21",
     "rc-resize-observer": "^1.0.1",
     "react-dom": "^16.9.0",
     "react-window": "^1.8.6",
