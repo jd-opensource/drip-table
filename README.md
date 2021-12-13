@@ -144,7 +144,7 @@ DripTable can be divided into two scenes: configuration side and application sid
 
     Then the configuration side can be rendered normally, as the sample screenshot below:
 
-    ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/156921/40/23673/32845/618bbc9eE7957906c/6fb6d6afe73b4238.jpg)
+    ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/209919/9/12490/4540144/61b71921Ee35a9a3c/e2f7167fef822f17.gif)
 
 ## Contribution
 
