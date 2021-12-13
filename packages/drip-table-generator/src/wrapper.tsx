@@ -30,7 +30,7 @@ const Wrapper = <RecordType extends DripTableRecordTypeBase>(props: DripTableGen
   const initialData = { dataSource } as DripTableGeneratorState;
   if (schema) {
     initialData.globalConfigs = schema.configs;
-    initialData.columns = schema.columns.map((item, index) => ({ key: index, sort: index, ...item }));
+    initialData.columns = schema.columns?.map((item, index) => ({ key: index, sort: index, ...item }));
   }
   const originState: DripTableGeneratorState = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });

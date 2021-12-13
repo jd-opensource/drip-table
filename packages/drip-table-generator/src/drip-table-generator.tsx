@@ -5,14 +5,19 @@ import zhCN from 'antd/lib/locale/zh_CN';
 
 import { Ctx } from '@/context';
 import { DripTableGeneratorProps } from '@/typing';
-import { defaultState, GlobalStore } from '@/store';
+import { defaultState, DripTableGeneratorState, GlobalStore } from '@/store';
 
 import Wrapper from './wrapper';
 
 import 'antd/dist/antd.less';
 
-export interface RootState {
-  getSchemaValue: () => null;
+export interface DripTableGeneratorHandle extends DripTableGeneratorState {
+  /**
+   * 通过接口获取配置
+   *
+   * @returns { DripTableSchema } 返回DripTableSchema配置
+   */
+  getSchemaValue: () => DripTableSchema;
 }
 
 const useTableRoot = (props, store, wrapper) => {
@@ -49,7 +54,7 @@ const useTableRoot = (props, store, wrapper) => {
   return context;
 };
 
-const Container = <RecordType extends DripTableRecordTypeBase>(props: DripTableGeneratorProps<RecordType>, ref) => {
+const Container = <RecordType extends DripTableRecordTypeBase>(props: DripTableGeneratorProps<RecordType>, ref: React.ForwardedRef<DripTableGeneratorHandle>) => {
   const wrapper = useRef({});
   const initialState = defaultState();
   const store = useState(initialState);
