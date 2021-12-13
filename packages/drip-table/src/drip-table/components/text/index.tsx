@@ -27,7 +27,7 @@ export interface DTCTextSchema extends DripTableComponentSchema {
   /** 前缀文案 */
   prefix?: string;
   /** 后缀文案 */
-  subfix?: string;
+  suffix?: string;
   enumValue?: string[];
   enumLabel?: string[];
   tooltip?: boolean | string;
@@ -38,7 +38,7 @@ export interface DTCTextSchema extends DripTableComponentSchema {
     /** 前缀文案 */
     prefix?: string;
     /** 后缀文案 */
-    subfix?: string;
+    suffix?: string;
     enumValue?: string[];
     enumLabel?: string[];
     tooltip?: boolean | string;
@@ -117,7 +117,7 @@ export default class DTCText<RecordType> extends React.PureComponent<DTCTextProp
       noDataValue,
       format,
       prefix,
-      subfix,
+      suffix,
       params,
       enumValue,
       enumLabel,
@@ -151,7 +151,7 @@ export default class DTCText<RecordType> extends React.PureComponent<DTCTextProp
         const index = enumValue.indexOf(value);
         value = enumLabel[index];
       }
-      const contentStr = `${prefix || ''} ${value || noDataStr} ${subfix || ''}`;
+      const contentStr = `${prefix || ''} ${value || noDataStr} ${suffix || ''}`;
       const Tooltip = this.props.driver.components.Tooltip;
       return (
         <div style={this.styles} className={this.classNames}>
@@ -176,7 +176,7 @@ export default class DTCText<RecordType> extends React.PureComponent<DTCTextProp
               const index = enumValue.indexOf(value);
               value = enumLabel[index];
             }
-            const contentStr = `${config.prefix || ''} ${value || noDataStr} ${config.subfix || ''}`;
+            const contentStr = `${config.prefix || ''} ${value || noDataStr} ${config.suffix || ''}`;
             return (
               <div key={i}>
                 { tooltip

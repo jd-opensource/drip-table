@@ -17,7 +17,6 @@ export interface DTCImageSchema extends DripTableComponentSchema {
   noDataUrl?: string;
   popover?: boolean;
   previewImg?: boolean;
-  // fullScreen?: boolean;
   imgWidth?: number;
   imgHeight?: number;
 }

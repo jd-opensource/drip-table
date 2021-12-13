@@ -13,8 +13,6 @@ import { DripTableComponentProps, DripTableComponentSchema } from '../component'
 
 export interface DTCTagSchema extends DripTableComponentSchema {
   'ui:type': 'tag';
-  /** 模式 */
-  //  mode?: 'single' | 'multi';
   /** 字体颜色 */
   color?: string;
   /** 边框颜色 */
@@ -26,7 +24,7 @@ export interface DTCTagSchema extends DripTableComponentSchema {
   /** 前缀 */
   prefix?: string;
   /** 后缀 */
-  subfix?: string;
+  suffix?: string;
   /** 静态文案 */
   content?: string;
   /** 枚举 */
@@ -62,7 +60,7 @@ export default class DTCTag<RecordType> extends React.PureComponent<DTCTagProps<
         >
           { schema.content || schema.tagOptions?.find(item => item.value === value)?.label || value }
         </Tag>
-        { schema.subfix || '' }
+        { schema.suffix || '' }
       </div>
     );
   }
