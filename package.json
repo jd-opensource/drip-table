@@ -29,6 +29,7 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.3",
     "drip-table": "link:packages/drip-table",
+    "drip-table-generator": "link:packages/drip-table-generator",
     "dumi": "^1.1.35",
     "eslint-config-lvmcn": "0.0.30",
     "eslint-formatter-pretty": "4.0.0",

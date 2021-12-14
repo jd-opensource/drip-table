@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 import { DataSchema, DripTableSchema, EventLike, DripTableProps, DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableGeneratorState } from './store';
 
 /** 组件属性的表单配置项 */
 export type DTGComponentPropertySchema = DataSchema & {
@@ -38,6 +39,15 @@ export interface DripTableComponentConfig {
   attrSchema: DTGComponentPropertySchema[];
   /** 展示用icon */
   icon?: string;
+}
+
+export interface DripTableGeneratorHandler extends DripTableGeneratorState {
+  /**
+   * 通过接口获取配置
+   *
+   * @returns { DripTableSchema } 返回DripTableSchema配置
+   */
+  getSchemaValue: () => DripTableSchema;
 }
 
 export interface DripTableGeneratorProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
