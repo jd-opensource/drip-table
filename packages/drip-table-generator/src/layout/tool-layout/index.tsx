@@ -57,7 +57,7 @@ const ToolLayout = (props: { store: GlobalStore }) => {
       <Button
         style={{ margin: '0 12px' }}
         size="small"
-        onClick={() => { globalActions.toogleEditMode(store); }}
+        onClick={() => { globalActions.toggleEditMode(store); }}
       >
         { state.isEdit ? '预览模式' : '编辑模式' }
       </Button>

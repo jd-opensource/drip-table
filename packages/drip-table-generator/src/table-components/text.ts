@@ -16,7 +16,7 @@ export default {
       name: 'dataIndex',
       required: true,
       'ui:title': '字段选择',
-      'ui:type': 'select',
+      'ui:type': 'auto-complete',
       'ui:props': {
         from: 'dataSource',
       },
@@ -96,7 +96,7 @@ export default {
           {
             name: 'dataIndex',
             'ui:title': '字段选择',
-            'ui:type': 'select',
+            'ui:type': 'auto-complete',
             'ui:props': {
               from: 'dataSource',
             },

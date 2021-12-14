@@ -81,7 +81,7 @@ DripTable can be divided into two scenes: configuration side and application sid
     // import ant-design css
     import 'antd/dist/antd.css';
     // import drip-table css
-    import 'drip-table/index.css';
+    import 'drip-table/dist/index.css';
     ```
 
 3. Use components in pages
@@ -133,7 +133,7 @@ DripTable can be divided into two scenes: configuration side and application sid
 
     ```js
     import DripTableGenerator from 'drip-table-generator';
-    import 'drip-table-generator/index.css';
+    import 'drip-table-generator/dist/index.css';
     ```
 
 3. Use components in pages

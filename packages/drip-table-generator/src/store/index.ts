@@ -47,7 +47,15 @@ export type GlobalStoreObject = {
   setState: React.Dispatch<React.SetStateAction<DripTableGeneratorState>>;
 };
 
-export const globalActions: Record<string, (store?: GlobalStoreObject) => void> = {
+export type GlobalActions = {
+  toggleEditMode: (store?: GlobalStoreObject) => void;
+  editColumns: (store?: GlobalStoreObject) => void;
+  checkColumn: (store?: GlobalStoreObject) => void;
+  updateDataSource: (store?: GlobalStoreObject) => void;
+  updateGlobalConfig: (store?: GlobalStoreObject) => void;
+}
+
+export const globalActions: GlobalActions = {
   toggleEditMode(store) {
     store?.setState({ ...store.state, isEdit: !store.state.isEdit });
   },
