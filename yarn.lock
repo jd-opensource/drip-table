@@ -2313,6 +2313,19 @@
     magic-string "^0.25.7"
     resolve "^1.17.0"
 
+"@rollup/plugin-commonjs@^21.0.1":
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-21.0.1.tgz#1e57c81ae1518e4df0954d681c642e7d94588fee"
+  integrity sha512-EA+g22lbNJ8p5kuZJUYyhhDK7WgJckW5g4pNN7n4mAFUM96VuwUnNT3xr2Db2iCZPI1pJPbGyfT5mS9T1dHfMg==
+  dependencies:
+    "@rollup/pluginutils" "^3.1.0"
+    commondir "^1.0.1"
+    estree-walker "^2.0.1"
+    glob "^7.1.6"
+    is-reference "^1.2.1"
+    magic-string "^0.25.7"
+    resolve "^1.17.0"
+
 "@rollup/plugin-eslint@^8.0.1":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-eslint/-/plugin-eslint-8.0.1.tgz#bf7462f96027613729b8a805caaa951dc23c333e"
@@ -5577,8 +5590,14 @@ dot-prop@^6.0.1:
     react-dom "^16.9.0"
 
 "drip-table@link:packages/drip-table":
-  version "0.0.0"
-  uid ""
+  version "1.0.3"
+  dependencies:
+    cheerio "1.0.0-rc.3"
+    lodash "^4.17.21"
+    rc-resize-observer "^1.0.1"
+    react-dom "^16.9.0"
+    react-window "^1.8.6"
+    viewerjs "1.7.1"
 
 dumi-assets-types@1.0.0:
   version "1.0.0"
