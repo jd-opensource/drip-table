@@ -28,7 +28,6 @@
     "cheerio": "1.0.0-rc.3",
     "lodash": "^4.4.2",
     "rc-color-picker": "^1.2.6",
-    "typescript": "^4.4.2",
     "viewerjs": "^1.10.0"
   },
   "devDependencies": {
