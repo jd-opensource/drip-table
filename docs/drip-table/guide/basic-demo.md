@@ -16,7 +16,7 @@ title: 基础实例
  * hideActions: ["CSB"]
  */
 import React from "react";
-import { DripTable } from "drip-table";
+import DripTable from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import "antd/dist/antd.css";
 import "drip-table/index.css";

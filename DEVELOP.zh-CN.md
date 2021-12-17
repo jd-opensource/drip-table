@@ -2,9 +2,11 @@
 
 ## 开发前
 
+简体中文 | [English](./DEVELOP.md)
+
 **在开发前你需要掌握的知识点**
 
-### 什么是JSON Schema
+### 什么是 JSON Schema
 
 1. `JSON Schema` 本身就是一种数据结构，可以清晰的描述 `JSON` 数据的结构。是一种描述 `JSON` 数据的 `JSON` 数据。
 2. [JSON Schema 官方文档](http://json-schema.org/)
@@ -21,16 +23,19 @@
 - 安装 `git`, `node`, `yarn`, 其中 `node` 版本 >=13.14.0，`yarn` 版本 >=1.0.0
 - 配置 [NPM](https://registry.npmjs.com/) 源, 如果有必要的话。
 
-    > 配置NPM源
-    ```sh
-    npm config set registry https://registry.npmjs.com/
-    ```
+  > 配置 NPM 源
 
-    > NPM 登录
-    ```shell
-    npm adduser (--registry=https://registry.npmjs.com/)
-    ```
-    > 按照提示输入用户名密码即可
+  ```sh
+  npm config set registry https://registry.npmjs.com/
+  ```
+
+  > NPM 登录
+
+  ```shell
+  npm adduser (--registry=https://registry.npmjs.com/)
+  ```
+
+  > 按照提示输入用户名密码即可
 
 - 源码下载
 
@@ -38,15 +43,15 @@
 
 1. 安装依赖
 
-    ```sh
-    lerna bootstrap
-    ```
+   ```sh
+   lerna bootstrap
+   ```
 
 2. 启动项目
 
-    ```
-    yarn start
-    ```
+   ```
+   yarn start
+   ```
 
 3. 浏览器访问: `http://localhost:8000` 即可。
 
@@ -94,6 +99,7 @@
 ## 官网发布
 
 > 构建打包
+
 ```
 yarn run build:docs
 ```

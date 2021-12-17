@@ -2,6 +2,8 @@
 
 ## Before Development
 
+English | [简体中文](./DEVELOP.zh-CN.md)
+
 **Knowledge points that you need to master before developing**
 
 ### What is JSON Schema?
@@ -21,17 +23,19 @@
 - install `git`, `node`, `yarn`. version requirement: `node` >=13.14.0, `yarn` >= 1.0.0
 - configure [NPM](https://registry.npmjs.com/) source if needed.
 
-    > configure NPM source
-    ```sh
-    npm config set registry https://registry.npmjs.com/
-    ```
+  > configure NPM source
 
-    > login
-    ```shell
-    npm adduser (--registry=https://registry.npmjs.com/)
-    ```
+  ```sh
+  npm config set registry https://registry.npmjs.com/
+  ```
 
-    - Download codes
+  > login
+
+  ```shell
+  npm adduser (--registry=https://registry.npmjs.com/)
+  ```
+
+  - Download codes
 
 ## Start
 
@@ -42,6 +46,7 @@ lerna bootstrap
 ```
 
 > run
+
 ```
 yarn start
 ```
