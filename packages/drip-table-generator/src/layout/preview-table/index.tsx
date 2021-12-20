@@ -13,12 +13,12 @@ import { GlobalStore } from '@/store';
 
 import styles from './index.module.less';
 
-interface Props<RecordType extends DripTableRecordTypeBase> {
-  driver: DripTableDriver<RecordType>;
-  customComponents: DripTableProps<RecordType>['components'];
+interface Props {
+  driver: DripTableDriver<DripTableRecordTypeBase>;
+  customComponents: DripTableProps<DripTableRecordTypeBase>['components'];
 }
 
-const PreviewTable = <RecordType extends DripTableRecordTypeBase>(props: Props<RecordType> & { store: GlobalStore }) => {
+const PreviewTable = (props: Props & { store: GlobalStore }) => {
   const [state] = props.store;
 
   const schema: DripTableSchema = {
@@ -28,14 +28,14 @@ const PreviewTable = <RecordType extends DripTableRecordTypeBase>(props: Props<R
     },
     columns: state.columns as ColumnConfig[],
   };
-  const totalPage = state.globalConfigs?.pagination && state.globalConfigs?.pagination.pageSize ? state.dataSource.length : 1;
+  const totalPage = state.globalConfigs?.pagination && state.globalConfigs?.pagination.pageSize ? state.previewDataSource.length : 1;
   return (
     <div className={styles['table-preview-wrapper']}>
-      <DripTable<RecordType>
+      <DripTable
         driver={(props.driver || DripTableDriverAntDesign)}
         schema={schema}
         total={totalPage}
-        dataSource={state.dataSource as RecordType[]}
+        dataSource={state.previewDataSource}
         components={props.customComponents}
       />
     </div>

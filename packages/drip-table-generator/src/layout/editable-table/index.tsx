@@ -18,12 +18,12 @@ import Draggable from '@/components/Draggable';
 import styles from './index.module.less';
 import { get } from '@/utils';
 
-interface Props<RecordType extends DripTableRecordTypeBase> {
-  driver: DripTableDriver<RecordType>;
-  customComponents: DripTableProps<RecordType>['components'] | undefined;
+interface Props {
+  driver: DripTableDriver<DripTableRecordTypeBase>;
+  customComponents: DripTableProps<DripTableRecordTypeBase>['components'] | undefined;
 }
 
-const EditableTable = <RecordType extends DripTableRecordTypeBase>(props: Props<RecordType> & { store: GlobalStore }) => {
+const EditableTable = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
@@ -36,8 +36,8 @@ const EditableTable = <RecordType extends DripTableRecordTypeBase>(props: Props<
     const DripTableComponent = column['ui:type'].startsWith('custom::')
       ? customComponents[column['ui:type'].replace('custom::', '')]
       : builtInComponents[column['ui:type']];
-    const hasRecord = !(!state.dataSource || state.dataSource.length <= 0);
-    const record = state.dataSource[0] || {} as Record<string, unknown>;
+    const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
+    const record = state.previewDataSource[0] || {} as Record<string, unknown>;
     const value = column.dataIndex ? get(record, column.dataIndex) : record;
 
     const errorBoundary = () => {
@@ -92,23 +92,23 @@ const EditableTable = <RecordType extends DripTableRecordTypeBase>(props: Props<
         <div className={styles['column-title']}>{ col.title }</div>
         { previewComponentRender(col) }
         { isCurrent && (
-          <CloseCircleTwoTone
-            className={styles['close-icon']}
-            twoToneColor="#ff4d4f"
-            onClick={() => {
-              const index = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
-              if (index > -1) {
-                state.columns.splice(index, 1);
-                for (let i = index; i < state.columns.length; i++) {
-                  state.columns[i].key = i + 1;
-                  state.columns[i].sort = i + 1;
-                }
-                state.currentColumn = void 0;
-                globalActions.editColumns(store);
-                globalActions.checkColumn(store);
+        <CloseCircleTwoTone
+          className={styles['close-icon']}
+          twoToneColor="#ff4d4f"
+          onClick={() => {
+            const index = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
+            if (index > -1) {
+              state.columns.splice(index, 1);
+              for (let i = index; i < state.columns.length; i++) {
+                state.columns[i].key = i + 1;
+                state.columns[i].sort = i + 1;
               }
-            }}
-          />
+              state.currentColumn = void 0;
+              globalActions.editColumns(store);
+              globalActions.checkColumn(store);
+            }
+          }}
+        />
         ) }
       </div>
     );
@@ -117,21 +117,21 @@ const EditableTable = <RecordType extends DripTableRecordTypeBase>(props: Props<
   return (
     <div style={{ padding: '12px 0 12px 12px', overflowX: 'auto' }}>
       {
-        state.columns && state.columns.length > 0
-          ? (
-            <Draggable<DripTableColumn>
-              value={(state.columns || []) as DripTableColumn[]}
-              codeKey="sort"
-              style={{ position: 'relative' }}
-              onChange={(data) => {
-                state.columns = [...data];
-                globalActions.editColumns(store);
-              }}
-              render={renderTableCell}
-            />
-          )
-          : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无表格配置" />
-      }
+         state.columns && state.columns.length > 0
+           ? (
+             <Draggable<DripTableColumn>
+               value={(state.columns || []) as DripTableColumn[]}
+               codeKey="sort"
+               style={{ position: 'relative' }}
+               onChange={(data) => {
+                 state.columns = [...data];
+                 globalActions.editColumns(store);
+               }}
+               render={renderTableCell}
+             />
+           )
+           : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无表格配置" />
+       }
     </div>
   );
 };

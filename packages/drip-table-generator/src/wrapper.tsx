@@ -1,5 +1,4 @@
 import React, { useState, useImperativeHandle } from 'react';
-import { DripTableRecordTypeBase } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { useGlobalData } from './hooks';
 import { defaultState, DripTableGeneratorState, GlobalStore, setState } from './store';
@@ -12,9 +11,13 @@ import { DripTableGeneratorProps } from './typing';
 
 import styles from './index.module.less';
 
-const Wrapper = <RecordType extends DripTableRecordTypeBase>(props: DripTableGeneratorProps<RecordType> & {
+export type GeneratorWrapperHandler = {
+  getState: () => DripTableGeneratorState;
+}
+
+const Wrapper = (props: DripTableGeneratorProps & {
   store: GlobalStore;
-}, ref) => {
+}, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
   const {
     style = {},
     driver,
@@ -22,12 +25,12 @@ const Wrapper = <RecordType extends DripTableRecordTypeBase>(props: DripTableGen
     componentLayoutStyle = {},
     rightLayoutStyle = {},
     showToolLayout = true,
-    dataSource = [],
+    dataSource,
     schema,
     customComponentPanel,
     customComponents,
   } = useGlobalData();
-  const initialData = { dataSource } as DripTableGeneratorState;
+  const initialData = { previewDataSource: dataSource } as DripTableGeneratorState;
   if (schema) {
     initialData.globalConfigs = schema.configs;
     initialData.columns = schema.columns?.map((item, index) => ({ key: index, sort: index, ...item }));

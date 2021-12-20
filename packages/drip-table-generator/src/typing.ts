@@ -48,19 +48,27 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState {
    * @returns { DripTableSchema } 返回DripTableSchema配置
    */
   getSchemaValue: () => DripTableSchema;
+
+  /**
+   * 通过接口获取预览用表格数据
+   *
+   * @returns {Record<string, unknown>[]} 返回预览用表格数据
+   */
+  getDataSource: () => Record<string, unknown>[];
 }
 
-export interface DripTableGeneratorProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
+export interface DripTableGeneratorProps<CustomComponentEvent extends EventLike = never, Ext = unknown> {
   style?: CSSProperties;
-  driver?: DripTableDriver<RecordType>;
+  driver?: DripTableDriver<DripTableRecordTypeBase>;
   showComponentLayout?: boolean;
   componentLayoutStyle?: CSSProperties;
   rightLayoutStyle?: CSSProperties;
   showToolLayout?: boolean;
-  dataSource?: RecordType[];
+  /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
+  dataSource?: DripTableRecordTypeBase[];
   dataFields?: string[];
   schema?: DripTableSchema;
-  customComponents?: DripTableProps<RecordType, CustomComponentEvent, Ext>['components'];
+  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentEvent, Ext>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentConfig[];

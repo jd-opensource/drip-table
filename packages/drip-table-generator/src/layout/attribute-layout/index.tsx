@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Result, Tabs } from 'antd';
+import { Alert, Result, Tabs } from 'antd';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { DripTableSchema } from 'drip-table';
 import MonacoEditor from '@monaco-editor/react';
@@ -38,12 +38,14 @@ const { TabPane } = Tabs;
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   const { dataFields } = useGlobalData();
 
+  const [state, setState] = props.store;
+  const store = { state, setState };
+
   const [activeKey, setActiveKey] = React.useState('0');
 
-  const [state, actions] = props.store;
-  const store = { state, setState: actions };
+  const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
-  const [code, setCode] = React.useState(JSON.stringify(state.dataSource, null, 4));
+  const code = JSON.stringify(state.previewDataSource, null, 4);
 
   const getActiveKey = () => {
     if (activeKey === '0') {
@@ -129,17 +131,22 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     } as DripTableColumn;
   };
 
-  /** TODO: 报错逻辑后续优化 */
-  function submitDataWithoutThrottle() {
+  /** TODO: 报错逻辑后续优化
+  *
+  * @param {string} codeValue JSON
+  */
+  const submitDataWithoutDebounce = (codeValue: string) => {
+    setCodeErrorMessage('');
     try {
-      state.dataSource = JSON.parse(code);
-      globalActions.updateDataSource(store);
+      state.previewDataSource = JSON.parse(codeValue);
+      setState({ ...state });
+      globalActions.updatePreviewDataSource(store);
     } catch (error) {
-      console.error(error);
+      setCodeErrorMessage((error as Error).message);
     }
-  }
+  };
 
-  const submitTableData = debounce(submitDataWithoutThrottle, 1000);
+  const submitTableData = debounce(submitDataWithoutDebounce, 1000);
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
@@ -169,7 +176,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         return;
       }
       if (uiProps.from === 'dataSource') {
-        uiProps.options = Object.keys(state.dataSource[0] || {})
+        uiProps.options = Object.keys(state.previewDataSource[0] || {})
           .map(key => ({ label: key, value: key }));
       } else if (uiProps.from === 'dataFields') {
         uiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
@@ -181,7 +188,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
             return;
           }
           if (itemUiProps.from === 'dataSource') {
-            itemUiProps.options = Object.keys(state.dataSource[0] || {})
+            itemUiProps.options = Object.keys(state.previewDataSource[0] || {})
               .map(key => ({ label: key, value: key }));
           } else if (itemUiProps.from === 'dataFields') {
             itemUiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
@@ -226,13 +233,14 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           </TabPane>
           <TabPane tab="表格数据" key="3" style={{ height: tabHeight, overflow: 'auto' }}>
             <div className={styles['attributes-code-panel']}>
+              { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
               <MonacoEditor
                 width="100%"
                 height={400}
                 language="json"
                 theme="vs-dark"
                 value={code || ''}
-                onChange={(value) => { setCode(value || ''); submitTableData(); }}
+                onChange={(value) => { submitTableData(value); }}
               />
             </div>
           </TabPane>
