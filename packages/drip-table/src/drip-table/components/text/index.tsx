@@ -149,7 +149,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (mode === 'single') {
       const noDataStr = noDataValue || '';
       let value = data[dataIndex as string];
-      if (enumValue && enumLabel) {
+      if (enumValue && enumLabel && typeof value === 'string') {
         const index = enumValue.indexOf(value);
         value = enumLabel[index];
       }
@@ -174,7 +174,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         <div style={this.styles} className={this.classNames}>
           { (params || []).map((config, i) => {
             let value = data[config.dataIndex];
-            if (enumValue && enumLabel) {
+            if (enumValue && enumLabel && typeof value === 'string') {
               const index = enumValue.indexOf(value);
               value = enumLabel[index];
             }
