@@ -8,6 +8,7 @@
 
 import React from 'react';
 import { indexValue, DripTableComponentProps, DripTableComponentSchema, DripTableRecordTypeBase } from 'drip-table';
+
 export interface TextSchema extends DripTableComponentSchema {
   /** 字体大小 */
   fontSize?: string;
@@ -15,7 +16,7 @@ export interface TextSchema extends DripTableComponentSchema {
   noDataValue?: string;
 }
 
-interface TextProps<RecordType> extends DripTableComponentProps<RecordType, TextSchema> { }
+interface TextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, TextSchema> { }
 
 interface TextState {}
 

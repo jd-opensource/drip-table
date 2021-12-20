@@ -111,7 +111,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   onEvent?: (event: DripTableBuiltInComponentEvent | CustomComponentEvent, record: RecordType, index: number) => void;
 }
 
-const DripTable = <RecordType extends Record<string, unknown>, CustomComponentEvent extends EventLike = never, Ext = unknown>
+const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown>
   (props: DripTableProps<RecordType, CustomComponentEvent, Ext>): JSX.Element => {
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;

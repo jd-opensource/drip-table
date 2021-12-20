@@ -7,6 +7,9 @@
  */
 
 import React from 'react';
+import { DripTableRecordTypeBase } from '@/types';
+
+import { finalizeString } from '../utils';
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCLinkSchema extends DripTableComponentSchema {
@@ -31,11 +34,11 @@ export interface DTCLinkEvent {
   payload: string;
 }
 
-interface DTCLinkProps<RecordType> extends DripTableComponentProps<RecordType, DTCLinkSchema> { }
+interface DTCLinkProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCLinkSchema> { }
 
 interface DTCLinkState {}
 
-export default class DTCLink<RecordType> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
+export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'multiple') {
@@ -44,7 +47,7 @@ export default class DTCLink<RecordType> extends React.PureComponent<DTCLinkProp
       }
       return false;
     }
-    if (schema.mode === 'single' && (schema.href || schema.event)) {
+    if (schema.mode === 'single' && (finalizeString('pattern', schema.href || '', this.props.data) || schema.event)) {
       return true;
     }
     return false;
@@ -71,7 +74,7 @@ export default class DTCLink<RecordType> extends React.PureComponent<DTCLinkProp
           </a>
         );
       }
-      return <a href={schema.href} target={schema.target}>{ schema.label }</a>;
+      return <a href={finalizeString('pattern', schema.href || '', this.props.data)} target={schema.target}>{ schema.label }</a>;
     }
     return (
       <div>
@@ -94,7 +97,16 @@ export default class DTCLink<RecordType> extends React.PureComponent<DTCLinkProp
                 </a>
               );
             }
-            return <a style={{ marginRight: '5px' }} key={config.name || index} href={config.href} target={config.target}>{ config.label }</a>;
+            return (
+              <a
+                style={{ marginRight: '5px' }}
+                key={config.name || index}
+                href={finalizeString('pattern', config.href || '', this.props.data)}
+                target={config.target}
+              >
+                { config.label }
+              </a>
+            );
           })
         }
       </div>

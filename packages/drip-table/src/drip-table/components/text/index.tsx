@@ -7,6 +7,8 @@
  */
 
 import React from 'react';
+import { DripTableRecordTypeBase } from '@/types';
+
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 import styles from './index.module.less';
 
@@ -45,11 +47,11 @@ export interface DTCTextSchema extends DripTableComponentSchema {
   }[];
 }
 
-interface DTCTextProps<RecordType> extends DripTableComponentProps<RecordType, DTCTextSchema> { }
+interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextSchema> { }
 
 interface DTCTextState {}
 
-export default class DTCText<RecordType> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
+export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'custom') {
@@ -147,7 +149,7 @@ export default class DTCText<RecordType> extends React.PureComponent<DTCTextProp
     if (mode === 'single') {
       const noDataStr = noDataValue || '';
       let value = data[dataIndex as string];
-      if (enumValue && enumLabel) {
+      if (enumValue && enumLabel && typeof value === 'string') {
         const index = enumValue.indexOf(value);
         value = enumLabel[index];
       }
@@ -172,7 +174,7 @@ export default class DTCText<RecordType> extends React.PureComponent<DTCTextProp
         <div style={this.styles} className={this.classNames}>
           { (params || []).map((config, i) => {
             let value = data[config.dataIndex];
-            if (enumValue && enumLabel) {
+            if (enumValue && enumLabel && typeof value === 'string') {
               const index = enumValue.indexOf(value);
               value = enumLabel[index];
             }

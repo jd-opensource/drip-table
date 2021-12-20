@@ -7,7 +7,9 @@
  */
 
 import React from 'react';
+import { DripTableRecordTypeBase } from '@/types';
 import RichText from '@/components/RichText';
+
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCRenderHTMLSchema extends DripTableComponentSchema {
@@ -16,11 +18,11 @@ export interface DTCRenderHTMLSchema extends DripTableComponentSchema {
   render: string;
 }
 
-interface DTCRenderHTMLProps<RecordType> extends DripTableComponentProps<RecordType, DTCRenderHTMLSchema> { }
+interface DTCRenderHTMLProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRenderHTMLSchema> { }
 
 interface DTCRenderHTMLState { }
 
-export default class DTCRenderHTML<RecordType> extends React.PureComponent<DTCRenderHTMLProps<RecordType>, DTCRenderHTMLState> {
+export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLProps<RecordType>, DTCRenderHTMLState> {
   public render(): JSX.Element {
     const { data, schema } = this.props;
     try {

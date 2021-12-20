@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { DripTableRecordTypeBase } from '@/types';
 import { indexValue } from '@/drip-table/utils';
 
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
@@ -31,11 +32,11 @@ export interface DTCTagSchema extends DripTableComponentSchema {
   tagOptions?: { label: string; value: string | number }[];
 }
 
-interface DTCTagProps<RecordType> extends DripTableComponentProps<RecordType, DTCTagSchema> { }
+interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagSchema> { }
 
 interface DTCTagState { }
 
-export default class DTCTag<RecordType> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
+export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
   private get value() {
     const schema = this.props.schema;
     const dataIndex = schema.dataIndex;
