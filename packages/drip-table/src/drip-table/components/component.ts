@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import { DripTableDriver, EventLike } from '@/types';
+import { DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
 import { DripTableBuiltInComponentEvent } from '.';
 
 export interface DripTableComponentSchema {
@@ -30,7 +30,7 @@ export interface DripTableComponentSchema {
 }
 
 export interface DripTableComponentProps<
-  RecordType,
+  RecordType extends DripTableRecordTypeBase,
   Schema extends DripTableComponentSchema = DripTableComponentSchema,
   ComponentEvent extends EventLike = never,
   Ext = unknown,

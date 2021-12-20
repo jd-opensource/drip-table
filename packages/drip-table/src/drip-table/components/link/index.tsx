@@ -7,6 +7,8 @@
  */
 
 import React from 'react';
+import { DripTableRecordTypeBase } from '@/types';
+
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCLinkSchema extends DripTableComponentSchema {
@@ -31,11 +33,11 @@ export interface DTCLinkEvent {
   payload: string;
 }
 
-interface DTCLinkProps<RecordType> extends DripTableComponentProps<RecordType, DTCLinkSchema> { }
+interface DTCLinkProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCLinkSchema> { }
 
 interface DTCLinkState {}
 
-export default class DTCLink<RecordType> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
+export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'multiple') {
