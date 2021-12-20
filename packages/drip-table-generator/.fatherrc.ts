@@ -1,4 +1,6 @@
+import path from 'path';
 import { IBundleOptions } from 'father-build/src/types';
+import eslint from '@rollup/plugin-eslint';
 
 const options: IBundleOptions = {
   cjs: { type: 'rollup' },
@@ -30,6 +32,12 @@ const options: IBundleOptions = {
       '@ant-design/icons',
     ],
   ],
+  extraRollupPlugins: [{
+    before: "babel",
+    plugins: [
+      eslint(path.resolve(__dirname, '.eslintrc.js')),
+    ],
+  }],
   pkgs: [
     'drip-table',
     'drip-table-generator',

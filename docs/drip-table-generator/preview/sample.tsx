@@ -8,7 +8,7 @@ import React from 'react';
 import { Button, Row } from 'antd';
 import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGenerator from 'drip-table-generator';
+import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import 'antd/dist/antd.css';
 import 'drip-table-generator/index.css';
 
@@ -53,9 +53,7 @@ const initialSchema: DripTableSchema = {
 
 
 const Demo = (props: { showHeader: boolean }) => {
-  const generator: React.MutableRefObject<null | {
-    getSchemaValue: () => void;
-  }> = React.useRef(null);
+  const generator: React.MutableRefObject<DripTableGeneratorHandler | null> = React.useRef(null);
 
   const views = {
     demoHeader: props.showHeader !== false,
@@ -65,17 +63,18 @@ const Demo = (props: { showHeader: boolean }) => {
     <React.Fragment>
       { views.demoHeader &&  (
         <Row className="sample-header-extra-container">
-          <Button type="primary" onClick={() => { console.log(generator.current?.getSchemaValue()); }}>获取schema</Button>
+          <Button className="header-button" type="primary"  onClick={() => { console.log(generator.current?.getSchemaValue()); }}>获取schema</Button>
+          <Button className="header-button" type="primary"  onClick={() => { console.log(generator.current?.getDataSource()); }}>获取dataSource</Button>
         </Row>
       )}
       <DripTableGenerator
         ref={generator}
-        style={{ height: 720 }}
+        style={{ height: 640 }}
         driver={DripTableDriverAntDesign}
         schema={initialSchema}
         dataSource={mockData.slice(0, 4)}
         dataFields={['id', 'name', 'status', 'description', 'ext.state']}
-        onExportSchema={(schema) => { console.log(schema); }}
+        onExportSchema={schema => { console.log(schema); }}
         customComponents={{ custom: { TextComponent } }}
         customComponentPanel={components}
       />

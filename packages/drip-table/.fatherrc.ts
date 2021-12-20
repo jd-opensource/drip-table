@@ -14,9 +14,8 @@ const options: IBundleOptions = {
   extraRollupPlugins: [{
     before: "babel",
     plugins: [
-      eslint({
-        configFile: path.resolve(__dirname, '.eslintrc.js'),
-      }),
+      eslint(path.resolve(__dirname, '.eslintrc.js')),
+      ,
     ],
   }],
   pkgs: [

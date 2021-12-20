@@ -23,7 +23,7 @@ export interface DripTableGeneratorState {
   currentColumn?: DripTableColumn;
   globalConfigs: DripTableSchema['configs'];
   /** 表格数据，generator不需要知道数据格式是什么，直接交给drip-table即可 */
-  dataSource: Record<string, unknown>[];
+  previewDataSource: Record<string, unknown>[];
 }
 
 export const defaultState: () => DripTableGeneratorState = () => ({
@@ -37,7 +37,7 @@ export const defaultState: () => DripTableGeneratorState = () => ({
     pagination: false,
   },
   /** 数据 */
-  dataSource: [],
+  previewDataSource: [],
 });
 
 export type GlobalStore = [DripTableGeneratorState, React.Dispatch<React.SetStateAction<DripTableGeneratorState>>];
@@ -51,7 +51,7 @@ export type GlobalActions = {
   toggleEditMode: (store?: GlobalStoreObject) => void;
   editColumns: (store?: GlobalStoreObject) => void;
   checkColumn: (store?: GlobalStoreObject) => void;
-  updateDataSource: (store?: GlobalStoreObject) => void;
+  updatePreviewDataSource: (store?: GlobalStoreObject) => void;
   updateGlobalConfig: (store?: GlobalStoreObject) => void;
 }
 
@@ -65,8 +65,8 @@ export const globalActions: GlobalActions = {
   checkColumn(store) {
     store?.setState({ ...store.state, currentColumn: store.state.currentColumn ? { ...store.state?.currentColumn } : void 0 });
   },
-  updateDataSource(store) {
-    store?.setState({ ...store.state, dataSource: [...store.state.dataSource] });
+  updatePreviewDataSource(store) {
+    store?.setState({ ...store.state, previewDataSource: [...store.state.previewDataSource] });
   },
   updateGlobalConfig(store) {
     store?.setState({ ...store.state, globalConfigs: { ...store.state.globalConfigs } });
