@@ -40,4 +40,5 @@ module.exports = {
     }],
   },
   "ignoreDisables": true,
+  "ignoreFiles": ["**/*.min.css"],
 };
