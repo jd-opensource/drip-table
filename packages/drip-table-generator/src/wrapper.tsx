@@ -64,10 +64,12 @@ const Wrapper = (props: DripTableGeneratorProps & {
           <span style={{ margin: '0 12px', fontWeight: 'bold' }}>可视区</span>
           { showToolLayout && <ToolLayout store={store} /> }
         </div>
-        { state.isEdit
-          ? <EditableTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} />
-          : <PreviewTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} /> }
-        <AttributeLayout parentHeight={style.height} customComponentPanel={customComponentPanel} store={store} />
+        <div className={styles['layout-right-workstation']}>
+          { state.isEdit
+            ? <EditableTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} />
+            : <PreviewTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} /> }
+          <AttributeLayout customComponentPanel={customComponentPanel} store={store} />
+        </div>
       </div>
     </div>
   );

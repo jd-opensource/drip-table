@@ -4,8 +4,6 @@
       min-width: 280px;
       width: 280px;
       height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
       border-right: 1px solid rgb(243, 244, 246);
 
       .group-title {
@@ -26,11 +24,13 @@
       padding: .5rem;
       font-size: 1.25rem;
       line-height: 1.75rem;
+      height: 2.75rem;
       font-weight: 500;
     }
 
     &-components-container {
-      padding: .75rem;
+      height: calc(100% - 1.75rem);
+      overflow-y: auto;
 
       table {
         width: 100%;
