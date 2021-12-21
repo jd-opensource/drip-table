@@ -5,7 +5,8 @@
   </h1>
 </a>
 
-English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.jd.com/) | [Discussions](https://github.com/JDFED/drip-table/discussions)
+English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.jd.com/) | [Discussions](https://github.com/JDFED/drip-table/discussions)｜[Gitter](https://gitter.im/drip-table/community)
+
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
