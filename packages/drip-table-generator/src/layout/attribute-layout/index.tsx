@@ -26,7 +26,6 @@ import styles from './index.module.less';
 type GlobalSchema = DripTableSchema['configs'];
 
 interface Props {
-  parentHeight: React.CSSProperties['width'];
   customComponentPanel: {
     mode: 'add' | 'replace';
     components: DripTableComponentConfig[];
@@ -135,10 +134,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   *
   * @param {string} codeValue JSON
   */
-  const submitDataWithoutDebounce = (codeValue: string) => {
+  const submitDataWithoutDebounce = (codeValue?: string) => {
     setCodeErrorMessage('');
     try {
-      state.previewDataSource = JSON.parse(codeValue);
+      state.previewDataSource = JSON.parse(codeValue || '');
       setState({ ...state });
       globalActions.updatePreviewDataSource(store);
     } catch (error) {
@@ -215,28 +214,26 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     );
   };
 
-  const tabHeight = typeof props.parentHeight === 'number' ? `${props.parentHeight - 320}px` : `calc(${props.parentHeight} - 320px)`;
-
   return (
     <div className={styles['attributes-wrapper']}>
       <div className={styles['attributes-container']}>
         <Tabs activeKey={getActiveKey()} type="card" onChange={(key) => { setActiveKey(key); }}>
-          <TabPane tab="属性配置" key="1" style={{ height: tabHeight, overflow: 'auto' }}>
+          <TabPane tab="属性配置" key="1" className={styles['attribute-panel']}>
             <div className={styles['attributes-form-panel']}>
               { renderColumnForm() }
             </div>
           </TabPane>
-          <TabPane tab="全局设置" key="2" style={{ height: tabHeight, overflow: 'auto' }}>
+          <TabPane tab="全局设置" key="2" className={styles['attribute-panel']}>
             <div className={styles['attributes-form-panel']}>
               { renderGlobalForm() }
             </div>
           </TabPane>
-          <TabPane tab="表格数据" key="3" style={{ height: tabHeight, overflow: 'auto' }}>
+          <TabPane tab="表格数据" key="3" className={styles['attribute-panel']}>
             <div className={styles['attributes-code-panel']}>
               { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
               <MonacoEditor
                 width="100%"
-                height={400}
+                height={348}
                 language="json"
                 theme="vs-dark"
                 value={code || ''}

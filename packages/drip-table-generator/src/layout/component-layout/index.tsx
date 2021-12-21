@@ -103,16 +103,17 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
   return (
     <div className={styles['layout-left-wrapper']} style={{ width: props.width }}>
       <div className={styles['layout-left-title']}>组件区</div>
-      <table style={{ width: '100%' }}>
-        { getGroups().map((name, index) => (
-          <React.Fragment key={index}>
-            <thead key={`thead.${index}`}>
-              <tr><td colSpan={2}><div className={styles['group-title']}>{ name }</div></td></tr>
-            </thead>
-            <tbody key={`tbody.${index}`}>
-              { chunk(getComponents(name), 2).map((items, i, componentsInLayout) => (
-                <React.Fragment key={i}>
-                  {
+      <div className={styles['layout-left-components-container']}>
+        <table style={{ width: '100%' }}>
+          { getGroups().map((name, index) => (
+            <React.Fragment key={index}>
+              <thead key={`thead.${index}`}>
+                <tr><td colSpan={2}><div className={styles['group-title']}>{ name }</div></td></tr>
+              </thead>
+              <tbody key={`tbody.${index}`}>
+                { chunk(getComponents(name), 2).map((items, i, componentsInLayout) => (
+                  <React.Fragment key={i}>
+                    {
                       i === 0
                         ? (
                           <tr key={`groupItem.group.${index}.${i}.gutter.before`}>
@@ -123,10 +124,10 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
                         )
                         : null
                     }
-                  <tr key={`groupItem.group.${index}.${i}`} className={styles['components-line']}>
-                    { items.map(item => <td key={item.$id}>{ componentCell(item) }</td>) }
-                  </tr>
-                  {
+                    <tr key={`groupItem.group.${index}.${i}`} className={styles['components-line']}>
+                      { items.map(item => <td key={item.$id}>{ componentCell(item) }</td>) }
+                    </tr>
+                    {
                       i === componentsInLayout.length - 1
                         ? (
                           <tr key={`groupItem.group.${index}.${i}.gutter.after`}>
@@ -137,12 +138,13 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
                         )
                         : null
                     }
-                </React.Fragment>
-              )) }
-            </tbody>
-          </React.Fragment>
-        )) }
-      </table>
+                  </React.Fragment>
+                )) }
+              </tbody>
+            </React.Fragment>
+          )) }
+        </table>
+      </div>
     </div>
   );
 };

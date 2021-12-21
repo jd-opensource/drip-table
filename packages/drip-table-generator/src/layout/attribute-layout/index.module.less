@@ -1,11 +1,21 @@
 .attributes {
   &-wrapper {
-    padding: 12px 0;
+    padding: 12px 0 0 0;
+    height: calc(100% - 196px);
+
+    :global(.ant-tabs) {
+      height: 100%;
+    }
   }
 
   &-container {
     padding: 16px;
     border-top: 1px solid #eeeeee;
+    height: 100%;
+
+    :global(.ant-tabs-content) {
+      height: 100%;
+    }
   }
 
   &-form-panel {
@@ -29,4 +39,9 @@
     color: #999999;
     width: 100%;
   }
+}
+
+.attribute-panel {
+  height: 100%;
+  overflow: auto;
 }

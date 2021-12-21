@@ -19,11 +19,9 @@
       border-left: 1px solid rgb(243, 244, 246);
       margin-left: -1px;
       min-width: 442px;
-      overflow-x: auto;
 
       &.preview {
         height: auto;
-        overflow-y: auto;
       }
     }
 
@@ -35,11 +33,17 @@
       padding: .5rem;
       font-size: 1.25rem;
       line-height: 1.75rem;
+      height: 2.75rem;
       font-weight: 500;
 
       & > span {
         font-size: 1.25rem;
       }
+    }
+
+    &-workstation {
+      height: calc(100% - 1.75rem);
+      overflow-y: auto;
     }
   }
 }

@@ -45,6 +45,12 @@ export default {
           default: '',
           visible: 'return formData.dataIndex',
         },
+        {
+          name: 'description',
+          'ui:title': '组件说明',
+          'ui:type': 'render-html',
+          default: '<span style="color:red;">这是一条说明</span>',
+        },
       ],
     }
   ] as DripTableComponentConfig[],
