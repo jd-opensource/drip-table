@@ -1,0 +1,365 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+.root {
+  background: #ffffff;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.7;
+  word-wrap: break-word;
+  -webkit-overflow-scrolling: touch;
+}
+
+@font-face {
+  font-family: 'CircularStd';
+  src: url(http://storage.360buyimg.com/drip-design/drip-table/circular-std.woff) format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'CircularStd';
+  src: url(http://storage.360buyimg.com/drip-design/drip-table/circular-std-bold.woff) format("woff");
+  font-weight: 700;
+}
+
+.font-circular-std {
+  font-family:
+    CircularStd,
+    'PingFangSC-Regular',
+    'Microsoft Yahei',
+    'Open Sans',
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.pattern-background {
+  background-image: url(https://img13.360buyimg.com/imagetools/jfs/t1/211263/17/13385/820/61c1792dEa71bee41/57a344f1e462ca74.png);
+  background-position: top center;
+  background-repeat: repeat;
+  background-size: 14% auto;
+  transition: background .3s, border-radius .3s, opacity .3s;
+}
+
+.subtitle {
+  font-size: 1.25rem !important;
+}
+
+.title.is-2 {
+  font-size: 2.8125rem;
+}
+
+.main-content {
+  padding-top: 9rem;
+  color: #2276f3 !important;
+}
+
+.main-content .slogan {
+  font-size: 3.75rem;
+  font-weight: 700;
+}
+
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 25px);
+  background:
+    linear-gradient(
+      0deg,
+      #edf3ff 0%,
+      #ffffff 100%
+    );
+  border-radius: 0 0 0 250px;
+}
+
+.typewriter {
+  padding-top: 10px;
+}
+
+.typewriter span {
+  font-size: 1.1rem;
+}
+
+.section2 {
+  background-color: #2276f3;
+  position: relative;
+}
+
+.section2 .container {
+  position: relative;
+  z-index: 2;
+}
+
+.demo-video {
+  border-radius: 5px;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+.section3 {
+  background: url(https://img14.360buyimg.com/imagetools/jfs/t1/157058/33/24290/875166/61c2d220Ebd9b7ae1/27ec57ea3660e44f.png) no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: calc(100vh - 5rem);
+}
+
+@media screen and (max-width: 768px) {
+  .section3 {
+    background-size: 100% auto;
+  }
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 0;
+}
+
+.section4 {
+  background-color: #2276f3;
+  position: relative;
+  padding-bottom: 200px;
+}
+
+.section4 .container {
+  position: relative;
+  z-index: 2;
+}
+
+.section5 {
+  margin-top: -200px;
+  padding-top: 0;
+}
+
+.section5 .feature-icon {
+  text-align: center;
+}
+
+.section5 .feature-icon svg {
+  width: 5rem;
+  height: 5rem;
+}
+
+.compare-slider {
+  border: 1px solid #e5e5e5;
+}
+
+@media screen and (min-width: 768px) {
+  .compare-slider {
+    margin-top: 10rem;
+  }
+}
+
+.section6 {
+  background-color: #fafafa;
+  position: relative;
+}
+
+.section6 .container {
+  position: relative;
+  z-index: 2;
+}
+
+.user-list-title {
+  font-size: 2.2rem !important;
+  font-weight: 400;
+}
+
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 65rem;
+  margin: 0 auto;
+}
+
+.users-item {
+  width: 220px;
+  height: 61px;
+  margin: 20px 20px 0;
+}
+
+.users-item > img {
+  width: 100%;
+  height: 100%;
+}
+
+.users-item > .hover {
+  display: none;
+}
+
+.users-item:hover > .hover,
+.users-item:active > .hover {
+  display: unset;
+}
+
+.users-item:hover > .normal,
+.users-item:active > .normal {
+  display: none;
+}
+
+.section7 {
+  height: 90vh;
+  background: url(https://img11.360buyimg.com/imagetools/jfs/t1/139651/25/24394/459532/61c178d7Eb82f1631/2cfbc37a4a631fed.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.line-height-2 {
+  line-height: 2em;
+}
+
+.image.is-40x40 {
+  width: 40px;
+  height: 40px;
+}
+
+.shape {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+  direction: ltr;
+}
+
+.shape svg {
+  z-index: -1;
+}
+
+.shape-bottom {
+  bottom: -1px;
+  transform: rotate(180deg) scaleX(-1);
+}
+
+.shape-bottom2 {
+  bottom: -1px;
+  transform: rotate(180deg) scaleX(-1);
+}
+
+.shape-fill {
+  fill: #ffffff;
+}
+
+pre {
+  border-radius: 6px;
+  max-width: 42rem;
+  margin: 0 auto;
+  font-size: .875rem !important;
+}
+
+.screen-container .image {
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 35px 60px 0 rgba(0, 0, 0, .1);
+}
+
+.img-bg {
+  background-color: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.site-footer {
+  color: #999999 !important;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  background-color: #101010;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.site-footer ul li {
+  position: relative;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.site-footer ul li.has-icon {
+  margin-bottom: 24px;
+  padding-left: 30px;
+}
+
+.site-footer ul li i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  color: #2075f3;
+}
+
+.site-footer ul li a:link,
+.site-footer ul li a:visited,
+.site-footer ul li a:active {
+  color: #999999 !important;
+}
+
+.site-footer ul li a:hover {
+  color: #2075f3 !important;
+}
+
+.site-footer p {
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.gitter {
+  font-size: .7rem;
+  margin-left: -.1rem !important;
+  margin-right: .6rem !important;
+}
+
+.footer-drip-icon {
+  width: 146px;
+  height: 31px;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 481px) {
+  .slogan {
+    font-size: 1.75rem !important;
+  }
+
+  .is-variable.is-6 {
+    --columnGap: 1rem !important;
+  }
+
+  .section7 {
+    display: block !important;
+  }
+
+  .section7 .title {
+    font-size: 1.5rem;
+  }
+
+  .section7 .subtitle {
+    font-size: 1rem;
+  }
+}
+
+.footer-bottom {
+  margin-top: 4rem;
+}
