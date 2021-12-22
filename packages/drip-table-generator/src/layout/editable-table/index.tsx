@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Empty } from 'antd';
+import { Empty, Result, ResultProps } from 'antd';
 import { CloseCircleTwoTone } from '@ant-design/icons';
 import { builtInComponents, ColumnConfig, DripTableDriver, DripTableRecordTypeBase, DripTableProps } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
@@ -28,14 +28,8 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   const store = { state, setState: actions };
 
   const previewComponentRender = (column: DripTableColumn) => {
-    const customComponents = {};
-    const componentsList = Object.values(props.customComponents || {});
-    componentsList.forEach((item) => {
-      Object.keys(item).forEach((key) => { customComponents[key] = item[key]; });
-    });
-    const DripTableComponent = column['ui:type'].startsWith('custom::')
-      ? customComponents[column['ui:type'].replace('custom::', '')]
-      : builtInComponents[column['ui:type']];
+    const [libName, componentName] = column['ui:type'].includes('::') ? column['ui:type'].split('::') : ['', column['ui:type']];
+    const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
     const record = state.previewDataSource[0] || {} as Record<string, unknown>;
     const value = column.dataIndex ? get(record, column.dataIndex) : record;
@@ -43,15 +37,21 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     const errorBoundary = () => {
       let color = '#F00';
       let message = '未知错误';
+      let status: ResultProps['status'] = 'error';
       if (!DripTableComponent) {
         color = '#F00';
         message = '未知组件';
       } else if (!hasRecord) {
         color = '#c9c9c9';
         message = '暂无数据';
+        status = 'warning';
       }
       return (
-        <div style={{ color }}>{ message }</div>
+        <Result
+          style={{ color, fontSize: 14, padding: '0' }}
+          status={status}
+          subTitle={message}
+        />
       );
     };
 
