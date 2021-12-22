@@ -16,7 +16,10 @@ export default {
       name: 'dataIndex',
       required: true,
       'ui:title': '字段选择',
-      'ui:type': 'input',
+      'ui:type': 'auto-complete',
+      'ui:props': {
+        from: 'dataFields',
+      },
       type: 'string',
     },
     {

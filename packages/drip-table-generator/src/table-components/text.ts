@@ -18,7 +18,7 @@ export default {
       'ui:title': '字段选择',
       'ui:type': 'auto-complete',
       'ui:props': {
-        from: 'dataSource',
+        from: 'dataFields',
       },
       type: 'string',
       visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
