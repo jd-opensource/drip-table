@@ -35,6 +35,14 @@ const config: IConfig = {
         { title: '更新日志', path: '/drip-table-generator/changelog' },
       ],
     },
+    {
+      title: 'GitHub',
+      path: 'https://github.com/JDFED/drip-table',
+    },
+    {
+      title: '讨论组',
+      path: 'https://github.com/JDFED/drip-table/discussions'
+    }
   ],
   menus: {
     '/drip-table': [
