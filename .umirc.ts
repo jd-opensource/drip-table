@@ -36,6 +36,10 @@ const config: IConfig = {
       ],
     },
     {
+      title: 'DEMO',
+      path: '/demo'
+    },
+    {
       title: '讨论组',
       path: 'https://github.com/JDFED/drip-table/discussions'
     },
@@ -173,9 +177,9 @@ const config: IConfig = {
     '.__dumi-default-layout-content { max-width:100% !important; }',
     '.__dumi-default-layout[data-route="/"] .__dumi-default-layout-footer-meta { display: none; }',
     // navbar customization
-    '.__dumi-default-navbar nav > :nth-child(5) { position: relative; margin-left: 40px; display: inline-block; color: #454d64; height: 64px; cursor: pointer; font-size: 14px; line-height: 64px; text-decoration: none; letter-spacing: 0; background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png"); background-size: 100%; background-repeat: no-repeat; background-position-x: center; background-position-y: center; }',
-    '.__dumi-default-navbar nav > :nth-child(5) a { display: inline-block; width: 30px; }',
-    '.__dumi-default-navbar nav > :nth-child(5) > a > svg, .__dumi-default-dark { display: none; }',
+    '.__dumi-default-navbar nav > :nth-child(6) { position: relative; margin-left: 40px; display: inline-block; color: #454d64; height: 64px; cursor: pointer; font-size: 14px; line-height: 64px; text-decoration: none; letter-spacing: 0; background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png"); background-size: 100%; background-repeat: no-repeat; background-position-x: center; background-position-y: center; }',
+    '.__dumi-default-navbar nav > :nth-child(6) a { display: inline-block; width: 30px; }',
+    '.__dumi-default-navbar nav > :nth-child(6) > a > svg, .__dumi-default-dark { display: none; }',
     '.__dumi-default-navbar { padding: 0 0 0 58px; }',
   ],
 };
