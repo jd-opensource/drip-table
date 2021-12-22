@@ -249,8 +249,14 @@
 }
 
 .shape-bottom2 {
-  bottom: -1px;
+  bottom: -8px;
   transform: rotate(180deg) scaleX(-1);
+  display: flex;
+  justify-content: center;
+}
+
+.shape-bottom2 svg {
+  max-width: 2100px;
 }
 
 .shape-fill {
