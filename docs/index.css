@@ -31,22 +31,36 @@
   width: 100%;
   height: 10em;
   z-index: 5;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   overflow: hidden;
 }
 
 .home-container svg g {
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-.home-container svg g > use { animation: move-forever 12s linear infinite; }
-.home-container svg g > use:nth-child(1) { animation-delay: -1s; }
-.home-container svg g > use:nth-child(2) { animation-delay: -2s; animation-duration: 5s; }
-.home-container svg g > use:nth-child(3) { animation-delay: -4s; animation-duration: 4s; }
+.home-container svg g > use {
+  animation: move-forever 12s linear infinite;
+}
+.home-container svg g > use:nth-child(1) {
+  animation-delay: -1s;
+}
+.home-container svg g > use:nth-child(2) {
+  animation-delay: -2s;
+  animation-duration: 5s;
+}
+.home-container svg g > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 4s;
+}
 
 @keyframes move-forever {
-  0% { transform: translate(-90px, 0); }
-  100% { transform: translate(85px, 0); }
+  0% {
+    transform: translate(-90px, 0);
+  }
+  100% {
+    transform: translate(85px, 0);
+  }
 }
 
 .home-container-banner {
@@ -99,7 +113,7 @@
   box-sizing: border-box;
   cursor: pointer;
   outline: none;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 @keyframes fadeIn {
@@ -121,7 +135,7 @@
   width: 600px;
   height: 350px;
   border-radius: 10px;
-  background-image: url('https://storage.360buyimg.com/imgtools/eec125447e-e24fa9a0-41f4-11ec-bf12-d7e468206312.png');
+  background-image: url("https://storage.360buyimg.com/imgtools/eec125447e-e24fa9a0-41f4-11ec-bf12-d7e468206312.png");
   position: relative;
 }
 
@@ -206,7 +220,7 @@
 .home-container-banner-table-title {
   height: 17%;
   width: 96%;
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
   margin: 3% auto;
   border-radius: 6px;
   animation-name: fadeIn; /* 动画名称 */
@@ -234,7 +248,7 @@
 }
 
 .home-container-feature-table {
-  background-image: url('https://storage.360buyimg.com/imgtools/5e1a6d77c3-9499ed10-5801-11ec-9296-d7123996e7ed.gif');
+  background-image: url("https://storage.360buyimg.com/imgtools/5e1a6d77c3-9499ed10-5801-11ec-9296-d7123996e7ed.gif");
   width: 650px;
   height: 350px;
   background-size: 650px 350px;
@@ -302,7 +316,7 @@
 
 .home-content {
   height: 680px;
-  background-image: url('https://img13.360buyimg.com/imagetools/jfs/t1/199878/17/16005/504968/61834c87E3f2e93bf/76bb26ebe6106862.png');
+  background-image: url("https://img13.360buyimg.com/imagetools/jfs/t1/199878/17/16005/504968/61834c87E3f2e93bf/76bb26ebe6106862.png");
 }
 
 .__dumi-default-layout-content {
@@ -397,4 +411,31 @@
   text-align: center;
   color: #b0b1ba;
   font-size: 15px;
+}
+
+.__dumi-default-navbar nav > :nth-child(5) {
+  position: relative;
+  margin-left: 40px;
+  display: inline-block;
+  color: #454d64;
+  height: 64px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 64px;
+  text-decoration: none;
+  letter-spacing: 0;
+  background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.__dumi-default-navbar nav > :nth-child(5) a {
+  display: inline-block;
+  width: 30px;
+}
+
+.__dumi-default-navbar nav > :nth-child(5) > a > svg {
+  display: none;
 }
