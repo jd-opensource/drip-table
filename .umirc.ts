@@ -36,13 +36,13 @@ const config: IConfig = {
       ],
     },
     {
-      title: 'GitHub',
-      path: 'https://github.com/JDFED/drip-table',
-    },
-    {
       title: '讨论组',
       path: 'https://github.com/JDFED/drip-table/discussions'
-    }
+    },
+    {
+      title: '',
+      path: 'https://github.com/JDFED/drip-table',
+    },
   ],
   menus: {
     '/drip-table': [
