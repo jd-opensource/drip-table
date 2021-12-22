@@ -10,6 +10,7 @@
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
+    "build:docs": "dumi build",
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
     "clean": "lerna clean -y",
