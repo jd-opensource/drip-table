@@ -18,7 +18,7 @@ import './index.css';
 
 const Home = () => (
   <div className="root">
-    <section className="section main-content pattern-background">
+    <section className="section main-content">
       <div className="home-banner-background" />
       <div className="container has-text-centered">
         <h1 className="title is-1 mb-2 has-text-primary slogan">Drip Table</h1>

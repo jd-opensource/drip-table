@@ -40,14 +40,6 @@
     sans-serif;
 }
 
-.pattern-background {
-  background-image: url(https://img13.360buyimg.com/imagetools/jfs/t1/211263/17/13385/820/61c1792dEa71bee41/57a344f1e462ca74.png);
-  background-position: top center;
-  background-repeat: repeat;
-  background-size: 14% auto;
-  transition: background .3s, border-radius .3s, opacity .3s;
-}
-
 .subtitle {
   font-size: 1.25rem !important;
 }
@@ -76,14 +68,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 25px);
+  height: 100%;
   background:
     linear-gradient(
       0deg,
       #edf3ff 0%,
       #ffffff 100%
     );
-  border-radius: 0 0 0 250px;
 }
 
 .typewriter {
