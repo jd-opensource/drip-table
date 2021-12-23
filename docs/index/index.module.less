@@ -50,13 +50,7 @@
 ///////////////
 
 .section1 {
-  padding-top: 9rem;
   color: #2276f3 !important;
-}
-
-.section1 .slogan {
-  font-size: 3.75rem;
-  font-weight: 700;
 }
 
 .section1-background {
@@ -73,6 +67,19 @@
     );
 }
 
+.slogan {
+  padding-top: 8rem;
+  font-size: 4.75rem !important;
+  font-weight: 700 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .slogan {
+    padding-top: 3rem !important;
+    font-size: 3rem !important;
+  }
+}
+
 .install-cmd {
   border-radius: 6px;
   max-width: 42rem;
@@ -87,11 +94,37 @@
 }
 
 .typewriter {
-  padding-top: 10px;
+  margin: 2.5rem 0 1.5rem !important;
+  font-size: 1.1rem !important;
+}
+
+@media screen and (max-width: 768px) {
+  .typewriter {
+    margin: 1rem 0 !important;
+    font-size: .9rem !important;
+  }
 }
 
 .typewriter span {
-  font-size: 1.1rem;
+  font-size: 1.1rem !important;
+}
+
+@media screen and (max-width: 768px) {
+  .typewriter span {
+    font-size: .9rem !important;
+  }
+}
+
+.description {
+  margin-top: 1.75rem !important;
+  font-size: 1.25rem !important;
+}
+
+@media screen and (max-width: 768px) {
+  .description {
+    margin-top: 6rem !important;
+    font-size: 1.25rem !important;
+  }
 }
 
 ///////////////
@@ -362,10 +395,6 @@
 }
 
 @media screen and (max-width: 481px) {
-  .slogan {
-    font-size: 1.75rem !important;
-  }
-
   .is-variable.is-6 {
     --columnGap: 1rem !important;
   }

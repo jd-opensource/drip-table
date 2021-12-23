@@ -23,18 +23,16 @@ const Home = () => (
       <div className={styles['section1-background']} />
       <div className="container has-text-centered">
         <h1 className={classnames('title is-1 mb-2 has-text-primary', styles.slogan)}>Drip Table</h1>
-        <h1 className={classnames('title is-1 has-text-primary', styles.slogan)}>
-          <div className={styles.typewriter}>
-            <Typewriter
-              options={{
-                strings: ['快速构建中后台表格', '可视化搭建', '逻辑变更，无需开发', '一次编写，永久使用'],
-                autoStart: true,
-                loop: true,
-              }}
-            />
-          </div>
+        <h1 className={classnames('title is-1 has-text-primary', styles.typewriter)}>
+          <Typewriter
+            options={{
+              strings: ['快速构建中后台表格', '可视化搭建', '逻辑变更，无需开发', '一次编写，永久使用'],
+              autoStart: true,
+              loop: true,
+            }}
+          />
         </h1>
-        <p className="subtitle mt-5 mb-5 has-text-primary">轻量、强大的企业级列表可视化搭建解决方案。</p>
+        <p className={classnames('subtitle mt-5 mb-5 has-text-primary', styles.description)}>轻量、强大的企业级列表可视化搭建解决方案。</p>
         <p className={classnames('mt-6', styles['font-circular-std'])}>适用于 React 16+ 环境</p>
         <figure className="highlight is-flex is-justify-content-center mt-3 mb-3">
           <pre className={styles['install-cmd']}><code className="language-shell">npm install --save drip-table drip-table-generator</code></pre>
