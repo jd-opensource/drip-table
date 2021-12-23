@@ -5,6 +5,7 @@
  */
 
 import { AppstoreTwoTone, BoxPlotTwoTone, UsbTwoTone } from '@ant-design/icons';
+import classnames from 'classnames';
 import React from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 import Typewriter from 'typewriter-effect';
@@ -14,16 +15,16 @@ import '../assets/prismjs/index.min';
 import '../assets/prismjs/index.min.css';
 import '../assets/bulma/index.min.css';
 
-import './index.css';
+import styles from './index.module.less';
 
 const Home = () => (
-  <div className="root">
-    <section className="section main-content">
-      <div className="home-banner-background" />
+  <div className={styles.root}>
+    <section className={classnames('section', styles.section, styles.section1)}>
+      <div className={styles['section1-background']} />
       <div className="container has-text-centered">
-        <h1 className="title is-1 mb-2 has-text-primary slogan">Drip Table</h1>
-        <h1 className="title is-1 has-text-primary slogan">
-          <div className="typewriter">
+        <h1 className={classnames('title is-1 mb-2 has-text-primary', styles.slogan)}>Drip Table</h1>
+        <h1 className={classnames('title is-1 has-text-primary', styles.slogan)}>
+          <div className={styles.typewriter}>
             <Typewriter
               options={{
                 strings: ['快速构建中后台表格', '可视化搭建', '逻辑变更，无需开发', '一次编写，永久使用'],
@@ -33,20 +34,20 @@ const Home = () => (
             />
           </div>
         </h1>
-        <p className="subtitle mt-5 mb-5 has-text-primary ">轻量、强大的企业级列表可视化搭建解决方案。</p>
-        <p className="mt-6 font-circular-std">适用于 React 16+ 环境</p>
+        <p className="subtitle mt-5 mb-5 has-text-primary">轻量、强大的企业级列表可视化搭建解决方案。</p>
+        <p className={classnames('mt-6', styles['font-circular-std'])}>适用于 React 16+ 环境</p>
         <figure className="highlight is-flex is-justify-content-center mt-3 mb-3">
-          <pre><code className="language-shell">npm install --save drip-table drip-table-generator</code></pre>
+          <pre className={styles['install-cmd']}><code className="language-shell">npm install --save drip-table drip-table-generator</code></pre>
         </figure>
-        <div className="screen-container mt-6 mb-6">
+        <div className={classnames(styles['screen-container'], 'mt-6 mb-6')}>
           <div className="columns is-variable is-6">
             <div className="column">
-              <figure className="image">
+              <figure className={styles['screen-image']}>
                 <img src="https://img10.360buyimg.com/imagetools/jfs/t1/215985/13/8544/240264/61c311d5E4a88cd4e/06f3ca0d883c3fad.png" />
               </figure>
             </div>
             <div className="column">
-              <figure className="image">
+              <figure className={styles['screen-image']}>
                 <img src="https://img12.360buyimg.com/imagetools/jfs/t1/214042/35/8655/360611/61c3164fEdce1daf7/a1b3cb267bf1ecaf.png" />
               </figure>
             </div>
@@ -55,9 +56,8 @@ const Home = () => (
       </div>
     </section>
 
-    <section className="section section2 pb-6">
-      <div className="container has-text-centered mt-6">
-
+    <section className={classnames('section', 'pb-6', styles.section, styles.section2)}>
+      <div className={classnames('container has-text-centered mt-6', styles.section2__container)}>
         <div>
           <h2 className="title is-2 has-text-white has-text-left">
             中后台「表格」开箱即用解决方案。
@@ -65,47 +65,47 @@ const Home = () => (
         </div>
         <div className="columns mt-6">
           <div className="column is-one-third">
-            <p className="has-text-white has-text-left is-size-6 line-height-2 font-circular-std">
+            <p className={classnames('has-text-white has-text-left is-size-6', styles.section2__desc, styles['font-circular-std'])}>
               DripTable 兼容所有 React 16+ 项目环境，通过可视化搭建，获得表格结构 Schema 对象，结合表格数据接口，即可快速完成中后台表格渲染开发。
               <br />
               DripTable 专注于可视化搭建、组件渲染分发，底层渲染逻辑由组件库处理，因此不依赖指定界面框架，可支持多种主流界面组件库。
             </p>
           </div>
           <div className="column">
-            <video className="demo-video" src="https://storage.360buyimg.com/drip-design/drip-table/drip-table-demo.mp4?v=2" autoPlay muted loop />
+            <video className={styles['demo-video']} src="https://storage.360buyimg.com/drip-design/drip-table/drip-table-demo.mp4?v=2" autoPlay muted loop />
           </div>
         </div>
       </div>
-      <div className="shape shape-bottom">
+      <div className={classnames(styles.shape, styles['shape-bottom'])}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <path className="shape-fill" d="M738,99l262-93V0H0v5.6L738,99z" />
+          <path className={styles['shape-fill']} d="M738,99l262-93V0H0v5.6L738,99z" />
         </svg>
       </div>
     </section>
 
-    <section className="section section3 mt-6">
-      <div className="padding" />
-      <div className="overlay" />
+    <section className={classnames('section mt-6', styles.section, styles.section3)}>
+      <div className={styles.section3__overlay} />
       <div className="container has-text-centered mt-6">
         <div className="ani-icon" />
         <h1 className="title is-2 has-text-white">可视化搭建</h1>
       </div>
     </section>
 
-    <section className="section section4">
+    <section className={classnames('section', styles.section, styles.section4)}>
       <div className="container">
         <h2 className="title is-5 has-text-white mt-4">优势</h2>
         <h2 className="title is-2 has-text-white has-text-left mb-6">
           积木化搭建，大幅降低研发周期。
         </h2>
       </div>
-      <div className="shape shape-bottom2 pb-6">
+      <div className={classnames('pb-6', styles.shape, styles['shape-bottom2'])}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <path className="shape-fill" d="M761.9,44.1L643.1,27.2L333.8,98L0,3.8V0l1000,0v3.9" />
+          <path className={styles['shape-fill']} d="M761.9,44.1L643.1,27.2L333.8,98L0,3.8V0l1000,0v3.9" />
         </svg>
       </div>
     </section>
-    <section className="section section5 font-circular-std">
+
+    <section className={classnames('section', styles.section, styles.section5, styles['font-circular-std'])}>
       <div className="container">
         <div className="columns mb-6">
           <div className="column is-one-third">
@@ -124,7 +124,7 @@ const Home = () => (
                 <div className="card">
                   <div className="card-content">
                     <div className="is-flex is-justify-content-center">
-                      <figure className="image is-128x128 r-8 feature-icon">
+                      <figure className={classnames('image is-128x128 r-8', styles['feature-icon'])}>
                         <BoxPlotTwoTone />
                       </figure>
                     </div>
@@ -139,7 +139,7 @@ const Home = () => (
                 <div className="card">
                   <div className="card-content">
                     <div className="is-flex is-justify-content-center">
-                      <figure className="image is-128x128 r-8 feature-icon">
+                      <figure className={classnames('image is-128x128 r-8', styles['feature-icon'])}>
                         <AppstoreTwoTone />
                       </figure>
                     </div>
@@ -154,7 +154,7 @@ const Home = () => (
                 <div className="card">
                   <div className="card-content">
                     <div className="is-flex is-justify-content-center">
-                      <figure className="image is-128x128 r-8 feature-icon">
+                      <figure className={classnames('image is-128x128 r-8', styles['feature-icon'])}>
                         <UsbTwoTone />
                       </figure>
                     </div>
@@ -173,29 +173,29 @@ const Home = () => (
       </div>
       <div className="container has-text-centered mt-6">
         <ReactCompareSlider
-          className="compare-slider"
+          className={styles['compare-slider']}
           itemOne={<ReactCompareSliderImage src="https://img10.360buyimg.com/imagetools/jfs/t1/143439/6/24521/306196/61c3102aEedfc091a/4dc6eac365946bd2.png" />}
           itemTwo={<ReactCompareSliderImage src="https://img14.360buyimg.com/imagetools/jfs/t1/223762/31/962/294271/61c29d96E2e06dd4d/60f210f1193d2ac0.png" />}
         />
-        <p className="line-height-2 pt-5 ml-6 mr-6">
+        <p className={classnames('pt-5 ml-6 mr-6', styles.section5__desc)}>
           抛弃繁重难以维护的 JSX 堆砌表格列，采用无需开发的低代码拖拽搭建模式。
         </p>
       </div>
     </section>
 
-    <section className="section section6">
-      <div className="container pt-3 mt-4">
-        <h1 className="title is-2 has-text-centered font-circular-std user-list-title">谁在使用</h1>
-        <div className="ui-image mt-6 mb-6 user-list">
-          <a href="https://ace.jd.com/" target="_blank" rel="noopener noreferrer" className="users-item">
-            <img className="normal" src="https://img30.360buyimg.com/pop/jfs/t1/195440/17/16088/13457/61056817Ec99890eb/10c25959825537c0.png" alt="营销投放平台" />
-            <img className="hover" src="https://img30.360buyimg.com/pop/jfs/t1/184131/20/16729/16548/61056658E5c1dd724/b72c92ce8026a441.png" alt="营销投放平台" />
+    <section className={classnames('section', styles.section, styles.section6)}>
+      <div className={classnames('container pt-3 mt-4', styles.section6__container)}>
+        <h1 className={classnames('title is-2 has-text-centered', styles['font-circular-std'], styles['user-list-title'])}>谁在使用</h1>
+        <div className={classnames('ui-image mt-6 mb-6', styles['user-list'])}>
+          <a href="https://ace.jd.com/" target="_blank" rel="noopener noreferrer" className={styles['users-item']}>
+            <img className={styles.normal} src="https://img30.360buyimg.com/pop/jfs/t1/195440/17/16088/13457/61056817Ec99890eb/10c25959825537c0.png" alt="营销投放平台" />
+            <img className={styles.hover} src="https://img30.360buyimg.com/pop/jfs/t1/184131/20/16729/16548/61056658E5c1dd724/b72c92ce8026a441.png" alt="营销投放平台" />
           </a>
         </div>
       </div>
     </section>
 
-    <section className="section section7 is-flex is-align-items-center">
+    <section className={classnames('section is-flex is-align-items-center', styles.section, styles.section7)}>
       <div className="container pt-6 mt-4">
         <div className=" is-flex  is-justify-content-center mb-5">
           <figure className="image is-128x128">
@@ -213,7 +213,7 @@ const Home = () => (
             className="button is-rounded is-primary has-text-weight-bold "
             rel="noreferrer"
           >
-            <span className="icon is-medium gitter">
+            <span className={classnames('icon is-medium', styles.gitter)}>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 25" fill="#ffffff">
                 <rect x="15" y="5" width="2" height="10" />
                 <rect x="10" y="5" width="2" height="20" />
@@ -227,19 +227,19 @@ const Home = () => (
       </div>
     </section>
 
-    <footer className="site-footer ">
-      <div className="footer-top">
+    <footer className={styles['site-footer']}>
+      <div className={styles['footer-top']}>
         <div className="container">
           <div className="columns">
             <div className="column">
-              <div className="pr-5 footer-column">
-                <img className="footer-drip-icon" src="http://img30.360buyimg.com/pop/jfs/t1/178931/39/16493/8079/61024235E81cb6a8e/25b1664bdb27aa13.png" alt="" />
+              <div className={classnames('pr-5', styles['footer-column'])}>
+                <img className={styles['footer-drip-icon']} src="http://img30.360buyimg.com/pop/jfs/t1/178931/39/16493/8079/61024235E81cb6a8e/25b1664bdb27aa13.png" alt="" />
               </div>
             </div>
             <div className="column">
-              <div className="pr-5 footer-column">
+              <div className={classnames('pr-5', styles['footer-column'])}>
                 <h3 className="title is-4 has-text-white">相关资源</h3>
-                <ul className="widget_address">
+                <ul>
                   <li><a href="http://drip.jd.com/" target="_blank" rel="noreferrer">Drip</a></li>
                   <li><a href="http://drip-design.jd.com/" target="_blank" rel="noreferrer">Drip Design</a></li>
                   <li><a href="https://jdfed.github.io/drip-form" target="_blank" rel="noreferrer">Drip Form</a></li>
@@ -259,8 +259,8 @@ const Home = () => (
                     </a>
                   </li>
                   <li>
-                    <a href="https://gitter.im/drip-table/community">
-                      <span className="pr-2"><span role="img" aria-label="profile" className="anticon anticon-profile"><svg viewBox="64 64 896 896" focusable="false" data-icon="profile" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656zM492 400h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zM340 368a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0z" /></svg></span></span>
+                    <a href="https://gitter.im/drip-table/community" target="_blank" rel="noreferrer">
+                      <span className="pr-2"><span role="img" aria-label="profile"><svg viewBox="64 64 896 896" focusable="false" data-icon="profile" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656zM492 400h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zM340 368a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0z" /></svg></span></span>
                       Gitter
                     </a>
                   </li>
@@ -279,7 +279,7 @@ const Home = () => (
                   </li>
                   <li>
                     <a href="https://github.com/JDFED/drip-table/issues" target="_blank" rel="noopener noreferrer">
-                      <span className="pr-2"><span role="img" aria-label="issues-close" className="anticon anticon-issues-close"><svg viewBox="64 64 896 896" focusable="false" data-icon="issues-close" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm72-112c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48zm400-188h-59.3c-2.6 0-5 1.2-6.5 3.3L763.7 538.1l-49.9-68.8a7.92 7.92 0 00-6.5-3.3H648c-6.5 0-10.3 7.4-6.5 12.7l109.2 150.7a16.1 16.1 0 0026 0l165.8-228.7c3.8-5.3 0-12.7-6.5-12.7zm-44 306h-64.2c-5.5 0-10.6 2.9-13.6 7.5a352.2 352.2 0 01-49.8 62.2A355.92 355.92 0 01651.1 840a355 355 0 01-138.7 27.9c-48.1 0-94.8-9.4-138.7-27.9a355.92 355.92 0 01-113.3-76.3A353.06 353.06 0 01184 650.5c-18.6-43.8-28-90.5-28-138.5s9.4-94.7 28-138.5c17.9-42.4 43.6-80.5 76.4-113.2 32.8-32.7 70.9-58.4 113.3-76.3a355 355 0 01138.7-27.9c48.1 0 94.8 9.4 138.7 27.9 42.4 17.9 80.5 43.6 113.3 76.3 19 19 35.6 39.8 49.8 62.2 2.9 4.7 8.1 7.5 13.6 7.5H892c6 0 9.8-6.3 7.2-11.6C828.8 178.5 684.7 82 517.7 80 278.9 77.2 80.5 272.5 80 511.2 79.5 750.1 273.3 944 512.4 944c169.2 0 315.6-97 386.7-238.4A8 8 0 00892 694z" /></svg></span></span>
+                      <span className="pr-2"><span role="img" aria-label="issues-close"><svg viewBox="64 64 896 896" focusable="false" data-icon="issues-close" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm72-112c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48zm400-188h-59.3c-2.6 0-5 1.2-6.5 3.3L763.7 538.1l-49.9-68.8a7.92 7.92 0 00-6.5-3.3H648c-6.5 0-10.3 7.4-6.5 12.7l109.2 150.7a16.1 16.1 0 0026 0l165.8-228.7c3.8-5.3 0-12.7-6.5-12.7zm-44 306h-64.2c-5.5 0-10.6 2.9-13.6 7.5a352.2 352.2 0 01-49.8 62.2A355.92 355.92 0 01651.1 840a355 355 0 01-138.7 27.9c-48.1 0-94.8-9.4-138.7-27.9a355.92 355.92 0 01-113.3-76.3A353.06 353.06 0 01184 650.5c-18.6-43.8-28-90.5-28-138.5s9.4-94.7 28-138.5c17.9-42.4 43.6-80.5 76.4-113.2 32.8-32.7 70.9-58.4 113.3-76.3a355 355 0 01138.7-27.9c48.1 0 94.8 9.4 138.7 27.9 42.4 17.9 80.5 43.6 113.3 76.3 19 19 35.6 39.8 49.8 62.2 2.9 4.7 8.1 7.5 13.6 7.5H892c6 0 9.8-6.3 7.2-11.6C828.8 178.5 684.7 82 517.7 80 278.9 77.2 80.5 272.5 80 511.2 79.5 750.1 273.3 944 512.4 944c169.2 0 315.6-97 386.7-238.4A8 8 0 00892 694z" /></svg></span></span>
                       讨论列表
                     </a>
                   </li>
@@ -297,7 +297,7 @@ const Home = () => (
                     </a>
                   </li>
                   <li>
-                    <a href="/drip-table/changelog">
+                    <a href="/drip-table/changelog" target="_blank">
                       <span className="pr-2"><span role="img" aria-label="history"><svg viewBox="64 64 896 896" focusable="false" data-icon="history" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M536.1 273H488c-4.4 0-8 3.6-8 8v275.3c0 2.6 1.2 5 3.3 6.5l165.3 120.7c3.6 2.6 8.6 1.9 11.2-1.7l28.6-39c2.7-3.7 1.9-8.7-1.7-11.2L544.1 528.5V281c0-4.4-3.6-8-8-8zm219.8 75.2l156.8 38.3c5 1.2 9.9-2.6 9.9-7.7l.8-161.5c0-6.7-7.7-10.5-12.9-6.3L752.9 334.1a8 8 0 003 14.1zm167.7 301.1l-56.7-19.5a8 8 0 00-10.1 4.8c-1.9 5.1-3.9 10.1-6 15.1-17.8 42.1-43.3 80-75.9 112.5a353 353 0 01-112.5 75.9 352.18 352.18 0 01-137.7 27.8c-47.8 0-94.1-9.3-137.7-27.8a353 353 0 01-112.5-75.9c-32.5-32.5-58-70.4-75.9-112.5A353.44 353.44 0 01171 512c0-47.8 9.3-94.2 27.8-137.8 17.8-42.1 43.3-80 75.9-112.5a353 353 0 01112.5-75.9C430.6 167.3 477 158 524.8 158s94.1 9.3 137.7 27.8A353 353 0 01775 261.7c10.2 10.3 19.8 21 28.6 32.3l59.8-46.8C784.7 146.6 662.2 81.9 524.6 82 285 82.1 92.6 276.7 95 516.4 97.4 751.9 288.9 942 524.8 942c185.5 0 343.5-117.6 403.7-282.3 1.5-4.2-.7-8.9-4.9-10.4z" /></svg></span></span>
                       更新日志
                     </a>
@@ -308,10 +308,10 @@ const Home = () => (
           </div>
         </div>
       </div>
-      <div className="footer-bottom">
+      <div className={styles['footer-bottom']}>
         <div className="container">
           <div className="is-flex is-justify-content-center">
-            <span className="copyrights-text is-size-7">© 2021 JDFED</span>
+            <span className="is-size-7">© 2021 JDFED</span>
           </div>
         </div>
       </div>
