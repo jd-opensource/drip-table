@@ -4,7 +4,7 @@ import { defineConfig } from 'dumi';
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 
 const config: IConfig = {
-  title: ' ',
+  title: 'DripTable',
   favicon: 'https://img13.360buyimg.com/imagetools/jfs/t1/204416/31/13736/8631/617f8334E9ae79a1c/5b96dfdce922e5fb.png',
   logo: 'https://img11.360buyimg.com/imagetools/jfs/t1/156025/11/22552/175523/617fb164E678b9642/6b8c55c5079b9819.jpg',
   outputPath: 'docs-dist',
@@ -150,7 +150,7 @@ const config: IConfig = {
   },
   // more config: https://d.umijs.org/config
   styles: [
-    `.__dumi-default-navbar-logo {width:146px !important;}
+    `.__dumi-default-navbar-logo { width:146px !important; color: transparent !important; }
     .__dumi-default-layout-hero,
     .__dumi-default-layout-toc li a.active::before,
     .__dumi-default-menu-inner ul li a::before,
