@@ -8,8 +8,10 @@
 
 import React from 'react';
 import { DripTableRecordTypeBase } from '@/types';
+import { indexValue } from '@/drip-table/utils';
 
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+
 import styles from './index.module.less';
 
 export interface DTCTextSchema extends DripTableComponentSchema {
@@ -131,24 +133,24 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return (
         <pre style={{ fontSize: this.fontSize }}>
           {
-            (format || '')
-              .replace(/\{\{(.+?)\}\}/uig, (s, s1) => {
-                try {
-                  const text = new Function('rec', `return ${s1}`)(data);
-                  if (typeof text === 'string') {
-                    return text;
-                  }
-                  return JSON.stringify(text);
-                } catch {}
-                return '';
-              })
-          }
+             (format || '')
+               .replace(/\{\{(.+?)\}\}/uig, (s, s1) => {
+                 try {
+                   const text = new Function('rec', `return ${s1}`)(data);
+                   if (typeof text === 'string') {
+                     return text;
+                   }
+                   return JSON.stringify(text);
+                 } catch {}
+                 return '';
+               })
+           }
         </pre>
       );
     }
     if (mode === 'single') {
       const noDataStr = noDataValue || '';
-      let value = data[dataIndex as string];
+      let value = indexValue(data, dataIndex);
       if (enumValue && enumLabel && typeof value === 'string') {
         const index = enumValue.indexOf(value);
         value = enumLabel[index];
@@ -173,7 +175,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div style={this.styles} className={this.classNames}>
           { (params || []).map((config, i) => {
-            let value = data[config.dataIndex];
+            let value = indexValue(data, config.dataIndex);
             if (enumValue && enumLabel && typeof value === 'string') {
               const index = enumValue.indexOf(value);
               value = enumLabel[index];

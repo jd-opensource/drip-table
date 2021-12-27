@@ -101,13 +101,14 @@ export default class ArrayComponent extends React.PureComponent<Props> {
       );
     }
     if (schema['ui:type'] === 'select') {
+      const formattedValue = (schema['ui:mode'] === 'multiple' || schema['ui:mode'] === 'tags') && !Array.isArray(currentValue[schema.name]) ? [currentValue[schema.name]] : currentValue[schema.name];
       return (
         <Select
           showSearch
           style={{ width: '100%' }}
           mode={schema['ui:mode']}
           defaultValue={schema.default as SelectValue}
-          value={currentValue[schema.name] as SelectValue}
+          value={formattedValue as SelectValue}
           options={options}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
         />
@@ -116,7 +117,21 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     return null;
   }
 
+  private visible(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
+    const currentValue = (this.props.value || [])[parentIndex] || {};
+    if (typeof schema.visible === 'function') {
+      return schema.visible(currentValue[schema.name], currentValue);
+    } if (typeof schema.visible === 'string') {
+      const visible = new Function('formData', schema.visible);
+      return visible(currentValue);
+    } if (typeof schema.visible === 'boolean') {
+      return schema.visible;
+    }
+    return true;
+  }
+
   private renderAttributeItem(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
+    if (!this.visible(schema, index, parentIndex)) { return null; }
     return (
       <Row key={index} style={{ lineHeight: '32px', margin: '6px 0' }}>
         <Col span={8}>

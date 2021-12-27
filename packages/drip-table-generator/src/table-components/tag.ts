@@ -13,6 +13,20 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents,
     {
+      name: 'dataIndexMode',
+      required: true,
+      'ui:title': '字段读取模式',
+      'ui:type': 'radio',
+      'ui:props': {
+        options: [
+          { label: '直接读取', value: 'direct' },
+          { label: '嵌套路径', value: 'nested' },
+        ],
+      },
+      type: 'string',
+      default: 'direct',
+    },
+    {
       name: 'dataIndex',
       required: true,
       'ui:title': '字段选择',
@@ -21,6 +35,20 @@ export default {
         from: 'dataFields',
       },
       type: 'string',
+      visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'direct',
+    },
+    {
+      name: 'dataIndex',
+      required: true,
+      'ui:title': '字段选择',
+      'ui:type': 'select',
+      'ui:props': {
+        from: 'dataFields',
+        mode: 'tags',
+        tokenSeparators: ['.', ',', '，'],
+      },
+      type: 'array',
+      visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'nested',
     },
     {
       name: 'prefix',

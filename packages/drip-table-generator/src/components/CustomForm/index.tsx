@@ -268,14 +268,16 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       );
     }
     if (config['ui:type'] === 'select') {
+      const formattedValue = (uiProps.mode === 'multiple' || uiProps.mode === 'tags') && !Array.isArray(formValues[config.name]) ? [formValues[config.name]] : formValues[config.name];
       return (
         <Select
+          {...uiProps}
           showSearch
           allowClear={uiProps.allowClear as boolean}
           style={{ width: 420, ...uiProps.style }}
           mode={uiProps.mode as 'multiple' | 'tags'}
           defaultValue={config.default as SelectValue}
-          value={formValues[config.name] as SelectValue}
+          value={formattedValue as SelectValue}
           options={(uiProps.options as { label: string; value: string }[] || []).map(v => ({ label: v.label, value: v.value }))}
           onChange={(value) => {
             formValues[config.name] = value;
