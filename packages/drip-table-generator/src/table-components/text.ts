@@ -13,6 +13,21 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents,
     {
+      name: 'dataIndexMode',
+      required: true,
+      'ui:title': '字段读取模式',
+      'ui:type': 'radio',
+      'ui:props': {
+        options: [
+          { label: '直接读取', value: 'direct' },
+          { label: '嵌套路径', value: 'nested' },
+        ],
+      },
+      type: 'string',
+      default: 'direct',
+      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+    },
+    {
       name: 'dataIndex',
       required: true,
       'ui:title': '字段选择',
@@ -21,7 +36,20 @@ export default {
         from: 'dataFields',
       },
       type: 'string',
-      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode === 'direct',
+    },
+    {
+      name: 'dataIndex',
+      required: true,
+      'ui:title': '字段选择',
+      'ui:type': 'select',
+      'ui:props': {
+        from: 'dataFields',
+        mode: 'tags',
+        tokenSeparators: ['.', ',', '，'],
+      },
+      type: 'array',
+      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode === 'nested',
     },
     {
       name: 'fontSize',
@@ -94,13 +122,39 @@ export default {
             default: '',
           },
           {
+            name: 'dataIndexMode',
+            required: true,
+            'ui:title': '字段读取模式',
+            'ui:type': 'radio',
+            'ui:props': {
+              options: [
+                { label: '直接读取', value: 'direct' },
+                { label: '嵌套路径', value: 'nested' },
+              ],
+            },
+            type: 'string',
+            default: 'direct',
+          },
+          {
+            name: 'dataIndex',
+            'ui:title': '字段选择',
+            'ui:type': 'select',
+            'ui:mode': 'tags',
+            'ui:props': {
+              from: 'dataFields',
+            },
+            type: 'array',
+            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'nested',
+          },
+          {
             name: 'dataIndex',
             'ui:title': '字段选择',
             'ui:type': 'auto-complete',
             'ui:props': {
-              from: 'dataSource',
+              from: 'dataFields',
             },
             type: 'string',
+            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'direct',
           },
           {
             name: 'suffix',
