@@ -17,7 +17,7 @@ export default {
           'ui:title': '字段选择',
           'ui:type': 'select',
           'ui:props': {
-            from: 'dataFields'
+            from: 'dataFields',
           },
           type: 'string',
         },
@@ -52,6 +52,6 @@ export default {
           default: '<span style="color:red;">这是一条说明</span>',
         },
       ],
-    }
+    },
   ] as DripTableComponentConfig[],
-}
+};

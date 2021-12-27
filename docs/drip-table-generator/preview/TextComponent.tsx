@@ -21,7 +21,6 @@ interface TextProps<RecordType extends DripTableRecordTypeBase> extends DripTabl
 interface TextState {}
 
 export default class TextComponent<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<TextProps<RecordType>, TextState> {
-
   private get fontSize() {
     let fontSize = String(this.props.schema.fontSize || '').trim();
     if ((/^[0-9]+$/uig).test(fontSize)) {
@@ -31,16 +30,15 @@ export default class TextComponent<RecordType extends DripTableRecordTypeBase> e
   }
 
   public render(): JSX.Element {
-  const { schema, data } = this.props;
-  const {
-    dataIndex,
-    noDataValue } = schema;
-  const value = indexValue(data, dataIndex, '');
-  const contentStr = `${ value || noDataValue }`
-  return (
-    <div style={{ fontSize: this.fontSize, color: '#6d0fff' }}>
-      { contentStr }
-    </div>
-  );
+    const { schema, data } = this.props;
+    const { dataIndex,
+      noDataValue } = schema;
+    const value = indexValue(data, dataIndex, '');
+    const contentStr = `${value || noDataValue}`;
+    return (
+      <div style={{ fontSize: this.fontSize, color: '#6d0fff' }}>
+        { contentStr }
+      </div>
+    );
   }
 }
