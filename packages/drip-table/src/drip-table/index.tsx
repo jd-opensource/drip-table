@@ -17,6 +17,7 @@ import VirtualTable from './virtual-table';
 import DripTableBuiltInComponents, { DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 
 import styles from './index.module.css';
+import RichText from '@/components/RichText';
 
 export interface DripTableProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
   /**
@@ -192,7 +193,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
       column.title = (
         <div>
           <span style={{ marginRight: '6px' }}>{ schemaColumn.title }</span>
-          <Popover placement="top" title="" content={schemaColumn.description}>
+          <Popover placement="top" title="" content={<RichText html={schemaColumn.description} />}>
             <QuestionCircleOutlined />
           </Popover>
         </div>
