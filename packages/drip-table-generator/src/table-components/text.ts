@@ -36,7 +36,7 @@ export default {
         from: 'dataFields',
       },
       type: 'string',
-      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode === 'direct',
+      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode !== 'nested',
     },
     {
       name: 'dataIndex',
@@ -154,7 +154,7 @@ export default {
               from: 'dataFields',
             },
             type: 'string',
-            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'direct',
+            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode !== 'nested',
           },
           {
             name: 'suffix',
