@@ -142,7 +142,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     }
   };
 
-  const submitTableData = debounce(submitDataWithoutDebounce, 1000);
+  const submitTableData = debounce(submitDataWithoutDebounce, 500);
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
