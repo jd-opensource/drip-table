@@ -1,22 +1,22 @@
-import { DripTableComponentConfig } from '../typing';
+import { DripTableComponentAttrConfig } from '../typing';
 import text from './text';
 import image from './picture';
 import renderHtml from './render-html';
 import links from './links';
 import tag from './tag';
 
-const baseComponentList: DripTableComponentConfig[] = [
+const baseComponentList: DripTableComponentAttrConfig[] = [
   text,
   image,
   links,
   tag,
 ];
 
-const customComponentList: DripTableComponentConfig[] = [
+const customComponentList: DripTableComponentAttrConfig[] = [
   renderHtml,
 ];
 
 export default [
   ...baseComponentList,
   ...customComponentList,
-] as DripTableComponentConfig[];
+] as DripTableComponentAttrConfig[];

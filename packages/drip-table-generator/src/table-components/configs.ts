@@ -26,4 +26,18 @@ export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
     },
     type: 'string',
   },
+  {
+    name: 'align',
+    'ui:title': '对齐方式',
+    'ui:type': 'radio',
+    'ui:props': {
+      options: [
+        { label: '居中对齐', value: 'center' },
+        { label: '靠左对齐', value: 'left' },
+        { label: '靠右对齐', value: 'right' },
+      ],
+    },
+    type: 'string',
+    default: 'center',
+  },
 ];

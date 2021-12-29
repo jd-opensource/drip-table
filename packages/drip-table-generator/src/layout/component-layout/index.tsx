@@ -11,7 +11,7 @@ import chunk from 'lodash/chunk';
 import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 
 import { globalActions, GlobalStore } from '@/store';
-import { DripTableComponentConfig } from '@/typing';
+import { DripTableComponentAttrConfig } from '@/typing';
 import { mockId } from '@/utils';
 import RichText from '@/components/RichText';
 import components from '@/table-components';
@@ -24,7 +24,7 @@ interface Props {
   width: React.CSSProperties['width'];
   customComponentPanel: {
     mode: 'add' | 'replace';
-    components: DripTableComponentConfig[];
+    components: DripTableComponentAttrConfig[];
   } | undefined;
 }
 
@@ -58,7 +58,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
-  const componentCell = (item: DripTableComponentConfig) => (
+  const componentCell = (item: DripTableComponentAttrConfig) => (
     <div
       className={styles['component-container']}
       onClick={() => {

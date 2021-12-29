@@ -28,6 +28,7 @@ const Wrapper = (props: DripTableGeneratorProps & {
     dataSource,
     schema,
     customComponentPanel,
+    customGlobalConfigPanel,
     customComponents,
   } = useGlobalData();
   const initialData = { previewDataSource: dataSource } as DripTableGeneratorState;
@@ -68,7 +69,7 @@ const Wrapper = (props: DripTableGeneratorProps & {
           { state.isEdit
             ? <EditableTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} />
             : <PreviewTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} /> }
-          <AttributeLayout customComponentPanel={customComponentPanel} store={store} />
+          <AttributeLayout customComponentPanel={customComponentPanel} customGlobalConfigPanel={customGlobalConfigPanel} store={store} />
         </div>
       </div>
     </div>

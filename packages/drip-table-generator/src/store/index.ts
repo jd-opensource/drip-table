@@ -7,14 +7,14 @@
  */
 
 import { DripTableSchema, ColumnConfig } from 'drip-table';
-import { DripTableComponentConfig } from '@/typing';
+import { DripTableComponentAttrConfig } from '@/typing';
 import useSharedState from './custom-hook';
 
 export type DripTableColumn = ColumnConfig & {
   $id: string;
   key: number;
   sort: number;
-  type: DripTableComponentConfig['type'];
+  type: DripTableComponentAttrConfig['type'];
 }
 
 export interface DripTableGeneratorState {
