@@ -16,7 +16,7 @@ title: API
 | dataSource         | 数据列表                                                           | `Array`                  | -       | 是   |
 | loading            | 是否加载         | `boolean`                  | -       | 否   |
 | totalPage          | 总页数，配置了分页需要         | `number`                  | -       | 否   |
-| components         | 组件库         | `Record<string, Record<string, React.Component>>`                  | -       | 否   |
+| components         | 自定义组件库         | `Record<string, Record<string, React.Component>>`                  | -       | 否   |
 | onEvent            | 通用事件回调         | `(event: { type: string; payload: unknown }, record: RecordType; index: number }) => void`                  | -       | 否   |
 | onPageChange       | 页面改变回调函数         | `(page, pageSize) => void`                  | -       | 否   |
 

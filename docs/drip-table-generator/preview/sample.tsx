@@ -76,6 +76,37 @@ const Demo = (props: { showHeader: boolean }) => {
         onExportSchema={(schema) => { console.log(schema); }}
         customComponents={{ custom: { TextComponent } }}
         customComponentPanel={components}
+        customGlobalConfigPanel={[
+          {
+            name: 'bordered',
+            'ui:title': '是否展示边框',
+            'ui:type': 'switch',
+            'ui:props': {},
+            type: 'boolean',
+            default: false,
+          },
+          {
+            name: 'size',
+            'ui:title': '表格尺寸',
+            'ui:type': 'radio',
+            'ui:props': {
+              options: [
+                { label: '大号', value: 'large' },
+                { label: '中等', value: 'middle' },
+                { label: '小号', value: 'small' },
+              ],
+            },
+            type: 'string',
+            default: 'default',
+          },
+          {
+            name: 'tips',
+            'ui:title': '配置说明',
+            'ui:type': 'render-html',
+            type: 'string',
+            default: '<span style="color:red;">这是一段说明</span>',
+          },
+        ]}
       />
     </React.Fragment>
   );

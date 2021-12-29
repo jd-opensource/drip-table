@@ -66,6 +66,7 @@ const config: IConfig = {
           '/drip-table/functions/index.md',
           '/drip-table/functions/refs.md',
           '/drip-table/functions/event',
+          '/drip-table/functions/custom.md',
           '/drip-table/functions/api.md',
         ],
       },
@@ -99,6 +100,7 @@ const config: IConfig = {
         children: [
           '/drip-table-generator/functions/index.md',
           '/drip-table-generator/functions/usage-pro.md',
+          '/drip-table-generator/functions/custom.md',
           '/drip-table-generator/functions/api.md',
         ],
       },
