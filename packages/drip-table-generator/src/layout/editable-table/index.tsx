@@ -31,7 +31,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     const [libName, componentName] = column['ui:type'].includes('::') ? column['ui:type'].split('::') : ['', column['ui:type']];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
-    const record = state.previewDataSource[0] || {} as Record<string, unknown>;
+    const record = state.previewDataSource?.[0] || {} as Record<string, unknown>;
     const value = column.dataIndex ? get(record, column.dataIndex) : record;
 
     const errorBoundary = () => {

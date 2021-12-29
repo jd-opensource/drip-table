@@ -20,7 +20,11 @@ title: 基本用法
  * hideActions: ["CSB"]
  */
 import React from 'react';
-import DripTableGenerator from 'drip-table-generator';
+import { DripTableSchema } from 'drip-table';
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
+import 'antd/dist/antd.css';
+import 'drip-table-generator/index.css';
 
 const initialSchema = {
   "$schema": "http://json-schema.org/draft/2019-09/schema#",
@@ -45,18 +49,18 @@ const initialSchema = {
 
 const Demo = () => {
   return (
-    <DripTableGenerator schema={initialSchema} />
+    <DripTableGenerator driver={DripTableDriverAntDesign} dataSource={[]} schema={initialSchema} />
   );
 };
 
 export default Demo;
 ```
 
-## 二、自定义样式
+## 二、更改主题样式
 
-`drip-table-generator` 支持通过修改 `CSS 变量`、传入 `style` 以及手动覆盖样式这三种方式修改样式。
+`drip-table-generator` 支持通过修改 `CSS` 变量、传入 `style` 以及手动覆盖样式这三种方式修改样式。
 
-CSS变量目前包括以下三个：
+`CSS` 变量目前包括以下三个：
 
 ```css
 * {
@@ -76,11 +80,19 @@ CSS变量目前包括以下三个：
  * hideActions: ["CSB"]
  */
 import React from 'react';
-import DripTableGenerator from 'drip-table-generator';
+import { DripTableSchema } from 'drip-table';
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
+import 'antd/dist/antd.css';
+import 'drip-table-generator/index.css';
 
 const Demo = () => {
   return (
-    <DripTableGenerator style={{ height: 500, background: '#EEFFEE6A', border: '1px solid #dedede' }} />
+    <DripTableGenerator
+      driver={DripTableDriverAntDesign}
+      dataSource={[]}
+      style={{ height: 500, background: '#EEFFEE6A', border: '1px solid #dedede' }}
+    />
   );
 };
 

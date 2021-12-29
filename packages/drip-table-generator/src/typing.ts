@@ -24,7 +24,7 @@ export type DTGComponentPropertySchema = DataSchema & {
 }
 
 /** 组件配置项 */
-export interface DripTableComponentConfig {
+export interface DripTableComponentAttrConfig {
   '$id': string;
   /** 组件类型 */
   'ui:type': string;
@@ -59,19 +59,20 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState {
 
 export interface DripTableGeneratorProps<CustomComponentEvent extends EventLike = never, Ext = unknown> {
   style?: CSSProperties;
-  driver?: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver<DripTableRecordTypeBase>;
   showComponentLayout?: boolean;
   componentLayoutStyle?: CSSProperties;
   rightLayoutStyle?: CSSProperties;
   showToolLayout?: boolean;
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
-  dataSource?: DripTableRecordTypeBase[];
+  dataSource: DripTableRecordTypeBase[];
   dataFields?: string[];
   schema?: DripTableSchema;
   customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentEvent, Ext>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
-    components: DripTableComponentConfig[];
+    components: DripTableComponentAttrConfig[];
   };
+  customGlobalConfigPanel?: DTGComponentPropertySchema[];
   onExportSchema?: (schema: DripTableSchema) => void;
 }

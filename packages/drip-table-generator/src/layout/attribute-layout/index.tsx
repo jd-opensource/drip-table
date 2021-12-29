@@ -14,7 +14,7 @@ import MonacoEditor from '@monaco-editor/react';
 import debounce from 'lodash/debounce';
 
 import { useGlobalData } from '@/hooks';
-import { DripTableComponentConfig, DTGComponentPropertySchema } from '@/typing';
+import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
 import components from '@/table-components';
@@ -28,8 +28,9 @@ type GlobalSchema = DripTableSchema['configs'];
 interface Props {
   customComponentPanel: {
     mode: 'add' | 'replace';
-    components: DripTableComponentConfig[];
+    components: DripTableComponentAttrConfig[];
   } | undefined;
+  customGlobalConfigPanel: DTGComponentPropertySchema[] | undefined;
 }
 
 const { TabPane } = Tabs;
@@ -130,10 +131,6 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     } as DripTableColumn;
   };
 
-  /** TODO: 报错逻辑后续优化
-  *
-  * @param {string} codeValue JSON
-  */
   const submitDataWithoutDebounce = (codeValue?: string) => {
     setCodeErrorMessage('');
     try {
@@ -149,7 +146,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
-      configs={GlobalAttrFormConfigs}
+      configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
       data={state.globalConfigs}
       encodeData={encodeGlobalConfigs}
       onChange={(data) => {
