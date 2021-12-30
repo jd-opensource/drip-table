@@ -92,8 +92,9 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   onSelectionChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
   /**
    * 搜索触发
+   * @param { { searchKey?: number | string; searchStr: string } } searchParams 搜索内容, string时只有关键字；searchKey为选中搜索类型，searchStr是关键字；
    */
-  onSearch?: (searchParams: { key?: number | string; value: string } | Record<string, unknown>) => void;
+  onSearch?: (searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>) => void;
   /**
    * 点击添加按钮触发
    */

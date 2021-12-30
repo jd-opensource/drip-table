@@ -6,8 +6,13 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+.header-container {
+  margin: 12px 0;
+}
+
 .search-container {
   display: flex;
+  flex-direction: row;
 }
 
 .header-title {
