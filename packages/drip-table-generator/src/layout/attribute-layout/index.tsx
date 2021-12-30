@@ -85,7 +85,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
             placeholder: formData['header.search.placeholder'],
             allowClear: formData['header.search.allowClear'],
             searchBtnText: formData['header.search.searchBtnText'],
-            searchStyle: { float: 'right', width: formData['header.search.width'] as string },
+            searchStyle: { width: formData['header.search.width'] as string },
             defaultSelectedKey: formData['header.search.defaultSelectedKey'],
             typeOptions: formData['header.search.typeVisible'] ? formData['header.search.typeOptions'] : void 0,
           }

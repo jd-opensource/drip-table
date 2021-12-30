@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 
 import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
 import { DripTableProps } from '@/index';
@@ -15,7 +15,7 @@ import RichText from '@/components/RichText';
 import styles from './index.module.css';
 
 type Config = {
-  type: 'title' | 'search' | 'addButton' | 'null';
+  type: 'title' | 'search' | 'addButton';
   /**
    * 跨度；取值 0-24
    */
@@ -24,7 +24,21 @@ type Config = {
    * 宽度；如果是string，可以是px也可以是%
    */
   width?: number | string;
+  /**
+   * 头部相对位置
+   */
   position: 'topLeft' | 'topCenter' | 'topRight';
+  /**
+   * 对齐方式
+   * flex-start: 左对齐; center: 居中; flex-end: 右对齐; space-between: 两端对齐; space-around: 等间对齐;
+   */
+  align?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
+  /**
+   * 是否可见
+   */
+  visible?: boolean;
+  /** 列样式 */
+  columnStyle?: CSSProperties;
 };
 
 interface TitleConfig extends Config {
@@ -42,7 +56,7 @@ interface SearchConfig extends Config {
   searchClassName?: string;
   size?: 'large' | 'middle' | 'small';
   searchKeys?: { label: string; value: number | string }[];
-  searchKeyValue?: number | string;
+  searchKeyDefaultValue?: number | string;
   props?: Record<string, unknown>;
 }
 
@@ -54,15 +68,12 @@ interface AddButtonConfig extends Config {
   addBtnClassName?: string;
 }
 
-interface NullConfig extends Config {
-  type: 'null';
-}
-
 export interface DripTableHeaderProps<RecordType extends DripTableRecordTypeBase> {
   driver: DripTableDriver<RecordType>;
-  title?: TitleConfig | NullConfig;
-  search?: SearchConfig | NullConfig;
-  addButton?: AddButtonConfig | NullConfig;
+  style?: React.CSSProperties;
+  title?: TitleConfig;
+  search?: SearchConfig;
+  addButton?: AddButtonConfig;
   onSearch?: DripTableProps<RecordType>['onSearch'];
   onAddButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
@@ -77,13 +88,13 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
   const TableSearch = props.driver.components.TableSearch;
 
   const [searchStr, setSearchStr] = useState('');
-  const [searchKey, setSearchKey] = useState<SearchConfig['searchKeyValue']>(void 0);
+  const [searchKey, setSearchKey] = useState<SearchConfig['searchKeyDefaultValue']>(props.search?.searchKeyDefaultValue);
 
   if (!props.title && !props.search && !props.addButton) {
     return null;
   }
 
-  const renderColumnContent = (config: TitleConfig | AddButtonConfig | SearchConfig | NullConfig) => {
+  const renderColumnContent = (config: TitleConfig | AddButtonConfig | SearchConfig) => {
     if (config.type === 'title') {
       return config.html
         ? <RichText html={config.title} />
@@ -103,7 +114,7 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
         <div style={config.searchStyle} className={`${styles['search-container']} ${config.searchClassName}`}>
           { config.searchKeys && (
             <Select
-              defaultValue={config.searchKeyValue}
+              defaultValue={config.searchKeyDefaultValue}
               className={styles['search-select']}
               value={searchKey}
               onChange={value => setSearchKey(value)}
@@ -118,7 +129,7 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
             size={config.size}
             value={searchStr}
             onChange={e => setSearchStr(e.target.value.trim())}
-            onSearch={(value) => { props.onSearch?.({ key: searchKey, value }); }}
+            onSearch={(value) => { props.onSearch?.({ searchKey, searchStr: value }); }}
           />
         </div>
       );
@@ -146,14 +157,14 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
     }
     const span = config.span || 8;
     return (
-      <Col span={span} style={{ width: config.width }}>
-        { renderColumnContent(config) }
+      <Col span={span} style={{ display: 'flex', width: config.width, justifyContent: config.align || 'center', ...config.columnStyle }}>
+        { config.visible !== false ? renderColumnContent(config) : null }
       </Col>
     );
   };
 
   return (
-    <div className={styles['header-container']}>
+    <div className={styles['header-container']} style={props.style}>
       <Row>
         { renderColumn('topLeft') }
         { renderColumn('topCenter') }
