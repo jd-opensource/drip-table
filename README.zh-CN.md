@@ -23,7 +23,7 @@
 
 ## 📖 介绍
 
-`DripTable` 是京东零售推出的一款用于企业级中后台的动态列表解决方案，项目基于 `React` 和 `JSON Schema`，旨在通过`简单配置`快速生成页面动态列表来降低 `CMS` 页面列表开发难度、提高工作效率。
+`DripTable` 是京东零售推出的一款用于企业级中后台的动态列表解决方案，项目基于 `React` 和 `JSON Schema`，旨在通过`简单配置`快速生成页面动态列表来降低列表开发难度、提高工作效率。
 
 `DripTable` 目前包含以下子项目：`drip-table`、`drip-table-generator`、`drip-table-driver-antd`。
 

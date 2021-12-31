@@ -24,7 +24,7 @@ English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.
 
 ## 📖 Introduction
 
-`Drip table`is a dynamic list solution for enterprise level middle and background launched by JD retail. The project is based on `React` and `JSON Schema` . It aims to reduce the difficulty of developing `CMS` page list and improve work efficiency by `simple configuration` to quickly generate page dynamic list.
+`Drip table`is a dynamic table solution for enterprise level middle and background launched by JD retail. The project is based on `React` and `JSON Schema` . It aims to reduce the difficulty of developing table and improve work efficiency by `simple configuration` to quickly generate page dynamic table.
 
 `Drip table` contains serval sub projects: `drip-table`, `drip-table-generator`, `drip-table-driver-antd`.
 
@@ -38,7 +38,7 @@ The introduction of each sub-project are as follows:
 
 ## ⬆️ Getting Start
 
-`Drip table` is divided into two application scenarios: configuration end and application end. The configuration side is mainly responsible for generating `JSON Schema` standard data through visualization and `low-code`. The function of the application side is to render the `JSON Schema` standard configuration data into a dynamic list.
+`Drip table` is divided into two application scenarios: configuration end and application end. The configuration side is mainly responsible for generating `JSON Schema` standard data through visualization and `low-code`. The function of the application side is to render the `JSON Schema` standard configuration data into a dynamic table.
 
 ### The configuration side
 
