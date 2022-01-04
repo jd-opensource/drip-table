@@ -99,6 +99,7 @@ const config: IConfig = {
         path: '/drip-table-generator/functions',
         children: [
           '/drip-table-generator/functions/index.md',
+          '/drip-table-generator/functions/refs.md',
           '/drip-table-generator/functions/usage-pro.md',
           '/drip-table-generator/functions/custom.md',
           '/drip-table-generator/functions/api.md',

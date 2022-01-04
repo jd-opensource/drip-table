@@ -7,6 +7,12 @@ export type DTGComponentPropertySchema = DataSchema & {
   $id?: string;
   name: string;
   required?: boolean;
+  'ui:layout'?: {
+    labelCol: number;
+    wrapperCol: number;
+    extraRow?: boolean;
+    customHelpMsg?: boolean;
+  };
   'ui:title': string;
   'ui:description'?: {
     type: 'icon' | 'text';
