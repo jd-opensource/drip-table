@@ -7,11 +7,11 @@
 import React from 'react';
 import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
+import DripTableGenerator from 'drip-table-generator';
 import 'antd/dist/antd.css';
 import 'drip-table-generator/index.css';
 
-import { Button, Row } from 'antd';
+import { message } from 'antd';
 import { mockData } from '../../global-configs';
 import components from './component-settings';
 import TextComponent from './TextComponent';
@@ -51,34 +51,17 @@ const initialSchema: DripTableSchema = {
   ],
 };
 
-const Demo = (props: { showHeader: boolean }) => {
-  const generator: React.MutableRefObject<DripTableGeneratorHandler | null> = React.useRef(null);
-
-  const views = {
-    demoHeader: props.showHeader !== false,
-  };
-
-  return (
-    <React.Fragment>
-      { views.demoHeader && (
-        <Row className="sample-header-extra-container">
-          <Button className="header-button" type="primary" onClick={() => { console.log(generator.current?.getSchemaValue()); }}>获取schema</Button>
-          <Button className="header-button" type="primary" onClick={() => { console.log(generator.current?.getDataSource()); }}>获取dataSource</Button>
-        </Row>
-      ) }
-      <DripTableGenerator
-        ref={generator}
-        style={{ height: 756 }}
-        driver={DripTableDriverAntDesign}
-        schema={initialSchema}
-        dataSource={mockData.slice(0, 4)}
-        dataFields={['id', 'name', 'status', 'description', 'ext.state']}
-        onExportSchema={(schema) => { console.log(schema); }}
-        customComponents={{ custom: { TextComponent } }}
-        customComponentPanel={components}
-      />
-    </React.Fragment>
-  );
-};
+const Demo = () => (
+  <DripTableGenerator
+    style={{ height: 756 }}
+    driver={DripTableDriverAntDesign}
+    schema={initialSchema}
+    dataSource={mockData.slice(0, 4)}
+    dataFields={['id', 'name', 'status', 'description', 'ext.state']}
+    onExportSchema={(schema) => { message.success('已导出'); }}
+    customComponents={{ custom: { TextComponent } }}
+    customComponentPanel={components}
+  />
+);
 
 export default Demo;

@@ -11,17 +11,17 @@ title: 快速开始
 
 ### 安装依赖
 
-drip-table-generator 依赖 `antd`、`drip-table` 和 `react`，单独使用不要忘记安装～
+drip-table-generator 依赖 `antd`、`drip-table`、 `drip-table-driver-{drivername}` 和 `react`，单独使用不要忘记安装～
 
 > yarn
 
 ```sh
-yarn add drip-table-generator drip-table-driver-antd
+yarn add drip-table-generator
 ```
 
 > npm
 ```sh
-npm install --save drip-table-generator drip-table-driver-antd
+npm install --save drip-table-generator
 ```
 
 ### 依赖引入

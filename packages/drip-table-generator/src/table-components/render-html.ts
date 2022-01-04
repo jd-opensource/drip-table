@@ -17,6 +17,8 @@ export default {
       'ui:title': '代码编辑',
       'ui:type': 'code-editor',
       'ui:layout': {
+        labelCol: 4,
+        wrapperCol: 20,
         extraRow: true,
         customHelpMsg: true,
       },
