@@ -16,8 +16,15 @@ export default {
       name: 'ui:props.render',
       'ui:title': '代码编辑',
       'ui:type': 'code-editor',
+      'ui:layout': {
+        extraRow: true,
+        customHelpMsg: true,
+      },
       'ui:props': {
-        minRow: 5,
+        style: {
+          height: 370,
+          marginTop: '-16px',
+        },
       },
       'ui:wrapperStyle': { minWidth: 680 },
       type: 'string',

@@ -31,3 +31,18 @@ export const get = (data: unknown, indexes: string | number | (string | number)[
   }
   return defaultValue;
 };
+
+/**
+ * 对象属性过滤器
+ * @param {Record<string, unknown>} record 原始对象
+ * @param {string | string[]} excludeAttrs 需要排除掉的属性名
+ * @returns {Record<string, unknown>} 返回最终对象
+ */
+export const filterAttributes = (record: Record<string, unknown>, excludeAttrs: string | string[]) => {
+  if (typeof excludeAttrs === 'string') { excludeAttrs = [excludeAttrs]; }
+  const finalObject = { ...record };
+  excludeAttrs.forEach((key) => {
+    delete finalObject[key];
+  });
+  return finalObject;
+};

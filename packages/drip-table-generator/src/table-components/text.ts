@@ -111,7 +111,7 @@ export default {
     {
       name: 'ui:props.params',
       'ui:title': '字段配置',
-      'ui:type': 'custom::ArrayComponent',
+      'ui:type': 'array-list',
       'ui:props': {
         items: [
           {

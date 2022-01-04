@@ -16,17 +16,18 @@ drip-table-generator 依赖 `antd`、`drip-table` 和 `react`，单独使用不�
 > yarn
 
 ```sh
-yarn add drip-table-generator
+yarn add drip-table-generator drip-table-driver-antd
 ```
 
 > npm
 ```sh
-npm install --save drip-table-generator
+npm install --save drip-table-generator drip-table-driver-antd
 ```
 
 ### 依赖引入
 
 ```js
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import 'drip-table-generator/index.css';
 ```
@@ -34,7 +35,10 @@ import 'drip-table-generator/index.css';
 ### 页面引入
 
 ```js
-<DripTableGenerator />
+<DripTableGenerator
+  driver={DripTableDriverAntDesign}
+  dataSource={[]}
+/>
 ```
 
 ### 代码演示
@@ -46,11 +50,16 @@ import 'drip-table-generator/index.css';
  * hideActions: ["CSB"]
  */
 import React from 'react';
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
+import 'drip-table-generator/index.css';
 
 const Demo = () => {
   return (
-    <DripTableGenerator />
+    <DripTableGenerator
+      driver={DripTableDriverAntDesign}
+      dataSource={[]}
+    />
   );
 };
 

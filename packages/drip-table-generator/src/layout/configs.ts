@@ -158,7 +158,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'header.search.typeOptions',
     'ui:title': '选择框配置',
-    'ui:type': 'custom::ArrayComponent',
+    'ui:type': 'array-list',
     'ui:props': {
       items: [
         {

@@ -68,7 +68,7 @@ export default {
       name: 'color',
       required: false,
       'ui:title': '字体颜色',
-      'ui:type': 'custom::ColorPicker',
+      'ui:type': 'color-picker',
       'ui:props': {},
       type: 'string',
     },
@@ -76,7 +76,7 @@ export default {
       name: 'borderColor',
       required: false,
       'ui:title': '边框颜色',
-      'ui:type': 'custom::ColorPicker',
+      'ui:type': 'color-picker',
       'ui:props': {},
       type: 'string',
     },
@@ -84,7 +84,7 @@ export default {
       name: 'backgroundColor',
       required: false,
       'ui:title': '背景颜色',
-      'ui:type': 'custom::ColorPicker',
+      'ui:type': 'color-picker',
       'ui:props': {},
       type: 'string',
     },
@@ -103,7 +103,7 @@ export default {
       name: 'tagOptions',
       required: false,
       'ui:title': '枚举值',
-      'ui:type': 'custom::ArrayComponent',
+      'ui:type': 'array-list',
       'ui:props': {
         items: [
           {

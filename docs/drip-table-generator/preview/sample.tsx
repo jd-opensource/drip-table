@@ -5,13 +5,13 @@
  */
 
 import React from 'react';
-import { Button, Row } from 'antd';
 import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import 'antd/dist/antd.css';
 import 'drip-table-generator/index.css';
 
+import { Button, Row } from 'antd';
 import { mockData } from '../../global-configs';
 import components from './component-settings';
 import TextComponent from './TextComponent';
@@ -68,7 +68,7 @@ const Demo = (props: { showHeader: boolean }) => {
       ) }
       <DripTableGenerator
         ref={generator}
-        style={{ height: 640 }}
+        style={{ height: 756 }}
         driver={DripTableDriverAntDesign}
         schema={initialSchema}
         dataSource={mockData.slice(0, 4)}
@@ -76,37 +76,6 @@ const Demo = (props: { showHeader: boolean }) => {
         onExportSchema={(schema) => { console.log(schema); }}
         customComponents={{ custom: { TextComponent } }}
         customComponentPanel={components}
-        customGlobalConfigPanel={[
-          {
-            name: 'bordered',
-            'ui:title': '是否展示边框',
-            'ui:type': 'switch',
-            'ui:props': {},
-            type: 'boolean',
-            default: false,
-          },
-          {
-            name: 'size',
-            'ui:title': '表格尺寸',
-            'ui:type': 'radio',
-            'ui:props': {
-              options: [
-                { label: '大号', value: 'large' },
-                { label: '中等', value: 'middle' },
-                { label: '小号', value: 'small' },
-              ],
-            },
-            type: 'string',
-            default: 'default',
-          },
-          {
-            name: 'tips',
-            'ui:title': '配置说明',
-            'ui:type': 'render-html',
-            type: 'string',
-            default: '<span style="color:red;">这是一段说明</span>',
-          },
-        ]}
       />
     </React.Fragment>
   );

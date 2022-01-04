@@ -6,22 +6,23 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React, { Component, ReactNode } from 'react';
-import { Form, Input, Switch, Cascader, Button, Select, Radio, Checkbox, InputNumber, Popover, message, AutoComplete } from 'antd';
-import { StringDataSchema } from 'drip-table';
-import MonacoEditor from '@monaco-editor/react';
+import React, { Component } from 'react';
+import { Alert, Col, Form, Popover, Row } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { LabeledValue, SelectValue } from 'antd/lib/select';
 import { DTGComponentPropertySchema } from '@/typing';
-import ExtraComponents from './components';
+import BuiltInComponents from './components';
 import RichText from '@/components/RichText';
 import 'rc-color-picker/assets/index.css';
 
-type CheckboxGroupProps = React.ComponentProps<typeof Checkbox.Group>;
-type CascaderProps = React.ComponentProps<typeof Cascader>;
-
+interface CustomComponentProps {
+  schema: DTGComponentPropertySchema;
+  value?: string;
+  onChange?: (value: string) => void;
+  onValidate?: (errorMessage: string) => void;
+}
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
+  extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   key?: string;
   extendKeys?: string[];
@@ -116,224 +117,6 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
   public renderFormComponent(config: DTGComponentPropertySchema) {
     const { formValues, helpMsg } = this.state;
     const uiProps = config['ui:props'] || {};
-    if (config['ui:type'] === 'input') {
-      return (
-        <Input
-          value={formValues[config.name] as string}
-          placeholder={uiProps.placeholder as string}
-          disabled={uiProps.disabled as boolean}
-          style={{ width: 420, ...uiProps.style }}
-          onChange={(e) => {
-            const value = e.target.value;
-            formValues[config.name] = (config as StringDataSchema).transform?.includes('trim') ? value.trim() : value;
-            this.setState({ formValues }, () => { this.changeData(); });
-            if (config.validate) {
-              const res = config.validate(value);
-              (res instanceof Promise ? res : Promise.resolve(res))
-                .then((msg) => {
-                  helpMsg[config.name] = msg || '';
-                  this.setState({ helpMsg });
-                  return msg;
-                })
-                .catch((error) => { throw error; });
-            }
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'text') {
-      return (
-        <Input.TextArea
-          value={formValues[config.name] as string}
-          placeholder={uiProps.placeholder as string}
-          disabled={uiProps.disabled as boolean}
-          style={{ width: 420, ...uiProps.style }}
-          autoSize={{
-            minRows: uiProps.minRows as number,
-            maxRows: uiProps.maxRows as number,
-          }}
-          onChange={(e) => {
-            const value = e.target.value;
-            formValues[config.name] = (config as StringDataSchema).transform?.includes('trim') ? value.trim() : value;
-            this.setState({ formValues }, () => { this.changeData(); });
-            if (config.validate) {
-              const res = config.validate(value);
-              (res instanceof Promise ? res : Promise.resolve(res))
-                .then((msg) => {
-                  helpMsg[config.name] = msg || '';
-                  this.setState({ helpMsg });
-                  return msg;
-                })
-                .catch((error) => { throw error; });
-            }
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'auto-complete') {
-      return (
-        <AutoComplete
-          value={formValues[config.name] as string}
-          placeholder={uiProps.placeholder as string}
-          disabled={uiProps.disabled as boolean}
-          style={{ width: 420, ...uiProps.style }}
-          options={uiProps.options as LabeledValue[]}
-          onChange={(value) => {
-            formValues[config.name] = (config as StringDataSchema).transform?.includes('trim') ? value.trim() : value;
-            this.setState({ formValues }, () => { this.changeData(); });
-            if (config.validate) {
-              const res = config.validate(value);
-              (res instanceof Promise ? res : Promise.resolve(res))
-                .then((msg) => {
-                  helpMsg[config.name] = msg || '';
-                  this.setState({ helpMsg });
-                  return msg;
-                })
-                .catch((error) => { throw error; });
-            }
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'switch') {
-      const checkedValue = uiProps.checkedValue ? formValues[config.name] === uiProps.checkedValue : formValues[config.name] as boolean;
-      return (
-        <Switch
-          checked={checkedValue}
-          checkedChildren={uiProps.checkedChildren as ReactNode || '是'}
-          unCheckedChildren={uiProps.uncheckedChildren as ReactNode || '否'}
-          onChange={(checked: boolean) => {
-            let value: boolean | string | number = checked;
-            if (uiProps.checkedValue && uiProps.unCheckedValue) {
-              value = checked ? uiProps.checkedValue as string | number : uiProps.unCheckedValue as string | number;
-            }
-            formValues[config.name] = value;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'number') {
-      return (
-        <InputNumber
-          value={formValues[config.name] as number}
-          max={uiProps.max as number}
-          min={uiProps.min as number}
-          precision={uiProps.precision as number}
-          onChange={(checked) => {
-            formValues[config.name] = checked;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'checkbox') {
-      return (
-        <Checkbox.Group
-          defaultValue={config.default as CheckboxGroupProps['defaultValue']}
-          value={formValues[config.name] as CheckboxGroupProps['value']}
-          onChange={(value) => {
-            formValues[config.name] = value;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        >
-          { (uiProps.options as CheckboxGroupProps['options'])?.map((option, i) => {
-            if (typeof option === 'string') {
-              option = { label: option, value: option };
-            }
-            return (
-              <Checkbox key={i} value={option.value} style={option.style} disabled={option.disabled}>{ option.label }</Checkbox>
-            );
-          }) }
-        </Checkbox.Group>
-      );
-    }
-    if (config['ui:type'] === 'radio') {
-      return (
-        <Radio.Group
-          defaultValue={config.default}
-          value={formValues[config.name] as number | string}
-          onChange={(e) => {
-            formValues[config.name] = e.target.value;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        >
-          { (uiProps.options as CheckboxGroupProps['options'])?.map((option, i) => {
-            if (typeof option === 'string') {
-              option = { label: option, value: option };
-            }
-            return (<Radio key={i} value={option.value} style={option.style} disabled={option.disabled}>{ option.label }</Radio>);
-          }) }
-        </Radio.Group>
-      );
-    }
-    if (config['ui:type'] === 'select') {
-      const formattedValue = (uiProps.mode === 'multiple' || uiProps.mode === 'tags') && !Array.isArray(formValues[config.name]) ? [formValues[config.name]] : formValues[config.name];
-      return (
-        <Select
-          {...uiProps}
-          showSearch
-          allowClear={uiProps.allowClear as boolean}
-          style={{ width: 420, ...uiProps.style }}
-          mode={uiProps.mode as 'multiple' | 'tags'}
-          defaultValue={config.default as SelectValue}
-          value={formattedValue as SelectValue}
-          options={(uiProps.options as { label: string; value: string }[] || []).map(v => ({ label: v.label, value: v.value }))}
-          onChange={(value) => {
-            formValues[config.name] = value;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'cascader') {
-      return (
-        <Cascader
-          options={uiProps.options as CascaderProps['options']}
-          defaultValue={config.default as CascaderProps['defaultValue']}
-          value={formValues[config.name] as CascaderProps['value']}
-          displayRender={uiProps.displayRender as CascaderProps['displayRender']}
-          disabled={uiProps.disabled as boolean}
-          style={{ width: 420, ...uiProps.style }}
-          onChange={(value) => {
-            formValues[config.name] = value;
-            this.setState({ formValues }, () => { this.changeData(); });
-          }}
-        />
-      );
-    }
-    if (config['ui:type'] === 'code-editor') {
-      let codeStr = formValues[config.name] as string;
-      let marks: { message: string }[] = [];
-      return (
-        <div style={{ position: 'relative' }}>
-          <div style={{ margin: '8px 0', position: 'absolute', top: '-42px', right: '2px' }}>
-            <Button onClick={() => {
-              if (marks.length <= 0) {
-                formValues[config.name] = codeStr;
-                this.setState({ formValues }, () => { this.changeData(); });
-              } else {
-                message.error(marks.map(item => item.message).join('\n'));
-              }
-            }}
-            >
-              提交代码
-            </Button>
-          </div>
-          <MonacoEditor
-            width="100%"
-            height={356}
-            language="javascript"
-            theme="vs-dark"
-            value={codeStr}
-            onChange={(value) => { codeStr = value || ''; }}
-            onValidate={(markers) => {
-              marks = markers;
-            }}
-          />
-        </div>
-      );
-    }
     if (config['ui:type'] === 'render-html') {
       return (
         <RichText html={config.default as string} />
@@ -341,8 +124,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     }
     if (config['ui:type'].startsWith('custom::')) {
       const ComponentName = config['ui:type'].replace('custom::', '');
-      const CustomComponent = ExtraComponents[ComponentName] || config['ui:externalComponent'];
-
+      const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
       return (
         <CustomComponent
           schema={config}
@@ -353,11 +135,34 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
               this.changeData();
             });
           }}
+          onValidate={(msg: string) => {
+            helpMsg[config.name] = msg || '';
+            this.setState({ helpMsg });
+          }}
           {...uiProps}
         />
       );
     }
-
+    const BuiltInComponent = BuiltInComponents[config['ui:type']];
+    if (BuiltInComponent) {
+      return (
+        <BuiltInComponent
+          schema={config}
+          value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
+          onChange={(value) => {
+            formValues[config.name] = value;
+            this.setState({ formValues }, () => {
+              this.changeData();
+            });
+          }}
+          onValidate={(msg: string) => {
+            helpMsg[config.name] = msg || '';
+            this.setState({ helpMsg });
+          }}
+          {...uiProps}
+        />
+      );
+    }
     return null;
   }
 
@@ -387,8 +192,8 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
 
   public renderFormItem(config: DTGComponentPropertySchema) {
     const { helpMsg } = this.state;
-    const labelCol = 6;
-    const wrapperCol = config['ui:type'] === 'code-editor' ? 24 : 16;
+    const labelCol = config['ui:layout']?.labelCol || 8;
+    const wrapperCol = config['ui:layout']?.wrapperCol || 16;
     const formItemLayout = {
       labelCol: { xs: { span: labelCol }, sm: { span: labelCol } },
       wrapperCol: { xs: { span: wrapperCol }, sm: { span: wrapperCol } },
@@ -397,18 +202,30 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     const visible = this.visible(config);
     if (!visible) { return null; }
     return (
-      <Form.Item
-        key={key}
-        label={this.renderTitleLabel(config)}
-        colon={false}
-        validateStatus={helpMsg[key] ? 'error' : 'success'}
-        help={helpMsg[key]}
-        required={config.required}
-        style={config['ui:wrapperStyle']}
-        {...formItemLayout}
-      >
-        { this.renderFormComponent(config) }
-      </Form.Item>
+      <React.Fragment>
+        <Form.Item
+          key={key}
+          label={this.renderTitleLabel(config)}
+          colon={false}
+          validateStatus={helpMsg[key] ? 'error' : 'success'}
+          help={config['ui:layout']?.customHelpMsg ? '' : helpMsg[key]}
+          required={config.required}
+          style={config['ui:wrapperStyle']}
+          {...formItemLayout}
+        >
+          { !config['ui:layout']?.extraRow && this.renderFormComponent(config) }
+          { config['ui:layout']?.customHelpMsg && helpMsg[key] && (
+            <Alert style={{ padding: '4px 12px', height: '32px' }} message={helpMsg[key]} type="error" showIcon />
+          ) }
+        </Form.Item>
+        { config['ui:layout']?.extraRow && (
+          <Row>
+            <Col span={24}>
+              { this.renderFormComponent(config) }
+            </Col>
+          </Row>
+        ) }
+      </React.Fragment>
     );
   }
 

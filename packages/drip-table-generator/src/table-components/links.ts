@@ -56,7 +56,7 @@ export default {
     {
       name: 'ui:props.operates',
       'ui:title': '字段配置',
-      'ui:type': 'custom::ArrayComponent',
+      'ui:type': 'array-list',
       default: [],
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'multiple',
       'ui:props': {
