@@ -39,7 +39,7 @@ title: 定制化面板
 - 类型: `string`
 - 默认值: `无`
 
-    默认属性组件类型包括：`input`、 `text`、 `auto-complete`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `code-editor`、 `color-picker`、 `custom::ArrayComponent`。
+    默认属性组件类型包括：`input`、 `text`、 `auto-complete`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `code-editor`、 `color-picker`、 `array-list`。
 
     当组件类型为 `custom::` 开头时可以通过 `ui:externalComponent` 属性传入外部组件。
 
@@ -57,7 +57,7 @@ title: 定制化面板
 
     * 具体属性同 `antd` 组件，具体详见 `antd` 官网。
     * `code-editor` 暂无属性。
-    * `custom::ArrayComponent` 属性包含 `items`，`items` 为 `Array`, 每一项配置同通用 `antd` 组件。
+    * `array-list` 属性包含 `items`，`items` 为 `Array`, 每一项配置同通用 `antd` 组件。
 
 #### type
 - 描述: `属性数据类型`
@@ -199,7 +199,7 @@ title: 定制化面板
 - 类型: `string`
 - 默认值: `无`
 
-    默认属性组件类型包括：`input`、 `text`、 `auto-complete`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `code-editor`、 `color-picker`、 `custom::ArrayComponent`。
+    默认属性组件类型包括：`input`、 `text`、 `auto-complete`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `code-editor`、 `color-picker`、 `array-list`。
 
     当组件类型为 `custom::` 开头时可以通过 `ui:externalComponent` 属性传入外部组件。
 
@@ -217,7 +217,7 @@ title: 定制化面板
 
     * 具体属性同 `antd` 组件，具体详见 `antd` 官网。
     * `code-editor` 暂无属性。
-    * `custom::ArrayComponent` 属性包含 `items`，`items` 为 `Array`, 每一项配置同通用 `antd` 组件。
+    * `array-list` 属性包含 `items`，`items` 为 `Array`, 每一项配置同通用 `antd` 组件。
 
 #### attrSchema.type
 - 描述: `属性数据类型`

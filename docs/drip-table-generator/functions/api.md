@@ -40,7 +40,7 @@ title: API
 | name             | 属性名 | `string`                               | -       | 否   |
 | required             | 属性是否必填 | `boolean`                               | `false`       | 否   |
 | ui:title             | 属性标题 | `string`                               | -       | 是   |
-| ui:type             | 属性组件类型, 默认属性组件类型包括：`input`、 `text`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `render-html`、 `custom::ArrayComponent`。当组件类型为 `custom::` 开头时可以通过`ui:externalComponent` 属性传入外部组件。 | `string`                               | -       | 是   |
+| ui:type             | 属性组件类型, 默认属性组件类型包括：`input`、 `text`、 `switch`、 `number`、 `checkbox`、 `radio`、 `select`、 `cascader`、 `render-html`、 `array-list`、 `color-picker`。当组件类型为 `custom::` 开头时可以通过`ui:externalComponent` 属性传入外部组件。 | `string`                               | -       | 是   |
 | ui:externalComponent             | 外部组件 | `React.ComponentClass \| React.FunctionComponent`                               | -       | 否   |
 | ui:props             | 属性组件的属性 | `Record`                               | -       | 否   |
 | type             | 属性数据类型 | `string`                               | -       | 否   |
