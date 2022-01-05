@@ -39,17 +39,31 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 
 ## Start
 
-> install dependencies
+1. install dependencies
 
-```sh
-lerna bootstrap
-```
+   ```sh
+   lerna bootstrap
+   ```
 
-> run
+2. Build environment
 
-```
-yarn start
-```
+   > yarn
+
+   ```sh
+   yarn run build
+   ```
+
+   > npm
+
+   ```sh
+   npm run build
+   ```
+
+3. run
+
+   ```
+   yarn start
+   ```
 
 > visit `http://localhost:8000` in browser.
 

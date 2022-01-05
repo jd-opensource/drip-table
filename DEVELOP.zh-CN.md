@@ -47,13 +47,27 @@
    lerna bootstrap
    ```
 
-2. 启动项目
+2. 构建环境
+
+   > yarn
+
+   ```sh
+   yarn run build
+   ```
+
+   > npm
+
+   ```sh
+   npm run build
+   ```
+
+3. 启动项目
 
    ```
    yarn start
    ```
 
-3. 浏览器访问: `http://localhost:8000` 即可。
+4. 浏览器访问: `http://localhost:8000` 即可。
 
 ## 目录结构
 

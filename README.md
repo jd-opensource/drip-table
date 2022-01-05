@@ -7,7 +7,6 @@
 
 English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.jd.com/) | [Discussions](https://github.com/JDFED/drip-table/discussions)｜[Gitter](https://gitter.im/drip-table/community)
 
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
 [contributors]: https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square "Number of contributors on All-Contributors"
@@ -160,7 +159,21 @@ If you're interested in this project, you're welcome to create ✨[issue](https:
    lerna bootstrap
    ```
 
-3. Run project
+3. Build environment
+
+   > yarn
+
+   ```sh
+   yarn run build
+   ```
+
+   > npm
+
+   ```sh
+   npm run build
+   ```
+
+4. Run project
 
    ```sh
    yarn start
