@@ -238,11 +238,12 @@ const Home = () => (
               <div className={classnames('pr-5', styles['footer-column'])}>
                 <h3 className="title is-4 has-text-white">相关资源</h3>
                 <ul>
-                  <li><a href="http://drip.jd.com/" target="_blank" rel="noreferrer">Drip</a></li>
-                  <li><a href="http://drip-design.jd.com/" target="_blank" rel="noreferrer">Drip Design</a></li>
+                  { /* <li><a href="http://drip.jd.com/" target="_blank" rel="noreferrer">Drip</a></li> */ }
+                  { /* <li><a href="http://drip-design.jd.com/" target="_blank" rel="noreferrer">Drip Design</a></li> */ }
                   <li><a href="https://jdfed.github.io/drip-form" target="_blank" rel="noreferrer">Drip Form</a></li>
-                  <li><a href="http://drip.jd.com/query" target="_blank" rel="noreferrer">Drip Query</a></li>
+                  { /* <li><a href="http://drip.jd.com/query" target="_blank" rel="noreferrer">Drip Query</a></li> */ }
                   <li><a href="https://cangdu.org/micro-app/docs.html" target="_blank" rel="noreferrer">Micro App</a></li>
+                  <li><a href="https://github.com/JDFED/leo" target="_blank" rel="noreferrer">Leo</a></li>
                 </ul>
               </div>
             </div>
