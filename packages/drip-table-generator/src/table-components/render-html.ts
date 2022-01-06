@@ -14,6 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     {
       name: 'ui:props.render',
+      group: '代码编辑',
       'ui:title': '代码编辑',
       'ui:type': 'code-editor',
       'ui:layout': {

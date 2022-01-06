@@ -14,6 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     {
       name: 'dataIndexMode',
+      group: '组件属性',
       required: true,
       'ui:title': '字段读取模式',
       'ui:type': 'radio',
@@ -28,6 +29,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'auto-complete',
@@ -39,6 +41,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'select',
@@ -52,6 +55,7 @@ export default {
     },
     {
       name: 'prefix',
+      group: '组件属性',
       'ui:title': '前缀文案',
       'ui:type': 'input',
       type: 'string',
@@ -59,6 +63,7 @@ export default {
     },
     {
       name: 'suffix',
+      group: '组件属性',
       'ui:title': '后缀文案',
       'ui:type': 'input',
       type: 'string',
@@ -66,6 +71,7 @@ export default {
     },
     {
       name: 'color',
+      group: '样式配置',
       required: false,
       'ui:title': '字体颜色',
       'ui:type': 'color-picker',
@@ -74,6 +80,7 @@ export default {
     },
     {
       name: 'borderColor',
+      group: '样式配置',
       required: false,
       'ui:title': '边框颜色',
       'ui:type': 'color-picker',
@@ -82,6 +89,7 @@ export default {
     },
     {
       name: 'backgroundColor',
+      group: '样式配置',
       required: false,
       'ui:title': '背景颜色',
       'ui:type': 'color-picker',
@@ -90,6 +98,7 @@ export default {
     },
     {
       name: 'radius',
+      group: '样式配置',
       required: false,
       'ui:title': '圆角半径',
       'ui:type': 'number',
@@ -101,6 +110,7 @@ export default {
     },
     {
       name: 'tagOptions',
+      group: '组件属性',
       required: false,
       'ui:title': '枚举值',
       'ui:type': 'array-list',

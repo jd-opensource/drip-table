@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { Alert, Col, Form, Popover, Row } from 'antd';
+import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { DTGComponentPropertySchema } from '@/typing';
 import BuiltInComponents from './components';
@@ -22,6 +22,7 @@ interface CustomComponentProps {
 }
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
+  groupType?: boolean | 'collapse' | 'tabs';
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   key?: string;
@@ -231,6 +232,33 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
 
   public render() {
     const { configs } = this.props;
+    if (this.props.groupType) {
+      const groups = [...new Set(configs.map(item => item.group || ''))];
+      const indexOfUnnamedGroup = groups.indexOf('');
+      if (indexOfUnnamedGroup > -1) {
+        groups[indexOfUnnamedGroup] = '其他';
+      }
+      if (this.props.groupType === 'collapse') {
+        return (
+          <Collapse>
+            { groups.map((groupName, index) => (
+              <Collapse.Panel key={index} header={groupName}>
+                { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+              </Collapse.Panel>
+            )) }
+          </Collapse>
+        );
+      }
+      return (
+        <Tabs tabPosition="left">
+          { groups.map((groupName, index) => (
+            <Tabs.TabPane key={index} tab={groupName}>
+              { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+            </Tabs.TabPane>
+          )) }
+        </Tabs>
+      );
+    }
     return (
       <div>
         { configs.map(item => this.renderFormItem(item)) }

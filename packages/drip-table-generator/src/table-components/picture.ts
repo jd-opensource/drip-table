@@ -14,6 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     {
       name: 'dataIndexMode',
+      group: '组件属性',
       required: true,
       'ui:title': '字段读取模式',
       'ui:type': 'radio',
@@ -28,6 +29,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'auto-complete',
@@ -39,6 +41,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'select',
@@ -52,6 +55,7 @@ export default {
     },
     {
       name: 'ui:props.imgWidth',
+      group: '样式配置',
       'ui:title': '图片宽度',
       'ui:type': 'number',
       'ui:minium': 0.01,
@@ -60,6 +64,7 @@ export default {
     },
     {
       name: 'ui:props.imgHeight',
+      group: '样式配置',
       'ui:title': '图片高度',
       'ui:type': 'number',
       'ui:minium': 0.01,
@@ -68,6 +73,7 @@ export default {
     },
     {
       name: 'ui:props.previewImg',
+      group: '组件属性',
       'ui:title': '是否预览图片',
       'ui:type': 'switch',
       type: 'boolean',

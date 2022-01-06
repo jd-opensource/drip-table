@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Alert, Result, Tabs } from 'antd';
+import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { DripTableSchema } from 'drip-table';
 import MonacoEditor from '@monaco-editor/react';
@@ -22,6 +22,7 @@ import components from '@/table-components';
 import { GlobalAttrFormConfigs } from '../configs';
 
 import styles from './index.module.less';
+import { CollapseIcon, TabsIcon } from './icons';
 
 type GlobalSchema = DripTableSchema['configs'];
 
@@ -42,6 +43,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   const store = { state, setState };
 
   const [activeKey, setActiveKey] = React.useState('0');
+
+  const [formDisplayMode, setFormDisplayMode] = React.useState('collapse' as 'collapse' | 'tabs');
 
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
@@ -149,6 +152,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
       data={state.globalConfigs}
       encodeData={encodeGlobalConfigs}
+      groupType={formDisplayMode}
       onChange={(data) => {
         state.globalConfigs = { ...data };
         globalActions.updateGlobalConfig(store);
@@ -198,6 +202,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props']}
+        groupType={formDisplayMode}
         onChange={(data) => {
           state.currentColumn = Object.assign(state.currentColumn, data);
           const idx = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
@@ -214,7 +219,23 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   return (
     <div className={styles['attributes-wrapper']}>
       <div className={styles['attributes-container']}>
-        <Tabs activeKey={getActiveKey()} type="card" onChange={(key) => { setActiveKey(key); }}>
+        <Tabs
+          activeKey={getActiveKey()}
+          type="card"
+          onChange={(key) => { setActiveKey(key); }}
+          tabBarExtraContent={activeKey !== '3'
+            ? (
+              <Tooltip title={formDisplayMode === 'tabs' ? '折叠面板' : '标签面板'}>
+                <Button
+                  style={{ borderRadius: 2 }}
+                  size="small"
+                  onClick={() => { setFormDisplayMode(formDisplayMode === 'collapse' ? 'tabs' : 'collapse'); }}
+                  icon={formDisplayMode === 'tabs' ? <CollapseIcon style={{ marginTop: 4 }} /> : <TabsIcon style={{ marginTop: 4 }} />}
+                />
+              </Tooltip>
+            )
+            : null}
+        >
           <TabPane tab="属性配置" key="1" className={styles['attribute-panel']}>
             <div className={styles['attributes-form-panel']}>
               { renderColumnForm() }
@@ -230,7 +251,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
               <MonacoEditor
                 width="100%"
-                height={348}
+                height={428}
                 language="json"
                 theme="vs-dark"
                 value={code || ''}
