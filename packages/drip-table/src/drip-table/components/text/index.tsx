@@ -183,7 +183,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
             }
             const contentStr = `${config.prefix || ''} ${value || noDataStr} ${config.suffix || ''}`;
             return (
-              <div key={i}>
+              <div key={i} style={this.styles} className={this.classNames}>
                 { tooltip
                   ? (
                     <Tooltip title={typeof tooltip === 'string' ? tooltip : contentStr} placement="top">

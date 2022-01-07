@@ -152,7 +152,11 @@ export interface DripTableDriver<RecordType> {
     Button: DripTableReactComponent<{
       style?: React.CSSProperties;
       className?: string;
-      type?: 'primary';
+      type?: 'primary' | 'dashed' | 'text' | 'link';
+      shape?: 'circle' | 'round';
+      size?: 'large' | 'middle' | 'small';
+      danger?: boolean;
+      ghost?: boolean;
       icon?: React.ReactNode;
       onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
