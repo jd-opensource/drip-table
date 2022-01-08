@@ -119,8 +119,8 @@
      },
      columns: [
        {
-         $id: "id",
-         title: "名称",
+         key: "columnKey",
+         title: "列标题",
          "ui:type": "text",
          "ui:props": { mode: "single" },
          type: "string",

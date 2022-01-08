@@ -119,8 +119,8 @@ The introduction of each sub-project are as follows:
      },
      columns: [
        {
-         $id: "id",
-         title: "My Title",
+         key: "columnKey",
+         title: "Column Title",
          "ui:type": "text",
          "ui:props": { mode: "single" },
          type: "string",

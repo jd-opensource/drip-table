@@ -52,7 +52,7 @@ export const initSchema: DripTableSchema = {
   },
   columns: [
     {
-      $id: 'mock_1',
+      key: 'mock_1',
       title: '商品名称',
       width: 80,
       align: 'center',
@@ -65,7 +65,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'name',
     },
     {
-      $id: 'mock_2',
+      key: 'mock_2',
       title: '商品详情',
       align: 'center',
       'ui:type': 'text',
@@ -79,7 +79,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'description',
     },
     {
-      $id: 'mock_3',
+      key: 'mock_3',
       title: '库存状态',
       width: 150,
       align: 'center',
@@ -94,7 +94,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'status',
     },
     {
-      $id: 'mock_4',
+      key: 'mock_4',
       title: '商品价格',
       width: 150,
       align: 'center',
@@ -107,7 +107,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'price',
     },
     {
-      $id: 'mock_5',
+      key: 'mock_5',
       title: '渲染组件',
       width: 150,
       align: 'center',
@@ -117,7 +117,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'render',
     },
     {
-      $id: 'mock_6',
+      key: 'mock_6',
       title: '自定义组件',
       'ui:type': 'custom::CustomComponentSample',
       'ui:props': {},
@@ -125,7 +125,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'custom',
     },
     {
-      $id: 'mock_7',
+      key: 'mock_7',
       title: '操作',
       align: 'center',
       'ui:type': 'links',

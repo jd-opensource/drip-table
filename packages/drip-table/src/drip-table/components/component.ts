@@ -11,22 +11,38 @@ import { DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
 import { DripTableBuiltInComponentEvent } from '.';
 
 export interface DripTableComponentSchema {
-  /** 唯一标识，不做展示用 */
-  $id: string;
-  /** 组件类型唯一标识 */
+  /**
+   * 唯一标识，不做展示用，React 需要的 key。
+   */
+  key: string;
+  /**
+   * 组件类型
+   */
   type: string;
-  /** 表头，组件名 */
+  /**
+   * 表头，组件名
+   */
   title: string;
-  /** 表格列宽 */
+  /**
+   * 表格列宽
+   */
   width?: string | number;
-  /** 表格列对齐 */
+  /**
+   * 表格列对齐
+   */
   align?: 'left' | 'center' | 'right';
-  /** 列数据在数据项中对应的路径，支持通过数组查询嵌套路径 */
+  /**
+   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+   */
   dataIndex: string | string[];
   default?: string;
-  /** 表头说明 */
+  /**
+   * 表头说明
+   */
   description?: string;
-  /** 是否固定列 */
+  /**
+   * 是否固定列
+   */
   fixed?: boolean;
 }
 

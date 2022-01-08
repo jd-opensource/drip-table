@@ -129,7 +129,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
   const {
-    rowKey = '$id',
+    rowKey = 'key',
   } = props;
   const dataSource = props.dataSource.map((item, index) => ({
     ...item,
