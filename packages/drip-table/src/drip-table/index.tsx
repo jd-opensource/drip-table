@@ -50,6 +50,10 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
    */
   selectedRowKeys?: React.Key[];
   /**
+   * 当前显示的列键
+   */
+  displayColumnKeys?: React.Key[];
+  /**
    * 附加数据
    */
   ext?: Ext;
@@ -108,6 +112,10 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
    */
   onPageChange?: (currentPage: number, pageSize: number) => void;
   /**
+   * 用户修改展示的列时
+   */
+  onDisplayColumnKeysChange?: (displayColumnKeys: React.Key[]) => void;
+  /**
    * 通用事件机制
    */
   onEvent?: (event: DripTableBuiltInComponentEvent | CustomComponentEvent, record: RecordType, index: number) => void;
@@ -121,22 +129,24 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   type TableColumn = NonNullable<DripTableReactComponentProps<typeof Table>['columns']>[number];
 
   const initialState = useTable();
-  const paginationConfig = props.schema?.configs?.pagination || {} as { current: number; total: number; pageSize: number };
+  const pagination = props.schema?.configs?.pagination || void 0;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
-  const onPropsChange = () => {
+  React.useEffect(() => {
     setTableState(state => ({
-      pagination: Object.assign(
-        {},
-        state.pagination,
-        {
-          pageSize: paginationConfig.pageSize || state.pagination?.pageSize || 10,
-        },
-      ),
+      pagination: {
+        ...state.pagination,
+        pageSize: pagination?.pageSize || 10,
+      },
     }));
-  };
-  React.useEffect(onPropsChange, [props]);
+  }, [pagination?.pageSize]);
+
+  React.useEffect(() => {
+    setTableState(state => ({
+      displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),
+    }));
+  }, [props.displayColumnKeys]);
 
   const {
     rowKey = 'key',
@@ -146,7 +156,10 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
   }));
 
-  const columns = React.useMemo(() => props.schema.columns || [], [props.schema.columns]);
+  const columns = React.useMemo(() => props.schema.columns
+    ?.filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
+    || [],
+  [props.schema.columns, tableState.displayColumnKeys]);
 
   /**
    * 根据组件类型，生成表格渲染器
@@ -269,7 +282,17 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         style={props.style}
         ref={rootRef}
       >
-        { props.schema.configs.header ? (<Header tableProps={props} />) : null }
+        {
+          props.schema.configs.header
+            ? (
+              <Header
+                tableProps={props}
+                tableState={tableState}
+                setTableState={setTableState}
+              />
+            )
+            : null
+          }
         {
           props.schema.configs.virtual
             ? (

@@ -37,6 +37,10 @@ export const initSchema: DripTableSchema = {
           align: 'flex-end',
           showIcon: true,
         },
+        {
+          type: 'display-column-selector',
+          buttonType: 'primary',
+        },
       ],
     },
     pagination: {
@@ -74,6 +78,7 @@ export const initSchema: DripTableSchema = {
       },
       type: 'string',
       dataIndex: 'description',
+      hidable: true,
     },
     {
       key: 'mock_3',
@@ -89,6 +94,7 @@ export const initSchema: DripTableSchema = {
       enumLabel: ['售卖中', '已售罄'],
       description: '这是一条提示信息',
       dataIndex: 'status',
+      hidable: true,
     },
     {
       key: 'mock_4',
@@ -102,6 +108,7 @@ export const initSchema: DripTableSchema = {
       },
       type: 'number',
       dataIndex: 'price',
+      hidable: true,
     },
     {
       key: 'mock_5',
@@ -112,6 +119,7 @@ export const initSchema: DripTableSchema = {
       render: "if (rec.id == 1) {\n  return '<button onclick=\"alert(\\'123\\');\" style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 3px; background: #f6ffed\\\">进行中</button>';\n}\nif (rec.id == 2) {\n  return '<span style=\\\"padding: 2px 4px;color:#999; border: 1px solid #999; border-radius: 3px; background: #f2f2f2\\\">已完成</span>';\n}\nreturn '';",
       type: 'number',
       dataIndex: 'render',
+      hidable: true,
     },
     {
       key: 'mock_6',
@@ -120,6 +128,7 @@ export const initSchema: DripTableSchema = {
       'ui:props': {},
       type: 'string',
       dataIndex: 'custom',
+      hidable: true,
     },
     {
       key: 'mock_7',
@@ -137,6 +146,7 @@ export const initSchema: DripTableSchema = {
       },
       type: 'string',
       dataIndex: 'operate',
+      hidable: true,
     },
   ] as unknown as ColumnConfig[],
 };

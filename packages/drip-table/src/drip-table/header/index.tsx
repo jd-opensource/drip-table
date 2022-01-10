@@ -9,8 +9,9 @@
 import classnames from 'classnames';
 import React, { CSSProperties } from 'react';
 
-import { type DripTableRecordTypeBase, type EventLike } from '@/types';
+import { type DripTableDriver, type DripTableRecordTypeBase, type EventLike } from '@/types';
 import RichText from '@/components/RichText';
+import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
 
 import styles from './index.module.css';
@@ -66,13 +67,31 @@ interface InsertButtonConfig extends ConfigBase {
   showIcon?: boolean;
 }
 
+interface DisplayColumnSelectorConfig extends ConfigBase {
+  /**
+   * 展示列选择器
+   */
+  type: 'display-column-selector';
+  /**
+   * 展示列选择器提示文案
+   */
+  text?: string;
+  /**
+   * 选择器按钮样式
+   */
+  buttonType?: React.ComponentProps<DripTableDriver<unknown>['components']['Button']>['type'];
+}
+
 export type DripTableHeaderElement =
   | TitleConfig
   | SearchConfig
-  | InsertButtonConfig;
+  | InsertButtonConfig
+  | DisplayColumnSelectorConfig;
 
 interface HeaderProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
   tableProps: DripTableProps<RecordType, CustomComponentEvent, Ext>;
+  tableState: IDripTableContext;
+  setTableState: IDripTableContext['setTableState'];
 }
 
 const Header = <
@@ -80,10 +99,14 @@ const Header = <
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
 >(props: HeaderProps<RecordType, CustomComponentEvent, Ext>) => {
-  const tableProps = props.tableProps;
+  const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
+  const CheckOutlined = tableProps.driver.icons.CheckOutlined;
   const Col = tableProps.driver.components.Col;
+  const DownOutlined = tableProps.driver.icons.DownOutlined;
+  const Dropdown = tableProps.driver.components.Dropdown;
   const Input = tableProps.driver.components.Input;
+  const Menu = tableProps.driver.components.Menu;
   const PlusOutlined = tableProps.driver.icons.PlusOutlined;
   const Row = tableProps.driver.components.Row;
   const Select = tableProps.driver.components.Select;
@@ -92,6 +115,7 @@ const Header = <
     () => {
       if (tableProps.schema.configs.header === true) {
         return [
+          { type: 'display-column-selector', span: 8 },
           { type: 'search', span: 8 },
           { type: 'insert-button', span: 4 },
         ];
@@ -164,6 +188,50 @@ const Header = <
       );
     }
 
+    if (config.type === 'display-column-selector') {
+      const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
+      const hidableColumns = tableProps.schema.columns.filter(c => c.hidable);
+      if (hidableColumns.length === 0) {
+        return null;
+      }
+      const menu = (
+        <Menu
+          onClick={(e) => {
+            setTableState((state) => {
+              const displayColumnKeys = state.displayColumnKeys.filter(k => k !== e.key) || [];
+              if (!state.displayColumnKeys.includes(e.key)) {
+                displayColumnKeys.push(e.key);
+              }
+              return { displayColumnKeys };
+            });
+          }}
+        >
+          {
+            hidableColumns.map(column => (
+              <Menu.Item
+                key={column.key}
+                icon={<span style={{ opacity: tableState.displayColumnKeys.includes(column.key) ? 1 : 0 }}><CheckOutlined /></span>}
+              >
+                { column.title }
+              </Menu.Item>
+            ))
+          }
+        </Menu>
+      );
+      return (
+        <Dropdown
+          trigger="click"
+          overlay={menu}
+          visible={displayColumnVisible}
+          onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
+        >
+          <Button type={config.buttonType}>
+            { config.text || '展示列' }
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
     return null;
   };
 
@@ -183,6 +251,8 @@ const Header = <
                   display: 'flex',
                   flex: item.span === 'auto' ? '1 1 auto' : void 0,
                   justifyContent: item.align || 'center',
+                  paddingLeft: index === 0 ? '0' : '3px',
+                  paddingRight: index === elements.length - 1 ? '3px' : '0',
                   ...item.columnStyle,
                 }}
                 span={item.span === 'auto' ? void 0 : item.span}

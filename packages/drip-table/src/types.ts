@@ -165,7 +165,7 @@ export interface DripTableDriver<RecordType> {
     Button: DripTableReactComponent<{
       style?: React.CSSProperties;
       className?: string;
-      type?: 'primary' | 'dashed' | 'text' | 'link';
+      type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
       shape?: 'circle' | 'round';
       size?: 'large' | 'middle' | 'small';
       danger?: boolean;
@@ -178,6 +178,12 @@ export interface DripTableDriver<RecordType> {
       span?: number;
     }>;
     ConfigProvider: DripTableReactComponent<Record<string, unknown>>;
+    Dropdown: DripTableReactComponent<{
+      trigger?: 'click' | 'hover' | 'contextMenu';
+      overlay?: JSX.Element;
+      visible?: boolean;
+      onVisibleChange?: (visible: boolean) => void;
+    }>;
     Image: DripTableReactComponent<{
       width?: number;
       height?: number;
@@ -197,6 +203,14 @@ export interface DripTableDriver<RecordType> {
         onSearch?: (value: string) => void;
       }>;
     };
+    Menu: DripTableReactComponent<{
+      onClick?: (data: { key: React.Key; keyPath: React.Key[]; domEvent: MouseEvent }) => void;
+    }> & {
+      Item: DripTableReactComponent<{
+        key: React.Key;
+        icon?: JSX.Element;
+      }>;
+    };
     Popover: DripTableReactComponent<{
       placement?: 'top';
       title?: string;
@@ -210,12 +224,16 @@ export interface DripTableDriver<RecordType> {
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
     }>;
-    Select: DripTableReactComponent<{
-      className?: string;
-      defaultValue?: string | number;
-      value?: string | number;
-      onChange?: (value: string | number) => void;
-    }> & {
+    Select: (
+      <VT extends string | number | (string | number)[]>(props: React.PropsWithChildren<{
+        className?: string;
+        defaultValue?: string | number;
+        mode?: 'multiple';
+        value?: VT;
+        onChange?: (value: VT) => void;
+      }>) => React.ReactElement | null
+    )
+    & {
       Option: DripTableReactComponent<Record<string, unknown> & { value: string | number; children: React.ReactNode }>;
     };
     Table: DripTableReactComponent<{
@@ -297,6 +315,8 @@ export interface DripTableDriver<RecordType> {
    * 图标库
    */
   icons: {
+    CheckOutlined: DripTableReactComponent<unknown>;
+    DownOutlined: DripTableReactComponent<unknown>;
     PlusOutlined: DripTableReactComponent<unknown>;
     QuestionCircleOutlined: DripTableReactComponent<unknown>;
   };
