@@ -6,8 +6,10 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableSchema, ColumnConfig } from 'drip-table';
+import { ColumnConfig, DripTableSchema } from 'drip-table';
+
 import { DripTableComponentAttrConfig } from '@/typing';
+
 import useSharedState from './custom-hook';
 
 export type DripTableColumn = ColumnConfig & {

@@ -5,8 +5,9 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import React from 'react';
+
 import { DTGComponentPropertySchema } from '@/typing';
 
 interface Props {

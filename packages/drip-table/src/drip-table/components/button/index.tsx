@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import React from 'react';
+
 import { DripTableRecordTypeBase } from '@/types';
 
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';

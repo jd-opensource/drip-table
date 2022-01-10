@@ -6,9 +6,10 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
 import DripTable, { ColumnConfig, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import React from 'react';
+
 import { GlobalStore } from '@/store';
 
 import styles from './index.module.less';

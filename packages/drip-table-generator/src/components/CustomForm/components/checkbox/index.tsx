@@ -5,13 +5,13 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
-import { Checkbox, Popover } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Checkbox, Popover } from 'antd';
 import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
 import { filterAttributes } from '@/utils';
+import { DTGComponentPropertySchema } from '@/typing';
 
 type CheckboxGroupProps = React.ComponentProps<typeof Checkbox.Group>;
 type CheckboxValueType = CheckboxGroupProps['value'];

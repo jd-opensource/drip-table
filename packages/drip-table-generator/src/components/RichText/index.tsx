@@ -6,11 +6,13 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React, { CSSProperties } from 'react';
-import cheerio from 'cheerio';
-import ViewerJS from 'viewerjs';
-import Highlight, { HighlightProps } from '../Highlight';
 import 'viewerjs/dist/viewer.css';
+
+import cheerio from 'cheerio';
+import React, { CSSProperties } from 'react';
+import ViewerJS from 'viewerjs';
+
+import Highlight, { HighlightProps } from '../Highlight';
 
 interface RichTextProps {
   html: string;

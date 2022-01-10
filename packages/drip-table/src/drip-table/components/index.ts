@@ -5,12 +5,12 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import DTCButton, { DTCButtonEvent } from './button';
 import DTCImage from './image';
 import DTCLink, { DTCLinkEvent } from './link';
 import DTCRenderHTML from './render-html';
 import DTCTag from './tag';
 import DTCText from './text';
-import DTCButton, { DTCButtonEvent } from './button';
 
 export type { DripTableComponentProps, DripTableComponentSchema } from './component';
 

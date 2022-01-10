@@ -6,15 +6,17 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React, { Component } from 'react';
-import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
-
-import { DTGComponentPropertySchema } from '@/typing';
-import BuiltInComponents from './components';
-import RichText from '@/components/RichText';
 import 'rc-color-picker/assets/index.css';
+
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import React, { Component } from 'react';
+
+import RichText from '@/components/RichText';
+import { DTGComponentPropertySchema } from '@/typing';
+
+import BuiltInComponents from './components';
 
 interface CustomComponentProps {
   schema: DTGComponentPropertySchema;

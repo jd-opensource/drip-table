@@ -6,23 +6,23 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
-import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
-import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import MonacoEditor from '@monaco-editor/react';
+import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import debounce from 'lodash/debounce';
+import React from 'react';
 
-import { useGlobalData } from '@/hooks';
-import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
+import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
+import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from '../configs';
+import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
-import { CollapseIcon, TabsIcon } from './icons';
 
 type GlobalSchema = DripTableSchema['configs'];
 

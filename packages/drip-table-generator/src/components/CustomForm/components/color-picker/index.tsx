@@ -5,11 +5,13 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
+import 'rc-color-picker/assets/index.css';
+
 import ColorPicker from 'rc-color-picker';
+import React from 'react';
+
 import { DTGComponentPropertySchema } from '@/typing';
 
-import 'rc-color-picker/assets/index.css';
 import styles from './index.module.css';
 
 interface Props {

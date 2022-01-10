@@ -5,10 +5,10 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
-import { Popover, Select } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Popover, Select } from 'antd';
 import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import React from 'react';
 
 import { DTGComponentPropertySchema } from '@/typing';
 

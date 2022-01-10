@@ -1,13 +1,14 @@
 import classnames from 'classnames';
-import React, { useState, useImperativeHandle } from 'react';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import React, { useImperativeHandle, useState } from 'react';
+
 import { useGlobalData } from './hooks';
-import { defaultState, DripTableGeneratorState, GlobalStore, setState } from './store';
 import AttributeLayout from './layout/attribute-layout';
 import ComponentLayout from './layout/component-layout';
 import EditableTable from './layout/editable-table';
 import PreviewTable from './layout/preview-table';
 import ToolLayout from './layout/tool-layout';
+import { defaultState, DripTableGeneratorState, GlobalStore, setState } from './store';
 import { DripTableGeneratorProps } from './typing';
 
 import styles from './index.module.less';
@@ -59,7 +60,7 @@ const Wrapper = (props: DripTableGeneratorProps & {
         <ComponentLayout store={store} width={componentLayoutStyle.width} customComponentPanel={customComponentPanel} />
       ) }
       <div
-        className={classnames(styles['layout-right-wrapper'], {[styles.preview]: !state.isEdit})}
+        className={classnames(styles['layout-right-wrapper'], { [styles.preview]: !state.isEdit })}
         style={showComponentLayout ? { width: `calc(100% - ${leftLayoutWidth})`, ...rightLayoutStyle } : {}}
       >
         <div className={styles['layout-right-title']}>

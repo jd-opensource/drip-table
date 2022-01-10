@@ -6,15 +6,15 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
-import chunk from 'lodash/chunk';
 import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
+import chunk from 'lodash/chunk';
+import React from 'react';
 
-import { globalActions, GlobalStore } from '@/store';
-import { DripTableComponentAttrConfig } from '@/typing';
 import { mockId } from '@/utils';
+import { globalActions, GlobalStore } from '@/store';
 import RichText from '@/components/RichText';
 import components from '@/table-components';
+import { DripTableComponentAttrConfig } from '@/typing';
 
 import { defaultComponentIcon } from '../configs';
 

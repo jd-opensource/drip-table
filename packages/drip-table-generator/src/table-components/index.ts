@@ -1,10 +1,10 @@
 import { DripTableComponentAttrConfig } from '../typing';
-import text from './text';
+import button from './button';
+import links from './links';
 import image from './picture';
 import renderHtml from './render-html';
-import links from './links';
 import tag from './tag';
-import button from './button';
+import text from './text';
 
 const baseComponentList: DripTableComponentAttrConfig[] = [
   text,
