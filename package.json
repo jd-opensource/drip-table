@@ -37,7 +37,7 @@
     "drip-table-driver-antd": "link:packages/drip-table-driver-antd",
     "drip-table-generator": "link:packages/drip-table-generator",
     "dumi": "^1.1.35",
-    "eslint-config-lvmcn": "0.0.33",
+    "eslint-config-lvmcn": "0.0.34",
     "eslint-formatter-pretty": "4.0.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-webpack": "^0.13.1",
