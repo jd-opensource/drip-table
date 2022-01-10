@@ -8,8 +8,8 @@
 
 import React from 'react';
 
-import { DripTableComponentSchema } from './drip-table/components';
-import { DripTableHeaderProps } from './drip-table/header';
+import { type DripTableComponentSchema } from './drip-table/components';
+import { type DripTableHeaderElement } from './drip-table/header';
 
 export interface StringDataSchema {
   type: 'string';
@@ -109,12 +109,10 @@ export interface DripTableSchema {
     /** 是否展示表格内部边框 */
     innerBordered?: boolean;
     /** 是否展示搜索栏以及配置 */
-    header?: boolean | {
+    header?: {
       style?: React.CSSProperties;
-      title?: DripTableHeaderProps<DripTableRecordTypeBase>['title'];
-      search?: DripTableHeaderProps<DripTableRecordTypeBase>['search'];
-      addButton?: DripTableHeaderProps<DripTableRecordTypeBase>['addButton'];
-    };
+      elements?: DripTableHeaderElement[];
+    } | boolean;
     /**
      * 是否展示分页以及配置
      */

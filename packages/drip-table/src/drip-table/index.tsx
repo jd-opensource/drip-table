@@ -98,7 +98,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   /**
    * 点击添加按钮触发
    */
-  onAddButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onInsertButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
    * 过滤器触发
    */
@@ -269,18 +269,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         style={props.style}
         ref={rootRef}
       >
-        {
-          props.schema.configs.header
-            ? (
-              <Header
-                {...(typeof props.schema.configs.header !== 'boolean' ? props.schema.configs.header : {})}
-                driver={props.driver}
-                onSearch={props.onSearch}
-                onAddButtonClick={props.onAddButtonClick}
-              />
-            )
-            : null
-        }
+        { props.schema.configs.header ? (<Header tableProps={props} />) : null }
         {
           props.schema.configs.virtual
             ? (

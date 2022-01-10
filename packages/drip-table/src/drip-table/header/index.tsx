@@ -7,11 +7,11 @@
  */
 
 import classnames from 'classnames';
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties } from 'react';
 
-import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
+import { type DripTableRecordTypeBase, type EventLike } from '@/types';
 import RichText from '@/components/RichText';
-import { DripTableProps } from '@/index';
+import { type DripTableProps } from '@/index';
 
 import styles from './index.module.css';
 
@@ -19,15 +19,11 @@ type ConfigBase = {
   /**
    * 跨度；取值 0-24
    */
-  span: number;
+  span?: number | 'auto';
   /**
    * 宽度；如果是string，可以是px也可以是%
    */
   width?: number | string;
-  /**
-   * 头部相对位置
-   */
-  position: 'topLeft' | 'topCenter' | 'topRight';
   /**
    * 对齐方式
    * flex-start: 左对齐; center: 居中; flex-end: 右对齐; space-between: 两端对齐; space-around: 等间对齐;
@@ -51,74 +47,86 @@ interface TitleConfig extends ConfigBase {
 
 interface SearchConfig extends ConfigBase {
   type: 'search';
+  className?: string;
+  style?: React.CSSProperties;
   placeholder?: string;
   allowClear?: boolean;
-  searchBtnText?: string;
-  searchStyle?: React.CSSProperties;
-  searchClassName?: string;
+  searchButtonText?: string;
   size?: 'large' | 'middle' | 'small';
   searchKeys?: { label: string; value: number | string }[];
   searchKeyDefaultValue?: number | string;
   props?: Record<string, unknown>;
 }
 
-interface AddButtonConfig extends ConfigBase {
-  type: 'add-button';
+interface InsertButtonConfig extends ConfigBase {
+  type: 'insert-button';
+  className?: string;
+  style?: React.CSSProperties;
+  text?: string;
   showIcon?: boolean;
-  addBtnText?: string;
-  addBtnStyle?: React.CSSProperties;
-  addBtnClassName?: string;
 }
 
-type Config =
+export type DripTableHeaderElement =
   | TitleConfig
   | SearchConfig
-  | AddButtonConfig;
+  | InsertButtonConfig;
 
-export interface DripTableHeaderProps<RecordType extends DripTableRecordTypeBase> {
-  driver: DripTableDriver<RecordType>;
-  style?: React.CSSProperties;
-  title?: TitleConfig;
-  search?: SearchConfig;
-  addButton?: AddButtonConfig;
-  onSearch?: DripTableProps<RecordType>['onSearch'];
-  onAddButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+interface HeaderProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
+  tableProps: DripTableProps<RecordType, CustomComponentEvent, Ext>;
 }
 
-const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHeaderProps<RecordType>) => {
-  const Button = props.driver.components.Button;
-  const Col = props.driver.components.Col;
-  const Input = props.driver.components.Input;
-  const PlusOutlined = props.driver.icons.PlusOutlined;
-  const Row = props.driver.components.Row;
-  const Select = props.driver.components.Select;
-  const TableSearch = props.driver.components.TableSearch;
+const Header = <
+  RecordType extends DripTableRecordTypeBase,
+  CustomComponentEvent extends EventLike = never,
+  Ext = unknown,
+>(props: HeaderProps<RecordType, CustomComponentEvent, Ext>) => {
+  const tableProps = props.tableProps;
+  const Button = tableProps.driver.components.Button;
+  const Col = tableProps.driver.components.Col;
+  const Input = tableProps.driver.components.Input;
+  const PlusOutlined = tableProps.driver.icons.PlusOutlined;
+  const Row = tableProps.driver.components.Row;
+  const Select = tableProps.driver.components.Select;
+  const TableSearch = tableProps.driver.components.TableSearch;
+  const elements: DripTableHeaderElement[] = React.useMemo(
+    () => {
+      if (tableProps.schema.configs.header === true) {
+        return [
+          { type: 'search', span: 8 },
+          { type: 'insert-button', span: 4 },
+        ];
+      }
+      if (tableProps.schema.configs.header === false) {
+        return [];
+      }
+      return tableProps.schema.configs.header?.elements || [];
+    },
+    [tableProps.schema.configs.header],
+  );
 
-  const [searchStr, setSearchStr] = useState('');
-  const [searchKey, setSearchKey] = useState<SearchConfig['searchKeyDefaultValue']>(props.search?.searchKeyDefaultValue);
+  const [searchStr, setSearchStr] = React.useState('');
+  const [searchKey, setSearchKey] = React.useState<SearchConfig['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
 
-  if (!props.title && !props.search && !props.addButton) {
-    return null;
-  }
-
-  const renderColumnContent = (config: Config) => {
+  const renderColumnContent = (config: DripTableHeaderElement) => {
     if (config.type === 'title') {
       return config.html
         ? <RichText html={config.title} />
         : <h3 className={styles['header-title']}>{ config.title }</h3>;
     }
+
     if (config.type === 'search') {
       if (TableSearch) {
         return (
           <TableSearch
             {...config.props}
-            driver={props.driver}
-            onSearch={(searchParams) => { props.onSearch?.(searchParams); }}
+            driver={tableProps.driver}
+            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
           />
         );
       }
+
       return (
-        <div style={config.searchStyle} className={classnames(styles['search-container'], config.searchClassName)}>
+        <div style={config.style} className={classnames(styles['search-container'], config.className)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
@@ -132,53 +140,62 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
           <Input.Search
             allowClear={config.allowClear}
             placeholder={config.placeholder}
-            enterButton={config.searchBtnText || true}
+            enterButton={config.searchButtonText || true}
             size={config.size}
             value={searchStr}
             onChange={e => setSearchStr(e.target.value.trim())}
-            onSearch={(value) => { props.onSearch?.({ searchKey, searchStr: value }); }}
+            onSearch={(value) => { tableProps.onSearch?.({ searchKey, searchStr: value }); }}
           />
         </div>
       );
     }
-    if (config.type === 'add-button') {
+
+    if (config.type === 'insert-button') {
       return (
         <Button
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
-          style={config.addBtnStyle}
-          className={config.addBtnClassName}
-          onClick={props.onAddButtonClick}
+          style={config.style}
+          className={config.className}
+          onClick={tableProps.onInsertButtonClick}
         >
-          { config.addBtnText }
+          { config.text }
         </Button>
       );
     }
+
     return null;
   };
 
-  const renderColumn = (position: 'topLeft' | 'topCenter' | 'topRight') => {
-    const config = [props.title, props.search, props.addButton].find(item => item && item.position === position);
-    if (!config) {
-      return <Col span={0} />;
-    }
-    const span = config.span || 8;
+  if (elements.length > 0) {
+    const style = typeof tableProps.schema.configs.header === 'object'
+      ? tableProps.schema.configs.header.style
+      : void 0;
     return (
-      <Col span={span} style={{ display: 'flex', width: config.width, justifyContent: config.align || 'center', ...config.columnStyle }}>
-        { config.visible !== false ? renderColumnContent(config) : null }
-      </Col>
+      <div className={styles['header-container']} style={style}>
+        <Row>
+          {
+            elements.map((item, index) => (
+              <Col
+                key={index}
+                style={{
+                  width: item.width,
+                  display: 'flex',
+                  flex: item.span === 'auto' ? '1 1 auto' : void 0,
+                  justifyContent: item.align || 'center',
+                  ...item.columnStyle,
+                }}
+                span={item.span === 'auto' ? void 0 : item.span}
+              >
+                { item.visible !== false ? renderColumnContent(item) : null }
+              </Col>
+            ))
+          }
+        </Row>
+      </div>
     );
-  };
-
-  return (
-    <div className={styles['header-container']} style={props.style}>
-      <Row>
-        { renderColumn('topLeft') }
-        { renderColumn('topCenter') }
-        { renderColumn('topRight') }
-      </Row>
-    </div>
-  );
+  }
+  return null;
 };
 
 export default Header;
