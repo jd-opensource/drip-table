@@ -109,8 +109,15 @@ export interface DripTableSchema {
     /** 是否展示表格内部边框 */
     innerBordered?: boolean;
     /** 是否展示搜索栏以及配置 */
-    header?: boolean | Omit<DripTableHeaderProps<DripTableRecordTypeBase>, 'driver' | 'onSearch' | 'onAddButtonClick'>;
-    /** 是否展示分页以及配置 */
+    header?: boolean | {
+      style?: React.CSSProperties;
+      title?: DripTableHeaderProps<DripTableRecordTypeBase>['title'];
+      search?: DripTableHeaderProps<DripTableRecordTypeBase>['search'];
+      addButton?: DripTableHeaderProps<DripTableRecordTypeBase>['addButton'];
+    };
+    /**
+     * 是否展示分页以及配置
+     */
     pagination?: false | {
       size?: 'small' | 'default';
       pageSize: number;
@@ -122,18 +129,26 @@ export interface DripTableSchema {
     size?: 'small' | 'middle' | 'large' | undefined;
     /** 粘性头部 */
     sticky?: boolean;
-    /** 是否支持选择栏 */
+    /**
+     * 是否支持选择栏
+     */
     rowSelection?: boolean;
     /** 是否平均列宽 */
     ellipsis?: boolean;
-    /** 无数据提示 */
-    nodata?: {
+    /**
+     * 无数据提示
+     */
+    placeholder?: {
       image: string;
       text: string;
     };
-    /** 是否开启虚拟列表 */
-    isVirtualList?: boolean;
-    /** 虚拟列表滚动高度 */
+    /**
+     * 是否开启虚拟滚动
+     */
+    virtual?: boolean;
+    /**
+     * 虚拟列表滚动高度
+     */
     scrollY?: number;
   };
   columns: ColumnConfig[];

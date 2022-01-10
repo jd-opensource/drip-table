@@ -28,7 +28,7 @@ title: schema配置项
 - 默认值: `false`
 是否展示表格内部边框线。
 
-### nodata
+### placeholder
 - 描述: `空提示`
 - 类型: `{ image: string; text: string; }`
 - 默认值: `undefined`
@@ -56,7 +56,7 @@ title: schema配置项
 - 默认值: `false`
 设置是否支持选择栏。
 
-### isVirtualList
+### virtual
 - 描述: `虚拟列表`
 - 类型: `boolean`
 - 默认值: `false`

@@ -93,7 +93,6 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   onSelectionChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
   /**
    * 搜索触发
-   * @param { { searchKey?: number | string; searchStr: string } } searchParams 搜索内容, string时只有关键字；searchKey为选中搜索类型，searchStr是关键字；
    */
   onSearch?: (searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>) => void;
   /**
@@ -123,10 +122,21 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
 
   const initialState = useTable();
   const paginationConfig = props.schema?.configs?.pagination || {} as { current: number; total: number; pageSize: number };
-  initialState.pagination.pageSize = paginationConfig.pageSize || 10;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
-
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
+
+  const onPropsChange = () => {
+    setTableState(state => ({
+      pagination: Object.assign(
+        {},
+        state.pagination,
+        {
+          pageSize: paginationConfig.pageSize || state.pagination?.pageSize || 10,
+        },
+      ),
+    }));
+  };
+  React.useEffect(onPropsChange, [props]);
 
   const {
     rowKey = 'key',
@@ -135,6 +145,8 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     ...item,
     [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
   }));
+
+  const columns = React.useMemo(() => props.schema.columns || [], [props.schema.columns]);
 
   /**
    * 根据组件类型，生成表格渲染器
@@ -212,7 +224,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
 
   const tableProps: Parameters<DripTableDriver<RecordType>['components']['Table']>[0] = {
     rowKey,
-    columns: props.schema.columns?.map(columnGenerator) || [],
+    columns: columns.map(columnGenerator),
     dataSource,
     pagination: props.schema.configs.pagination === false
       ? false as const
@@ -238,8 +250,8 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     bordered: props.schema.configs.bordered,
     innerBordered: props.schema.configs.innerBordered,
     // ellipsis: schema.configs.ellipsis,
-    sticky: props.schema.configs.isVirtualList ? false : props.schema.configs.sticky,
-    rowSelection: props.schema.configs.rowSelection && !props.schema.configs.isVirtualList
+    sticky: props.schema.configs.virtual ? false : props.schema.configs.sticky,
+    rowSelection: props.schema.configs.rowSelection && !props.schema.configs.virtual
       ? {
         selectedRowKeys: props.selectedRowKeys || tableState.selectedRowKeys,
         onChange: (selectedKeys, selectedRows) => {
@@ -270,7 +282,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
             : null
         }
         {
-          props.schema.configs.isVirtualList
+          props.schema.configs.virtual
             ? (
               <VirtualTable
                 {...tableProps}

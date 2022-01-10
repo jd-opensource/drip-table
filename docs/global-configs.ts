@@ -9,7 +9,7 @@ export const initSchema: DripTableSchema = {
     ellipsis: false,
     sticky: true,
     rowSelection: true,
-    isVirtualList: false,
+    virtual: false,
     scrollY: 400,
     header: {
       style: { margin: '0', padding: '12px 0' },

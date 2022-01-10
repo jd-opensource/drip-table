@@ -47,7 +47,7 @@ title: API
 | rowSelection               | 是否支持选择栏              | `boolean`            | `false`     |
 | ellipsis               | 是否平均列宽              | `boolean`            | `false`     |
 | sticky               | 粘性头部              | `boolean`            | `false`     |
-| nodata               | 无数据提示              | `{ image: string; text: string; }`            | -     |
+| placeholder               | 无数据提示              | `{ image: string; text: string; }`            | -     |
 
 ### `DripTableSchema` 参数 中 Columns 列定义
 

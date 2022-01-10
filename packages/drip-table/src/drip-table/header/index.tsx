@@ -15,8 +15,7 @@ import { DripTableProps } from '@/index';
 
 import styles from './index.module.css';
 
-type Config = {
-  type: 'title' | 'search' | 'addButton';
+type ConfigBase = {
   /**
    * 跨度；取值 0-24
    */
@@ -38,17 +37,19 @@ type Config = {
    * 是否可见
    */
   visible?: boolean;
-  /** 列样式 */
+  /**
+   * 列样式
+   */
   columnStyle?: CSSProperties;
 };
 
-interface TitleConfig extends Config {
+interface TitleConfig extends ConfigBase {
   type: 'title';
   title: string;
   html?: boolean;
 }
 
-interface SearchConfig extends Config {
+interface SearchConfig extends ConfigBase {
   type: 'search';
   placeholder?: string;
   allowClear?: boolean;
@@ -61,13 +62,18 @@ interface SearchConfig extends Config {
   props?: Record<string, unknown>;
 }
 
-interface AddButtonConfig extends Config {
-  type: 'addButton';
+interface AddButtonConfig extends ConfigBase {
+  type: 'add-button';
   showIcon?: boolean;
   addBtnText?: string;
   addBtnStyle?: React.CSSProperties;
   addBtnClassName?: string;
 }
+
+type Config =
+  | TitleConfig
+  | SearchConfig
+  | AddButtonConfig;
 
 export interface DripTableHeaderProps<RecordType extends DripTableRecordTypeBase> {
   driver: DripTableDriver<RecordType>;
@@ -95,7 +101,7 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
     return null;
   }
 
-  const renderColumnContent = (config: TitleConfig | AddButtonConfig | SearchConfig) => {
+  const renderColumnContent = (config: Config) => {
     if (config.type === 'title') {
       return config.html
         ? <RichText html={config.title} />
@@ -135,7 +141,7 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
         </div>
       );
     }
-    if (config.type === 'addButton') {
+    if (config.type === 'add-button') {
       return (
         <Button
           type="primary"

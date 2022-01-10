@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import { createContext } from 'react';
+import { createContext, SetStateAction } from 'react';
 
 export interface IDripTableContext {
   readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
@@ -22,7 +22,7 @@ export interface IDripTableContext {
   tableSize: 'default';
   checkPassed: boolean;
   selectedRowKeys: React.Key[];
-  setTableState: CallableFunction;
+  setTableState: (state: SetStateAction<Partial<IDripTableContext>>) => void;
 }
 
 export const DripTableContext = createContext<IDripTableContext>({
@@ -39,7 +39,7 @@ export const DripTableContext = createContext<IDripTableContext>({
   checkPassed: true,
   selectedRowKeys: [],
   _CTX_SOURCE: 'CONTEXT',
-  setTableState: () => false,
+  setTableState: () => void 0,
 });
 
 export const DripTableStoreContext = createContext({});
