@@ -9,8 +9,8 @@
 import React, { CSSProperties, useState } from 'react';
 
 import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
-import { DripTableProps } from '@/index';
 import RichText from '@/components/RichText';
+import { DripTableProps } from '@/index';
 
 import styles from './index.module.css';
 

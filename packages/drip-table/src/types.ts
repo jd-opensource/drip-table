@@ -7,8 +7,9 @@
  */
 
 import React from 'react';
-import { DripTableHeaderProps } from './drip-table/header';
+
 import { DripTableComponentSchema } from './drip-table/components';
+import { DripTableHeaderProps } from './drip-table/header';
 
 export interface StringDataSchema {
   type: 'string';

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { VariableSizeGrid } from 'react-window';
 import ResizeObserver from 'rc-resize-observer';
+import React, { useEffect, useRef, useState } from 'react';
+import { VariableSizeGrid } from 'react-window';
 
-import { indexValue } from '../utils';
 import { DripTableDriver, DripTableRecordTypeBase } from '../..';
+import { indexValue } from '../utils';
 
 import styles from './index.module.css';
 

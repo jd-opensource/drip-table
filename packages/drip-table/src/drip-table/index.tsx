@@ -9,13 +9,13 @@
 import React, { useRef } from 'react';
 
 import { ColumnConfig, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
-import { useState, useTable } from '@/hooks';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
+import { useState, useTable } from '@/hooks';
 
+import DripTableBuiltInComponents, { DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 import Header from './header';
 import VirtualTable from './virtual-table';
-import DripTableBuiltInComponents, { DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 
 import styles from './index.module.css';
 
