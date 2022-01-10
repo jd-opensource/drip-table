@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import classnames from 'classnames';
 import React from 'react';
 import { Empty, Result, ResultProps } from 'antd';
 import { CloseCircleTwoTone } from '@ant-design/icons';
@@ -83,7 +84,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     return (
       <div
         style={{ width }}
-        className={`${styles.column} ${isCurrent ? 'checked' : ''}`}
+        className={classnames(styles.column, {checked: isCurrent})}
         onClick={() => {
           state.currentColumn = isCurrent ? void 0 : col;
           globalActions.checkColumn(store);
