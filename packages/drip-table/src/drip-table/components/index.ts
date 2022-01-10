@@ -8,8 +8,8 @@
 import DTCImage from './image';
 import DTCLink, { DTCLinkEvent } from './link';
 import DTCRenderHTML from './render-html';
-import DTCText from './text';
 import DTCTag from './tag';
+import DTCText from './text';
 
 export type { DripTableComponentProps, DripTableComponentSchema } from './component';
 

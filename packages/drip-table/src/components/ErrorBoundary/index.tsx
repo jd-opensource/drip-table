@@ -7,7 +7,8 @@
  */
 
 import React, { ErrorInfo } from 'react';
-import { DripTableRecordTypeBase, DripTableDriver } from '@/types';
+
+import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
 
 class ErrorBoundary<RecordType extends DripTableRecordTypeBase> extends React.Component<
 { driver: DripTableDriver<RecordType> },

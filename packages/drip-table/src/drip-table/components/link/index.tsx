@@ -7,10 +7,11 @@
  */
 
 import React from 'react';
+
 import { DripTableRecordTypeBase } from '@/types';
 
-import { finalizeString } from '../utils';
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { finalizeString } from '../utils';
 
 export interface DTCLinkSchema extends DripTableComponentSchema {
   'ui:type': 'link';

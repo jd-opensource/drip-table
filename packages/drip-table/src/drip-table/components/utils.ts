@@ -7,6 +7,7 @@
  */
 
 import get from 'lodash/get';
+
 import { DripTableRecordTypeBase } from '@/types';
 
 /**

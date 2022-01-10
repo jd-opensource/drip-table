@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+
 import { DripTableRecordTypeBase } from '@/types';
 import RichText from '@/components/RichText';
 
