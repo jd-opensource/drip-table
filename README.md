@@ -159,7 +159,7 @@ If you're interested in this project, you're welcome to create ✨[issue](https:
    lerna bootstrap
    ```
 
-3. Build environment
+3. build independecies
 
    > yarn
 

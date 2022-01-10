@@ -47,7 +47,7 @@
    lerna bootstrap
    ```
 
-2. 构建环境
+2. 构建依赖包
 
    > yarn
 

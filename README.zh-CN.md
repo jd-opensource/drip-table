@@ -159,7 +159,7 @@
    lerna bootstrap
    ```
 
-3. 构建环境
+3. 构建依赖包
 
    > yarn
 

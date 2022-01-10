@@ -45,7 +45,7 @@ English | [简体中文](./DEVELOP.zh-CN.md)
    lerna bootstrap
    ```
 
-2. Build environment
+2. build independecies
 
    > yarn
 
