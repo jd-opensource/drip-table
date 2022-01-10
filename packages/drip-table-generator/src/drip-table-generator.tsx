@@ -1,11 +1,11 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { ConfigProvider } from 'antd';
-import { ColumnConfig, DripTableSchema } from 'drip-table';
 import zhCN from 'antd/lib/locale/zh_CN';
+import { ColumnConfig, DripTableSchema } from 'drip-table';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
-import { Ctx } from '@/context';
-import { DripTableGeneratorProps, DripTableGeneratorHandler } from '@/typing';
 import { defaultState, DripTableGeneratorState, GlobalStore } from '@/store';
+import { Ctx } from '@/context';
+import { DripTableGeneratorHandler, DripTableGeneratorProps } from '@/typing';
 
 import Wrapper, { GeneratorWrapperHandler } from './wrapper';
 

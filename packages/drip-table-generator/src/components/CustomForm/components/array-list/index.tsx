@@ -1,7 +1,8 @@
-import React from 'react';
-import { Button, Row, Col, Popover, Radio, InputNumber, Switch, Input, Select, AutoComplete } from 'antd';
-import { LabeledValue, SelectValue } from 'antd/lib/select';
 import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { AutoComplete, Button, Col, Input, InputNumber, Popover, Radio, Row, Select, Switch } from 'antd';
+import { LabeledValue, SelectValue } from 'antd/lib/select';
+import React from 'react';
+
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 

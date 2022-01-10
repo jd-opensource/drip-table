@@ -6,20 +6,21 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
-import { Alert, Result, Tabs } from 'antd';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
-import { DripTableSchema } from 'drip-table';
 import MonacoEditor from '@monaco-editor/react';
+import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import debounce from 'lodash/debounce';
+import React from 'react';
 
-import { useGlobalData } from '@/hooks';
-import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
+import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
+import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from '../configs';
+import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
 
@@ -31,6 +32,7 @@ interface Props {
     components: DripTableComponentAttrConfig[];
   } | undefined;
   customGlobalConfigPanel: DTGComponentPropertySchema[] | undefined;
+  driver: DripTableDriver<DripTableRecordTypeBase>;
 }
 
 const { TabPane } = Tabs;
@@ -42,6 +44,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   const store = { state, setState };
 
   const [activeKey, setActiveKey] = React.useState('0');
+
+  const [formDisplayMode, setFormDisplayMode] = React.useState('tabs' as 'collapse' | 'tabs');
 
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
@@ -149,6 +153,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
       data={state.globalConfigs}
       encodeData={encodeGlobalConfigs}
+      groupType={formDisplayMode}
+      theme={props.driver}
       onChange={(data) => {
         state.globalConfigs = { ...data };
         globalActions.updateGlobalConfig(store);
@@ -198,6 +204,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props']}
+        groupType={formDisplayMode}
+        theme={props.driver}
         onChange={(data) => {
           state.currentColumn = Object.assign(state.currentColumn, data);
           const idx = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
@@ -214,7 +222,23 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   return (
     <div className={styles['attributes-wrapper']}>
       <div className={styles['attributes-container']}>
-        <Tabs activeKey={getActiveKey()} type="card" onChange={(key) => { setActiveKey(key); }}>
+        <Tabs
+          activeKey={getActiveKey()}
+          type="card"
+          onChange={(key) => { setActiveKey(key); }}
+          tabBarExtraContent={activeKey !== '3'
+            ? (
+              <Tooltip title={formDisplayMode === 'tabs' ? '折叠面板' : '标签面板'}>
+                <Button
+                  style={{ borderRadius: 2 }}
+                  size="small"
+                  onClick={() => { setFormDisplayMode(formDisplayMode === 'collapse' ? 'tabs' : 'collapse'); }}
+                  icon={formDisplayMode === 'tabs' ? <CollapseIcon style={{ marginTop: 4 }} /> : <TabsIcon style={{ marginTop: 4 }} />}
+                />
+              </Tooltip>
+            )
+            : null}
+        >
           <TabPane tab="属性配置" key="1" className={styles['attribute-panel']}>
             <div className={styles['attributes-form-panel']}>
               { renderColumnForm() }
@@ -230,7 +254,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
               <MonacoEditor
                 width="100%"
-                height={348}
+                height={428}
                 language="json"
                 theme="vs-dark"
                 value={code || ''}

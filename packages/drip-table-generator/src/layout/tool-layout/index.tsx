@@ -6,9 +6,10 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React, { useState } from 'react';
-import { message, Button, Input, Modal } from 'antd';
+import { Button, Input, message, Modal } from 'antd';
 import { ColumnConfig, DripTableSchema } from 'drip-table';
+import React, { useState } from 'react';
+
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import { useGlobalData } from '@/hooks';
 

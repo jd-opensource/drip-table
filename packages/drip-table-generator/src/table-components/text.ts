@@ -14,6 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     {
       name: 'dataIndexMode',
+      group: '组件属性',
       required: true,
       'ui:title': '字段读取模式',
       'ui:type': 'radio',
@@ -29,6 +30,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'auto-complete',
@@ -40,6 +42,7 @@ export default {
     },
     {
       name: 'dataIndex',
+      group: '组件属性',
       required: true,
       'ui:title': '字段选择',
       'ui:type': 'select',
@@ -53,6 +56,7 @@ export default {
     },
     {
       name: 'fontSize',
+      group: '样式配置',
       'ui:title': '字体大小',
       'ui:type': 'number',
       'ui:description': {
@@ -65,6 +69,7 @@ export default {
     },
     {
       name: 'ui:props.maxRow',
+      group: '样式配置',
       'ui:title': '最大行数',
       'ui:type': 'number',
       'ui:description': {
@@ -76,12 +81,14 @@ export default {
     },
     {
       name: 'ui:props.linHeight',
+      group: '样式配置',
       'ui:title': '行高',
       'ui:type': 'number',
       min: 1,
     },
     {
       name: 'ui:props.mode',
+      group: '组件属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -96,6 +103,7 @@ export default {
     },
     {
       name: 'ui:props.prefix',
+      group: '组件属性',
       'ui:title': '前缀文案',
       'ui:type': 'input',
       default: '',
@@ -103,6 +111,7 @@ export default {
     },
     {
       name: 'ui:props.suffix',
+      group: '组件属性',
       'ui:title': '后缀文案',
       'ui:type': 'input',
       default: '',
@@ -110,6 +119,7 @@ export default {
     },
     {
       name: 'ui:props.params',
+      group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
       'ui:props': {
@@ -170,6 +180,7 @@ export default {
     },
     {
       name: 'defaultValue',
+      group: '组件属性',
       'ui:title': '兜底文案',
       'ui:type': 'input',
       'ui:description': {
@@ -182,6 +193,7 @@ export default {
     },
     {
       name: 'ui:props.format',
+      group: '组件属性',
       'ui:title': '模板',
       'ui:type': 'text',
       'ui:props': {

@@ -5,8 +5,9 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
 import { Cascader as Cascade } from 'antd';
+import React from 'react';
+
 import { DTGComponentPropertySchema } from '@/typing';
 
 type CascadeProps = React.ComponentProps<typeof Cascade>;

@@ -6,13 +6,17 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React, { Component } from 'react';
-import { Alert, Col, Form, Popover, Row } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { DTGComponentPropertySchema } from '@/typing';
-import BuiltInComponents from './components';
-import RichText from '@/components/RichText';
 import 'rc-color-picker/assets/index.css';
+
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import React, { Component } from 'react';
+
+import RichText from '@/components/RichText';
+import { DTGComponentPropertySchema } from '@/typing';
+
+import BuiltInComponents from './components';
 
 interface CustomComponentProps {
   schema: DTGComponentPropertySchema;
@@ -22,10 +26,12 @@ interface CustomComponentProps {
 }
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
+  groupType?: boolean | 'collapse' | 'tabs';
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   key?: string;
   extendKeys?: string[];
+  theme?: DripTableDriver<DripTableRecordTypeBase>;
   encodeData: (formData: { [key: string]: unknown }) => T;
   onChange?: (data?: T) => void;
 }
@@ -127,6 +133,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
       return (
         <CustomComponent
+          theme={this.props.theme}
           schema={config}
           value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
           onChange={(value) => {
@@ -147,6 +154,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (BuiltInComponent) {
       return (
         <BuiltInComponent
+          theme={this.props.theme}
           schema={config}
           value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
           onChange={(value) => {
@@ -231,6 +239,33 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
 
   public render() {
     const { configs } = this.props;
+    if (this.props.groupType) {
+      const groups = [...new Set(configs.map(item => item.group || ''))];
+      const indexOfUnnamedGroup = groups.indexOf('');
+      if (indexOfUnnamedGroup > -1) {
+        groups[indexOfUnnamedGroup] = '其他';
+      }
+      if (this.props.groupType === 'collapse') {
+        return (
+          <Collapse>
+            { groups.map((groupName, index) => (
+              <Collapse.Panel key={index} header={groupName}>
+                { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+              </Collapse.Panel>
+            )) }
+          </Collapse>
+        );
+      }
+      return (
+        <Tabs tabPosition="left">
+          { groups.map((groupName, index) => (
+            <Tabs.TabPane key={index} tab={groupName}>
+              { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+            </Tabs.TabPane>
+          )) }
+        </Tabs>
+      );
+    }
     return (
       <div>
         { configs.map(item => this.renderFormItem(item)) }

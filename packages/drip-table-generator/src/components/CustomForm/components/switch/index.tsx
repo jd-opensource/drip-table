@@ -5,8 +5,9 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React, { ReactNode } from 'react';
 import { Switch } from 'antd';
+import React, { ReactNode } from 'react';
+
 import { DTGComponentPropertySchema } from '@/typing';
 
 interface Props {

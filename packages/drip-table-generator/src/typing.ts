@@ -6,6 +6,7 @@ import { DripTableGeneratorState } from './store';
 export type DTGComponentPropertySchema = DataSchema & {
   $id?: string;
   name: string;
+  group: string;
   required?: boolean;
   'ui:layout'?: {
     labelCol: number;

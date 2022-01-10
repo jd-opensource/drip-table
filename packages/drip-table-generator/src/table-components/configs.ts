@@ -10,6 +10,7 @@ import { DTGComponentPropertySchema } from '../typing';
 export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
   {
     name: 'title',
+    group: '组件属性',
     'ui:title': '表头名称',
     'ui:type': 'text',
     type: 'string',
@@ -17,6 +18,7 @@ export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
   },
   {
     name: 'width',
+    group: '组件属性',
     'ui:title': '表格列宽',
     'ui:type': 'text',
     'ui:description': {
@@ -28,6 +30,7 @@ export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
   },
   {
     name: 'align',
+    group: '样式配置',
     'ui:title': '对齐方式',
     'ui:type': 'radio',
     'ui:props': {

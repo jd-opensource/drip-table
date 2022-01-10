@@ -10,6 +10,7 @@ import { DTGComponentPropertySchema } from '../typing';
 export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'size',
+    group: '全局样式',
     'ui:title': '表格尺寸',
     'ui:type': 'radio',
     'ui:props': {
@@ -25,6 +26,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'innerBordered',
+    group: '全局样式',
     'ui:title': '是否展示内部边框',
     'ui:type': 'switch',
     'ui:props': {},
@@ -33,6 +35,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'ellipsis',
+    group: '全局属性',
     'ui:title': '是否平均列宽',
     'ui:type': 'switch',
     'ui:props': {},
@@ -41,6 +44,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'bordered',
+    group: '全局样式',
     'ui:title': '是否展示边框',
     'ui:type': 'switch',
     'ui:props': {},
@@ -49,6 +53,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header',
+    group: '全局属性',
     'ui:title': '是否展示标题栏',
     'ui:type': 'switch',
     'ui:props': {},
@@ -57,6 +62,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.title.type',
+    group: '全局属性',
     'ui:title': '标题栏是否展示标题',
     'ui:type': 'switch',
     'ui:props': {
@@ -68,6 +74,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.title.title',
+    group: '全局属性',
     'ui:title': '标题名称',
     'ui:type': 'input',
     'ui:props': {
@@ -78,6 +85,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.title.width',
+    group: '全局属性',
     'ui:title': '标题宽度',
     'ui:type': 'number',
     'ui:props': {
@@ -89,6 +97,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.type',
+    group: '全局属性',
     'ui:title': '标题栏是否展示搜索',
     'ui:type': 'switch',
     'ui:props': {
@@ -100,6 +109,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.wrapperWidth',
+    group: '全局属性',
     'ui:title': '搜索栏宽度',
     'ui:type': 'number',
     'ui:props': {
@@ -111,6 +121,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.placeholder',
+    group: '全局属性',
     'ui:title': '搜索框提示文案',
     'ui:type': 'input',
     'ui:props': {
@@ -121,6 +132,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.searchBtnText',
+    group: '全局属性',
     'ui:title': '搜索按钮文案',
     'ui:type': 'input',
     'ui:props': {
@@ -131,6 +143,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.width',
+    group: '全局属性',
     'ui:title': '搜索框宽度',
     'ui:type': 'input',
     'ui:props': {
@@ -141,6 +154,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.allowClear',
+    group: '全局属性',
     'ui:title': '搜索框清除按钮',
     'ui:type': 'switch',
     'ui:props': {},
@@ -149,6 +163,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.typeVisible',
+    group: '全局属性',
     'ui:title': '是否展示选择框',
     'ui:type': 'switch',
     'ui:props': {},
@@ -157,6 +172,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'header.search.typeOptions',
+    group: '全局属性',
     'ui:title': '选择框配置',
     'ui:type': 'array-list',
     'ui:props': {
@@ -181,6 +197,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'pagination',
+    group: '全局属性',
     'ui:title': '是否展示分页',
     'ui:type': 'switch',
     'ui:props': {},
@@ -189,6 +206,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'pagination.pageSize',
+    group: '全局属性',
     'ui:title': '分页大小',
     'ui:type': 'number',
     'ui:props': {
@@ -200,6 +218,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   },
   {
     name: 'pagination.position',
+    group: '全局属性',
     'ui:title': '分页位置',
     'ui:type': 'radio',
     'ui:props': {

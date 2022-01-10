@@ -5,17 +5,20 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import React from 'react';
-import { Checkbox, Popover } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { DTGComponentPropertySchema } from '@/typing';
+import { Checkbox, Popover } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import React from 'react';
+
 import { filterAttributes } from '@/utils';
+import { DTGComponentPropertySchema } from '@/typing';
 
 type CheckboxGroupProps = React.ComponentProps<typeof Checkbox.Group>;
 type CheckboxValueType = CheckboxGroupProps['value'];
-type CheckboxOptionType = NonNullable<CheckboxGroupProps['options']>[number] & { description?: string };
+type CheckboxOptionType = NonNullable<CheckboxGroupProps['options']>[number] & { description?: string; icon?: string };
 
 interface Props {
+  theme?: DripTableDriver<DripTableRecordTypeBase>;
   schema: DTGComponentPropertySchema;
   value?: CheckboxValueType;
   onChange?: (value: CheckboxValueType) => void;
@@ -23,6 +26,12 @@ interface Props {
 }
 
 export default class CheckboxComponent extends React.PureComponent<Props> {
+  private iconRender(iconName: string) {
+    const icons = this.props.theme?.icons || {};
+    const Icon = icons[iconName];
+    return Icon ? <Icon /> : null;
+  }
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};
@@ -42,6 +51,7 @@ export default class CheckboxComponent extends React.PureComponent<Props> {
           }
           return (
             <Checkbox key={i} value={option.value} style={option.style} disabled={option.disabled}>
+              { option.icon && this.iconRender(option.icon) }
               { option.label }
               { option.description && (
                 <Popover content={option.description}>

@@ -6,18 +6,18 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import classnames from 'classnames';
-import React from 'react';
-import { Empty, Result, ResultProps } from 'antd';
 import { CloseCircleTwoTone } from '@ant-design/icons';
-import { builtInComponents, ColumnConfig, DripTableDriver, DripTableRecordTypeBase, DripTableProps } from 'drip-table';
+import { Empty, Result, ResultProps } from 'antd';
+import classnames from 'classnames';
+import { builtInComponents, ColumnConfig, DripTableDriver, DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import React from 'react';
 
-import { globalActions, GlobalStore, DripTableColumn } from '@/store';
+import { get } from '@/utils';
+import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import Draggable from '@/components/Draggable';
 
 import styles from './index.module.less';
-import { get } from '@/utils';
 
 interface Props {
   driver: DripTableDriver<DripTableRecordTypeBase>;
@@ -84,7 +84,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     return (
       <div
         style={{ width }}
-        className={classnames(styles.column, {checked: isCurrent})}
+        className={classnames(styles.column, { checked: isCurrent })}
         onClick={() => {
           state.currentColumn = isCurrent ? void 0 : col;
           globalActions.checkColumn(store);

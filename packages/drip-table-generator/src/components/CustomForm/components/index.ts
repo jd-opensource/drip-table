@@ -6,17 +6,17 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import ArrayComponent from './array-list';
+import AutoComplete from './auto-complete';
+import CascadeComponent from './cascade';
+import Checkbox from './checkbox';
+import CodeEditorComponent from './code-editor';
 import ColorPicker from './color-picker';
 import InputComponent from './input';
-import AutoComplete from './auto-complete';
-import TextComponent from './text';
-import Checkbox from './checkbox';
-import RadioComponent from './radio';
-import SwitchComponent from './switch';
-import SelectComponent from './select';
 import InputNumberComponent from './number';
-import CascadeComponent from './cascade';
-import CodeEditorComponent from './code-editor';
+import RadioComponent from './radio';
+import SelectComponent from './select';
+import SwitchComponent from './switch';
+import TextComponent from './text';
 
 export default {
   input: InputComponent,

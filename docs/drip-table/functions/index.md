@@ -134,7 +134,7 @@ title: schema配置项
 - 类型: `string`
 - 默认值: `必填`
 是该列对应的单元格内容所需要的组件类型名称，除内置的几个类型外，自定义类型需要使用`命名空间::组件名称`格式，并通过 components 属性传进来。
-目前所包含的内置类型有：纯文本`text`, 富文本`render-html`, 带事件的链接`links`, 图片`picture`, 代码自定义渲染组件`code`。
+目前所包含的内置类型有：纯文本 `text`, 富文本 `render-html`, 带事件的链接 `links`, 图片 `picture`, 按钮 `buttons`, 代码自定义渲染组件`code`。
 
 ### ui:props
 - 描述: `组件属性`

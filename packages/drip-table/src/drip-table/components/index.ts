@@ -5,6 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import DTCButton, { DTCButtonEvent } from './button';
 import DTCImage from './image';
 import DTCLink, { DTCLinkEvent } from './link';
 import DTCRenderHTML from './render-html';
@@ -14,11 +15,13 @@ import DTCText from './text';
 export type { DripTableComponentProps, DripTableComponentSchema } from './component';
 
 export type DripTableBuiltInComponentEvent =
-  | DTCLinkEvent;
+  | DTCLinkEvent
+  | DTCButtonEvent;
 
 const DripTableBuiltInComponents = {
   image: DTCImage,
   links: DTCLink,
+  buttons: DTCButton,
   text: DTCText,
   tag: DTCTag,
   'render-html': DTCRenderHTML,

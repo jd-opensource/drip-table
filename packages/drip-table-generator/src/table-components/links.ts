@@ -14,6 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     {
       name: 'ui:props.mode',
+      group: '组件属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -27,6 +28,7 @@ export default {
     },
     {
       name: 'ui:props.label',
+      group: '组件属性',
       'ui:title': '链接文案',
       'ui:type': 'text',
       default: '',
@@ -34,6 +36,7 @@ export default {
     },
     {
       name: 'ui:props.href',
+      group: '组件属性',
       'ui:title': '链接地址',
       'ui:type': 'text',
       default: '',
@@ -41,6 +44,7 @@ export default {
     },
     {
       name: 'ui:props.target',
+      group: '组件属性',
       'ui:title': '链接打开方式',
       'ui:type': 'text',
       default: '',
@@ -48,6 +52,7 @@ export default {
     },
     {
       name: 'ui:props.event',
+      group: '组件属性',
       'ui:title': '事件名称',
       'ui:type': 'text',
       default: '',
@@ -55,6 +60,7 @@ export default {
     },
     {
       name: 'ui:props.operates',
+      group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
       default: [],
