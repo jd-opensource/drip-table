@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import classnames from 'classnames';
 import React, { useRef } from 'react';
 
 import { ColumnConfig, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
@@ -252,7 +253,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   return (
     <ErrorBoundary driver={props.driver}>
       <div
-        className={`${styles['drip-table-wrapper']} ${props.className || ''}`}
+        className={classnames(styles['drip-table-wrapper'], props.className)}
         style={props.style}
         ref={rootRef}
       >

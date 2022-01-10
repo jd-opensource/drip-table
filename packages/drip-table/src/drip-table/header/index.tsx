@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import classnames from 'classnames';
 import React, { CSSProperties, useState } from 'react';
 
 import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
@@ -111,7 +112,7 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
         );
       }
       return (
-        <div style={config.searchStyle} className={`${styles['search-container']} ${config.searchClassName}`}>
+        <div style={config.searchStyle} className={classnames(styles['search-container'], config.searchClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
