@@ -5,7 +5,7 @@
   </h1>
 </a>
 
-[English](./README.md) | 简体中文 | [官方文档](http://drip-table.jd.com/) | [讨论组](https://github.com/JDFED/drip-table/discussions)｜[Gitter群聊](https://gitter.im/drip-table/community)
+[English](./README.md) | 简体中文 | [官方文档](http://drip-table.jd.com/) | [讨论组](https://github.com/JDFED/drip-table/discussions)｜[Gitter 群聊](https://gitter.im/drip-table/community)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -159,7 +159,21 @@
    lerna bootstrap
    ```
 
-3. 运行项目
+3. 构建依赖包
+
+   > yarn
+
+   ```sh
+   yarn run build
+   ```
+
+   > npm
+
+   ```sh
+   npm run build
+   ```
+
+4. 运行项目
 
    ```sh
    yarn start
