@@ -3,12 +3,12 @@
  * inline: true
  */
 
-import React, { useEffect, useState, useRef } from 'react';
 import { message } from 'antd';
 import DripTable, { DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { mockData, initSchema, SampleRecordType } from '../../../global-configs';
+import { initSchema, mockData, SampleRecordType } from '../../../demo-data';
 import { CustomComponentEvent, CustomComponents } from './custom-components';
 
 const Demo = () => {
@@ -24,7 +24,7 @@ const Demo = () => {
     () => {
       setPageDataSource(dataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, dataSource.length)));
     },
-    [dataSource, pageSize, pageNum]
+    [dataSource, pageSize, pageNum],
   );
 
   const fetchPageData = (nextPageNum: number) => {
@@ -36,10 +36,10 @@ const Demo = () => {
         setLoading(false);
         setPageNum(nextPageNum);
       },
-      500
+      500,
     );
     setLoading(true);
-  }
+  };
 
   return (
     <React.Fragment>

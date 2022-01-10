@@ -6,11 +6,11 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
 import { Button } from 'antd';
 import { DripTableComponentProps, DripTableComponentSchema } from 'drip-table';
+import React from 'react';
 
-import { SampleRecordType } from '../../../global-configs';
+import { SampleRecordType } from '../../../demo-data';
 import { CustomComponentEvent } from '.';
 
 export interface CustomComponentSampleSchema extends DripTableComponentSchema {

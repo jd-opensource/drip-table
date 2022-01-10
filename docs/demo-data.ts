@@ -2,54 +2,52 @@ import { ColumnConfig, DripTableSchema } from 'drip-table';
 
 export const initSchema: DripTableSchema = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
-  configs: {
-    size: 'middle',
-    bordered: true,
-    innerBordered: false,
-    ellipsis: false,
-    sticky: true,
-    rowSelection: true,
-    virtual: false,
-    scrollY: 400,
-    header: {
-      style: { margin: '0', padding: '12px 0' },
-      elements: [
-        {
-          type: 'title',
-          title: '商品列表',
-          span: 'auto',
-          html: false,
-          align: 'flex-start',
-        },
-        {
-          type: 'search',
-          placeholder: '请输入关键字',
-          allowClear: true,
-          searchButtonText: '搜索',
-          style: { width: 360 },
-          searchKeys: [{ label: '商品', value: 'goods' }, { label: '广告', value: 'advert' }],
-          searchKeyDefaultValue: 'goods',
-          align: 'flex-end',
-        },
-        {
-          type: 'insert-button',
-          text: '添加商品',
-          align: 'flex-end',
-          showIcon: true,
-        },
-        {
-          type: 'display-column-selector',
-          buttonType: 'primary',
-        },
-      ],
-    },
-    pagination: {
-      pageSize: 10,
-      size: 'small',
-      position: 'bottomRight',
-      showQuickJumper: true,
-      showSizeChanger: true,
-    },
+  size: 'middle',
+  bordered: true,
+  innerBordered: false,
+  ellipsis: false,
+  sticky: true,
+  rowSelection: true,
+  virtual: false,
+  scrollY: 400,
+  header: {
+    style: { margin: '0', padding: '12px 0' },
+    elements: [
+      {
+        type: 'title',
+        title: '商品列表',
+        span: 'auto',
+        html: false,
+        align: 'flex-start',
+      },
+      {
+        type: 'search',
+        placeholder: '请输入关键字',
+        allowClear: true,
+        searchButtonText: '搜索',
+        style: { width: 360 },
+        searchKeys: [{ label: '商品', value: 'goods' }, { label: '广告', value: 'advert' }],
+        searchKeyDefaultValue: 'goods',
+        align: 'flex-end',
+      },
+      {
+        type: 'insert-button',
+        text: '添加商品',
+        align: 'flex-end',
+        showIcon: true,
+      },
+      {
+        type: 'display-column-selector',
+        buttonType: 'primary',
+      },
+    ],
+  },
+  pagination: {
+    pageSize: 10,
+    size: 'small',
+    position: 'bottomRight',
+    showQuickJumper: true,
+    showSizeChanger: true,
   },
   columns: [
     {

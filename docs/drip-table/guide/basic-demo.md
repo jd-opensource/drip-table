@@ -23,17 +23,15 @@ import "drip-table/index.css";
 
 const schema = {
   $schema: "http://json-schema.org/draft/2019-09/schema#",
-  configs: {
-    size: "middle",
-    search: {
-      placeholder: "请输入",
-      searchText: "搜索",
-      position: "topRight",
-    },
-    pagination: {
-      pageSize: 10,
-      position: "bottomRight",
-    },
+  size: "middle",
+  search: {
+    placeholder: "请输入",
+    searchText: "搜索",
+    position: "topRight",
+  },
+  pagination: {
+    pageSize: 10,
+    position: "bottomRight",
   },
   columns: [
     {

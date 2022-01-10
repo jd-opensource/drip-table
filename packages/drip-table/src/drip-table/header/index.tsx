@@ -113,19 +113,19 @@ const Header = <
   const TableSearch = tableProps.driver.components.TableSearch;
   const elements: DripTableHeaderElement[] = React.useMemo(
     () => {
-      if (tableProps.schema.configs.header === true) {
+      if (tableProps.schema.header === true) {
         return [
           { type: 'display-column-selector', span: 8 },
           { type: 'search', span: 8 },
           { type: 'insert-button', span: 4 },
         ];
       }
-      if (tableProps.schema.configs.header === false) {
+      if (tableProps.schema.header === false) {
         return [];
       }
-      return tableProps.schema.configs.header?.elements || [];
+      return tableProps.schema.header?.elements || [];
     },
-    [tableProps.schema.configs.header],
+    [tableProps.schema.header],
   );
 
   const [searchStr, setSearchStr] = React.useState('');
@@ -236,8 +236,8 @@ const Header = <
   };
 
   if (elements.length > 0) {
-    const style = typeof tableProps.schema.configs.header === 'object'
-      ? tableProps.schema.configs.header.style
+    const style = typeof tableProps.schema.header === 'object'
+      ? tableProps.schema.header.style
       : void 0;
     return (
       <div className={styles['header-container']} style={style}>

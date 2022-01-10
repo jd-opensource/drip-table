@@ -129,7 +129,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   type TableColumn = NonNullable<DripTableReactComponentProps<typeof Table>['columns']>[number];
 
   const initialState = useTable();
-  const pagination = props.schema?.configs?.pagination || void 0;
+  const pagination = props.schema?.pagination || void 0;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
@@ -226,7 +226,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         </div>
       );
     }
-    if (props.schema.configs.ellipsis) {
+    if (props.schema.ellipsis) {
       column.ellipsis = true;
     }
     if (!column.render) {
@@ -239,7 +239,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     rowKey,
     columns: columns.map(columnGenerator),
     dataSource,
-    pagination: props.schema.configs.pagination === false
+    pagination: props.schema.pagination === false
       ? false as const
       : {
         onChange: (page, pageSize) => {
@@ -249,22 +249,21 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
           setTableState({ pagination: { ...tableState.pagination, current: page, pageSize } });
           props.onPageChange?.(page, pageSize);
         },
-        size: props.schema.configs.pagination?.size === void 0 ? 'small' : props.schema.configs.pagination.size,
+        size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
         total: props.total === void 0 ? dataSource.length : props.total,
         current: props.currentPage || tableState.pagination.current,
-        position: [props.schema.configs.pagination?.position || 'bottomRight'],
-        showLessItems: props.schema.configs.pagination?.showLessItems,
-        showQuickJumper: props.schema.configs.pagination?.showQuickJumper,
-        showSizeChanger: props.schema.configs.pagination?.showSizeChanger,
+        position: [props.schema.pagination?.position || 'bottomRight'],
+        showLessItems: props.schema.pagination?.showLessItems,
+        showQuickJumper: props.schema.pagination?.showQuickJumper,
+        showSizeChanger: props.schema.pagination?.showSizeChanger,
       },
     loading: props.loading,
-    size: props.schema.configs.size,
-    bordered: props.schema.configs.bordered,
-    innerBordered: props.schema.configs.innerBordered,
-    // ellipsis: schema.configs.ellipsis,
-    sticky: props.schema.configs.virtual ? false : props.schema.configs.sticky,
-    rowSelection: props.schema.configs.rowSelection && !props.schema.configs.virtual
+    size: props.schema.size,
+    bordered: props.schema.bordered,
+    innerBordered: props.schema.innerBordered,
+    sticky: props.schema.virtual ? false : props.schema.sticky,
+    rowSelection: props.schema.rowSelection && !props.schema.virtual
       ? {
         selectedRowKeys: props.selectedRowKeys || tableState.selectedRowKeys,
         onChange: (selectedKeys, selectedRows) => {
@@ -283,7 +282,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         ref={rootRef}
       >
         {
-          props.schema.configs.header
+          props.schema.header
             ? (
               <Header
                 tableProps={props}
@@ -294,12 +293,12 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
             : null
           }
         {
-          props.schema.configs.virtual
+          props.schema.virtual
             ? (
               <VirtualTable
                 {...tableProps}
                 driver={props.driver}
-                scroll={{ y: props.schema.configs.scrollY || 300, x: '100vw' }}
+                scroll={{ y: props.schema.scrollY || 300, x: '100vw' }}
               />
             )
             : <Table {...tableProps} />

@@ -103,52 +103,69 @@ export interface DripTableSchema {
   | 'http://json-schema.org/draft-07/schema#'
   | 'http://json-schema.org/draft-06/schema#'
   | 'http://json-schema.org/draft-04/schema#';
-  configs: {
-    /** 是否展示表格边框 */
-    bordered?: boolean;
-    /** 是否展示表格内部边框 */
-    innerBordered?: boolean;
-    /** 是否展示搜索栏以及配置 */
-    header?: {
-      style?: React.CSSProperties;
-      elements?: DripTableHeaderElement[];
-    } | boolean;
+  /**
+   * 是否展示表格边框
+   */
+  bordered?: boolean;
+  /**
+   * 是否展示表格内部边框
+   */
+  innerBordered?: boolean;
+  /**
+   * 是否展示头部以及配置
+   */
+  header?: {
     /**
-     * 是否展示分页以及配置
+     * 头部自定义样式
      */
-    pagination?: false | {
-      size?: 'small' | 'default';
-      pageSize: number;
-      position?: 'bottomLeft' | 'bottomCenter' | 'bottomRight';
-      showLessItems?: boolean;
-      showQuickJumper?: boolean;
-      showSizeChanger?: boolean;
-    };
-    size?: 'small' | 'middle' | 'large' | undefined;
-    /** 粘性头部 */
-    sticky?: boolean;
+    style?: React.CSSProperties;
     /**
-     * 是否支持选择栏
+     * 头部展示元素配置
      */
-    rowSelection?: boolean;
-    /** 是否平均列宽 */
-    ellipsis?: boolean;
-    /**
-     * 无数据提示
-     */
-    placeholder?: {
-      image: string;
-      text: string;
-    };
-    /**
-     * 是否开启虚拟滚动
-     */
-    virtual?: boolean;
-    /**
-     * 虚拟列表滚动高度
-     */
-    scrollY?: number;
+    elements?: DripTableHeaderElement[];
+  } | boolean;
+  /**
+   * 是否展示分页以及配置
+   */
+  pagination?: false | {
+    size?: 'small' | 'default';
+    pageSize: number;
+    position?: 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+    showLessItems?: boolean;
+    showQuickJumper?: boolean;
+    showSizeChanger?: boolean;
   };
+  size?: 'small' | 'middle' | 'large' | undefined;
+  /**
+   * 粘性头部
+   */
+  sticky?: boolean;
+  /**
+   * 是否支持选择栏
+   */
+  rowSelection?: boolean;
+  /**
+   * 是否平均列宽
+   */
+  ellipsis?: boolean;
+  /**
+   * 无数据提示
+   */
+  placeholder?: {
+    image: string;
+    text: string;
+  };
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean;
+  /**
+   * 虚拟列表滚动高度
+   */
+  scrollY?: number;
+  /**
+   * 列定义
+   */
   columns: ColumnConfig[];
 }
 

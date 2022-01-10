@@ -14,7 +14,7 @@ import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { initSchema, mockData, SampleRecordType } from '../../global-configs';
+import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 import { CustomComponentEvent, CustomComponents } from './custom-components';
 
 import styles from './sample.module.less';
@@ -113,7 +113,7 @@ const Demo = () => {
                 value={schema}
                 onChange={(d: typeof schema) => {
                   setSchema(d);
-                  setPageSize(d.configs.pagination ? d.configs.pagination.pageSize || 0 : 10);
+                  setPageSize(d.pagination ? d.pagination.pageSize || 0 : 10);
                 }}
               />
             </Tabs.TabPane>
