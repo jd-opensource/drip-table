@@ -10,15 +10,18 @@ import DTCLink, { DTCLinkEvent } from './link';
 import DTCRenderHTML from './render-html';
 import DTCTag from './tag';
 import DTCText from './text';
+import DTCButton, { DTCButtonEvent } from './button';
 
 export type { DripTableComponentProps, DripTableComponentSchema } from './component';
 
 export type DripTableBuiltInComponentEvent =
-  | DTCLinkEvent;
+  | DTCLinkEvent
+  | DTCButtonEvent;
 
 const DripTableBuiltInComponents = {
   image: DTCImage,
   links: DTCLink,
+  buttons: DTCButton,
   text: DTCText,
   tag: DTCTag,
   'render-html': DTCRenderHTML,

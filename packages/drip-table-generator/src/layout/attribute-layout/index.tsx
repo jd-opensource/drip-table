@@ -9,7 +9,7 @@
 import React from 'react';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
-import { DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import MonacoEditor from '@monaco-editor/react';
 import debounce from 'lodash/debounce';
 
@@ -32,6 +32,7 @@ interface Props {
     components: DripTableComponentAttrConfig[];
   } | undefined;
   customGlobalConfigPanel: DTGComponentPropertySchema[] | undefined;
+  driver: DripTableDriver<DripTableRecordTypeBase>;
 }
 
 const { TabPane } = Tabs;
@@ -44,7 +45,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const [activeKey, setActiveKey] = React.useState('0');
 
-  const [formDisplayMode, setFormDisplayMode] = React.useState('collapse' as 'collapse' | 'tabs');
+  const [formDisplayMode, setFormDisplayMode] = React.useState('tabs' as 'collapse' | 'tabs');
 
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
@@ -153,6 +154,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       data={state.globalConfigs}
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
+      theme={props.driver}
       onChange={(data) => {
         state.globalConfigs = { ...data };
         globalActions.updateGlobalConfig(store);
@@ -203,6 +205,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props']}
         groupType={formDisplayMode}
+        theme={props.driver}
         onChange={(data) => {
           state.currentColumn = Object.assign(state.currentColumn, data);
           const idx = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);

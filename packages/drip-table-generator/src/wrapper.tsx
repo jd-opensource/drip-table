@@ -70,7 +70,12 @@ const Wrapper = (props: DripTableGeneratorProps & {
           { state.isEdit
             ? <EditableTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} />
             : <PreviewTable driver={driver || DripTableDriverAntDesign} customComponents={customComponents} store={store} /> }
-          <AttributeLayout customComponentPanel={customComponentPanel} customGlobalConfigPanel={customGlobalConfigPanel} store={store} />
+          <AttributeLayout
+            customComponentPanel={customComponentPanel}
+            customGlobalConfigPanel={customGlobalConfigPanel}
+            driver={driver || DripTableDriverAntDesign}
+            store={store}
+          />
         </div>
       </div>
     </div>

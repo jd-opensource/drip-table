@@ -6,11 +6,13 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import React from 'react';
-import { AutoComplete, Select } from 'antd';
-import { StringDataSchema } from 'drip-table';
+import { AutoComplete, Popover, Select } from 'antd';
+import { DripTableDriver, DripTableRecordTypeBase, StringDataSchema } from 'drip-table';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { DTGComponentPropertySchema } from '@/typing';
 
 interface Props {
+  theme?: DripTableDriver<DripTableRecordTypeBase>;
   schema: DTGComponentPropertySchema;
   value?: string;
   onChange?: (value: string) => void;
@@ -20,6 +22,11 @@ interface Props {
 type LabeledValue = React.ComponentProps<typeof Select>['options'];
 
 export default class AutoCompleteComponent extends React.PureComponent<Props> {
+  private get options() {
+    const uiProps = this.props.schema['ui:props'] || {};
+    return (uiProps.options as LabeledValue)?.map(item => this.renderOptionItem(item));
+  }
+
   private transform(value: string) {
     const transform = (this.props.schema as StringDataSchema).transform;
     if (transform) {
@@ -36,6 +43,33 @@ export default class AutoCompleteComponent extends React.PureComponent<Props> {
     return value;
   }
 
+  private iconRender(iconName: string) {
+    const icons = this.props.theme?.icons || {};
+    const Icon = icons[iconName];
+    return Icon ? <Icon style={{ lineHeight: '22px' }} /> : null;
+  }
+
+  private renderOptionItem(option: NonNullable<LabeledValue>[number]) {
+    if (option.icon || option.description) {
+      return {
+        ...option,
+        value: option.value,
+        label: (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            { option.icon && this.iconRender(option.icon) }
+            <span>{ option.label }</span>
+            { option.description && (
+            <Popover content={option.description}>
+              <QuestionCircleOutlined style={{ margin: '0 8px' }} />
+            </Popover>
+            ) }
+          </div>
+        ),
+      };
+    }
+    return { ...option };
+  }
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};
@@ -46,7 +80,7 @@ export default class AutoCompleteComponent extends React.PureComponent<Props> {
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
         style={{ width: 420, ...uiProps.style }}
-        options={uiProps.options as LabeledValue}
+        options={this.options as LabeledValue}
         onChange={(value) => {
           const formattedValue = this.transform(value);
           this.props.onChange?.(formattedValue);

@@ -9,6 +9,8 @@
 import React, { Component } from 'react';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+
 import { DTGComponentPropertySchema } from '@/typing';
 import BuiltInComponents from './components';
 import RichText from '@/components/RichText';
@@ -27,6 +29,7 @@ interface Props<T> {
   data?: T;
   key?: string;
   extendKeys?: string[];
+  theme?: DripTableDriver<DripTableRecordTypeBase>;
   encodeData: (formData: { [key: string]: unknown }) => T;
   onChange?: (data?: T) => void;
 }
@@ -128,6 +131,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
       return (
         <CustomComponent
+          theme={this.props.theme}
           schema={config}
           value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
           onChange={(value) => {
@@ -148,6 +152,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (BuiltInComponent) {
       return (
         <BuiltInComponent
+          theme={this.props.theme}
           schema={config}
           value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
           onChange={(value) => {
