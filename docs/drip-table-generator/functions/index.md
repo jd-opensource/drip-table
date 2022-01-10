@@ -28,22 +28,20 @@ import 'drip-table-generator/index.css';
 
 const initialSchema = {
   "$schema": "http://json-schema.org/draft/2019-09/schema#",
-  "configs": {
-      "pagination": false
-  },
+  "pagination": false,
   "columns": [
-      {
-          "$id": "mock_1",
-          "dataIndex": "",
-          "title": "自定义111",
-          "description": "",
-          "ui:type": "render-html",
-          "width": '200px',
-          "ui:props": {
-              "render": "if (rec.id == 1) {\r\n  return '<span style=\\\"padding: 2px 4px; border: 1px solid #2baa55; border-radius: 2px; background: #99ffad99\\\">壹</span>';\r\n}\r\nreturn '';"
-          },
-          "type": "string"
+    {
+      "$id": "mock_1",
+      "dataIndex": "",
+      "title": "自定义111",
+      "description": "",
+      "ui:type": "render-html",
+      "width": '200px',
+      "ui:props": {
+        "render": "if (rec.id == 1) {\r\n  return '<span style=\\\"padding: 2px 4px; border: 1px solid #2baa55; border-radius: 2px; background: #99ffad99\\\">壹</span>';\r\n}\r\nreturn '';"
       },
+      "type": "string"
+    },
   ]
 }
 
@@ -69,7 +67,6 @@ export default Demo;
   --drip-table-border-color: #FFFFFF;
 }
 ```
-
 
 ### 代码演示
 

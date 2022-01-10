@@ -6,7 +6,9 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import { createContext } from 'react';
+import React from 'react';
+
+import { SetStateAction } from './hooks';
 
 export interface IDripTableContext {
   readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
@@ -22,10 +24,11 @@ export interface IDripTableContext {
   tableSize: 'default';
   checkPassed: boolean;
   selectedRowKeys: React.Key[];
-  setTableState: CallableFunction;
+  displayColumnKeys: React.Key[];
+  setTableState: (state: SetStateAction<IDripTableContext>) => void;
 }
 
-export const DripTableContext = createContext<IDripTableContext>({
+export const DripTableContext = React.createContext<IDripTableContext>({
   loading: false,
   api: null,
   tab: 0,
@@ -38,8 +41,9 @@ export const DripTableContext = createContext<IDripTableContext>({
   tableSize: 'default',
   checkPassed: true,
   selectedRowKeys: [],
+  displayColumnKeys: [],
   _CTX_SOURCE: 'CONTEXT',
-  setTableState: () => false,
+  setTableState: () => void 0,
 });
 
-export const DripTableStoreContext = createContext({});
+export const DripTableStoreContext = React.createContext({});

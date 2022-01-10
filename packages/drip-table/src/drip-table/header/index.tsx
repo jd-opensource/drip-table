@@ -7,28 +7,24 @@
  */
 
 import classnames from 'classnames';
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties } from 'react';
 
-import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
+import { type DripTableDriver, type DripTableRecordTypeBase, type EventLike } from '@/types';
 import RichText from '@/components/RichText';
-import { DripTableProps } from '@/index';
+import { type IDripTableContext } from '@/context';
+import { type DripTableProps } from '@/index';
 
 import styles from './index.module.css';
 
-type Config = {
-  type: 'title' | 'search' | 'addButton';
+type ConfigBase = {
   /**
    * 跨度；取值 0-24
    */
-  span: number;
+  span?: number | 'auto';
   /**
    * 宽度；如果是string，可以是px也可以是%
    */
   width?: number | string;
-  /**
-   * 头部相对位置
-   */
-  position: 'topLeft' | 'topCenter' | 'topRight';
   /**
    * 对齐方式
    * flex-start: 左对齐; center: 居中; flex-end: 右对齐; space-between: 两端对齐; space-around: 等间对齐;
@@ -38,81 +34,123 @@ type Config = {
    * 是否可见
    */
   visible?: boolean;
-  /** 列样式 */
+  /**
+   * 列样式
+   */
   columnStyle?: CSSProperties;
 };
 
-interface TitleConfig extends Config {
+interface TitleConfig extends ConfigBase {
   type: 'title';
   title: string;
   html?: boolean;
 }
 
-interface SearchConfig extends Config {
+interface SearchConfig extends ConfigBase {
   type: 'search';
+  className?: string;
+  style?: React.CSSProperties;
   placeholder?: string;
   allowClear?: boolean;
-  searchBtnText?: string;
-  searchStyle?: React.CSSProperties;
-  searchClassName?: string;
+  searchButtonText?: string;
   size?: 'large' | 'middle' | 'small';
   searchKeys?: { label: string; value: number | string }[];
   searchKeyDefaultValue?: number | string;
   props?: Record<string, unknown>;
 }
 
-interface AddButtonConfig extends Config {
-  type: 'addButton';
-  showIcon?: boolean;
-  addBtnText?: string;
-  addBtnStyle?: React.CSSProperties;
-  addBtnClassName?: string;
-}
-
-export interface DripTableHeaderProps<RecordType extends DripTableRecordTypeBase> {
-  driver: DripTableDriver<RecordType>;
+interface InsertButtonConfig extends ConfigBase {
+  type: 'insert-button';
+  className?: string;
   style?: React.CSSProperties;
-  title?: TitleConfig;
-  search?: SearchConfig;
-  addButton?: AddButtonConfig;
-  onSearch?: DripTableProps<RecordType>['onSearch'];
-  onAddButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  text?: string;
+  showIcon?: boolean;
 }
 
-const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHeaderProps<RecordType>) => {
-  const Button = props.driver.components.Button;
-  const Col = props.driver.components.Col;
-  const Input = props.driver.components.Input;
-  const PlusOutlined = props.driver.icons.PlusOutlined;
-  const Row = props.driver.components.Row;
-  const Select = props.driver.components.Select;
-  const TableSearch = props.driver.components.TableSearch;
+interface DisplayColumnSelectorConfig extends ConfigBase {
+  /**
+   * 展示列选择器
+   */
+  type: 'display-column-selector';
+  /**
+   * 展示列选择器提示文案
+   */
+  text?: string;
+  /**
+   * 选择器按钮样式
+   */
+  buttonType?: React.ComponentProps<DripTableDriver<unknown>['components']['Button']>['type'];
+}
 
-  const [searchStr, setSearchStr] = useState('');
-  const [searchKey, setSearchKey] = useState<SearchConfig['searchKeyDefaultValue']>(props.search?.searchKeyDefaultValue);
+export type DripTableHeaderElement =
+  | TitleConfig
+  | SearchConfig
+  | InsertButtonConfig
+  | DisplayColumnSelectorConfig;
 
-  if (!props.title && !props.search && !props.addButton) {
-    return null;
-  }
+interface HeaderProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
+  tableProps: DripTableProps<RecordType, CustomComponentEvent, Ext>;
+  tableState: IDripTableContext;
+  setTableState: IDripTableContext['setTableState'];
+}
 
-  const renderColumnContent = (config: TitleConfig | AddButtonConfig | SearchConfig) => {
+const Header = <
+  RecordType extends DripTableRecordTypeBase,
+  CustomComponentEvent extends EventLike = never,
+  Ext = unknown,
+>(props: HeaderProps<RecordType, CustomComponentEvent, Ext>) => {
+  const { tableProps, tableState, setTableState } = props;
+  const Button = tableProps.driver.components.Button;
+  const CheckOutlined = tableProps.driver.icons.CheckOutlined;
+  const Col = tableProps.driver.components.Col;
+  const DownOutlined = tableProps.driver.icons.DownOutlined;
+  const Dropdown = tableProps.driver.components.Dropdown;
+  const Input = tableProps.driver.components.Input;
+  const Menu = tableProps.driver.components.Menu;
+  const PlusOutlined = tableProps.driver.icons.PlusOutlined;
+  const Row = tableProps.driver.components.Row;
+  const Select = tableProps.driver.components.Select;
+  const TableSearch = tableProps.driver.components.TableSearch;
+  const elements: DripTableHeaderElement[] = React.useMemo(
+    () => {
+      if (tableProps.schema.header === true) {
+        return [
+          { type: 'display-column-selector', span: 8 },
+          { type: 'search', span: 8 },
+          { type: 'insert-button', span: 4 },
+        ];
+      }
+      if (tableProps.schema.header === false) {
+        return [];
+      }
+      return tableProps.schema.header?.elements || [];
+    },
+    [tableProps.schema.header],
+  );
+
+  const [searchStr, setSearchStr] = React.useState('');
+  const [searchKey, setSearchKey] = React.useState<SearchConfig['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
+
+  const renderColumnContent = (config: DripTableHeaderElement) => {
     if (config.type === 'title') {
       return config.html
         ? <RichText html={config.title} />
         : <h3 className={styles['header-title']}>{ config.title }</h3>;
     }
+
     if (config.type === 'search') {
       if (TableSearch) {
         return (
           <TableSearch
             {...config.props}
-            driver={props.driver}
-            onSearch={(searchParams) => { props.onSearch?.(searchParams); }}
+            driver={tableProps.driver}
+            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
           />
         );
       }
+
       return (
-        <div style={config.searchStyle} className={classnames(styles['search-container'], config.searchClassName)}>
+        <div style={config.style} className={classnames(styles['search-container'], config.className)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
@@ -126,53 +164,108 @@ const Header = <RecordType extends DripTableRecordTypeBase>(props: DripTableHead
           <Input.Search
             allowClear={config.allowClear}
             placeholder={config.placeholder}
-            enterButton={config.searchBtnText || true}
+            enterButton={config.searchButtonText || true}
             size={config.size}
             value={searchStr}
             onChange={e => setSearchStr(e.target.value.trim())}
-            onSearch={(value) => { props.onSearch?.({ searchKey, searchStr: value }); }}
+            onSearch={(value) => { tableProps.onSearch?.({ searchKey, searchStr: value }); }}
           />
         </div>
       );
     }
-    if (config.type === 'addButton') {
+
+    if (config.type === 'insert-button') {
       return (
         <Button
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
-          style={config.addBtnStyle}
-          className={config.addBtnClassName}
-          onClick={props.onAddButtonClick}
+          style={config.style}
+          className={config.className}
+          onClick={tableProps.onInsertButtonClick}
         >
-          { config.addBtnText }
+          { config.text }
         </Button>
+      );
+    }
+
+    if (config.type === 'display-column-selector') {
+      const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
+      const hidableColumns = tableProps.schema.columns.filter(c => c.hidable);
+      if (hidableColumns.length === 0) {
+        return null;
+      }
+      const menu = (
+        <Menu
+          onClick={(e) => {
+            setTableState((state) => {
+              const displayColumnKeys = state.displayColumnKeys.filter(k => k !== e.key) || [];
+              if (!state.displayColumnKeys.includes(e.key)) {
+                displayColumnKeys.push(e.key);
+              }
+              return { displayColumnKeys };
+            });
+          }}
+        >
+          {
+            hidableColumns.map(column => (
+              <Menu.Item
+                key={column.key}
+                icon={<span style={{ opacity: tableState.displayColumnKeys.includes(column.key) ? 1 : 0 }}><CheckOutlined /></span>}
+              >
+                { column.title }
+              </Menu.Item>
+            ))
+          }
+        </Menu>
+      );
+      return (
+        <Dropdown
+          trigger="click"
+          overlay={menu}
+          visible={displayColumnVisible}
+          onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
+        >
+          <Button type={config.buttonType}>
+            { config.text || '展示列' }
+            <DownOutlined />
+          </Button>
+        </Dropdown>
       );
     }
     return null;
   };
 
-  const renderColumn = (position: 'topLeft' | 'topCenter' | 'topRight') => {
-    const config = [props.title, props.search, props.addButton].find(item => item && item.position === position);
-    if (!config) {
-      return <Col span={0} />;
-    }
-    const span = config.span || 8;
+  if (elements.length > 0) {
+    const style = typeof tableProps.schema.header === 'object'
+      ? tableProps.schema.header.style
+      : void 0;
     return (
-      <Col span={span} style={{ display: 'flex', width: config.width, justifyContent: config.align || 'center', ...config.columnStyle }}>
-        { config.visible !== false ? renderColumnContent(config) : null }
-      </Col>
+      <div className={styles['header-container']} style={style}>
+        <Row>
+          {
+            elements.map((item, index) => (
+              <Col
+                key={index}
+                style={{
+                  width: item.width,
+                  display: 'flex',
+                  flex: item.span === 'auto' ? '1 1 auto' : void 0,
+                  justifyContent: item.align || 'center',
+                  paddingLeft: index === 0 ? '0' : '3px',
+                  paddingRight: index === elements.length - 1 ? '3px' : '0',
+                  ...item.columnStyle,
+                }}
+                span={item.span === 'auto' ? void 0 : item.span}
+              >
+                { item.visible !== false ? renderColumnContent(item) : null }
+              </Col>
+            ))
+          }
+        </Row>
+      </div>
     );
-  };
-
-  return (
-    <div className={styles['header-container']} style={props.style}>
-      <Row>
-        { renderColumn('topLeft') }
-        { renderColumn('topCenter') }
-        { renderColumn('topRight') }
-      </Row>
-    </div>
-  );
+  }
+  return null;
 };
 
 export default Header;

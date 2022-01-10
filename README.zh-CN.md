@@ -113,20 +113,18 @@
 
    ```js
    const schema = {
-     $schema: "http://json-schema.org/draft/2019-09/schema#",
-     configs: {
-       size: "middle",
-     },
-     columns: [
-       {
-         $id: "id",
-         title: "名称",
-         "ui:type": "text",
-         "ui:props": { mode: "single" },
-         type: "string",
-         dataIndex: "dataIndexName",
-       },
-     ],
+    $schema: "http://json-schema.org/draft/2019-09/schema#",
+    size: "middle",
+    columns: [
+      {
+        key: "columnKey",
+        title: "列标题",
+        "ui:type": "text",
+        "ui:props": { mode: "single" },
+        type: "string",
+        dataIndex: "dataIndexName",
+      },
+    ],
    };
    return (
      <DripTable
@@ -179,7 +177,7 @@
    yarn start
    ```
 
-- 访问 http://localhost:8000
+- 访问 <http://localhost:8000>
 - `drip-table` 示例路由：/drip-table/guide/basic-demo
 - `drip-table-generator` 示例路由：/drip-table-generator/preview
 

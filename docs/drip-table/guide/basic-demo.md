@@ -23,21 +23,19 @@ import "drip-table/index.css";
 
 const schema = {
   $schema: "http://json-schema.org/draft/2019-09/schema#",
-  configs: {
-    size: "middle",
-    search: {
-      placeholder: "请输入",
-      searchText: "搜索",
-      position: "topRight",
-    },
-    pagination: {
-      pageSize: 10,
-      position: "bottomRight",
-    },
+  size: "middle",
+  search: {
+    placeholder: "请输入",
+    searchText: "搜索",
+    position: "topRight",
+  },
+  pagination: {
+    pageSize: 10,
+    position: "bottomRight",
   },
   columns: [
     {
-      $id: "mock_1",
+      key: "mock_1",
       title: "商品名称",
       "ui:type": "text",
       "ui:props": {
@@ -48,7 +46,7 @@ const schema = {
       dataIndex: "name",
     },
     {
-      $id: "mock_2",
+      key: "mock_2",
       title: "商品详情",
       align: "center",
       "ui:type": "text",
@@ -62,7 +60,7 @@ const schema = {
       dataIndex: "description",
     },
     {
-      $id: "mock_3",
+      key: "mock_3",
       title: "库存状态",
       "ui:type": "text",
       "ui:props": {
@@ -75,7 +73,7 @@ const schema = {
       dataIndex: "status",
     },
     {
-      $id: "mock_4",
+      key: "mock_4",
       title: "商品价格",
       width: 80,
       "ui:type": "text",
@@ -87,7 +85,7 @@ const schema = {
       dataIndex: "price",
     },
     {
-      $id: "mock_5",
+      key: "mock_5",
       title: "操作",
       "ui:type": "links",
       "ui:props": {

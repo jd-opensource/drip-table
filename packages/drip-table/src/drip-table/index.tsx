@@ -50,6 +50,10 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
    */
   selectedRowKeys?: React.Key[];
   /**
+   * 当前显示的列键
+   */
+  displayColumnKeys?: React.Key[];
+  /**
    * 附加数据
    */
   ext?: Ext;
@@ -93,13 +97,12 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   onSelectionChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
   /**
    * 搜索触发
-   * @param { { searchKey?: number | string; searchStr: string } } searchParams 搜索内容, string时只有关键字；searchKey为选中搜索类型，searchStr是关键字；
    */
   onSearch?: (searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>) => void;
   /**
    * 点击添加按钮触发
    */
-  onAddButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onInsertButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   /**
    * 过滤器触发
    */
@@ -108,6 +111,10 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
    * 页码/页大小变化
    */
   onPageChange?: (currentPage: number, pageSize: number) => void;
+  /**
+   * 用户修改展示的列时
+   */
+  onDisplayColumnKeysChange?: (displayColumnKeys: React.Key[]) => void;
   /**
    * 通用事件机制
    */
@@ -122,19 +129,37 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   type TableColumn = NonNullable<DripTableReactComponentProps<typeof Table>['columns']>[number];
 
   const initialState = useTable();
-  const paginationConfig = props.schema?.configs?.pagination || {} as { current: number; total: number; pageSize: number };
-  initialState.pagination.pageSize = paginationConfig.pageSize || 10;
+  const pagination = props.schema?.pagination || void 0;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
-
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
+  React.useEffect(() => {
+    setTableState(state => ({
+      pagination: {
+        ...state.pagination,
+        pageSize: pagination?.pageSize || 10,
+      },
+    }));
+  }, [pagination?.pageSize]);
+
+  React.useEffect(() => {
+    setTableState(state => ({
+      displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),
+    }));
+  }, [props.displayColumnKeys]);
+
   const {
-    rowKey = '$id',
+    rowKey = 'key',
   } = props;
   const dataSource = props.dataSource.map((item, index) => ({
     ...item,
     [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
   }));
+
+  const columns = React.useMemo(() => props.schema.columns
+    ?.filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
+    || [],
+  [props.schema.columns, tableState.displayColumnKeys]);
 
   /**
    * 根据组件类型，生成表格渲染器
@@ -201,7 +226,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         </div>
       );
     }
-    if (props.schema.configs.ellipsis) {
+    if (props.schema.ellipsis) {
       column.ellipsis = true;
     }
     if (!column.render) {
@@ -212,9 +237,9 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
 
   const tableProps: Parameters<DripTableDriver<RecordType>['components']['Table']>[0] = {
     rowKey,
-    columns: props.schema.columns?.map(columnGenerator) || [],
+    columns: columns.map(columnGenerator),
     dataSource,
-    pagination: props.schema.configs.pagination === false
+    pagination: props.schema.pagination === false
       ? false as const
       : {
         onChange: (page, pageSize) => {
@@ -224,22 +249,21 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
           setTableState({ pagination: { ...tableState.pagination, current: page, pageSize } });
           props.onPageChange?.(page, pageSize);
         },
-        size: props.schema.configs.pagination?.size === void 0 ? 'small' : props.schema.configs.pagination.size,
+        size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
         total: props.total === void 0 ? dataSource.length : props.total,
         current: props.currentPage || tableState.pagination.current,
-        position: [props.schema.configs.pagination?.position || 'bottomRight'],
-        showLessItems: props.schema.configs.pagination?.showLessItems,
-        showQuickJumper: props.schema.configs.pagination?.showQuickJumper,
-        showSizeChanger: props.schema.configs.pagination?.showSizeChanger,
+        position: [props.schema.pagination?.position || 'bottomRight'],
+        showLessItems: props.schema.pagination?.showLessItems,
+        showQuickJumper: props.schema.pagination?.showQuickJumper,
+        showSizeChanger: props.schema.pagination?.showSizeChanger,
       },
     loading: props.loading,
-    size: props.schema.configs.size,
-    bordered: props.schema.configs.bordered,
-    innerBordered: props.schema.configs.innerBordered,
-    // ellipsis: schema.configs.ellipsis,
-    sticky: props.schema.configs.isVirtualList ? false : props.schema.configs.sticky,
-    rowSelection: props.schema.configs.rowSelection && !props.schema.configs.isVirtualList
+    size: props.schema.size,
+    bordered: props.schema.bordered,
+    innerBordered: props.schema.innerBordered,
+    sticky: props.schema.virtual ? false : props.schema.sticky,
+    rowSelection: props.schema.rowSelection && !props.schema.virtual
       ? {
         selectedRowKeys: props.selectedRowKeys || tableState.selectedRowKeys,
         onChange: (selectedKeys, selectedRows) => {
@@ -258,24 +282,23 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         ref={rootRef}
       >
         {
-          props.schema.configs.header
+          props.schema.header
             ? (
               <Header
-                {...(typeof props.schema.configs.header !== 'boolean' ? props.schema.configs.header : {})}
-                driver={props.driver}
-                onSearch={props.onSearch}
-                onAddButtonClick={props.onAddButtonClick}
+                tableProps={props}
+                tableState={tableState}
+                setTableState={setTableState}
               />
             )
             : null
-        }
+          }
         {
-          props.schema.configs.isVirtualList
+          props.schema.virtual
             ? (
               <VirtualTable
                 {...tableProps}
                 driver={props.driver}
-                scroll={{ y: props.schema.configs.scrollY || 300, x: '100vw' }}
+                scroll={{ y: props.schema.scrollY || 300, x: '100vw' }}
               />
             )
             : <Table {...tableProps} />

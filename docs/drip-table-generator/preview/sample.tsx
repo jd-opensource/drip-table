@@ -4,28 +4,26 @@
  * hideActions: ["CSB"]
  */
 
-import React from 'react';
+import 'antd/dist/antd.css';
+import 'drip-table-generator/index.css';
+import './sample.module.less';
+
+import { message } from 'antd';
 import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
-import 'antd/dist/antd.css';
-import 'drip-table-generator/index.css';
+import React from 'react';
 
-import { message } from 'antd';
-import { mockData } from '../../global-configs';
+import { mockData } from '../../demo-data';
 import components from './component-settings';
 import TextComponent from './TextComponent';
 
-import './sample.module.less';
-
 const initialSchema: DripTableSchema = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
-  configs: {
-    pagination: false,
-  },
+  pagination: false,
   columns: [
     {
-      $id: 'mock_2',
+      key: 'mock_2',
       title: '商品名称',
       width: '96px',
       'ui:type': 'text',
@@ -37,7 +35,7 @@ const initialSchema: DripTableSchema = {
       dataIndex: 'name',
     },
     {
-      $id: 'mock_1',
+      key: 'mock_1',
       dataIndex: '',
       title: '自定义',
       description: '',

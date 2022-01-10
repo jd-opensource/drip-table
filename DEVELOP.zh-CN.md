@@ -89,7 +89,7 @@
 │ | ├── preview                    // drip-table-generator 案例展示子页面
 │ | ├── faq.md                     // drip-table-generator 常见问题页 markdown
 │ | └── index.md                   // drip-table-generator 文档介绍页 markdown
-│ ├── global-configs.ts            // 案例展示页面所用全局配置项
+│ ├── global-schema.ts             // 案例展示页面所用全局配置项
 │ ├── index.css                    // 文档官网首页 CSS
 │ ├── index.md                     // 文档官网首页入口 markdown
 │ ├── index.tsx                    // 文档官网首页

@@ -21,6 +21,7 @@ title: API
 | onPageChange       | 页面改变回调函数         | `(page, pageSize) => void`                  | -       | 否   |
 
 ## `DripTableDriver` 参数
+
 | 属性                  | 描述                                                                      | 类型                | 默认值      |
 | --------------------- | ------------------------------------------------------------------------- | ------------------- | ----------- |
 | components             | 组件库 | `Record<string, React.ComponentClass \| React.FunctionComponent \| React.ForwardRefExoticComponent>`                               | -       | 是   |
@@ -29,14 +30,8 @@ title: API
 
 ## `DripTableSchema` 参数
 
-**设置 drip-table 的 props，其中 `configs` 是表格的全局设置，另外最基本的使用需要填写 `columns`**
+**设置 drip-table 的 props，另外最基本的使用需要填写 `columns`**
 
-| 属性                  | 描述                                                                      | 类型                | 默认值      |
-| --------------------- | ------------------------------------------------------------------------- | ------------------- | ----------- |
-| configs               | 全局定义                                                                    | `object`            | `false`     |
-| columns               | 列定义                                                                    | `object`            | `false`     |
-
-### `DripTableSchema` 参数 中 Configs 全局定义
 | 属性                  | 描述                                                                      | 类型                | 默认值      |
 | --------------------- | ------------------------------------------------------------------------- | ------------------- | ----------- |
 | bordered               | 是否展示表格边框              | `boolean`            | `false`     |
@@ -47,7 +42,8 @@ title: API
 | rowSelection               | 是否支持选择栏              | `boolean`            | `false`     |
 | ellipsis               | 是否平均列宽              | `boolean`            | `false`     |
 | sticky               | 粘性头部              | `boolean`            | `false`     |
-| nodata               | 无数据提示              | `{ image: string; text: string; }`            | -     |
+| placeholder               | 无数据提示              | `{ image: string; text: string; }`            | -     |
+| columns               | 列定义                                                                    | `object`            | `false`     |
 
 ### `DripTableSchema` 参数 中 Columns 列定义
 
@@ -55,7 +51,7 @@ title: API
 
 | 属性      | 描述                                                | 类型                                                  | 默认值 |
 | --------- | --------------------------------------------------- | ----------------------------------------------------- | ------ |
-| $id  | 键值 | string | - |
+| key  | 键值 | string | - |
 | dataIndex  | 列数据在数据项中对应的路径，支持通过数组查询嵌套路径 | `string | string[]` | - |
 | title  | 表头， 组件名 | string | - |
 | width  | 表格列宽 | number | - |
@@ -63,4 +59,5 @@ title: API
 | ui:type  | 组件名，若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现 | string | - |
 | ui:props  | 组件属性 | `object` | - |
 | type  | 数据格式 | `string` \| `number` \| `boolean` \| `null` \| `array` \| `object` | - |
+| hidable  | 是否允许用户隐藏 | `boolean` | false |
 | `[...props]`  | 其他属性 | `unknown` | - |

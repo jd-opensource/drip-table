@@ -10,6 +10,7 @@ title: 自定义组件库
 ## 参数定义
 
 #### components
+
 - 描述: `自定义组件库`
 - 类型: `{ [libName: string]: { [componentName: string]: new (props: DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>) => React.PureComponent<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>}`
 - 默认值: `无`
@@ -29,7 +30,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { DripTableComponentProps, DripTableComponentSchema, DripTableCustomEvent } from 'drip-table';
 
-import { SampleRecordType } from '../../global-configs.ts';
+import { SampleRecordType } from '../../global-schema.ts';
 
 interface CustomComponentSampleSchema extends DripTableComponentSchema {
   customSchema?: string;

@@ -87,7 +87,7 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 | | ├── preview                    // drip-table-generator demos
 | | ├── faq.md                     // drip-table-generator faq
 | | └── index.md                   // drip-table-generator document entry
-│ ├── global-configs.ts            // global configs for demos
+│ ├── global-schema.ts             // global schema for demos
 │ ├── index.css                    // official website CSS
 │ ├── index.md                     // official website markdown
 │ ├── index.tsx                    // official website entry

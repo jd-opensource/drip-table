@@ -4,18 +4,19 @@
  * hideActions: ["CSB"]
  */
 
-import React, { useState, useRef } from 'react';
+import 'antd/dist/antd.css';
+
 import { Button, message } from 'antd';
 import DripTable, { DripTableContainerHandle, DripTableProps, DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import 'antd/dist/antd.css';
+import React, { useRef, useState } from 'react';
 
-import { mockData, initSchema, SampleRecordType } from '../../global-configs';
+import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 
 const schema = {
   ...initSchema,
-  columns: [...initSchema.columns].filter(cfg => !cfg['ui:type'].startsWith('custom::') && cfg['ui:type'] !== 'render-html')
-}
+  columns: [...initSchema.columns].filter(cfg => !cfg['ui:type'].startsWith('custom::') && cfg['ui:type'] !== 'render-html'),
+};
 
 const simpleData = mockData.filter(item => item.id < 10);
 
@@ -41,7 +42,10 @@ const Demo = () => {
   return (
     <React.Fragment>
       <div style={{ padding: '0 30px 30px', textAlign: 'left' }}>
-        <Button style={{ marginRight: '5px' }} type="primary" onClick={selectAllRecord}>{allSelected && '取消'}全选</Button>
+        <Button style={{ marginRight: '5px' }} type="primary" onClick={selectAllRecord}>
+          { allSelected && '取消' }
+          全选
+        </Button>
       </div>
       <DripTableProvider ref={dripTable}>
         <DripTable<SampleRecordType>

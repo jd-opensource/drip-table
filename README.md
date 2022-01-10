@@ -113,20 +113,18 @@ The introduction of each sub-project are as follows:
 
    ```js
    const schema = {
-     $schema: "http://json-schema.org/draft/2019-09/schema#",
-     configs: {
-       size: "middle",
-     },
-     columns: [
-       {
-         $id: "id",
-         title: "My Title",
-         "ui:type": "text",
-         "ui:props": { mode: "single" },
-         type: "string",
-         dataIndex: "dataIndexName",
-       },
-     ],
+    $schema: "http://json-schema.org/draft/2019-09/schema#",
+    size: "middle",
+    columns: [
+      {
+        key: "columnKey",
+        title: "Column Title",
+        "ui:type": "text",
+        "ui:props": { mode: "single" },
+        type: "string",
+        dataIndex: "dataIndexName",
+      },
+    ],
    };
    return (
      <DripTable

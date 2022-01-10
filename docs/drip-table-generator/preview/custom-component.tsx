@@ -4,22 +4,19 @@
  * hideActions: ["CSB"]
  */
 
-import React from 'react';
 import { Button, Row } from 'antd';
 import { DripTableSchema } from 'drip-table';
 import DripTableGenerator from 'drip-table-generator';
+import React from 'react';
 
-import { mockData } from '../../global-configs';
+import { mockData } from '../../demo-data';
 
 const initialSchema: DripTableSchema = {
-  "$schema": "http://json-schema.org/draft/2019-09/schema#",
-  "configs": {
-      "pagination": false
-  },
-  "columns": [
-  ]
-}
-
+  $schema: 'http://json-schema.org/draft/2019-09/schema#',
+  pagination: false,
+  columns: [
+  ],
+};
 
 const Demo = () => {
   const generator = React.useRef(null);

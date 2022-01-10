@@ -3,17 +3,18 @@
  * inline: true
  */
 
-import React, { useEffect, useState, useRef } from 'react';
-import { Button, message, Tabs } from 'antd';
-import { CloseCircleTwoTone } from '@ant-design/icons';
-import DripTable, { DripTableProvider, DripTableContainerHandle } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import { JsonEditor } from 'jsoneditor-react';
 import 'antd/dist/antd.css';
 import 'jsoneditor-react/es/editor.min.css';
 import 'drip-table/index.css';
 
-import { mockData, initSchema, SampleRecordType } from '../../global-configs';
+import { CloseCircleTwoTone } from '@ant-design/icons';
+import { Button, message, Tabs } from 'antd';
+import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import { JsonEditor } from 'jsoneditor-react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 import { CustomComponentEvent, CustomComponents } from './custom-components';
 
 import styles from './sample.module.less';
@@ -96,8 +97,8 @@ const Demo = () => {
           onSelectionChange={(selectedKeys, selectedRows) => {
             setAllSelected(selectedRows.length >= pageDataSource.length);
           }}
-          onSearch={(searchParams) => console.log(searchParams)}
-          onAddButtonClick={event => console.log(event)}
+          onSearch={searchParams => console.log(searchParams)}
+          onInsertButtonClick={event => console.log(event)}
         />
       </DripTableProvider>
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
@@ -112,7 +113,7 @@ const Demo = () => {
                 value={schema}
                 onChange={(d: typeof schema) => {
                   setSchema(d);
-                  setPageSize(d.configs.pagination ? d.configs.pagination.pageSize || 0 : 10);
+                  setPageSize(d.pagination ? d.pagination.pageSize || 0 : 10);
                 }}
               />
             </Tabs.TabPane>
