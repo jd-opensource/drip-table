@@ -28,7 +28,7 @@ export interface DTCTextSchema extends DripTableComponentSchema {
   /** 自定义文本 -- 渲染格式/代码 */
   format?: string;
   /** 兜底文案 */
-  noDataValue?: string;
+  placeholder?: string;
   /** 前缀文案 */
   prefix?: string;
   /** 后缀文案 */
@@ -119,7 +119,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const { schema, data } = this.props;
     const { mode,
       dataIndex,
-      noDataValue,
+      placeholder,
       format,
       prefix,
       suffix,
@@ -150,7 +150,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       );
     }
     if (mode === 'single') {
-      const noDataStr = noDataValue || '';
+      const noDataStr = placeholder || '';
       let value = indexValue(data, dataIndex);
       if (enumValue && enumLabel && typeof value === 'string') {
         const index = enumValue.indexOf(value);
@@ -171,7 +171,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       );
     }
     if (mode === 'multiple') {
-      const noDataStr = noDataValue || '';
+      const noDataStr = placeholder || '';
       const Tooltip = this.props.driver.components.Tooltip;
       return (
         <div style={this.styles} className={this.classNames}>

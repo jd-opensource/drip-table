@@ -15,7 +15,6 @@ import { DripTableComponentProps, DripTableComponentSchema } from '../component'
 
 export interface DTCRenderHTMLSchema extends DripTableComponentSchema {
   'ui:type': 'render-html';
-  paramName: string | string[];
   render: string;
 }
 
