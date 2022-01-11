@@ -7,7 +7,7 @@
  */
 
 import classnames from 'classnames';
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
 import { type DripTableDriver, type DripTableRecordTypeBase, type EventLike } from '@/types';
 import RichText from '@/components/RichText';
@@ -16,65 +16,125 @@ import { type DripTableProps } from '@/index';
 
 import styles from './index.module.css';
 
-type ConfigBase = {
+interface HeaderConfigBase {
   /**
-   * 跨度；取值 0-24
+   * 包裹 <Col> 样式名
    */
-  span?: number | 'auto';
+  className?: string;
   /**
-   * 宽度；如果是string，可以是px也可以是%
+   * 包裹 <Col> 样式
    */
-  width?: number | string;
+  style?: React.CSSProperties;
+  /**
+   * 宽度：
+   * {number}      跨度，取值 0-24。
+   * {'flex-auto'} 自动伸缩。
+   * {string}      透传给元素的 width 样式值。
+   */
+  span?: number | 'flex-auto' | string;
   /**
    * 对齐方式
-   * flex-start: 左对齐; center: 居中; flex-end: 右对齐; space-between: 两端对齐; space-around: 等间对齐;
+   * {'flex-start'}    左对齐。
+   * {'center'}        居中。
+   * {'flex-end'}      右对齐。
+   * {'space-between'} 两端对齐。
+   * {'space-around'}  等间对齐。
    */
   align?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
   /**
    * 是否可见
    */
   visible?: boolean;
-  /**
-   * 列样式
-   */
-  columnStyle?: CSSProperties;
-};
+}
 
-interface SpacerConfig extends ConfigBase {
+interface HeaderSpacerElement extends HeaderConfigBase {
   /**
    * 占位区域
    */
   type: 'spacer';
 }
 
-interface TitleConfig extends ConfigBase {
-  type: 'title';
-  title: string;
-  html?: boolean;
+interface HeaderTextElement extends HeaderConfigBase {
+  /**
+   * 文本展示
+   */
+  type: 'text';
+  /**
+   * 文本内容
+   */
+  text: string;
 }
 
-interface SearchConfig extends ConfigBase {
+interface HeaderHTMLElement extends HeaderConfigBase {
+  /**
+   * 富文本展示
+   */
+  type: 'html';
+  /**
+   * 富文本内容
+   */
+  html: string;
+}
+
+interface HeaderSearchElement extends HeaderConfigBase {
+  /**
+   * 基本搜索
+   */
   type: 'search';
-  className?: string;
-  style?: React.CSSProperties;
+  /**
+   * 搜索区域类名
+   */
+  wrapperClassName?: string;
+  /**
+   * 搜索区域样式
+   */
+  wrapperStyle?: React.CSSProperties;
+  /**
+   * 暗纹提示
+   */
   placeholder?: string;
+  /**
+   * 显示清空按钮
+   */
   allowClear?: boolean;
+  /**
+   * 搜索按钮文字
+   */
   searchButtonText?: string;
-  size?: 'large' | 'middle' | 'small';
+  /**
+   * 搜索按钮大小
+   */
+  searchButtonSize?: 'large' | 'middle' | 'small';
+  /**
+   * 多维度搜索维度指定
+   */
   searchKeys?: { label: string; value: number | string }[];
+  /**
+   * 多维度搜索默认维度值
+   */
   searchKeyDefaultValue?: number | string;
+}
+
+interface HeaderAdvanceSearchElement extends HeaderConfigBase {
+  /**
+   * 高级搜索（用户自定义搜索组件）
+   */
+  type: 'advance-search';
+  /**
+   * 透传给自定搜索组件的属性值
+   */
   props?: Record<string, unknown>;
 }
 
-interface InsertButtonConfig extends ConfigBase {
+interface HeaderInsertButtonElement extends HeaderConfigBase {
   type: 'insert-button';
-  className?: string;
-  style?: React.CSSProperties;
-  text?: string;
+  insertButtonClassName?: string;
+  insertButtonStyle?: React.CSSProperties;
+  insertButtonText?: string;
   showIcon?: boolean;
 }
 
-interface DisplayColumnSelectorConfig extends ConfigBase {
+interface HeaderDisplayColumnSelectorElement extends HeaderConfigBase {
   /**
    * 展示列选择器
    */
@@ -82,19 +142,21 @@ interface DisplayColumnSelectorConfig extends ConfigBase {
   /**
    * 展示列选择器提示文案
    */
-  text?: string;
+  selectorButtonText?: string;
   /**
    * 选择器按钮样式
    */
-  buttonType?: React.ComponentProps<DripTableDriver<unknown>['components']['Button']>['type'];
+  selectorButtonType?: React.ComponentProps<DripTableDriver<unknown>['components']['Button']>['type'];
 }
 
 export type DripTableHeaderElement =
-  | SpacerConfig
-  | TitleConfig
-  | SearchConfig
-  | InsertButtonConfig
-  | DisplayColumnSelectorConfig;
+  | HeaderSpacerElement
+  | HeaderTextElement
+  | HeaderHTMLElement
+  | HeaderSearchElement
+  | HeaderAdvanceSearchElement
+  | HeaderInsertButtonElement
+  | HeaderDisplayColumnSelectorElement;
 
 interface HeaderProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
   tableProps: DripTableProps<RecordType, CustomComponentEvent, Ext>;
@@ -118,7 +180,7 @@ const Header = <
   const PlusOutlined = tableProps.driver.icons.PlusOutlined;
   const Row = tableProps.driver.components.Row;
   const Select = tableProps.driver.components.Select;
-  const TableSearch = tableProps.driver.components.TableSearch;
+  const TableAdvanceSearch = tableProps.driver.components.TableAdvanceSearch;
   const elements: DripTableHeaderElement[] = React.useMemo(
     () => {
       if (tableProps.schema.header === true) {
@@ -137,32 +199,24 @@ const Header = <
   );
 
   const [searchStr, setSearchStr] = React.useState('');
-  const [searchKey, setSearchKey] = React.useState<SearchConfig['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
+  const [searchKey, setSearchKey] = React.useState<HeaderSearchElement['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
 
   const renderColumnContent = (config: DripTableHeaderElement) => {
     if (config.type === 'spacer') {
       return null;
     }
 
-    if (config.type === 'title') {
-      return config.html
-        ? <RichText html={config.title} />
-        : <h3 className={styles['header-title']}>{ config.title }</h3>;
+    if (config.type === 'text') {
+      return <h3 className={styles['header-title']}>{ config.text }</h3>;
+    }
+
+    if (config.type === 'html') {
+      return <RichText html={config.html} />;
     }
 
     if (config.type === 'search') {
-      if (TableSearch) {
-        return (
-          <TableSearch
-            {...config.props}
-            driver={tableProps.driver}
-            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
-          />
-        );
-      }
-
       return (
-        <div style={config.style} className={classnames(styles['search-container'], config.className)}>
+        <div style={config.wrapperStyle} className={classnames(styles['search-container'], config.wrapperClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
@@ -177,7 +231,7 @@ const Header = <
             allowClear={config.allowClear}
             placeholder={config.placeholder}
             enterButton={config.searchButtonText || true}
-            size={config.size}
+            size={config.searchButtonSize}
             value={searchStr}
             onChange={e => setSearchStr(e.target.value.trim())}
             onSearch={(value) => { tableProps.onSearch?.({ searchKey, searchStr: value }); }}
@@ -186,16 +240,29 @@ const Header = <
       );
     }
 
+    if (config.type === 'advance-search') {
+      if (TableAdvanceSearch) {
+        return (
+          <TableAdvanceSearch
+            {...config.props}
+            driver={tableProps.driver}
+            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
+          />
+        );
+      }
+      return <span>未指定 tableProps.driver.components.TableAdvanceSearch 自定义搜索组件</span>;
+    }
+
     if (config.type === 'insert-button') {
       return (
         <Button
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
-          style={config.style}
-          className={config.className}
+          style={config.insertButtonStyle}
+          className={config.insertButtonClassName}
           onClick={tableProps.onInsertButtonClick}
         >
-          { config.text }
+          { config.insertButtonText }
         </Button>
       );
     }
@@ -237,8 +304,8 @@ const Header = <
           visible={displayColumnVisible}
           onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
         >
-          <Button type={config.buttonType}>
-            { config.text || '展示列' }
+          <Button type={config.selectorButtonType}>
+            { config.selectorButtonText || '展示列' }
             <DownOutlined />
           </Button>
         </Dropdown>
@@ -259,16 +326,17 @@ const Header = <
             elements.map((item, index) => (
               <Col
                 key={index}
+                className={item.className}
                 style={{
-                  width: item.width,
+                  width: typeof item.span === 'string' && item.span !== 'flex-auto' ? item.span : void 0,
                   display: 'flex',
-                  flex: item.span === 'auto' ? '1 1 auto' : void 0,
+                  flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
                   justifyContent: item.align || 'center',
                   paddingLeft: index === 0 ? '0' : '3px',
                   paddingRight: index === elements.length - 1 ? '3px' : '0',
-                  ...item.columnStyle,
+                  ...item.style,
                 }}
-                span={item.span === 'auto' ? void 0 : item.span}
+                span={typeof item.span === 'string' ? void 0 : item.span}
               >
                 { item.visible !== false ? renderColumnContent(item) : null }
               </Col>

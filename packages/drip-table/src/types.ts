@@ -191,6 +191,7 @@ export interface DripTableDriver<RecordType> {
       onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     Col: DripTableReactComponent<{
+      className?: string;
       style?: React.CSSProperties;
       span?: number;
     }>;
@@ -302,7 +303,7 @@ export interface DripTableDriver<RecordType> {
         }) => React.ReactNode;
       };
     }>;
-    TableSearch?: DripTableReactComponent<Record<string, unknown> & {
+    TableAdvanceSearch?: DripTableReactComponent<Record<string, unknown> & {
       driver: DripTableDriver<RecordType>;
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
