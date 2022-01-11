@@ -14,7 +14,6 @@ import { indexValue } from '@/drip-table/utils';
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCImageSchema extends DripTableComponentSchema {
-  'ui:type': 'image';
   popover?: boolean;
   preview?: boolean;
   imageWidth?: number;

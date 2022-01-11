@@ -14,6 +14,8 @@ import RichText from '@/components/RichText';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
 
+import { DripTableComponentSchema } from '../components';
+
 import styles from './index.module.css';
 
 interface HeaderConfigBase {
@@ -158,17 +160,23 @@ export type DripTableHeaderElement =
   | HeaderInsertButtonElement
   | HeaderDisplayColumnSelectorElement;
 
-interface HeaderProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
-  tableProps: DripTableProps<RecordType, CustomComponentEvent, Ext>;
+interface HeaderProps<
+  RecordType extends DripTableRecordTypeBase,
+  CustomComponentSchema extends DripTableComponentSchema = never,
+  CustomComponentEvent extends EventLike = never,
+  Ext = unknown,
+> {
+  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
 }
 
 const Header = <
   RecordType extends DripTableRecordTypeBase,
+  CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
->(props: HeaderProps<RecordType, CustomComponentEvent, Ext>) => {
+>(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>) => {
   const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;

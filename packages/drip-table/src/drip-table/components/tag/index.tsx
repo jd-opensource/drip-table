@@ -14,7 +14,6 @@ import { indexValue } from '@/drip-table/utils';
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCTagSchema extends DripTableComponentSchema {
-  'ui:type': 'tag';
   /** 字体颜色 */
   color?: string;
   /** 边框颜色 */

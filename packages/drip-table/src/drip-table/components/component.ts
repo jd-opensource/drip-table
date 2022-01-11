@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import React from 'react';
+
 import { DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
 
 import { DripTableBuiltInComponentEvent } from '.';

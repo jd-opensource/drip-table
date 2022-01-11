@@ -1,6 +1,8 @@
-import { ColumnConfig, DripTableSchema } from 'drip-table';
+import { DripTableSchema } from 'drip-table';
 
-export const initSchema: DripTableSchema = {
+import { CustomComponentSchema } from './drip-table/sample/custom-components';
+
+export const initSchema: DripTableSchema<CustomComponentSchema> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
   size: 'middle',
   bordered: true,
@@ -136,7 +138,7 @@ export const initSchema: DripTableSchema = {
       key: 'mock_7',
       title: '操作',
       align: 'center',
-      'ui:type': 'links',
+      'ui:type': 'link',
       'ui:props': {
         mode: 'multiple',
         operates: [
@@ -150,7 +152,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'operate',
       hidable: true,
     },
-  ] as unknown as ColumnConfig[],
+  ],
 };
 
 export interface SampleRecordType extends Record<string, unknown> {

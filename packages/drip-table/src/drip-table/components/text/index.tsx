@@ -16,7 +16,6 @@ import { DripTableComponentProps, DripTableComponentSchema } from '../component'
 import styles from './index.module.less';
 
 export interface DTCTextSchema extends DripTableComponentSchema {
-  'ui:type': 'text';
   /** 字体大小 */
   fontSize?: string;
   /** 最大行数，超出展示... */

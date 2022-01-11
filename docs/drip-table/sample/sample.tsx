@@ -15,7 +15,7 @@ import { JsonEditor } from 'jsoneditor-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { initSchema, mockData, SampleRecordType } from '../../demo-data';
-import { CustomComponentEvent, CustomComponents } from './custom-components';
+import { CustomComponentEvent, CustomComponents, CustomComponentSchema } from './custom-components';
 
 import styles from './sample.module.less';
 
@@ -76,7 +76,7 @@ const Demo = () => {
         </Button>
       </div>
       <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType, CustomComponentEvent>
+        <DripTable<SampleRecordType, CustomComponentSchema, CustomComponentEvent>
           driver={DripTableDriverAntDesign}
           schema={schema}
           loading={loading}
