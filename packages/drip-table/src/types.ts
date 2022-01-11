@@ -78,7 +78,7 @@ export interface UISchema {
   };
 }
 
-export type ColumnConfig = DripTableComponentSchema & UISchema & DataSchema & {
+export type DripTableColumnSchema = DripTableComponentSchema & UISchema & DataSchema & {
   /**
    * 是否支持过滤
    */
@@ -166,7 +166,7 @@ export interface DripTableSchema {
   /**
    * 列定义
    */
-  columns: ColumnConfig[];
+  columns: DripTableColumnSchema[];
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;

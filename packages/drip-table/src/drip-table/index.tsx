@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { ColumnConfig, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableColumnSchema, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
@@ -106,7 +106,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   /**
    * 过滤器触发
    */
-  onFilter?: (column: ColumnConfig) => void;
+  onFilter?: (column: DripTableColumnSchema) => void;
   /**
    * 页码/页大小变化
    */
@@ -166,7 +166,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
    * @param schema Schema
    * @returns 表格
    */
-  const renderGenerator = (schema: ColumnConfig): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
+  const renderGenerator = (schema: DripTableColumnSchema): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
     const BuiltInComponent = DripTableBuiltInComponents[schema['ui:type']] as new() => React.PureComponent<DripTableComponentProps<RecordType>>;
     if (BuiltInComponent) {
       return (value, record, index) => (
@@ -204,7 +204,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
    * @param schemaColumn Schema Column
    * @returns 表格列配置
    */
-  const columnGenerator = (schemaColumn: ColumnConfig): TableColumn => {
+  const columnGenerator = (schemaColumn: DripTableColumnSchema): TableColumn => {
     let width = String(schemaColumn.width).trim();
     if ((/^[0-9]+$/uig).test(width)) {
       width += 'px';
