@@ -48,6 +48,17 @@ export interface DripTableComponentSchema {
    * 用户可控制该列显示隐藏
    */
   hidable?: boolean;
+  /**
+   * 数据过滤器设置
+   */
+  filter?: {
+    text: React.ReactNode;
+    value: string | number | boolean;
+  }[];
+  /**
+   * 默认数据过滤器值
+   */
+  defaultFilteredValue?: React.Key[] | null;
 }
 
 export interface DripTableComponentProps<

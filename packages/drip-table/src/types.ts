@@ -78,25 +78,7 @@ export interface UISchema {
   };
 }
 
-export type DripTableColumnSchema = DripTableComponentSchema & UISchema & DataSchema & {
-  /**
-   * 是否支持过滤
-   */
-  filtered?: boolean | {
-    /**
-     * 从 icons 属性传入，或者 antd 自带 icon
-     */
-    icon?: string;
-    options?: { label: string; value: string }[];
-    resetText?: string;
-    confirmText?: string;
-  };
-  /** 是否支持排序 */
-  sorter?: boolean | {
-    ascendIcon?: string;
-    descendIcon?: string;
-  };
-}
+export type DripTableColumnSchema = DripTableComponentSchema & UISchema & DataSchema;
 
 export interface DripTableSchema {
   '$schema': 'http://json-schema.org/draft/2019-09/schema#'
@@ -173,6 +155,20 @@ export type DripTableRecordTypeBase = Record<string, unknown>;
 
 export type DripTableReactComponent<P> = (props: React.PropsWithChildren<P>) => React.ReactElement | null;
 export type DripTableReactComponentProps<T> = T extends DripTableReactComponent<infer P> ? P : never;
+
+export interface DripTablePagination {
+  onChange?: (page: number, pageSize?: number) => void;
+  size?: 'small' | 'default';
+  pageSize?: number;
+  total?: number;
+  current?: number;
+  position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
+  showLessItems?: boolean;
+  showQuickJumper?: boolean;
+  showSizeChanger?: boolean;
+}
+
+export type DripTableFilters = Record<string, (React.Key | boolean)[] | null>;
 
 export interface DripTableDriver<RecordType> {
   /**
@@ -264,19 +260,14 @@ export interface DripTableDriver<RecordType> {
         fixed?: boolean;
         ellipsis?: boolean;
         render?: (value: unknown, record: RecordType, rowIndex: number) => React.ReactNode;
+        filter?: {
+          text: React.ReactNode;
+          value: string | number | boolean;
+        }[];
+        defaultFilteredValue?: React.Key[] | null;
       }[];
       dataSource?: RecordType[];
-      pagination?: false | {
-        onChange?: (page: number, pageSize?: number) => void;
-        size?: 'small' | 'default';
-        pageSize?: number;
-        total?: number;
-        current?: number;
-        position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
-        showLessItems?: boolean;
-        showQuickJumper?: boolean;
-        showSizeChanger?: boolean;
-      };
+      pagination?: false | DripTablePagination;
       loading?: boolean;
       size?: 'large' | 'middle' | 'small';
       bordered?: boolean;
@@ -302,6 +293,7 @@ export interface DripTableDriver<RecordType> {
           }) => void;
         }) => React.ReactNode;
       };
+      onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
     }>;
     TableAdvanceSearch?: DripTableReactComponent<Record<string, unknown> & {
       driver: DripTableDriver<RecordType>;

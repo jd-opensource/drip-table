@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { DripTableColumnSchema, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableColumnSchema, DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
@@ -20,7 +20,7 @@ import VirtualTable from './virtual-table';
 
 import styles from './index.module.css';
 
-export interface DripTableProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
+export interface DripTableProps< RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
   /**
    * 底层组件驱动
    */
@@ -106,7 +106,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   /**
    * 过滤器触发
    */
-  onFilter?: (column: DripTableColumnSchema) => void;
+  onFilterChange?: (filters: DripTableFilters) => void;
   /**
    * 页码/页大小变化
    */
@@ -129,7 +129,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
   type TableColumn = NonNullable<DripTableReactComponentProps<typeof Table>['columns']>[number];
 
   const initialState = useTable();
-  const pagination = props.schema?.pagination || void 0;
+  const initialPagination = props.schema?.pagination || void 0;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
@@ -137,10 +137,10 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     setTableState(state => ({
       pagination: {
         ...state.pagination,
-        pageSize: pagination?.pageSize || 10,
+        pageSize: initialPagination?.pageSize || 10,
       },
     }));
-  }, [pagination?.pageSize]);
+  }, [initialPagination?.pageSize]);
 
   React.useEffect(() => {
     setTableState(state => ({
@@ -215,6 +215,8 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
       title: schemaColumn.title,
       dataIndex: schemaColumn.dataIndex,
       fixed: schemaColumn.fixed,
+      filter: schemaColumn.filter,
+      defaultFilteredValue: schemaColumn.defaultFilteredValue,
     };
     if (schemaColumn.description) {
       column.title = (
@@ -272,6 +274,9 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         },
       }
       : void 0,
+    onChange: (pagination, filters) => {
+      setTableState({ filters });
+    },
   };
 
   return (
