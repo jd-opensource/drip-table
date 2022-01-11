@@ -40,6 +40,13 @@ type ConfigBase = {
   columnStyle?: CSSProperties;
 };
 
+interface SpacerConfig extends ConfigBase {
+  /**
+   * 占位区域
+   */
+  type: 'spacer';
+}
+
 interface TitleConfig extends ConfigBase {
   type: 'title';
   title: string;
@@ -83,6 +90,7 @@ interface DisplayColumnSelectorConfig extends ConfigBase {
 }
 
 export type DripTableHeaderElement =
+  | SpacerConfig
   | TitleConfig
   | SearchConfig
   | InsertButtonConfig
@@ -132,6 +140,10 @@ const Header = <
   const [searchKey, setSearchKey] = React.useState<SearchConfig['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
 
   const renderColumnContent = (config: DripTableHeaderElement) => {
+    if (config.type === 'spacer') {
+      return null;
+    }
+
     if (config.type === 'title') {
       return config.html
         ? <RichText html={config.title} />
@@ -232,6 +244,7 @@ const Header = <
         </Dropdown>
       );
     }
+
     return null;
   };
 
