@@ -9,18 +9,24 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { ColumnConfig, DripTableDriver, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
 
-import DripTableBuiltInComponents, { DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
+import { DripTableColumnSchema, DripTablePagination } from '..';
+import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 import Header from './header';
 import VirtualTable from './virtual-table';
 
 import styles from './index.module.css';
 
-export interface DripTableProps<RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown> {
+export interface DripTableProps<
+  RecordType extends DripTableRecordTypeBase,
+  CustomComponentSchema extends DripTableComponentSchema = never,
+  CustomComponentEvent extends EventLike = never,
+  Ext = unknown,
+> {
   /**
    * 底层组件驱动
    */
@@ -36,7 +42,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   /**
    * 表单 Schema
    */
-  schema: DripTableSchema;
+  schema: DripTableSchema<CustomComponentSchema>;
   /**
    * 表格行主键
    */
@@ -74,9 +80,7 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
    */
   components?: {
     [libName: string]: {
-      [componentName: string]:
-      new (props: DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>)
-      => React.PureComponent<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
+      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
     };
   };
   /** 生命周期 */
@@ -106,11 +110,15 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   /**
    * 过滤器触发
    */
-  onFilter?: (column: ColumnConfig) => void;
+  onFilterChange?: (filters: DripTableFilters) => void;
   /**
    * 页码/页大小变化
    */
   onPageChange?: (currentPage: number, pageSize: number) => void;
+  /**
+   * 过滤器、分页器 等配置变化
+   */
+  onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
   /**
    * 用户修改展示的列时
    */
@@ -121,15 +129,19 @@ export interface DripTableProps<RecordType extends DripTableRecordTypeBase, Cust
   onEvent?: (event: DripTableBuiltInComponentEvent | CustomComponentEvent, record: RecordType, index: number) => void;
 }
 
-const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEvent extends EventLike = never, Ext = unknown>
-  (props: DripTableProps<RecordType, CustomComponentEvent, Ext>): JSX.Element => {
+const DripTable = <
+  RecordType extends DripTableRecordTypeBase,
+  CustomComponentSchema extends DripTableComponentSchema = never,
+  CustomComponentEvent extends EventLike = never,
+  Ext = unknown,
+>(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>): JSX.Element => {
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;
   const QuestionCircleOutlined = props.driver.icons?.QuestionCircleOutlined;
   type TableColumn = NonNullable<DripTableReactComponentProps<typeof Table>['columns']>[number];
 
   const initialState = useTable();
-  const pagination = props.schema?.pagination || void 0;
+  const initialPagination = props.schema?.pagination || void 0;
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
@@ -137,10 +149,10 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     setTableState(state => ({
       pagination: {
         ...state.pagination,
-        pageSize: pagination?.pageSize || 10,
+        pageSize: initialPagination?.pageSize || 10,
       },
     }));
-  }, [pagination?.pageSize]);
+  }, [initialPagination?.pageSize]);
 
   React.useEffect(() => {
     setTableState(state => ({
@@ -166,19 +178,22 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
    * @param schema Schema
    * @returns 表格
    */
-  const renderGenerator = (schema: ColumnConfig): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
-    const BuiltInComponent = DripTableBuiltInComponents[schema['ui:type']] as new() => React.PureComponent<DripTableComponentProps<RecordType>>;
-    if (BuiltInComponent) {
-      return (value, record, index) => (
-        <BuiltInComponent
-          driver={props.driver}
-          value={value}
-          data={record}
-          schema={{ ...schema, ...schema['ui:props'] }}
-          ext={props.ext}
-          fireEvent={event => props.onEvent?.(event, record, index)}
-        />
-      );
+  const renderGenerator = (schema: CustomComponentSchema | DripTableBuiltInColumnSchema): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
+    const uiType = 'ui:type' in schema ? schema['ui:type'] : void 0;
+    if (uiType) {
+      const BuiltInComponent = DripTableBuiltInComponents[uiType] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['ui:type'], DripTableComponentSchema>>>;
+      if (BuiltInComponent) {
+        return (value, record, index) => (
+          <BuiltInComponent
+            driver={props.driver}
+            value={value}
+            data={record}
+            schema={{ ...schema, ...schema['ui:props'], 'ui:type': uiType }}
+            ext={props.ext}
+            fireEvent={event => props.onEvent?.(event, record, index)}
+          />
+        );
+      }
     }
     const [libName, componentName] = schema['ui:type'].split('::');
     if (libName && componentName) {
@@ -204,7 +219,7 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
    * @param schemaColumn Schema Column
    * @returns 表格列配置
    */
-  const columnGenerator = (schemaColumn: ColumnConfig): TableColumn => {
+  const columnGenerator = (schemaColumn: CustomComponentSchema | DripTableBuiltInColumnSchema): TableColumn => {
     let width = String(schemaColumn.width).trim();
     if ((/^[0-9]+$/uig).test(width)) {
       width += 'px';
@@ -215,6 +230,8 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
       title: schemaColumn.title,
       dataIndex: schemaColumn.dataIndex,
       fixed: schemaColumn.fixed,
+      filters: schemaColumn.filters,
+      defaultFilteredValue: schemaColumn.defaultFilteredValue,
     };
     if (schemaColumn.description) {
       column.title = (
@@ -242,13 +259,6 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
     pagination: props.schema.pagination === false
       ? false as const
       : {
-        onChange: (page, pageSize) => {
-          if (pageSize === void 0) {
-            pageSize = tableState.pagination.pageSize;
-          }
-          setTableState({ pagination: { ...tableState.pagination, current: page, pageSize } });
-          props.onPageChange?.(page, pageSize);
-        },
         size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
         total: props.total === void 0 ? dataSource.length : props.total,
@@ -272,6 +282,14 @@ const DripTable = <RecordType extends DripTableRecordTypeBase, CustomComponentEv
         },
       }
       : void 0,
+    onChange: (pagination, filters) => {
+      const current = pagination.current ?? tableState.pagination.current;
+      const pageSize = pagination.pageSize ?? tableState.pagination.pageSize;
+      setTableState({ pagination: { ...tableState.pagination, current, pageSize }, filters });
+      props.onFilterChange?.(filters);
+      props.onPageChange?.(current, pageSize);
+      props.onChange?.(pagination, filters);
+    },
   };
 
   return (

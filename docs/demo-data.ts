@@ -1,6 +1,8 @@
-import { ColumnConfig, DripTableSchema } from 'drip-table';
+import { DripTableSchema } from 'drip-table';
 
-export const initSchema: DripTableSchema = {
+import { CustomComponentSchema } from './drip-table/sample/custom-components';
+
+export const initSchema: DripTableSchema<CustomComponentSchema> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
   size: 'middle',
   bordered: true,
@@ -14,31 +16,35 @@ export const initSchema: DripTableSchema = {
     style: { margin: '0', padding: '12px 0' },
     elements: [
       {
-        type: 'title',
-        title: '商品列表',
-        span: 'auto',
-        html: false,
+        type: 'display-column-selector',
+        selectorButtonType: 'primary',
+        selectorButtonText: '选择展示列',
+      },
+      {
+        type: 'spacer',
+        style: { width: '20px' },
+      },
+      {
+        type: 'text',
+        span: 'flex-auto',
         align: 'flex-start',
+        text: '商品列表',
       },
       {
         type: 'search',
+        wrapperStyle: { width: 360 },
+        align: 'flex-end',
         placeholder: '请输入关键字',
         allowClear: true,
         searchButtonText: '搜索',
-        style: { width: 360 },
         searchKeys: [{ label: '商品', value: 'goods' }, { label: '广告', value: 'advert' }],
         searchKeyDefaultValue: 'goods',
-        align: 'flex-end',
       },
       {
         type: 'insert-button',
-        text: '添加商品',
         align: 'flex-end',
+        insertButtonText: '添加商品',
         showIcon: true,
-      },
-      {
-        type: 'display-column-selector',
-        buttonType: 'primary',
       },
     ],
   },
@@ -83,16 +89,23 @@ export const initSchema: DripTableSchema = {
       title: '库存状态',
       width: 150,
       align: 'center',
+      dataIndex: 'status',
       'ui:type': 'text',
       'ui:props': {
         mode: 'single',
       },
       type: 'string',
-      enumValue: ['onSale', 'soldOut'],
-      enumLabel: ['售卖中', '已售罄'],
+      i18n: {
+        onSale: '售卖中',
+        soldOut: '已售罄',
+      },
       description: '这是一条提示信息',
-      dataIndex: 'status',
       hidable: true,
+      filters: [
+        { text: '售卖中', value: 'onSale' },
+        { text: '已售罄', value: 'soldOut' },
+      ],
+      defaultFilteredValue: ['onSale', 'soldOut'],
     },
     {
       key: 'mock_4',
@@ -132,7 +145,7 @@ export const initSchema: DripTableSchema = {
       key: 'mock_7',
       title: '操作',
       align: 'center',
-      'ui:type': 'links',
+      'ui:type': 'link',
       'ui:props': {
         mode: 'multiple',
         operates: [
@@ -146,7 +159,7 @@ export const initSchema: DripTableSchema = {
       dataIndex: 'operate',
       hidable: true,
     },
-  ] as unknown as ColumnConfig[],
+  ],
 };
 
 export interface SampleRecordType extends Record<string, unknown> {

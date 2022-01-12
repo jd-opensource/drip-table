@@ -12,7 +12,6 @@ import { DripTableRecordTypeBase } from '@/types';
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
 export interface DTCButtonSchema extends DripTableComponentSchema {
-  'ui:type': 'button';
   /** 展示模式：单按钮、多按钮 */
   mode?: 'single' | 'multiple';
   label?: string;

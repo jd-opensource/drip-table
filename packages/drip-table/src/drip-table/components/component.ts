@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import React from 'react';
+
 import { DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
 
 import { DripTableBuiltInComponentEvent } from '.';
@@ -48,6 +50,17 @@ export interface DripTableComponentSchema {
    * 用户可控制该列显示隐藏
    */
   hidable?: boolean;
+  /**
+   * 数据过滤器设置
+   */
+  filters?: {
+    text: React.ReactNode;
+    value: string | number | boolean;
+  }[];
+  /**
+   * 默认数据过滤器值
+   */
+  defaultFilteredValue?: React.Key[] | null;
 }
 
 export interface DripTableComponentProps<

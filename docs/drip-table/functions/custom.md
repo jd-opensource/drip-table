@@ -3,16 +3,25 @@ order: 3
 title: 自定义组件库
 ---
 
-# 自定义组件库
+## 自定义组件库
 
 > 自定义业务组件，使 `drip-table` 适用于具体业务。
 
-## 参数定义
+### 参数定义
 
 #### components
 
 - 描述: `自定义组件库`
-- 类型: `{ [libName: string]: { [componentName: string]: new (props: DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>) => React.PureComponent<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>}`
+- 类型:
+
+  ```ts
+  type Components = {
+    [libName: string]: {
+      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
+    };
+  };
+  ```
+
 - 默认值: `无`
 
     自定义组件库

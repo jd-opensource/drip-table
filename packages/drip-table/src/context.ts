@@ -21,6 +21,7 @@ export interface IDripTableContext {
     total: number;
     pageSize: number;
   };
+  filters: Record<string, (boolean | React.Key)[] | null>;
   tableSize: 'default';
   checkPassed: boolean;
   selectedRowKeys: React.Key[];
@@ -38,6 +39,7 @@ export const DripTableContext = React.createContext<IDripTableContext>({
     total: 0,
     pageSize: 10,
   },
+  filters: {},
   tableSize: 'default',
   checkPassed: true,
   selectedRowKeys: [],

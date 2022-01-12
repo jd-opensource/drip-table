@@ -62,15 +62,17 @@ const schema = {
     {
       key: "mock_3",
       title: "库存状态",
+      dataIndex: "status",
       "ui:type": "text",
       "ui:props": {
         mode: "single",
       },
       type: "string",
-      enumValue: ["onSale", "soldOut"],
-      enumLabel: ["售卖中", "已售罄"],
+      i18n: {
+        onSale: '售卖中',
+        soldOut: '已售罄',
+      },
       description: "这是一条提示信息",
-      dataIndex: "status",
     },
     {
       key: "mock_4",

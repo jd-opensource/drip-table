@@ -8,97 +8,21 @@
 
 import React from 'react';
 
-import { type DripTableComponentSchema } from './drip-table/components';
+import { type DripTableBuiltInColumnSchema, type DripTableComponentSchema } from './drip-table/components';
 import { type DripTableHeaderElement } from './drip-table/header';
 
-export interface StringDataSchema {
-  type: 'string';
-  maxLength?: number;
-  minLength?: number;
-  pattern?: string;
-  default?: string;
-  enumValue?: string[];
-  enumLabel?: string[];
-  transform?: ('trim' | 'toUpperCase' | 'toLowerCase')[];
-}
-
-export interface NumberDataSchema {
-  type: 'number' | 'integer';
-  minimum?: number;
-  exclusiveMinimum?: number;
-  maximum?: number;
-  exclusiveMaximum?: number;
-  default?: number;
-  enumValue?: number[];
-  enumLabel?: string[];
-}
-
-export interface BooleanDataSchema {
-  type: 'boolean';
-  default?: boolean;
-  checkedValue?: string | number;
-  uncheckedValue?: string | number;
-}
-
-export interface NullDataSchema {
-  type: 'null';
-  default?: undefined | null;
-}
-
-export interface ObjectDataSchema {
-  type: 'object';
-  default?: Record<string, unknown>;
-  properties?: {
-    [key: string]: DataSchema;
-  };
-}
-
-export interface ArrayDataSchema {
-  type: 'array';
-  items?: DataSchema | DataSchema[];
-  default?: unknown[];
-}
-
-export type DataSchema =
-  | StringDataSchema
-  | NumberDataSchema
-  | BooleanDataSchema
-  | ObjectDataSchema
-  | NullDataSchema
-  | ArrayDataSchema;
-
-export interface UISchema {
+export type DripTableColumnSchema<T, C> = {
   /**
    * 若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）
    */
-  'ui:type': string;
-  'ui:props': {
+  'ui:type': T;
+  'ui:props'?: {
     [key: string]: unknown;
   };
-}
+} & C;
 
-export type ColumnConfig = DripTableComponentSchema & UISchema & DataSchema & {
-  /**
-   * 是否支持过滤
-   */
-  filtered?: boolean | {
-    /**
-     * 从 icons 属性传入，或者 antd 自带 icon
-     */
-    icon?: string;
-    options?: { label: string; value: string }[];
-    resetText?: string;
-    confirmText?: string;
-  };
-  /** 是否支持排序 */
-  sorter?: boolean | {
-    ascendIcon?: string;
-    descendIcon?: string;
-  };
-}
-
-export interface DripTableSchema {
+export interface DripTableSchema<CustomComponentSchema extends DripTableComponentSchema = never> {
   '$schema': 'http://json-schema.org/draft/2019-09/schema#'
   | 'http://json-schema.org/draft-07/schema#'
   | 'http://json-schema.org/draft-06/schema#'
@@ -166,13 +90,27 @@ export interface DripTableSchema {
   /**
    * 列定义
    */
-  columns: ColumnConfig[];
+  columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
 
 export type DripTableReactComponent<P> = (props: React.PropsWithChildren<P>) => React.ReactElement | null;
 export type DripTableReactComponentProps<T> = T extends DripTableReactComponent<infer P> ? P : never;
+
+export interface DripTablePagination {
+  onChange?: (page: number, pageSize?: number) => void;
+  size?: 'small' | 'default';
+  pageSize?: number;
+  total?: number;
+  current?: number;
+  position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
+  showLessItems?: boolean;
+  showQuickJumper?: boolean;
+  showSizeChanger?: boolean;
+}
+
+export type DripTableFilters = Record<string, (React.Key | boolean)[] | null>;
 
 export interface DripTableDriver<RecordType> {
   /**
@@ -191,6 +129,7 @@ export interface DripTableDriver<RecordType> {
       onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     Col: DripTableReactComponent<{
+      className?: string;
       style?: React.CSSProperties;
       span?: number;
     }>;
@@ -263,19 +202,14 @@ export interface DripTableDriver<RecordType> {
         fixed?: boolean;
         ellipsis?: boolean;
         render?: (value: unknown, record: RecordType, rowIndex: number) => React.ReactNode;
+        filters?: {
+          text: React.ReactNode;
+          value: string | number | boolean;
+        }[];
+        defaultFilteredValue?: React.Key[] | null;
       }[];
       dataSource?: RecordType[];
-      pagination?: false | {
-        onChange?: (page: number, pageSize?: number) => void;
-        size?: 'small' | 'default';
-        pageSize?: number;
-        total?: number;
-        current?: number;
-        position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
-        showLessItems?: boolean;
-        showQuickJumper?: boolean;
-        showSizeChanger?: boolean;
-      };
+      pagination?: false | DripTablePagination;
       loading?: boolean;
       size?: 'large' | 'middle' | 'small';
       bordered?: boolean;
@@ -301,8 +235,9 @@ export interface DripTableDriver<RecordType> {
           }) => void;
         }) => React.ReactNode;
       };
+      onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
     }>;
-    TableSearch?: DripTableReactComponent<Record<string, unknown> & {
+    TableAdvanceSearch?: DripTableReactComponent<Record<string, unknown> & {
       driver: DripTableDriver<RecordType>;
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
