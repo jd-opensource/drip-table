@@ -25,8 +25,9 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.2.1",
-    "cheerio": "1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.3.1",
+    "domhandler": "^4.3.0",
     "lodash": "^4.4.2",
     "rc-color-picker": "^1.2.6",
     "viewerjs": "^1.10.0"
