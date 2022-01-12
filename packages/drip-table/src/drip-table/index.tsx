@@ -14,7 +14,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
 
-import { DripTableColumnSchema } from '..';
+import { DripTableColumnSchema, DripTablePagination } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 import Header from './header';
 import VirtualTable from './virtual-table';
@@ -115,6 +115,10 @@ export interface DripTableProps<
    * 页码/页大小变化
    */
   onPageChange?: (currentPage: number, pageSize: number) => void;
+  /**
+   * 过滤器、分页器 等配置变化
+   */
+  onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
   /**
    * 用户修改展示的列时
    */
@@ -226,7 +230,7 @@ const DripTable = <
       title: schemaColumn.title,
       dataIndex: schemaColumn.dataIndex,
       fixed: schemaColumn.fixed,
-      filter: schemaColumn.filter,
+      filters: schemaColumn.filters,
       defaultFilteredValue: schemaColumn.defaultFilteredValue,
     };
     if (schemaColumn.description) {
@@ -255,13 +259,6 @@ const DripTable = <
     pagination: props.schema.pagination === false
       ? false as const
       : {
-        onChange: (page, pageSize) => {
-          if (pageSize === void 0) {
-            pageSize = tableState.pagination.pageSize;
-          }
-          setTableState({ pagination: { ...tableState.pagination, current: page, pageSize } });
-          props.onPageChange?.(page, pageSize);
-        },
         size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
         total: props.total === void 0 ? dataSource.length : props.total,
@@ -286,7 +283,12 @@ const DripTable = <
       }
       : void 0,
     onChange: (pagination, filters) => {
-      setTableState({ filters });
+      const current = pagination.current ?? tableState.pagination.current;
+      const pageSize = pagination.pageSize ?? tableState.pagination.pageSize;
+      setTableState({ pagination: { ...tableState.pagination, current, pageSize }, filters });
+      props.onFilterChange?.(filters);
+      props.onPageChange?.(current, pageSize);
+      props.onChange?.(pagination, filters);
     },
   };
 

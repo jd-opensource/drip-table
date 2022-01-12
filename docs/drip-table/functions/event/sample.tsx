@@ -6,34 +6,48 @@
 import { message } from 'antd';
 import DripTable, { DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import { initSchema, mockData, SampleRecordType } from '../../../demo-data';
+import { CustomComponentSchema } from '../../sample/custom-components';
 import { CustomComponentEvent, CustomComponents } from './custom-components';
 
 const Demo = () => {
-  const [loading, setLoading] = useState(false);
-  const [pageNum, setPageNum] = useState(1);
-  const [pageSize] = useState(10);
-  const [dataSource] = useState(mockData);
-  const [pageDataSource, setPageDataSource] = useState(dataSource);
-  const [schema] = useState(initSchema);
-  const dripTable = useRef(null);
+  const [loading, setLoading] = React.useState(false);
+  const [filters, setFilters] = React.useState<{ key: string; values: unknown[] }[] | undefined>(void 0);
+  const [pageNum, setPageNum] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [dataBase, setDataBase] = React.useState(mockData);
+  const [totalNum, setTotalNum] = React.useState(dataBase.length);
+  const [dataSource, setDataSource] = React.useState(dataBase);
+  const [schema] = React.useState(initSchema);
+  const dripTable = React.useRef(null);
 
-  useEffect(
+  React.useEffect(
     () => {
-      setPageDataSource(dataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, dataSource.length)));
+      setDataBase(mockData);
     },
-    [dataSource, pageSize, pageNum],
+    [mockData],
   );
 
-  const fetchPageData = (nextPageNum: number) => {
+  React.useEffect(
+    () => {
+      const filteredDataSource = dataBase.filter(ds => !filters?.length || filters.some(f => f.values.includes(ds[f.key])));
+      setTotalNum(filteredDataSource.length);
+      setDataSource(filteredDataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, filteredDataSource.length)));
+    },
+    [dataBase, filters, pageSize, pageNum],
+  );
+
+  const fetchPageData = (nextFilters: Record<string, string[]>, nextPageSize: number, nextPageNum: number) => {
     if (loading) {
       return;
     }
     setTimeout(
       () => {
         setLoading(false);
+        setFilters(Object.entries(nextFilters).map(([key, values]) => ({ key, values })));
+        setPageSize(nextPageSize);
         setPageNum(nextPageNum);
       },
       500,
@@ -44,12 +58,12 @@ const Demo = () => {
   return (
     <React.Fragment>
       <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType, CustomComponentEvent>
+        <DripTable<SampleRecordType, CustomComponentSchema, CustomComponentEvent>
           driver={DripTableDriverAntDesign}
           schema={schema}
           loading={loading}
-          total={mockData.length}
-          dataSource={pageDataSource}
+          total={totalNum}
+          dataSource={dataSource}
           components={{ custom: CustomComponents }}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {
@@ -61,7 +75,12 @@ const Demo = () => {
               console.log(event, record, index);
             }
           }}
-          onPageChange={(page, pageSize) => { fetchPageData(page); }}
+          onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}
+          onPageChange={(...args) => { console.log('onPageChange', ...args); }}
+          onChange={(nextPagination, nextFilters) => {
+            console.log('onChange', nextPagination, nextFilters);
+            fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
+          }}
         />
       </DripTableProvider>
     </React.Fragment>

@@ -101,6 +101,11 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       },
       description: '这是一条提示信息',
       hidable: true,
+      filters: [
+        { text: '售卖中', value: 'onSale' },
+        { text: '已售罄', value: 'soldOut' },
+      ],
+      defaultFilteredValue: ['onSale', 'soldOut'],
     },
     {
       key: 'mock_4',

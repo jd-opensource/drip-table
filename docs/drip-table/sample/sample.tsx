@@ -12,7 +12,7 @@ import { Button, message, Tabs } from 'antd';
 import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 import { CustomComponentEvent, CustomComponents, CustomComponentSchema } from './custom-components';
@@ -20,30 +20,43 @@ import { CustomComponentEvent, CustomComponents, CustomComponentSchema } from '.
 import styles from './sample.module.less';
 
 const Demo = () => {
-  const [loading, setLoading] = useState(false);
-  const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [dataSource, setDataSource] = useState(mockData);
-  const [pageDataSource, setPageDataSource] = useState(dataSource);
-  const [schema, setSchema] = useState(initSchema);
-  const [editVisible, setEditVisible] = useState(false);
-  const [allSelected, setAllSelected] = useState(false);
-  const dripTable: React.MutableRefObject<DripTableContainerHandle | null> = useRef(null);
+  const [loading, setLoading] = React.useState(false);
+  const [filters, setFilters] = React.useState<{ key: string; values: unknown[] }[] | undefined>(void 0);
+  const [pageNum, setPageNum] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [dataBase, setDataBase] = React.useState(mockData);
+  const [totalNum, setTotalNum] = React.useState(dataBase.length);
+  const [dataSource, setDataSource] = React.useState(dataBase);
+  const [schema, setSchema] = React.useState(initSchema);
+  const [editVisible, setEditVisible] = React.useState(false);
+  const [allSelected, setAllSelected] = React.useState(false);
+  const dripTable: React.MutableRefObject<DripTableContainerHandle | null> = React.useRef(null);
 
-  useEffect(
+  React.useEffect(
     () => {
-      setPageDataSource(dataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, dataSource.length)));
+      setDataBase(mockData);
     },
-    [dataSource, pageSize, pageNum],
+    [mockData],
   );
 
-  const fetchPageData = (nextPageNum: number) => {
+  React.useEffect(
+    () => {
+      const filteredDataSource = dataBase.filter(ds => !filters?.length || filters.some(f => f.values.includes(ds[f.key])));
+      setTotalNum(filteredDataSource.length);
+      setDataSource(filteredDataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, filteredDataSource.length)));
+    },
+    [dataBase, filters, pageSize, pageNum],
+  );
+
+  const fetchPageData = (nextFilters: Record<string, string[]>, nextPageSize: number, nextPageNum: number) => {
     if (loading) {
       return;
     }
     setTimeout(
       () => {
         setLoading(false);
+        setFilters(Object.entries(nextFilters).map(([key, values]) => ({ key, values })));
+        setPageSize(nextPageSize);
         setPageNum(nextPageNum);
       },
       500,
@@ -53,7 +66,7 @@ const Demo = () => {
 
   function selectAllRecord() {
     const tableInstance = dripTable.current;
-    const allKeys = pageDataSource.map((rec, idx) => idx);
+    const allKeys = dataSource.map((rec, idx) => idx);
     if (tableInstance) {
       const selectedKeys = tableInstance.selectedRowKeys;
       if (selectedKeys.length < allKeys.length) {
@@ -80,8 +93,8 @@ const Demo = () => {
           driver={DripTableDriverAntDesign}
           schema={schema}
           loading={loading}
-          total={mockData.length}
-          dataSource={pageDataSource}
+          total={totalNum}
+          dataSource={dataSource}
           components={{ custom: CustomComponents }}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {
@@ -93,9 +106,14 @@ const Demo = () => {
               console.log(event, record, index);
             }
           }}
-          onPageChange={(page, pageSize) => { fetchPageData(page); }}
+          onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}
+          onPageChange={(...args) => { console.log('onPageChange', ...args); }}
+          onChange={(nextPagination, nextFilters) => {
+            console.log('onChange', nextPagination, nextFilters);
+            fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
+          }}
           onSelectionChange={(selectedKeys, selectedRows) => {
-            setAllSelected(selectedRows.length >= pageDataSource.length);
+            setAllSelected(selectedRows.length >= dataSource.length);
           }}
           onSearch={searchParams => console.log(searchParams)}
           onInsertButtonClick={event => console.log(event)}
@@ -119,8 +137,8 @@ const Demo = () => {
             </Tabs.TabPane>
             <Tabs.TabPane key="DATA" tab="DATA" className={styles['json-edit-tab']}>
               <JsonEditor
-                value={dataSource}
-                onChange={(d: typeof dataSource) => { setDataSource(d); }}
+                value={dataBase}
+                onChange={(d: typeof dataBase) => { setDataBase(d); }}
               />
             </Tabs.TabPane>
           </Tabs>

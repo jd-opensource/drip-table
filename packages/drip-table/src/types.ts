@@ -202,7 +202,7 @@ export interface DripTableDriver<RecordType> {
         fixed?: boolean;
         ellipsis?: boolean;
         render?: (value: unknown, record: RecordType, rowIndex: number) => React.ReactNode;
-        filter?: {
+        filters?: {
           text: React.ReactNode;
           value: string | number | boolean;
         }[];

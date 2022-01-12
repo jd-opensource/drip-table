@@ -53,7 +53,7 @@ export interface DripTableComponentSchema {
   /**
    * 数据过滤器设置
    */
-  filter?: {
+  filters?: {
     text: React.ReactNode;
     value: string | number | boolean;
   }[];
