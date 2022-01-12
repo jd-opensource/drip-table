@@ -7,7 +7,7 @@
  */
 
 import { Button, Input, message, Modal } from 'antd';
-import { ColumnConfig, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableComponentSchema, DripTableSchema } from 'drip-table';
 import React, { useState } from 'react';
 
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
@@ -27,7 +27,7 @@ const ToolLayout = (props: { store: GlobalStore }) => {
     configs: {
       ...state.globalConfigs,
     },
-    columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })) as ColumnConfig[],
+    columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })) as DripTableColumnSchema<string, DripTableComponentSchema>[],
   });
 
   /**

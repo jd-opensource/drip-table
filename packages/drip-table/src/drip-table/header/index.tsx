@@ -307,7 +307,7 @@ const Header = <
       );
       return (
         <Dropdown
-          trigger="click"
+          trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
           onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
