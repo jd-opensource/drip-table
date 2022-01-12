@@ -89,15 +89,17 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       title: '库存状态',
       width: 150,
       align: 'center',
+      dataIndex: 'status',
       'ui:type': 'text',
       'ui:props': {
         mode: 'single',
       },
       type: 'string',
-      enumValue: ['onSale', 'soldOut'],
-      enumLabel: ['售卖中', '已售罄'],
+      i18n: {
+        onSale: '售卖中',
+        soldOut: '已售罄',
+      },
       description: '这是一条提示信息',
-      dataIndex: 'status',
       hidable: true,
     },
     {
