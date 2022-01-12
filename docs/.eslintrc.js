@@ -1,6 +1,7 @@
 const path = require('path');
 
 const rules = {
+  "no-console": "off",
   "no-new-func": "off",
   "no-undefined": "error",
   "no-void": "off",
