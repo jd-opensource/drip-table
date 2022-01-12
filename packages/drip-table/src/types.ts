@@ -11,7 +11,7 @@ import React from 'react';
 import { type DripTableBuiltInColumnSchema, type DripTableComponentSchema } from './drip-table/components';
 import { type DripTableHeaderElement } from './drip-table/header';
 
-export type DripTableColumnSchema<T, C> = {
+export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
   /**
    * 若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）

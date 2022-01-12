@@ -6,24 +6,24 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { ColumnConfig, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
 
 import { DripTableComponentAttrConfig } from '@/typing';
 
 import useSharedState from './custom-hook';
 
-export type DripTableColumn = ColumnConfig & {
+export type DripTableColumn = DripTableColumnSchema<string, {
   $id: string;
-  key: number;
+  key: number ;
   sort: number;
   type: DripTableComponentAttrConfig['type'];
-}
+}>;
 
 export interface DripTableGeneratorState {
   isEdit: boolean;
   columns: DripTableColumn[];
   currentColumn?: DripTableColumn;
-  globalConfigs: DripTableSchema['configs'];
+  globalConfigs: Omit<DripTableSchema, '$schema' | 'columns'>;
   /** 表格数据，generator不需要知道数据格式是什么，直接交给drip-table即可 */
   previewDataSource: Record<string, unknown>[];
 }
