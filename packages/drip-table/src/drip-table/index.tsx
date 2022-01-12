@@ -80,9 +80,7 @@ export interface DripTableProps<
    */
   components?: {
     [libName: string]: {
-      [componentName: string]:
-      new (props: DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>)
-      => React.PureComponent<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
+      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
     };
   };
   /** 生命周期 */
