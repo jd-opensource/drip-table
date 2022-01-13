@@ -15,16 +15,21 @@ import ViewerJS from 'viewerjs';
 
 import Highlight, { HighlightProps } from '@/components/Highlight';
 
+type UppercaseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+type HTMLTagName = keyof React.ReactHTML;
+type DOMEventType = keyof React.DOMAttributes<unknown> & `on${UppercaseLetter}${string}`;
+
 interface RichTextProps {
+  style?: React.CSSProperties;
   html: string;
-  tagNames?: (keyof React.ReactHTML)[];
   singleLine?: boolean;
   maxLength?: number;
   highlight?: Omit<HighlightProps, 'content' | 'tagName'>;
-  style?: React.CSSProperties;
+  tagNames?: HTMLTagName[];
+  domEvents?: DOMEventType[];
 }
 
-const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
+const SAFE_TAG_NAME: HTMLTagName[] = [
   'a',
   'abbr',
   'address',
@@ -143,12 +148,168 @@ const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
   'webview',
 ];
 
-const EVENT_PROP_NAME = Object.fromEntries(
-  [
-    'onClick',
-  ]
-    .map(name => [name.toLowerCase(), name]),
-);
+const DOM_EVENT_TYPE: DOMEventType[] = [
+  'onCopy',
+  'onCopyCapture',
+  'onCut',
+  'onCutCapture',
+  'onPaste',
+  'onPasteCapture',
+  'onCompositionEnd',
+  'onCompositionEndCapture',
+  'onCompositionStart',
+  'onCompositionStartCapture',
+  'onCompositionUpdate',
+  'onCompositionUpdateCapture',
+  'onFocus',
+  'onFocusCapture',
+  'onBlur',
+  'onBlurCapture',
+  'onChange',
+  'onChangeCapture',
+  'onBeforeInput',
+  'onBeforeInputCapture',
+  'onInput',
+  'onInputCapture',
+  'onReset',
+  'onResetCapture',
+  'onSubmit',
+  'onSubmitCapture',
+  'onInvalid',
+  'onInvalidCapture',
+  'onLoad',
+  'onLoadCapture',
+  'onError',
+  'onErrorCapture',
+  'onKeyDown',
+  'onKeyDownCapture',
+  'onKeyPress',
+  'onKeyPressCapture',
+  'onKeyUp',
+  'onKeyUpCapture',
+  'onAbort',
+  'onAbortCapture',
+  'onCanPlay',
+  'onCanPlayCapture',
+  'onCanPlayThrough',
+  'onCanPlayThroughCapture',
+  'onDurationChange',
+  'onDurationChangeCapture',
+  'onEmptied',
+  'onEmptiedCapture',
+  'onEncrypted',
+  'onEncryptedCapture',
+  'onEnded',
+  'onEndedCapture',
+  'onLoadedData',
+  'onLoadedDataCapture',
+  'onLoadedMetadata',
+  'onLoadedMetadataCapture',
+  'onLoadStart',
+  'onLoadStartCapture',
+  'onPause',
+  'onPauseCapture',
+  'onPlay',
+  'onPlayCapture',
+  'onPlaying',
+  'onPlayingCapture',
+  'onProgress',
+  'onProgressCapture',
+  'onRateChange',
+  'onRateChangeCapture',
+  'onSeeked',
+  'onSeekedCapture',
+  'onSeeking',
+  'onSeekingCapture',
+  'onStalled',
+  'onStalledCapture',
+  'onSuspend',
+  'onSuspendCapture',
+  'onTimeUpdate',
+  'onTimeUpdateCapture',
+  'onVolumeChange',
+  'onVolumeChangeCapture',
+  'onWaiting',
+  'onWaitingCapture',
+  'onAuxClick',
+  'onAuxClickCapture',
+  'onClick',
+  'onClickCapture',
+  'onContextMenu',
+  'onContextMenuCapture',
+  'onDoubleClick',
+  'onDoubleClickCapture',
+  'onDrag',
+  'onDragCapture',
+  'onDragEnd',
+  'onDragEndCapture',
+  'onDragEnter',
+  'onDragEnterCapture',
+  'onDragExit',
+  'onDragExitCapture',
+  'onDragLeave',
+  'onDragLeaveCapture',
+  'onDragOver',
+  'onDragOverCapture',
+  'onDragStart',
+  'onDragStartCapture',
+  'onDrop',
+  'onDropCapture',
+  'onMouseDown',
+  'onMouseDownCapture',
+  'onMouseEnter',
+  'onMouseLeave',
+  'onMouseMove',
+  'onMouseMoveCapture',
+  'onMouseOut',
+  'onMouseOutCapture',
+  'onMouseOver',
+  'onMouseOverCapture',
+  'onMouseUp',
+  'onMouseUpCapture',
+  'onSelect',
+  'onSelectCapture',
+  'onTouchCancel',
+  'onTouchCancelCapture',
+  'onTouchEnd',
+  'onTouchEndCapture',
+  'onTouchMove',
+  'onTouchMoveCapture',
+  'onTouchStart',
+  'onTouchStartCapture',
+  'onPointerDown',
+  'onPointerDownCapture',
+  'onPointerMove',
+  'onPointerMoveCapture',
+  'onPointerUp',
+  'onPointerUpCapture',
+  'onPointerCancel',
+  'onPointerCancelCapture',
+  'onPointerEnter',
+  'onPointerEnterCapture',
+  'onPointerLeave',
+  'onPointerLeaveCapture',
+  'onPointerOver',
+  'onPointerOverCapture',
+  'onPointerOut',
+  'onPointerOutCapture',
+  'onGotPointerCapture',
+  'onGotPointerCaptureCapture',
+  'onLostPointerCapture',
+  'onLostPointerCaptureCapture',
+  'onScroll',
+  'onScrollCapture',
+  'onWheel',
+  'onWheelCapture',
+  'onAnimationStart',
+  'onAnimationStartCapture',
+  'onAnimationEnd',
+  'onAnimationEndCapture',
+  'onAnimationIteration',
+  'onAnimationIterationCapture',
+  'onTransitionEnd',
+  'onTransitionEndCapture',
+];
 
 const HIDDEN_TAG_PROP_NAME = new Set([
   'key',
@@ -158,17 +319,14 @@ const HIDDEN_TAG_PROP_NAME = new Set([
 interface ReducerRenderValue {
   elements: (JSX.Element | string)[];
   maxLength: number;
-  tagNames: NonNullable<RichTextProps['tagNames']>;
   singleLine: NonNullable<RichTextProps['singleLine']>;
   highlight: RichTextProps['highlight'];
+  tagNames: HTMLTagName[];
+  domEvents: Record<string, DOMEventType>;
 }
 
 /**
  * 高亮文本
- *
- * @export
- * @class RichText
- * @extends {React.PureComponent<RichTextProps>}
  */
 export default class RichText extends React.PureComponent<RichTextProps> {
   private viewer!: ViewerJS;
@@ -186,7 +344,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
    * @memberOf RichText
    */
   private reducerRenderEl = (prevVal: ReducerRenderValue, el: DOMHandler.DataNode | DOMHandler.Element | Cheerio.Node, key: number): ReducerRenderValue => {
-    const { tagNames, singleLine, maxLength, highlight } = prevVal;
+    const { maxLength, singleLine, highlight, tagNames, domEvents } = prevVal;
     if (el.type === 'text') {
       let text = 'data' in el ? el.data ?? '' : '';
       if (singleLine) {
@@ -232,12 +390,12 @@ export default class RichText extends React.PureComponent<RichTextProps> {
         // normal props
         ...Object.fromEntries(
           Object.entries(attribs)
-            .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k) && !(k.toLowerCase() in EVENT_PROP_NAME)),
+            .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k) && !(k.toLowerCase() in domEvents)),
         ),
         // event props
         ...Object.fromEntries(
           Object.entries(attribs)
-            .map(([k, v]) => [EVENT_PROP_NAME[k.toLowerCase()], v])
+            .map(([k, v]) => [domEvents[k.toLowerCase()], v])
             .filter(([k, v]) => k)
             .map(([k, v]) => [k, new Function(v)]),
         ),
@@ -261,9 +419,10 @@ export default class RichText extends React.PureComponent<RichTextProps> {
         const res = children.reduce<ReducerRenderValue>(this.reducerRenderEl, {
           elements: [],
           maxLength,
-          tagNames,
           singleLine,
           highlight,
+          tagNames,
+          domEvents,
         });
         if (res.elements.length > 0) {
           content = res.elements;
@@ -302,19 +461,18 @@ export default class RichText extends React.PureComponent<RichTextProps> {
   }
 
   public render(): JSX.Element | null {
-    const { html, maxLength = -1, tagNames = SAFE_TAG_NAME, singleLine = false, highlight, style } = this.props;
-    const $ = cheerio.load(html);
-    const body = $('body')[0];
+    const bodyEl = cheerio.load(this.props.html)('body')[0];
     return (
-      <div ref={this.onRef} style={style}>
+      <div ref={this.onRef} style={this.props.style}>
         {
-          body && body.type === 'tag'
-            ? body.children.reduce<ReducerRenderValue>(this.reducerRenderEl, {
+          bodyEl && bodyEl.type === 'tag'
+            ? bodyEl.children.reduce<ReducerRenderValue>(this.reducerRenderEl, {
               elements: [],
-              maxLength,
-              tagNames,
-              singleLine,
-              highlight,
+              maxLength: this.props.maxLength ?? -1,
+              singleLine: this.props.singleLine ?? false,
+              highlight: this.props.highlight,
+              tagNames: this.props.tagNames ?? SAFE_TAG_NAME,
+              domEvents: Object.fromEntries((this.props.domEvents ?? DOM_EVENT_TYPE).map(name => [name.toLowerCase(), name])),
             }).elements
             : void 0
         }
