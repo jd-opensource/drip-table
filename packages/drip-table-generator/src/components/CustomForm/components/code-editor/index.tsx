@@ -5,8 +5,9 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import MonacoEditor from '@monaco-editor/react';
+
 import React from 'react';
+import MonacoEditor, { monaco as Monaco } from 'react-monaco-editor';
 
 import { DTGComponentPropertySchema } from '@/typing';
 
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export default class CodeEditorComponent extends React.PureComponent<Props> {
+  private markerListener?: Monaco.IDisposable;
+
   public render() {
     const uiProps = this.props.schema['ui:props'] || {};
 
@@ -30,9 +33,19 @@ export default class CodeEditorComponent extends React.PureComponent<Props> {
           theme="vs-dark"
           value={this.props.value as string}
           onChange={(value) => { this.props.onChange?.(value || ''); }}
-          onValidate={(markers) => {
-            const errorMessages = markers.map(item => item.message).join('\n');
-            this.props.onValidate?.(errorMessages);
+          editorDidMount={(editor, monaco) => {
+            this.markerListener?.dispose();
+            this.markerListener = monaco.editor.onDidChangeMarkers((uris) => {
+              const editorUri = editor.getModel()?.uri;
+              if (editorUri) {
+                const markerChanged = uris.find(uri => uri.path === editorUri.path);
+                if (markerChanged) {
+                  const markers = monaco.editor.getModelMarkers({ resource: editorUri });
+                  const errorMessages = markers.map(item => item.message).join('\n');
+                  this.props.onValidate?.(errorMessages);
+                }
+              }
+            });
           }}
         />
       </div>
