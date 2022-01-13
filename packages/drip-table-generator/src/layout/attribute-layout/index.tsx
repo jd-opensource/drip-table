@@ -7,11 +7,11 @@
  */
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
-import MonacoEditor from '@monaco-editor/react';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import debounce from 'lodash/debounce';
 import React from 'react';
+import MonacoEditor from 'react-monaco-editor';
 
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
