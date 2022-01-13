@@ -1,6 +1,6 @@
 /*
  * This file is part of the drip-table project.
- * @link     : https://drip-table.jd.com/
+ * @link     : https://ace.jd.com/
  * @author   : Emil Zhai (root@derzh.com)
  * @modifier : Emil Zhai (root@derzh.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
@@ -8,20 +8,20 @@
 
 import 'viewerjs/dist/viewer.css';
 
-import cheerio from 'cheerio';
-import React, { CSSProperties } from 'react';
+import cheerio, * as Cheerio from 'cheerio';
+import * as DOMHandler from 'domhandler';
+import React from 'react';
 import ViewerJS from 'viewerjs';
 
-import Highlight, { HighlightProps } from '../Highlight';
+import Highlight, { HighlightProps } from '@/components/Highlight';
 
 interface RichTextProps {
   html: string;
-  tagNames?: (keyof React.ReactDOM)[];
+  tagNames?: (keyof React.ReactHTML)[];
   singleLine?: boolean;
   maxLength?: number;
   highlight?: Omit<HighlightProps, 'content' | 'tagName'>;
-  style?: CSSProperties;
-  wrapperClass?: string;
+  style?: React.CSSProperties;
 }
 
 const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
@@ -141,62 +141,19 @@ const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
   'video',
   'wbr',
   'webview',
-  'animate',
-  'circle',
-  'clipPath',
-  'defs',
-  'desc',
-  'ellipse',
-  'feBlend',
-  'feColorMatrix',
-  'feComponentTransfer',
-  'feComposite',
-  'feConvolveMatrix',
-  'feDiffuseLighting',
-  'feDisplacementMap',
-  'feDistantLight',
-  'feDropShadow',
-  'feFlood',
-  'feFuncA',
-  'feFuncB',
-  'feFuncG',
-  'feFuncR',
-  'feGaussianBlur',
-  'feImage',
-  'feMerge',
-  'feMergeNode',
-  'feMorphology',
-  'feOffset',
-  'fePointLight',
-  'feSpecularLighting',
-  'feSpotLight',
-  'feTile',
-  'feTurbulence',
-  'filter',
-  'foreignObject',
-  'g',
-  'image',
-  'line',
-  'linearGradient',
-  'marker',
-  'mask',
-  'metadata',
-  'path',
-  'pattern',
-  'polygon',
-  'polyline',
-  'radialGradient',
-  'rect',
-  'stop',
-  'svg',
-  'switch',
-  'symbol',
-  'text',
-  'textPath',
-  'tspan',
-  'use',
-  'view',
 ];
+
+const EVENT_PROP_NAME = Object.fromEntries(
+  [
+    'onClick',
+  ]
+    .map(name => [name.toLowerCase(), name]),
+);
+
+const HIDDEN_TAG_PROP_NAME = new Set([
+  'key',
+  'class',
+]);
 
 interface ReducerRenderValue {
   elements: (JSX.Element | string)[];
@@ -217,24 +174,6 @@ export default class RichText extends React.PureComponent<RichTextProps> {
   private viewer!: ViewerJS;
 
   /**
-   * 根据指定属性名过滤掉一部分属性
-   *
-   * @private
-   * @param {Record<string, unknown>} originAttr 原始属性对象
-   * @param {string[]} excludeKeys 指定需要过滤的属性名
-   * @returns {Record<string, unknown>} 过滤后的属性
-   *
-   * @memberOf RichText
-   */
-  private filterAttrs(originAttr: Record<string, unknown>, excludeKeys: string[]) {
-    const attr = {};
-    Object.keys(originAttr).filter(k => !excludeKeys.includes(k)).forEach((key) => {
-      attr[key] = originAttr[key];
-    });
-    return attr;
-  }
-
-  /**
    * 迭代渲染一个节点
    *
    * @private
@@ -246,10 +185,10 @@ export default class RichText extends React.PureComponent<RichTextProps> {
    *
    * @memberOf RichText
    */
-  private reducerRenderEl = (prevVal: ReducerRenderValue, el: cheerio.Element, key: number): ReducerRenderValue => {
+  private reducerRenderEl = (prevVal: ReducerRenderValue, el: DOMHandler.DataNode | DOMHandler.Element | Cheerio.Node, key: number): ReducerRenderValue => {
     const { tagNames, singleLine, maxLength, highlight } = prevVal;
     if (el.type === 'text') {
-      let text = el.data || '';
+      let text = 'data' in el ? el.data ?? '' : '';
       if (singleLine) {
         text = text.replace(/[\r\n]/ug, '$nbsp');
       }
@@ -267,8 +206,8 @@ export default class RichText extends React.PureComponent<RichTextProps> {
       );
       return prevVal;
     }
-    if (tagNames.includes(el.tagName as never)) {
-      const tagName = el.tagName as NonNullable<HighlightProps['tagName']>;
+    if ('tagName' in el && tagNames.includes(el.tagName as never)) {
+      const tagName = el.tagName;
       const { attribs = {}, children } = el;
       const style: React.CSSProperties = {};
       if (attribs.style) {
@@ -290,18 +229,32 @@ export default class RichText extends React.PureComponent<RichTextProps> {
         style.display = 'inline';
       }
       const props: Record<string, unknown> = {
-        ...this.filterAttrs(attribs, ['key', 'class', 'onclick']),
+        // normal props
+        ...Object.fromEntries(
+          Object.entries(attribs)
+            .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k) && !(k.toLowerCase() in EVENT_PROP_NAME)),
+        ),
+        // event props
+        ...Object.fromEntries(
+          Object.entries(attribs)
+            .map(([k, v]) => [EVENT_PROP_NAME[k.toLowerCase()], v])
+            .filter(([k, v]) => k)
+            .map(([k, v]) => [k, new Function(v)]),
+        ),
+        // static props
         key,
         style,
         className: attribs.class,
         src: attribs.src,
         width: attribs.width,
         height: attribs.height,
-        onClick: new Function(attribs.onclick),
       };
       if (tagName === 'a') {
         props.href = attribs.href;
         props.target = attribs.target;
+      }
+      if (attribs.title) {
+        props.title = attribs.title;
       }
       let content: (JSX.Element | string | null)[] | undefined;
       if (children) {
@@ -349,11 +302,11 @@ export default class RichText extends React.PureComponent<RichTextProps> {
   }
 
   public render(): JSX.Element | null {
-    const { html, maxLength = -1, tagNames = SAFE_TAG_NAME, singleLine = false, highlight, style, wrapperClass } = this.props;
+    const { html, maxLength = -1, tagNames = SAFE_TAG_NAME, singleLine = false, highlight, style } = this.props;
     const $ = cheerio.load(html);
     const body = $('body')[0];
     return (
-      <div ref={this.onRef} style={style} className={wrapperClass}>
+      <div ref={this.onRef} style={style}>
         {
           body && body.type === 'tag'
             ? body.children.reduce<ReducerRenderValue>(this.reducerRenderEl, {

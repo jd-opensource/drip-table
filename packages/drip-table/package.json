@@ -24,8 +24,9 @@
     "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
   },
   "dependencies": {
-    "cheerio": "1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.3.1",
+    "domhandler": "^4.3.0",
     "lodash": "^4.17.21",
     "rc-resize-observer": "^1.0.1",
     "react-dom": "^16.9.0",
@@ -33,7 +34,6 @@
     "viewerjs": "1.7.1"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.22",
     "@types/react-window": "^1.8.5",
     "father-build": "^1.20.4",
     "tsc-alias": "^1.4.2",

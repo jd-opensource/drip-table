@@ -8,8 +8,9 @@
 
 import 'viewerjs/dist/viewer.css';
 
-import cheerio from 'cheerio';
-import React, { CSSProperties } from 'react';
+import cheerio, * as Cheerio from 'cheerio';
+import * as DOMHandler from 'domhandler';
+import React from 'react';
 import ViewerJS from 'viewerjs';
 
 import Highlight, { HighlightProps } from '@/components/Highlight';
@@ -20,7 +21,7 @@ interface RichTextProps {
   singleLine?: boolean;
   maxLength?: number;
   highlight?: Omit<HighlightProps, 'content' | 'tagName'>;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 }
 
 const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
@@ -142,6 +143,18 @@ const SAFE_TAG_NAME: NonNullable<RichTextProps['tagNames']> = [
   'webview',
 ];
 
+const EVENT_PROP_NAME = Object.fromEntries(
+  [
+    'onClick',
+  ]
+    .map(name => [name.toLowerCase(), name]),
+);
+
+const HIDDEN_TAG_PROP_NAME = new Set([
+  'key',
+  'class',
+]);
+
 interface ReducerRenderValue {
   elements: (JSX.Element | string)[];
   maxLength: number;
@@ -172,10 +185,10 @@ export default class RichText extends React.PureComponent<RichTextProps> {
    *
    * @memberOf RichText
    */
-  private reducerRenderEl = (prevVal: ReducerRenderValue, el: cheerio.Element, key: number): ReducerRenderValue => {
+  private reducerRenderEl = (prevVal: ReducerRenderValue, el: DOMHandler.DataNode | DOMHandler.Element | Cheerio.Node, key: number): ReducerRenderValue => {
     const { tagNames, singleLine, maxLength, highlight } = prevVal;
     if (el.type === 'text') {
-      let text = el.data || '';
+      let text = 'data' in el ? el.data ?? '' : '';
       if (singleLine) {
         text = text.replace(/[\r\n]/ug, '$nbsp');
       }
@@ -193,8 +206,8 @@ export default class RichText extends React.PureComponent<RichTextProps> {
       );
       return prevVal;
     }
-    if (tagNames.includes(el.tagName as never)) {
-      const tagName = el.tagName as NonNullable<HighlightProps['tagName']>;
+    if ('tagName' in el && tagNames.includes(el.tagName as never)) {
+      const tagName = el.tagName;
       const { attribs = {}, children } = el;
       const style: React.CSSProperties = {};
       if (attribs.style) {
@@ -215,22 +228,33 @@ export default class RichText extends React.PureComponent<RichTextProps> {
         }
         style.display = 'inline';
       }
-      const filterAttrs = (rec: Record<string, unknown>, excludeKeys: string[]) =>
-        Object.fromEntries(Object.entries(rec)
-          .filter(([k, v]) => !excludeKeys.includes(k)));
       const props: Record<string, unknown> = {
-        ...filterAttrs(attribs, ['key', 'class', 'onclick']),
+        // normal props
+        ...Object.fromEntries(
+          Object.entries(attribs)
+            .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k) && !(k.toLowerCase() in EVENT_PROP_NAME)),
+        ),
+        // event props
+        ...Object.fromEntries(
+          Object.entries(attribs)
+            .map(([k, v]) => [EVENT_PROP_NAME[k.toLowerCase()], v])
+            .filter(([k, v]) => k)
+            .map(([k, v]) => [k, new Function(v)]),
+        ),
+        // static props
         key,
         style,
         className: attribs.class,
         src: attribs.src,
         width: attribs.width,
         height: attribs.height,
-        onClick: new Function(attribs.onclick),
       };
       if (tagName === 'a') {
         props.href = attribs.href;
         props.target = attribs.target;
+      }
+      if (attribs.title) {
+        props.title = attribs.title;
       }
       let content: (JSX.Element | string | null)[] | undefined;
       if (children) {
