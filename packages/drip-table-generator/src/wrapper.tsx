@@ -10,6 +10,7 @@ import PreviewTable from './layout/preview-table';
 import ToolLayout from './layout/tool-layout';
 import { defaultState, DripTableGeneratorState, GlobalStore, setState } from './store';
 import { DripTableGeneratorProps } from './typing';
+import { filterAttributes } from './utils';
 
 import styles from './index.module.less';
 
@@ -35,8 +36,8 @@ const Wrapper = (props: DripTableGeneratorProps & {
   } = useGlobalData();
   const initialData = { previewDataSource: dataSource } as DripTableGeneratorState;
   if (schema) {
-    initialData.globalConfigs = schema.configs;
-    initialData.columns = schema.columns?.map((item, index) => ({ key: index, sort: index, ...item }));
+    initialData.globalConfigs = filterAttributes(schema, 'columns');
+    initialData.columns = schema.columns?.map((item, index) => ({ sort: index, ...item }));
   }
   const originState: DripTableGeneratorState = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });

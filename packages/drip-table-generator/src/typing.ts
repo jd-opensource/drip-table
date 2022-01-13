@@ -1,10 +1,67 @@
+import { DripTableComponentSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from 'drip-table';
 import { CSSProperties } from 'react';
-import { DataSchema, DripTableSchema, EventLike, DripTableProps, DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+
 import { DripTableGeneratorState } from './store';
+
+export interface StringDataSchema {
+  type: 'string';
+  maxLength?: number;
+  minLength?: number;
+  pattern?: string;
+  default?: string;
+  enumValue?: string[];
+  enumLabel?: string[];
+  transform?: ('trim' | 'toUpperCase' | 'toLowerCase')[];
+}
+
+export interface NumberDataSchema {
+  type: 'number' | 'integer';
+  minimum?: number;
+  exclusiveMinimum?: number;
+  maximum?: number;
+  exclusiveMaximum?: number;
+  default?: number;
+  enumValue?: number[];
+  enumLabel?: string[];
+}
+
+export interface BooleanDataSchema {
+  type: 'boolean';
+  default?: boolean;
+  checkedValue?: string | number;
+  uncheckedValue?: string | number;
+}
+
+export interface NullDataSchema {
+  type: 'null';
+  default?: undefined | null;
+}
+
+export interface ObjectDataSchema {
+  type: 'object';
+  default?: Record<string, unknown>;
+  properties?: {
+    [key: string]: DataSchema;
+  };
+}
+
+export interface ArrayDataSchema {
+  type: 'array';
+  items?: DataSchema | DataSchema[];
+  default?: unknown[];
+}
+
+export type DataSchema =
+  | StringDataSchema
+  | NumberDataSchema
+  | BooleanDataSchema
+  | ObjectDataSchema
+  | NullDataSchema
+  | ArrayDataSchema;
 
 /** 组件属性的表单配置项 */
 export type DTGComponentPropertySchema = DataSchema & {
-  $id?: string;
+  key: string;
   name: string;
   group: string;
   required?: boolean;
@@ -32,7 +89,6 @@ export type DTGComponentPropertySchema = DataSchema & {
 
 /** 组件配置项 */
 export interface DripTableComponentAttrConfig {
-  '$id': string;
   /** 组件类型 */
   'ui:type': string;
   type: 'string' | 'number' | 'boolean' | 'object' | 'integer' | 'null' | 'array';
@@ -64,22 +120,26 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState {
   getDataSource: () => Record<string, unknown>[];
 }
 
-export interface DripTableGeneratorProps<CustomComponentEvent extends EventLike = never, Ext = unknown> {
+export interface DripTableGeneratorProps<
+RecordType extends DripTableRecordTypeBase = never,
+CustomComponentSchema extends DripTableComponentSchema = never,
+CustomComponentEvent extends EventLike = never,
+Ext = unknown> {
   style?: CSSProperties;
-  driver: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver<RecordType>;
   showComponentLayout?: boolean;
   componentLayoutStyle?: CSSProperties;
   rightLayoutStyle?: CSSProperties;
   showToolLayout?: boolean;
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
-  dataSource: DripTableRecordTypeBase[];
+  dataSource: RecordType[];
   dataFields?: string[];
-  schema?: DripTableSchema;
-  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentEvent, Ext>['components'];
+  schema?: DripTableSchema<CustomComponentSchema>;
+  customComponents?: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];
   };
   customGlobalConfigPanel?: DTGComponentPropertySchema[];
-  onExportSchema?: (schema: DripTableSchema) => void;
+  onExportSchema?: (schema: DripTableSchema<CustomComponentSchema>) => void;
 }

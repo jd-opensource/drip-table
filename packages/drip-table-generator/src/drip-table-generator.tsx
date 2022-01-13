@@ -1,6 +1,6 @@
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { DripTableColumnSchema, DripTableComponentSchema, DripTableSchema } from 'drip-table';
+import { DripTableSchema } from 'drip-table';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { defaultState, DripTableGeneratorState, GlobalStore } from '@/store';
@@ -24,7 +24,7 @@ const useTableRoot = (
         configs: {
           ...currentState.globalConfigs,
         },
-        columns: currentState.columns.map(item => ({ ...item, key: void 0, sort: void 0 })) as DripTableColumnSchema<string, DripTableComponentSchema>[],
+        columns: currentState.columns.map(item => ({ ...item, sort: void 0 })),
       };
     }
 
@@ -33,7 +33,7 @@ const useTableRoot = (
       configs: {
         ...state.globalConfigs,
       },
-      columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })) as DripTableColumnSchema<string, DripTableComponentSchema>[],
+      columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })),
     };
   };
 

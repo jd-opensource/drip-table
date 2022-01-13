@@ -13,10 +13,11 @@ import { DripTableComponentAttrConfig } from '@/typing';
 import useSharedState from './custom-hook';
 
 export type DripTableColumn = DripTableColumnSchema<string, {
-  $id: string;
-  key: number ;
+  key: string;
   sort: number;
   type: DripTableComponentAttrConfig['type'];
+  title: string;
+  dataIndex: string | string[];
 }>;
 
 export interface DripTableGeneratorState {
