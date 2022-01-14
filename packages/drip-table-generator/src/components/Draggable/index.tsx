@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './index.module.less';
 
 interface Data {
-  key: number;
+  index: number;
   sort: number;
   width?: string | number;
 }
@@ -58,9 +58,9 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
 
   public compare() {
     return (a: T, b: T) => {
-      if (a.key < b.key) {
+      if (a.index < b.index) {
         return -1;
-      } if (a.key > b.key) {
+      } if (a.index > b.index) {
         return 1;
       }
       return 0;
@@ -82,18 +82,18 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
       if (sort < droppedSort) {
         data.map((item) => {
           if (item[codeKey] === Number(code)) {
-            item.key = droppedSort;
-          } else if (item.key > sort && item.key < droppedSort + 1) {
-            item.key -= 1;
+            item.index = droppedSort;
+          } else if (item.index > sort && item.index < droppedSort + 1) {
+            item.index -= 1;
           }
           return item;
         });
       } else {
         data = data.map((item) => {
           if (item[codeKey] === Number(code)) {
-            item.key = droppedSort;
-          } else if (item.key > droppedSort - 1 && item.key < sort) {
-            item.key += 1;
+            item.index = droppedSort;
+          } else if (item.index > droppedSort - 1 && item.index < sort) {
+            item.index += 1;
           }
           return item;
         });
@@ -101,13 +101,13 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
     } else if (this.props.isAcceptAdd) {
       const draggedItem = JSON.parse(event.dataTransfer.getData('item'));
       if (!data.some(item => item[codeKey] === draggedItem[codeKey])) {
-        const maxSort = Math.max(...data.map(item => item.key));
+        const maxSort = Math.max(...data.map(item => item.index));
         data.forEach((item) => {
           if (droppedSort === maxSort) {
             draggedItem.key = droppedSort + 1;
           } else if (item.sort > droppedSort) {
             draggedItem.key = droppedSort + 1;
-            item.key += 1;
+            item.index += 1;
           }
         });
         data.push(draggedItem);
@@ -136,8 +136,8 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
         draggable
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
-        onDragStart={e => this.onDragStart(e, item.key, String(item[codeKey]), uuid, item)}
-        onDrop={e => this.onDrop(e, item.key, data, uuid, codeKey)}
+        onDragStart={e => this.onDragStart(e, item.index, String(item[codeKey]), uuid, item)}
+        onDrop={e => this.onDrop(e, item.index, data, uuid, codeKey)}
         onDragOver={e => e.preventDefault()}
       >
         { renderCell(item) }

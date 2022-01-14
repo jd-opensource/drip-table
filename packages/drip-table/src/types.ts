@@ -136,7 +136,7 @@ export interface DripTableDriver<RecordType> {
     ConfigProvider: DripTableReactComponent<Record<string, unknown>>;
     Dropdown: DripTableReactComponent<{
       trigger?: ('click' | 'hover' | 'contextMenu')[];
-      overlay?: React.ReactElement | (() => React.ReactElement);
+      overlay: React.ReactElement | (() => React.ReactElement);
       visible?: boolean;
       onVisibleChange?: (visible: boolean) => void;
     }>;

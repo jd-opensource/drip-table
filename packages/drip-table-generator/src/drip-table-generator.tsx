@@ -11,29 +11,25 @@ import Wrapper, { GeneratorWrapperHandler } from './wrapper';
 
 const useTableRoot = (
   props: DripTableGeneratorProps,
-  store: [DripTableGeneratorState, React.Dispatch<React.SetStateAction<DripTableGeneratorState>>],
+  store: [DripTableGeneratorState<string, never>, React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, never>>>],
   wrapper: React.MutableRefObject<GeneratorWrapperHandler | null>,
 ) => {
   const [state, setState] = store;
 
-  const getSchemaValue = (): DripTableSchema => {
+  const getSchemaValue = (): DripTableSchema<never> => {
     if (wrapper.current) {
       const currentState = wrapper.current.getState();
       return {
         $schema: 'http://json-schema.org/draft/2019-09/schema#',
-        configs: {
-          ...currentState.globalConfigs,
-        },
-        columns: currentState.columns.map(item => ({ ...item, sort: void 0 })),
+        ...currentState.globalConfigs,
+        columns: currentState.columns.map(item => ({ ...item, sort: void 0, index: void 0 })),
       };
     }
 
     return {
       $schema: 'http://json-schema.org/draft/2019-09/schema#',
-      configs: {
-        ...state.globalConfigs,
-      },
-      columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })),
+      ...state.globalConfigs,
+      columns: state.columns.map(item => ({ ...item, sort: void 0, index: void 0 })),
     };
   };
 

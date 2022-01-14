@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import DripTable, { DripTableColumnSchema, DripTableComponentSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import DripTable, { DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
@@ -24,10 +24,8 @@ const PreviewTable = (props: Props & { store: GlobalStore }) => {
 
   const schema: DripTableSchema = {
     $schema: 'http://json-schema.org/draft/2019-09/schema#',
-    configs: {
-      ...state.globalConfigs,
-    },
-    columns: state.columns as DripTableColumnSchema<string, DripTableComponentSchema>[],
+    ...state.globalConfigs,
+    columns: state.columns,
   };
   const totalPage = state.globalConfigs?.pagination && state.globalConfigs?.pagination.pageSize ? state.previewDataSource.length : 1;
   return (

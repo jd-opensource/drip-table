@@ -1,10 +1,10 @@
-import { DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { createContext } from 'react';
 
 import { DripTableGeneratorProps } from '@/typing';
 
-export const Ctx = createContext<DripTableGeneratorProps<DripTableRecordTypeBase>>({
+export const Ctx = createContext<DripTableGeneratorProps>({
   dataSource: [],
-  driver: DripTableDriverAntDesign,
+  driver: DripTableDriverAntDesign as unknown as DripTableDriver<DripTableRecordTypeBase>,
 });

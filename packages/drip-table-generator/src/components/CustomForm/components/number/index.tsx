@@ -23,7 +23,7 @@ export default class InputNumberComponent extends React.PureComponent<Props> {
     const uiProps = this.props.schema['ui:props'] || {};
 
     return (
-      <InputNumber<number>
+      <InputNumber
         {...uiProps}
         max={uiProps.max as number}
         min={uiProps.min as number}
@@ -33,9 +33,9 @@ export default class InputNumberComponent extends React.PureComponent<Props> {
         disabled={uiProps.disabled as boolean}
         style={{ width: 420, ...uiProps.style }}
         onChange={(value) => {
-          this.props.onChange?.(value);
+          this.props.onChange?.(Number(value));
           if (config.validate) {
-            const res = config.validate(value);
+            const res = config.validate(Number(value));
             (res instanceof Promise ? res : Promise.resolve(res))
               .then((msg) => {
                 this.props.onValidate?.(msg);

@@ -13,6 +13,7 @@ import debounce from 'lodash/debounce';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
+import { filterAttributes } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
 import { useGlobalData } from '@/hooks';
@@ -24,7 +25,7 @@ import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
 
-type GlobalSchema = DripTableSchema['configs'];
+type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, '$schema' | 'columns'>;
 
 interface Props {
   customComponentPanel: {
@@ -71,46 +72,14 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     bordered: formData.bordered as boolean,
     size: formData.size as 'small' | 'middle' | 'large' | undefined,
     ellipsis: formData.ellipsis as boolean,
-    header: formData.header
-      ? {
-        title: formData['header.title.type'] === 'title'
-          ? {
-            type: formData['header.title.type'] as 'title',
-            title: formData['header.title.title'] as string,
-            span: formData['header.title.span'] as number,
-            position: 'topLeft',
-          }
-          : void 0,
-        search: formData['header.search.type'] === 'search'
-          ? {
-            type: formData['header.search.type'] as 'search',
-            span: formData['header.search.wrapperWidth'] as number,
-            position: 'topCenter',
-            placeholder: formData['header.search.placeholder'],
-            allowClear: formData['header.search.allowClear'],
-            searchBtnText: formData['header.search.searchBtnText'],
-            searchStyle: { width: formData['header.search.width'] as string },
-            defaultSelectedKey: formData['header.search.defaultSelectedKey'],
-            typeOptions: formData['header.search.typeVisible'] ? formData['header.search.typeOptions'] : void 0,
-          }
-          : void 0,
-      }
-      : false,
+    header: false,
     pagination: formData.pagination
       ? {
         pageSize: formData['pagination.pageSize'] as number,
         position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
       }
       : false,
-  } as GlobalSchema);
-
-  const filterAttrs = (originObj: Record<string, unknown>, excludeKeys: string[]) => {
-    const obj = {};
-    Object.keys(originObj).filter(k => !excludeKeys.includes(k)).forEach((key) => {
-      obj[key] = originObj[key];
-    });
-    return obj;
-  };
+  });
 
   const encodeColumnConfigs = (formData: { [key: string]: unknown }) => {
     const uiProps = {};
@@ -124,15 +93,14 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     });
     const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.['ui:type']);
     return {
-      ...filterAttrs(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
-      $id: state.currentColumn?.$id || '',
+      ...filterAttributes(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
       'ui:type': state.currentColumn?.['ui:type'],
       'ui:props': { ...uiProps },
       type: columnConfig ? columnConfig.type : state.currentColumn?.type,
-    } as DripTableColumn;
+    } as DripTableColumn<string, never>;
   };
 
   const submitDataWithoutDebounce = (codeValue?: string) => {
@@ -199,7 +167,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       }
     });
     return (
-      <CustomForm<DripTableColumn>
+      <CustomForm<DripTableColumn<string, never>>
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
@@ -208,7 +176,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         theme={props.driver}
         onChange={(data) => {
           state.currentColumn = Object.assign(state.currentColumn, data);
-          const idx = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
+          const idx = state.columns.findIndex(item => item.key === state.currentColumn?.key);
           if (idx > -1 && state.currentColumn) {
             state.columns[idx] = state.currentColumn;
           }

@@ -61,7 +61,6 @@ export type DataSchema =
 
 /** 组件属性的表单配置项 */
 export type DTGComponentPropertySchema = DataSchema & {
-  key: string;
   name: string;
   group: string;
   required?: boolean;
@@ -104,7 +103,7 @@ export interface DripTableComponentAttrConfig {
   icon?: string;
 }
 
-export interface DripTableGeneratorHandler extends DripTableGeneratorState {
+export interface DripTableGeneratorHandler extends DripTableGeneratorState<string, never> {
   /**
    * 通过接口获取配置
    *
@@ -121,21 +120,20 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState {
 }
 
 export interface DripTableGeneratorProps<
-RecordType extends DripTableRecordTypeBase = never,
 CustomComponentSchema extends DripTableComponentSchema = never,
 CustomComponentEvent extends EventLike = never,
 Ext = unknown> {
   style?: CSSProperties;
-  driver: DripTableDriver<RecordType>;
+  driver: DripTableDriver<DripTableRecordTypeBase>;
   showComponentLayout?: boolean;
   componentLayoutStyle?: CSSProperties;
   rightLayoutStyle?: CSSProperties;
   showToolLayout?: boolean;
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
-  dataSource: RecordType[];
+  dataSource?: DripTableRecordTypeBase[];
   dataFields?: string[];
   schema?: DripTableSchema<CustomComponentSchema>;
-  customComponents?: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>['components'];
+  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentSchema, CustomComponentEvent, Ext>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];

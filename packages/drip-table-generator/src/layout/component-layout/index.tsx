@@ -6,12 +6,11 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import chunk from 'lodash/chunk';
 import React from 'react';
 
 import { mockId } from '@/utils';
-import { globalActions, GlobalStore } from '@/store';
+import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import RichText from '@/components/RichText';
 import components from '@/table-components';
 import { DripTableComponentAttrConfig } from '@/typing';
@@ -62,8 +61,8 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
     <div
       className={styles['component-container']}
       onClick={() => {
-        const columnSchema: DripTableProps<DripTableRecordTypeBase>['schema']['columns'][number] & { $id: string; group: string } = {
-          $id: `${item.$id}_${mockId()}`,
+        const columnSchema = {
+          key: `${item['ui:type']}_${mockId()}`,
           dataIndex: '',
           title: item.title,
           group: '',
@@ -72,11 +71,13 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
           'ui:type': item['ui:type'],
           'ui:props': {},
           type: item.type || 'null',
+          render: '',
         };
         item.attrSchema.forEach((schema) => {
           if (typeof schema.default !== 'undefined') {
             if (schema.name.startsWith('ui:props')) {
               const key = schema.name.replace('ui:props.', '');
+              if (!columnSchema['ui:props']) { columnSchema['ui:props'] = {}; }
               columnSchema['ui:props'][key] = schema.default;
             } else {
               columnSchema[schema.name] = schema.default;
@@ -85,9 +86,9 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
         });
         state.columns.push({
           ...columnSchema,
-          key: state.columns.length + 1, // +1 是因为从1排序的
+          index: state.columns.length + 1,
           sort: state.columns.length + 1,
-        });
+        } as DripTableColumn<string, never>);
         globalActions.editColumns(store);
       }}
     >
@@ -125,7 +126,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
                         : null
                     }
                     <tr key={`groupItem.group.${index}.${i}`} className={styles['components-line']}>
-                      { items.map(item => <td key={item.$id}>{ componentCell(item) }</td>) }
+                      { items.map((item, idx) => <td key={idx}>{ componentCell(item) }</td>) }
                     </tr>
                     {
                       i === componentsInLayout.length - 1
