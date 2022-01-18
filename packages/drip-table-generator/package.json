@@ -28,9 +28,9 @@
     "classnames": "^2.3.1",
     "domhandler": "^4.3.0",
     "lodash": "^4.4.2",
-    "monaco-editor": "^0.28.1",
+    "monaco-editor": "0.31.1",
     "rc-color-picker": "^1.2.6",
-    "react-monaco-editor": "^0.43.0",
+    "react-monaco-editor": "0.46.0",
     "viewerjs": "^1.10.0"
   },
   "devDependencies": {

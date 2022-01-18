@@ -16,4 +16,4 @@ title: 常见问题
 
 ### 3、安装后运行项目报错： `ReferenceError: Buffer is not defined`，如何解决？
 
-建议查看一下是否是因为本地项目使用了 `webpack5`， `drip-table` 暂时不支持 `webpack5`，后续会出相应的迁移办法。
+建议查看一下是否是因为本地项目使用了 `webpack5`，然后安装最新版本的 `drip-table`。

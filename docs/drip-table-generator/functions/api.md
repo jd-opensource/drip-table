@@ -12,8 +12,9 @@ title: API
 | 属性               | 描述                                                                                  | 类型                                   | 默认值  | 必填 |
 | ------------------ | ------------------------------------------------------------------------------------- | -------------------------------------- | ------- | ---- |
 | style             | 组件的表单样式 | `React.CSSProperties`                               | -       | 否   |
-| showComponentLayout                | 是否展示组件栏                                                           | `true`                  | -       | 否   |
-| showToolLayout                | 是否展示工具栏                                                           | `true`                  | -       | 否   |
+| showComponentLayout                | 是否展示组件栏                                  | `true`                  | -       | 否   |
+| showToolLayout                | 是否展示工具栏                                       | `true`                  | -       | 否   |
+| mockDataSource                | 属性栏是否展示表格数据输入框                           | `false`                  | -       | 否   |
 | schema                | 初始化载入的schema配置数据                                                           | [DripTableSchema](/drip-table/functions/api#driptableschema-参数)                  | -       | 否   |
 | dataSource                | 初始化载入的表格示例数据                                                           | `Record<string, unknown>[]`                  | -       | 否   |
 | dataFields                | 后端API默认的字段名                                                           | `string[]`                  | -       | 否   |

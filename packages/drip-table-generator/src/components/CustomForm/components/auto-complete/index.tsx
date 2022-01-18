@@ -7,10 +7,10 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { AutoComplete, Popover, Select } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase, StringDataSchema } from 'drip-table';
+import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentPropertySchema, StringDataSchema } from '@/typing';
 
 interface Props {
   theme?: DripTableDriver<DripTableRecordTypeBase>;

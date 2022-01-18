@@ -8,13 +8,14 @@ import ComponentLayout from './layout/component-layout';
 import EditableTable from './layout/editable-table';
 import PreviewTable from './layout/preview-table';
 import ToolLayout from './layout/tool-layout';
-import { defaultState, DripTableGeneratorState, GlobalStore, setState } from './store';
+import { defaultState, DripTableColumn, DripTableGeneratorState, GlobalStore, setState } from './store';
 import { DripTableGeneratorProps } from './typing';
+import { filterAttributes } from './utils';
 
 import styles from './index.module.less';
 
 export type GeneratorWrapperHandler = {
-  getState: () => DripTableGeneratorState;
+  getState: () => DripTableGeneratorState<string, never>;
 }
 
 const Wrapper = (props: DripTableGeneratorProps & {
@@ -33,12 +34,12 @@ const Wrapper = (props: DripTableGeneratorProps & {
     customGlobalConfigPanel,
     customComponents,
   } = useGlobalData();
-  const initialData = { previewDataSource: dataSource } as DripTableGeneratorState;
+  const initialData = { previewDataSource: dataSource } as DripTableGeneratorState<string, never>;
   if (schema) {
-    initialData.globalConfigs = schema.configs;
-    initialData.columns = schema.columns?.map((item, index) => ({ key: index, sort: index, ...item }));
+    initialData.globalConfigs = filterAttributes(schema, 'columns');
+    initialData.columns = schema.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
   }
-  const originState: DripTableGeneratorState = props.store ? props.store[0] : defaultState();
+  const originState: DripTableGeneratorState<string, never> = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });
   const store = useState(originState);
   const [state] = store;

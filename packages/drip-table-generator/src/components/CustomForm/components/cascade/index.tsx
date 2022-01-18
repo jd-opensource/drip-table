@@ -14,8 +14,8 @@ type CascadeProps = React.ComponentProps<typeof Cascade>;
 
 interface Props {
   schema: DTGComponentPropertySchema;
-  value?: number;
-  onChange?: (value: number) => void;
+  value?: CascadeProps['value'];
+  onChange?: (value: CascadeProps['value']) => void;
   onValidate?: (errorMessage: string) => void;
 }
 
@@ -29,7 +29,7 @@ export default class CascadeComponent extends React.PureComponent<Props> {
         {...uiProps}
         options={uiProps.options as CascadeProps['options']}
         defaultValue={config.default as CascadeProps['defaultValue']}
-        value={this.props.value as CascadeProps['value']}
+        value={this.props.value}
         displayRender={uiProps.displayRender as CascadeProps['displayRender']}
         disabled={uiProps.disabled as boolean}
         style={{ width: 420, ...uiProps.style }}

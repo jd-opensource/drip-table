@@ -7,10 +7,11 @@
  */
 
 import { Button, Input, message, Modal } from 'antd';
-import { DripTableColumnSchema, DripTableComponentSchema, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
 import React, { useState } from 'react';
 
-import { DripTableColumn, globalActions, GlobalStore } from '@/store';
+import { filterAttributes } from '@/utils';
+import { globalActions, GlobalStore } from '@/store';
 import { useGlobalData } from '@/hooks';
 
 const ToolLayout = (props: { store: GlobalStore }) => {
@@ -24,10 +25,8 @@ const ToolLayout = (props: { store: GlobalStore }) => {
 
   const getSchemaValue = (): DripTableSchema => ({
     $schema: 'http://json-schema.org/draft/2019-09/schema#',
-    configs: {
-      ...state.globalConfigs,
-    },
-    columns: state.columns.map(item => ({ ...item, key: void 0, sort: void 0 })) as DripTableColumnSchema<string, DripTableComponentSchema>[],
+    ...state.globalConfigs,
+    columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableColumnSchema<string, never>[],
   });
 
   /**
@@ -90,8 +89,8 @@ const ToolLayout = (props: { store: GlobalStore }) => {
           if (modalStatus === 'import') { // 导入解析
             const value = (code || '').trim();
             try {
-              const json: { configs: DripTableSchema['configs']; columns: DripTableColumn[] } = JSON.parse(value);
-              state.globalConfigs = json.configs;
+              const json = JSON.parse(value);
+              state.globalConfigs = filterAttributes(json, ['$schema', 'columns']);
               state.columns = json.columns;
               state.currentColumn = void 0;
             } catch {

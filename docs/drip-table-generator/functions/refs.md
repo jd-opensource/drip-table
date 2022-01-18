@@ -89,6 +89,7 @@ const Demo = () => {
       </Row>
       <DripTableGenerator
         ref={generator}
+        mockDataSource
         driver={DripTableDriverAntDesign}
         dataSource={[]}
       />

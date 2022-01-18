@@ -29,7 +29,7 @@ interface Props<T> {
   groupType?: boolean | 'collapse' | 'tabs';
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
-  key?: string;
+  primaryKey?: string;
   extendKeys?: string[];
   theme?: DripTableDriver<DripTableRecordTypeBase>;
   encodeData: (formData: { [key: string]: unknown }) => T;
@@ -55,7 +55,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
   }
 
   public componentDidUpdate(prepProps: Props<T>) {
-    const key = this.props.key || '$id';
+    const key = this.props.primaryKey || '$id';
     const preId = prepProps.data ? prepProps.data[key] : '';
     const thisId = this.props.data ? this.props.data[key] : '';
     if (preId !== thisId) {
@@ -198,7 +198,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     );
   }
 
-  public renderFormItem(config: DTGComponentPropertySchema) {
+  public renderFormItem(config: DTGComponentPropertySchema, index: number) {
     const { helpMsg } = this.state;
     const labelCol = config['ui:layout']?.labelCol || 8;
     const wrapperCol = config['ui:layout']?.wrapperCol || 16;
@@ -210,7 +210,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     const visible = this.visible(config);
     if (!visible) { return null; }
     return (
-      <React.Fragment>
+      <React.Fragment key={index}>
         <Form.Item
           key={key}
           label={this.renderTitleLabel(config)}
@@ -248,9 +248,9 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       if (this.props.groupType === 'collapse') {
         return (
           <Collapse>
-            { groups.map((groupName, index) => (
-              <Collapse.Panel key={index} header={groupName}>
-                { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+            { groups.map((groupName, groupIndex) => (
+              <Collapse.Panel key={groupIndex} header={groupName}>
+                { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
               </Collapse.Panel>
             )) }
           </Collapse>
@@ -258,9 +258,9 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       }
       return (
         <Tabs tabPosition="left">
-          { groups.map((groupName, index) => (
-            <Tabs.TabPane key={index} tab={groupName}>
-              { configs.filter(item => groupName === (item.group || '其他')).map(item => this.renderFormItem(item)) }
+          { groups.map((groupName, groupIndex) => (
+            <Tabs.TabPane key={groupIndex} tab={groupName}>
+              { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
             </Tabs.TabPane>
           )) }
         </Tabs>
@@ -268,7 +268,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     }
     return (
       <div>
-        { configs.map(item => this.renderFormItem(item)) }
+        { configs.map((item, index) => this.renderFormItem(item, index)) }
       </div>
     );
   }

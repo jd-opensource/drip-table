@@ -52,7 +52,7 @@
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
     "lint-staged": "10.0.7",
-    "monaco-editor-webpack-plugin": "^4.2.0",
+    "monaco-editor-webpack-plugin": "7.0.1",
     "react": "17.0.2",
     "react-compare-slider": "^2.2.0",
     "stylelint": "13.8.0",

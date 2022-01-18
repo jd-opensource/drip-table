@@ -41,7 +41,7 @@ const Demo = () => {
 
   React.useEffect(
     () => {
-      const filteredDataSource = dataBase.filter(ds => !filters?.length || filters.some(f => f.values.includes(ds[f.key])));
+      const filteredDataSource = dataBase.filter(ds => !filters?.length || filters.some(f => f.values?.includes(ds[f.key])));
       setTotalNum(filteredDataSource.length);
       setDataSource(filteredDataSource.slice((pageNum - 1) * pageSize, Math.min(pageNum * pageSize, filteredDataSource.length)));
     },

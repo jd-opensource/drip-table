@@ -9,10 +9,10 @@
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
-import debounce from 'lodash/debounce';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
+import { filterAttributes } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
 import { useGlobalData } from '@/hooks';
@@ -24,7 +24,7 @@ import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
 
-type GlobalSchema = DripTableSchema['configs'];
+type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, '$schema' | 'columns'>;
 
 interface Props {
   customComponentPanel: {
@@ -38,7 +38,7 @@ interface Props {
 const { TabPane } = Tabs;
 
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
-  const { dataFields } = useGlobalData();
+  const { dataFields, mockDataSource: isDemo } = useGlobalData();
 
   const [state, setState] = props.store;
   const store = { state, setState };
@@ -49,7 +49,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
-  const code = JSON.stringify(state.previewDataSource, null, 4);
+  const [code, setCode] = React.useState(JSON.stringify(state.previewDataSource, null, 4));
 
   const getActiveKey = () => {
     if (activeKey === '0') {
@@ -71,46 +71,14 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     bordered: formData.bordered as boolean,
     size: formData.size as 'small' | 'middle' | 'large' | undefined,
     ellipsis: formData.ellipsis as boolean,
-    header: formData.header
-      ? {
-        title: formData['header.title.type'] === 'title'
-          ? {
-            type: formData['header.title.type'] as 'title',
-            title: formData['header.title.title'] as string,
-            span: formData['header.title.span'] as number,
-            position: 'topLeft',
-          }
-          : void 0,
-        search: formData['header.search.type'] === 'search'
-          ? {
-            type: formData['header.search.type'] as 'search',
-            span: formData['header.search.wrapperWidth'] as number,
-            position: 'topCenter',
-            placeholder: formData['header.search.placeholder'],
-            allowClear: formData['header.search.allowClear'],
-            searchBtnText: formData['header.search.searchBtnText'],
-            searchStyle: { width: formData['header.search.width'] as string },
-            defaultSelectedKey: formData['header.search.defaultSelectedKey'],
-            typeOptions: formData['header.search.typeVisible'] ? formData['header.search.typeOptions'] : void 0,
-          }
-          : void 0,
-      }
-      : false,
+    header: false,
     pagination: formData.pagination
       ? {
         pageSize: formData['pagination.pageSize'] as number,
         position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
       }
       : false,
-  } as GlobalSchema);
-
-  const filterAttrs = (originObj: Record<string, unknown>, excludeKeys: string[]) => {
-    const obj = {};
-    Object.keys(originObj).filter(k => !excludeKeys.includes(k)).forEach((key) => {
-      obj[key] = originObj[key];
-    });
-    return obj;
-  };
+  });
 
   const encodeColumnConfigs = (formData: { [key: string]: unknown }) => {
     const uiProps = {};
@@ -124,19 +92,19 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     });
     const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.['ui:type']);
     return {
-      ...filterAttrs(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
-      $id: state.currentColumn?.$id || '',
+      ...filterAttributes(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
       'ui:type': state.currentColumn?.['ui:type'],
       'ui:props': { ...uiProps },
       type: columnConfig ? columnConfig.type : state.currentColumn?.type,
-    } as DripTableColumn;
+    } as DripTableColumn<string, never>;
   };
 
-  const submitDataWithoutDebounce = (codeValue?: string) => {
+  const submitTableData = (codeValue?: string) => {
     setCodeErrorMessage('');
+    setCode(codeValue || '');
     try {
       state.previewDataSource = JSON.parse(codeValue || '');
       setState({ ...state });
@@ -145,8 +113,6 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       setCodeErrorMessage((error as Error).message);
     }
   };
-
-  const submitTableData = debounce(submitDataWithoutDebounce, 500);
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
@@ -177,11 +143,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       if (!uiProps) {
         return;
       }
-      if (uiProps.from === 'dataSource') {
-        uiProps.options = Object.keys(state.previewDataSource[0] || {})
-          .map(key => ({ label: key, value: key }));
-      } else if (uiProps.from === 'dataFields') {
-        uiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
+      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+        uiProps.options = isDemo
+          ? Object.keys(state.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+          : dataFields?.map(key => ({ label: key, value: key })) || [];
       }
       if (uiProps.items) {
         (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
@@ -189,17 +154,17 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           if (!itemUiProps) {
             return;
           }
-          if (itemUiProps.from === 'dataSource') {
-            itemUiProps.options = Object.keys(state.previewDataSource[0] || {})
-              .map(key => ({ label: key, value: key }));
-          } else if (itemUiProps.from === 'dataFields') {
-            itemUiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
+          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+            itemUiProps.options = isDemo
+              ? Object.keys(state.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+              : dataFields?.map(key => ({ label: key, value: key })) || [];
           }
         });
       }
     });
     return (
-      <CustomForm<DripTableColumn>
+      <CustomForm<DripTableColumn<string, never>>
+        primaryKey="key"
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
@@ -208,7 +173,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         theme={props.driver}
         onChange={(data) => {
           state.currentColumn = Object.assign(state.currentColumn, data);
-          const idx = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
+          const idx = state.columns.findIndex(item => item.key === state.currentColumn?.key);
           if (idx > -1 && state.currentColumn) {
             state.columns[idx] = state.currentColumn;
           }
@@ -249,6 +214,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               { renderGlobalForm() }
             </div>
           </TabPane>
+          { isDemo && (
           <TabPane tab="表格数据" key="3" className={styles['attribute-panel']}>
             <div className={styles['attributes-code-panel']}>
               { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
@@ -262,6 +228,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               />
             </div>
           </TabPane>
+          ) }
         </Tabs>
       </div>
     </div>

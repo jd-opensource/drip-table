@@ -6,10 +6,9 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { Input } from 'antd';
-import { StringDataSchema } from 'drip-table';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentPropertySchema, StringDataSchema } from '@/typing';
 
 interface Props {
   schema: DTGComponentPropertySchema;

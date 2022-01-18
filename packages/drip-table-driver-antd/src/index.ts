@@ -6,9 +6,9 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import * as AntDesignIcons from '@ant-design/icons';
 import * as AntDesign from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-import * as AntDesignIcons from '@ant-design/icons';
 
 const DripTableDriverAntDesign = {
   components: AntDesign,

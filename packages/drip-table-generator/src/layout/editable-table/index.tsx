@@ -7,7 +7,7 @@
  */
 
 import { CloseCircleTwoTone } from '@ant-design/icons';
-import { Empty, Result, ResultProps } from 'antd';
+import { Empty, Result } from 'antd';
 import classnames from 'classnames';
 import { builtInComponents, DripTableColumnSchema, DripTableComponentSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
@@ -19,6 +19,7 @@ import Draggable from '@/components/Draggable';
 
 import styles from './index.module.less';
 
+type ResultProps = React.ComponentProps<typeof Result>;
 interface Props {
   driver: DripTableDriver<DripTableRecordTypeBase>;
   customComponents: DripTableProps<DripTableRecordTypeBase>['components'] | undefined;
@@ -28,7 +29,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
-  const previewComponentRender = (column: DripTableColumn) => {
+  const previewComponentRender = (column: DripTableColumn<string, never>) => {
     const [libName, componentName] = column['ui:type'].includes('::') ? column['ui:type'].split('::') : ['', column['ui:type']];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
@@ -75,8 +76,8 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     );
   };
 
-  const renderTableCell = (col: DripTableColumn) => {
-    const isCurrent = state.currentColumn && state.currentColumn.$id === col.$id;
+  const renderTableCell = (col: DripTableColumn<string, never>) => {
+    const isCurrent = state.currentColumn && state.currentColumn.index === col.index;
     let width = String(col.width).trim() || '120';
     if ((/^[0-9]+$/gui).test(width)) {
       width += 'px';
@@ -97,11 +98,11 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
           className={styles['close-icon']}
           twoToneColor="#ff4d4f"
           onClick={() => {
-            const index = state.columns.findIndex(item => item.$id === state.currentColumn?.$id);
+            const index = state.columns.findIndex(item => item.key === state.currentColumn?.key);
             if (index > -1) {
               state.columns.splice(index, 1);
               for (let i = index; i < state.columns.length; i++) {
-                state.columns[i].key = i + 1;
+                state.columns[i].index = i + 1;
                 state.columns[i].sort = i + 1;
               }
               state.currentColumn = void 0;
@@ -120,8 +121,8 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
       {
          state.columns && state.columns.length > 0
            ? (
-             <Draggable<DripTableColumn>
-               value={(state.columns || []) as DripTableColumn[]}
+             <Draggable<DripTableColumn<string, never>>
+               value={(state.columns || []) as DripTableColumn<string, never>[]}
                codeKey="sort"
                style={{ position: 'relative' }}
                onChange={(data) => {
