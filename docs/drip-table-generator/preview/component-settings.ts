@@ -17,7 +17,7 @@ export default {
           'ui:title': '字段选择',
           'ui:type': 'select',
           'ui:props': {
-            options: '$$FIELD_KEY_OPTIONS$$',
+            optionsParam: '$$FIELD_KEY_OPTIONS$$',
           },
           type: 'string',
         },

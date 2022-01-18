@@ -3,7 +3,7 @@ import { basicColumnAttrComponents } from './configs';
 
 export default {
   $id: '$display_links',
-  'ui:type': 'links',
+  'ui:type': 'link',
   type: 'string',
   group: '基础组件',
   fieldKey: 'links_qywxDIIO',
