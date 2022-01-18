@@ -25,7 +25,10 @@ type LabeledValue = React.ComponentProps<typeof Select>['options'];
 export default class AutoCompleteComponent extends React.PureComponent<Props> {
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
-    return (uiProps.options as LabeledValue)?.map(item => this.renderOptionItem(item));
+    if (Array.isArray(uiProps.options)) {
+      return (uiProps.options as LabeledValue)?.map(item => this.renderOptionItem(item));
+    }
+    return [];
   }
 
   private transform(value: string) {

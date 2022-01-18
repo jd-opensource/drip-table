@@ -27,7 +27,10 @@ interface Props {
 export default class SelectComponent extends React.PureComponent<Props> {
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
-    return (uiProps.options as SelectOptionType)?.map(item => this.renderOptionItem(item));
+    if (Array.isArray(uiProps.options)) {
+      return (uiProps.options as SelectOptionType)?.map(item => this.renderOptionItem(item));
+    }
+    return [];
   }
 
   private get formattedValue() {
@@ -77,7 +80,7 @@ export default class SelectComponent extends React.PureComponent<Props> {
         style={{ width: 420, ...uiProps.style }}
         mode={uiProps.mode as 'multiple' | 'tags'}
         defaultValue={config.default as SelectValueType}
-        value={this.formattedValue as SelectValueType}
+        value={this.formattedValue}
         options={(this.options as SelectOptionType[] || [])}
         onChange={(value) => {
           this.props.onChange?.(value);
