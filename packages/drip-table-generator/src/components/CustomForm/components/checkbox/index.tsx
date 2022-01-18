@@ -26,6 +26,14 @@ interface Props {
 }
 
 export default class CheckboxComponent extends React.PureComponent<Props> {
+  private get options() {
+    const uiProps = this.props.schema['ui:props'] || {};
+    if (Array.isArray(uiProps.options)) {
+      return uiProps.options;
+    }
+    return [];
+  }
+
   private iconRender(iconName: string) {
     const icons = this.props.theme?.icons || {};
     const Icon = icons[iconName];
@@ -45,7 +53,7 @@ export default class CheckboxComponent extends React.PureComponent<Props> {
           this.props.onChange?.(value);
         }}
       >
-        { (uiProps.options as CheckboxOptionType[])?.map((option, i) => {
+        { (this.options as CheckboxOptionType[])?.map((option, i) => {
           if (typeof option === 'string') {
             option = { label: option, value: option };
           }

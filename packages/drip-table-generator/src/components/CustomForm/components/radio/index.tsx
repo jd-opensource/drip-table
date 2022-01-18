@@ -26,6 +26,14 @@ interface Props {
 }
 
 export default class RadioComponent extends React.PureComponent<Props> {
+  private get options() {
+    const uiProps = this.props.schema['ui:props'] || {};
+    if (Array.isArray(uiProps.options)) {
+      return uiProps.options;
+    }
+    return [];
+  }
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};
@@ -39,7 +47,7 @@ export default class RadioComponent extends React.PureComponent<Props> {
           this.props.onChange?.(e.target.value);
         }}
       >
-        { (uiProps.options as RadioOptionType[])?.map((option, i) => {
+        { (this.options as RadioOptionType[])?.map((option, i) => {
           if (typeof option === 'string') {
             option = { label: option, value: option };
           }
