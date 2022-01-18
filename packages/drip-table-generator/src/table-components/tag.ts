@@ -34,7 +34,7 @@ export default {
       'ui:title': '字段选择',
       'ui:type': 'auto-complete',
       'ui:props': {
-        from: 'dataFields',
+        optionsParam: '$$FIELD_KEY_OPTIONS$$',
       },
       type: 'string',
       visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode !== 'nested',
@@ -46,7 +46,7 @@ export default {
       'ui:title': '字段选择',
       'ui:type': 'select',
       'ui:props': {
-        from: 'dataFields',
+        optionsParam: '$$FIELD_KEY_OPTIONS$$',
         mode: 'tags',
         tokenSeparators: ['.', ',', '，'],
       },

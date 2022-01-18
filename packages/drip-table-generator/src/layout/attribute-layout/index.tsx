@@ -9,7 +9,6 @@
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
-import debounce from 'lodash/debounce';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -39,7 +38,7 @@ interface Props {
 const { TabPane } = Tabs;
 
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
-  const { dataFields } = useGlobalData();
+  const { dataFields, mockDataSource: isDemo } = useGlobalData();
 
   const [state, setState] = props.store;
   const store = { state, setState };
@@ -50,7 +49,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
 
-  const code = JSON.stringify(state.previewDataSource, null, 4);
+  const [code, setCode] = React.useState(JSON.stringify(state.previewDataSource, null, 4));
 
   const getActiveKey = () => {
     if (activeKey === '0') {
@@ -103,8 +102,9 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     } as DripTableColumn<string, never>;
   };
 
-  const submitDataWithoutDebounce = (codeValue?: string) => {
+  const submitTableData = (codeValue?: string) => {
     setCodeErrorMessage('');
+    setCode(codeValue || '');
     try {
       state.previewDataSource = JSON.parse(codeValue || '');
       setState({ ...state });
@@ -113,8 +113,6 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       setCodeErrorMessage((error as Error).message);
     }
   };
-
-  const submitTableData = debounce(submitDataWithoutDebounce, 500);
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
@@ -145,11 +143,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       if (!uiProps) {
         return;
       }
-      if (uiProps.from === 'dataSource') {
-        uiProps.options = Object.keys(state.previewDataSource[0] || {})
-          .map(key => ({ label: key, value: key }));
-      } else if (uiProps.from === 'dataFields') {
-        uiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
+      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+        uiProps.options = isDemo
+          ? Object.keys(state.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+          : dataFields?.map(key => ({ label: key, value: key })) || [];
       }
       if (uiProps.items) {
         (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
@@ -157,11 +154,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           if (!itemUiProps) {
             return;
           }
-          if (itemUiProps.from === 'dataSource') {
-            itemUiProps.options = Object.keys(state.previewDataSource[0] || {})
-              .map(key => ({ label: key, value: key }));
-          } else if (itemUiProps.from === 'dataFields') {
-            itemUiProps.options = dataFields?.map(key => ({ label: key, value: key })) || [];
+          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+            itemUiProps.options = isDemo
+              ? Object.keys(state.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+              : dataFields?.map(key => ({ label: key, value: key })) || [];
           }
         });
       }
@@ -218,6 +214,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               { renderGlobalForm() }
             </div>
           </TabPane>
+          { isDemo && (
           <TabPane tab="表格数据" key="3" className={styles['attribute-panel']}>
             <div className={styles['attributes-code-panel']}>
               { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
@@ -231,6 +228,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               />
             </div>
           </TabPane>
+          ) }
         </Tabs>
       </div>
     </div>

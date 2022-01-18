@@ -51,6 +51,7 @@ const initialSchema: DripTableSchema = {
 
 const Demo = () => (
   <DripTableGenerator
+    mockDataSource
     style={{ height: 756 }}
     driver={DripTableDriverAntDesign as unknown as DripTableDriver<DripTableRecordTypeBase>}
     schema={initialSchema}

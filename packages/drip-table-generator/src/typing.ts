@@ -132,6 +132,7 @@ Ext = unknown> {
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
   dataSource?: DripTableRecordTypeBase[];
   dataFields?: string[];
+  mockDataSource?: boolean;
   schema?: DripTableSchema<CustomComponentSchema>;
   customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentSchema, CustomComponentEvent, Ext>['components'];
   customComponentPanel?: {

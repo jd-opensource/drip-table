@@ -37,7 +37,6 @@ import 'drip-table-generator/index.css';
 ```js
 <DripTableGenerator
   driver={DripTableDriverAntDesign}
-  dataSource={[]}
 />
 ```
 
@@ -58,7 +57,6 @@ const Demo = () => {
   return (
     <DripTableGenerator
       driver={DripTableDriverAntDesign}
-      dataSource={[]}
     />
   );
 };
