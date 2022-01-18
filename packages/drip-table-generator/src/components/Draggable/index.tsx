@@ -104,9 +104,9 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
         const maxSort = Math.max(...data.map(item => item.index));
         data.forEach((item) => {
           if (droppedSort === maxSort) {
-            draggedItem.key = droppedSort + 1;
+            draggedItem.index = droppedSort + 1;
           } else if (item.sort > droppedSort) {
-            draggedItem.key = droppedSort + 1;
+            draggedItem.index = droppedSort + 1;
             item.index += 1;
           }
         });

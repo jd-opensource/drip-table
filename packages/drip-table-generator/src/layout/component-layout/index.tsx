@@ -11,7 +11,7 @@ import React from 'react';
 
 import { mockId } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
-import RichText from '@/components/RichText';
+import Icon from '@/components/Icon';
 import components from '@/table-components';
 import { DripTableComponentAttrConfig } from '@/typing';
 
@@ -93,9 +93,10 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
       }}
     >
       <div>
-        { item.icon && item.icon.startsWith('base64')
+        { /* { typeof item.icon === 'string' && item.icon.startsWith('base64')
           ? <div className={styles['component-icon']} style={{ backgroundImage: `url(${item.icon})` }} />
-          : <RichText html={item.icon || defaultComponentIcon} wrapperClass={styles['component-icon']} /> }
+          : <RichText html={item.icon || defaultComponentIcon} className={styles['component-icon']} /> } */ }
+        <Icon svg={item.icon || defaultComponentIcon} className={styles['component-icon']} />
         <span>{ item.title }</span>
       </div>
     </div>

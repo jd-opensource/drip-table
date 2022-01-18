@@ -77,7 +77,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   };
 
   const renderTableCell = (col: DripTableColumn<string, never>) => {
-    const isCurrent = state.currentColumn && state.currentColumn.key === col.key;
+    const isCurrent = state.currentColumn && state.currentColumn.index === col.index;
     let width = String(col.width).trim() || '120';
     if ((/^[0-9]+$/gui).test(width)) {
       width += 'px';

@@ -5,7 +5,7 @@ const iconOptions = ['StepBackwardOutlined', 'StepForwardOutlined', 'QuestionCir
 
 export default {
   $id: '$display_buttons',
-  'ui:type': 'buttons',
+  'ui:type': 'button',
   type: 'string',
   group: '基础组件',
   fieldKey: 'buttons_qywxDIIO',
@@ -86,7 +86,7 @@ export default {
       'ui:type': 'radio',
       'ui:props': {
         options: [
-          { label: '原型', value: 'circle' },
+          { label: '圆形', value: 'circle' },
           { label: '圆角', value: 'round' },
           { label: '默认', value: '' },
         ],
@@ -194,7 +194,7 @@ export default {
             'ui:type': 'radio',
             'ui:props': {
               options: [
-                { label: '原型', value: 'circle' },
+                { label: '圆形', value: 'circle' },
                 { label: '圆角', value: 'round' },
                 { label: '默认', value: '' },
               ],

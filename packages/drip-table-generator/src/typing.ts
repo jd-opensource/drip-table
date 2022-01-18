@@ -100,7 +100,7 @@ export interface DripTableComponentAttrConfig {
   /** 属性表单配置 - 用于生成column的表单 */
   attrSchema: DTGComponentPropertySchema[];
   /** 展示用icon */
-  icon?: string;
+  icon?: React.ReactSVG | string;
 }
 
 export interface DripTableGeneratorHandler extends DripTableGeneratorState<string, never> {

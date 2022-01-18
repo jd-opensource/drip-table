@@ -27,7 +27,7 @@ interface RichTextProps {
   highlight?: Omit<HighlightProps, 'content' | 'tagName'>;
   tagNames?: HTMLTagName[];
   domEvents?: DOMEventType[];
-  wrapperClass?: string;
+  className?: string;
 }
 
 const SAFE_TAG_NAME: HTMLTagName[] = [
@@ -464,7 +464,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
   public render(): JSX.Element | null {
     const bodyEl = cheerio.load(this.props.html)('body')[0];
     return (
-      <div ref={this.onRef} style={this.props.style} className={this.props.wrapperClass}>
+      <div ref={this.onRef} style={this.props.style} className={this.props.className}>
         {
           bodyEl && bodyEl.type === 'tag'
             ? bodyEl.children.reduce<ReducerRenderValue>(this.reducerRenderEl, {

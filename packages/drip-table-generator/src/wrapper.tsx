@@ -37,7 +37,7 @@ const Wrapper = (props: DripTableGeneratorProps & {
   const initialData = { previewDataSource: dataSource } as DripTableGeneratorState<string, never>;
   if (schema) {
     initialData.globalConfigs = filterAttributes(schema, 'columns');
-    initialData.columns = schema.columns?.map((item, index) => ({ sort: index, ...item })) as DripTableColumn<string, never>[];
+    initialData.columns = schema.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
   }
   const originState: DripTableGeneratorState<string, never> = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });

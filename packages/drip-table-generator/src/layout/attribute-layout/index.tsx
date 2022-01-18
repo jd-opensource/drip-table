@@ -168,6 +168,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     });
     return (
       <CustomForm<DripTableColumn<string, never>>
+        primaryKey="key"
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
