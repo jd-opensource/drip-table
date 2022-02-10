@@ -1,10 +1,7 @@
-import { DripTableComponentConfig } from 'drip-table-generator';
-
 export default {
   mode: 'add' as 'add' | 'replace',
   components: [
     {
-      $id: '$display_text_1',
       'ui:type': 'custom::TextComponent',
       type: 'string',
       group: '业务组件',
@@ -53,5 +50,5 @@ export default {
         },
       ],
     },
-  ] as DripTableComponentConfig[],
+  ],
 };

@@ -43,4 +43,15 @@ export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
     type: 'string',
     default: 'center',
   },
+  {
+    name: 'hidable',
+    group: '组件属性',
+    'ui:title': '该列是否支持隐藏',
+    'ui:type': 'switch',
+    'ui:props': {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+    },
+    type: 'boolean',
+  },
 ];

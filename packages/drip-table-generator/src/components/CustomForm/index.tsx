@@ -32,7 +32,8 @@ interface Props<T> {
   primaryKey?: string;
   extendKeys?: string[];
   theme?: DripTableDriver<DripTableRecordTypeBase>;
-  encodeData: (formData: { [key: string]: unknown }) => T;
+  decodeData?: (data?: T) => Record<string, unknown>;
+  encodeData: (formData: Record<string, unknown>) => T;
   onChange?: (data?: T) => void;
 }
 
@@ -64,7 +65,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
   }
 
   public decodeData(material?: T) {
-    const obj: { [key: string]: unknown } = {};
+    let obj: { [key: string]: unknown } = {};
     // 注入 defaultValue
     this.props.configs.forEach((item) => {
       if (typeof item.default !== 'undefined') { obj[item.name] = item.default; }
@@ -77,6 +78,9 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         this.props.extendKeys.forEach(extKey =>
           Object.keys(material[extKey] || {})
             .forEach((key) => { obj[`${extKey}.${key}`] = (material[extKey] || {})[key]; }));
+      }
+      if (this.props.decodeData) {
+        obj = { ...obj, ...this.props.decodeData(material) };
       }
     }
     return obj;

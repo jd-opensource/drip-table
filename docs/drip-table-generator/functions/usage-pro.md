@@ -32,7 +32,7 @@ return `<a href="http://ace.jd.com/#/launch?config=${rec.price}" target="_blank"
 
 ## 二、Refs 引用
 
-利用 `React.useRef` 获取 `<DripTableGenerator>` 实例，可以直接在外部操作生成器动作胡哦哦这获取生成器状态。
+利用 `React.useRef` 获取 `<DripTableGenerator>` 实例，可以直接在外部操作生成器从而获取生成器内部属性状态以及修改相应的状态。
 
 **开放方法**
 

@@ -206,6 +206,8 @@ const Header = <
     [tableProps.schema.header],
   );
 
+  const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
+
   const [searchStr, setSearchStr] = React.useState('');
   const [searchKey, setSearchKey] = React.useState<HeaderSearchElement['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
 
@@ -276,7 +278,6 @@ const Header = <
     }
 
     if (config.type === 'display-column-selector') {
-      const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
       const hidableColumns = tableProps.schema.columns.filter(c => c.hidable);
       if (hidableColumns.length === 0) {
         return null;

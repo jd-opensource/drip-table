@@ -11,7 +11,7 @@ import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
 import React, { useState } from 'react';
 
 import { filterAttributes } from '@/utils';
-import { globalActions, GlobalStore } from '@/store';
+import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import { useGlobalData } from '@/hooks';
 
 const ToolLayout = (props: { store: GlobalStore }) => {
@@ -25,7 +25,7 @@ const ToolLayout = (props: { store: GlobalStore }) => {
 
   const getSchemaValue = (): DripTableSchema => ({
     $schema: 'http://json-schema.org/draft/2019-09/schema#',
-    ...state.globalConfigs,
+    ...filterAttributes(state.globalConfigs, '$version'),
     columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableColumnSchema<string, never>[],
   });
 
@@ -91,12 +91,13 @@ const ToolLayout = (props: { store: GlobalStore }) => {
             try {
               const json = JSON.parse(value);
               state.globalConfigs = filterAttributes(json, ['$schema', 'columns']);
-              state.columns = json.columns;
+              state.columns = json.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
               state.currentColumn = void 0;
             } catch {
               message.error('解析出错, 请传入正确的格式');
             } finally {
               globalActions.updateGlobalConfig(store);
+              message.success('数据导入成功');
             }
           } else { // 导出复制
             const aux = document.createElement('input');
@@ -108,8 +109,8 @@ const ToolLayout = (props: { store: GlobalStore }) => {
             if (globalData.onExportSchema) {
               globalData.onExportSchema(getSchemaValue());
             }
+            message.success('复制成功');
           }
-          message.success('复制成功');
           setModalStatus('');
           setCode('');
         }}

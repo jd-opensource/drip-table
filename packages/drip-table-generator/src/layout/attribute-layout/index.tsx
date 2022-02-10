@@ -8,7 +8,7 @@
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableHeaderElement, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -26,6 +26,12 @@ import styles from './index.module.less';
 
 type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, '$schema' | 'columns'>;
 
+type ButtonType = 'link' | 'text' | 'ghost' | 'primary' | 'dashed' | 'default';
+type FlexJustifyContent = 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
+type LabeledValue = {
+  label: string;
+  value: string | number;
+}[];
 interface Props {
   customComponentPanel: {
     mode: 'add' | 'replace';
@@ -67,18 +73,108 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     return [...componentsToUse];
   };
 
-  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): GlobalSchema => ({
-    bordered: formData.bordered as boolean,
-    size: formData.size as 'small' | 'middle' | 'large' | undefined,
-    ellipsis: formData.ellipsis as boolean,
-    header: false,
-    pagination: formData.pagination
-      ? {
-        pageSize: formData['pagination.pageSize'] as number,
-        position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
+  const decodeGlobalConfigs = (globalConfigs?: Omit<DripTableSchema, '$schema' | 'columns'>) => {
+    const formData: Record<string, unknown> = {};
+    if (typeof globalConfigs?.header === 'object') {
+      formData.header = true;
+      const headerElements = globalConfigs?.header?.elements || [];
+      for (const headerItem of headerElements) {
+        if (headerItem.type === 'display-column-selector') {
+          formData['header.displayColumnSelector'] = true;
+          formData['header.displayColumnSelector.selectorButtonType'] = headerItem.selectorButtonType;
+          formData['header.displayColumnSelector.selectorButtonText'] = headerItem.selectorButtonText;
+        }
+        if (headerItem.type === 'text') {
+          formData['header.title'] = true;
+          formData['header.title.align'] = headerItem.align;
+          formData['header.title.text'] = headerItem.text;
+        }
+        if (headerItem.type === 'search') {
+          formData['header.search'] = true;
+          formData['header.search.width'] = headerItem.wrapperStyle?.width;
+          formData['header.search.align'] = headerItem.align;
+          formData['header.search.placeholder'] = headerItem.placeholder;
+          formData['header.search.allowClear'] = headerItem.allowClear;
+          formData['header.search.searchButtonText'] = headerItem.searchButtonText;
+          formData['header.search.searchKeys'] = headerItem.searchKeys;
+          formData['header.search.searchKeyDefaultValue'] = headerItem.searchKeyDefaultValue;
+        }
+        if (headerItem.type === 'insert-button') {
+          formData['header.insertButton'] = true;
+          formData['header.insertButton.align'] = headerItem.align;
+          formData['header.insertButton.showIcon'] = headerItem.showIcon;
+          formData['header.insertButton.insertButtonText'] = headerItem.insertButtonText;
+        }
       }
-      : false,
-  });
+    }
+    return formData;
+  };
+
+  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): GlobalSchema => {
+    const elements: DripTableHeaderElement[] = [];
+    if (formData.header) {
+      if (formData['header.displayColumnSelector']) {
+        elements.push({
+          type: 'display-column-selector',
+          selectorButtonType: formData['header.displayColumnSelector.selectorButtonType'] as ButtonType,
+          selectorButtonText: formData['header.displayColumnSelector.selectorButtonText'] as string || '',
+        });
+      }
+      if (formData['header.title']) {
+        elements.push({
+          type: 'text',
+          span: 'flex-auto',
+          align: formData['header.title.align'] as FlexJustifyContent,
+          text: formData['header.title.text'] as string,
+        });
+      }
+      if (formData['header.search']) {
+        elements.push({
+          type: 'search',
+          wrapperStyle: { width: formData['header.search.width'] as number },
+          align: formData['header.search.align'] as FlexJustifyContent,
+          placeholder: formData['header.search.placeholder'] as string,
+          allowClear: formData['header.search.allowClear'] as boolean,
+          searchButtonText: formData['header.search.searchButtonText'] as string,
+          searchKeys: formData['header.search.typeVisible'] ? formData['header.search.searchKeys'] as LabeledValue : void 0,
+          searchKeyDefaultValue: formData['header.search.searchKeyDefaultValue'] as string,
+        });
+      }
+      if (formData['header.insertButton']) {
+        elements.push({
+          type: 'insert-button',
+          align: formData['header.insertButton.align'] as FlexJustifyContent,
+          showIcon: formData['header.insertButton.showIcon'] as boolean,
+          insertButtonText: formData['header.insertButton.insertButtonText'] as string,
+        });
+      }
+    }
+    return {
+      bordered: formData.bordered as boolean,
+      innerBordered: formData.innerBordered as boolean,
+      size: formData.size as 'small' | 'middle' | 'large' | undefined,
+      ellipsis: formData.ellipsis as boolean,
+      sticky: formData.sticky as boolean,
+      rowSelection: formData.rowSelection as boolean,
+      virtual: formData.virtual as boolean,
+      scrollY: formData.scrollY as number,
+      header: formData.header
+        ? {
+          style: { margin: '0', padding: '12px 0' },
+          elements,
+        }
+        : false,
+      pagination: formData.pagination
+        ? {
+          size: formData['pagination.size'] as 'small' | 'default',
+          pageSize: formData['pagination.pageSize'] as number,
+          position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
+          showQuickJumper: formData['pagination.showQuickJumper'] as boolean,
+          showSizeChanger: formData['pagination.showSizeChanger'] as boolean,
+        }
+        : false,
+    };
+  };
 
   const encodeColumnConfigs = (formData: { [key: string]: unknown }) => {
     const uiProps = {};
@@ -116,8 +212,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
+      primaryKey="$version"
       configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
       data={state.globalConfigs}
+      decodeData={decodeGlobalConfigs}
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
       theme={props.driver}
