@@ -64,8 +64,10 @@ export default {
         type: 'icon',
         title: '控制表格该列默认字体大小，默认单位为“px”，支持手动指定单位后缀。',
       },
-      default: 12,
-      min: 12,
+      default: 13,
+      'ui:props': {
+        min: 13,
+      },
     },
     {
       name: 'ui:props.maxRow',
@@ -77,14 +79,18 @@ export default {
         type: 'icon',
         title: '文字展示的最大行数，超过该行数则展示...',
       },
-      min: 1,
+      'ui:props': {
+        min: 0,
+      },
     },
     {
       name: 'ui:props.linHeight',
       group: '样式配置',
       'ui:title': '行高',
       'ui:type': 'number',
-      min: 1,
+      'ui:props': {
+        min: 1,
+      },
     },
     {
       name: 'ui:props.mode',
@@ -118,7 +124,7 @@ export default {
       visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
     },
     {
-      name: 'ui:props.params',
+      name: 'ui:props.parts',
       group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',

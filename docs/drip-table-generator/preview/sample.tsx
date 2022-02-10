@@ -5,6 +5,7 @@
  */
 
 import 'antd/dist/antd.css';
+import 'drip-table/index.css';
 import 'drip-table-generator/index.css';
 import './sample.module.less';
 

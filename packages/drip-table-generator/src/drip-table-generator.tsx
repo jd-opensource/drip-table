@@ -7,6 +7,7 @@ import { defaultState, DripTableGeneratorState, GlobalStore } from '@/store';
 import { Ctx } from '@/context';
 import { DripTableGeneratorHandler, DripTableGeneratorProps } from '@/typing';
 
+import { filterAttributes } from './utils';
 import Wrapper, { GeneratorWrapperHandler } from './wrapper';
 
 const useTableRoot = (
@@ -21,14 +22,14 @@ const useTableRoot = (
       const currentState = wrapper.current.getState();
       return {
         $schema: 'http://json-schema.org/draft/2019-09/schema#',
-        ...currentState.globalConfigs,
+        ...filterAttributes(currentState.globalConfigs, '$version'),
         columns: currentState.columns.map(item => ({ ...item, sort: void 0, index: void 0 })),
       };
     }
 
     return {
       $schema: 'http://json-schema.org/draft/2019-09/schema#',
-      ...state.globalConfigs,
+      ...filterAttributes(state.globalConfigs, '$version'),
       columns: state.columns.map(item => ({ ...item, sort: void 0, index: void 0 })),
     };
   };
