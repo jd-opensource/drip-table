@@ -7,7 +7,7 @@
 import 'antd/dist/antd.css';
 
 import { Button, message } from 'antd';
-import DripTable, { DripTableContainerHandle, DripTableProps, DripTableProvider } from 'drip-table';
+import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React, { useRef, useState } from 'react';
 
@@ -49,7 +49,7 @@ const Demo = () => {
       </div>
       <DripTableProvider ref={dripTable}>
         <DripTable<SampleRecordType>
-          driver={DripTableDriverAntDesign as DripTableProps<SampleRecordType>['driver']}
+          driver={DripTableDriverAntDesign}
           schema={schema}
           total={simpleData.length}
           dataSource={simpleData}
