@@ -9,11 +9,12 @@
 import * as AntDesignIcons from '@ant-design/icons';
 import * as AntDesign from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
+import { DripTableDriver } from 'drip-table';
 
-const DripTableDriverAntDesign = {
+const DripTableDriverAntDesign: DripTableDriver = {
   components: AntDesign,
   icons: AntDesignIcons,
   locale: zhCN,
-};
+} as unknown as DripTableDriver;
 
 export default DripTableDriverAntDesign;
