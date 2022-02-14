@@ -8,10 +8,10 @@
 
 import React, { ErrorInfo } from 'react';
 
-import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
+import { DripTableDriver } from '@/types';
 
-class ErrorBoundary<RecordType extends DripTableRecordTypeBase> extends React.Component<
-{ driver: DripTableDriver<RecordType> },
+class ErrorBoundary extends React.Component<
+{ driver: DripTableDriver },
 { hasError: boolean; errorInfo: string }
 > {
   public state = { hasError: false, errorInfo: '' };

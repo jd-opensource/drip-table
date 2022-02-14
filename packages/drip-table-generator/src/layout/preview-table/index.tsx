@@ -15,7 +15,7 @@ import { GlobalStore } from '@/store';
 import styles from './index.module.less';
 
 interface Props {
-  driver: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver;
   customComponents: DripTableProps<DripTableRecordTypeBase>['components'];
 }
 

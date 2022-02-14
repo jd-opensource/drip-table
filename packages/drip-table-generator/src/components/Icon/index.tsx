@@ -8,14 +8,14 @@
 
 import cheerio, * as Cheerio from 'cheerio';
 import * as DOMHandler from 'domhandler';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
 interface IconProps {
   className?: string;
   style?: React.CSSProperties;
   name?: string;
-  driver?: DripTableDriver<DripTableRecordTypeBase>;
+  driver?: DripTableDriver;
   svg?: React.ReactSVG | string;
 }
 

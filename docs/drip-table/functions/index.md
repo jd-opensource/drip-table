@@ -221,7 +221,7 @@ title: Schema 配置项
     /**
      * 选择器按钮样式
      */
-    selectorButtonType?: React.ComponentProps<DripTableDriver<unknown>['components']['Button']>['type'];
+    selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
   }
 
   export type DripTableHeaderElement =

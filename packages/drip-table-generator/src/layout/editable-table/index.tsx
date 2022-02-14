@@ -21,7 +21,7 @@ import styles from './index.module.less';
 
 type ResultProps = React.ComponentProps<typeof Result>;
 interface Props {
-  driver: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver;
   customComponents: DripTableProps<DripTableRecordTypeBase>['components'] | undefined;
 }
 
