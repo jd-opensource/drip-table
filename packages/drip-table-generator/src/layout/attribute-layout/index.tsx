@@ -8,7 +8,7 @@
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
-import { DripTableDriver, DripTableHeaderElement, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableHeaderElement, DripTableSchema } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -38,7 +38,7 @@ interface Props {
     components: DripTableComponentAttrConfig[];
   } | undefined;
   customGlobalConfigPanel: DTGComponentPropertySchema[] | undefined;
-  driver: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver;
 }
 
 const { TabPane } = Tabs;

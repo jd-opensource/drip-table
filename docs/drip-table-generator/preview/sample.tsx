@@ -10,7 +10,7 @@ import 'drip-table-generator/index.css';
 import './sample.module.less';
 
 import { message } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React from 'react';
@@ -54,7 +54,7 @@ const Demo = () => (
   <DripTableGenerator
     mockDataSource
     style={{ height: 756 }}
-    driver={DripTableDriverAntDesign as unknown as DripTableDriver<DripTableRecordTypeBase>}
+    driver={DripTableDriverAntDesign as unknown as DripTableDriver}
     schema={initialSchema}
     dataSource={mockData.slice(0, 4)}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}

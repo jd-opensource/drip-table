@@ -7,7 +7,7 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Popover, Select } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
 import { DTGComponentPropertySchema } from '@/typing';
@@ -17,7 +17,7 @@ type SelectValueType = SelectProps['value'];
 type SelectOptionType = NonNullable<SelectProps['options']>[number];
 
 interface Props {
-  theme?: DripTableDriver<DripTableRecordTypeBase>;
+  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
   value?: SelectValueType;
   onChange?: (value: SelectValueType) => void;

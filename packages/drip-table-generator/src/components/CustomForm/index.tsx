@@ -10,7 +10,7 @@ import 'rc-color-picker/assets/index.css';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver } from 'drip-table';
 import React, { Component } from 'react';
 
 import RichText from '@/components/RichText';
@@ -31,7 +31,7 @@ interface Props<T> {
   data?: T;
   primaryKey?: string;
   extendKeys?: string[];
-  theme?: DripTableDriver<DripTableRecordTypeBase>;
+  theme?: DripTableDriver;
   decodeData?: (data?: T) => Record<string, unknown>;
   encodeData: (formData: Record<string, unknown>) => T;
   onChange?: (data?: T) => void;

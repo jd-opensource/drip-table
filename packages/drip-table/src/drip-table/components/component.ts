@@ -72,7 +72,7 @@ export interface DripTableComponentProps<
   /**
    * 底层渲染驱动
    */
-  driver: DripTableDriver<RecordType>;
+  driver: DripTableDriver;
   /**
    * 当前渲染列参数
    */

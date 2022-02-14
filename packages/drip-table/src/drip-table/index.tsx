@@ -10,6 +10,7 @@ import classnames from 'classnames';
 import React, { useRef } from 'react';
 
 import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
@@ -30,7 +31,7 @@ export interface DripTableProps<
   /**
    * 底层组件驱动
    */
-  driver: DripTableDriver<RecordType>;
+  driver: DripTableDriver;
   /**
    * 样式表类名
    */
@@ -247,12 +248,12 @@ const DripTable = <
       column.ellipsis = true;
     }
     if (!column.render) {
-      column.render = renderGenerator(schemaColumn);
+      column.render = renderGenerator(schemaColumn) as TableColumn['render'];
     }
     return column;
   };
 
-  const tableProps: Parameters<DripTableDriver<RecordType>['components']['Table']>[0] = {
+  const tableProps: DripTableDriverTableProps<RecordType> = {
     rowKey,
     columns: columns.map(columnGenerator),
     dataSource,

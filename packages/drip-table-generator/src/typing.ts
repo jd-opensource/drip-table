@@ -124,7 +124,7 @@ CustomComponentSchema extends DripTableComponentSchema = never,
 CustomComponentEvent extends EventLike = never,
 Ext = unknown> {
   style?: CSSProperties;
-  driver: DripTableDriver<DripTableRecordTypeBase>;
+  driver: DripTableDriver;
   showComponentLayout?: boolean;
   componentLayoutStyle?: CSSProperties;
   rightLayoutStyle?: CSSProperties;

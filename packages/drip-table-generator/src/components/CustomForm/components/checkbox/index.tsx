@@ -7,7 +7,7 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Checkbox, Popover } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -18,7 +18,7 @@ type CheckboxValueType = CheckboxGroupProps['value'];
 type CheckboxOptionType = NonNullable<CheckboxGroupProps['options']>[number] & { description?: string; icon?: string };
 
 interface Props {
-  theme?: DripTableDriver<DripTableRecordTypeBase>;
+  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
   value?: CheckboxValueType;
   onChange?: (value: CheckboxValueType) => void;

@@ -7,13 +7,13 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { AutoComplete, Popover, Select } from 'antd';
-import { DripTableDriver, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
 import { DTGComponentPropertySchema, StringDataSchema } from '@/typing';
 
 interface Props {
-  theme?: DripTableDriver<DripTableRecordTypeBase>;
+  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
   value?: string;
   onChange?: (value: string) => void;

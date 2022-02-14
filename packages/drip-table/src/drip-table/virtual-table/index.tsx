@@ -2,7 +2,9 @@ import ResizeObserver from 'rc-resize-observer';
 import React, { useEffect, useRef, useState } from 'react';
 import { VariableSizeGrid } from 'react-window';
 
-import { DripTableDriver, DripTableRecordTypeBase } from '../..';
+import { DripTableDriver, DripTableRecordTypeBase } from '@/types';
+import { DripTableDriverTableProps } from '@/types/driver/table';
+
 import { indexValue } from '../utils';
 
 import styles from './index.module.css';
@@ -14,7 +16,7 @@ const rowHeightMap = {
   large: 88,
 };
 
-function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { driver: DripTableDriver<RecordType> } & Parameters<DripTableDriver<RecordType>['components']['Table']>[0]) {
+function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { driver: DripTableDriver } & DripTableDriverTableProps<RecordType>) {
   const { columns = [], scroll, size, driver } = props;
   const Table = driver.components.Table;
   const [tableWidth, setTableWidth] = useState(0);
@@ -66,7 +68,7 @@ function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { drive
 
   useEffect(() => resetVirtualGrid, [tableWidth]);
 
-  const renderVirtualList: NonNullable<Parameters<DripTableDriver<RecordType>['components']['Table']>[0]['components']>['body'] = (rawData, { scrollbarSize, ref, onScroll }) => {
+  const renderVirtualList: NonNullable<typeof props['components']>['body'] = (rawData, { scrollbarSize, ref, onScroll }) => {
     // if (ref && 'current' in ref) {
     //   ref.current = refConnector;
     // }
