@@ -13,9 +13,9 @@ import { type DripTableHeaderElement } from '../drip-table/header';
 
 export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
   /**
-    * 若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
-    * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）
-    */
+   * 若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
+   * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）
+   */
   'ui:type': T;
   'ui:props'?: {
     [key: string]: unknown;
@@ -28,29 +28,29 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
   | 'http://json-schema.org/draft-06/schema#'
   | 'http://json-schema.org/draft-04/schema#';
   /**
-    * 是否展示表格边框
-    */
+   * 是否展示表格边框
+   */
   bordered?: boolean;
   /**
-    * 是否展示表格内部边框
-    */
+   * 是否展示表格内部边框
+   */
   innerBordered?: boolean;
   /**
-    * 是否展示头部以及配置
-    */
+   * 是否展示头部以及配置
+   */
   header?: {
     /**
-      * 头部自定义样式
-      */
+     * 头部自定义样式
+     */
     style?: React.CSSProperties;
     /**
-      * 头部展示元素配置
-      */
+     * 头部展示元素配置
+     */
     elements?: DripTableHeaderElement[];
   } | boolean;
   /**
-    * 是否展示分页以及配置
-    */
+   * 是否展示分页以及配置
+   */
   pagination?: false | {
     size?: 'small' | 'default';
     pageSize: number;
@@ -60,48 +60,48 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
     showSizeChanger?: boolean;
   };
   /**
-    * 是否需要展开行
-    */
+   * 是否需要展开行
+   */
   expandable?: boolean;
   size?: 'small' | 'middle' | 'large' | undefined;
   /**
-    * 粘性头部
-    */
+   * 粘性头部
+   */
   sticky?: boolean;
   /**
-    * 是否支持选择栏
-    */
+   * 是否支持选择栏
+   */
   rowSelection?: boolean;
   /**
-    * 是否平均列宽
-    */
+   * 是否平均列宽
+   */
   ellipsis?: boolean;
   /**
-    * 无数据提示
-    */
+   * 无数据提示
+   */
   placeholder?: {
     image: string;
     text: string;
   };
   /**
-    * 是否开启虚拟滚动
-    */
+   * 是否开启虚拟滚动
+   */
   virtual?: boolean;
   /**
-    * 虚拟列表滚动高度
-    */
+   * 虚拟列表滚动高度
+   */
   scrollY?: number;
   /**
-    * 列定义
-    */
+   * 列定义
+   */
   columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
   /**
-    * 展开行列表信息
-    */
+   * 展开行列表信息
+   */
   expandedRowColumns?: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
   /**
-    * 表格尾部
-    */
+   * 表格尾部
+   */
   footer?: (currentPageData: Record<string, any>) => JSX.Element;
 }
 
