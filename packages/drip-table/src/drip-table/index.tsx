@@ -253,10 +253,39 @@ const DripTable = <
     return column;
   };
 
+  const expandableGenerator = (expandedRowColumns: any) => {
+
+    return {
+      expandedRowRender: (record: Record<string, any> | RecordType, index: number) =>
+        (<Table
+            size={'middle'}
+            columns={expandedRowColumns.map(columnGenerator)}
+            dataSource={record.expandedRowChild}
+            showHeader={false}
+            pagination={{
+              hideOnSinglePage: true
+            }}
+            footer={(currentPageData: Record<string, any>)  =>  renderExpandableGenerator(currentPageData, index) } />),
+      rowExpandable: (record: Record<string, any>) => !!record.expandedRowChild,
+    }
+  };
+
+  const renderExpandableGenerator = (currentPageData: Record<string, unknown>, index: number) => {
+    return (
+      <div
+        className={classnames(styles['drip-table-wrapper-expandable-show-more-btn'])}
+        onClick={() => props.onEvent?.({ type: 'drip-button-click', payload: 'showMore' }, currentPageData as RecordType, index)}>
+          查看更多
+      </div>
+    )
+  }
+
+
   const tableProps: DripTableDriverTableProps<RecordType> = {
     rowKey,
     columns: columns.map(columnGenerator),
     dataSource,
+    expandable: props.schema.expandable ? expandableGenerator(props.schema.expandedRowColumns) : {},
     pagination: props.schema.pagination === false
       ? false as const
       : {
