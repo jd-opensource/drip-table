@@ -104,6 +104,9 @@ const Demo = () => {
             } else if (event.type === 'custom') {
               message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
               console.log(event, record, index);
+            } else if (event.type === 'drip-button-click' && event.payload === 'showMore') {
+              message.info('点击加载更多');
+              console.log(event, record, index);
             }
           }}
           onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}

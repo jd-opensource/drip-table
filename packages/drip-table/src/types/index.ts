@@ -91,6 +91,14 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
    * 列定义
    */
   columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
+  /**
+   * 展开行参数
+   */
+  expandable?: DripTableExpandable;
+  /**
+   * 表格尾部
+   */
+  footer?: (currentPageData: Record<string, unknown>) => JSX.Element;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
@@ -105,6 +113,7 @@ export interface DripTablePagination {
   showLessItems?: boolean;
   showQuickJumper?: boolean;
   showSizeChanger?: boolean;
+  hideOnSinglePage?: boolean;
 }
 
 export type DripTableFilters = Record<string, (React.Key | boolean)[] | null>;
@@ -113,3 +122,14 @@ export type { DripTableDriver, DripTableReactComponent, DripTableReactComponentP
 
 export type EventLike<T = { type: string }> = T extends { type: string } ? T : never;
 export interface DripTableCustomEvent<TN> extends EventLike<{ type: 'custom' }> { name: TN }
+
+export interface DripTableExpandable <CustomComponentSchema extends DripTableComponentSchema = never>{
+  /**
+   * 展开列信息
+   */
+  expandedRowColumns?: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
+  /**
+   * 展开更多文案
+   */
+  expandedText?: string;
+}
