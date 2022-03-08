@@ -1,0 +1,8 @@
+{
+  "*.{js,jsx,ts,tsx,tx,json,scss,less,css}": [
+    "npm run lint"
+  ],
+  "*": [
+    "npm run lint:git"
+  ]
+}

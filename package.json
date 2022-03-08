@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky install",
     "start": "dumi dev",
     "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd && yarn run build:drip-table-generator",
     "build:drip-table": "lerna run build --stream --scope=drip-table",
@@ -14,14 +15,16 @@
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
     "clean": "lerna clean -y",
-    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator",
+    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator || exit 1",
     "lint:git": "sh ./bin/gitlint.sh || exit 1",
-    "lint:drip-table": "lerna run lint --stream --scope=drip-table",
-    "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd",
-    "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator"
+    "lint:drip-table": "lerna run lint --stream --scope=drip-table || exit 1",
+    "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd || exit 1",
+    "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
     "@rollup/plugin-eslint": "^8.0.1",
     "@types/lodash": "^4.14.178",
     "@types/react-window": "^1.8.5",
@@ -47,6 +50,7 @@
     "eslint-plugin-unicorn": "^38.0.1",
     "eslint-plugin-unused-imports": "^1.1.1",
     "father-build": "^1.20.4",
+    "husky": "^7.0.4",
     "jsoneditor": "^9.5.7",
     "jsoneditor-react": "^3.1.1",
     "lerna": "3.22.1",
@@ -70,5 +74,10 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/JDFED/drip-table/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
