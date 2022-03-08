@@ -151,6 +151,13 @@ const config: IConfig = {
     'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd/dist'),
     'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator/dist'),
   },
+  proxy: {
+    '/storage.jd.com': {
+      'target': 'https://storage.jd.com/',
+      'changeOrigin': true,
+      'pathRewrite': { '^/storage.jd.com' : '' },
+    },
+  },
   // more config: https://d.umijs.org/config
   styles: [
     `.__dumi-default-navbar-logo { width:146px !important; color: transparent !important; }
