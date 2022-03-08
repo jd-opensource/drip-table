@@ -1,0 +1,37 @@
+module.exports = {
+  extends: [
+    '@commitlint/config-conventional',
+  ],
+  rules: {
+    'type-enum': [2, 'always', [
+      'build',
+      'ci',
+      'chore',
+      'docs',
+      'feat',
+      'fix',
+      'perf',
+      'refactor',
+      'revert',
+      'style',
+      'test',
+      'release',
+    ]],
+    'invalid-subject-chars': [2, 'always'],
+  },
+  plugins: [
+    {
+      rules: {
+        'invalid-subject-chars': function (data) {
+          if (typeof data.subject === 'string') {
+            var invalidChars = data.subject.match(/[^a-zA-Z0-9,.'"\-_ /\\#]/gu);
+            if (invalidChars && invalidChars.length > 0) {
+              return [false, 'Subject contains invalid characters: ' + invalidChars.join('')];
+            }
+          }
+          return [true, null];
+        },
+      },
+    },
+  ],
+};
