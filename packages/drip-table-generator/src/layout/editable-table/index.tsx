@@ -65,7 +65,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
               <DripTableComponent
                 driver={props.driver || DripTableDriverAntDesign}
                 value={value as unknown}
-                data={record as Record<string, unknown>}
+                data={record}
                 schema={{ ...column, ...(column['ui:props'] || {}) as Record<string, unknown> } as unknown as DripTableColumnSchema<string, DripTableComponentSchema>}
                 preview={{}}
               />
@@ -122,7 +122,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
          state.columns && state.columns.length > 0
            ? (
              <Draggable<DripTableColumn<string, never>>
-               value={(state.columns || []) as DripTableColumn<string, never>[]}
+               value={(state.columns || [])}
                codeKey="sort"
                style={{ position: 'relative' }}
                onChange={(data) => {
