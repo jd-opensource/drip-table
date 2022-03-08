@@ -12,6 +12,7 @@ import DTCButton, { DTCButtonEvent, DTCButtonSchema } from './button';
 import DTCImage, { DTCImageSchema } from './image';
 import DTCLink, { DTCLinkEvent, DTCLinkSchema } from './link';
 import DTCRenderHTML, { DTCRenderHTMLSchema } from './render-html';
+import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteSchema } from './render-html-remote';
 import DTCTag, { DTCTagSchema } from './tag';
 import DTCText, { DTCTextSchema } from './text';
 
@@ -27,7 +28,8 @@ export type DripTableBuiltInColumnSchema =
   | DripTableColumnSchema<'button', DTCButtonSchema>
   | DripTableColumnSchema<'text', DTCTextSchema>
   | DripTableColumnSchema<'tag', DTCTagSchema>
-  | DripTableColumnSchema<'render-html', DTCRenderHTMLSchema>;
+  | DripTableColumnSchema<'render-html', DTCRenderHTMLSchema>
+  | DripTableColumnSchema<'render-html-remote', DTCRenderHTMLRemoteSchema>;
 
 const DripTableBuiltInComponents = {
   image: DTCImage,
@@ -36,5 +38,6 @@ const DripTableBuiltInComponents = {
   text: DTCText,
   tag: DTCTag,
   'render-html': DTCRenderHTML,
+  'render-html-remote': DTCRenderHTMLRemote,
 };
 export default DripTableBuiltInComponents;
