@@ -31,19 +31,26 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
   };
 
   private async fetch() {
-    if (!CACHE_RENDERER.has(this.props.schema.url)) {
-      const response = await fetch(this.props.schema.url);
+    const url = this.props.schema.url;
+    if (!CACHE_RENDERER.has(url)) {
+      const response = await fetch(url);
       const text = await response.text();
-      CACHE_RENDERER.set(this.props.schema.url, text);
+      CACHE_RENDERER.set(url, text);
     }
-    const render = CACHE_RENDERER.get(this.props.schema.url);
-    if (render) {
+    const render = CACHE_RENDERER.get(url);
+    if (render && this.props.schema.url === url) {
       this.setState({ render });
     }
   }
 
   public componentDidMount() {
     this.fetch();
+  }
+
+  public componentDidUpdate(prevProps: DTCRenderHTMLRemoteProps<RecordType>) {
+    if (this.props.schema.url !== prevProps.schema.url) {
+      this.fetch();
+    }
   }
 
   public render(): JSX.Element {
