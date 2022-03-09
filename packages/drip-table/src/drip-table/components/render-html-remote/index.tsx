@@ -13,7 +13,7 @@ import RichText from '@/components/RichText';
 
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 
-const CACHE_RENDERER = new Map<string, string>();
+const CACHE_RENDERER = new Map<string, Promise<string>>();
 
 export interface DTCRenderHTMLRemoteSchema extends DripTableComponentSchema {
   url: string;
@@ -33,13 +33,25 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
   private async fetch() {
     const url = this.props.schema.url;
     if (!CACHE_RENDERER.has(url)) {
-      const response = await fetch(url);
-      const text = await response.text();
-      CACHE_RENDERER.set(url, text);
+      CACHE_RENDERER.set(url, new Promise((resolve, reject) => {
+        fetch(url)
+          .then(res => res.text())
+          .then((res) => {
+            resolve(res);
+            return res;
+          })
+          .catch((error) => {
+            CACHE_RENDERER.delete(url);
+            throw error;
+          });
+      }));
     }
-    const render = CACHE_RENDERER.get(url);
-    if (render && this.props.schema.url === url) {
-      this.setState({ render });
+    const promise = CACHE_RENDERER.get(url);
+    if (promise) {
+      const render = await promise;
+      if (this.props.schema.url === url) {
+        this.setState({ render });
+      }
     }
   }
 
