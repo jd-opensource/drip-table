@@ -160,13 +160,12 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       hidable: true,
     },
   ],
-  expandable: {
-    expandedText: '加载更多',
-    expandedRowColumns: [
+  subtable: {
+    dataSourceKey: 'subtable',
+    columns: [
       {
         key: 'mock_1',
         title: '页面名称',
-        // width: 90,
         align: 'center',
         'ui:type': 'text',
         'ui:props': {
@@ -179,7 +178,6 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       {
         key: 'mock_2',
         title: '开始/结束时间',
-        // width: 410,
         align: 'center',
         'ui:type': 'text',
         'ui:props': {
@@ -195,7 +193,6 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       {
         key: 'mock_3',
         title: '页面状态',
-        // width: 150,
         align: 'center',
         dataIndex: 'status',
         'ui:type': 'text',
@@ -234,6 +231,8 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
         hidable: true,
       },
     ],
+    showHeader: false,
+    bordered: true,
   },
 };
 
@@ -246,22 +245,26 @@ export interface SampleRecordType extends Record<string, unknown> {
 }
 
 export const mockData: SampleRecordType[] = [
-  { id: 1,
+  {
+    id: 1,
     name: '商品一',
     description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
     status: 'onSale',
     price: 7999,
-    expandedRowChildren: [
+    subtable: [
       { id: '1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
-    ] },
-  { id: 2,
+    ],
+  },
+  {
+    id: 2,
     name: '商品二',
     description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
     status: 'onSale',
     price: 6488,
-    expandedRowChildren: [
+    subtable: [
       { id: '2-1', name: '梨', description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族', status: 'onSale', price: 799 },
-    ] },
+    ],
+  },
   { id: 3, name: '商品三', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 2099 },
   { id: 4, name: '商品四', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 5999 },
   { id: 5, name: '商品五', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 109.9 },
@@ -302,5 +305,4 @@ export const mockData: SampleRecordType[] = [
   { id: 40, name: '商品二', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'soldOut', price: 109.9 },
   { id: 41, name: '商品三', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 178 },
   { id: 42, name: '商品四', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'soldOut', price: 9999 },
-
 ];

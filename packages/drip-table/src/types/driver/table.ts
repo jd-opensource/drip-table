@@ -24,14 +24,30 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
     }[];
     defaultFilteredValue?: React.Key[] | null;
   }[];
-  expandable?: Record<string, unknown>;
   dataSource?: RecordType[];
   pagination?: false | DripTablePagination;
   loading?: boolean;
   size?: 'large' | 'middle' | 'small';
   bordered?: boolean;
   innerBordered?: boolean;
+  showHeader?: boolean;
   sticky?: boolean;
+  expandable?: {
+    expandedRowKeys?: readonly React.Key[];
+    defaultExpandedRowKeys?: readonly React.Key[];
+    expandedRowRender?: (record: RecordType, index: number, indent: number, expanded: boolean) => React.ReactNode;
+    expandRowByClick?: boolean;
+    onExpand?: (expanded: boolean, record: RecordType) => void;
+    onExpandedRowsChange?: (expandedKeys: readonly React.Key[]) => void;
+    defaultExpandAllRows?: boolean;
+    indentSize?: number;
+    expandIconColumnIndex?: number;
+    expandedRowClassName?: (record: RecordType, index: number, indent: number) => string;
+    childrenColumnName?: string;
+    rowExpandable?: (record: RecordType) => boolean;
+    columnWidth?: number | string;
+    fixed?: 'left' | 'right' | boolean;
+  };
   rowSelection?: {
     selectedRowKeys?: React.Key[];
     onChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
@@ -52,9 +68,9 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
       }) => void;
     }) => React.ReactNode;
   };
+  title?: (data: readonly RecordType[]) => React.ReactNode;
+  footer?: (data: readonly RecordType[]) => React.ReactNode;
   onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
-  showHeader?: boolean;
-  footer?: (currentPageData: Record<string, unknown>) => JSX.Element | undefined | string;
 }
 
 declare function DripTableDriverTable<RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase>(props: DripTableDriverTableProps<RecordType>): JSX.Element;

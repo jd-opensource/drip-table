@@ -32,7 +32,7 @@ const createTableContext = <RecordType extends DripTableRecordTypeBase>(props: D
 
   const select = (indexes: number[]) => {
     let selectedKeys: React.Key[] = [];
-    const { dataSource, rowKey } = props;
+    const { dataSource, schema: { rowKey } } = props;
     if (dataSource && rowKey) {
       indexes.forEach((index) => {
         const data = dataSource[index];

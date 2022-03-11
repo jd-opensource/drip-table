@@ -92,9 +92,38 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
    */
   columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
   /**
-   * 展开行参数
+   * 表格行主键
    */
-  expandable?: DripTableExpandable;
+  rowKey?: string;
+  /**
+   * 子表设置项
+   */
+  subtable?: {
+    /**
+     * 父表获取子表数据源键名
+     */
+    dataSourceKey: React.Key;
+    /**
+     * 展开子表列信息
+     */
+    columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
+    /**
+     * 子表格行主键
+     */
+    rowKey?: string;
+    /**
+     * 展开子表大小
+     */
+    size?: 'large' | 'middle' | 'small';
+    /**
+     * 是否展示表格边框
+     */
+    bordered?: boolean;
+    /**
+     * 是否显示表头
+     */
+    showHeader?: boolean;
+  };
   /**
    * 表格尾部
    */
@@ -122,14 +151,3 @@ export type { DripTableDriver, DripTableReactComponent, DripTableReactComponentP
 
 export type EventLike<T = { type: string }> = T extends { type: string } ? T : never;
 export interface DripTableCustomEvent<TN> extends EventLike<{ type: 'custom' }> { name: TN }
-
-export interface DripTableExpandable <CustomComponentSchema extends DripTableComponentSchema = never>{
-  /**
-   * 展开列信息
-   */
-  expandedRowColumns?: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
-  /**
-   * 展开更多文案
-   */
-  expandedText?: string;
-}
