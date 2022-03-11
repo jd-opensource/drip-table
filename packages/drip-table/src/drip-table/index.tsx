@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableDriver, DripTableExpandable, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
 import { DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
@@ -253,10 +253,42 @@ const DripTable = <
     return column;
   };
 
+  const renderExpandableGenerator = (currentPageData: Record<string, unknown>, index: number, expandedText: string | undefined) => expandedText && (
+    <div
+      className={classnames(styles['drip-table-wrapper-expandable-show-more-btn'])}
+      onClick={() => props.onEvent?.({ type: 'drip-button-click', payload: 'showMore' }, currentPageData as RecordType, index)}
+    >
+      { expandedText }
+    </div>
+  );
+
+  const expandableGenerator = (expandable: DripTableExpandable) => {
+    const { expandedRowColumns, expandedText } = expandable;
+    return {
+      expandedRowRender: (record: RecordType, index: number) => {
+        const { expandedRowChildren } = record;
+        return (
+          <Table
+            size="middle"
+            columns={expandedRowColumns?.map(columnGenerator)}
+            dataSource={expandedRowChildren as DripTableRecordTypeBase[]}
+            showHeader={false}
+            pagination={{
+              hideOnSinglePage: true,
+            }}
+            footer={(currentPageData: Record<string, unknown>) => renderExpandableGenerator(currentPageData, index, expandedText)}
+          />
+        );
+      },
+      rowExpandable: (record: Record<string, unknown>) => !!record.expandedRowChildren,
+    };
+  };
+
   const tableProps: DripTableDriverTableProps<RecordType> = {
     rowKey,
     columns: columns.map(columnGenerator),
     dataSource,
+    expandable: props.schema.expandable ? expandableGenerator(props.schema.expandable) : {},
     pagination: props.schema.pagination === false
       ? false as const
       : {

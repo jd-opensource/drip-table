@@ -160,6 +160,81 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
       hidable: true,
     },
   ],
+  expandable: {
+    expandedText: '加载更多',
+    expandedRowColumns: [
+      {
+        key: 'mock_1',
+        title: '页面名称',
+        // width: 90,
+        align: 'center',
+        'ui:type': 'text',
+        'ui:props': {
+          mode: 'single',
+          maxRow: 1,
+        },
+        type: 'string',
+        dataIndex: 'name',
+      },
+      {
+        key: 'mock_2',
+        title: '开始/结束时间',
+        // width: 410,
+        align: 'center',
+        'ui:type': 'text',
+        'ui:props': {
+          mode: 'single',
+          tooltip: true,
+          ellipsis: true,
+          maxRow: 3,
+        },
+        type: 'string',
+        dataIndex: 'description',
+        hidable: true,
+      },
+      {
+        key: 'mock_3',
+        title: '页面状态',
+        // width: 150,
+        align: 'center',
+        dataIndex: 'status',
+        'ui:type': 'text',
+        'ui:props': {
+          mode: 'single',
+        },
+        type: 'string',
+        i18n: {
+          onSale: '售卖中',
+          soldOut: '已售罄',
+        },
+        description: '这是一条提示信息',
+        hidable: true,
+        filters: [
+          { text: '售卖中', value: 'onSale' },
+          { text: '已售罄', value: 'soldOut' },
+        ],
+        defaultFilteredValue: ['onSale', 'soldOut'],
+      },
+      {
+        key: 'mock_7',
+        title: '操作',
+        align: 'center',
+        'ui:type': 'link',
+        'ui:props': {
+          mode: 'multiple',
+          operates: [
+            { name: 'order', label: '订购', href: './#order', target: '_blank' },
+            { name: 'view', label: '查看', href: './#view' },
+            { name: 'edit', label: '编辑', event: 'edit' },
+            { name: 'remove', label: '删除', event: 'remove' },
+          ],
+        },
+        type: 'string',
+        dataIndex: 'operate',
+        hidable: true,
+      },
+    ],
+  },
 };
 
 export interface SampleRecordType extends Record<string, unknown> {
@@ -171,8 +246,22 @@ export interface SampleRecordType extends Record<string, unknown> {
 }
 
 export const mockData: SampleRecordType[] = [
-  { id: 1, name: '商品一', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 7999 },
-  { id: 2, name: '商品二', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 6488 },
+  { id: 1,
+    name: '商品一',
+    description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
+    status: 'onSale',
+    price: 7999,
+    expandedRowChildren: [
+      { id: '1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+    ] },
+  { id: 2,
+    name: '商品二',
+    description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
+    status: 'onSale',
+    price: 6488,
+    expandedRowChildren: [
+      { id: '2-1', name: '梨', description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族', status: 'onSale', price: 799 },
+    ] },
   { id: 3, name: '商品三', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 2099 },
   { id: 4, name: '商品四', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 5999 },
   { id: 5, name: '商品五', description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。', status: 'onSale', price: 109.9 },

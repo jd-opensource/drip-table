@@ -24,6 +24,7 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
     }[];
     defaultFilteredValue?: React.Key[] | null;
   }[];
+  expandable?: Record<string, unknown>;
   dataSource?: RecordType[];
   pagination?: false | DripTablePagination;
   loading?: boolean;
@@ -52,6 +53,8 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
     }) => React.ReactNode;
   };
   onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
+  showHeader?: boolean;
+  footer?: (currentPageData: Record<string, unknown>) => JSX.Element | undefined | string;
 }
 
 declare function DripTableDriverTable<RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase>(props: DripTableDriverTableProps<RecordType>): JSX.Element;
