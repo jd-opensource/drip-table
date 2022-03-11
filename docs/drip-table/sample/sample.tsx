@@ -7,7 +7,7 @@ import 'antd/dist/antd.css';
 import 'jsoneditor-react/es/editor.min.css';
 import 'drip-table/index.css';
 
-import { CloseCircleTwoTone } from '@ant-design/icons';
+import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message, Tabs } from 'antd';
 import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
@@ -96,16 +96,28 @@ const Demo = () => {
           total={totalNum}
           dataSource={dataSource}
           components={{ custom: CustomComponents }}
+          subtableTitle={(record, index, subtableData) => <div style={{ textAlign: 'center' }}>{ `“${record.name}” 的子表 （${subtableData.length} 条）` }</div>}
+          subtableFooter={(record, index, subtableData) => (
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
+              onClick={() => {
+                message.info(`加载更多 “${record.name}” (${index}) 的子表数据，已有 ${subtableData.length} 条`);
+                console.log('expandable-footer-click', record, index, subtableData);
+              }}
+            >
+              <CloudSyncOutlined />
+              <span style={{ marginLeft: '5px' }}>加载更多</span>
+            </div>
+          )}
+          rowExpandable={record => record.id === 5}
+          expandedRowRender={(record, index) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“${record.name}”的展开自定义渲染` }</div>)}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {
               const name = event.payload;
-              message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
+              message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
               console.log(name, record, index);
             } else if (event.type === 'custom') {
               message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
-              console.log(event, record, index);
-            } else if (event.type === 'drip-button-click' && event.payload === 'showMore') {
-              message.info('点击加载更多');
               console.log(event, record, index);
             }
           }}

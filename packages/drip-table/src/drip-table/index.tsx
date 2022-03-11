@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { DripTableDriver, DripTableExpandable, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
 import { DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
@@ -44,10 +44,6 @@ export interface DripTableProps<
    * 表单 Schema
    */
   schema: DripTableSchema<CustomComponentSchema>;
-  /**
-   * 表格行主键
-   */
-  rowKey?: string;
   /**
    * 数据源
    */
@@ -84,6 +80,22 @@ export interface DripTableProps<
       [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
     };
   };
+  /**
+   * 子表顶部自定义渲染函数
+   */
+  subtableTitle?: (record: RecordType, index: number, subtableData: readonly DripTableRecordTypeBase[]) => React.ReactNode;
+  /**
+   * 子表底部自定义渲染函数
+   */
+  subtableFooter?: (record: RecordType, index: number, subtableData: readonly DripTableRecordTypeBase[]) => React.ReactNode;
+  /**
+   * 获取指定行是否可展开
+   */
+  rowExpandable?: (record: RecordType) => boolean;
+  /**
+   * 行展开自定义渲染函数
+   */
+  expandedRowRender?: (record: RecordType, index: number) => React.ReactNode;
   /** 生命周期 */
   componentDidMount?: () => void;
   componentDidUpdate?: () => void;
@@ -160,19 +172,6 @@ const DripTable = <
       displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),
     }));
   }, [props.displayColumnKeys]);
-
-  const {
-    rowKey = 'key',
-  } = props;
-  const dataSource = props.dataSource.map((item, index) => ({
-    ...item,
-    [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
-  }));
-
-  const columns = React.useMemo(() => props.schema.columns
-    ?.filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
-    || [],
-  [props.schema.columns, tableState.displayColumnKeys]);
 
   /**
    * 根据组件类型，生成表格渲染器
@@ -253,48 +252,30 @@ const DripTable = <
     return column;
   };
 
-  const renderExpandableGenerator = (currentPageData: Record<string, unknown>, index: number, expandedText: string | undefined) => expandedText && (
-    <div
-      className={classnames(styles['drip-table-wrapper-expandable-show-more-btn'])}
-      onClick={() => props.onEvent?.({ type: 'drip-button-click', payload: 'showMore' }, currentPageData as RecordType, index)}
-    >
-      { expandedText }
-    </div>
-  );
-
-  const expandableGenerator = (expandable: DripTableExpandable) => {
-    const { expandedRowColumns, expandedText } = expandable;
-    return {
-      expandedRowRender: (record: RecordType, index: number) => {
-        const { expandedRowChildren } = record;
-        return (
-          <Table
-            size="middle"
-            columns={expandedRowColumns?.map(columnGenerator)}
-            dataSource={expandedRowChildren as DripTableRecordTypeBase[]}
-            showHeader={false}
-            pagination={{
-              hideOnSinglePage: true,
-            }}
-            footer={(currentPageData: Record<string, unknown>) => renderExpandableGenerator(currentPageData, index, expandedText)}
-          />
-        );
-      },
-      rowExpandable: (record: Record<string, unknown>) => !!record.expandedRowChildren,
-    };
-  };
-
   const tableProps: DripTableDriverTableProps<RecordType> = {
-    rowKey,
-    columns: columns.map(columnGenerator),
-    dataSource,
-    expandable: props.schema.expandable ? expandableGenerator(props.schema.expandable) : {},
+    rowKey: props.schema.rowKey ?? 'key',
+    columns: React.useMemo(
+      () => props.schema.columns
+        .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
+        .map(columnGenerator),
+      [props.schema.columns, tableState.displayColumnKeys],
+    ),
+    dataSource: React.useMemo(
+      () => props.dataSource.map((item, index) => {
+        const rowKey = props.schema.rowKey ?? 'key';
+        return {
+          ...item,
+          [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
+        };
+      }),
+      [props.dataSource, props.schema.rowKey],
+    ),
     pagination: props.schema.pagination === false
       ? false as const
       : {
         size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
-        total: props.total === void 0 ? dataSource.length : props.total,
+        total: props.total === void 0 ? props.dataSource.length : props.total,
         current: props.currentPage || tableState.pagination.current,
         position: [props.schema.pagination?.position || 'bottomRight'],
         showLessItems: props.schema.pagination?.showLessItems,
@@ -306,6 +287,67 @@ const DripTable = <
     bordered: props.schema.bordered,
     innerBordered: props.schema.innerBordered,
     sticky: props.schema.virtual ? false : props.schema.sticky,
+    expandable: React.useMemo(
+      () => {
+        const subtable = props.schema.subtable;
+        const expandedRowRender = props.expandedRowRender;
+        const rowExpandable = props.rowExpandable;
+        if (subtable || expandedRowRender) {
+          return {
+            expandedRowRender: (record, index) => (
+              <React.Fragment>
+                {
+                  subtable && Array.isArray(record[subtable.dataSourceKey])
+                    ? (
+                      <Table<DripTableRecordTypeBase>
+                        columns={subtable.columns.map(columnGenerator)}
+                        dataSource={(record[subtable.dataSourceKey] as DripTableRecordTypeBase[]).map((subItem, subIndex) => {
+                          const rowKey = subtable.rowKey ?? 'key';
+                          return {
+                            ...subItem,
+                            [rowKey]: typeof subItem[rowKey] === 'undefined' ? subIndex : subItem[rowKey],
+                          };
+                        })}
+                        rowKey={subtable.rowKey ?? 'key'}
+                        size={subtable.size ?? 'middle'}
+                        bordered={subtable.bordered}
+                        showHeader={subtable.showHeader}
+                        pagination={{
+                          hideOnSinglePage: true,
+                        }}
+                        title={subtableData => (
+                          props.subtableTitle
+                            ? props.subtableTitle(record, index, subtableData)
+                            : void 0
+                        )}
+                        footer={subtableData => (
+                          props.subtableFooter
+                            ? props.subtableFooter(record, index, subtableData)
+                            : void 0
+                        )}
+                      />
+                    )
+                    : void 0
+                }
+                { expandedRowRender?.(record, index) }
+              </React.Fragment>
+            ),
+            rowExpandable: (record) => {
+              if (rowExpandable?.(record)) {
+                return true;
+              }
+              if (subtable) {
+                const ds = record[subtable.dataSourceKey];
+                return Array.isArray(ds) && ds.length > 0;
+              }
+              return false;
+            },
+          };
+        }
+        return void 0;
+      },
+      [props.schema.subtable, props.expandedRowRender, props.rowExpandable],
+    ),
     rowSelection: props.schema.rowSelection && !props.schema.virtual
       ? {
         selectedRowKeys: props.selectedRowKeys || tableState.selectedRowKeys,
