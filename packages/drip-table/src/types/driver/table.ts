@@ -29,7 +29,6 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   loading?: boolean;
   size?: 'large' | 'middle' | 'small';
   bordered?: boolean;
-  innerBordered?: boolean;
   showHeader?: boolean;
   sticky?: boolean;
   expandable?: {

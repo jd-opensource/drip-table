@@ -342,15 +342,6 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     default: 'default',
   },
   {
-    name: 'innerBordered',
-    group: '全局属性',
-    'ui:title': '是否展示内部边框',
-    'ui:type': 'switch',
-    'ui:props': {},
-    type: 'boolean',
-    default: false,
-  },
-  {
     name: 'bordered',
     group: '全局属性',
     'ui:title': '是否展示边框',
