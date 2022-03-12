@@ -124,10 +124,6 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
      */
     showHeader?: boolean;
   };
-  /**
-   * 表格尾部
-   */
-  footer?: (currentPageData: Record<string, unknown>) => JSX.Element;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
