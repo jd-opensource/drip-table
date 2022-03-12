@@ -6,7 +6,6 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
   size: 'middle',
   bordered: true,
-  innerBordered: false,
   ellipsis: false,
   sticky: true,
   rowSelection: true,

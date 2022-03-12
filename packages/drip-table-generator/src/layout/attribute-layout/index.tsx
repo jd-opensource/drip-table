@@ -151,7 +151,6 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     }
     return {
       bordered: formData.bordered as boolean,
-      innerBordered: formData.innerBordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       ellipsis: formData.ellipsis as boolean,
       sticky: formData.sticky as boolean,

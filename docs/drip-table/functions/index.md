@@ -9,7 +9,7 @@ title: Schema 配置项
 
 ### bordered
 
-> 添加表格外部边框线。
+> 添加表格边框线。
 
 - 描述: 表格边框
 - 类型: `boolean`
@@ -20,14 +20,6 @@ title: Schema 配置项
 > 设置是否平均列宽展示。
 
 - 描述: 平均列宽
-- 类型: `boolean`
-- 默认值: `false`
-
-### innerBordered
-
-> 是否展示表格内部边框线。
-
-- 描述: 表格边框
 - 类型: `boolean`
 - 默认值: `false`
 

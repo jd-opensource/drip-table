@@ -285,7 +285,6 @@ const DripTable = <
     loading: props.loading,
     size: props.schema.size,
     bordered: props.schema.bordered,
-    innerBordered: props.schema.innerBordered,
     sticky: props.schema.virtual ? false : props.schema.sticky,
     expandable: React.useMemo(
       () => {

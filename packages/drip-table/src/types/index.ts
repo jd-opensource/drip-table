@@ -32,10 +32,6 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
    */
   bordered?: boolean;
   /**
-   * 是否展示表格内部边框
-   */
-  innerBordered?: boolean;
-  /**
    * 是否展示头部以及配置
    */
   header?: {
@@ -59,7 +55,7 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
   };
-  size?: 'small' | 'middle' | 'large' | undefined;
+  size?: 'small' | 'middle' | 'large';
   /**
    * 粘性头部
    */
