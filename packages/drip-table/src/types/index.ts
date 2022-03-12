@@ -32,6 +32,10 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
    */
   bordered?: boolean;
   /**
+   * 是否显示表头
+   */
+  showHeader?: boolean;
+  /**
    * 是否展示头部以及配置
    */
   header?: {
