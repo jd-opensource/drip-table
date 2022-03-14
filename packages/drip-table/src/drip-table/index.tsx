@@ -9,13 +9,13 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from '@/types';
+import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, EventLike } from '@/types';
 import { DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
 
-import { DripTableColumnSchema, DripTablePagination } from '..';
+import { DripTableColumnSchema, DripTableID, DripTablePagination, DripTableProvider } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 import Header from './header';
 import VirtualTable from './virtual-table';
@@ -23,10 +23,11 @@ import VirtualTable from './virtual-table';
 import styles from './index.module.css';
 
 export interface DripTableProps<
-  RecordType extends DripTableRecordTypeBase,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
+  SubtableDataSourceKey extends React.Key = never,
 > {
   /**
    * 底层组件驱动
@@ -43,7 +44,7 @@ export interface DripTableProps<
   /**
    * 表单 Schema
    */
-  schema: DripTableSchema<CustomComponentSchema>;
+  schema: DripTableSchema<CustomComponentSchema, SubtableDataSourceKey>;
   /**
    * 数据源
    */
@@ -81,21 +82,64 @@ export interface DripTableProps<
     };
   };
   /**
+   * 顶部自定义渲染函数
+   */
+  title?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
+   * 底部自定义渲染函数
+   */
+  footer?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
    * 子表顶部自定义渲染函数
    */
-  subtableTitle?: (record: RecordType, index: number, subtableData: readonly DripTableRecordTypeBase[]) => React.ReactNode;
+  subtableTitle?: (
+    record: RecordType,
+    recordIndex: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+    subtable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
   /**
    * 子表底部自定义渲染函数
    */
-  subtableFooter?: (record: RecordType, index: number, subtableData: readonly DripTableRecordTypeBase[]) => React.ReactNode;
+  subtableFooter?: (
+    record: RecordType,
+    recordIndex: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+    subtable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
   /**
    * 获取指定行是否可展开
    */
-  rowExpandable?: (record: RecordType) => boolean;
+  rowExpandable?: (
+    record: RecordType,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => boolean;
   /**
    * 行展开自定义渲染函数
    */
-  expandedRowRender?: (record: RecordType, index: number) => React.ReactNode;
+  expandedRowRender?: (
+    record: RecordType,
+    index: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
   /** 生命周期 */
   componentDidMount?: () => void;
   componentDidUpdate?: () => void;
@@ -143,11 +187,12 @@ export interface DripTableProps<
 }
 
 const DripTable = <
-  RecordType extends DripTableRecordTypeBase,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
->(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>): JSX.Element => {
+  SubtableDataSourceKey extends React.Key = never,
+>(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>): JSX.Element => {
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;
   const QuestionCircleOutlined = props.driver.icons?.QuestionCircleOutlined;
@@ -281,12 +326,15 @@ const DripTable = <
         showLessItems: props.schema.pagination?.showLessItems,
         showQuickJumper: props.schema.pagination?.showQuickJumper,
         showSizeChanger: props.schema.pagination?.showSizeChanger,
+        hideOnSinglePage: props.schema.pagination?.hideOnSinglePage,
       },
     loading: props.loading,
     size: props.schema.size,
     bordered: props.schema.bordered,
     showHeader: props.schema.showHeader,
     sticky: props.schema.virtual ? false : props.schema.sticky,
+    title: props.title,
+    footer: props.footer,
     expandable: React.useMemo(
       () => {
         const subtable = props.schema.subtable;
@@ -299,41 +347,45 @@ const DripTable = <
                 {
                   subtable && Array.isArray(record[subtable.dataSourceKey])
                     ? (
-                      <Table<DripTableRecordTypeBase>
-                        columns={subtable.columns.map(columnGenerator)}
-                        dataSource={(record[subtable.dataSourceKey] as DripTableRecordTypeBase[]).map((subItem, subIndex) => {
-                          const rowKey = subtable.rowKey ?? 'key';
-                          return {
-                            ...subItem,
-                            [rowKey]: typeof subItem[rowKey] === 'undefined' ? subIndex : subItem[rowKey],
-                          };
-                        })}
-                        rowKey={subtable.rowKey ?? 'key'}
-                        size={subtable.size ?? 'middle'}
-                        bordered={subtable.bordered}
-                        showHeader={subtable.showHeader}
-                        pagination={{
-                          hideOnSinglePage: true,
-                        }}
-                        title={subtableData => (
-                          props.subtableTitle
-                            ? props.subtableTitle(record, index, subtableData)
-                            : void 0
-                        )}
-                        footer={subtableData => (
-                          props.subtableFooter
-                            ? props.subtableFooter(record, index, subtableData)
-                            : void 0
-                        )}
-                      />
+                      <DripTableProvider>
+                        <DripTable<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>
+                          driver={props.driver}
+                          schema={{ ...subtable, $schema: props.schema.$schema }}
+                          dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                          title={subtableData => (
+                            props.subtableTitle
+                              ? props.subtableTitle(
+                                record,
+                                index,
+                                { id: props.schema.id, dataSource: props.dataSource },
+                                { id: subtable.id, dataSource: subtableData },
+                              )
+                              : void 0
+                          )}
+                          footer={subtableData => (
+                            props.subtableFooter
+                              ? props.subtableFooter(
+                                record,
+                                index,
+                                { id: props.schema.id, dataSource: props.dataSource },
+                                { id: subtable.id, dataSource: subtableData },
+                              )
+                              : void 0
+                          )}
+                          subtableTitle={props.subtableTitle}
+                          subtableFooter={props.subtableFooter}
+                          rowExpandable={props.rowExpandable}
+                          expandedRowRender={props.expandedRowRender}
+                        />
+                      </DripTableProvider>
                     )
                     : void 0
                 }
-                { expandedRowRender?.(record, index) }
+                { expandedRowRender?.(record, index, { id: props.schema.id, dataSource: props.dataSource }) }
               </React.Fragment>
             ),
             rowExpandable: (record) => {
-              if (rowExpandable?.(record)) {
+              if (rowExpandable?.(record, { id: props.schema.id, dataSource: props.dataSource })) {
                 return true;
               }
               if (subtable) {

@@ -22,11 +22,20 @@ export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
   };
 } & C;
 
-export interface DripTableSchema<CustomComponentSchema extends DripTableComponentSchema = never> {
+export type DripTableID = string | number | undefined;
+
+export interface DripTableSchema<
+  CustomComponentSchema extends DripTableComponentSchema = never,
+  SubtableDataSourceKey extends React.Key = never,
+> {
   '$schema': 'http://json-schema.org/draft/2019-09/schema#'
   | 'http://json-schema.org/draft-07/schema#'
   | 'http://json-schema.org/draft-06/schema#'
   | 'http://json-schema.org/draft-04/schema#';
+  /**
+   * 表格标识符，当存在子表嵌套渲染、回调时可用于区分不同层级表格
+   */
+  id?: DripTableID;
   /**
    * 是否展示表格边框
    */
@@ -58,6 +67,7 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
     showLessItems?: boolean;
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
+    hideOnSinglePage?: boolean;
   };
   size?: 'small' | 'middle' | 'large';
   /**
@@ -102,31 +112,16 @@ export interface DripTableSchema<CustomComponentSchema extends DripTableComponen
     /**
      * 父表获取子表数据源键名
      */
-    dataSourceKey: React.Key;
-    /**
-     * 展开子表列信息
-     */
-    columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
-    /**
-     * 子表格行主键
-     */
-    rowKey?: string;
-    /**
-     * 展开子表大小
-     */
-    size?: 'large' | 'middle' | 'small';
-    /**
-     * 是否展示表格边框
-     */
-    bordered?: boolean;
-    /**
-     * 是否显示表头
-     */
-    showHeader?: boolean;
-  };
+    dataSourceKey: SubtableDataSourceKey;
+  } & Omit<DripTableSchema<CustomComponentSchema, SubtableDataSourceKey>, '$schema'>;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
+
+export type DripTableRecordTypeWithSubtable<
+  RecordType extends DripTableRecordTypeBase,
+  SubtableDataSourceKey extends React.Key
+> = RecordType & { [key in SubtableDataSourceKey]?: RecordType[]; }
 
 export interface DripTablePagination {
   onChange?: (page: number, pageSize?: number) => void;

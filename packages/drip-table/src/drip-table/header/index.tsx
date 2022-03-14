@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { type DripTableDriver, type DripTableRecordTypeBase, type EventLike } from '@/types';
+import { type DripTableDriver, type DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, type EventLike } from '@/types';
 import RichText from '@/components/RichText';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
@@ -161,22 +161,24 @@ export type DripTableHeaderElement =
   | HeaderDisplayColumnSelectorElement;
 
 interface HeaderProps<
-  RecordType extends DripTableRecordTypeBase,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
+  SubtableDataSourceKey extends React.Key = never,
 > {
-  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>;
+  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
 }
 
 const Header = <
-  RecordType extends DripTableRecordTypeBase,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
   Ext = unknown,
->(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext>) => {
+  SubtableDataSourceKey extends React.Key = never,
+>(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>) => {
   const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;

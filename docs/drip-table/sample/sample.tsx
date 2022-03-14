@@ -96,21 +96,25 @@ const Demo = () => {
           total={totalNum}
           dataSource={dataSource}
           components={{ custom: CustomComponents }}
-          subtableTitle={(record, index, subtableData) => <div style={{ textAlign: 'center' }}>{ `“${record.name}” 的子表 （${subtableData.length} 条）` }</div>}
-          subtableFooter={(record, index, subtableData) => (
-            <div
-              style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
-              onClick={() => {
-                message.info(`加载更多 “${record.name}” (${index}) 的子表数据，已有 ${subtableData.length} 条`);
-                console.log('expandable-footer-click', record, index, subtableData);
-              }}
-            >
-              <CloudSyncOutlined />
-              <span style={{ marginLeft: '5px' }}>加载更多</span>
-            </div>
+          subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
+          subtableFooter={(record, index, parent, subtable) => (
+            subtable.id === 'sample-table-sub-level-1'
+              ? (
+                <div
+                  style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
+                  onClick={() => {
+                    message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable.dataSource.length} 条`);
+                    console.log('expandable-footer-click', record, index, parent, subtable);
+                  }}
+                >
+                  <CloudSyncOutlined />
+                  <span style={{ marginLeft: '5px' }}>加载更多</span>
+                </div>
+              )
+              : void 0
           )}
-          rowExpandable={record => record.id === 5}
-          expandedRowRender={(record, index) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“${record.name}”的展开自定义渲染` }</div>)}
+          rowExpandable={(record, parent) => parent.id === 'sample-table' && record.id === 5}
+          expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.id})”行“${record.name}”的展开自定义渲染` }</div>)}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {
               const name = event.payload;
