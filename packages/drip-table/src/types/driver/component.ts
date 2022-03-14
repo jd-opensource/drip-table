@@ -6,5 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-export type DripTableReactComponent<P> = (props: React.PropsWithChildren<P>) => React.ReactElement | null;
-export type DripTableReactComponentProps<T> = T extends DripTableReactComponent<infer P> ? P : never;
+import React from 'react';
+
+export type DripTableReactComponent<P> = React.JSXElementConstructor<React.PropsWithChildren<P>>;
+
+export type { ComponentProps as DripTableReactComponentProps } from 'react';
