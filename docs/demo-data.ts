@@ -1,9 +1,12 @@
-import { DripTableSchema } from 'drip-table';
+import { DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 
 import { CustomComponentSchema } from './drip-table/sample/custom-components';
 
-export const initSchema: DripTableSchema<CustomComponentSchema> = {
+type SampleSubtableDataSourceKey = 'subtable' | 'subtableLevel2';
+
+export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDataSourceKey> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
+  id: 'sample-table',
   size: 'middle',
   bordered: true,
   ellipsis: false,
@@ -160,6 +163,7 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
     },
   ],
   subtable: {
+    id: 'sample-table-sub-level-1',
     dataSourceKey: 'subtable',
     columns: [
       {
@@ -232,18 +236,60 @@ export const initSchema: DripTableSchema<CustomComponentSchema> = {
     ],
     showHeader: false,
     bordered: true,
+    subtable: {
+      id: 'sample-table-sub-level-2',
+      dataSourceKey: 'subtableLevel2',
+      columns: [
+        {
+          key: 'mock_1',
+          title: '页面名称',
+          align: 'center',
+          'ui:type': 'text',
+          'ui:props': {
+            mode: 'single',
+            maxRow: 1,
+          },
+          type: 'string',
+          dataIndex: 'name',
+        },
+        {
+          key: 'mock_2',
+          title: '开始/结束时间',
+          align: 'center',
+          'ui:type': 'text',
+          'ui:props': {
+            mode: 'single',
+            tooltip: true,
+            ellipsis: true,
+            maxRow: 3,
+          },
+          type: 'string',
+          dataIndex: 'description',
+          hidable: true,
+        },
+      ],
+    },
   },
 };
 
-export interface SampleRecordType extends Record<string, unknown> {
-  name: string;
-  id: number;
-  description: string;
-  status: string;
-  price: number;
-}
+export type SampleRecordType = DripTableRecordTypeBase & (
+  {
+    name: string;
+    id: number;
+    description: string;
+    status: string;
+    price: number;
+  }
+  | {
+    id: string;
+    name: string;
+    description: string;
+    status: string;
+    price: number;
+  }
+)
 
-export const mockData: SampleRecordType[] = [
+export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, SampleSubtableDataSourceKey>[] = [
   {
     id: 1,
     name: '商品一',
@@ -251,7 +297,17 @@ export const mockData: SampleRecordType[] = [
     status: 'onSale',
     price: 7999,
     subtable: [
-      { id: '1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+      {
+        id: '1-1',
+        name: '苹果',
+        description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素',
+        status: 'onSale',
+        price: 799,
+        subtableLevel2: [
+          { id: '1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+        ],
+      },
+      { id: '1-2', name: '梨', description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族', status: 'onSale', price: 799 },
     ],
   },
   {
