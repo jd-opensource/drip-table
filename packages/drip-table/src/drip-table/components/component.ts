@@ -67,7 +67,7 @@ export interface DripTableComponentProps<
   RecordType extends DripTableRecordTypeBase,
   Schema extends DripTableComponentSchema = DripTableComponentSchema,
   ComponentEvent extends EventLike = never,
-  Ext = unknown,
+  CustomComponentExtraData = unknown,
 > {
   /**
    * 底层渲染驱动
@@ -86,9 +86,9 @@ export interface DripTableComponentProps<
    */
   value: unknown;
   /**
-   * 额外透传数据
+   * 最外层额外透传的数据
    */
-  ext?: Ext;
+  ext?: CustomComponentExtraData;
   /**
    * 是否处于预览模式（不响应事件）
    */

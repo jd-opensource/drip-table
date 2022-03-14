@@ -164,10 +164,10 @@ interface HeaderProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
-  Ext = unknown,
+  CustomComponentExtraData = unknown,
   SubtableDataSourceKey extends React.Key = never,
 > {
-  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>;
+  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
 }
@@ -176,9 +176,9 @@ const Header = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
-  Ext = unknown,
+  CustomComponentExtraData = unknown,
   SubtableDataSourceKey extends React.Key = never,
->(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>) => {
+>(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>) => {
   const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;

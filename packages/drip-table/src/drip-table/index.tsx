@@ -26,7 +26,7 @@ export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
-  Ext = unknown,
+  CustomComponentExtraData = unknown,
   SubtableDataSourceKey extends React.Key = never,
 > {
   /**
@@ -58,10 +58,6 @@ export interface DripTableProps<
    */
   displayColumnKeys?: React.Key[];
   /**
-   * 附加数据
-   */
-  ext?: Ext;
-  /**
    * 数据源总条数
    */
   total?: number;
@@ -78,9 +74,13 @@ export interface DripTableProps<
    */
   components?: {
     [libName: string]: {
-      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
+      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, CustomComponentExtraData>>;
     };
   };
+  /**
+   * 自定义组件附加透传数据
+   */
+  ext?: CustomComponentExtraData;
   /**
    * 顶部自定义渲染函数
    */
@@ -190,9 +190,9 @@ const DripTable = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
   CustomComponentSchema extends DripTableComponentSchema = never,
   CustomComponentEvent extends EventLike = never,
-  Ext = unknown,
+  CustomComponentExtraData = unknown,
   SubtableDataSourceKey extends React.Key = never,
->(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>): JSX.Element => {
+>(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>): JSX.Element => {
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;
   const QuestionCircleOutlined = props.driver.icons?.QuestionCircleOutlined;
@@ -234,7 +234,6 @@ const DripTable = <
             value={value}
             data={record}
             schema={{ ...schema, ...schema['ui:props'], 'ui:type': uiType }}
-            ext={props.ext}
             fireEvent={event => props.onEvent?.(event, record, index)}
           />
         );
@@ -348,7 +347,7 @@ const DripTable = <
                   subtable && Array.isArray(record[subtable.dataSourceKey])
                     ? (
                       <DripTableProvider>
-                        <DripTable<RecordType, CustomComponentSchema, CustomComponentEvent, Ext, SubtableDataSourceKey>
+                        <DripTable<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>
                           driver={props.driver}
                           schema={{ ...subtable, $schema: props.schema.$schema }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}

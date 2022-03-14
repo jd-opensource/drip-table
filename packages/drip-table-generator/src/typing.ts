@@ -122,7 +122,7 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState<strin
 export interface DripTableGeneratorProps<
 CustomComponentSchema extends DripTableComponentSchema = never,
 CustomComponentEvent extends EventLike = never,
-Ext = unknown> {
+CustomComponentExtraData = unknown> {
   style?: CSSProperties;
   driver: DripTableDriver;
   showComponentLayout?: boolean;
@@ -134,7 +134,7 @@ Ext = unknown> {
   dataFields?: string[];
   mockDataSource?: boolean;
   schema?: DripTableSchema<CustomComponentSchema>;
-  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentSchema, CustomComponentEvent, Ext>['components'];
+  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];
