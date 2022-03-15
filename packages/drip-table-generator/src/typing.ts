@@ -134,7 +134,7 @@ CustomComponentExtraData = unknown> {
   dataFields?: string[];
   mockDataSource?: boolean;
   schema?: DripTableSchema<CustomComponentSchema>;
-  customComponents?: DripTableProps<DripTableRecordTypeBase, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData>['components'];
+  customComponents?: DripTableProps<DripTableRecordTypeBase, { CustomComponentSchema: CustomComponentSchema; CustomComponentEvent: CustomComponentEvent; CustomComponentExtraData: CustomComponentExtraData }>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];

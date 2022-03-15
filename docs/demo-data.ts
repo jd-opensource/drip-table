@@ -2,7 +2,7 @@ import { DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSche
 
 import { CustomComponentSchema } from './drip-table/sample/custom-components';
 
-type SampleSubtableDataSourceKey = 'subtable' | 'subtableLevel2';
+export type SampleSubtableDataSourceKey = 'subtable' | 'subtableLevel2';
 
 export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDataSourceKey> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',

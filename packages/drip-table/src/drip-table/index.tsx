@@ -9,13 +9,24 @@
 import classnames from 'classnames';
 import React, { useRef } from 'react';
 
-import { DripTableDriver, DripTableFilters, DripTableReactComponentProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, EventLike } from '@/types';
-import { DripTableDriverTableProps } from '@/types/driver/table';
+import {
+  type DripTableColumnSchema,
+  type DripTableDriver,
+  type DripTableExtraOptions,
+  type DripTableFilters,
+  type DripTableID,
+  type DripTablePagination,
+  type DripTableReactComponentProps,
+  type DripTableRecordTypeBase,
+  type DripTableRecordTypeWithSubtable,
+  type DripTableSchema,
+} from '@/types';
+import { type DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
 
-import { DripTableColumnSchema, DripTableID, DripTablePagination, DripTableProvider } from '..';
+import { DripTableProvider } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
 import Header from './header';
 import VirtualTable from './virtual-table';
@@ -23,11 +34,8 @@ import VirtualTable from './virtual-table';
 import styles from './index.module.css';
 
 export interface DripTableProps<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
-  CustomComponentSchema extends DripTableComponentSchema = never,
-  CustomComponentEvent extends EventLike = never,
-  CustomComponentExtraData = unknown,
-  SubtableDataSourceKey extends React.Key = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
    * 底层组件驱动
@@ -44,7 +52,7 @@ export interface DripTableProps<
   /**
    * 表单 Schema
    */
-  schema: DripTableSchema<CustomComponentSchema, SubtableDataSourceKey>;
+  schema: DripTableSchema<NonNullable<ExtraOptions['CustomComponentSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
   /**
    * 数据源
    */
@@ -74,13 +82,21 @@ export interface DripTableProps<
    */
   components?: {
     [libName: string]: {
-      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, CustomComponentExtraData>>;
+      [componentName: string]:
+      React.JSXElementConstructor<
+      DripTableComponentProps<
+      RecordType,
+      DripTableComponentSchema,
+      NonNullable<ExtraOptions['CustomComponentEvent']>,
+      NonNullable<ExtraOptions['CustomComponentExtraData']>
+      >
+      >;
     };
   };
   /**
    * 自定义组件附加透传数据
    */
-  ext?: CustomComponentExtraData;
+  ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
   /**
    * 顶部自定义渲染函数
    */
@@ -183,16 +199,13 @@ export interface DripTableProps<
   /**
    * 通用事件机制
    */
-  onEvent?: (event: DripTableBuiltInComponentEvent | CustomComponentEvent, record: RecordType, index: number) => void;
+  onEvent?: (event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>, record: RecordType, index: number) => void;
 }
 
 const DripTable = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
-  CustomComponentSchema extends DripTableComponentSchema = never,
-  CustomComponentEvent extends EventLike = never,
-  CustomComponentExtraData = unknown,
-  SubtableDataSourceKey extends React.Key = never,
->(props: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>): JSX.Element => {
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;
   const QuestionCircleOutlined = props.driver.icons?.QuestionCircleOutlined;
@@ -223,7 +236,7 @@ const DripTable = <
    * @param schema Schema
    * @returns 表格
    */
-  const renderGenerator = (schema: CustomComponentSchema | DripTableBuiltInColumnSchema): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
+  const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomComponentSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
     const uiType = 'ui:type' in schema ? schema['ui:type'] : void 0;
     if (uiType) {
       const BuiltInComponent = DripTableBuiltInComponents[uiType] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['ui:type'], DripTableComponentSchema>>>;
@@ -263,7 +276,7 @@ const DripTable = <
    * @param schemaColumn Schema Column
    * @returns 表格列配置
    */
-  const columnGenerator = (schemaColumn: CustomComponentSchema | DripTableBuiltInColumnSchema): TableColumn => {
+  const columnGenerator = (schemaColumn: NonNullable<ExtraOptions['CustomComponentSchema']> | DripTableBuiltInColumnSchema): TableColumn => {
     let width = String(schemaColumn.width).trim();
     if ((/^[0-9]+$/uig).test(width)) {
       width += 'px';
@@ -347,7 +360,7 @@ const DripTable = <
                   subtable && Array.isArray(record[subtable.dataSourceKey])
                     ? (
                       <DripTableProvider>
-                        <DripTable<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>
+                        <DripTable<RecordType, ExtraOptions>
                           driver={props.driver}
                           schema={{ ...subtable, $schema: props.schema.$schema }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}

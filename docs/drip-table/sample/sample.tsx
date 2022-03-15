@@ -14,7 +14,7 @@ import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
 import React from 'react';
 
-import { initSchema, mockData, SampleRecordType } from '../../demo-data';
+import { initSchema, mockData, SampleRecordType, SampleSubtableDataSourceKey } from '../../demo-data';
 import { CustomComponentEvent, CustomComponents, CustomComponentSchema } from './custom-components';
 
 import styles from './sample.module.less';
@@ -89,7 +89,11 @@ const Demo = () => {
         </Button>
       </div>
       <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType, CustomComponentSchema, CustomComponentEvent>
+        <DripTable<SampleRecordType, {
+          CustomComponentSchema: CustomComponentSchema;
+          CustomComponentEvent: CustomComponentEvent;
+          SubtableDataSourceKey: SampleSubtableDataSourceKey;
+        }>
           driver={DripTableDriverAntDesign}
           schema={schema}
           loading={loading}

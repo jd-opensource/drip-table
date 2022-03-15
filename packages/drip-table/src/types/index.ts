@@ -123,6 +123,13 @@ export type DripTableRecordTypeWithSubtable<
   SubtableDataSourceKey extends React.Key
 > = RecordType & { [key in SubtableDataSourceKey]?: RecordType[]; }
 
+export interface DripTableExtraOptions {
+  CustomComponentSchema: DripTableComponentSchema;
+  CustomComponentEvent: EventLike;
+  CustomComponentExtraData: unknown;
+  SubtableDataSourceKey: React.Key;
+}
+
 export interface DripTablePagination {
   onChange?: (page: number, pageSize?: number) => void;
   size?: 'small' | 'default';

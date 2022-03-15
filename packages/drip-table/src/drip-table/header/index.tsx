@@ -9,12 +9,15 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { type DripTableDriver, type DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, type EventLike } from '@/types';
+import {
+  type DripTableDriver,
+  type DripTableExtraOptions,
+  type DripTableRecordTypeBase,
+  type DripTableRecordTypeWithSubtable,
+} from '@/types';
 import RichText from '@/components/RichText';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
-
-import { DripTableComponentSchema } from '../components';
 
 import styles from './index.module.css';
 
@@ -161,24 +164,18 @@ export type DripTableHeaderElement =
   | HeaderDisplayColumnSelectorElement;
 
 interface HeaderProps<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
-  CustomComponentSchema extends DripTableComponentSchema = never,
-  CustomComponentEvent extends EventLike = never,
-  CustomComponentExtraData = unknown,
-  SubtableDataSourceKey extends React.Key = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  tableProps: DripTableProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>;
+  tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
 }
 
 const Header = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>,
-  CustomComponentSchema extends DripTableComponentSchema = never,
-  CustomComponentEvent extends EventLike = never,
-  CustomComponentExtraData = unknown,
-  SubtableDataSourceKey extends React.Key = never,
->(props: HeaderProps<RecordType, CustomComponentSchema, CustomComponentEvent, CustomComponentExtraData, SubtableDataSourceKey>) => {
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: HeaderProps<RecordType, ExtraOptions>) => {
   const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;

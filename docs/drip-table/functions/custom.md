@@ -17,7 +17,7 @@ title: 自定义组件库
   ```ts
   type Components = {
     [libName: string]: {
-      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, Ext>>;
+      [componentName: string]: React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableComponentSchema, CustomComponentEvent, CustomComponentExtraData>>;
     };
   };
   ```
