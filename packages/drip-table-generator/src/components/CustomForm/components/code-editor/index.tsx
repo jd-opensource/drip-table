@@ -19,6 +19,8 @@ interface Props {
 }
 
 export default class CodeEditorComponent extends React.PureComponent<Props> {
+  public static componentName = 'code-editor';
+
   private markerListener?: Monaco.IDisposable;
 
   public render() {

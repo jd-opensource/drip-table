@@ -23,21 +23,21 @@ export type DripTableBuiltInComponentEvent =
   | DTCButtonEvent;
 
 export type DripTableBuiltInColumnSchema =
-  | DripTableColumnSchema<'image', DTCImageSchema>
-  | DripTableColumnSchema<'link', DTCLinkSchema>
-  | DripTableColumnSchema<'button', DTCButtonSchema>
-  | DripTableColumnSchema<'text', DTCTextSchema>
-  | DripTableColumnSchema<'tag', DTCTagSchema>
-  | DripTableColumnSchema<'render-html', DTCRenderHTMLSchema>
-  | DripTableColumnSchema<'render-html-remote', DTCRenderHTMLRemoteSchema>;
+  | DripTableColumnSchema<typeof DTCImage['componentName'], DTCImageSchema>
+  | DripTableColumnSchema<typeof DTCLink['componentName'], DTCLinkSchema>
+  | DripTableColumnSchema<typeof DTCButton['componentName'], DTCButtonSchema>
+  | DripTableColumnSchema<typeof DTCText['componentName'], DTCTextSchema>
+  | DripTableColumnSchema<typeof DTCTag['componentName'], DTCTagSchema>
+  | DripTableColumnSchema<typeof DTCRenderHTML['componentName'], DTCRenderHTMLSchema>
+  | DripTableColumnSchema<typeof DTCRenderHTMLRemote['componentName'], DTCRenderHTMLRemoteSchema>;
 
 const DripTableBuiltInComponents = {
-  image: DTCImage,
-  link: DTCLink,
-  button: DTCButton,
-  text: DTCText,
-  tag: DTCTag,
-  'render-html': DTCRenderHTML,
-  'render-html-remote': DTCRenderHTMLRemote,
+  [DTCImage.componentName]: DTCImage,
+  [DTCLink.componentName]: DTCLink,
+  [DTCButton.componentName]: DTCButton,
+  [DTCText.componentName]: DTCText,
+  [DTCTag.componentName]: DTCTag,
+  [DTCRenderHTML.componentName]: DTCRenderHTML,
+  [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
 };
 export default DripTableBuiltInComponents;

@@ -22,6 +22,8 @@ interface DTCRenderHTMLProps<RecordType extends DripTableRecordTypeBase> extends
 interface DTCRenderHTMLState { }
 
 export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLProps<RecordType>, DTCRenderHTMLState> {
+  public static componentName: 'render-html' = 'render-html';
+
   public render(): JSX.Element {
     const { data, schema } = this.props;
     try {

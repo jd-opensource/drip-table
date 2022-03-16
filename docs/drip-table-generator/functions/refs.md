@@ -52,7 +52,7 @@ import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import 'antd/dist/antd.css';
-import 'drip-table-generator/index.css';
+import 'drip-table-generator/dist/index.css';
 
 const { Row, Col, Button, message } = DripTableDriverAntDesign.components;
 

@@ -37,6 +37,8 @@ interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTa
 interface DTCTagState { }
 
 export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
+  public static componentName: 'tag' = 'tag';
+
   private get value() {
     const schema = this.props.schema;
     const dataIndex = schema.dataIndex;

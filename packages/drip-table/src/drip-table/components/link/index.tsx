@@ -39,6 +39,8 @@ interface DTCLinkProps<RecordType extends DripTableRecordTypeBase> extends DripT
 interface DTCLinkState {}
 
 export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
+  public static componentName: 'link' = 'link';
+
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'multiple') {

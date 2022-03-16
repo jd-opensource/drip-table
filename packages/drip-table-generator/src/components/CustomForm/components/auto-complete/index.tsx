@@ -23,6 +23,8 @@ interface Props {
 type LabeledValue = React.ComponentProps<typeof Select>['options'];
 
 export default class AutoCompleteComponent extends React.PureComponent<Props> {
+  public static componentName = 'auto-complete';
+
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
     if (Array.isArray(uiProps.options)) {

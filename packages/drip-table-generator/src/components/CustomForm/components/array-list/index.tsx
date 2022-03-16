@@ -16,6 +16,8 @@ interface Props {
 }
 
 export default class ArrayComponent extends React.PureComponent<Props> {
+  public static componentName = 'array-list';
+
   private changeColumnItem(key: string, value: unknown, index: number) {
     const currentValue = this.props.value?.slice() || [];
     if (!currentValue[index]) {

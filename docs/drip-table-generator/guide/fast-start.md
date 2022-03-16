@@ -29,7 +29,7 @@ npm install --save drip-table-generator
 ```js
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
-import 'drip-table-generator/index.css';
+import 'drip-table-generator/dist/index.css';
 ```
 
 ### 页面引入
@@ -51,7 +51,7 @@ import 'drip-table-generator/index.css';
 import React from 'react';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
-import 'drip-table-generator/index.css';
+import 'drip-table-generator/dist/index.css';
 
 const Demo = () => {
   return (

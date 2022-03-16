@@ -47,14 +47,14 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
     if (ele.className?.includes && ele.className.includes(styles['draggable-droppedcontent'])) {
       ele.className = styles['draggable-droppingcontent'];
     }
-  }
+  };
 
   public onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     const ele = event.target as Element;
     if (ele.className?.includes && ele.className.includes(styles['draggable-droppingcontent'])) {
       ele.className = styles['draggable-droppedcontent'];
     }
-  }
+  };
 
   public compare() {
     return (a: T, b: T) => {

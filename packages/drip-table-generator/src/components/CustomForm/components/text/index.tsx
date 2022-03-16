@@ -20,6 +20,8 @@ interface Props {
 const TextArea = Input.TextArea;
 
 export default class TextComponent extends React.PureComponent<Props> {
+  public static componentName = 'text';
+
   private transform(value: string) {
     const transform = (this.props.schema as StringDataSchema).transform;
     if (transform) {

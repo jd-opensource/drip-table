@@ -6,8 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { DripTableComponentProps, DripTableComponentSchema, DripTableRecordTypeBase, indexValue } from 'drip-table';
 import React from 'react';
-import { indexValue, DripTableComponentProps, DripTableComponentSchema, DripTableRecordTypeBase } from 'drip-table';
 
 export interface TextSchema extends DripTableComponentSchema {
   /** 字体大小 */

@@ -49,14 +49,6 @@ function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { drive
 
   const gridRef = useRef<VariableSizeGrid>(null);
   const fixedGridRef = useRef<VariableSizeGrid>(null);
-  // const [refConnector] = useState((): { scrollLeft: number } => {
-  //   const connector = { scrollLeft: 0 };
-  //   Object.defineProperty(connector, 'scrollLeft', {
-  //     get: () => null,
-  //     set: (scrollLeft: number) => { gridRef.current?.scrollTo({ scrollLeft }); },
-  //   });
-  //   return connector;
-  // });
 
   const resetVirtualGrid = () => {
     gridRef.current?.resetAfterIndices({
@@ -69,9 +61,6 @@ function VirtualTable<RecordType extends DripTableRecordTypeBase>(props: { drive
   useEffect(() => resetVirtualGrid, [tableWidth]);
 
   const renderVirtualList: NonNullable<typeof props['components']>['body'] = (rawData, { scrollbarSize, ref, onScroll }) => {
-    // if (ref && 'current' in ref) {
-    //   ref.current = refConnector;
-    // }
     const totalHeight = rawData.length * rowHeight;
 
     const renderCell = ({ columnIndex, rowIndex, style }: { columnIndex: number; rowIndex: number; style: React.CSSProperties }) => {

@@ -1,16 +1,16 @@
-import path from 'path';
 import { IConfig } from '@umijs/core';
 import { defineConfig } from 'dumi';
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+import path from 'path';
 
-const config: IConfig = {
+const umiConfig: IConfig = {
   title: 'DripTable',
   favicon: 'https://img13.360buyimg.com/imagetools/jfs/t1/204416/31/13736/8631/617f8334E9ae79a1c/5b96dfdce922e5fb.png',
   logo: 'https://img11.360buyimg.com/imagetools/jfs/t1/156025/11/22552/175523/617fb164E678b9642/6b8c55c5079b9819.jpg',
   outputPath: 'docs-dist',
   hash: true,
   dynamicImport: {
-    loading: '/docs/Loading.js',
+    loading: '/docs/loading.js',
   },
   locales: [['zh-CN', '中文']],
   ignoreMomentLocale: false,
@@ -37,11 +37,11 @@ const config: IConfig = {
     },
     {
       title: 'DEMO',
-      path: '/demo'
+      path: '/demo',
     },
     {
       title: '讨论组',
-      path: 'https://github.com/JDFED/drip-table/discussions'
+      path: 'https://github.com/JDFED/drip-table/discussions',
     },
     {
       title: '',
@@ -147,15 +147,15 @@ const config: IConfig = {
     config.plugin('monaco-editor').use(MonacoWebpackPlugin);
   },
   alias: {
-    'drip-table': path.resolve(__dirname, './packages/drip-table/dist'),
-    'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd/dist'),
-    'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator/dist'),
+    'drip-table': path.resolve(__dirname, './packages/drip-table'),
+    'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd'),
+    'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
   },
   proxy: {
     '/storage.jd.com': {
-      'target': 'https://storage.jd.com/',
-      'changeOrigin': true,
-      'pathRewrite': { '^/storage.jd.com' : '' },
+      target: 'https://storage.jd.com/',
+      changeOrigin: true,
+      pathRewrite: { '^/storage.jd.com': '' },
     },
   },
   // more config: https://d.umijs.org/config
@@ -194,4 +194,4 @@ const config: IConfig = {
   ],
 };
 
-export default defineConfig(config);
+export default defineConfig(umiConfig);

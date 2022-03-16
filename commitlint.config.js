@@ -22,11 +22,11 @@ module.exports = {
   plugins: [
     {
       rules: {
-        'invalid-subject-chars': function (data) {
+        'invalid-subject-chars': (data) => {
           if (typeof data.subject === 'string') {
-            var invalidChars = data.subject.match(/[^a-zA-Z0-9,.'"\-_ /\\#()]/gu);
+            const invalidChars = data.subject.match(/[^a-zA-Z0-9,.'"\-_ /\\#()]/gu);
             if (invalidChars && invalidChars.length > 0) {
-              return [false, 'Subject contains invalid characters: ' + invalidChars.join('')];
+              return [false, `Subject contains invalid characters: ${invalidChars.join('')}`];
             }
           }
           return [true, null];

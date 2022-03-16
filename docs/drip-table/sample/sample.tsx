@@ -5,7 +5,7 @@
 
 import 'antd/dist/antd.css';
 import 'jsoneditor-react/es/editor.min.css';
-import 'drip-table/index.css';
+import 'drip-table/dist/index.css';
 
 import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message, Tabs } from 'antd';

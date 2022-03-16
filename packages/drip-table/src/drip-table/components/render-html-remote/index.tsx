@@ -26,6 +26,8 @@ interface DTCRenderHTMLRemoteState {
 }
 
 export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLRemoteProps<RecordType>, DTCRenderHTMLRemoteState> {
+  public static componentName: 'render-html-remote' = 'render-html-remote';
+
   public state = {
     render: '',
   };

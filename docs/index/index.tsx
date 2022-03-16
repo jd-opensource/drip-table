@@ -4,16 +4,16 @@
  * sidemenu: false
  */
 
+import 'antd/dist/antd.css';
+import '../assets/prismjs/index.min';
+import '../assets/prismjs/index.min.css';
+import '../assets/bulma/index.min.css';
+
 import { AppstoreTwoTone, BoxPlotTwoTone, UsbTwoTone } from '@ant-design/icons';
 import classnames from 'classnames';
 import React from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 import Typewriter from 'typewriter-effect';
-import 'antd/dist/antd.css';
-
-import '../assets/prismjs/index.min';
-import '../assets/prismjs/index.min.css';
-import '../assets/bulma/index.min.css';
 
 import styles from './index.module.less';
 
