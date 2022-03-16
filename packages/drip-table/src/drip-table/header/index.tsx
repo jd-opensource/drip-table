@@ -120,13 +120,17 @@ interface HeaderSearchElement extends HeaderConfigBase {
   searchKeyDefaultValue?: number | string;
 }
 
-interface HeaderAdvanceSearchElement extends HeaderConfigBase {
+interface HeaderSlotElement extends HeaderConfigBase {
   /**
-   * 高级搜索（用户自定义搜索组件）
+   * 用户自定义组件插槽
    */
-  type: 'advance-search';
+  type: 'slot';
   /**
-   * 透传给自定搜索组件的属性值
+   * 插槽渲染函数标识符
+   */
+  slot: string;
+  /**
+   * 透传给自定组件的属性值
    */
   props?: Record<string, unknown>;
 }
@@ -159,7 +163,7 @@ export type DripTableHeaderElement =
   | HeaderTextElement
   | HeaderHTMLElement
   | HeaderSearchElement
-  | HeaderAdvanceSearchElement
+  | HeaderSlotElement
   | HeaderInsertButtonElement
   | HeaderDisplayColumnSelectorElement;
 
@@ -187,7 +191,6 @@ const Header = <
   const PlusOutlined = tableProps.driver.icons.PlusOutlined;
   const Row = tableProps.driver.components.Row;
   const Select = tableProps.driver.components.Select;
-  const TableAdvanceSearch = tableProps.driver.components.TableAdvanceSearch;
   const elements: DripTableHeaderElement[] = React.useMemo(
     () => {
       if (tableProps.schema.header === true) {
@@ -249,17 +252,21 @@ const Header = <
       );
     }
 
-    if (config.type === 'advance-search') {
-      if (TableAdvanceSearch) {
+    if (config.type === 'slot') {
+      const Slot = tableProps.slots?.[config.slot] || tableProps.slots?.default;
+      if (Slot) {
         return (
-          <TableAdvanceSearch
+          <Slot
             {...config.props}
+            slotType={config.slot}
             driver={tableProps.driver}
+            schema={tableProps.schema}
+            dataSource={tableProps.dataSource}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
           />
         );
       }
-      return <span>未指定 tableProps.driver.components.TableAdvanceSearch 自定义搜索组件</span>;
+      return <span className={styles['slot-error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
     }
 
     if (config.type === 'insert-button') {

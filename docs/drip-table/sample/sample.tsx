@@ -100,6 +100,18 @@ const Demo = () => {
           total={totalNum}
           dataSource={dataSource}
           components={{ custom: CustomComponents }}
+          slots={{
+            'header-slot-sample': React.memo(() => {
+              const [state, setState] = React.useState({ count: 0 });
+              return (
+                <div style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
+                  <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Header Slot Sample</Button>
+                  <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
+                </div>
+              );
+            }),
+            default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
+          }}
           subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
           subtableFooter={(record, index, parent, subtable) => (
             subtable.id === 'sample-table-sub-level-1'

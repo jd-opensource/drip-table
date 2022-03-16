@@ -46,7 +46,7 @@ interface DripTableEvent {
 ## 事件监听
 
 ```js
-<DripTable<SampleRecordType, CustomComponentEvent>
+<DripTable<SampleRecordType, { CustomComponentEvent: CustomComponentEvent }>
   onEvent={(event, record, index) => {
     if (event.type === 'drip-link-click') {
       const name = event.payload;

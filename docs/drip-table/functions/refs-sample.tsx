@@ -51,6 +51,9 @@ const Demo = () => {
         <DripTable<SampleRecordType>
           driver={DripTableDriverAntDesign}
           schema={schema}
+          slots={{
+            default: props => <div>{ props.slotType }</div>,
+          }}
           total={simpleData.length}
           dataSource={simpleData}
           onEvent={(event, record, index) => {

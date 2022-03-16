@@ -33,6 +33,10 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
         text: '商品列表',
       },
       {
+        type: 'slot',
+        slot: 'header-slot-sample',
+      },
+      {
         type: 'search',
         wrapperStyle: { width: 360 },
         align: 'flex-end',

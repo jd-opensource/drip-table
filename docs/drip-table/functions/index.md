@@ -182,13 +182,17 @@ title: Schema 配置项
     searchKeyDefaultValue?: number | string;
   }
 
-  interface HeaderAdvanceSearchElement extends HeaderConfigBase {
+  interface HeaderSlotElement extends HeaderConfigBase {
     /**
-     * 高级搜索（用户自定义搜索组件）
+     * 用户自定义组件插槽
      */
-    type: 'advance-search';
+    type: 'slot';
     /**
-     * 透传给自定搜索组件的属性值
+     * 插槽渲染函数标识符
+     */
+    slot: string;
+    /**
+     * 透传给自定组件的属性值
      */
     props?: Record<string, unknown>;
   }

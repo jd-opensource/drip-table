@@ -58,13 +58,19 @@ const Demo = () => {
   return (
     <React.Fragment>
       <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType, CustomComponentSchema, CustomComponentEvent>
+        <DripTable<SampleRecordType, {
+          CustomComponentSchema: CustomComponentSchema;
+          CustomComponentEvent: CustomComponentEvent;
+        }>
           driver={DripTableDriverAntDesign}
           schema={schema}
           loading={loading}
           total={totalNum}
           dataSource={dataSource}
           components={{ custom: CustomComponents }}
+          slots={{
+            default: props => <div>{ props.slotType }</div>,
+          }}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {
               const name = event.payload;

@@ -78,7 +78,7 @@ export interface DripTableProps<
    */
   loading?: boolean;
   /**
-   * 组件库
+   * 表格单元格组件库
    */
   components?: {
     [libName: string]: {
@@ -92,6 +92,18 @@ export interface DripTableProps<
       >
       >;
     };
+  };
+  /**
+   * 组件插槽，可通过 Schema 控制自定义区域渲染
+   */
+  slots?: {
+    [componentType: string]: React.JSXElementConstructor<{
+      slotType: string;
+      driver: DripTableDriver;
+      schema: DripTableSchema<NonNullable<ExtraOptions['CustomComponentSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      dataSource: readonly RecordType[];
+      onSearch: (searchParams: Record<string, unknown>) => void;
+    }>;
   };
   /**
    * 自定义组件附加透传数据

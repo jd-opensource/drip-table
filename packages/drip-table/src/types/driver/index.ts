@@ -92,10 +92,6 @@ export interface DripTableDriver {
       Option: DripTableReactComponent<Record<string, unknown> & { value: string | number; children: React.ReactNode }>;
     };
     Table: DripTableDriverTable;
-    TableAdvanceSearch?: DripTableReactComponent<Record<string, unknown> & {
-      driver: DripTableDriver;
-      onSearch: (searchParams: Record<string, unknown>) => void;
-    }>;
     Tag: DripTableReactComponent<{
       style?: React.CSSProperties;
       color?: string;
