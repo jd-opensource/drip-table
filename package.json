@@ -49,7 +49,7 @@
     "drip-table-generator": "link:packages/drip-table-generator",
     "dumi": "^1.1.35",
     "eslint": "^8.9.0",
-    "eslint-config-lvmcn": "^0.0.44",
+    "eslint-config-lvmcn": "^0.0.46",
     "eslint-formatter-pretty": "^4.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-webpack": "^0.13.2",

@@ -25,14 +25,15 @@ const typescriptRules = {
   '@typescript-eslint/naming-convention': require('eslint-config-lvmcn/typescript/plugins/base')
     .rules['@typescript-eslint/naming-convention']
     .map((rule) => {
-      if (typeof rule === 'object' && rule.selector.includes('property')) {
+      if (typeof rule === 'object' && rule.selector.some(selector => ['property', 'method', 'objectLiteralMethod'].includes(selector))) {
         return {
           ...rule,
           filter: {
             // you can expand this regex as you find more cases that require quoting that you want to allow
             // allow `__low_case_const__` and `__UPPER_CASE_CONST__`, such as __REDUX_DEVTOOLS_EXTENSION__
             // allow `ui:xxx`, such as "ui:props"
-            regex: '(^__[a-z0-9](?:[a-z0-9_]*[a-z0-9]){0,1}__$|^__[A-Z0-9](?:[A-Z0-9_]*[A-Z0-9]){0,1}__$|^ui:.+$)',
+            // allow `lowercase-property-name`, such as "sample-key-01"
+            regex: '(^__[a-z0-9](?:[a-z0-9_]*[a-z0-9]){0,1}__$|^__[A-Z0-9](?:[A-Z0-9_]*[A-Z0-9]){0,1}__$|^ui:.+$|^[a-z0-9]+(?:-[a-z0-9]+)*$)',
             match: false,
           },
         };
@@ -49,6 +50,7 @@ const buildingToolsJavascriptRules = {
   'no-console': 'off',
   'no-sync': 'off',
   'no-underscore-dangle': 'off',
+  'node/global-require': 'off',
   'node/no-unpublished-require': 'off',
   'unicorn/prefer-module': 'off',
 };
@@ -68,7 +70,6 @@ module.exports = {
       modules: true,
       jsx: true,
       legacyDecorators: true,
-      experimentalObjectRestSpread: true,
     },
     sourceType: 'module',
     requireConfigFile: false,
@@ -133,7 +134,6 @@ module.exports = {
           modules: true,
           jsx: true,
           legacyDecorators: true,
-          experimentalObjectRestSpread: true,
         },
         sourceType: 'module',
         project: './tsconfig.json',
@@ -158,7 +158,6 @@ module.exports = {
           modules: true,
           jsx: true,
           legacyDecorators: true,
-          experimentalObjectRestSpread: true,
         },
         sourceType: 'module',
         project: './tsconfig.json',
