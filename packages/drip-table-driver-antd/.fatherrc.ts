@@ -9,6 +9,17 @@ const options: IBundleOptions = {
   },
   cssModules: true,
   extractCSS: true,
+  extraBabelPlugins: [
+    [
+      'import',
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'lib',
+        style: true,
+      },
+      'antd',
+    ],
+  ],
   hookGetRollupConfig: (rollupConfigs, opts) => rollupConfigs.map(rollupConfig => ({
     ...rollupConfig,
     plugins: [
