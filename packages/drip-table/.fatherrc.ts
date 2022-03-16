@@ -1,6 +1,5 @@
-import { IBundleOptions } from 'father-build/src/types';
-import path from 'path';
 import eslint from '@rollup/plugin-eslint';
+import { IBundleOptions } from 'father-build-universal/src/types';
 
 const options: IBundleOptions = {
   cjs: { type: 'rollup' },
@@ -11,19 +10,23 @@ const options: IBundleOptions = {
   cssModules: true,
   extractCSS: true,
   extraBabelPlugins: [],
-  extraRollupPlugins: [{
-    before: "babel",
-    plugins: [
-      eslint(path.resolve(__dirname, '.eslintrc.js')),
-      ,
-    ],
-  }],
+  hookGetRollupConfig: (rollupConfigs, opts) => {
+    return rollupConfigs.map(rollupConfig => ({
+      ...rollupConfig,
+      plugins: [
+        eslint({
+          include: [/\.js$/ui, /\.jsx$/ui, /\.ts$/ui, /\.tsx$/ui, /\.tx$/ui],
+          exclude: [/\/node_modules\//ui, /\/dist\//ui],
+          throwOnError: true,
+          throwOnWarning: true,
+        }),
+        ...rollupConfig.plugins,
+      ],
+    }));
+  },
   pkgs: [
     'drip-table',
   ],
-  preCommit: {
-    eslint: true,
-  },
 };
 
 export default options;
