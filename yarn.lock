@@ -7044,10 +7044,10 @@ eslint-config-airbnb@^18.2.1:
     object.assign "^4.1.2"
     object.entries "^1.1.2"
 
-eslint-config-lvmcn@^0.0.42:
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/eslint-config-lvmcn/-/eslint-config-lvmcn-0.0.42.tgz#cf8d772e468971b735255cf17df8cf95eae5611b"
-  integrity sha512-1ytb31qcmxEGC+iiamuz4mTJmhmoX/26jmmlmqyA0154fKty4IWAQkTpPL3+1TFBeJhkb1DBGXFQ8zKak+2QFg==
+eslint-config-lvmcn@^0.0.44:
+  version "0.0.44"
+  resolved "https://registry.yarnpkg.com/eslint-config-lvmcn/-/eslint-config-lvmcn-0.0.44.tgz#4338d949c078ac1827e7ff25e6460fc0903ea49e"
+  integrity sha512-haaR9tSS4jeBgekuWiADjMwsL3rQenLXJHJ/Apo5fyNTEBYV++GVLjxQDNS0gKO1U//izktdRGHaa75r+vEZFg==
   dependencies:
     clone "^2.1.2"
     eslint-config-airbnb "^18.2.1"

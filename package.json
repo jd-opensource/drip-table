@@ -17,6 +17,7 @@
     "clean": "lerna clean -y",
     "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator || exit 1",
     "lint:git": "sh ./bin/gitlint.sh || exit 1",
+    "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty",
     "lint:drip-table": "lerna run lint --stream --scope=drip-table || exit 1",
     "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd || exit 1",
     "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1"
@@ -47,7 +48,7 @@
     "drip-table-generator": "link:packages/drip-table-generator",
     "dumi": "^1.1.35",
     "eslint": "^8.9.0",
-    "eslint-config-lvmcn": "^0.0.42",
+    "eslint-config-lvmcn": "^0.0.44",
     "eslint-formatter-pretty": "^4.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-webpack": "^0.13.2",

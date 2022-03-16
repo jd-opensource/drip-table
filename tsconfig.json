@@ -17,5 +17,11 @@
   "rules": {
     "react/prop-types": 0
   },
+  "include": [
+      "**/*.ts",
+      "**/.*.ts",
+      "**/*.tsx",
+      "**/.*.tsx"
+  ],
   "exclude": ["node_modules", "dist"]
 }
