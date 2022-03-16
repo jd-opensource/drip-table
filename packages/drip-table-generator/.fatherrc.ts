@@ -1,5 +1,4 @@
-import path from 'path';
-import { IBundleOptions } from 'father-build/src/types';
+import { IBundleOptions } from 'father-build-universal/src/types';
 import eslint from '@rollup/plugin-eslint';
 
 const options: IBundleOptions = {
@@ -32,12 +31,20 @@ const options: IBundleOptions = {
       '@ant-design/icons',
     ],
   ],
-  extraRollupPlugins: [{
-    before: "babel",
-    plugins: [
-      eslint(path.resolve(__dirname, '.eslintrc.js')),
-    ],
-  }],
+  hookGetRollupConfig: (rollupConfigs, opts) => {
+    return rollupConfigs.map(rollupConfig => ({
+      ...rollupConfig,
+      plugins: [
+        eslint({
+          include: [/\.js$/ui, /\.jsx$/ui, /\.ts$/ui, /\.tsx$/ui, /\.tx$/ui],
+          exclude: [/\/node_modules\//ui, /\/dist\//ui],
+          throwOnError: true,
+          throwOnWarning: true,
+        }),
+        ...rollupConfig.plugins,
+      ],
+    }));
+  },
   pkgs: [
     'drip-table',
     'drip-table-generator',
