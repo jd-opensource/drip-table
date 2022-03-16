@@ -154,7 +154,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         />
       );
     }
-    const BuiltInComponent = BuiltInComponents[config['ui:type']];
+    const BuiltInComponent = BuiltInComponents[config['ui:type']] as unknown as React.JSXElementConstructor<Record<string, unknown>>; // TODO: 基础组件 Props 类型应该抽离出来作为子组件 Props 的基类
     if (BuiltInComponent) {
       return (
         <BuiltInComponent

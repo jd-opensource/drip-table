@@ -26,6 +26,8 @@ interface Props {
 }
 
 export default class CheckboxComponent extends React.PureComponent<Props> {
+  public static componentName = 'checkbox';
+
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
     if (Array.isArray(uiProps.options)) {

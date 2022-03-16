@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default class InputComponent extends React.PureComponent<Props> {
+  public static componentName = 'input';
+
   private transform(value: string) {
     const transform = (this.props.schema as StringDataSchema).transform;
     if (transform) {

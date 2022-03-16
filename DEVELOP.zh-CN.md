@@ -93,7 +93,7 @@
 │ ├── index.css                    // 文档官网首页 CSS
 │ ├── index.md                     // 文档官网首页入口 markdown
 │ ├── index.tsx                    // 文档官网首页
-│ └── Loading.js                   // 文档官网 Loading 组件
+│ └── loading.js                   // 文档官网 Loading 组件
 └── packages                       // 源代码入口
   ├── drip-table                   // drip-table 代码
   ├── drip-table-driver-antd       // drip-table antd 主题包

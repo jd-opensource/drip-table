@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default class SwitchComponent extends React.PureComponent<Props> {
+  public static componentName = 'switch';
+
   private get checked() {
     const uiProps = this.props.schema['ui:props'] || {};
     if (uiProps.checkedValue && uiProps.unCheckedValue) {

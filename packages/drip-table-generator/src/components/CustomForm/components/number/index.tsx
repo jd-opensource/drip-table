@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default class InputNumberComponent extends React.PureComponent<Props> {
+  public static componentName = 'number';
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};

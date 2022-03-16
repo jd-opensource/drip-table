@@ -45,6 +45,8 @@ interface DTCButtonProps<RecordType extends DripTableRecordTypeBase> extends Dri
 interface DTCButtonState {}
 
 export default class DTCButton<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCButtonProps<RecordType>, DTCButtonState> {
+  public static componentName: 'button' = 'button';
+
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'multiple') {

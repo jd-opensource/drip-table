@@ -5,6 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+
 import ArrayComponent from './array-list';
 import AutoComplete from './auto-complete';
 import CascadeComponent from './cascade';
@@ -19,16 +20,16 @@ import SwitchComponent from './switch';
 import TextComponent from './text';
 
 export default {
-  input: InputComponent,
-  text: TextComponent,
-  number: InputNumberComponent,
-  checkbox: Checkbox,
-  radio: RadioComponent,
-  switch: SwitchComponent,
-  select: SelectComponent,
-  cascade: CascadeComponent,
-  'code-editor': CodeEditorComponent,
-  'auto-complete': AutoComplete,
-  'array-list': ArrayComponent,
-  'color-picker': ColorPicker,
+  [InputComponent.componentName]: InputComponent,
+  [TextComponent.componentName]: TextComponent,
+  [InputNumberComponent.componentName]: InputNumberComponent,
+  [Checkbox.componentName]: Checkbox,
+  [RadioComponent.componentName]: RadioComponent,
+  [SwitchComponent.componentName]: SwitchComponent,
+  [SelectComponent.componentName]: SelectComponent,
+  [CascadeComponent.componentName]: CascadeComponent,
+  [CodeEditorComponent.componentName]: CodeEditorComponent,
+  [AutoComplete.componentName]: AutoComplete,
+  [ArrayComponent.componentName]: ArrayComponent,
+  [ColorPicker.componentName]: ColorPicker,
 };

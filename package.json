@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "husky install",
     "start": "dumi dev",
-    "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd && yarn run build:drip-table-generator",
+    "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd && yarn run build:drip-table-generator && yarn run build:docs",
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
@@ -15,12 +15,12 @@
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
     "clean": "lerna clean -y",
-    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator || exit 1",
+    "lint": "yarn run lint:git && yarn run lint:drip-table && yarn run lint:drip-table-driver-antd && yarn run lint:drip-table-generator && yarn run lint:docs || exit 1",
     "lint:git": "sh ./bin/gitlint.sh || exit 1",
-    "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty",
     "lint:drip-table": "lerna run lint --stream --scope=drip-table || exit 1",
     "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd || exit 1",
-    "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1"
+    "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1",
+    "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty || exit 1"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -39,6 +39,7 @@
     "@types/react-window": "^1.8.5",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.1",
+    "@umijs/core": "^3.5.20",
     "@umijs/plugin-esbuild": "^1.4.1",
     "antd": "^4.17.4",
     "babel-plugin-import": "^1.13.3",

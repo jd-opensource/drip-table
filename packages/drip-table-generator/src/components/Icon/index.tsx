@@ -152,7 +152,7 @@ export default class Icon extends React.PureComponent<IconProps> {
       return prevVal;
     }
     return prevVal;
-  }
+  };
 
   public renderByName() {
     if (this.props.name && this.props.driver) {

@@ -93,6 +93,8 @@ const translate = (i18n: Record<string, string> | undefined, origin: string) => 
 };
 
 export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
+  public static componentName: 'text' = 'text';
+
   private get configured() {
     const schema = this.props.schema;
     if (schema.mode === 'custom') {

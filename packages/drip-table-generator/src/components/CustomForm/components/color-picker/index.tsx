@@ -16,12 +16,13 @@ import styles from './index.module.css';
 
 interface Props {
   schema: DTGComponentPropertySchema;
-  fieldOptions?: { label: string; value: string }[];
   value?: string;
   onChange?: (value: string) => void;
 }
 
 export default class ColorPickerComponent extends React.PureComponent<Props> {
+  public static componentName = 'color-picker';
+
   /**
    * 将alpha通道值(透明度)转成16进制字符串
    *

@@ -59,7 +59,7 @@ npm adduser (--registry=https://registry.npmjs.com/)
     ```js
     import React from 'react';
     import DripTable from 'drip-table';
-    import 'drip-table/index.css';
+    import 'drip-table/dist/index.css';
     ```
 
 2. 选择主题包并引入

@@ -91,7 +91,7 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 │ ├── index.css                    // official website CSS
 │ ├── index.md                     // official website markdown
 │ ├── index.tsx                    // official website entry
-│ └── Loading.js                   // official website loading component
+│ └── loading.js                   // official website loading component
 └── packages                       // codes menu
   ├── drip-table                   // drip-table codes
   ├── drip-table-driver-antd       // drip-table antd theme package

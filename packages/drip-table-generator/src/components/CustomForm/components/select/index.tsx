@@ -25,6 +25,8 @@ interface Props {
 }
 
 export default class SelectComponent extends React.PureComponent<Props> {
+  public static componentName = 'select';
+
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
     if (Array.isArray(uiProps.options)) {

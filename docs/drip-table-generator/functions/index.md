@@ -24,7 +24,7 @@ import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import 'antd/dist/antd.css';
-import 'drip-table-generator/index.css';
+import 'drip-table-generator/dist/index.css';
 
 const initialSchema = {
   "$schema": "http://json-schema.org/draft/2019-09/schema#",
@@ -81,7 +81,7 @@ import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import 'antd/dist/antd.css';
-import 'drip-table-generator/index.css';
+import 'drip-table-generator/dist/index.css';
 
 const Demo = () => {
   return (

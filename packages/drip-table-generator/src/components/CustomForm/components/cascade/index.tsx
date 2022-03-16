@@ -20,6 +20,8 @@ interface Props {
 }
 
 export default class CascadeComponent extends React.PureComponent<Props> {
+  public static componentName = 'cascade';
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};

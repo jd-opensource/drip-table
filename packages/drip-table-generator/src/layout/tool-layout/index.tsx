@@ -30,9 +30,9 @@ const ToolLayout = (props: { store: GlobalStore }) => {
   });
 
   /**
-    * 渲染一个Modal用来展示JSON Schema配置
-    * @returns {JSX.Element} 返回React组件
-    */
+   * 渲染一个Modal用来展示JSON Schema配置
+   * @returns {JSX.Element} 返回React组件
+   */
   const renderSchemaModal = () => {
     if (modalStatus !== 'export' && modalStatus !== 'import') {
       return null;

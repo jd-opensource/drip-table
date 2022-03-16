@@ -433,7 +433,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
       return prevVal;
     }
     return prevVal;
-  }
+  };
 
   /**
    * 处理页面，绑定图片查看器
@@ -452,7 +452,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
       this.viewer.destroy();
     }
     this.viewer = new ViewerJS(el);
-  }
+  };
 
   public componentDidUpdate() {
     if (this.viewer) {
