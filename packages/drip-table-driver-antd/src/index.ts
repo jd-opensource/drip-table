@@ -7,7 +7,7 @@
  */
 
 import * as AntDesignIcons from '@ant-design/icons';
-import * as AntDesign from 'antd';
+import * as AntDesign from 'antd/lib/index';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { DripTableDriver } from 'drip-table';
 
