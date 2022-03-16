@@ -1,6 +1,14 @@
 const path = require('path');
 
-const extensions = ['.js', '.jsx', '.jx', '.ts', '.tsx', '.tx'];
+const importResolverExtensions = [
+  '.js',
+  '.jsx',
+  '.jx',
+  '.ts',
+  '.tsx',
+  '.tx',
+];
+
 const javascriptRules = {
   'no-new-func': 'off',
   'react/jsx-no-bind': 'off',
@@ -11,6 +19,7 @@ const javascriptRules = {
   'unicorn/no-array-reduce': 'off',
   'unicorn/prefer-switch': 'off',
 };
+
 const typescriptRules = {
   ...javascriptRules,
   '@typescript-eslint/naming-convention': require('eslint-config-lvmcn/typescript/plugins/base')
@@ -30,6 +39,23 @@ const typescriptRules = {
       }
       return rule;
     }),
+};
+
+const buildingToolsJavascriptRules = {
+  camelcase: 'off',
+  'global-require': 'off',
+  'id-match': 'off',
+  'multiline-comment-style': 'off',
+  'no-console': 'off',
+  'no-sync': 'off',
+  'no-underscore-dangle': 'off',
+  'node/no-unpublished-require': 'off',
+  'unicorn/prefer-module': 'off',
+};
+
+const buildingToolsTypescriptRules = {
+  ...buildingToolsJavascriptRules,
+  '@typescript-eslint/naming-convention': 'off',
 };
 
 // http://eslint.org/docs/user-guide/configuring
@@ -65,14 +91,14 @@ module.exports = {
         map: [
           ['@', path.resolve(__dirname, './src')],
         ],
-        extensions,
+        extensions: importResolverExtensions,
       },
       node: {
-        extensions,
+        extensions: importResolverExtensions,
       },
     },
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+      '@typescript-eslint/parser': ['.ts', '.tsx', '.tx'],
     },
     react: {
       version: 'detect',
@@ -80,37 +106,26 @@ module.exports = {
   },
   noInlineConfig: true,
   overrides: [
-    // building tools files
+    // ----------------------
+    //  json files
+    // ----------------------
     {
-      files: ['*.js', '*.jsx', '*.ts', '*.tsx', '*.tx', '.*.js', '.*.jsx', '.*.ts', '.*.tsx', '.*.tx'],
+      files: ['.json', '.*.json'],
+      extends: ['lvmcn/json'],
+    },
+    // ----------------------
+    //  building tools files
+    // ----------------------
+    {
+      files: ['*.js', '.*.js'],
       excludedFiles: ['src/**'],
-      extends: ['lvmcn/javascript/node', 'lvmcn/json'],
-      rules: {
-        camelcase: 'off',
-        'global-require': 'off',
-        'id-match': 'off',
-        'multiline-comment-style': 'off',
-        'no-console': 'off',
-        'no-sync': 'off',
-        'no-underscore-dangle': 'off',
-        'node/no-unpublished-require': 'off',
-        'unicorn/prefer-module': 'off',
-      },
-    },
-    // src files
-    {
-      files: ['src/**/*.js', 'src/**/*.jsx'],
-      extends: ['lvmcn/javascript/react'],
-      rules: javascriptRules,
+      extends: ['lvmcn/javascript/node'],
+      rules: buildingToolsJavascriptRules,
     },
     {
-      files: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.tx'],
-      extends: ['lvmcn/javascript/react'],
-      rules: typescriptRules,
-    },
-    // src typescript files
-    {
-      files: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.tx'],
+      files: ['*.ts', '.*.ts', '*.tsx', '.*.tsx'],
+      excludedFiles: ['src/**'],
+      extends: ['lvmcn/typescript/node'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 6,
@@ -123,22 +138,34 @@ module.exports = {
         sourceType: 'module',
         project: './tsconfig.json',
       },
+      rules: buildingToolsTypescriptRules,
+    },
+    // ----------------------
+    //  project source files
+    // ----------------------
+    {
+      files: ['src/**/*.js', 'src/**/*.jsx'],
+      extends: ['lvmcn/javascript/react'],
+      rules: javascriptRules,
+    },
+    {
+      files: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.tx'],
       extends: ['lvmcn/typescript/react'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 6,
+        ecmaFeatures: {
+          modules: true,
+          jsx: true,
+          legacyDecorators: true,
+          experimentalObjectRestSpread: true,
+        },
+        sourceType: 'module',
+        project: './tsconfig.json',
+      },
       rules: typescriptRules,
     },
-    // src store services files
-    {
-      files: [
-        'src/store/services/**/*.ts',
-        'src/store/services/**/*.tsx',
-      ],
-      rules: {
-        'unicorn/filename-case': 'off',
-        'unicorn/no-array-for-each': 'off',
-        '@typescript-eslint/no-redeclare': 'off',
-      },
-    },
-    // src d.ts files
+    // d.ts
     {
       files: ['src/**/*.d.ts'],
       rules: {
@@ -146,18 +173,5 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
-    // src utils files
-    {
-      files: ['src/utils/*.ts'],
-      rules: {},
-    },
-    // src utils logger
-    {
-      files: ['src/utils/logger.ts'],
-      rules: { 'no-console': 'off' },
-    },
-  ],
-  ignorePatterns: [
-    '/dist',
   ],
 };
