@@ -69,7 +69,7 @@ const Demo = () => {
           dataSource={dataSource}
           components={{ custom: CustomComponents }}
           slots={{
-            default: props => <div>{ props.slotType }</div>,
+            default: props => <div data-slot-type={props.slotType} />,
           }}
           onEvent={(event, record, index) => {
             if (event.type === 'drip-link-click') {

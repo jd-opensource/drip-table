@@ -45,7 +45,7 @@ export interface DripTableComponentSchema {
   /**
    * 是否固定列
    */
-  fixed?: boolean;
+  fixed?: 'left' | 'right' | boolean;
   /**
    * 用户可控制该列显示隐藏
    */

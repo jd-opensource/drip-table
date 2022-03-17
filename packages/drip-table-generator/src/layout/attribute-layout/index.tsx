@@ -156,7 +156,9 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       sticky: formData.sticky as boolean,
       rowSelection: formData.rowSelection as boolean,
       virtual: formData.virtual as boolean,
-      scrollY: formData.scrollY as number,
+      scroll: {
+        y: formData.scrollY as number,
+      },
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },

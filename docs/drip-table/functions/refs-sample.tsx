@@ -52,7 +52,7 @@ const Demo = () => {
           driver={DripTableDriverAntDesign}
           schema={schema}
           slots={{
-            default: props => <div>{ props.slotType }</div>,
+            default: props => <div data-slot-type={props.slotType} />,
           }}
           total={simpleData.length}
           dataSource={simpleData}

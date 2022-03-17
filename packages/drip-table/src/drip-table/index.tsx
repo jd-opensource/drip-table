@@ -352,6 +352,7 @@ const DripTable = <
         showSizeChanger: props.schema.pagination?.showSizeChanger,
         hideOnSinglePage: props.schema.pagination?.hideOnSinglePage,
       },
+    scroll: props.schema.scroll,
     loading: props.loading,
     size: props.schema.size,
     bordered: props.schema.bordered,
@@ -467,7 +468,11 @@ const DripTable = <
               <VirtualTable
                 {...tableProps}
                 driver={props.driver}
-                scroll={{ y: props.schema.scrollY || 300, x: '100vw' }}
+                scroll={{
+                  ...props.schema.scroll,
+                  x: props.schema.scroll?.x || '100vw',
+                  y: props.schema.scroll?.y || 300,
+                }}
               />
             )
             : <Table {...tableProps} />

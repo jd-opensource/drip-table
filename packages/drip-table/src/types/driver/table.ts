@@ -15,7 +15,7 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
     align?: 'left' | 'center' | 'right';
     title?: string | JSX.Element;
     dataIndex?: string | string[];
-    fixed?: boolean;
+    fixed?: 'left' | 'right' | boolean;
     ellipsis?: boolean;
     render?: (value: unknown, record: RecordType, rowIndex: number) => React.ReactNode;
     filters?: {
@@ -52,8 +52,9 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
     onChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
   };
   scroll?: {
-    x?: string | number;
-    y?: string | number;
+    x?: number | true | string;
+    y?: number | string;
+    scrollToFirstRowOnChange?: boolean;
   };
   components?: {
     body?: (data: readonly RecordType[], info: {

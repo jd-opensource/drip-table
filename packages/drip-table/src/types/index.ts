@@ -75,6 +75,14 @@ export interface DripTableSchema<
    */
   sticky?: boolean;
   /**
+   * 固定列、固定表头滚动设置
+   */
+  scroll?: {
+    x?: number | true | string;
+    y?: number | string;
+    scrollToFirstRowOnChange?: boolean;
+  };
+  /**
    * 是否支持选择栏
    */
   rowSelection?: boolean;
@@ -95,6 +103,7 @@ export interface DripTableSchema<
   virtual?: boolean;
   /**
    * 虚拟列表滚动高度
+   * @deprecated 请使用 scroll.y
    */
   scrollY?: number;
   /**

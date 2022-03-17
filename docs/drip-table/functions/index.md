@@ -67,13 +67,22 @@ title: Schema 配置项
 - 类型: `boolean`
 - 默认值: `false`
 
-### scrollY
+### scroll
 
-> 设置开启虚拟列表后的表格高度。
+> 设置表格宽高，从而启用内部滚动、固定表头、固定列。
 
-- 描述: 虚拟列表高度
-- 类型: `number`
-- 默认值: `300`
+- 描述: 表格宽高
+- 类型:
+
+  ```typescript
+  interface Scroll {
+    x?: number | true | string;
+    y?: number | string;
+    scrollToFirstRowOnChange?: boolean;
+  }
+  ```
+
+- 默认值: `undefined`
 
 ### header
 

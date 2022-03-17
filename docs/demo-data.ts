@@ -13,7 +13,9 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
   sticky: true,
   rowSelection: true,
   virtual: false,
-  scrollY: 400,
+  scroll: {
+    y: 500,
+  },
   header: {
     style: { margin: '0', padding: '12px 0' },
     elements: [
@@ -67,6 +69,7 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       title: '商品名称',
       width: 80,
       align: 'center',
+      fixed: 'left',
       'ui:type': 'text',
       'ui:props': {
         mode: 'single',
@@ -78,6 +81,7 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
     {
       key: 'mock_2',
       title: '商品详情',
+      width: 200,
       align: 'center',
       'ui:type': 'text',
       'ui:props': {
@@ -141,6 +145,7 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
     {
       key: 'mock_6',
       title: '自定义组件',
+      width: 200,
       'ui:type': 'custom::CustomComponentSample',
       'ui:props': {},
       type: 'string',
@@ -150,7 +155,9 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
     {
       key: 'mock_7',
       title: '操作',
+      width: 200,
       align: 'center',
+      fixed: 'right',
       'ui:type': 'link',
       'ui:props': {
         mode: 'multiple',
