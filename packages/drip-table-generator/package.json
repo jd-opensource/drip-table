@@ -38,7 +38,7 @@
     "drip-table": "link:../drip-table",
     "drip-table-driver-antd": "link:../drip-table-driver-antd",
     "eslint-config-lvmcn": "^0.0.46",
-    "father-build-universal": "^1.21.2",
+    "father-build-universal": "^1.21.3",
     "tsc-alias": "^1.4.2",
     "typescript": "^4.5.4"
   },

@@ -5,7 +5,7 @@ const options: IBundleOptions = {
   esm: 'rollup',
   disableTypeCheck: false,
   cjs: { type: 'babel', lazy: true },
-  hookGetRollupConfig: (rollupConfigs, opts) => rollupConfigs.map(rollupConfig => ({
+  hookRollupConfig: (rollupConfigs, environment) => rollupConfigs.map(rollupConfig => ({
     ...rollupConfig,
     plugins: [
       eslint({

@@ -7736,10 +7736,10 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-father-build-universal@^1.21.2:
-  version "1.21.2"
-  resolved "https://registry.yarnpkg.com/father-build-universal/-/father-build-universal-1.21.2.tgz#915c367f719d0232d0e769a2aa05357949c7e653"
-  integrity sha512-ulUrGKaFwlWfmtzKaOOsX4V1eoC1ty7lH36HI8Ha71i4vI66bkq9WbYvDn7uWQqfsvkee9Eil57/9P/oeQkyEw==
+father-build-universal@^1.21.3:
+  version "1.21.3"
+  resolved "https://registry.yarnpkg.com/father-build-universal/-/father-build-universal-1.21.3.tgz#038a4f0972404422b19cd537216c1847b8643aa0"
+  integrity sha512-Fn0j4kcAFo4FYbxJitfDMJyFXb7dZZIlhtQ3qWsxEsUDFRPY9ppa5IsyzIalTg7J0GLQ6aADbh4DJZTtdd3tTQ==
   dependencies:
     "@babel/core" "7.12.3"
     "@babel/plugin-proposal-class-properties" "7.12.1"

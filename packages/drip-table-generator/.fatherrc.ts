@@ -31,7 +31,7 @@ const options: IBundleOptions = {
       '@ant-design/icons',
     ],
   ],
-  hookGetRollupConfig: (rollupConfigs, opts) => rollupConfigs.map(rollupConfig => ({
+  hookRollupConfig: (rollupConfigs, environment) => rollupConfigs.map(rollupConfig => ({
     ...rollupConfig,
     plugins: [
       eslint({

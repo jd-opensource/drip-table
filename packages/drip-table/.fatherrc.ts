@@ -10,7 +10,7 @@ const options: IBundleOptions = {
   cssModules: true,
   extractCSS: true,
   extraBabelPlugins: [],
-  hookGetRollupConfig: (rollupConfigs, opts) => rollupConfigs.map(rollupConfig => ({
+  hookRollupConfig: (rollupConfigs, environment) => rollupConfigs.map(rollupConfig => ({
     ...rollupConfig,
     plugins: [
       eslint({

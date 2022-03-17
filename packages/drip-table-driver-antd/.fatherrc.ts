@@ -20,7 +20,7 @@ const options: IBundleOptions = {
       'antd',
     ],
   ],
-  hookGetRollupConfig: (rollupConfigs, opts) => rollupConfigs.map(rollupConfig => ({
+  hookRollupConfig: (rollupConfigs, environment) => rollupConfigs.map(rollupConfig => ({
     ...rollupConfig,
     plugins: [
       eslint({

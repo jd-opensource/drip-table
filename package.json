@@ -61,7 +61,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unicorn": "^40.1.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "father-build-universal": "^1.21.2",
+    "father-build-universal": "^1.21.3",
     "husky": "^7.0.4",
     "jsoneditor": "^9.5.7",
     "jsoneditor-react": "^3.1.1",
