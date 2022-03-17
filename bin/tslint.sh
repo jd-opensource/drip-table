@@ -1,5 +1,5 @@
 #!/bin/bash -e
-__ROOT_DIR__="$(readlink -f "$0" | xargs dirname | xargs dirname)"
+__ROOT_DIR__="$(cd "$(dirname "$0" | xargs dirname)"; pwd -P)"
 __WORK_DIR__="$(pwd)"
 __TMP_DIR__="${__ROOT_DIR__}/node_modules/.tmp"
 
