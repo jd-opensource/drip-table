@@ -74,7 +74,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   };
 
   const decodeGlobalConfigs = (globalConfigs?: Omit<DripTableSchema, '$schema' | 'columns'>) => {
-    const formData: Record<string, unknown> = {};
+    const formData: Record<string, unknown> = { ...filterAttributes(globalConfigs, 'header') };
     if (typeof globalConfigs?.header === 'object') {
       formData.header = true;
       const headerElements = globalConfigs?.header?.elements || [];
@@ -150,6 +150,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       }
     }
     return {
+      ...formData,
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       ellipsis: formData.ellipsis as boolean,
