@@ -377,6 +377,9 @@ const DripTable = <
                           driver={props.driver}
                           schema={{ ...subtable, $schema: props.schema.$schema }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                          components={props.components}
+                          slots={props.slots}
+                          ext={props.ext}
                           title={subtableData => (
                             props.subtableTitle
                               ? props.subtableTitle(
