@@ -30,8 +30,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   const store = { state, setState: actions };
 
   const previewComponentRender = (column: DripTableColumn<string, never>) => {
-    const componentGlobalName = column.component || column['ui:type'];
-    const [libName, componentName] = componentGlobalName.includes('::') ? componentGlobalName.split('::') : ['', componentGlobalName];
+    const [libName, componentName] = column.component.includes('::') ? column.component.split('::') : ['', column.component];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
     const record = state.previewDataSource?.[0] || {} as Record<string, unknown>;

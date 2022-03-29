@@ -54,6 +54,33 @@ const useTableRoot = (
 };
 
 const Container = (props: DripTableGeneratorProps, ref: React.ForwardedRef<DripTableGeneratorHandler>) => {
+  if (props.schema && props.schema.columns.some(c => c['ui:type'] || c['ui:props'])) {
+    props = {
+      ...props,
+      schema: {
+        ...props.schema,
+        columns: props.schema.columns.map((column) => {
+          // 兼容旧版本数据
+          if ('ui:type' in column || 'ui:props' in column) {
+            const key = column.key;
+            if ('ui:type' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
+            }
+            if ('ui:props' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please spread values instead.`);
+            }
+            return {
+              ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
+              ...column['ui:props'] || null,
+              component: column['ui:type'] || column.component,
+            };
+          }
+          return column;
+        }),
+      },
+    };
+  }
+
   const wrapper = useRef(null);
   const initialState = defaultState();
   const store = useState(initialState);
