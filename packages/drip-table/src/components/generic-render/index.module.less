@@ -7,10 +7,10 @@
  */
 
 .generic-render {
-  margin: 12px 0;
+  margin: 0;
 
   &-text-element {
-    margin-bottom: 0;
+    margin: 12px 0;
     line-height: 32px;
     text-align: left;
     overflow: hidden;
@@ -19,7 +19,12 @@
     word-break: break-all;
   }
 
+  &-html-element {
+    margin: 12px 0;
+  }
+
   &-search-element {
+    margin: 12px 0;
     display: flex;
     flex-direction: row;
 
@@ -30,6 +35,8 @@
   }
 
   &-slot-element {
+    margin: 12px 0;
+
     &__error {
       padding: 3px 8px;
       font-size: 14px;
@@ -41,5 +48,13 @@
       justify-content: center;
       align-items: center;
     }
+  }
+
+  &-insert-button-element {
+    margin: 12px 0;
+  }
+
+  &-display-column-selector-element {
+    margin: 12px 0;
   }
 }

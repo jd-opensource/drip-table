@@ -96,6 +96,8 @@ export interface DripTableProps<
    */
   slots?: {
     [componentType: string]: React.JSXElementConstructor<{
+      style?: React.CSSProperties;
+      className?: string;
       slotType: string;
       driver: DripTableDriver;
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomComponentSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
@@ -373,7 +375,11 @@ const DripTable = <
                       <DripTableProvider>
                         <DripTable<RecordType, ExtraOptions>
                           driver={props.driver}
-                          schema={{ ...subtable, $schema: props.schema.$schema }}
+                          schema={{
+                            ...subtable,
+                            $schema: props.schema.$schema,
+                            footer: props.schema.footer || { elements: [{ type: 'spacer' }] },
+                          }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
                           components={props.components}
                           slots={props.slots}

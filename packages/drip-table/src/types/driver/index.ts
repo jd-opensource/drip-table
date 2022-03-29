@@ -34,6 +34,7 @@ export interface DripTableDriver {
     }>;
     ConfigProvider: DripTableReactComponent<Record<string, unknown>>;
     Dropdown: DripTableReactComponent<{
+      className?: string;
       trigger?: ('click' | 'hover' | 'contextMenu')[];
       overlay: React.ReactElement | (() => React.ReactElement);
       visible?: boolean;

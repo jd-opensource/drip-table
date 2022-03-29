@@ -215,7 +215,7 @@ const GenericRender = <
     }
 
     if (config.type === 'html') {
-      return <RichText html={config.html} />;
+      return <RichText className={styles['generic-render-html-element']} html={config.html} />;
     }
 
     if (config.type === 'search') {
@@ -250,6 +250,7 @@ const GenericRender = <
         return (
           <Slot
             {...config.props}
+            className={classnames(styles['generic-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
             slotType={config.slot}
             driver={tableProps.driver}
             schema={tableProps.schema}
@@ -264,10 +265,10 @@ const GenericRender = <
     if (config.type === 'insert-button') {
       return (
         <Button
+          className={classnames(styles['generic-render-insert-button-element'], config.insertButtonClassName)}
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
-          className={config.insertButtonClassName}
           onClick={tableProps.onInsertButtonClick}
         >
           { config.insertButtonText }
@@ -306,6 +307,7 @@ const GenericRender = <
       );
       return (
         <Dropdown
+          className={styles['generic-render-display-column-selector-element']}
           trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
