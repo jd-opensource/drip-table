@@ -19,9 +19,9 @@ import RichText from '@/components/RichText';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
 
-import styles from './index.module.css';
+import styles from './index.module.less';
 
-interface HeaderConfigBase {
+interface GenericRenderElementBasic {
   /**
    * 包裹 <Col> 样式名
    */
@@ -52,14 +52,14 @@ interface HeaderConfigBase {
   visible?: boolean;
 }
 
-interface HeaderSpacerElement extends HeaderConfigBase {
+interface GenericRenderSpacerElement extends GenericRenderElementBasic {
   /**
    * 占位区域
    */
   type: 'spacer';
 }
 
-interface HeaderTextElement extends HeaderConfigBase {
+interface GenericRenderTextElement extends GenericRenderElementBasic {
   /**
    * 文本展示
    */
@@ -70,7 +70,7 @@ interface HeaderTextElement extends HeaderConfigBase {
   text: string;
 }
 
-interface HeaderHTMLElement extends HeaderConfigBase {
+interface GenericRenderHTMLElement extends GenericRenderElementBasic {
   /**
    * 富文本展示
    */
@@ -81,7 +81,7 @@ interface HeaderHTMLElement extends HeaderConfigBase {
   html: string;
 }
 
-interface HeaderSearchElement extends HeaderConfigBase {
+interface GenericRenderSearchElement extends GenericRenderElementBasic {
   /**
    * 基本搜索
    */
@@ -120,7 +120,7 @@ interface HeaderSearchElement extends HeaderConfigBase {
   searchKeyDefaultValue?: number | string;
 }
 
-interface HeaderSlotElement extends HeaderConfigBase {
+interface GenericRenderSlotElement extends GenericRenderElementBasic {
   /**
    * 用户自定义组件插槽
    */
@@ -135,7 +135,7 @@ interface HeaderSlotElement extends HeaderConfigBase {
   props?: Record<string, unknown>;
 }
 
-interface HeaderInsertButtonElement extends HeaderConfigBase {
+interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
   type: 'insert-button';
   insertButtonClassName?: string;
   insertButtonStyle?: React.CSSProperties;
@@ -143,7 +143,7 @@ interface HeaderInsertButtonElement extends HeaderConfigBase {
   showIcon?: boolean;
 }
 
-interface HeaderDisplayColumnSelectorElement extends HeaderConfigBase {
+interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElementBasic {
   /**
    * 展示列选择器
    */
@@ -158,28 +158,36 @@ interface HeaderDisplayColumnSelectorElement extends HeaderConfigBase {
   selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
 }
 
-export type DripTableHeaderElement =
-  | HeaderSpacerElement
-  | HeaderTextElement
-  | HeaderHTMLElement
-  | HeaderSearchElement
-  | HeaderSlotElement
-  | HeaderInsertButtonElement
-  | HeaderDisplayColumnSelectorElement;
+export type DripTableGenericRenderElement =
+  | GenericRenderSpacerElement
+  | GenericRenderTextElement
+  | GenericRenderHTMLElement
+  | GenericRenderSearchElement
+  | GenericRenderSlotElement
+  | GenericRenderInsertButtonElement
+  | GenericRenderDisplayColumnSelectorElement;
 
-interface HeaderProps<
+interface GenericRenderProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * 展示元素配置
+   */
+  schemas: DripTableGenericRenderElement[];
   tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
 }
 
-const Header = <
+const GenericRender = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: HeaderProps<RecordType, ExtraOptions>) => {
+>(props: GenericRenderProps<RecordType, ExtraOptions>) => {
   const { tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;
@@ -191,35 +199,19 @@ const Header = <
   const PlusOutlined = tableProps.driver.icons.PlusOutlined;
   const Row = tableProps.driver.components.Row;
   const Select = tableProps.driver.components.Select;
-  const elements: DripTableHeaderElement[] = React.useMemo(
-    () => {
-      if (tableProps.schema.header === true) {
-        return [
-          { type: 'display-column-selector', span: 8 },
-          { type: 'search', span: 8 },
-          { type: 'insert-button', span: 4 },
-        ];
-      }
-      if (tableProps.schema.header === false) {
-        return [];
-      }
-      return tableProps.schema.header?.elements || [];
-    },
-    [tableProps.schema.header],
-  );
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
 
   const [searchStr, setSearchStr] = React.useState('');
-  const [searchKey, setSearchKey] = React.useState<HeaderSearchElement['searchKeyDefaultValue']>(elements.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
+  const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
 
-  const renderColumnContent = (config: DripTableHeaderElement) => {
+  const renderColumnContent = (config: DripTableGenericRenderElement) => {
     if (config.type === 'spacer') {
       return null;
     }
 
     if (config.type === 'text') {
-      return <h3 className={styles['header-title']}>{ config.text }</h3>;
+      return <h3 className={styles['generic-render-text-element']}>{ config.text }</h3>;
     }
 
     if (config.type === 'html') {
@@ -228,11 +220,11 @@ const Header = <
 
     if (config.type === 'search') {
       return (
-        <div style={config.wrapperStyle} className={classnames(styles['search-container'], config.wrapperClassName)}>
+        <div style={config.wrapperStyle} className={classnames(styles['generic-render-search-element'], config.wrapperClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
-              className={styles['search-select']}
+              className={styles['generic-render-search-element__select']}
               value={searchKey}
               onChange={value => setSearchKey(value)}
             >
@@ -266,7 +258,7 @@ const Header = <
           />
         );
       }
-      return <span className={styles['slot-error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className={styles['generic-render-slot-element__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
     }
 
     if (config.type === 'insert-button') {
@@ -330,15 +322,12 @@ const Header = <
     return null;
   };
 
-  if (elements.length > 0) {
-    const style = typeof tableProps.schema.header === 'object'
-      ? tableProps.schema.header.style
-      : void 0;
+  if (props.schemas.length > 0) {
     return (
-      <div className={styles['header-container']} style={style}>
+      <div className={styles['generic-render']} style={props.style}>
         <Row>
           {
-            elements.map((item, index) => (
+            props.schemas.map((item, index) => (
               <Col
                 key={index}
                 className={item.className}
@@ -348,7 +337,7 @@ const Header = <
                   flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
                   justifyContent: item.align || 'center',
                   paddingLeft: index === 0 ? '0' : '3px',
-                  paddingRight: index === elements.length - 1 ? '3px' : '0',
+                  paddingRight: index === props.schemas.length - 1 ? '3px' : '0',
                   ...item.style,
                 }}
                 span={typeof item.span === 'string' ? void 0 : item.span}
@@ -364,4 +353,4 @@ const Header = <
   return null;
 };
 
-export default Header;
+export default GenericRender;

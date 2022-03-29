@@ -8,8 +8,9 @@
 
 import React from 'react';
 
+import { type DripTableGenericRenderElement } from '@/components/generic-render';
+
 import { type DripTableBuiltInColumnSchema, type DripTableComponentSchema } from '../drip-table/components';
-import { type DripTableHeaderElement } from '../drip-table/header';
 
 export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
   /**
@@ -55,7 +56,7 @@ export interface DripTableSchema<
     /**
      * 头部展示元素配置
      */
-    elements?: DripTableHeaderElement[];
+    elements?: DripTableGenericRenderElement[];
   } | boolean;
   /**
    * 是否展示分页以及配置

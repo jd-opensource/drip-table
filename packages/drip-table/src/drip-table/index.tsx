@@ -23,12 +23,12 @@ import {
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import GenericRender, { DripTableGenericRenderElement } from '@/components/generic-render';
 import RichText from '@/components/RichText';
 import { useState, useTable } from '@/hooks';
 
 import { DripTableProvider } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
-import Header from './header';
 import VirtualTable from './virtual-table';
 
 export interface DripTableProps<
@@ -445,6 +445,28 @@ const DripTable = <
     },
   };
 
+  const header = React.useMemo<{ style?: React.CSSProperties; schemas: DripTableGenericRenderElement[] } | null>(
+    () => {
+      if (props.schema.header === true) {
+        return {
+          schemas: [
+            { type: 'display-column-selector', span: 8 },
+            { type: 'search', span: 8 },
+            { type: 'insert-button', span: 4 },
+          ],
+        };
+      }
+      if (props.schema.header === false) {
+        return null;
+      }
+      return {
+        style: props.schema.header?.style,
+        schemas: props.schema.header?.elements || [],
+      };
+    },
+    [props.schema.header],
+  );
+
   return (
     <ErrorBoundary driver={props.driver}>
       <div
@@ -453,9 +475,11 @@ const DripTable = <
         ref={rootRef}
       >
         {
-          props.schema.header
+          header
             ? (
-              <Header
+              <GenericRender
+                style={header.style}
+                schemas={header.schemas}
                 tableProps={props}
                 tableState={tableState}
                 setTableState={setTableState}

@@ -8,7 +8,7 @@
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
-import { DripTableDriver, DripTableHeaderElement, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableGenericRenderElement, DripTableSchema } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -111,7 +111,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   };
 
   const encodeGlobalConfigs = (formData: { [key: string]: unknown }): GlobalSchema => {
-    const elements: DripTableHeaderElement[] = [];
+    const elements: DripTableGenericRenderElement[] = [];
     if (formData.header) {
       if (formData['header.displayColumnSelector']) {
         elements.push({
