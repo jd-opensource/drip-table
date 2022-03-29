@@ -18,9 +18,6 @@ export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
    * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）
    */
   'ui:type': T;
-  'ui:props'?: {
-    [key: string]: unknown;
-  };
 } & C;
 
 export type DripTableID = string | number | undefined;
