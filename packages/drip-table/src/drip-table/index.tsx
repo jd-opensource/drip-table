@@ -377,7 +377,6 @@ const DripTable = <
                           schema={{
                             ...subtable,
                             $schema: props.schema.$schema,
-                            footer: props.schema.footer || { elements: [{ type: 'spacer' }] },
                           }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
                           components={props.components}
