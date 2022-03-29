@@ -21,6 +21,7 @@ type DOMEventType = keyof React.DOMAttributes<unknown> & `on${UppercaseLetter}${
 
 interface RichTextProps {
   style?: React.CSSProperties;
+  className?: string;
   html: string;
   singleLine?: boolean;
   maxLength?: number;
@@ -463,7 +464,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
   public render(): JSX.Element | null {
     const bodyEl = cheerio.load(this.props.html)('body')[0];
     return (
-      <div ref={this.onRef} style={this.props.style}>
+      <div ref={this.onRef} className={this.props.className} style={this.props.style}>
         {
           bodyEl && bodyEl.type === 'tag'
             ? bodyEl.children.reduce<ReducerRenderValue>(this.reducerRenderEl, {
