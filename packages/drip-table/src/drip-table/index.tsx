@@ -249,16 +249,15 @@ const DripTable = <
    * @returns 表格
    */
   const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomComponentSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
-    const uiType = 'ui:type' in schema ? schema['ui:type'] : void 0;
-    if (uiType) {
-      const BuiltInComponent = DripTableBuiltInComponents[uiType] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['ui:type'], DripTableComponentSchema>>>;
+    if ('ui:type' in schema) {
+      const BuiltInComponent = DripTableBuiltInComponents[schema['ui:type']] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['ui:type'], DripTableComponentSchema>>>;
       if (BuiltInComponent) {
         return (value, record, index) => (
           <BuiltInComponent
             driver={props.driver}
             value={value}
             data={record}
-            schema={{ ...schema, ...schema['ui:props'], 'ui:type': uiType }}
+            schema={schema}
             fireEvent={event => props.onEvent?.(event, record, index)}
           />
         );
