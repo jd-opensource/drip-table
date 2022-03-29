@@ -123,6 +123,9 @@ const umiConfig: IConfig = {
   mode: 'site',
   esbuild: {},
   publicPath: '/',
+  copy: [
+    { from: './docs/assets', to: './assets' },
+  ],
   exportStatic: {},
   extraBabelPlugins: [
     [
