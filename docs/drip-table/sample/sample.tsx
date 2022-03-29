@@ -81,7 +81,7 @@ const Demo = () => {
 
   return (
     <React.Fragment>
-      <div style={{ padding: '0 30px 30px', textAlign: 'left' }}>
+      <div style={{ padding: '0 0 30px', textAlign: 'left' }}>
         <Button style={{ marginRight: '5px' }} type="primary" onClick={() => { setEditVisible(!editVisible); }}>编辑</Button>
         <Button style={{ marginRight: '5px' }} type="primary" onClick={selectAllRecord}>
           { allSelected && '取消' }
