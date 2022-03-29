@@ -22,9 +22,9 @@ import {
   type DripTableSchema,
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
-import ErrorBoundary from '@/components/ErrorBoundary';
+import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { DripTableGenericRenderElement } from '@/components/generic-render';
-import RichText from '@/components/RichText';
+import RichText from '@/components/rich-text';
 import { useState, useTable } from '@/hooks';
 
 import { DripTableProvider } from '..';

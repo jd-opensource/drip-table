@@ -9,7 +9,7 @@
 import React from 'react';
 
 import { DripTableRecordTypeBase } from '@/types';
-import RichText from '@/components/RichText';
+import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps, DripTableComponentSchema } from '../component';
 

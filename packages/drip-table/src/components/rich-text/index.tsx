@@ -13,7 +13,7 @@ import * as DOMHandler from 'domhandler';
 import React from 'react';
 import ViewerJS from 'viewerjs';
 
-import Highlight, { HighlightProps } from '@/components/Highlight';
+import Highlight, { HighlightProps } from '@/components/highlight';
 
 type UppercaseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
 type HTMLTagName = keyof React.ReactHTML;

@@ -15,7 +15,7 @@ import {
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
 } from '@/types';
-import RichText from '@/components/RichText';
+import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
 
