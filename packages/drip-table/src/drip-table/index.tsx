@@ -384,26 +384,26 @@ const DripTable = <
                           components={props.components}
                           slots={props.slots}
                           ext={props.ext}
-                          title={subtableData => (
+                          title={
                             props.subtableTitle
-                              ? props.subtableTitle(
+                              ? subtableData => props.subtableTitle?.(
                                 record,
                                 index,
                                 { id: props.schema.id, dataSource: props.dataSource },
                                 { id: subtable.id, dataSource: subtableData },
                               )
                               : void 0
-                          )}
-                          footer={subtableData => (
+                          }
+                          footer={
                             props.subtableFooter
-                              ? props.subtableFooter(
+                              ? subtableData => props.subtableFooter?.(
                                 record,
                                 index,
                                 { id: props.schema.id, dataSource: props.dataSource },
                                 { id: subtable.id, dataSource: subtableData },
                               )
                               : void 0
-                          )}
+                          }
                           subtableTitle={props.subtableTitle}
                           subtableFooter={props.subtableFooter}
                           rowExpandable={props.rowExpandable}
