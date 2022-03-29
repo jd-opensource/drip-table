@@ -59,6 +59,19 @@ export interface DripTableSchema<
     elements?: DripTableGenericRenderElement[];
   } | boolean;
   /**
+   * 是否展示尾部以及配置
+   */
+  footer?: {
+    /**
+     * 尾部自定义样式
+     */
+    style?: React.CSSProperties;
+    /**
+     * 尾部展示元素配置
+     */
+    elements?: DripTableGenericRenderElement[];
+  };
+  /**
    * 是否展示分页以及配置
    */
   pagination?: false | {

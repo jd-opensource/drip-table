@@ -456,15 +456,37 @@ const DripTable = <
           ],
         };
       }
-      if (props.schema.header === false) {
+      if (!props.schema.header || !props.schema.header.elements?.length) {
         return null;
       }
       return {
-        style: props.schema.header?.style,
-        schemas: props.schema.header?.elements || [],
+        style: props.schema.header.style,
+        schemas: props.schema.header.elements,
       };
     },
     [props.schema.header],
+  );
+
+  const footer = React.useMemo<{ style?: React.CSSProperties; schemas: DripTableGenericRenderElement[] } | null>(
+    () => {
+      if (props.schema.footer === true) {
+        return {
+          schemas: [
+            { type: 'display-column-selector', span: 8 },
+            { type: 'search', span: 8 },
+            { type: 'insert-button', span: 4 },
+          ],
+        };
+      }
+      if (!props.schema.footer || !props.schema.footer.elements?.length) {
+        return null;
+      }
+      return {
+        style: props.schema.footer.style,
+        schemas: props.schema.footer.elements,
+      };
+    },
+    [props.schema.footer],
   );
 
   return (
@@ -486,7 +508,7 @@ const DripTable = <
               />
             )
             : null
-          }
+        }
         {
           props.schema.virtual
             ? (
@@ -502,7 +524,19 @@ const DripTable = <
             )
             : <Table {...tableProps} />
         }
-        <div />
+        {
+          footer
+            ? (
+              <GenericRender
+                style={footer.style}
+                schemas={footer.schemas}
+                tableProps={props}
+                tableState={tableState}
+                setTableState={setTableState}
+              />
+            )
+            : null
+        }
       </div>
     </ErrorBoundary>
   );
