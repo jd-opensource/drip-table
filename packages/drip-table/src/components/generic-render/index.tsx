@@ -289,6 +289,7 @@ const GenericRender = <
               if (!state.displayColumnKeys.includes(e.key)) {
                 displayColumnKeys.push(e.key);
               }
+              tableProps.onDisplayColumnKeysChange?.(displayColumnKeys);
               return { displayColumnKeys };
             });
           }}
