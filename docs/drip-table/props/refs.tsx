@@ -15,7 +15,7 @@ import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 
 const schema = {
   ...initSchema,
-  columns: [...initSchema.columns].filter(cfg => !cfg['ui:type'].startsWith('custom::') && cfg['ui:type'] !== 'render-html'),
+  columns: [...initSchema.columns].filter(cfg => !cfg.component.startsWith('custom::') && cfg.component !== 'render-html'),
 };
 
 const simpleData = mockData.filter(item => item.id < 10);

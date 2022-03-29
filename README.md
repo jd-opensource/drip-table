@@ -119,10 +119,9 @@ The introduction of each sub-project are as follows:
       {
         key: "columnKey",
         title: "Column Title",
-        "ui:type": "text",
-        "ui:props": { mode: "single" },
-        type: "string",
         dataIndex: "dataIndexName",
+        component: "text",
+        mode: "single",
       },
     ],
    };

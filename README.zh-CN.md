@@ -119,10 +119,9 @@
       {
         key: "columnKey",
         title: "列标题",
-        "ui:type": "text",
-        "ui:props": { mode: "single" },
-        type: "string",
         dataIndex: "dataIndexName",
+        component: "text",
+        mode: "single",
       },
     ],
    };

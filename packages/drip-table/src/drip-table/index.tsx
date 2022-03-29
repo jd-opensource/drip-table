@@ -249,8 +249,8 @@ const DripTable = <
    * @returns 表格
    */
   const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomComponentSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
-    if ('ui:type' in schema) {
-      const BuiltInComponent = DripTableBuiltInComponents[schema['ui:type']] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['ui:type'], DripTableComponentSchema>>>;
+    if ('component' in schema) {
+      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['component'], DripTableComponentSchema>>>;
       if (BuiltInComponent) {
         return (value, record, index) => (
           <BuiltInComponent
@@ -262,21 +262,21 @@ const DripTable = <
           />
         );
       }
-    }
-    const [libName, componentName] = schema['ui:type'].split('::');
-    if (libName && componentName) {
-      const ExtraComponent = props.components?.[libName]?.[componentName];
-      if (ExtraComponent) {
-        return (value, record, index) => (
-          <ExtraComponent
-            driver={props.driver}
-            value={value}
-            data={record}
-            schema={schema}
-            ext={props.ext}
-            fireEvent={event => props.onEvent?.(event, record, index)}
-          />
-        );
+      const [libName, componentName] = schema.component.split('::');
+      if (libName && componentName) {
+        const ExtraComponent = props.components?.[libName]?.[componentName];
+        if (ExtraComponent) {
+          return (value, record, index) => (
+            <ExtraComponent
+              driver={props.driver}
+              value={value}
+              data={record}
+              schema={schema}
+              ext={props.ext}
+              fireEvent={event => props.onEvent?.(event, record, index)}
+            />
+          );
+        }
       }
     }
     return value => JSON.stringify(value);
@@ -325,6 +325,24 @@ const DripTable = <
     columns: React.useMemo(
       () => props.schema.columns
         .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
+        .map((column) => {
+          // 兼容旧版本数据
+          if ('ui:type' in column || 'ui:props' in column) {
+            const key = column.key;
+            if ('ui:type' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
+            }
+            if ('ui:props' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please spread values instead.`);
+            }
+            return {
+              ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
+              ...column['ui:props'] || null,
+              component: column['ui:type'] || column.component,
+            };
+          }
+          return column;
+        })
         .map(columnGenerator),
       [props.schema.columns, tableState.displayColumnKeys],
     ),

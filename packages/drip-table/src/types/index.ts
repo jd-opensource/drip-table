@@ -14,10 +14,13 @@ import { type DripTableBuiltInColumnSchema, type DripTableComponentSchema } from
 
 export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
   /**
-   * 若自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
-   * 系统支持的通用组件目前有：文本组件、图文组件和自定义组件（通过代码实现的）
+   * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    */
-  'ui:type': T;
+  component: T;
+  /**
+   * @deprecated 已废弃，请使用 component 属性
+   */
+  'ui:type'?: T;
 } & C;
 
 export type DripTableID = string | number | undefined;

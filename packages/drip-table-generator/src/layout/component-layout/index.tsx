@@ -68,6 +68,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
           group: '',
           width: void 0,
           description: '',
+          component: item['ui:type'],
           'ui:type': item['ui:type'],
           'ui:props': {},
           type: item.type || 'null',
