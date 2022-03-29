@@ -478,6 +478,7 @@ const DripTable = <
             )
             : <Table {...tableProps} />
         }
+        <div />
       </div>
     </ErrorBoundary>
   );
