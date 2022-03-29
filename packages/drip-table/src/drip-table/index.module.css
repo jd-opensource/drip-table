@@ -6,26 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-.drip-table-wrapper {
-  background: #ffffff;
-  padding: 0 24px;
-  width: 100%;
-}
-
-.mb2 {
-  margin-bottom: .5rem;
-}
-
 .mr {
   margin-right: 8px;
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-end {
-  justify-content: flex-end;
 }
 
 .w-100 {

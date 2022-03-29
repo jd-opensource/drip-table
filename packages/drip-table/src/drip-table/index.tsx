@@ -31,8 +31,6 @@ import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuil
 import Header from './header';
 import VirtualTable from './virtual-table';
 
-import styles from './index.module.css';
-
 export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
@@ -450,7 +448,7 @@ const DripTable = <
   return (
     <ErrorBoundary driver={props.driver}>
       <div
-        className={classnames(styles['drip-table-wrapper'], props.className)}
+        className={classnames(props.className)}
         style={props.style}
         ref={rootRef}
       >
