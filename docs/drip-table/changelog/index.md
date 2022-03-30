@@ -5,6 +5,17 @@ title: 更新日志
 
 ## 更新日志
 
+### 2022.03.31 `v1.3.3`
+
+* 🐞 移除错误的 $schema 属性。
+* 🐞 修复 `onDisplayColumnKeysChange` 事件无效的问题。
+* 🐞 修复子表表头不存在时仍然渲染空白的问题。
+* 🆕 增加 ajv schema 校验。
+* 🆕 更改列 Schema 组件类型属性名为 `component`，组件设置项属性名为 `options`。
+* 🆕 不再自动为子表添加空页脚，从而使 `antd` 页脚子表自动缩进生效（`"ant-table-wrapper:only-child"`选择器）。
+* 🆕 增加表页脚 Schema 通用渲染功能。
+* 🆕 增加 rich-text 组件的 className 属性。
+
 ### 2022.03.17 `v1.3.1`
 
 * 🐞 修复表格嵌套无法渲染自定义组件的问题。
