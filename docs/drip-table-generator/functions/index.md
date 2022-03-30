@@ -27,7 +27,6 @@ import 'antd/dist/antd.css';
 import 'drip-table-generator/dist/index.css';
 
 const initialSchema = {
-  "$schema": "http://json-schema.org/draft/2019-09/schema#",
   "pagination": false,
   "columns": [
     {

@@ -54,4 +54,4 @@ const table = React.createRef();
 
 ## 代码示例
 
-<code src='./refs.tsx' />
+<code src='./ref.tsx' />

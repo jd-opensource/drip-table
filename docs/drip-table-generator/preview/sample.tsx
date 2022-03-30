@@ -20,7 +20,6 @@ import components from './component-settings';
 import TextComponent from './text-component';
 
 const initialSchema: DripTableSchema = {
-  $schema: 'http://json-schema.org/draft/2019-09/schema#',
   pagination: false,
   columns: [
     {

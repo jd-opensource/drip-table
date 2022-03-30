@@ -53,7 +53,6 @@ const customComponents = {
 type CustomColumnSchema = SampleColumnSchema;
 
 const schema: DripTableSchema<CustomColumnSchema> = {
-  $schema: "http://json-schema.org/draft/2019-09/schema#",
   columns: [
     {
       key: "mock_1",

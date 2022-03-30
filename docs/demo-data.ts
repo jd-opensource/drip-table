@@ -5,7 +5,6 @@ import { CustomColumnSchema } from './drip-table/sample/custom-components';
 export type SubtableDataSourceKey = 'subtable' | 'subtableLevel2';
 
 export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceKey> = {
-  $schema: 'http://json-schema.org/draft/2019-09/schema#',
   id: 'sample-table',
   size: 'middle',
   bordered: true,

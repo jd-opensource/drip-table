@@ -84,10 +84,6 @@ export interface DripTableSchema<
   CustomColumnSchema extends DripTableColumnSchema = never,
   SubtableDataSourceKey extends React.Key = never,
 > {
-  '$schema': 'http://json-schema.org/draft/2019-09/schema#'
-  | 'http://json-schema.org/draft-07/schema#'
-  | 'http://json-schema.org/draft-06/schema#'
-  | 'http://json-schema.org/draft-04/schema#';
   /**
    * 表格标识符，当存在子表嵌套渲染、回调时可用于区分不同层级表格
    */
@@ -191,7 +187,7 @@ export interface DripTableSchema<
      * 父表获取子表数据源键名
      */
     dataSourceKey: SubtableDataSourceKey;
-  } & Omit<DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>, '$schema'>;
+  } & DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;

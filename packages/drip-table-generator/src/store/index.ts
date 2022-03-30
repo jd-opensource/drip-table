@@ -25,7 +25,7 @@ export interface DripTableGeneratorState<T, P extends Record<string, unknown>> {
   isEdit: boolean;
   columns: DripTableColumn<T, P>[];
   currentColumn?: DripTableColumn<T, P>;
-  globalConfigs: Omit<DripTableSchema, '$schema' | 'columns'> & { '$version'?: number };
+  globalConfigs: Omit<DripTableSchema, 'columns'> & { '$version'?: number };
   /** 表格数据，generator不需要知道数据格式是什么，直接交给drip-table即可 */
   previewDataSource: Record<string, unknown>[];
 }

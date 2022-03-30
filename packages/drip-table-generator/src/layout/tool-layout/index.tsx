@@ -24,7 +24,6 @@ const ToolLayout = (props: { store: GlobalStore }) => {
   const [code, setCode] = useState('');
 
   const getSchemaValue = (): DripTableSchema => ({
-    $schema: 'http://json-schema.org/draft/2019-09/schema#',
     ...filterAttributes(state.globalConfigs, '$version'),
     columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableBuiltInColumnSchema[],
   });
@@ -90,7 +89,7 @@ const ToolLayout = (props: { store: GlobalStore }) => {
             const value = (code || '').trim();
             try {
               const json = JSON.parse(value);
-              state.globalConfigs = filterAttributes(json, ['$schema', 'columns']);
+              state.globalConfigs = filterAttributes(json, ['columns']);
               state.columns = json.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
               state.currentColumn = void 0;
             } catch {

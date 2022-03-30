@@ -24,7 +24,7 @@ import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
 
-type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, '$schema' | 'columns'>;
+type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, 'columns'>;
 
 type ButtonType = 'link' | 'text' | 'ghost' | 'primary' | 'dashed' | 'default';
 type FlexJustifyContent = 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
@@ -73,7 +73,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     return [...componentsToUse];
   };
 
-  const decodeGlobalConfigs = (globalConfigs?: Omit<DripTableSchema, '$schema' | 'columns'>) => {
+  const decodeGlobalConfigs = (globalConfigs?: Omit<DripTableSchema, 'columns'>) => {
     const formData: Record<string, unknown> = { ...filterAttributes(globalConfigs, 'header') };
     if (typeof globalConfigs?.header === 'object') {
       formData.header = true;

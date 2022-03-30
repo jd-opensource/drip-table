@@ -21,14 +21,12 @@ const useTableRoot = (
     if (wrapper.current) {
       const currentState = wrapper.current.getState();
       return {
-        $schema: 'http://json-schema.org/draft/2019-09/schema#',
         ...filterAttributes(currentState.globalConfigs, '$version'),
         columns: currentState.columns.map(item => ({ ...item, sort: void 0, index: void 0 })) as unknown as DripTableSchema['columns'], // TODO: 类型有问题强转防止报错的 component 类型怎么能是 string 呢？
       };
     }
 
     return {
-      $schema: 'http://json-schema.org/draft/2019-09/schema#',
       ...filterAttributes(state.globalConfigs, '$version'),
       columns: state.columns.map(item => ({ ...item, sort: void 0, index: void 0 })) as unknown as DripTableSchema['columns'], // TODO: 类型有问题强转防止报错的 component 类型怎么能是 string 呢？
     };

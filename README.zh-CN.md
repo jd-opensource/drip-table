@@ -113,7 +113,6 @@
 
    ```js
    const schema = {
-    $schema: "http://json-schema.org/draft/2019-09/schema#",
     size: "middle",
     columns: [
       {

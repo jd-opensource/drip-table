@@ -12,7 +12,6 @@ import React from 'react';
 import { mockData } from '../../demo-data';
 
 const initialSchema: DripTableSchema = {
-  $schema: 'http://json-schema.org/draft/2019-09/schema#',
   pagination: false,
   columns: [
   ],
