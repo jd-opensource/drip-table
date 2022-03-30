@@ -345,7 +345,7 @@ const DripTable = <
         }
       }
     }
-    return value => JSON.stringify(value);
+    return () => <div className={styles['ajv-error']}>{ `Unknown column component: ${schema.component}` }</div>;
   };
 
   /**
