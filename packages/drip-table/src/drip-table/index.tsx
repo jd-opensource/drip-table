@@ -217,6 +217,33 @@ const DripTable = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
+  if (props.schema && props.schema.columns.some(c => c['ui:type'] || c['ui:props'])) {
+    props = {
+      ...props,
+      schema: {
+        ...props.schema,
+        columns: props.schema.columns.map((column) => {
+          // 兼容旧版本数据
+          if ('ui:type' in column || 'ui:props' in column) {
+            const key = column.key;
+            if ('ui:type' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
+            }
+            if ('ui:props' in column) {
+              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
+            }
+            return {
+              ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
+              options: column['ui:props'] || column.options || void 0,
+              component: column['ui:type'] || column.component,
+            } as typeof column;
+          }
+          return column;
+        }),
+      },
+    };
+  }
+
   const Table = props.driver.components?.Table;
   const Popover = props.driver.components?.Popover;
   const QuestionCircleOutlined = props.driver.icons?.QuestionCircleOutlined;
@@ -324,24 +351,6 @@ const DripTable = <
     columns: React.useMemo(
       () => props.schema.columns
         .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
-        .map((column) => {
-          // 兼容旧版本数据
-          if ('ui:type' in column || 'ui:props' in column) {
-            const key = column.key;
-            if ('ui:type' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
-            }
-            if ('ui:props' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
-            }
-            return {
-              ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
-              options: column['ui:props'] || column.options || void 0,
-              component: column['ui:type'] || column.component,
-            } as typeof column;
-          }
-          return column;
-        })
         .map(columnGenerator),
       [props.schema.columns, tableState.displayColumnKeys],
     ),
