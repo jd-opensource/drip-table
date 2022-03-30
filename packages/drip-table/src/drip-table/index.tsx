@@ -446,6 +446,7 @@ const DripTable = <
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
                           components={props.components}
                           slots={props.slots}
+                          ajv={props.ajv}
                           ext={props.ext}
                           title={
                             props.subtableTitle
