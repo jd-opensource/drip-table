@@ -11,6 +11,8 @@ title: 总览
 | [style](/drip-table/props/style) | 自定义样式表 | × | [🔗 示例](/drip-table/props/style) |
 | [driver](/drip-table/props/driver) | 底层组件驱动 | √ | [🔗 示例](/drip-table/props/driver) |
 | [schema](/drip-table/props/schema) | 表单 Schema | √ | [🔗 示例](/drip-table/props/schema) |
+| [ref](/drip-table/props/ref) | 引用 | × | [🔗 示例](/drip-table/props/ref) |
+| [ajv](/drip-table/props/ajv) | Schema 校验配置项 | × | [🔗 示例](/drip-table/props/ajv) |
 | [dataSource](/drip-table/props/data-source) | 数据源 | √ | [🔗 示例](/drip-table/props/data-source) |
 | [selectedRowKeys](/drip-table/props/selected-row-keys) | 当前选中的行键 | × | [🔗 示例](/drip-table/props/selected-row-keys) |
 | [displayColumnKeys](/drip-table/props/display-column-keys) | 当前显示的列键 | × | [🔗 示例](/drip-table/props/display-column-keys) |

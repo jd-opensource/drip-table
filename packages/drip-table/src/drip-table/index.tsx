@@ -21,6 +21,7 @@ import {
   type DripTableSchema,
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
+import { AjvOptions, validateDripTableProps } from '@/utils/ajv';
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { DripTableGenericRenderElement } from '@/components/generic-render';
 import RichText from '@/components/rich-text';
@@ -29,6 +30,8 @@ import { useState, useTable } from '@/hooks';
 import { DripTableProvider } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
 import VirtualTable from './virtual-table';
+
+import styles from './index.module.less';
 
 export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -104,6 +107,10 @@ export interface DripTableProps<
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
   };
+  /**
+   * Schema 校验配置项
+   */
+  ajv?: AjvOptions | false;
   /**
    * 自定义组件附加透传数据
    */
@@ -242,6 +249,17 @@ const DripTable = <
         }),
       },
     };
+  }
+
+  if (props.ajv !== false) {
+    const errorMessage = validateDripTableProps(props, props.ajv);
+    if (errorMessage) {
+      return (
+        <div className={styles['ajv-error']}>
+          { `Props validate failed: ${errorMessage}` }
+        </div>
+      );
+    }
   }
 
   const Table = props.driver.components?.Table;
@@ -402,7 +420,6 @@ const DripTable = <
                           driver={props.driver}
                           schema={{
                             ...subtable,
-                            $schema: props.schema.$schema,
                           }}
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
                           components={props.components}

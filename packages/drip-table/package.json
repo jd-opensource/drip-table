@@ -24,6 +24,8 @@
     "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
   },
   "dependencies": {
+    "ajv": "^8.11.0",
+    "ajv-keywords": "^5.1.0",
     "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.3.1",
     "domhandler": "^4.3.0",
