@@ -4,7 +4,7 @@ export type CustomColumnSchema =
   | CustomComponentSampleColumnSchema;
 
 export const CustomComponents = {
-  CustomComponentSample,
+  [CustomComponentSample.componentName]: CustomComponentSample,
 };
 
 export type { CustomComponentEvent } from './event';

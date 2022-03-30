@@ -36,7 +36,6 @@ const schema = {
       component: "text",
       options: {
         mode: "single",
-        tooltip: true,
         ellipsis: true,
         maxRow: 1,
       },
@@ -45,6 +44,7 @@ const schema = {
       key: "mock_3",
       title: "Custom Component",
       align: "center",
+      dataIndex: "description",
       component: "custom::Sample",
     },
   ],

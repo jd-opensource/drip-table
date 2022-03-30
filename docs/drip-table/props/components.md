@@ -45,6 +45,11 @@ const SampleComponent = <RecordType extends DripTableRecordTypeBase>(props: Samp
   <div>Sample: {props.schema.options.someCustomConfigure}</div>
 );
 SampleComponent.componentName = 'Sample';
+SampleComponent.schema = { // https://ajv.js.org/json-schema.html
+  properties: {
+    someCustomConfigure: { type: 'string' },
+  },
+};
 
 // 对所有自定义组件做集合处理，准备提供给 DripTable 使用。
 const customComponents = {
@@ -72,7 +77,6 @@ const schema: DripTableSchema<CustomColumnSchema> = {
       component: "text",
       options: {
         mode: "single",
-        tooltip: true,
         ellipsis: true,
         maxRow: 1,
       },
@@ -81,6 +85,7 @@ const schema: DripTableSchema<CustomColumnSchema> = {
       key: "mock_3",
       title: "Custom Component",
       align: "center",
+      dataIndex: "description",
       component: "custom::Sample",
       options: {
         someCustomConfigure: "configure-sample",

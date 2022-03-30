@@ -49,7 +49,6 @@ const schema = {
       component: "text",
       options: {
         mode: "single",
-        tooltip: true,
         ellipsis: true,
         maxRow: 1,
       },

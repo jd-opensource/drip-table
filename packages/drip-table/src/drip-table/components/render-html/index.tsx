@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps } from '../component';
@@ -23,6 +23,12 @@ interface DTCRenderHTMLState { }
 
 export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLProps<RecordType>, DTCRenderHTMLState> {
   public static componentName: DTCRenderHTMLColumnSchema['component'] = 'render-html';
+  public static schema: SchemaObject = {
+    properties: {
+      render: { type: 'string' },
+    },
+    required: ['render'],
+  };
 
   public render(): JSX.Element {
     const { data, schema: { options } } = this.props;

@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps } from '../component';
@@ -27,6 +27,12 @@ interface DTCRenderHTMLRemoteState {
 
 export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLRemoteProps<RecordType>, DTCRenderHTMLRemoteState> {
   public static componentName: DTCRenderHTMLRemoteColumnSchema['component'] = 'render-html-remote';
+  public static schema: SchemaObject = {
+    properties: {
+      url: { type: 'string' },
+    },
+    required: ['url'],
+  };
 
   public state = {
     render: '',

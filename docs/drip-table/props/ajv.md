@@ -44,11 +44,11 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      mode: "single",
       options: {
-        tooltip: true,
+        mode: "single",
         ellipsis: true,
         maxRow: 1,
+        someExtraProperty: true, // 多余的字段
       },
       someExtraProperty: false, // 多余的字段
     },

@@ -7,7 +7,7 @@
  */
 
 import { Button } from 'antd';
-import { DripTableColumnSchema, DripTableComponentProps } from 'drip-table';
+import { DripTableColumnSchema, DripTableComponentProps, SchemaObject } from 'drip-table';
 import React from 'react';
 
 import { SampleRecordType } from '../../../demo-data';
@@ -22,6 +22,13 @@ export interface CustomComponentSampleProps extends DripTableComponentProps<Samp
 interface CustomComponentSampleState { }
 
 export default class CustomComponentSample extends React.PureComponent<CustomComponentSampleProps, CustomComponentSampleState> {
+  public static componentName: 'CustomComponentSample' = 'CustomComponentSample';
+  public static schema: SchemaObject = {
+    properties: {
+      customSchema: { type: 'string' },
+    },
+  };
+
   public constructor(props: CustomComponentSampleProps) {
     super(props);
     this.state = {};

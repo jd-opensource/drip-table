@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue } from '@/drip-table/utils';
 
 import { DripTableComponentProps } from '../component';
@@ -38,6 +38,28 @@ interface DTCTagState { }
 
 export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
   public static componentName: DTCTagColumnSchema['component'] = 'tag';
+  public static schema: SchemaObject = {
+    properties: {
+      color: { type: 'string' },
+      borderColor: { type: 'string' },
+      backgroundColor: { type: 'string' },
+      radius: { type: 'number' },
+      prefix: { type: 'string' },
+      suffix: { type: 'string' },
+      content: { type: 'string' },
+      /** 枚举 */
+      tagOptions: {
+        type: 'array',
+        items: {
+          properties: {
+            label: { type: 'string' },
+            value: { typeof: ['string', 'number'] },
+          },
+          required: ['label', 'value'],
+        },
+      },
+    },
+  };
 
   private get value() {
     const schema = this.props.schema;

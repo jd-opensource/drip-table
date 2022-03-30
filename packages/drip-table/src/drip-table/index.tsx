@@ -19,9 +19,10 @@ import {
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type DripTableSchema,
+  type SchemaObject,
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
-import { AjvOptions, validateDripTableProps } from '@/utils/ajv';
+import { AjvOptions, validateDripTableColumnSchema, validateDripTableProps } from '@/utils/ajv';
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { DripTableGenericRenderElement } from '@/components/generic-render';
 import RichText from '@/components/rich-text';
@@ -90,7 +91,7 @@ export interface DripTableProps<
       NonNullable<ExtraOptions['CustomComponentEvent']>,
       NonNullable<ExtraOptions['CustomComponentExtraData']>
       >
-      >;
+      > & { schema?: SchemaObject };
     };
   };
   /**
@@ -294,8 +295,19 @@ const DripTable = <
    */
   const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
     if ('component' in schema) {
-      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>>;
+      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as
+        React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
       if (BuiltInComponent) {
+        if (props.ajv !== false) {
+          const errorMessage = validateDripTableColumnSchema(schema, BuiltInComponent.schema, props.ajv);
+          if (errorMessage) {
+            return () => (
+              <div className={styles['ajv-error']}>
+                { `Schema validate failed: ${errorMessage}` }
+              </div>
+            );
+          }
+        }
         return (value, record, index) => (
           <BuiltInComponent
             driver={props.driver}
@@ -310,6 +322,16 @@ const DripTable = <
       if (libName && componentName) {
         const ExtraComponent = props.components?.[libName]?.[componentName];
         if (ExtraComponent) {
+          if (props.ajv !== false) {
+            const errorMessage = validateDripTableColumnSchema(schema, ExtraComponent.schema, props.ajv);
+            if (errorMessage) {
+              return () => (
+                <div className={styles['ajv-error']}>
+                  { `Schema validate failed: ${errorMessage}` }
+                </div>
+              );
+            }
+          }
           return (value, record, index) => (
             <ExtraComponent
               driver={props.driver}

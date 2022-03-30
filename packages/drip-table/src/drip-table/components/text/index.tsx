@@ -9,7 +9,7 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/drip-table/utils';
 
 import { DripTableComponentProps } from '../component';
@@ -93,6 +93,36 @@ const translate = (i18n: Record<string, string> | undefined, origin: string) => 
 
 export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
   public static componentName: DTCTextColumnSchema['component'] = 'text';
+  public static schema: SchemaObject = {
+    properties: {
+      fontSize: { type: 'string' },
+      mode: { enum: ['single', 'multiple', 'custom'] },
+      format: { type: 'string' },
+      i18n: {},
+      defaultValue: { type: 'string' },
+      prefix: { type: 'string' },
+      suffix: { type: 'string' },
+      parts: {
+        type: 'array',
+        items: {
+          properties: {
+            dataIndex: {
+              anyOf: [
+                { type: 'string' },
+                { type: 'array', items: { type: 'string' } },
+              ],
+            },
+            i18n: {},
+            prefix: { type: 'string' },
+            suffix: { type: 'string' },
+          },
+        },
+      },
+      maxRow: { type: 'number' },
+      lineHeight: { type: 'number' },
+      ellipsis: { type: 'boolean' },
+    },
+  };
 
   private get configured() {
     const schema = this.props.schema;

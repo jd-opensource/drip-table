@@ -7,7 +7,7 @@
  */
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 
 import { DripTableComponentProps } from '../component';
 
@@ -46,6 +46,35 @@ interface DTCButtonState {}
 
 export default class DTCButton<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCButtonProps<RecordType>, DTCButtonState> {
   public static componentName: DTCButtonColumnSchema['component'] = 'button';
+  public static schema: SchemaObject = {
+    properties: {
+      mode: { enum: ['single', 'multiple'] },
+      label: { type: 'string' },
+      buttonType: { enum: ['primary', 'dashed', 'text', 'link'] },
+      shape: { enum: ['circle', 'round'] },
+      size: { enum: ['large', 'middle', 'small'] },
+      danger: { type: 'boolean' },
+      ghost: { type: 'boolean' },
+      icon: { type: 'string' },
+      event: { type: 'string' },
+      margin: { type: 'number' },
+      buttons: {
+        type: 'array',
+        items: {
+          properties: {
+            label: { type: 'string' },
+            event: { type: 'string' },
+            buttonType: { enum: ['primary', 'dashed', 'text', 'link'] },
+            shape: { enum: ['circle', 'round'] },
+            size: { enum: ['large', 'middle', 'small'] },
+            danger: { type: 'boolean' },
+            ghost: { type: 'boolean' },
+            icon: { type: 'string' },
+          },
+        },
+      },
+    },
+  };
 
   private get configured() {
     const options = this.props.schema.options;

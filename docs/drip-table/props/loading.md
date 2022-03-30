@@ -34,9 +34,8 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      mode: "single",
       options: {
-        tooltip: true,
+        mode: "single",
         ellipsis: true,
         maxRow: 1,
       },

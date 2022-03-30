@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -40,6 +40,28 @@ interface DTCLinkState {}
 
 export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
   public static componentName: DTCLinkColumnSchema['component'] = 'link';
+  public static schema: SchemaObject = {
+    properties: {
+      mode: { enum: ['single', 'multiple'] },
+      name: { type: 'string' },
+      label: { type: 'string' },
+      href: { type: 'string' },
+      event: { type: 'string' },
+      target: { type: 'string' },
+      operates: {
+        type: 'array',
+        items: {
+          properties: {
+            name: { type: 'string' },
+            label: { type: 'string' },
+            href: { type: 'string' },
+            event: { type: 'string' },
+            target: { type: 'string' },
+          },
+        },
+      },
+    },
+  };
 
   private get configured() {
     const options = this.props.schema.options;

@@ -6,10 +6,10 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import Ajv, { Schema } from 'ajv';
+import Ajv from 'ajv';
 import AjvKeywords from 'ajv-keywords';
 
-import { DripTableSchema } from '..';
+import { DripTableSchema, SchemaObject } from '@/types';
 
 export interface AjvOptions {
   /**
@@ -29,7 +29,7 @@ const createAjv = (): Ajv => AjvKeywords(new Ajv({ discriminator: true, strictTy
 export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
   const ajv = createAjv();
   const additionalProperties = options?.additionalProperties ?? false;
-  const dripTableGenericRenderElementSchema: Schema = {
+  const dripTableGenericRenderElementSchema: SchemaObject = {
     type: 'array',
     items: {
       typeof: 'object',
@@ -104,7 +104,7 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       ],
     },
   };
-  const dripTableSchema: Schema = {
+  const dripTableSchema: SchemaObject = {
     properties: {
       id: { typeof: ['number', 'string'] },
       bordered: { type: 'boolean' },
@@ -171,7 +171,18 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
     },
     additionalProperties,
   };
-  const propsSchema: Schema = {
+  const dripTableSubtableSchema = {
+    ...dripTableSchema,
+    properties: {
+      ...dripTableSchema.properties || [],
+      dataSourceKey: { typeof: ['number', 'string'] },
+    },
+    required: [
+      ...dripTableSchema.required || [],
+      'dataSourceKey',
+    ],
+  };
+  const propsSchema: SchemaObject = {
     properties: {
       driver: {},
       schema: dripTableSchema,
@@ -224,11 +235,73 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
   let subtable = (data as { schema: DripTableSchema }).schema.subtable;
   let prefix = 'props.subtable';
   while (subtable) {
-    if (!ajv.validate(dripTableSchema, data)) {
+    if (!ajv.validate(dripTableSubtableSchema, subtable)) {
       return ajv.errorsText(void 0, { dataVar: prefix });
     }
     subtable = subtable.subtable;
     prefix += '.subtable';
+  }
+  return null;
+};
+
+/**
+ * 校验 DripTableColumnSchema 是否符合 Schema 要求
+ * @param data DripTableColumnSchema 数据
+ * @param schema DripTableColumnSchema 的 Schema 对象
+ * @param options ajv 校验选项
+ * @returns 校验失败提示内容，成功返回 null
+ */
+export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObject, options?: AjvOptions) => {
+  const ajv = createAjv();
+  const additionalProperties = options?.additionalProperties ?? false;
+  const dripTableColumnSchema: SchemaObject = {
+    properties: {
+      component: { type: 'string' },
+      options: schema
+        ? { ...schema, additionalProperties }
+        : {},
+      key: { type: 'string' },
+      title: { type: 'string' },
+      width: { typeof: ['string', 'number'] },
+      align: { enum: ['left', 'center', 'right'] },
+      dataIndex: {
+        anyOf: [
+          { type: 'array', items: { type: 'string' } },
+          { type: 'string' },
+        ],
+      },
+      default: {},
+      description: { type: 'string' },
+      fixed: {
+        anyOf: [
+          { enum: ['left', 'right'] },
+          { type: 'boolean' },
+        ],
+      },
+      hidable: { type: 'boolean' },
+      filters: {
+        type: 'array',
+        items: {
+          properties: {
+            text: {},
+            value: { typeof: ['string', 'number', 'boolean'] },
+          },
+          required: ['text', 'value'],
+        },
+      },
+      defaultFilteredValue: { typeof: ['string', 'number', 'object'] },
+    },
+    required: [
+      'component',
+      schema ? 'options' : '',
+      'key',
+      'title',
+      'dataIndex',
+    ].map(_ => _),
+    additionalProperties,
+  };
+  if (!ajv.validate(dripTableColumnSchema, data)) {
+    return ajv.errorsText(void 0, { dataVar: 'column' });
   }
   return null;
 };

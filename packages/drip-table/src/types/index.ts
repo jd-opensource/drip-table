@@ -12,6 +12,8 @@ import { type DripTableGenericRenderElement } from '@/components/generic-render'
 
 import { type DripTableBuiltInColumnSchema } from '../drip-table/components';
 
+export { SchemaObject } from 'ajv';
+
 export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> {
   /**
    * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
