@@ -199,6 +199,16 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       loading: { type: 'boolean' },
       components: {},
       slots: {},
+      ajv: {
+        anyOf: [
+          {
+            properties: {
+              additionalProperties: { type: 'boolean' },
+            },
+          },
+          { type: 'boolean' },
+        ],
+      },
       ext: {},
       title: { instanceof: 'Function' },
       footer: { instanceof: 'Function' },
