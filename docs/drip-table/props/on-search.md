@@ -25,8 +25,10 @@ const schema = {
       title: "商品名称",
       dataIndex: "name",
       component: "text",
-      mode: "single",
-      maxRow: 1,
+      options: {
+        mode: "single",
+        maxRow: 1,
+      },
     },
     {
       key: "mock_2",
@@ -34,10 +36,12 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      mode: "single",
-      tooltip: true,
-      ellipsis: true,
-      maxRow: 1,
+      options: {
+        mode: "single",
+        tooltip: true,
+        ellipsis: true,
+        maxRow: 1,
+      },
     },
   ],
   header: {

@@ -8,26 +8,26 @@
 
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 import RichText from '@/components/rich-text';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 
-export interface DTCRenderHTMLSchema extends DripTableComponentSchema {
+export type DTCRenderHTMLColumnSchema = DripTableColumnSchema<'render-html', {
   render: string;
-}
+}>;
 
-interface DTCRenderHTMLProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRenderHTMLSchema> { }
+interface DTCRenderHTMLProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRenderHTMLColumnSchema> { }
 
 interface DTCRenderHTMLState { }
 
 export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLProps<RecordType>, DTCRenderHTMLState> {
-  public static componentName: 'render-html' = 'render-html';
+  public static componentName: DTCRenderHTMLColumnSchema['component'] = 'render-html';
 
   public render(): JSX.Element {
-    const { data, schema } = this.props;
+    const { data, schema: { options } } = this.props;
     try {
-      const html = new Function('rec', schema.render)(data);
+      const html = new Function('rec', options.render)(data);
       if (typeof html === 'object') {
         return (
           <div>{ Object.prototype.toString.call(html) }</div>

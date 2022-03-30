@@ -25,8 +25,10 @@ const schema = {
       title: "商品名称",
       dataIndex: "name",
       component: "text",
-      mode: "single",
-      maxRow: 1,
+      options: {
+        mode: "single",
+        maxRow: 1,
+      },
     },
     {
       key: "mock_2",
@@ -34,10 +36,12 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      mode: "single",
-      tooltip: true,
-      ellipsis: true,
-      maxRow: 1,
+      options: {
+        mode: "single",
+        tooltip: true,
+        ellipsis: true,
+        maxRow: 1,
+      },
     },
     {
       key: "mock_3",
@@ -55,13 +59,15 @@ const schema = {
       hidable: true,
       dataIndex: 'operate',
       component: 'link',
-      mode: 'multiple',
-      operates: [
-        { name: 'order', label: '订购', event: 'order' },
-        { name: 'view', label: '查看', event: 'view' },
-        { name: 'edit', label: '编辑', event: 'edit' },
-        { name: 'remove', label: '删除', event: 'remove' },
-      ],
+      options: {
+        mode: 'multiple',
+        operates: [
+          { name: 'order', label: '订购', event: 'order' },
+          { name: 'view', label: '查看', event: 'view' },
+          { name: 'edit', label: '编辑', event: 'edit' },
+          { name: 'remove', label: '删除', event: 'remove' },
+        ],
+      },
     },
   ],
 };

@@ -194,8 +194,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
-      'ui:type': state.currentColumn?.['ui:type'],
-      ...uiProps,
+      component: state.currentColumn?.['ui:type'],
+      options: uiProps,
       type: columnConfig ? columnConfig.type : state.currentColumn?.type,
     } as DripTableColumn<string, never>;
   };

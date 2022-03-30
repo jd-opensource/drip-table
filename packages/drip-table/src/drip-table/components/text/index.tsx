@@ -9,15 +9,14 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 import { indexValue, stringify } from '@/drip-table/utils';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 
 import styles from './index.module.less';
 
-export interface DTCTextSchema extends DripTableComponentSchema {
-  dataIndex: string | string[];
+export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
   /**
    * 字体大小
    */
@@ -79,9 +78,9 @@ export interface DTCTextSchema extends DripTableComponentSchema {
    * 超出部分显示省略号
    */
   ellipsis?: boolean;
-}
+}>;
 
-interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextSchema> { }
+interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
 
 interface DTCTextState {}
 
@@ -93,23 +92,24 @@ const translate = (i18n: Record<string, string> | undefined, origin: string) => 
 };
 
 export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
-  public static componentName: 'text' = 'text';
+  public static componentName: DTCTextColumnSchema['component'] = 'text';
 
   private get configured() {
     const schema = this.props.schema;
-    if (schema.mode === 'custom') {
-      if (schema.format) {
+    const options = schema.options;
+    if (options.mode === 'custom') {
+      if (options.format) {
         return true;
       }
       return false;
     }
-    if (schema.mode === 'multiple') {
-      if (schema.parts) {
-        return schema.parts.length > 0;
+    if (options.mode === 'multiple') {
+      if (options.parts) {
+        return options.parts.length > 0;
       }
       return false;
     }
-    if (schema.mode === 'single') {
+    if (options.mode === 'single') {
       if (typeof schema.dataIndex === 'object') {
         return Object.keys(schema.dataIndex).length > 0;
       }
@@ -119,7 +119,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get fontSize() {
-    let fontSize = String(this.props.schema.fontSize || '').trim();
+    let fontSize = String(this.props.schema.options.fontSize || '').trim();
     if ((/^[0-9]+$/uig).test(fontSize)) {
       fontSize += 'px';
     }
@@ -127,13 +127,13 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get lineHeight() {
-    return this.props.schema.lineHeight || 1.5;
+    return this.props.schema.options.lineHeight || 1.5;
   }
 
   private get wrapperClassName(): string | null {
-    const maxRow = this.props.schema.maxRow;
+    const maxRow = this.props.schema.options.maxRow;
     const classNames: string[] = [];
-    if (this.props.schema.ellipsis) {
+    if (this.props.schema.options.ellipsis) {
       classNames.push(styles['text-ellipsis']);
     }
     if (maxRow) {
@@ -153,7 +153,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   private get wrapperStyles(): React.CSSProperties {
     const rawTextStyles = this.rawTextStyles;
-    const maxRow = this.props.schema.maxRow;
+    const maxRow = this.props.schema.options.maxRow;
     const lineHeight = this.lineHeight;
     const wrapperStyles: React.CSSProperties = Object.assign({}, rawTextStyles);
     if (maxRow) {
@@ -165,7 +165,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   private get rawText(): string[] {
     const { schema, data } = this.props;
-    const { mode, dataIndex, defaultValue, format, prefix, suffix, parts: params } = schema;
+    const { dataIndex, options } = schema;
+    const { mode, defaultValue, format, prefix, suffix, parts: params } = options;
     if (mode === 'custom') {
       return (format || '')
         .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
@@ -180,7 +181,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         .split('\n');
     }
     if (mode === 'single') {
-      return `${prefix ?? ''}${translate(schema.i18n, indexValue(data, dataIndex, defaultValue)) ?? ''}${suffix ?? ''}`.split('\n');
+      return `${prefix ?? ''}${translate(schema.options.i18n, indexValue(data, dataIndex, defaultValue)) ?? ''}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
       return (params || [])
@@ -200,7 +201,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     }
     const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) }</div>);
     const wrapperEl = <div className={classnames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
-    if (this.props.schema.maxRow) {
+    if (this.props.schema.options.maxRow) {
       return (
         <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
           { wrapperEl }

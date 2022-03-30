@@ -26,8 +26,10 @@ const schema = {
       hidable: true,
       dataIndex: "name",
       component: "text",
-      mode: "single",
-      maxRow: 1,
+      options: {
+        mode: "single",
+        maxRow: 1,
+      },
     },
     {
       key: "mock_2",
@@ -36,10 +38,12 @@ const schema = {
       hidable: true,
       dataIndex: "description",
       component: "text",
-      mode: "single",
-      tooltip: true,
-      ellipsis: true,
-      maxRow: 1,
+      options: {
+        mode: "single",
+        tooltip: true,
+        ellipsis: true,
+        maxRow: 1,
+      },
     },
   ],
   header: {

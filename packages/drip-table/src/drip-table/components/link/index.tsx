@@ -8,12 +8,12 @@
 
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
 
-export interface DTCLinkSchema extends DripTableComponentSchema {
+export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   mode?: 'single' | 'multiple';
   name?: string;
   label?: string;
@@ -27,41 +27,41 @@ export interface DTCLinkSchema extends DripTableComponentSchema {
     event?: string;
     target?: string;
   }[];
-}
+}>;
 
 export interface DTCLinkEvent {
   type: 'drip-link-click';
   payload: string;
 }
 
-interface DTCLinkProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCLinkSchema> { }
+interface DTCLinkProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCLinkColumnSchema> { }
 
 interface DTCLinkState {}
 
 export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
-  public static componentName: 'link' = 'link';
+  public static componentName: DTCLinkColumnSchema['component'] = 'link';
 
   private get configured() {
-    const schema = this.props.schema;
-    if (schema.mode === 'multiple') {
-      if (schema.operates) {
+    const options = this.props.schema.options;
+    if (options.mode === 'multiple') {
+      if (options.operates) {
         return true;
       }
       return false;
     }
-    if (schema.mode === 'single' && (finalizeString('pattern', schema.href || '', this.props.data) || schema.event)) {
+    if (options.mode === 'single' && (finalizeString('pattern', options.href || '', this.props.data) || options.event)) {
       return true;
     }
     return false;
   }
 
   public render(): JSX.Element {
-    const { schema } = this.props;
+    const options = this.props.schema.options;
     if (!this.configured) {
       return <div style={{ color: 'red' }}>属性配置错误</div>;
     }
-    if (schema.mode === 'single') {
-      const event = schema.event;
+    if (options.mode === 'single') {
+      const event = options.event;
       if (event) {
         return (
           <a
@@ -72,16 +72,16 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               this.props.fireEvent({ type: 'drip-link-click', payload: event });
             }}
           >
-            { schema.label }
+            { options.label }
           </a>
         );
       }
-      return <a href={finalizeString('pattern', schema.href || '', this.props.data)} target={schema.target}>{ schema.label }</a>;
+      return <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>;
     }
     return (
       <div>
         {
-          schema.operates?.map((config, index) => {
+          options.operates?.map((config, index) => {
             const event = config.event;
             if (event) {
               return (

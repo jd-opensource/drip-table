@@ -7,17 +7,17 @@
  */
 
 import { Button } from 'antd';
-import { DripTableComponentProps, DripTableComponentSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableComponentProps } from 'drip-table';
 import React from 'react';
 
 import { SampleRecordType } from '../../../demo-data';
 import { CustomComponentEvent } from '.';
 
-export interface CustomComponentSampleSchema extends DripTableComponentSchema {
+export type CustomComponentSampleColumnSchema = DripTableColumnSchema<'custom::CustomComponentSample', {
   customSchema?: string;
-}
+}>;
 
-export interface CustomComponentSampleProps extends DripTableComponentProps<SampleRecordType, CustomComponentSampleSchema, CustomComponentEvent> { }
+export interface CustomComponentSampleProps extends DripTableComponentProps<SampleRecordType, CustomComponentSampleColumnSchema, CustomComponentEvent> { }
 
 interface CustomComponentSampleState { }
 
@@ -34,7 +34,7 @@ export default class CustomComponentSample extends React.PureComponent<CustomCom
         { ' ' }
         { this.props.data?.status }
         <Button type="link" onClick={() => { this.props.fireEvent({ type: 'custom', name: 'sample-event' }); }}>发起事件</Button>
-        { this.props.schema.customSchema }
+        { this.props.schema.options.customSchema }
       </div>
     );
   }

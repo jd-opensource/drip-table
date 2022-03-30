@@ -8,12 +8,12 @@
 
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 import { indexValue } from '@/drip-table/utils';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 
-export interface DTCTagSchema extends DripTableComponentSchema {
+export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
   /** 字体颜色 */
   color?: string;
   /** 边框颜色 */
@@ -30,14 +30,14 @@ export interface DTCTagSchema extends DripTableComponentSchema {
   content?: string;
   /** 枚举 */
   tagOptions?: { label: string; value: string | number }[];
-}
+}>;
 
-interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagSchema> { }
+interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagColumnSchema> { }
 
 interface DTCTagState { }
 
 export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
-  public static componentName: 'tag' = 'tag';
+  public static componentName: DTCTagColumnSchema['component'] = 'tag';
 
   private get value() {
     const schema = this.props.schema;
@@ -47,23 +47,23 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
 
   public render() {
     const Tag = this.props.driver.components.Tag;
-    const schema = this.props.schema;
+    const options = this.props.schema.options;
     const value = this.value;
     return (
       <div>
-        { schema.prefix || '' }
+        { options.prefix || '' }
         <Tag
-          color={schema.color}
+          color={options.color}
           style={{
-            color: schema.color,
-            borderColor: schema.borderColor,
-            backgroundColor: schema.backgroundColor,
-            borderRadius: schema.radius,
+            color: options.color,
+            borderColor: options.borderColor,
+            backgroundColor: options.backgroundColor,
+            borderRadius: options.radius,
           }}
         >
-          { schema.content || schema.tagOptions?.find(item => item.value === value)?.label || value }
+          { options.content || options.tagOptions?.find(item => item.value === value)?.label || value }
         </Tag>
-        { schema.suffix || '' }
+        { options.suffix || '' }
       </div>
     );
   }

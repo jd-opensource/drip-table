@@ -10,7 +10,6 @@ import classnames from 'classnames';
 import React, { useRef } from 'react';
 
 import {
-  type DripTableColumnSchema,
   type DripTableDriver,
   type DripTableExtraOptions,
   type DripTableFilters,
@@ -28,7 +27,7 @@ import RichText from '@/components/rich-text';
 import { useState, useTable } from '@/hooks';
 
 import { DripTableProvider } from '..';
-import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps, DripTableComponentSchema } from './components';
+import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
 import VirtualTable from './virtual-table';
 
 export interface DripTableProps<
@@ -50,7 +49,7 @@ export interface DripTableProps<
   /**
    * 表单 Schema
    */
-  schema: DripTableSchema<NonNullable<ExtraOptions['CustomComponentSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+  schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
   /**
    * 数据源
    */
@@ -84,7 +83,7 @@ export interface DripTableProps<
       React.JSXElementConstructor<
       DripTableComponentProps<
       RecordType,
-      DripTableComponentSchema,
+      NonNullable<ExtraOptions['CustomColumnSchema']>,
       NonNullable<ExtraOptions['CustomComponentEvent']>,
       NonNullable<ExtraOptions['CustomComponentExtraData']>
       >
@@ -100,7 +99,7 @@ export interface DripTableProps<
       className?: string;
       slotType: string;
       driver: DripTableDriver;
-      schema: DripTableSchema<NonNullable<ExtraOptions['CustomComponentSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
       dataSource: readonly RecordType[];
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
@@ -248,16 +247,16 @@ const DripTable = <
    * @param schema Schema
    * @returns 表格
    */
-  const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomComponentSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
+  const renderGenerator = (schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>): (value: unknown, record: RecordType, index: number) => JSX.Element | string | null => {
     if ('component' in schema) {
-      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableColumnSchema<DripTableBuiltInColumnSchema['component'], DripTableComponentSchema>>>;
+      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>>;
       if (BuiltInComponent) {
         return (value, record, index) => (
           <BuiltInComponent
             driver={props.driver}
             value={value}
             data={record}
-            schema={schema}
+            schema={schema as unknown as DripTableBuiltInColumnSchema}
             fireEvent={event => props.onEvent?.(event, record, index)}
           />
         );
@@ -271,7 +270,7 @@ const DripTable = <
               driver={props.driver}
               value={value}
               data={record}
-              schema={schema}
+              schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={props.ext}
               fireEvent={event => props.onEvent?.(event, record, index)}
             />
@@ -287,7 +286,7 @@ const DripTable = <
    * @param schemaColumn Schema Column
    * @returns 表格列配置
    */
-  const columnGenerator = (schemaColumn: NonNullable<ExtraOptions['CustomComponentSchema']> | DripTableBuiltInColumnSchema): TableColumn => {
+  const columnGenerator = (schemaColumn: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>): TableColumn => {
     let width = String(schemaColumn.width).trim();
     if ((/^[0-9]+$/uig).test(width)) {
       width += 'px';
@@ -333,13 +332,13 @@ const DripTable = <
               console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
             }
             if ('ui:props' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please spread values instead.`);
+              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
             }
             return {
               ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
-              ...column['ui:props'] || null,
+              options: column['ui:props'] || column.options || void 0,
               component: column['ui:type'] || column.component,
-            };
+            } as typeof column;
           }
           return column;
         })

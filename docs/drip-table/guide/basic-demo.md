@@ -37,8 +37,10 @@ const schema = {
       title: "商品名称",
       dataIndex: "name",
       component: "text",
-      mode: "single",
-      maxRow: 1,
+      options: {
+        mode: "single",
+        maxRow: 1,
+      },
     },
     {
       key: "mock_2",
@@ -46,22 +48,26 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      mode: "single",
-      tooltip: true,
-      ellipsis: true,
-      maxRow: 1,
+      options: {
+        mode: "single",
+        tooltip: true,
+        ellipsis: true,
+        maxRow: 1,
+      },
     },
     {
       key: "mock_3",
       title: "库存状态",
       dataIndex: "status",
       component: "text",
-      mode: "single",
-      i18n: {
-        onSale: '售卖中',
-        soldOut: '已售罄',
+      options: {
+        mode: "single",
+        i18n: {
+          onSale: '售卖中',
+          soldOut: '已售罄',
+        },
+        description: "这是一条提示信息",
       },
-      description: "这是一条提示信息",
     },
     {
       key: "mock_4",
@@ -69,8 +75,10 @@ const schema = {
       width: 80,
       dataIndex: "price",
       component: "text",
-      mode: "single",
-      prefix: "￥",
+      options: {
+        mode: "single",
+        prefix: "￥",
+      },
     },
     {
       key: "mock_5",
@@ -78,12 +86,14 @@ const schema = {
       width: 118,
       dataIndex: "operate",
       component: "links",
-      mode: "multiple",
-      operates: [
-        { name: "order", label: "预定", href: "./#order", target: "_blank" },
-        { name: "view", label: "查看", href: "./#view" },
-        { name: "remove", label: "删除", href: "./#remove" },
-      ],
+      options: {
+        mode: "multiple",
+        operates: [
+          { name: "order", label: "预定", href: "./#order", target: "_blank" },
+          { name: "view", label: "查看", href: "./#view" },
+          { name: "remove", label: "删除", href: "./#remove" },
+        ],
+      },
     },
   ],
 };

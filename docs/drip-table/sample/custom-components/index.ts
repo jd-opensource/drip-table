@@ -1,9 +1,7 @@
-import { DripTableColumnSchema } from 'drip-table';
+import CustomComponentSample, { CustomComponentSampleColumnSchema } from './sample';
 
-import CustomComponentSample, { CustomComponentSampleSchema } from './sample';
-
-export type CustomComponentSchema =
-  | DripTableColumnSchema<'custom::CustomComponentSample', CustomComponentSampleSchema>;
+export type CustomColumnSchema =
+  | CustomComponentSampleColumnSchema;
 
 export const CustomComponents = {
   CustomComponentSample,

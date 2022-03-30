@@ -67,13 +67,13 @@ const Container = (props: DripTableGeneratorProps, ref: React.ForwardedRef<DripT
               console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
             }
             if ('ui:props' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please spread values instead.`);
+              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
             }
             return {
               ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
-              ...column['ui:props'] || null,
+              options: column['ui:props'] || column.options || void 0,
               component: column['ui:type'] || column.component,
-            };
+            } as typeof column;
           }
           return column;
         }),

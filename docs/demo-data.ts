@@ -1,10 +1,10 @@
 import { DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 
-import { CustomComponentSchema } from './drip-table/sample/custom-components';
+import { CustomColumnSchema } from './drip-table/sample/custom-components';
 
-export type SampleSubtableDataSourceKey = 'subtable' | 'subtableLevel2';
+export type SubtableDataSourceKey = 'subtable' | 'subtableLevel2';
 
-export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDataSourceKey> = {
+export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceKey> = {
   $schema: 'http://json-schema.org/draft/2019-09/schema#',
   id: 'sample-table',
   size: 'middle',
@@ -72,8 +72,10 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       fixed: 'left',
       dataIndex: 'name',
       component: 'text',
-      mode: 'single',
-      maxRow: 1,
+      options: {
+        mode: 'single',
+        maxRow: 1,
+      },
     },
     {
       key: 'mock_2',
@@ -83,10 +85,11 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       hidable: true,
       dataIndex: 'description',
       component: 'text',
-      mode: 'single',
-      tooltip: true,
-      ellipsis: true,
-      maxRow: 3,
+      options: {
+        mode: 'single',
+        ellipsis: true,
+        maxRow: 3,
+      },
     },
     {
       key: 'mock_3',
@@ -102,10 +105,12 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       ],
       defaultFilteredValue: ['onSale', 'soldOut'],
       component: 'text',
-      mode: 'single',
-      i18n: {
-        onSale: '售卖中',
-        soldOut: '已售罄',
+      options: {
+        mode: 'single',
+        i18n: {
+          onSale: '售卖中',
+          soldOut: '已售罄',
+        },
       },
     },
     {
@@ -116,8 +121,10 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       hidable: true,
       dataIndex: 'price',
       component: 'text',
-      mode: 'single',
-      prefix: '￥',
+      options: {
+        mode: 'single',
+        prefix: '￥',
+      },
     },
     {
       key: 'mock_5',
@@ -127,7 +134,9 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       hidable: true,
       dataIndex: 'render',
       component: 'render-html',
-      render: "if (rec.id == 1) {\n  return '<button onclick=\"alert(\\'123\\');\" style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 3px; background: #f6ffed\\\">进行中</button>';\n}\nif (rec.id == 2) {\n  return '<span style=\\\"padding: 2px 4px;color:#999; border: 1px solid #999; border-radius: 3px; background: #f2f2f2\\\">已完成</span>';\n}\nreturn '';",
+      options: {
+        render: "if (rec.id == 1) {\n  return '<button onclick=\"alert(\\'123\\');\" style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 3px; background: #f6ffed\\\">进行中</button>';\n}\nif (rec.id == 2) {\n  return '<span style=\\\"padding: 2px 4px;color:#999; border: 1px solid #999; border-radius: 3px; background: #f2f2f2\\\">已完成</span>';\n}\nreturn '';",
+      },
     },
     {
       key: 'mock_6',
@@ -136,6 +145,9 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       hidable: true,
       dataIndex: 'custom',
       component: 'custom::CustomComponentSample',
+      options: {
+        customSchema: 'custom schema value',
+      },
     },
     {
       key: 'mock_7',
@@ -146,13 +158,15 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
       hidable: true,
       dataIndex: 'operate',
       component: 'link',
-      mode: 'multiple',
-      operates: [
-        { name: 'order', label: '订购', href: './#order', target: '_blank' },
-        { name: 'view', label: '查看', href: './#view' },
-        { name: 'edit', label: '编辑', event: 'edit' },
-        { name: 'remove', label: '删除', event: 'remove' },
-      ],
+      options: {
+        mode: 'multiple',
+        operates: [
+          { name: 'order', label: '订购', href: './#order', target: '_blank' },
+          { name: 'view', label: '查看', href: './#view' },
+          { name: 'edit', label: '编辑', event: 'edit' },
+          { name: 'remove', label: '删除', event: 'remove' },
+        ],
+      },
     },
   ],
   subtable: {
@@ -165,8 +179,10 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
         align: 'center',
         dataIndex: 'name',
         component: 'text',
-        mode: 'single',
-        maxRow: 1,
+        options: {
+          mode: 'single',
+          maxRow: 1,
+        },
       },
       {
         key: 'mock_2',
@@ -175,10 +191,11 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
         hidable: true,
         dataIndex: 'description',
         component: 'text',
-        mode: 'single',
-        tooltip: true,
-        ellipsis: true,
-        maxRow: 3,
+        options: {
+          mode: 'single',
+          ellipsis: true,
+          maxRow: 3,
+        },
       },
       {
         key: 'mock_3',
@@ -193,10 +210,12 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
         ],
         defaultFilteredValue: ['onSale', 'soldOut'],
         component: 'text',
-        mode: 'single',
-        i18n: {
-          onSale: '售卖中',
-          soldOut: '已售罄',
+        options: {
+          mode: 'single',
+          i18n: {
+            onSale: '售卖中',
+            soldOut: '已售罄',
+          },
         },
       },
       {
@@ -206,13 +225,15 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
         hidable: true,
         dataIndex: 'operate',
         component: 'link',
-        mode: 'multiple',
-        operates: [
-          { name: 'order', label: '订购', href: './#order', target: '_blank' },
-          { name: 'view', label: '查看', href: './#view' },
-          { name: 'edit', label: '编辑', event: 'edit' },
-          { name: 'remove', label: '删除', event: 'remove' },
-        ],
+        options: {
+          mode: 'multiple',
+          operates: [
+            { name: 'order', label: '订购', href: './#order', target: '_blank' },
+            { name: 'view', label: '查看', href: './#view' },
+            { name: 'edit', label: '编辑', event: 'edit' },
+            { name: 'remove', label: '删除', event: 'remove' },
+          ],
+        },
       },
     ],
     showHeader: false,
@@ -227,8 +248,10 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
           align: 'center',
           dataIndex: 'name',
           component: 'text',
-          mode: 'single',
-          maxRow: 1,
+          options: {
+            mode: 'single',
+            maxRow: 1,
+          },
         },
         {
           key: 'mock_2',
@@ -237,10 +260,12 @@ export const initSchema: DripTableSchema<CustomComponentSchema, SampleSubtableDa
           hidable: true,
           dataIndex: 'description',
           component: 'text',
-          mode: 'single',
-          tooltip: true,
-          ellipsis: true,
-          maxRow: 3,
+          options: {
+            mode: 'single',
+            tooltip: true,
+            ellipsis: true,
+            maxRow: 3,
+          },
         },
       ],
     },
@@ -264,7 +289,7 @@ export type SampleRecordType = DripTableRecordTypeBase & (
   }
 )
 
-export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, SampleSubtableDataSourceKey>[] = [
+export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, SubtableDataSourceKey>[] = [
   {
     id: 1,
     name: '商品一',

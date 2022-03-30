@@ -7,11 +7,11 @@
  */
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 
-export interface DTCButtonSchema extends DripTableComponentSchema {
+export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   /** 展示模式：单按钮、多按钮 */
   mode?: 'single' | 'multiple';
   label?: string;
@@ -33,24 +33,24 @@ export interface DTCButtonSchema extends DripTableComponentSchema {
     ghost?: boolean;
     icon?: string;
   }[];
-}
+}>;
 
 export interface DTCButtonEvent {
   type: 'drip-button-click';
   payload: string;
 }
 
-interface DTCButtonProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCButtonSchema> { }
+interface DTCButtonProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCButtonColumnSchema> { }
 
 interface DTCButtonState {}
 
 export default class DTCButton<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCButtonProps<RecordType>, DTCButtonState> {
-  public static componentName: 'button' = 'button';
+  public static componentName: DTCButtonColumnSchema['component'] = 'button';
 
   private get configured() {
-    const schema = this.props.schema;
-    if (schema.mode === 'multiple') {
-      if (schema.buttons) {
+    const options = this.props.schema.options;
+    if (options.mode === 'multiple') {
+      if (options.buttons) {
         return true;
       }
       return false;
@@ -71,35 +71,35 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
 
   public render() {
     const Button = this.props.driver.components.Button;
-    const { schema } = this.props;
+    const options = this.props.schema.options;
     if (!this.configured) {
       return <div style={{ color: 'red' }}>属性配置错误</div>;
     }
-    if (schema.mode === 'single') {
+    if (options.mode === 'single') {
       return (
         <Button
-          type={schema.buttonType}
-          size={schema.size}
-          shape={schema.shape}
-          danger={schema.danger}
-          ghost={schema.ghost}
-          icon={schema.icon ? this.getIcon(schema.icon) : void 0}
+          type={options.buttonType}
+          size={options.size}
+          shape={options.shape}
+          danger={options.danger}
+          ghost={options.ghost}
+          icon={options.icon ? this.getIcon(options.icon) : void 0}
           onClick={() => {
             if (this.props.preview) { return; }
-            if (schema.event) {
-              this.props.fireEvent({ type: 'drip-button-click', payload: schema.event });
+            if (options.event) {
+              this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
             }
           }}
         >
-          { schema.label }
+          { options.label }
         </Button>
       );
     }
-    if (schema.mode === 'multiple') {
-      return schema.buttons?.map((config, index) => (
+    if (options.mode === 'multiple') {
+      return options.buttons?.map((config, index) => (
         <Button
           key={index}
-          style={{ marginLeft: schema.margin, marginRight: schema.margin }}
+          style={{ marginLeft: options.margin, marginRight: options.margin }}
           type={config.buttonType}
           size={config.size}
           shape={config.shape}

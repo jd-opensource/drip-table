@@ -8,32 +8,32 @@
 
 import React from 'react';
 
-import { DripTableRecordTypeBase } from '@/types';
+import { DripTableColumnSchema, DripTableRecordTypeBase } from '@/types';
 import RichText from '@/components/rich-text';
 
-import { DripTableComponentProps, DripTableComponentSchema } from '../component';
+import { DripTableComponentProps } from '../component';
 
 const CACHE_RENDERER = new Map<string, Promise<string>>();
 
-export interface DTCRenderHTMLRemoteSchema extends DripTableComponentSchema {
+export type DTCRenderHTMLRemoteColumnSchema = DripTableColumnSchema<'render-html-remote', {
   url: string;
-}
+}>;
 
-interface DTCRenderHTMLRemoteProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRenderHTMLRemoteSchema> { }
+interface DTCRenderHTMLRemoteProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRenderHTMLRemoteColumnSchema> { }
 
 interface DTCRenderHTMLRemoteState {
   render: string;
 }
 
 export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRenderHTMLRemoteProps<RecordType>, DTCRenderHTMLRemoteState> {
-  public static componentName: 'render-html-remote' = 'render-html-remote';
+  public static componentName: DTCRenderHTMLRemoteColumnSchema['component'] = 'render-html-remote';
 
   public state = {
     render: '',
   };
 
   private async fetch() {
-    const url = this.props.schema.url;
+    const url = this.props.schema.options.url;
     if (!CACHE_RENDERER.has(url)) {
       CACHE_RENDERER.set(url, new Promise((resolve, reject) => {
         fetch(url)
@@ -51,7 +51,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
     const promise = CACHE_RENDERER.get(url);
     if (promise) {
       const render = await promise;
-      if (this.props.schema.url === url) {
+      if (this.props.schema.options.url === url) {
         this.setState({ render });
       }
     }
@@ -62,7 +62,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
   }
 
   public componentDidUpdate(prevProps: DTCRenderHTMLRemoteProps<RecordType>) {
-    if (this.props.schema.url !== prevProps.schema.url) {
+    if (this.props.schema.options.url !== prevProps.schema.options.url) {
       this.fetch();
     }
   }

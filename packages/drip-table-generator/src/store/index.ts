@@ -6,13 +6,13 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableComponentSchema, DripTableSchema } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableSchema } from 'drip-table';
 
 import { DripTableComponentAttrConfig } from '@/typing';
 
 import useSharedState from './custom-hook';
 
-export type DripTableColumn<T, P extends DripTableComponentSchema> = (DripTableColumnSchema<T, P> | DripTableBuiltInColumnSchema) & {
+export type DripTableColumn<T, P extends Record<string, unknown>> = (DripTableColumnSchema<T, P> | DripTableBuiltInColumnSchema) & {
   key: string;
   index: number;
   sort: number;
@@ -21,7 +21,7 @@ export type DripTableColumn<T, P extends DripTableComponentSchema> = (DripTableC
   dataIndex: string | string[];
 };
 
-export interface DripTableGeneratorState<T, P extends DripTableComponentSchema> {
+export interface DripTableGeneratorState<T, P extends Record<string, unknown>> {
   isEdit: boolean;
   columns: DripTableColumn<T, P>[];
   currentColumn?: DripTableColumn<T, P>;
@@ -30,7 +30,7 @@ export interface DripTableGeneratorState<T, P extends DripTableComponentSchema> 
   previewDataSource: Record<string, unknown>[];
 }
 
-export const defaultState: () => DripTableGeneratorState<string, never> = () => ({
+export const defaultState: () => DripTableGeneratorState<string, Record<string, unknown>> = () => ({
   isEdit: true,
   /** 生成的列配置 */
   columns: [],
@@ -44,11 +44,11 @@ export const defaultState: () => DripTableGeneratorState<string, never> = () => 
   previewDataSource: [],
 });
 
-export type GlobalStore = [DripTableGeneratorState<string, never>, React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, never>>>];
+export type GlobalStore = [DripTableGeneratorState<string, Record<string, unknown>>, React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, Record<string, unknown>>>>];
 
 export type GlobalStoreObject = {
-  state: DripTableGeneratorState<string, never>;
-  setState: React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, never>>>;
+  state: DripTableGeneratorState<string, Record<string, unknown>>;
+  setState: React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, Record<string, unknown>>>>;
 };
 
 export type GlobalActions = {
@@ -78,7 +78,7 @@ export const globalActions: GlobalActions = {
   },
 };
 
-export const setState = (originState: DripTableGeneratorState<string, never>, states?: DripTableGeneratorState<string, never>) => {
+export const setState = (originState: DripTableGeneratorState<string, Record<string, unknown>>, states?: DripTableGeneratorState<string, Record<string, unknown>>) => {
   if (states) {
     Object.keys(states).forEach((key) => { originState[key] = states[key]; });
   }

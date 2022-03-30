@@ -10,23 +10,78 @@ import React from 'react';
 
 import { type DripTableGenericRenderElement } from '@/components/generic-render';
 
-import { type DripTableBuiltInColumnSchema, type DripTableComponentSchema } from '../drip-table/components';
+import { type DripTableBuiltInColumnSchema } from '../drip-table/components';
 
-export type DripTableColumnSchema<T, C extends DripTableComponentSchema> = {
+export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> {
   /**
    * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    */
   component: T;
   /**
+   * 对应组件类型的配置项
+   */
+  options: P;
+  /**
    * @deprecated 已废弃，请使用 component 属性
    */
   'ui:type'?: T;
-} & C;
+  /**
+   * @deprecated 已废弃，请使用 options 属性
+   */
+  'ui:props'?: P;
+  /**
+   * 唯一标识，不做展示用，React 需要的 key。
+   */
+  key: string;
+  /**
+   * 表头，组件名
+   */
+  title: string;
+  /**
+   * 表格列宽
+   */
+  width?: string | number;
+  /**
+   * 表格列对齐
+   */
+  align?: 'left' | 'center' | 'right';
+  /**
+   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+   */
+  dataIndex: string | string[];
+  /**
+   * 默认数据
+   */
+  default?: unknown;
+  /**
+   * 表头说明
+   */
+  description?: string;
+  /**
+   * 是否固定列
+   */
+  fixed?: 'left' | 'right' | boolean;
+  /**
+   * 用户可控制该列显示隐藏
+   */
+  hidable?: boolean;
+  /**
+   * 数据过滤器设置
+   */
+  filters?: {
+    text: React.ReactNode;
+    value: string | number | boolean;
+  }[];
+  /**
+   * 默认数据过滤器值
+   */
+  defaultFilteredValue?: React.Key[] | null;
+}
 
 export type DripTableID = string | number | undefined;
 
 export interface DripTableSchema<
-  CustomComponentSchema extends DripTableComponentSchema = never,
+  CustomColumnSchema extends DripTableColumnSchema = never,
   SubtableDataSourceKey extends React.Key = never,
 > {
   '$schema': 'http://json-schema.org/draft/2019-09/schema#'
@@ -123,7 +178,7 @@ export interface DripTableSchema<
   /**
    * 列定义
    */
-  columns: (CustomComponentSchema | DripTableBuiltInColumnSchema)[];
+  columns: (CustomColumnSchema | DripTableBuiltInColumnSchema)[];
   /**
    * 表格行主键
    */
@@ -136,7 +191,7 @@ export interface DripTableSchema<
      * 父表获取子表数据源键名
      */
     dataSourceKey: SubtableDataSourceKey;
-  } & Omit<DripTableSchema<CustomComponentSchema, SubtableDataSourceKey>, '$schema'>;
+  } & Omit<DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>, '$schema'>;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
@@ -147,7 +202,7 @@ export type DripTableRecordTypeWithSubtable<
 > = RecordType & { [key in SubtableDataSourceKey]?: RecordType[]; }
 
 export interface DripTableExtraOptions {
-  CustomComponentSchema: DripTableComponentSchema;
+  CustomColumnSchema: DripTableColumnSchema;
   CustomComponentEvent: EventLike;
   CustomComponentExtraData: unknown;
   SubtableDataSourceKey: React.Key;

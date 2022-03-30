@@ -121,7 +121,9 @@ The introduction of each sub-project are as follows:
         title: "Column Title",
         dataIndex: "dataIndexName",
         component: "text",
-        mode: "single",
+        options: {
+          mode: "single",
+        },
       },
     ],
    };

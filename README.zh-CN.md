@@ -121,7 +121,9 @@
         title: "列标题",
         dataIndex: "dataIndexName",
         component: "text",
-        mode: "single",
+        options: {
+          mode: "single",
+        },
       },
     ],
    };

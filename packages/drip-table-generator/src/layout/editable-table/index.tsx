@@ -9,7 +9,7 @@
 import { CloseCircleTwoTone } from '@ant-design/icons';
 import { Empty, Result } from 'antd';
 import classnames from 'classnames';
-import { builtInComponents, DripTableColumnSchema, DripTableComponentSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase } from 'drip-table';
+import { builtInComponents, DripTableDriver, DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
@@ -66,7 +66,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
                 driver={props.driver || DripTableDriverAntDesign}
                 value={value as unknown}
                 data={record}
-                schema={{ ...column, ...(column['ui:props'] || {}) as Record<string, unknown> } as unknown as DripTableColumnSchema<string, DripTableComponentSchema>}
+                schema={column}
                 preview={{}}
               />
             )

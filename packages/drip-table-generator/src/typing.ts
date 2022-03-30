@@ -1,4 +1,4 @@
-import { DripTableComponentSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from 'drip-table';
+import { DripTableColumnSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from 'drip-table';
 import { CSSProperties } from 'react';
 
 import { DripTableGeneratorState } from './store';
@@ -120,7 +120,7 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState<strin
 }
 
 export interface DripTableGeneratorProps<
-CustomComponentSchema extends DripTableComponentSchema = never,
+CustomColumnSchema extends DripTableColumnSchema = never,
 CustomComponentEvent extends EventLike = never,
 CustomComponentExtraData = unknown> {
   style?: CSSProperties;
@@ -133,12 +133,16 @@ CustomComponentExtraData = unknown> {
   dataSource?: DripTableRecordTypeBase[];
   dataFields?: string[];
   mockDataSource?: boolean;
-  schema?: DripTableSchema<CustomComponentSchema>;
-  customComponents?: DripTableProps<DripTableRecordTypeBase, { CustomComponentSchema: CustomComponentSchema; CustomComponentEvent: CustomComponentEvent; CustomComponentExtraData: CustomComponentExtraData }>['components'];
+  schema?: DripTableSchema<CustomColumnSchema>;
+  customComponents?: DripTableProps<DripTableRecordTypeBase, {
+    CustomColumnSchema: CustomColumnSchema;
+    CustomComponentEvent: CustomComponentEvent;
+    CustomComponentExtraData: CustomComponentExtraData;
+  }>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];
   };
   customGlobalConfigPanel?: DTGComponentPropertySchema[];
-  onExportSchema?: (schema: DripTableSchema<CustomComponentSchema>) => void;
+  onExportSchema?: (schema: DripTableSchema<CustomColumnSchema>) => void;
 }

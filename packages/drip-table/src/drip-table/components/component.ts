@@ -6,68 +6,15 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import React from 'react';
-
-import { DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
+import { DripTableColumnSchema, DripTableDriver, DripTableRecordTypeBase, EventLike } from '@/types';
 
 import { DripTableBuiltInComponentEvent } from '.';
 
-export interface DripTableComponentSchema {
-  /**
-   * 唯一标识，不做展示用，React 需要的 key。
-   */
-  key: string;
-  /**
-   * 组件类型
-   */
-  type: string;
-  /**
-   * 表头，组件名
-   */
-  title: string;
-  /**
-   * 表格列宽
-   */
-  width?: string | number;
-  /**
-   * 表格列对齐
-   */
-  align?: 'left' | 'center' | 'right';
-  /**
-   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
-   */
-  dataIndex: string | string[];
-  default?: string;
-  /**
-   * 表头说明
-   */
-  description?: string;
-  /**
-   * 是否固定列
-   */
-  fixed?: 'left' | 'right' | boolean;
-  /**
-   * 用户可控制该列显示隐藏
-   */
-  hidable?: boolean;
-  /**
-   * 数据过滤器设置
-   */
-  filters?: {
-    text: React.ReactNode;
-    value: string | number | boolean;
-  }[];
-  /**
-   * 默认数据过滤器值
-   */
-  defaultFilteredValue?: React.Key[] | null;
-}
-
 export interface DripTableComponentProps<
   RecordType extends DripTableRecordTypeBase,
-  Schema extends DripTableComponentSchema = DripTableComponentSchema,
+  ColumnSchema extends DripTableColumnSchema,
   ComponentEvent extends EventLike = never,
-  CustomComponentExtraData = unknown,
+  ComponentExtraData = unknown,
 > {
   /**
    * 底层渲染驱动
@@ -76,7 +23,7 @@ export interface DripTableComponentProps<
   /**
    * 当前渲染列参数
    */
-  schema: Schema;
+  schema: ColumnSchema;
   /**
    * 当前渲染行数据结构 `list[i]`
    */
@@ -88,7 +35,7 @@ export interface DripTableComponentProps<
   /**
    * 最外层额外透传的数据
    */
-  ext?: CustomComponentExtraData;
+  ext?: ComponentExtraData;
   /**
    * 是否处于预览模式（不响应事件）
    */
@@ -96,7 +43,7 @@ export interface DripTableComponentProps<
     /**
      * 自定义列渲染函数
      */
-    columnRenderer?: (columnSchema: Schema, columnElement: JSX.Element) => JSX.Element;
+    columnRenderer?: (columnSchema: ColumnSchema, columnElement: JSX.Element) => JSX.Element;
   };
   onClick?: (name: string) => void;
   /**
