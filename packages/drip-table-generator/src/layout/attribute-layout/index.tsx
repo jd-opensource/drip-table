@@ -188,13 +188,13 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         dataProps[key] = formData[key];
       }
     });
-    const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.['ui:type']);
+    const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.component);
     return {
       ...filterAttributes(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
-      component: state.currentColumn?.['ui:type'],
+      component: state.currentColumn?.component,
       options: uiProps,
       type: columnConfig ? columnConfig.type : state.currentColumn?.type,
     } as DripTableColumn<string, never>;
@@ -217,12 +217,12 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       primaryKey="$version"
       configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
       data={state.globalConfigs}
-      decodeData={decodeGlobalConfigs}
+      decodeData={decodeGlobalConfigs as unknown as React.ComponentProps<typeof CustomForm>['decodeData']} // TODO: 类型问题，强行转换
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
       theme={props.driver}
       onChange={(data) => {
-        state.globalConfigs = { ...data };
+        state.globalConfigs = { ...data } as unknown as typeof state.globalConfigs; // TODO: 类型问题，强行转换
         globalActions.updateGlobalConfig(store);
       }}
     />
@@ -237,7 +237,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         />
       );
     }
-    const columnConfig = getComponents().find(schema => schema['ui:type'] === state.currentColumn?.['ui:type']);
+    const columnConfig = getComponents().find(schema => schema['ui:type'] === state.currentColumn?.component);
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {
@@ -266,7 +266,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       <CustomForm<DripTableColumn<string, never>>
         primaryKey="key"
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
-        data={state.currentColumn}
+        data={state.currentColumn as unknown as DripTableColumn<string, never>} // TODO: 类型问题，强行转换
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props']}
         groupType={formDisplayMode}

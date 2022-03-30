@@ -29,7 +29,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
-  const previewComponentRender = (column: DripTableColumn<string, never>) => {
+  const previewComponentRender = (column: DripTableColumn<string, Record<string, unknown>>) => {
     const [libName, componentName] = column.component.includes('::') ? column.component.split('::') : ['', column.component];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
@@ -76,7 +76,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     );
   };
 
-  const renderTableCell = (col: DripTableColumn<string, never>) => {
+  const renderTableCell = (col: DripTableColumn<string, Record<string, unknown>>) => {
     const isCurrent = state.currentColumn && state.currentColumn.index === col.index;
     let width = String(col.width).trim() || '120';
     if ((/^[0-9]+$/gui).test(width)) {
@@ -119,21 +119,21 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   return (
     <div style={{ padding: '12px 0 12px 12px', overflowX: 'auto' }}>
       {
-         state.columns && state.columns.length > 0
-           ? (
-             <Draggable<DripTableColumn<string, never>>
-               value={(state.columns || [])}
-               codeKey="sort"
-               style={{ position: 'relative' }}
-               onChange={(data) => {
-                 state.columns = [...data];
-                 globalActions.editColumns(store);
-               }}
-               render={renderTableCell}
-             />
-           )
-           : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无表格配置" />
-       }
+        state.columns && state.columns.length > 0
+          ? (
+            <Draggable<DripTableColumn<string, Record<string, unknown>>>
+              value={(state.columns || [])}
+              codeKey="sort"
+              style={{ position: 'relative' }}
+              onChange={(data) => {
+                state.columns = [...data];
+                globalActions.editColumns(store);
+              }}
+              render={renderTableCell}
+            />
+          )
+          : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无表格配置" />
+      }
     </div>
   );
 };

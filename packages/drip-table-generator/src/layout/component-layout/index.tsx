@@ -61,7 +61,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
     <div
       className={styles['component-container']}
       onClick={() => {
-        const columnSchema = {
+        const columnSchema: DripTableColumn<string, Record<string, unknown>> & Record<string, unknown> = {
           key: `${item['ui:type']}_${mockId()}`,
           dataIndex: '',
           title: item.title,
@@ -69,27 +69,26 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
           width: void 0,
           description: '',
           component: item['ui:type'],
-          'ui:type': item['ui:type'],
-          'ui:props': {},
+          options: {},
           type: item.type || 'null',
           render: '',
+          index: state.columns.length + 1,
+          sort: state.columns.length + 1,
         };
         item.attrSchema.forEach((schema) => {
           if (typeof schema.default !== 'undefined') {
             if (schema.name.startsWith('ui:props')) {
               const key = schema.name.replace('ui:props.', '');
-              if (!columnSchema['ui:props']) { columnSchema['ui:props'] = {}; }
-              columnSchema['ui:props'][key] = schema.default;
+              if (!columnSchema.options) {
+                columnSchema.options = {};
+              }
+              columnSchema.options[key] = schema.default;
             } else {
               columnSchema[schema.name] = schema.default;
             }
           }
         });
-        state.columns.push({
-          ...columnSchema,
-          index: state.columns.length + 1,
-          sort: state.columns.length + 1,
-        } as DripTableColumn<string, never>);
+        state.columns.push(columnSchema);
         globalActions.editColumns(store);
       }}
     >

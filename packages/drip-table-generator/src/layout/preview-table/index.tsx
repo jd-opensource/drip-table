@@ -25,7 +25,7 @@ const PreviewTable = (props: Props & { store: GlobalStore }) => {
   const schema: DripTableSchema = {
     $schema: 'http://json-schema.org/draft/2019-09/schema#',
     ...state.globalConfigs,
-    columns: state.columns,
+    columns: state.columns as unknown as DripTableSchema['columns'], // TODO: 类型问题，强行转换
   };
   const totalPage = state.globalConfigs?.pagination && state.globalConfigs?.pagination.pageSize ? state.previewDataSource.length : 1;
   return (

@@ -15,7 +15,7 @@ import { filterAttributes } from './utils';
 import styles from './index.module.less';
 
 export type GeneratorWrapperHandler = {
-  getState: () => DripTableGeneratorState<string, never>;
+  getState: () => DripTableGeneratorState<string, Record<string, unknown>>;
 }
 
 const Wrapper = (props: DripTableGeneratorProps & {
@@ -39,7 +39,7 @@ const Wrapper = (props: DripTableGeneratorProps & {
     initialData.globalConfigs = filterAttributes(schema, 'columns');
     initialData.columns = schema.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
   }
-  const originState: DripTableGeneratorState<string, never> = props.store ? props.store[0] : defaultState();
+  const originState: DripTableGeneratorState<string, Record<string, unknown>> = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });
   const store = useState(originState);
   const [state] = store;

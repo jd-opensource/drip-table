@@ -7,7 +7,7 @@
  */
 
 import { Button, Input, message, Modal } from 'antd';
-import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableSchema } from 'drip-table';
 import React, { useState } from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -26,7 +26,7 @@ const ToolLayout = (props: { store: GlobalStore }) => {
   const getSchemaValue = (): DripTableSchema => ({
     $schema: 'http://json-schema.org/draft/2019-09/schema#',
     ...filterAttributes(state.globalConfigs, '$version'),
-    columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableColumnSchema<string, never>[],
+    columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableBuiltInColumnSchema[],
   });
 
   /**

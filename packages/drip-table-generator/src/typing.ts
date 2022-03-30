@@ -103,7 +103,7 @@ export interface DripTableComponentAttrConfig {
   icon?: React.ReactSVG | string;
 }
 
-export interface DripTableGeneratorHandler extends DripTableGeneratorState<string, never> {
+export interface DripTableGeneratorHandler extends DripTableGeneratorState<string, Record<string, unknown>> {
   /**
    * 通过接口获取配置
    *
