@@ -440,9 +440,12 @@ const DripTable = <
                       <DripTableProvider>
                         <DripTable<RecordType, ExtraOptions>
                           driver={props.driver}
-                          schema={{
-                            ...subtable,
-                          }}
+                          schema={
+                            Object.fromEntries(
+                              Object.entries(subtable)
+                                .filter(([key]) => key !== 'dataSourceKey'),
+                            ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>
+                          }
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
                           components={props.components}
                           slots={props.slots}
