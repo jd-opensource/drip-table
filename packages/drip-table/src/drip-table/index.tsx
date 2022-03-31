@@ -387,6 +387,8 @@ const DripTable = <
   };
 
   const tableProps: DripTableDriverTableProps<RecordType> = {
+    className: props.schema.innerClassName,
+    style: props.schema.innerStyle,
     rowKey: props.schema.rowKey ?? 'key',
     columns: React.useMemo(
       () => props.schema.columns
@@ -565,8 +567,8 @@ const DripTable = <
   return (
     <ErrorBoundary driver={props.driver}>
       <div
-        className={classnames(props.className)}
-        style={props.style}
+        className={classnames(props.className, props.schema.className)}
+        style={Object.assign({}, props.style, props.schema.style)}
         ref={rootRef}
       >
         {

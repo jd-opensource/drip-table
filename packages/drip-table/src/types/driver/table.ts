@@ -9,6 +9,8 @@
 import { DripTableFilters, DripTablePagination, DripTableRecordTypeBase } from '@/types';
 
 export interface DripTableDriverTableProps<RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase> {
+  className?: string;
+  style?: React.CSSProperties;
   rowKey?: string;
   columns?: {
     width?: string | number;

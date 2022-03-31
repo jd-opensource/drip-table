@@ -91,6 +91,22 @@ export interface DripTableSchema<
    */
   id?: DripTableID;
   /**
+   * 自定义表格类名
+   */
+  className?: string;
+  /**
+   * 自定义表格样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * 内部表格组件类名
+   */
+  innerClassName?: string;
+  /**
+   * 内部表格组件样式
+   */
+  innerStyle?: React.CSSProperties;
+  /**
    * 是否展示表格边框
    */
   bordered?: boolean;
