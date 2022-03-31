@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import ErrorBoundary from '@/components/error-boundary';
 import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps } from '../component';
@@ -39,7 +40,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
           <div>{ Object.prototype.toString.call(html) }</div>
         );
       }
-      return <RichText html={html || ''} />;
+      return <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>;
     } catch (error) {
       console.error(error);
     }
