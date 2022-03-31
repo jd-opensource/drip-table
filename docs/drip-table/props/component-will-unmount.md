@@ -1,7 +1,7 @@
 # componentWillUnmount
 
 - 描述：生命周期：组件即将卸载
-- 类型：`() => void`
+- 类型：`(currentTable: DripTableTableInformation<RecordType>) => void`
 - 默认值：`undefined`
 
 ```jsx

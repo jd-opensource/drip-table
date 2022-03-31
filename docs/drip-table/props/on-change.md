@@ -1,7 +1,18 @@
 # onChange
 
 - 描述：过滤器、分页器 等配置变化
-- 类型：`(pagination: DripTablePagination, filters: DripTableFilters) => void`
+- 类型：
+
+```typescript
+type OnChange = (
+  options: {
+    pagination: DripTablePagination;
+    filters: DripTableFilters;
+  },
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

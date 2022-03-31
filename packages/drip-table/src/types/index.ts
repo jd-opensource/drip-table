@@ -222,6 +222,11 @@ export interface DripTableExtraOptions {
   SubtableDataSourceKey: React.Key;
 }
 
+export interface DripTableTableInformation<RecordType extends DripTableRecordTypeBase> {
+  id: DripTableID;
+  dataSource: readonly RecordType[];
+}
+
 export interface DripTablePagination {
   onChange?: (page: number, pageSize?: number) => void;
   size?: 'small' | 'default';

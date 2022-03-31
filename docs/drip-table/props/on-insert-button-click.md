@@ -1,7 +1,15 @@
 # onInsertButtonClick
 
 - 描述：点击添加按钮触发
-- 类型：`(event: React.MouseEvent<HTMLElement, MouseEvent>) => void`
+- 类型：
+
+```typescript
+type OnInsertButtonClick = (
+  event: React.MouseEvent<HTMLElement, MouseEvent>,
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

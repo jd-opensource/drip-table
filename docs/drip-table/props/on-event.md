@@ -1,7 +1,17 @@
 # onEvent
 
 - 描述：通用事件机制
-- 类型：`(event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>, record: RecordType, index: number) => void`
+- 类型：
+
+```typescript
+type OnEvent = (
+  event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
+  record: RecordType,
+  index: number,
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

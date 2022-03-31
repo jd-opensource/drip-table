@@ -1,7 +1,7 @@
 # componentDidMount
 
 - 描述：生命周期：组件加载完成
-- 类型：`() => void`
+- 类型：`(currentTable: DripTableTableInformation<RecordType>) => void`
 - 默认值：`undefined`
 
 ```jsx

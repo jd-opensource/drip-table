@@ -1,7 +1,15 @@
 # onSearch
 
 - 描述：搜索触发
-- 类型：`(searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>) => void`
+- 类型：
+
+```typescript
+type OnSearch = (
+  searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>,
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

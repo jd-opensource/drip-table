@@ -1,7 +1,16 @@
 # onRowClick
 
 - 描述：点击行
-- 类型：`(record: RecordType | RecordType[], index?: number | string | (number | string)[]) => void`
+- 类型：
+
+```typescript
+type OnRowClick = (
+  record: RecordType | RecordType[],
+  index: number | string | (number | string)[],
+  parentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

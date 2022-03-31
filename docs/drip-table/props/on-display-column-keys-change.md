@@ -1,7 +1,15 @@
 # onDisplayColumnKeysChange
 
 - 描述：用户修改展示的列时，配合 [`schema.columns.hidable`](/drip-table/props/schema/columns/hidable) 使用。
-- 类型：`(displayColumnKeys: React.Key[]) => void`
+- 类型：
+
+```typescript
+type OnDisplayColumnKeysChange = (
+  displayColumnKeys: React.Key[],
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

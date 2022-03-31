@@ -13,12 +13,12 @@ import {
   type DripTableDriver,
   type DripTableExtraOptions,
   type DripTableFilters,
-  type DripTableID,
   type DripTablePagination,
   type DripTableReactComponentProps,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type DripTableSchema,
+  type DripTableTableInformation,
   type SchemaObject,
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
@@ -130,14 +130,8 @@ export interface DripTableProps<
   subtableTitle?: (
     record: RecordType,
     recordIndex: number,
-    parentTable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
-    subtable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
+    parentTable: DripTableTableInformation<RecordType>,
+    subtable: DripTableTableInformation<RecordType>,
   ) => React.ReactNode;
   /**
    * 子表底部自定义渲染函数
@@ -145,24 +139,15 @@ export interface DripTableProps<
   subtableFooter?: (
     record: RecordType,
     recordIndex: number,
-    parentTable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
-    subtable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
+    parentTable: DripTableTableInformation<RecordType>,
+    subtable: DripTableTableInformation<RecordType>,
   ) => React.ReactNode;
   /**
    * 获取指定行是否可展开
    */
   rowExpandable?: (
     record: RecordType,
-    parentTable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
+    parentTable: DripTableTableInformation<RecordType>,
   ) => boolean;
   /**
    * 行展开自定义渲染函数
@@ -170,55 +155,99 @@ export interface DripTableProps<
   expandedRowRender?: (
     record: RecordType,
     index: number,
-    parentTable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
+    parentTable: DripTableTableInformation<RecordType>,
   ) => React.ReactNode;
-  /** 生命周期 */
-  componentDidMount?: () => void;
-  componentDidUpdate?: () => void;
-  componentWillUnmount?: () => void;
+  /**
+   * 生命周期：组件加载完成
+   */
+  componentDidMount?: (currentTable: DripTableTableInformation<RecordType>) => void;
+  /**
+   * 生命周期：组件更新完成
+   */
+  componentDidUpdate?: (currentTable: DripTableTableInformation<RecordType>) => void;
+  /**
+   * 生命周期：组件即将卸载
+   */
+  componentWillUnmount?: (currentTable: DripTableTableInformation<RecordType>) => void;
   /**
    * 点击行
    */
-  onRowClick?: (record: RecordType | RecordType[], index?: number | string | (number | string)[]) => void;
+  onRowClick?: (
+    record: RecordType | RecordType[],
+    index: number | string | (number | string)[],
+    parentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 双击行
    */
-  onRowDoubleClick?: (record: RecordType | RecordType[], index?: number | string | (number | string)[]) => void;
+  onRowDoubleClick?: (
+    record: RecordType | RecordType[],
+    index: number | string | (number | string)[],
+    parentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 选择行变化
    */
-  onSelectionChange?: (selectedKeys: React.Key[], selectedRows: RecordType[]) => void;
+  onSelectionChange?: (
+    selectedKeys: React.Key[],
+    selectedRows: RecordType[],
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 搜索触发
    */
-  onSearch?: (searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>) => void;
+  onSearch?: (
+    searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>,
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 点击添加按钮触发
    */
-  onInsertButtonClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onInsertButtonClick?: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 过滤器触发
    */
-  onFilterChange?: (filters: DripTableFilters) => void;
+  onFilterChange?: (
+    filters: DripTableFilters,
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 页码/页大小变化
    */
-  onPageChange?: (currentPage: number, pageSize: number) => void;
+  onPageChange?: (
+    currentPage: number,
+    pageSize: number,
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 过滤器、分页器 等配置变化
    */
-  onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
+  onChange?: (
+    options: {
+      pagination: DripTablePagination;
+      filters: DripTableFilters;
+    },
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 用户修改展示的列时
    */
-  onDisplayColumnKeysChange?: (displayColumnKeys: React.Key[]) => void;
+  onDisplayColumnKeysChange?: (
+    displayColumnKeys: React.Key[],
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
   /**
    * 通用事件机制
    */
-  onEvent?: (event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>, record: RecordType, index: number) => void;
+  onEvent?: (
+    event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
+    record: RecordType,
+    index: number,
+    currentTable: DripTableTableInformation<RecordType>,
+  ) => void;
 }
 
 const DripTable = <
@@ -273,6 +302,8 @@ const DripTable = <
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
+  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType> => ({ id: props.schema.id, dataSource: props.dataSource }), [props.schema.id, props.dataSource]);
+
   React.useEffect(() => {
     setTableState(state => ({
       pagination: {
@@ -314,7 +345,7 @@ const DripTable = <
             value={value}
             data={record}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
-            fireEvent={event => props.onEvent?.(event, record, index)}
+            fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
           />
         );
       }
@@ -339,7 +370,7 @@ const DripTable = <
               data={record}
               schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={props.ext}
-              fireEvent={event => props.onEvent?.(event, record, index)}
+              fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
             />
           );
         }
@@ -441,7 +472,7 @@ const DripTable = <
                     ? (
                       <DripTableProvider>
                         <DripTable<RecordType, ExtraOptions>
-                          driver={props.driver}
+                          {...props}
                           schema={
                             Object.fromEntries(
                               Object.entries(subtable)
@@ -449,16 +480,12 @@ const DripTable = <
                             ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>
                           }
                           dataSource={record[subtable.dataSourceKey] as RecordType[]}
-                          components={props.components}
-                          slots={props.slots}
-                          ajv={props.ajv}
-                          ext={props.ext}
                           title={
                             props.subtableTitle
                               ? subtableData => props.subtableTitle?.(
                                 record,
                                 index,
-                                { id: props.schema.id, dataSource: props.dataSource },
+                                tableInfo,
                                 { id: subtable.id, dataSource: subtableData },
                               )
                               : void 0
@@ -468,25 +495,21 @@ const DripTable = <
                               ? subtableData => props.subtableFooter?.(
                                 record,
                                 index,
-                                { id: props.schema.id, dataSource: props.dataSource },
+                                tableInfo,
                                 { id: subtable.id, dataSource: subtableData },
                               )
                               : void 0
                           }
-                          subtableTitle={props.subtableTitle}
-                          subtableFooter={props.subtableFooter}
-                          rowExpandable={props.rowExpandable}
-                          expandedRowRender={props.expandedRowRender}
                         />
                       </DripTableProvider>
                     )
                     : void 0
                 }
-                { expandedRowRender?.(record, index, { id: props.schema.id, dataSource: props.dataSource }) }
+                { expandedRowRender?.(record, index, tableInfo) }
               </React.Fragment>
             ),
             rowExpandable: (record) => {
-              if (rowExpandable?.(record, { id: props.schema.id, dataSource: props.dataSource })) {
+              if (rowExpandable?.(record, tableInfo)) {
                 return true;
               }
               if (subtable) {
@@ -506,7 +529,7 @@ const DripTable = <
         selectedRowKeys: props.selectedRowKeys || tableState.selectedRowKeys,
         onChange: (selectedKeys, selectedRows) => {
           setTableState({ selectedRowKeys: [...selectedKeys] });
-          props.onSelectionChange?.(selectedKeys, selectedRows);
+          props.onSelectionChange?.(selectedKeys, selectedRows, tableInfo);
         },
       }
       : void 0,
@@ -514,9 +537,9 @@ const DripTable = <
       const current = pagination.current ?? tableState.pagination.current;
       const pageSize = pagination.pageSize ?? tableState.pagination.pageSize;
       setTableState({ pagination: { ...tableState.pagination, current, pageSize }, filters });
-      props.onFilterChange?.(filters);
-      props.onPageChange?.(current, pageSize);
-      props.onChange?.(pagination, filters);
+      props.onFilterChange?.(filters, tableInfo);
+      props.onPageChange?.(current, pageSize, tableInfo);
+      props.onChange?.({ pagination, filters }, tableInfo);
     },
   };
 

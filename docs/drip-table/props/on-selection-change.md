@@ -1,7 +1,16 @@
 # onSelectionChange
 
 - 描述：选择行变化，配合 [`rowSelection`](/drip-table/props/schema/row-selection) 使用
-- 类型：`(selectedKeys: React.Key[], selectedRows: RecordType[]) => void`
+- 类型：
+
+```typescript
+type OnSelectionChange = (
+  selectedKeys: React.Key[],
+  selectedRows: RecordType[],
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

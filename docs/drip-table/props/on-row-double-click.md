@@ -1,7 +1,16 @@
 # onRowDoubleClick
 
 - 描述：双击行
-- 类型：`(record: RecordType | RecordType[], index?: number | string | (number | string)[]) => void`
+- 类型：
+
+```typescript
+type OnRowDoubleClick = (
+  record: RecordType | RecordType[],
+  index: number | string | (number | string)[],
+  parentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx

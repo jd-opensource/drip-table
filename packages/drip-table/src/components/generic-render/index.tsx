@@ -14,6 +14,7 @@ import {
   type DripTableExtraOptions,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
+  DripTableTableInformation,
 } from '@/types';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
@@ -204,6 +205,7 @@ const GenericRender = <
 
   const [searchStr, setSearchStr] = React.useState('');
   const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
+  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType> => ({ id: tableProps.schema.id, dataSource: tableProps.dataSource }), [tableProps.schema.id, tableProps.dataSource]);
 
   const renderColumnContent = (config: DripTableGenericRenderElement) => {
     if (config.type === 'spacer') {
@@ -238,7 +240,7 @@ const GenericRender = <
             size={config.searchButtonSize}
             value={searchStr}
             onChange={e => setSearchStr(e.target.value.trim())}
-            onSearch={(value) => { tableProps.onSearch?.({ searchKey, searchStr: value }); }}
+            onSearch={(value) => { tableProps.onSearch?.({ searchKey, searchStr: value }, tableInfo); }}
           />
         </div>
       );
@@ -255,7 +257,7 @@ const GenericRender = <
             driver={tableProps.driver}
             schema={tableProps.schema}
             dataSource={tableProps.dataSource}
-            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams); }}
+            onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
           />
         );
       }
@@ -269,7 +271,7 @@ const GenericRender = <
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
-          onClick={tableProps.onInsertButtonClick}
+          onClick={e => tableProps.onInsertButtonClick?.(e, tableInfo)}
         >
           { config.insertButtonText }
         </Button>
@@ -289,7 +291,7 @@ const GenericRender = <
               if (!state.displayColumnKeys.includes(e.key)) {
                 displayColumnKeys.push(e.key);
               }
-              tableProps.onDisplayColumnKeysChange?.(displayColumnKeys);
+              tableProps.onDisplayColumnKeysChange?.(displayColumnKeys, tableInfo);
               return { displayColumnKeys };
             });
           }}

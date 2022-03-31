@@ -2,6 +2,15 @@
 
 - 描述：页码/页大小变化
 - 类型：`(currentPage: number, pageSize: number) => void`
+
+```typescript
+type OnPageChange = (
+  currentPage: number,
+  pageSize: number,
+  currentTable: DripTableTableInformation<RecordType>,
+) => void;
+```
+
 - 默认值：`undefined`
 
 ```jsx
