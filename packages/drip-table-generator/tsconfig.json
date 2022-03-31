@@ -16,7 +16,7 @@
     "importHelpers": true,
     "listFiles": true,
     "noEmit": false,
-    "removeComments": true,
+    "removeComments": false,
     "noImplicitThis": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
