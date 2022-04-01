@@ -319,6 +319,17 @@ const DripTable = <
     }));
   }, [props.displayColumnKeys]);
 
+  React.useEffect(() => {
+    props.componentDidMount?.(tableInfo);
+    return () => {
+      props.componentWillUnmount?.(tableInfo);
+    };
+  });
+
+  React.useEffect(() => {
+    props.componentDidUpdate?.(tableInfo);
+  }, [props]);
+
   /**
    * 根据组件类型，生成表格渲染器
    * @param schema Schema
