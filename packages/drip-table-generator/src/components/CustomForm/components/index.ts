@@ -6,6 +6,10 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { DripTableDriver } from 'drip-table';
+
+import { DTGComponentPropertySchema } from '@/typing';
+
 import ArrayComponent from './array-list';
 import AutoComplete from './auto-complete';
 import CascadeComponent from './cascade';
@@ -33,3 +37,11 @@ export default {
   [ArrayComponent.componentName]: ArrayComponent,
   [ColorPicker.componentName]: ColorPicker,
 };
+
+export interface DTGComponentBaseProperty<T> {
+  schema: DTGComponentPropertySchema;
+  theme?: DripTableDriver;
+  value?: T;
+  onChange?: (value: T) => void;
+  onValidate?: (errorMessage: string) => void;
+}

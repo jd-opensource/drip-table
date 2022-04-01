@@ -61,17 +61,14 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
     <div
       className={styles['component-container']}
       onClick={() => {
-        const columnSchema: DripTableColumn<string, Record<string, unknown>> & Record<string, unknown> = {
+        const columnSchema: DripTableColumn = {
           key: `${item['ui:type']}_${mockId()}`,
           dataIndex: '',
           title: item.title,
-          group: '',
           width: void 0,
           description: '',
           component: item['ui:type'],
           options: {},
-          type: item.type || 'null',
-          render: '',
           index: state.columns.length + 1,
           sort: state.columns.length + 1,
         };

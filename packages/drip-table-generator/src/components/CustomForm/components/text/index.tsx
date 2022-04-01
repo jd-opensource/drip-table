@@ -8,13 +8,11 @@
 import { Input } from 'antd';
 import React from 'react';
 
-import { DTGComponentPropertySchema, StringDataSchema } from '@/typing';
+import { StringDataSchema } from '@/typing';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
-  onValidate?: (errorMessage: string) => void;
+import { DTGComponentBaseProperty } from '..';
+
+interface Props extends DTGComponentBaseProperty<string> {
 }
 
 const TextArea = Input.TextArea;

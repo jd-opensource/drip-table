@@ -8,16 +8,11 @@
 import { Cascader as Cascade } from 'antd';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
 type CascadeProps = React.ComponentProps<typeof Cascade>;
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: CascadeProps['value'];
-  onChange?: (value: CascadeProps['value']) => void;
-  onValidate?: (errorMessage: string) => void;
-}
+interface Props extends DTGComponentBaseProperty<CascadeProps['value']> {}
 
 export default class CascadeComponent extends React.PureComponent<Props> {
   public static componentName = 'cascade';

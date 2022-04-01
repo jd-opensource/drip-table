@@ -8,13 +8,9 @@
 import { Switch } from 'antd';
 import React, { ReactNode } from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: string | number | boolean;
-  onChange?: (value: string | number | boolean) => void;
-  onValidate?: (errorMessage: string) => void;
+interface Props extends DTGComponentBaseProperty<string | number | boolean> {
 }
 
 export default class SwitchComponent extends React.PureComponent<Props> {

@@ -7,18 +7,13 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { AutoComplete, Popover, Select } from 'antd';
-import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
-import { DTGComponentPropertySchema, StringDataSchema } from '@/typing';
+import { StringDataSchema } from '@/typing';
 
-interface Props {
-  theme?: DripTableDriver;
-  schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
-  onValidate?: (errorMessage: string) => void;
-}
+import { DTGComponentBaseProperty } from '..';
+
+interface Props extends DTGComponentBaseProperty<string> {}
 
 type LabeledValue = React.ComponentProps<typeof Select>['options'];
 

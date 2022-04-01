@@ -8,13 +8,9 @@
 import { InputNumber } from 'antd';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: number;
-  onChange?: (value: number) => void;
-  onValidate?: (errorMessage: string) => void;
+interface Props extends DTGComponentBaseProperty<number> {
 }
 
 export default class InputNumberComponent extends React.PureComponent<Props> {

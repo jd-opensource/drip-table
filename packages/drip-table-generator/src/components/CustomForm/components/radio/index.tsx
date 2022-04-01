@@ -10,7 +10,8 @@ import { Popover, Radio } from 'antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
-import { DTGComponentPropertySchema } from '@/typing';
+
+import { DTGComponentBaseProperty } from '..';
 
 const RadioGroup = Radio.Group;
 
@@ -18,11 +19,7 @@ const RadioGroup = Radio.Group;
  type RadioValueType = RadioGroupProps['value'];
  type RadioOptionType = NonNullable<RadioGroupProps['options']>[number] & { description?: string };
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: RadioValueType;
-  onChange?: (value: RadioValueType) => void;
-  onValidate?: (errorMessage: string) => void;
+interface Props extends DTGComponentBaseProperty<RadioValueType> {
 }
 
 export default class RadioComponent extends React.PureComponent<Props> {

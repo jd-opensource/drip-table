@@ -6,13 +6,12 @@ import React from 'react';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
+import { DTGComponentBaseProperty } from '..';
+
 import styles from './index.module.less';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
+interface Props extends DTGComponentBaseProperty<Record<string, unknown>[]> {
   fieldOptions?: { label: string; value: string }[];
-  value?: Record<string, unknown>[];
-  onChange?: (value: Record<string, unknown>[]) => void;
 }
 
 export default class ArrayComponent extends React.PureComponent<Props> {
@@ -53,6 +52,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
           style={{ width: '100%' }}
           defaultValue={schema.default as string}
           value={currentValue[schema.name] as string}
+          placeholder={schema['ui:props']?.placeholder as string}
           onChange={e => this.changeColumnItem(schema.name, e.target.value, parentIndex)}
         />
       );
@@ -64,6 +64,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
           autoSize={schema['ui:autoSize']}
           defaultValue={schema.default as string}
           value={currentValue[schema.name] as string}
+          placeholder={schema['ui:props']?.placeholder as string}
           onChange={e => this.changeColumnItem(schema.name, e.target.value, parentIndex)}
         />
       );
@@ -114,6 +115,17 @@ export default class ArrayComponent extends React.PureComponent<Props> {
           value={formattedValue as SelectValue}
           options={options}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
+        />
+      );
+    }
+    if (schema['ui:type'] === 'array-list') {
+      return (
+        <ArrayComponent
+          theme={this.props.theme}
+          schema={schema}
+          value={currentValue[schema.name] as Record<string, unknown>[] | undefined}
+          onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
+          onValidate={msg => this.props.onValidate?.(msg)}
         />
       );
     }

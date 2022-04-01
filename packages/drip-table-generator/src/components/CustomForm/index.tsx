@@ -16,7 +16,7 @@ import React, { Component } from 'react';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
-import BuiltInComponents from './components';
+import BuiltInComponents, { DTGComponentBaseProperty } from './components';
 
 interface CustomComponentProps {
   schema: DTGComponentPropertySchema;
@@ -154,20 +154,20 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         />
       );
     }
-    const BuiltInComponent = BuiltInComponents[config['ui:type']] as unknown as React.JSXElementConstructor<Record<string, unknown>>; // TODO: 基础组件 Props 类型应该抽离出来作为子组件 Props 的基类
+    const BuiltInComponent = BuiltInComponents[config['ui:type']] as React.JSXElementConstructor<DTGComponentBaseProperty<unknown>>;
     if (BuiltInComponent) {
       return (
         <BuiltInComponent
           theme={this.props.theme}
           schema={config}
-          value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
+          value={formValues[config.name]}
           onChange={(value) => {
             formValues[config.name] = value;
             this.setState({ formValues }, () => {
               this.changeData();
             });
           }}
-          onValidate={(msg: string) => {
+          onValidate={(msg) => {
             helpMsg[config.name] = msg || '';
             this.setState({ helpMsg });
           }}

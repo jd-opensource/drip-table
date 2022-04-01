@@ -9,7 +9,7 @@
 import { CloseCircleTwoTone } from '@ant-design/icons';
 import { Empty, Result } from 'antd';
 import classnames from 'classnames';
-import { builtInComponents, DripTableDriver, DripTableProps, DripTableRecordTypeBase } from 'drip-table';
+import { builtInComponents, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
@@ -22,15 +22,15 @@ import styles from './index.module.less';
 type ResultProps = React.ComponentProps<typeof Result>;
 interface Props {
   driver: DripTableDriver;
-  customComponents: DripTableProps<DripTableRecordTypeBase>['components'] | undefined;
+  customComponents: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>['components'];
 }
 
 const EditableTable = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
-  const previewComponentRender = (column: DripTableColumn<string, Record<string, unknown>>) => {
-    const [libName, componentName] = column.component.includes('::') ? column.component.split('::') : ['', column.component];
+  const previewComponentRender = (column: DripTableColumn) => {
+    const [libName, componentName] = column.component?.includes('::') ? column.component.split('::') : ['', column.component];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
     const record = state.previewDataSource?.[0] || {} as Record<string, unknown>;
@@ -76,7 +76,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     );
   };
 
-  const renderTableCell = (col: DripTableColumn<string, Record<string, unknown>>) => {
+  const renderTableCell = (col: DripTableColumn) => {
     const isCurrent = state.currentColumn && state.currentColumn.index === col.index;
     let width = String(col.width).trim() || '120';
     if ((/^[0-9]+$/gui).test(width)) {
@@ -121,7 +121,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
       {
         state.columns && state.columns.length > 0
           ? (
-            <Draggable<DripTableColumn<string, Record<string, unknown>>>
+            <Draggable<DripTableColumn>
               value={(state.columns || [])}
               codeKey="sort"
               style={{ position: 'relative' }}

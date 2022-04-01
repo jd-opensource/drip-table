@@ -8,12 +8,12 @@
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
-import { DripTableDriver, DripTableGenericRenderElement, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableGenericRenderElement } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
-import { filterAttributes } from '@/utils';
-import { DripTableColumn, globalActions, GlobalStore } from '@/store';
+import { filterAttributes, filterAttributesByRegExp } from '@/utils';
+import { DripTableColumn, globalActions, GlobalSchema, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
 import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
@@ -24,20 +24,15 @@ import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
 
-type GlobalSchema = Omit<DripTableSchema<DripTableColumn<string, never>>, 'columns'>;
-
-type ButtonType = 'link' | 'text' | 'ghost' | 'primary' | 'dashed' | 'default';
-type FlexJustifyContent = 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around';
-type LabeledValue = {
-  label: string;
-  value: string | number;
-}[];
 interface Props {
   customComponentPanel: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];
   } | undefined;
-  customGlobalConfigPanel: DTGComponentPropertySchema[] | undefined;
+  customGlobalConfigPanel: {
+    mode: 'add' | 'replace';
+    configs: DTGComponentPropertySchema[];
+  } | undefined;
   driver: DripTableDriver;
 }
 
@@ -73,84 +68,63 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     return [...componentsToUse];
   };
 
-  const decodeGlobalConfigs = (globalConfigs?: Omit<DripTableSchema, 'columns'>) => {
+  /**
+   * 将全局配置转换成FormData
+   * @param {GlobalSchema} globalConfigs 全局配置
+   * @returns {Record<string, unknown>} 表单数据
+   */
+  const decodeGlobalConfigs = (globalConfigs?: GlobalSchema) => {
     const formData: Record<string, unknown> = { ...filterAttributes(globalConfigs, 'header') };
     if (typeof globalConfigs?.header === 'object') {
       formData.header = true;
       const headerElements = globalConfigs?.header?.elements || [];
       for (const headerItem of headerElements) {
-        if (headerItem.type === 'display-column-selector') {
-          formData['header.displayColumnSelector'] = true;
-          formData['header.displayColumnSelector.selectorButtonType'] = headerItem.selectorButtonType;
-          formData['header.displayColumnSelector.selectorButtonText'] = headerItem.selectorButtonText;
-        }
-        if (headerItem.type === 'text') {
-          formData['header.title'] = true;
-          formData['header.title.align'] = headerItem.align;
-          formData['header.title.text'] = headerItem.text;
+        if (headerItem.type === 'spacer') {
+          headerItem['style.width'] = headerItem.style?.width;
         }
         if (headerItem.type === 'search') {
-          formData['header.search'] = true;
-          formData['header.search.width'] = headerItem.wrapperStyle?.width;
-          formData['header.search.align'] = headerItem.align;
-          formData['header.search.placeholder'] = headerItem.placeholder;
-          formData['header.search.allowClear'] = headerItem.allowClear;
-          formData['header.search.searchButtonText'] = headerItem.searchButtonText;
-          formData['header.search.searchKeys'] = headerItem.searchKeys;
-          formData['header.search.searchKeyDefaultValue'] = headerItem.searchKeyDefaultValue;
-        }
-        if (headerItem.type === 'insert-button') {
-          formData['header.insertButton'] = true;
-          formData['header.insertButton.align'] = headerItem.align;
-          formData['header.insertButton.showIcon'] = headerItem.showIcon;
-          formData['header.insertButton.insertButtonText'] = headerItem.insertButtonText;
+          headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
         }
       }
+      formData['header.items'] = headerElements;
+    }
+    if (typeof globalConfigs?.footer === 'object') {
+      formData.footer = true;
+      const footerElements = globalConfigs?.footer?.elements || [];
+      for (const footerItem of footerElements) {
+        if (footerItem.type === 'text') {
+          footerItem['style.width'] = footerItem.style?.width;
+        }
+        if (footerItem.type === 'search') {
+          footerItem['wrapperStyle.width'] = footerItem.wrapperStyle?.width;
+        }
+      }
+      formData['footer.items'] = footerElements;
+    }
+    if (typeof globalConfigs?.pagination === 'object') {
+      formData.pagination = true;
+      Object.keys(globalConfigs?.pagination || {}).forEach((key) => {
+        formData[`pagination.${key}`] = globalConfigs?.pagination?.[key];
+      });
     }
     return formData;
   };
 
   const encodeGlobalConfigs = (formData: { [key: string]: unknown }): GlobalSchema => {
-    const elements: DripTableGenericRenderElement[] = [];
-    if (formData.header) {
-      if (formData['header.displayColumnSelector']) {
-        elements.push({
-          type: 'display-column-selector',
-          selectorButtonType: formData['header.displayColumnSelector.selectorButtonType'] as ButtonType,
-          selectorButtonText: formData['header.displayColumnSelector.selectorButtonText'] as string || '',
-        });
+    const formatElement = (element) => {
+      if (element['style.width']) {
+        element.style = { width: element['style.width'] };
+        delete element['style.width'];
       }
-      if (formData['header.title']) {
-        elements.push({
-          type: 'text',
-          span: 'flex-auto',
-          align: formData['header.title.align'] as FlexJustifyContent,
-          text: formData['header.title.text'] as string,
-        });
+      if (element['wrapperStyle.width']) {
+        element.wrapperStyle = { width: element['wrapperStyle.width'] };
+        delete element['wrapperStyle.width'];
       }
-      if (formData['header.search']) {
-        elements.push({
-          type: 'search',
-          wrapperStyle: { width: formData['header.search.width'] as number },
-          align: formData['header.search.align'] as FlexJustifyContent,
-          placeholder: formData['header.search.placeholder'] as string,
-          allowClear: formData['header.search.allowClear'] as boolean,
-          searchButtonText: formData['header.search.searchButtonText'] as string,
-          searchKeys: formData['header.search.typeVisible'] ? formData['header.search.searchKeys'] as LabeledValue : void 0,
-          searchKeyDefaultValue: formData['header.search.searchKeyDefaultValue'] as string,
-        });
-      }
-      if (formData['header.insertButton']) {
-        elements.push({
-          type: 'insert-button',
-          align: formData['header.insertButton.align'] as FlexJustifyContent,
-          showIcon: formData['header.insertButton.showIcon'] as boolean,
-          insertButtonText: formData['header.insertButton.insertButtonText'] as string,
-        });
-      }
-    }
+      return element;
+    };
     return {
-      ...formData,
+      ...filterAttributesByRegExp(formData, /^(footer|header|pagination)\./u),
+      $version: formData.$version as number,
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       ellipsis: formData.ellipsis as boolean,
@@ -158,14 +132,21 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       rowSelection: formData.rowSelection as boolean,
       virtual: formData.virtual as boolean,
       scroll: {
+        x: formData.scrollX as number,
         y: formData.scrollY as number,
       },
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements,
+          elements: (formData['header.items'] as DripTableGenericRenderElement[] || []).map(item => formatElement(item)),
         }
         : false,
+      footer: formData.footer
+        ? {
+          style: { margin: '0', padding: '12px 0' },
+          elements: (formData['footer.items'] as DripTableGenericRenderElement[] || []).map(item => formatElement(item)),
+        }
+        : void 0,
       pagination: formData.pagination
         ? {
           size: formData['pagination.size'] as 'small' | 'default',
@@ -178,7 +159,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     };
   };
 
-  const encodeColumnConfigs = (formData: { [key: string]: unknown }) => {
+  const encodeColumnConfigs = (formData: { [key: string]: unknown }): DripTableColumn => {
     const uiProps = {};
     const dataProps = {};
     Object.keys(formData).forEach((key) => {
@@ -188,16 +169,18 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         dataProps[key] = formData[key];
       }
     });
-    const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.component);
+    // const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.component);
     return {
       ...filterAttributes(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
+      key: state.currentColumn?.key ?? '',
+      index: state.currentColumn?.index ?? 0,
+      sort: state.currentColumn?.sort ?? 0,
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
-      component: state.currentColumn?.component,
+      component: state.currentColumn?.component ?? '',
       options: uiProps,
-      type: columnConfig ? columnConfig.type : state.currentColumn?.type,
-    } as DripTableColumn<string, never>;
+    };
   };
 
   const submitTableData = (codeValue?: string) => {
@@ -212,17 +195,30 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     }
   };
 
+  const getGlobalFormConfigs = () => {
+    if (props.customGlobalConfigPanel) {
+      return props.customGlobalConfigPanel.mode === 'add'
+        ? [
+          ...GlobalAttrFormConfigs,
+          ...props.customGlobalConfigPanel.configs,
+        ]
+        : [...props.customGlobalConfigPanel.configs];
+    }
+    return GlobalAttrFormConfigs;
+  };
+
   const renderGlobalForm = () => (
     <CustomForm<GlobalSchema>
       primaryKey="$version"
-      configs={props.customGlobalConfigPanel || GlobalAttrFormConfigs}
+      configs={getGlobalFormConfigs()}
       data={state.globalConfigs}
-      decodeData={decodeGlobalConfigs as unknown as React.ComponentProps<typeof CustomForm>['decodeData']} // TODO: 类型问题，强行转换
+      decodeData={decodeGlobalConfigs}
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
       theme={props.driver}
       onChange={(data) => {
-        state.globalConfigs = { ...data } as unknown as typeof state.globalConfigs; // TODO: 类型问题，强行转换
+        if (data && data.$version) { data.$version += 1; }
+        state.globalConfigs = { ...data };
         globalActions.updateGlobalConfig(store);
       }}
     />
@@ -263,10 +259,10 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       }
     });
     return (
-      <CustomForm<DripTableColumn<string, never>>
+      <CustomForm<DripTableColumn>
         primaryKey="key"
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
-        data={state.currentColumn as unknown as DripTableColumn<string, never>} // TODO: 类型问题，强行转换
+        data={state.currentColumn}
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props']}
         groupType={formDisplayMode}

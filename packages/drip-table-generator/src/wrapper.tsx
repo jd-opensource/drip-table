@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React, { useImperativeHandle, useState } from 'react';
 
@@ -15,12 +16,15 @@ import { filterAttributes } from './utils';
 import styles from './index.module.less';
 
 export type GeneratorWrapperHandler = {
-  getState: () => DripTableGeneratorState<string, Record<string, unknown>>;
+  getState: () => DripTableGeneratorState;
 }
 
-const Wrapper = (props: DripTableGeneratorProps & {
-  store: GlobalStore;
-}, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
+const Wrapper = <
+RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
+ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions> & {
+    store: GlobalStore;
+  }, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
   const {
     style = {},
     driver,
@@ -28,18 +32,18 @@ const Wrapper = (props: DripTableGeneratorProps & {
     componentLayoutStyle = {},
     rightLayoutStyle = {},
     showToolLayout = true,
-    dataSource,
+    dataSource = [],
     schema,
     customComponentPanel,
     customGlobalConfigPanel,
     customComponents,
   } = useGlobalData();
-  const initialData = { previewDataSource: dataSource } as DripTableGeneratorState<string, never>;
+  const initialData = { previewDataSource: dataSource } as DripTableGeneratorState;
   if (schema) {
-    initialData.globalConfigs = filterAttributes(schema, 'columns');
-    initialData.columns = schema.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
+    initialData.globalConfigs = filterAttributes(schema, 'columns') as Omit<DripTableSchema<DripTableColumn>, 'columns'>;
+    initialData.columns = schema.columns?.map((item, index) => ({ index, sort: index, ...item }));
   }
-  const originState: DripTableGeneratorState<string, Record<string, unknown>> = props.store ? props.store[0] : defaultState();
+  const originState: DripTableGeneratorState = props.store ? props.store[0] : defaultState();
   setState(originState, { ...initialData });
   const store = useState(originState);
   const [state] = store;

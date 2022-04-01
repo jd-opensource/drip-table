@@ -6,3 +6,4 @@ export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './dr
 export type { DripTableProps } from './drip-table';
 export type { DripTableGenericRenderElement } from './components/generic-render';
 export { default } from './drip-table';
+export type { AjvOptions } from './utils/ajv';

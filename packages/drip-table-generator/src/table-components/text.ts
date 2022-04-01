@@ -1,5 +1,5 @@
 import { DripTableComponentAttrConfig } from '../typing';
-import { basicColumnAttrComponents } from './configs';
+import { basicColumnAttrComponents, dataIndexColumnAttrComponents } from './configs';
 
 export default {
   $id: '$display_text',
@@ -11,62 +11,38 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
     {
-      name: 'dataIndexMode',
+      name: 'ui:props.mode',
       group: '组件属性',
-      required: true,
-      'ui:title': '字段读取模式',
+      'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
         options: [
-          { label: '直接读取', value: 'direct' },
-          { label: '嵌套路径', value: 'nested' },
+          { label: '单行文本', value: 'single' },
+          { label: '多行文本', value: 'multiple' },
+          { label: '自定义文本', value: 'custom' },
         ],
       },
       type: 'string',
-      default: 'direct',
-      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      default: 'single',
     },
+    ...basicColumnAttrComponents,
+    ...dataIndexColumnAttrComponents(
+      (_1, formData) => formData?.['ui:props.mode'] === 'single',
+      (_1, formData) => formData?.['ui:props.mode'] === 'single' && formData?.dataIndexMode === 'nested',
+    ),
     {
-      name: 'dataIndex',
-      group: '组件属性',
-      required: true,
-      'ui:title': '字段选择',
-      'ui:type': 'auto-complete',
-      'ui:props': {
-        optionsParam: '$$FIELD_KEY_OPTIONS$$',
-      },
-      type: 'string',
-      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode !== 'nested',
-    },
-    {
-      name: 'dataIndex',
-      group: '组件属性',
-      required: true,
-      'ui:title': '字段选择',
-      'ui:type': 'select',
-      'ui:props': {
-        optionsParam: '$$FIELD_KEY_OPTIONS$$',
-        mode: 'tags',
-        tokenSeparators: ['.', ',', '，'],
-      },
-      type: 'array',
-      visible: (_1: string, formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single' && formData.dataIndexMode === 'nested',
-    },
-    {
-      name: 'fontSize',
+      name: 'ui:props.fontSize',
       group: '样式配置',
       'ui:title': '字体大小',
-      'ui:type': 'number',
+      'ui:type': 'input',
+      'ui:props': {
+        placeholder: '请输入字体大小',
+      },
       'ui:description': {
         trigger: 'hover',
         type: 'icon',
         title: '控制表格该列默认字体大小，默认单位为“px”，支持手动指定单位后缀。',
-      },
-      default: 13,
-      'ui:props': {
-        min: 13,
       },
     },
     {
@@ -93,21 +69,6 @@ export default {
       },
     },
     {
-      name: 'ui:props.mode',
-      group: '组件属性',
-      'ui:title': '模式',
-      'ui:type': 'radio',
-      'ui:props': {
-        options: [
-          { label: '单行文本', value: 'single' },
-          { label: '多行文本', value: 'multiple' },
-          { label: '自定义文本', value: 'custom' },
-        ],
-      },
-      type: 'string',
-      default: 'single',
-    },
-    {
       name: 'ui:props.prefix',
       group: '组件属性',
       'ui:title': '前缀文案',
@@ -130,47 +91,13 @@ export default {
       'ui:type': 'array-list',
       'ui:props': {
         items: [
+          ...dataIndexColumnAttrComponents(),
           {
             name: 'prefix',
             'ui:title': '前缀文案',
             'ui:type': 'input',
             type: 'string',
             default: '',
-          },
-          {
-            name: 'dataIndexMode',
-            required: true,
-            'ui:title': '字段读取模式',
-            'ui:type': 'radio',
-            'ui:props': {
-              options: [
-                { label: '直接读取', value: 'direct' },
-                { label: '嵌套路径', value: 'nested' },
-              ],
-            },
-            type: 'string',
-            default: 'direct',
-          },
-          {
-            name: 'dataIndex',
-            'ui:title': '字段选择',
-            'ui:type': 'select',
-            'ui:mode': 'tags',
-            'ui:props': {
-              optionsParam: '$$FIELD_KEY_OPTIONS$$',
-            },
-            type: 'array',
-            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode === 'nested',
-          },
-          {
-            name: 'dataIndex',
-            'ui:title': '字段选择',
-            'ui:type': 'auto-complete',
-            'ui:props': {
-              optionsParam: '$$FIELD_KEY_OPTIONS$$',
-            },
-            type: 'string',
-            visible: (_1: string, formData: Record<string, unknown>) => formData.dataIndexMode !== 'nested',
           },
           {
             name: 'suffix',
@@ -185,7 +112,7 @@ export default {
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'multiple',
     },
     {
-      name: 'defaultValue',
+      name: 'ui:props.defaultValue',
       group: '组件属性',
       'ui:title': '兜底文案',
       'ui:type': 'input',
