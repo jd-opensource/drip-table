@@ -28,7 +28,7 @@ import GenericRender, { DripTableGenericRenderElement } from '@/components/gener
 import RichText from '@/components/rich-text';
 import { useState, useTable } from '@/hooks';
 
-import { DripTableProvider } from '..';
+import DripTableProvider from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
 import VirtualTable from './virtual-table';
 
@@ -481,17 +481,16 @@ const DripTable = <
                 {
                   subtable && Array.isArray(record[subtable.dataSourceKey])
                     ? (
-                      <DripTableProvider>
-                        <DripTable<RecordType, ExtraOptions>
-                          {...props}
-                          schema={
+                      <DripTableProvider<RecordType, ExtraOptions>
+                        {...props}
+                        schema={
                             Object.fromEntries(
                               Object.entries(subtable)
                                 .filter(([key]) => key !== 'dataSourceKey'),
                             ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>
                           }
-                          dataSource={record[subtable.dataSourceKey] as RecordType[]}
-                          title={
+                        dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                        title={
                             props.subtableTitle
                               ? subtableData => props.subtableTitle?.(
                                 record,
@@ -501,7 +500,7 @@ const DripTable = <
                               )
                               : void 0
                           }
-                          footer={
+                        footer={
                             props.subtableFooter
                               ? subtableData => props.subtableFooter?.(
                                 record,
@@ -511,8 +510,7 @@ const DripTable = <
                               )
                               : void 0
                           }
-                        />
-                      </DripTableProvider>
+                      />
                     )
                     : void 0
                 }
