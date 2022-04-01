@@ -9,14 +9,9 @@
 import React from 'react';
 import MonacoEditor, { monaco as Monaco } from 'react-monaco-editor';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
-  onValidate?: (errorMessage: string) => void;
-}
+interface Props extends DTGComponentBaseProperty<string> {}
 
 export default class CodeEditorComponent extends React.PureComponent<Props> {
   public static componentName = 'code-editor';

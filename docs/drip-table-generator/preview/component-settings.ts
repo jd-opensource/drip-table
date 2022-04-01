@@ -1,5 +1,7 @@
-export default {
-  mode: 'add' as 'add' | 'replace',
+import { DripTableGeneratorProps } from 'drip-table-generator';
+
+const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPanel'] = {
+  mode: 'add',
   components: [
     {
       'ui:type': 'custom::TextComponent',
@@ -11,6 +13,7 @@ export default {
         {
           name: 'dataIndex',
           required: true,
+          group: '自定义组',
           'ui:title': '字段选择',
           'ui:type': 'select',
           'ui:props': {
@@ -19,7 +22,8 @@ export default {
           type: 'string',
         },
         {
-          name: 'fontSize',
+          name: 'ui:props.fontSize',
+          group: '自定义组',
           'ui:title': '字体大小',
           'ui:type': 'number',
           'ui:description': {
@@ -28,10 +32,12 @@ export default {
             title: '控制表格该列默认字体大小，默认单位为“px”，支持手动指定单位后缀。',
           },
           default: 12,
-          min: 12,
+          minimum: 12,
+          type: 'number',
         },
         {
-          name: 'noDataValue',
+          name: 'ui:props.noDataValue',
+          group: '自定义组',
           'ui:title': '兜底文案',
           'ui:type': 'input',
           'ui:description': {
@@ -41,14 +47,19 @@ export default {
           },
           default: '',
           visible: 'return formData.dataIndex',
+          type: 'string',
         },
         {
           name: 'description',
+          group: '自定义组',
           'ui:title': '组件说明',
           'ui:type': 'render-html',
           default: '<span style="color:red;">这是一条说明</span>',
+          type: 'string',
         },
       ],
     },
   ],
 };
+
+export default CustomGeneratorComponentPanel;

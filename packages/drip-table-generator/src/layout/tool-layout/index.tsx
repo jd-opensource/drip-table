@@ -7,10 +7,10 @@
  */
 
 import { Button, Input, message, Modal } from 'antd';
-import { DripTableBuiltInColumnSchema, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
 import React, { useState } from 'react';
 
-import { filterAttributes } from '@/utils';
+import { filterAttributes, generateColumn } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import { useGlobalData } from '@/hooks';
 
@@ -23,9 +23,9 @@ const ToolLayout = (props: { store: GlobalStore }) => {
   const [modalStatus, setModalStatus] = useState('');
   const [code, setCode] = useState('');
 
-  const getSchemaValue = (): DripTableSchema => ({
+  const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
     ...filterAttributes(state.globalConfigs, '$version'),
-    columns: state.columns.map(item => ({ ...item, index: void 0, sort: void 0 })) as DripTableBuiltInColumnSchema[],
+    columns: state.columns.map(item => generateColumn(item)),
   });
 
   /**
@@ -87,16 +87,20 @@ const ToolLayout = (props: { store: GlobalStore }) => {
         onOk={() => {
           if (modalStatus === 'import') { // 导入解析
             const value = (code || '').trim();
+            let hasError = false;
             try {
               const json = JSON.parse(value);
               state.globalConfigs = filterAttributes(json, ['columns']);
-              state.columns = json.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn<string, never>[];
+              state.columns = json.columns?.map((item, index) => ({ index, sort: index, ...item })) as DripTableColumn[];
               state.currentColumn = void 0;
             } catch {
+              hasError = true;
               message.error('解析出错, 请传入正确的格式');
             } finally {
-              globalActions.updateGlobalConfig(store);
-              message.success('数据导入成功');
+              if (!hasError) {
+                globalActions.updateGlobalConfig(store);
+                message.success('数据导入成功');
+              }
             }
           } else { // 导出复制
             const aux = document.createElement('input');

@@ -55,3 +55,51 @@ export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
     type: 'boolean',
   },
 ];
+
+export const dataIndexColumnAttrComponents: (
+  modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
+  indexDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean
+) => DTGComponentPropertySchema[] = (modeDiffFn, indexDiffFn) => [
+  {
+    name: 'dataIndexMode',
+    group: '组件属性',
+    required: true,
+    'ui:title': '字段读取模式',
+    'ui:type': 'radio',
+    'ui:props': {
+      options: [
+        { label: '直接读取', value: 'direct' },
+        { label: '嵌套路径', value: 'nested' },
+      ],
+    },
+    type: 'string',
+    default: 'direct',
+    visible: modeDiffFn,
+  },
+  {
+    name: 'dataIndex',
+    group: '组件属性',
+    required: true,
+    'ui:title': '字段选择',
+    'ui:type': 'auto-complete',
+    'ui:props': {
+      optionsParam: '$$FIELD_KEY_OPTIONS$$',
+    },
+    type: 'string',
+    visible: indexDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode !== 'nested'),
+  },
+  {
+    name: 'dataIndex',
+    group: '组件属性',
+    required: true,
+    'ui:title': '字段选择',
+    'ui:type': 'select',
+    'ui:props': {
+      optionsParam: '$$FIELD_KEY_OPTIONS$$',
+      mode: 'tags',
+      tokenSeparators: ['.', ',', '，'],
+    },
+    type: 'string',
+    visible: indexDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'nested'),
+  },
+];

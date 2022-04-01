@@ -1,4 +1,5 @@
-import { DripTableColumnSchema, DripTableDriver, DripTableProps, DripTableRecordTypeBase, DripTableSchema, EventLike } from 'drip-table';
+import type { AjvOptions } from 'drip-table';
+import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableID, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import { CSSProperties } from 'react';
 
 import { DripTableGeneratorState } from './store';
@@ -103,13 +104,13 @@ export interface DripTableComponentAttrConfig {
   icon?: React.ReactSVG | string;
 }
 
-export interface DripTableGeneratorHandler extends DripTableGeneratorState<string, Record<string, unknown>> {
+export interface DripTableGeneratorHandler extends DripTableGeneratorState {
   /**
    * 通过接口获取配置
    *
    * @returns { DripTableSchema } 返回DripTableSchema配置
    */
-  getSchemaValue: () => DripTableSchema;
+  getSchemaValue: () => DripTableSchema<DripTableColumnSchema>;
 
   /**
    * 通过接口获取预览用表格数据
@@ -120,9 +121,9 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState<strin
 }
 
 export interface DripTableGeneratorProps<
-CustomColumnSchema extends DripTableColumnSchema = never,
-CustomComponentEvent extends EventLike = never,
-CustomComponentExtraData = unknown> {
+RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
+ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+> {
   style?: CSSProperties;
   driver: DripTableDriver;
   showComponentLayout?: boolean;
@@ -130,19 +131,103 @@ CustomComponentExtraData = unknown> {
   rightLayoutStyle?: CSSProperties;
   showToolLayout?: boolean;
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
-  dataSource?: DripTableRecordTypeBase[];
+  dataSource?: DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[];
   dataFields?: string[];
   mockDataSource?: boolean;
-  schema?: DripTableSchema<CustomColumnSchema>;
-  customComponents?: DripTableProps<DripTableRecordTypeBase, {
-    CustomColumnSchema: CustomColumnSchema;
-    CustomComponentEvent: CustomComponentEvent;
-    CustomComponentExtraData: CustomComponentExtraData;
+  schema?: DripTableSchema<ExtraOptions['CustomColumnSchema']>;
+  customComponents?: DripTableProps<DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>, {
+    CustomColumnSchema: ExtraOptions['CustomColumnSchema'];
+    CustomComponentEvent: ExtraOptions['CustomComponentEvent'];
+    CustomComponentExtraData: ExtraOptions['CustomComponentExtraData'];
   }>['components'];
   customComponentPanel?: {
     mode: 'add' | 'replace';
     components: DripTableComponentAttrConfig[];
   };
-  customGlobalConfigPanel?: DTGComponentPropertySchema[];
-  onExportSchema?: (schema: DripTableSchema<CustomColumnSchema>) => void;
+  customGlobalConfigPanel?: {
+    mode: 'add' | 'replace';
+    configs: DTGComponentPropertySchema[];
+  };
+  /**
+   * 组件插槽，可通过 Schema 控制自定义区域渲染
+   */
+  slots?: {
+    [componentType: string]: React.JSXElementConstructor<{
+      style?: React.CSSProperties;
+      className?: string;
+      slotType: string;
+      driver: DripTableDriver;
+      schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      dataSource: readonly RecordType[];
+      onSearch: (searchParams: Record<string, unknown>) => void;
+    }>;
+  };
+  /**
+   * Schema 校验配置项
+   */
+  ajv?: AjvOptions | false;
+  /**
+   * 自定义组件附加透传数据
+   */
+  ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
+  /**
+   * 顶部自定义渲染函数
+   */
+  title?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
+   * 底部自定义渲染函数
+   */
+  footer?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
+   * 子表顶部自定义渲染函数
+   */
+  subtableTitle?: (
+    record: RecordType,
+    recordIndex: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+    subtable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
+  /**
+   * 子表底部自定义渲染函数
+   */
+  subtableFooter?: (
+    record: RecordType,
+    recordIndex: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+    subtable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
+  /**
+   * 获取指定行是否可展开
+   */
+  rowExpandable?: (
+    record: RecordType,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => boolean;
+  /**
+   * 行展开自定义渲染函数
+   */
+  expandedRowRender?: (
+    record: RecordType,
+    index: number,
+    parentTable: {
+      id: DripTableID;
+      dataSource: readonly RecordType[];
+    },
+  ) => React.ReactNode;
+  onExportSchema?: (schema: DripTableSchema<ExtraOptions['CustomColumnSchema']>) => void;
 }

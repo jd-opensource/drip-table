@@ -7,22 +7,15 @@
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Popover, Select } from 'antd';
-import { DripTableDriver } from 'drip-table';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
 type SelectProps = React.ComponentProps<typeof Select>;
 type SelectValueType = SelectProps['value'];
 type SelectOptionType = NonNullable<SelectProps['options']>[number];
 
-interface Props {
-  theme?: DripTableDriver;
-  schema: DTGComponentPropertySchema;
-  value?: SelectValueType;
-  onChange?: (value: SelectValueType) => void;
-  onValidate?: (errorMessage: string) => void;
-}
+interface Props extends DTGComponentBaseProperty<SelectValueType> {}
 
 export default class SelectComponent extends React.PureComponent<Props> {
   public static componentName = 'select';

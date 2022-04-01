@@ -10,15 +10,11 @@ import 'rc-color-picker/assets/index.css';
 import ColorPicker from 'rc-color-picker';
 import React from 'react';
 
-import { DTGComponentPropertySchema } from '@/typing';
+import { DTGComponentBaseProperty } from '..';
 
 import styles from './index.module.css';
 
-interface Props {
-  schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
-}
+interface Props extends DTGComponentBaseProperty<string> {}
 
 export default class ColorPickerComponent extends React.PureComponent<Props> {
   public static componentName = 'color-picker';

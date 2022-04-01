@@ -1,34 +1,36 @@
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { defaultState, DripTableGeneratorState, GlobalStore } from '@/store';
 import { Ctx } from '@/context';
 import { DripTableGeneratorHandler, DripTableGeneratorProps } from '@/typing';
 
-import { filterAttributes } from './utils';
+import { filterAttributes, generateColumn } from './utils';
 import Wrapper, { GeneratorWrapperHandler } from './wrapper';
 
-const useTableRoot = (
-  props: DripTableGeneratorProps,
-  store: [DripTableGeneratorState<string, Record<string, unknown>>, React.Dispatch<React.SetStateAction<DripTableGeneratorState<string, Record<string, unknown>>>>],
-  wrapper: React.MutableRefObject<GeneratorWrapperHandler | null>,
-) => {
+const useTableRoot = <
+RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
+ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions>(
+    props: DripTableGeneratorProps<RecordType, ExtraOptions>,
+    store: [DripTableGeneratorState, React.Dispatch<React.SetStateAction<DripTableGeneratorState>>],
+    wrapper: React.MutableRefObject<GeneratorWrapperHandler | null>,
+  ) => {
   const [state, setState] = store;
 
-  const getSchemaValue = (): DripTableSchema<never> => {
+  const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => {
     if (wrapper.current) {
       const currentState = wrapper.current.getState();
       return {
         ...filterAttributes(currentState.globalConfigs, '$version'),
-        columns: currentState.columns.map(item => ({ ...item, sort: void 0, index: void 0 })) as unknown as DripTableSchema['columns'], // TODO: 类型有问题强转防止报错的 component 类型怎么能是 string 呢？
+        columns: currentState.columns.map(item => generateColumn(item)),
       };
     }
 
     return {
       ...filterAttributes(state.globalConfigs, '$version'),
-      columns: state.columns.map(item => ({ ...item, sort: void 0, index: void 0 })) as unknown as DripTableSchema['columns'], // TODO: 类型有问题强转防止报错的 component 类型怎么能是 string 呢？
+      columns: state.columns.map(item => generateColumn(item)),
     };
   };
 
@@ -51,8 +53,11 @@ const useTableRoot = (
   return context;
 };
 
-const Container = (props: DripTableGeneratorProps, ref: React.ForwardedRef<DripTableGeneratorHandler>) => {
-  if (props.schema && props.schema.columns.some(c => c['ui:type'] || c['ui:props'])) {
+const Container = <
+RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
+ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DripTableGeneratorHandler>) => {
+  if (props.schema && props.schema.columns.some(c => c.component || c.options)) {
     props = {
       ...props,
       schema: {
@@ -86,7 +91,7 @@ const Container = (props: DripTableGeneratorProps, ref: React.ForwardedRef<DripT
 
   useImperativeHandle(ref, () => context);
 
-  const WrapperRef = forwardRef<GeneratorWrapperHandler, DripTableGeneratorProps & { store: GlobalStore }>(Wrapper);
+  const WrapperRef = forwardRef<GeneratorWrapperHandler, DripTableGeneratorProps<RecordType, ExtraOptions> & { store: GlobalStore }>(Wrapper);
 
   return (
     <ConfigProvider locale={zhCN}>
