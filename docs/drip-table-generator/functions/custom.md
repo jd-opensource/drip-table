@@ -1,9 +1,9 @@
 ---
 order: 3
-title: 定制化面板
+title: 自定义属性面板
 ---
 
-# 定制化面板
+# 自定义属性面板
 
 > 本篇主要介绍 `drip-table-generator` 的自定义组件以及自定义属性面板的功能
 
@@ -19,6 +19,16 @@ title: 定制化面板
 
 参数字段说明：
 
+### mode
+- 描述: `加载模式`
+- 类型: `enum<add | replace>`
+- 默认值: ``
+
+### configs
+- 描述: `属性栏配置项`
+- 类型: `DTGComponentPropertySchema[]`
+
+  configs每项数据字段详情如下所示：
 #### name
 - 描述: `属性名`
 - 类型: `string`
