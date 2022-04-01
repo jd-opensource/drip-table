@@ -20,6 +20,22 @@ export interface AjvOptions {
 
 const createAjv = (): Ajv => AjvKeywords(new Ajv({ discriminator: true, strictTypes: false }));
 
+const getAjvErrorMessage = (
+  ajv: Ajv,
+  { separator = ', ', dataVar = 'data' }: Parameters<Ajv['errorsText']>[1] = {},
+): string => {
+  if (!ajv.errors || ajv.errors.length === 0) {
+    return '';
+  }
+  return ajv.errors
+    .map((e) => {
+      const params = Object.entries(e.params).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ');
+      return `${dataVar}${e.instancePath} ${e.message}${params ? ` ({ ${params} })` : ''}`;
+    })
+    .reduce((text, msg) => `${text}${separator}${msg}`);
+  // return ajv.errorsText(void 0, { dataVar: 'column' });
+};
+
 /**
  * 校验 DripTable Props 是否符合 Schema 要求
  * @param data DripTable Props
@@ -239,14 +255,14 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
   };
   // 校验 Props Schema（不校验子表，因为 ajv 不支持循环引用）
   if (!ajv.validate(propsSchema, data)) {
-    return ajv.errorsText(void 0, { dataVar: 'props' });
+    return getAjvErrorMessage(ajv, { dataVar: 'props', separator: '; ' });
   }
   // 递归校验子表 Schema
   let subtable = (data as { schema: DripTableSchema }).schema.subtable;
   let prefix = 'props.subtable';
   while (subtable) {
     if (!ajv.validate(dripTableSubtableSchema, subtable)) {
-      return ajv.errorsText(void 0, { dataVar: prefix });
+      return getAjvErrorMessage(ajv, { dataVar: prefix, separator: '; ' });
     }
     subtable = subtable.subtable;
     prefix += '.subtable';
@@ -311,7 +327,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
     additionalProperties,
   };
   if (!ajv.validate(dripTableColumnSchema, data)) {
-    return ajv.errorsText(void 0, { dataVar: 'column' });
+    return getAjvErrorMessage(ajv, { dataVar: 'column', separator: '; ' });
   }
   return null;
 };
