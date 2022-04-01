@@ -1,4 +1,3 @@
-import type { AjvOptions } from 'drip-table';
 import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableID, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import { CSSProperties } from 'react';
 
@@ -165,7 +164,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   /**
    * Schema 校验配置项
    */
-  ajv?: AjvOptions | false;
+  ajv?: DripTableProps<DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>, ExtraOptions>['ajv'];
   /**
    * 自定义组件附加透传数据
    */

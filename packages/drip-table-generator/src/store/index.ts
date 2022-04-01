@@ -7,6 +7,7 @@
  */
 
 import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 
 import useSharedState from './custom-hook';
 
@@ -69,13 +70,13 @@ export const globalActions: GlobalActions = {
   },
   updateGlobalConfig(store) {
     const version = Number(store?.state.globalConfigs.$version) || 0;
-    store?.setState({ ...store.state, globalConfigs: { ...store.state.globalConfigs, $version: version + 1 } });
+    store?.setState({ ...store.state, globalConfigs: cloneDeep({ ...store.state.globalConfigs, $version: version + 1 }) });
   },
 };
 
 export const setState = (originState: DripTableGeneratorState, states?: DripTableGeneratorState) => {
   if (states) {
-    Object.keys(states).forEach((key) => { originState[key] = states[key]; });
+    Object.keys(states).forEach((key) => { originState[key] = cloneDeep(states[key]); });
   }
 };
 

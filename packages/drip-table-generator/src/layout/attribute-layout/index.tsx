@@ -9,6 +9,7 @@
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
 import { DripTableDriver, DripTableGenericRenderElement } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -112,15 +113,52 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const encodeGlobalConfigs = (formData: { [key: string]: unknown }): GlobalSchema => {
     const formatElement = (element) => {
-      if (element['style.width']) {
-        element.style = { width: element['style.width'] };
-        delete element['style.width'];
+      if (element.type === 'display-column-selector') {
+        return {
+          type: 'display-column-selector',
+          selectorButtonType: element.selectorButtonType,
+          selectorButtonText: element.selectorButtonText,
+        };
       }
-      if (element['wrapperStyle.width']) {
-        element.wrapperStyle = { width: element['wrapperStyle.width'] };
-        delete element['wrapperStyle.width'];
+      if (element.type === 'spacer') {
+        const width = element['style.width'];
+        element['style.width'] = void 0;
+        return {
+          type: 'spacer',
+          style: { width },
+        };
       }
-      return element;
+      if (element.type === 'text') {
+        return {
+          type: 'text',
+          span: element.span,
+          align: element.align,
+          text: element.text,
+        };
+      }
+      if (element.type === 'search') {
+        const width = element['wrapperStyle.width'];
+        element['wrapperStyle.width'] = void 0;
+        return {
+          type: 'search',
+          wrapperStyle: { width },
+          align: element.align,
+          placeholder: element.placeholder,
+          allowClear: element.allowClear,
+          searchButtonText: element.searchButtonText,
+          searchKeys: element.searchKeys,
+          searchKeyDefaultValue: element.searchKeyDefaultValue,
+        };
+      }
+      if (element.type === 'insert-button') {
+        return {
+          type: 'insert-button',
+          align: element.align,
+          insertButtonText: element.insertButtonText,
+          showIcon: element.showIcon,
+        };
+      }
+      return { ...element };
     };
     return {
       ...filterAttributesByRegExp(formData, /^(footer|header|pagination)\./u),
@@ -138,13 +176,13 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['header.items'] as DripTableGenericRenderElement[] || []).map(item => formatElement(item)),
+          elements: (formData['header.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
         }
         : false,
       footer: formData.footer
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['footer.items'] as DripTableGenericRenderElement[] || []).map(item => formatElement(item)),
+          elements: (formData['footer.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
         }
         : void 0,
       pagination: formData.pagination
@@ -211,14 +249,13 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     <CustomForm<GlobalSchema>
       primaryKey="$version"
       configs={getGlobalFormConfigs()}
-      data={state.globalConfigs}
+      data={cloneDeep(state.globalConfigs)}
       decodeData={decodeGlobalConfigs}
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
       theme={props.driver}
       onChange={(data) => {
-        if (data && data.$version) { data.$version += 1; }
-        state.globalConfigs = { ...data };
+        store.state.globalConfigs = cloneDeep({ ...data });
         globalActions.updateGlobalConfig(store);
       }}
     />
