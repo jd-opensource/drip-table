@@ -21,7 +21,6 @@ export const CustomGlobalConfigPanel: {
       'ui:type': 'input',
       'ui:props': {},
       type: 'string',
-      default: '',
     },
   ],
 };

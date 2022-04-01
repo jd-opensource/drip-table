@@ -67,7 +67,6 @@ const Demo = () => (
     customComponents={{ custom: { TextComponent } }}
     customComponentPanel={components}
     customGlobalConfigPanel={CustomGlobalConfigPanel}
-    ajv={false}
     slots={{
       'header-slot-sample': React.memo((props) => {
         const [state, setState] = React.useState({ count: 0 });
