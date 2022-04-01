@@ -7,7 +7,7 @@
 import 'antd/dist/antd.css';
 
 import { Button, message } from 'antd';
-import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
+import DripTable, { DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React, { useRef, useState } from 'react';
 
@@ -22,7 +22,7 @@ const simpleData = mockData.filter(item => item.id < 10);
 
 const Demo = () => {
   const [allSelected, setAllSelected] = useState(false);
-  const dripTable: React.MutableRefObject<DripTableContainerHandle | null> = useRef(null);
+  const dripTable: React.MutableRefObject<DripTableInstance | null> = useRef(null);
 
   function selectAllRecord() {
     const tableInstance = dripTable.current;
@@ -47,30 +47,29 @@ const Demo = () => {
           全选
         </Button>
       </div>
-      <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType>
-          driver={DripTableDriverAntDesign}
-          schema={schema}
-          slots={{
-            default: props => <div data-slot-type={props.slotType} />,
-          }}
-          total={simpleData.length}
-          dataSource={simpleData}
-          onEvent={(event, record, index) => {
-            if (event.type === 'drip-link-click') {
-              const name = event.payload;
-              message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
-              console.log(name, record, index);
-            } else if (event.type) {
-              message.info(`自定义事件“${event.type}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
-              console.log(event, record, index);
-            }
-          }}
-          onSelectionChange={(selectedKeys, selectedRows) => {
-            setAllSelected(selectedRows.length >= simpleData.length);
-          }}
-        />
-      </DripTableProvider>
+      <DripTable<SampleRecordType>
+        ref={dripTable}
+        driver={DripTableDriverAntDesign}
+        schema={schema}
+        slots={{
+          default: props => <div data-slot-type={props.slotType} />,
+        }}
+        total={simpleData.length}
+        dataSource={simpleData}
+        onEvent={(event, record, index) => {
+          if (event.type === 'drip-link-click') {
+            const name = event.payload;
+            message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
+            console.log(name, record, index);
+          } else if (event.type) {
+            message.info(`自定义事件“${event.type}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
+            console.log(event, record, index);
+          }
+        }}
+        onSelectionChange={(selectedKeys, selectedRows) => {
+          setAllSelected(selectedRows.length >= simpleData.length);
+        }}
+      />
     </React.Fragment>
   );
 };

@@ -9,7 +9,7 @@ import 'drip-table/dist/index.css';
 
 import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message, Tabs } from 'antd';
-import DripTable, { DripTableContainerHandle, DripTableProvider } from 'drip-table';
+import DripTable, { DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
 import React from 'react';
@@ -30,7 +30,7 @@ const Demo = () => {
   const [schema, setSchema] = React.useState(initSchema);
   const [editVisible, setEditVisible] = React.useState(false);
   const [allSelected, setAllSelected] = React.useState(false);
-  const dripTable: React.MutableRefObject<DripTableContainerHandle | null> = React.useRef(null);
+  const dripTable: React.MutableRefObject<DripTableInstance | null> = React.useRef(null);
 
   React.useEffect(
     () => {
@@ -88,72 +88,71 @@ const Demo = () => {
           全选
         </Button>
       </div>
-      <DripTableProvider ref={dripTable}>
-        <DripTable<SampleRecordType, {
-          CustomColumnSchema: CustomColumnSchema;
-          CustomComponentEvent: CustomComponentEvent;
-          SubtableDataSourceKey: SubtableDataSourceKey;
-        }>
-          driver={DripTableDriverAntDesign}
-          schema={schema}
-          loading={loading}
-          total={totalNum}
-          dataSource={dataSource}
-          components={{ custom: CustomComponents }}
-          slots={{
-            'header-slot-sample': React.memo((props) => {
-              const [state, setState] = React.useState({ count: 0 });
-              return (
-                <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
-                  <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Header Slot Sample</Button>
-                  <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
-                </div>
-              );
-            }),
-            default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
-          }}
-          subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
-          subtableFooter={(record, index, parent, subtable) => (
-            subtable.id === 'sample-table-sub-level-1'
-              ? (
-                <div
-                  style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
-                  onClick={() => {
-                    message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable.dataSource.length} 条`);
-                    console.log('expandable-footer-click', record, index, parent, subtable);
-                  }}
-                >
-                  <CloudSyncOutlined />
-                  <span style={{ marginLeft: '5px' }}>加载更多</span>
-                </div>
-              )
-              : void 0
-          )}
-          rowExpandable={(record, parent) => parent.id === 'sample-table' && record.id === 5}
-          expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.id})”行“${record.name}”的展开自定义渲染` }</div>)}
-          onEvent={(event, record, index) => {
-            if (event.type === 'drip-link-click') {
-              const name = event.payload;
-              message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
-              console.log(name, record, index);
-            } else if (event.type === 'custom') {
-              message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
-              console.log(event, record, index);
-            }
-          }}
-          onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}
-          onPageChange={(...args) => { console.log('onPageChange', ...args); }}
-          onChange={(nextPagination, nextFilters) => {
-            console.log('onChange', nextPagination, nextFilters);
-            fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
-          }}
-          onSelectionChange={(selectedKeys, selectedRows) => {
-            setAllSelected(selectedRows.length >= dataSource.length);
-          }}
-          onSearch={searchParams => console.log(searchParams)}
-          onInsertButtonClick={event => console.log(event)}
-        />
-      </DripTableProvider>
+      <DripTable<SampleRecordType, {
+        CustomColumnSchema: CustomColumnSchema;
+        CustomComponentEvent: CustomComponentEvent;
+        SubtableDataSourceKey: SubtableDataSourceKey;
+      }>
+        ref={dripTable}
+        driver={DripTableDriverAntDesign}
+        schema={schema}
+        loading={loading}
+        total={totalNum}
+        dataSource={dataSource}
+        components={{ custom: CustomComponents }}
+        slots={{
+          'header-slot-sample': React.memo((props) => {
+            const [state, setState] = React.useState({ count: 0 });
+            return (
+              <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
+                <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Header Slot Sample</Button>
+                <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
+              </div>
+            );
+          }),
+          default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
+        }}
+        subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
+        subtableFooter={(record, index, parent, subtable) => (
+          subtable.id === 'sample-table-sub-level-1'
+            ? (
+              <div
+                style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
+                onClick={() => {
+                  message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable.dataSource.length} 条`);
+                  console.log('expandable-footer-click', record, index, parent, subtable);
+                }}
+              >
+                <CloudSyncOutlined />
+                <span style={{ marginLeft: '5px' }}>加载更多</span>
+              </div>
+            )
+            : void 0
+        )}
+        rowExpandable={(record, parent) => parent.id === 'sample-table' && record.id === 5}
+        expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.id})”行“${record.name}”的展开自定义渲染` }</div>)}
+        onEvent={(event, record, index) => {
+          if (event.type === 'drip-link-click') {
+            const name = event.payload;
+            message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
+            console.log(name, record, index);
+          } else if (event.type === 'custom') {
+            message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
+            console.log(event, record, index);
+          }
+        }}
+        onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}
+        onPageChange={(...args) => { console.log('onPageChange', ...args); }}
+        onChange={(nextPagination, nextFilters) => {
+          console.log('onChange', nextPagination, nextFilters);
+          fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
+        }}
+        onSelectionChange={(selectedKeys, selectedRows) => {
+          setAllSelected(selectedRows.length >= dataSource.length);
+        }}
+        onSearch={searchParams => console.log(searchParams)}
+        onInsertButtonClick={event => console.log(event)}
+      />
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
       <div className={styles['popup-layer']} style={{ height: editVisible ? '70%' : '0' }}>
         <div style={{ position: 'absolute', right: '10px', top: '8px', zIndex: 1 }}>

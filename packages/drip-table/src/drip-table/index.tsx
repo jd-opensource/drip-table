@@ -28,7 +28,7 @@ import GenericRender, { DripTableGenericRenderElement } from '@/components/gener
 import RichText from '@/components/rich-text';
 import { useState, useTable } from '@/hooks';
 
-import DripTableProvider from '..';
+import DripTableWrapper from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
 import VirtualTable from './virtual-table';
 
@@ -481,7 +481,7 @@ const DripTable = <
                 {
                   subtable && Array.isArray(record[subtable.dataSourceKey])
                     ? (
-                      <DripTableProvider<RecordType, ExtraOptions>
+                      <DripTableWrapper<RecordType, ExtraOptions>
                         {...props}
                         schema={
                             Object.fromEntries(
