@@ -93,7 +93,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      onChange={(pagination, filters) => {
+      onChange={({ pagination, filters }) => {
         message.info(`过滤器：${JSON.stringify(filters)}，分页器：current = ${pagination.current}, pageSize = ${pagination.pageSize}。`);
         console.log('onChange', pagination, filters);
       }}
