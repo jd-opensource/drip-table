@@ -29,8 +29,10 @@ const getAjvErrorMessage = (
   }
   return ajv.errors
     .map((e) => {
-      const params = Object.entries(e.params).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ');
-      return `${dataVar}${e.instancePath} ${e.message}${params ? ` ({ ${params} })` : ''}`;
+      const params = e.params && typeof e.params === 'object'
+        ? Object.entries(e.params).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')
+        : String(e.params);
+      return `${dataVar}${e.instancePath} ${e.message}${params ? `, ${params}` : ''}`;
     })
     .reduce((text, msg) => `${text}${separator}${msg}`);
   // return ajv.errorsText(void 0, { dataVar: 'column' });
