@@ -34,9 +34,9 @@ const initialSchema = {
       "dataIndex": "",
       "title": "自定义111",
       "description": "",
-      "ui:type": "render-html",
+      "component": "render-html",
       "width": '200px',
-      "ui:props": {
+      "options": {
         "render": "if (rec.id == 1) {\r\n  return '<span style=\\\"padding: 2px 4px; border: 1px solid #2baa55; border-radius: 2px; background: #99ffad99\\\">壹</span>';\r\n}\r\nreturn '';"
       },
       "type": "string"
