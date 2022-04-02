@@ -567,9 +567,10 @@ const DripTable = <
       if (props.schema.header === true) {
         return {
           schemas: [
-            { type: 'display-column-selector', span: 8 },
-            { type: 'search', span: 8 },
-            { type: 'insert-button', span: 4 },
+            { type: 'display-column-selector', selectorButtonType: 'primary' },
+            { type: 'spacer', span: 'flex-auto' },
+            { type: 'search' },
+            { type: 'insert-button', showIcon: true },
           ],
         };
       }
