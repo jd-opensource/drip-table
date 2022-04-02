@@ -303,7 +303,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'string' },
         ],
       },
-      default: {},
+      defaultValue: {},
       description: { type: 'string' },
       fixed: {
         anyOf: [

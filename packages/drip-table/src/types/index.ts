@@ -54,7 +54,7 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
   /**
    * 默认数据
    */
-  default?: unknown;
+  defaultValue?: unknown;
   /**
    * 表头说明
    */

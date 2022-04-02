@@ -361,7 +361,7 @@ const DripTable = <
         return (value, record, index) => (
           <BuiltInComponent
             driver={props.driver}
-            value={value}
+            value={value ?? schema.defaultValue}
             data={record}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
             fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
@@ -385,7 +385,7 @@ const DripTable = <
           return (value, record, index) => (
             <ExtraComponent
               driver={props.driver}
-              value={value}
+              value={value ?? schema.defaultValue}
               data={record}
               schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={props.ext}
