@@ -232,6 +232,13 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
         ],
       },
       ext: {},
+      sticky: {
+        properties: {
+          offsetHeader: { type: 'number' },
+          offsetScroll: { type: 'number' },
+          getContainer: { instanceof: 'Function' },
+        },
+      },
       title: { instanceof: 'Function' },
       footer: { instanceof: 'Function' },
       subtableTitle: { instanceof: 'Function' },

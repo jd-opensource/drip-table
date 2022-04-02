@@ -79,6 +79,14 @@ export interface DripTableProps<
    */
   loading?: boolean;
   /**
+   * 粘性头部和滚动条设置项
+   */
+  sticky?: {
+    offsetHeader?: number;
+    offsetScroll?: number;
+    getContainer?: () => HTMLElement;
+  };
+  /**
    * 表格单元格组件库
    */
   components?: {
@@ -466,7 +474,9 @@ const DripTable = <
     size: props.schema.size,
     bordered: props.schema.bordered,
     showHeader: props.schema.showHeader,
-    sticky: props.schema.virtual ? false : props.schema.sticky,
+    sticky: props.schema.sticky
+      ? props.sticky ?? true
+      : false,
     title: props.title,
     footer: props.footer,
     expandable: React.useMemo(

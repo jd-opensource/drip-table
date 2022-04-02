@@ -32,7 +32,11 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   size?: 'large' | 'middle' | 'small';
   bordered?: boolean;
   showHeader?: boolean;
-  sticky?: boolean;
+  sticky?: boolean | {
+    offsetHeader?: number;
+    offsetScroll?: number;
+    getContainer?: () => HTMLElement;
+  };
   expandable?: {
     expandedRowKeys?: readonly React.Key[];
     defaultExpandedRowKeys?: readonly React.Key[];

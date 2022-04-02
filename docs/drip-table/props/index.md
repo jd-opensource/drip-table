@@ -22,6 +22,7 @@ title: 总览
 | [components](/drip-table/props/components) | 表格单元格组件库 | × | [🔗 示例](/drip-table/props/components) |
 | [slots](/drip-table/props/slots) | 组件插槽，可通过 Schema 控制自定义区域渲染 | × | [🔗 示例](/drip-table/props/slots) |
 | [ext](/drip-table/props/ext) | 自定义组件附加透传数据 | × | [🔗 示例](/drip-table/props/ext) |
+| [sticky](/drip-table/props/sticky) | 粘性头部和滚动条设置项 | × | [🔗 示例](/drip-table/props/sticky) |
 | [title](/drip-table/props/title) | 顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/title) |
 | [footer](/drip-table/props/footer) | 底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/footer) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
