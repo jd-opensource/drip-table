@@ -125,6 +125,10 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
   const dripTableSchema: SchemaObject = {
     properties: {
       id: { typeof: ['number', 'string'] },
+      className: { type: 'string' },
+      style: { typeof: 'object' },
+      innerClassName: { type: 'string' },
+      innerStyle: { typeof: 'object' },
       bordered: { type: 'boolean' },
       showHeader: { type: 'boolean' },
       header: {
