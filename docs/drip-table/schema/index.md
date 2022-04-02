@@ -25,4 +25,4 @@ title: 总览
 | [virtual](/drip-table/schema/virtual) | 是否开启虚拟滚动 | × | [🔗 示例](/drip-table/schema/virtual) |
 | [columns](/drip-table/schema/columns) | 列定义 | √ | [🔗 示例](/drip-table/schema/columns) |
 | [rowKey](/drip-table/schema/row-key) | 表格行主键 | × | [🔗 示例](/drip-table/schema/row-key) |
-| [subtable](/drip-table/schema/subtable) | 表格行主键 | × | [🔗 示例](/drip-table/schema/subtable) |
+| [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
