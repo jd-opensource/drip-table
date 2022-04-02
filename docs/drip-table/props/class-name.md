@@ -55,12 +55,15 @@ const dataSource = [
 
 const Demo = () => {
   return (
-    <DripTable
-      driver={DripTableDriverAntDesign}
-      schema={schema}
-      dataSource={dataSource}
-      className="demo-drip-table-class-name"
-    />
+    <React.Fragment>
+      <DripTable
+        driver={DripTableDriverAntDesign}
+        schema={schema}
+        dataSource={dataSource}
+        className="demo-drip-table-class-name"
+      />
+      <style>{ '.demo-drip-table-class-name { background: #ffb4b4; border: 1px solid #ffb4b4; }' }</style>
+    </React.Fragment>
   );
 };
 
