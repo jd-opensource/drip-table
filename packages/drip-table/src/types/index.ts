@@ -40,14 +40,6 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   title: string;
   /**
-   * 表格列宽
-   */
-  width?: string | number;
-  /**
-   * 表格列对齐
-   */
-  align?: 'left' | 'center' | 'right';
-  /**
    * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
    */
   dataIndex: string | string[];
@@ -55,6 +47,14 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据
    */
   defaultValue?: unknown;
+  /**
+   * 表格列宽
+   */
+  width?: string | number;
+  /**
+   * 表格列对齐
+   */
+  align?: 'left' | 'center' | 'right';
   /**
    * 表头说明
    */
