@@ -174,13 +174,6 @@ export interface DripTableSchema<
    */
   ellipsis?: boolean;
   /**
-   * 无数据提示
-   */
-  placeholder?: {
-    image: string;
-    text: string;
-  };
-  /**
    * 是否开启虚拟滚动
    */
   virtual?: boolean;

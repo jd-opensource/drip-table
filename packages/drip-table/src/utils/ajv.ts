@@ -176,12 +176,6 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       },
       rowSelection: { type: 'boolean' },
       ellipsis: { type: 'boolean' },
-      placeholder: {
-        properties: {
-          image: { type: 'string' },
-          text: { type: 'string' },
-        },
-      },
       virtual: { type: 'boolean' },
       scrollY: { type: 'number' },
       columns: {
