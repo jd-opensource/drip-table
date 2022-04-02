@@ -15,13 +15,23 @@
  */
 export const indexValue = (data: unknown, indexes: string | string[], defaultValue: unknown = void 0) => {
   if (typeof data !== 'object' || !data) {
-    return void 0;
+    return defaultValue;
   }
   if (typeof indexes === 'string') {
-    return data[indexes];
+    return indexes in data
+      ? data[indexes]
+      : defaultValue;
   }
   if (Array.isArray(indexes)) {
-    return indexes.reduce((d, key) => (d ? d[key] : void 0), data);
+    for (const k of indexes) {
+      if (data && typeof data === 'object' && k in data) {
+        data = data[k];
+      } else {
+        data = defaultValue;
+        break;
+      }
+    }
+    return data;
   }
   return defaultValue;
 };
