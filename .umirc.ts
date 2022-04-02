@@ -60,6 +60,19 @@ const umiConfig: IConfig = {
         ],
       },
       {
+        title: '案例展示',
+        path: '/drip-table/sample',
+        children: [],
+      },
+      {
+        title: '类型',
+        path: '/drip-table/types',
+        children: [
+          '/drip-table/types/generic-render-element',
+          '/drip-table/types/column-schema',
+        ],
+      },
+      {
         title: '参数',
         path: '/drip-table/props',
         children: [
@@ -143,21 +156,8 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '类型',
-        path: '/drip-table/types',
-        children: [
-          '/drip-table/types/generic-render-element',
-          '/drip-table/types/column-schema',
-        ],
-      },
-      {
         title: '常见问题',
         path: '/drip-table/faq',
-      },
-      {
-        title: '案例展示',
-        path: '/drip-table/sample',
-        children: [],
       },
       {
         title: '更新日志',
