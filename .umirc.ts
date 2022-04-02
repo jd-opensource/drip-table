@@ -79,6 +79,7 @@ const umiConfig: IConfig = {
           '/drip-table/props/components',
           '/drip-table/props/slots',
           '/drip-table/props/ext',
+          '/drip-table/props/sticky',
           '/drip-table/props/title',
           '/drip-table/props/footer',
           '/drip-table/props/subtable-title',
