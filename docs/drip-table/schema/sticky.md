@@ -1,23 +1,14 @@
 # sticky
 
-- 描述：粘性头部和滚动条设置项
-- 类型：
-
-  ```typescript
-  interface Sticky {
-    offsetHeader?: number;
-    offsetScroll?: number;
-    getContainer?: () => HTMLElement;
-  }
-  ```
-
-- 默认值：`undefined`
-- 更多内容：该属性仅为粘性头部环境配置，多用于页面存在导航栏或内部滚动等场景，需要配合 [`schema.sticky`](/drip-table/schema/sticky) 设置项开启表格粘性头部开关才能使用。
+- 描述：粘性头部
+- 类型：`boolean`
+- 默认值：`false`
+- 更多内容：页面如果存在导航栏或内部滚动，可能需要配合 [`props.sticky`](/drip-table/props/sticky) 属性使用。
 
 ```jsx
 /**
  * transform: true
- * defaultShowCode: true
+ * defaultShowCode: false
  * hideActions: ["CSB"]
  */
 import React from "react";
@@ -28,6 +19,9 @@ import "drip-table/dist/index.css";
 
 const schema = {
   sticky: true,
+  pagination: {
+    pageSize: 50,
+  },
   columns: [
     {
       key: "mock_1",
@@ -47,7 +41,7 @@ const schema = {
   ],
 };
 
-const dataSource = Array(10).fill(0).map((_, i) => ({
+const dataSource = Array(50).fill(0).map((_, i) => ({
   id: i,
   name: "商品" + i,
   price: 7999,
@@ -61,11 +55,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      sticky={{
-        offsetHeader: 64,
-        offsetScroll: 0,
-        getContainer: () => document.documentElement,
-      }}
+      sticky={{ offsetHeader: 64 }}
     />
   );
 };

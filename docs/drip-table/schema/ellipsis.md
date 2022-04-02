@@ -1,23 +1,13 @@
-# sticky
+# ellipsis
 
-- 描述：粘性头部和滚动条设置项
-- 类型：
-
-  ```typescript
-  interface Sticky {
-    offsetHeader?: number;
-    offsetScroll?: number;
-    getContainer?: () => HTMLElement;
-  }
-  ```
-
+- 描述：是否平均列宽，超过单元格宽度部分将不可见
+- 类型：`boolean`
 - 默认值：`undefined`
-- 更多内容：该属性仅为粘性头部环境配置，多用于页面存在导航栏或内部滚动等场景，需要配合 [`schema.sticky`](/drip-table/schema/sticky) 设置项开启表格粘性头部开关才能使用。
 
 ```jsx
 /**
  * transform: true
- * defaultShowCode: true
+ * defaultShowCode: false
  * hideActions: ["CSB"]
  */
 import React from "react";
@@ -27,7 +17,7 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
-  sticky: true,
+  ellipsis: true,
   columns: [
     {
       key: "mock_1",
@@ -38,6 +28,22 @@ const schema = {
     },
     {
       key: "mock_2",
+      title: "商品详情",
+      align: "center",
+      dataIndex: "description",
+      component: "text",
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
+    },
+    {
+      key: "mock_3",
+      title: "商品详情",
+      align: "center",
+      dataIndex: "description",
+      component: "text",
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
+    },
+    {
+      key: "mock_4",
       title: "商品详情",
       align: "center",
       dataIndex: "description",
@@ -61,11 +67,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      sticky={{
-        offsetHeader: 64,
-        offsetScroll: 0,
-        getContainer: () => document.documentElement,
-      }}
+      sticky={{ offsetHeader: 64 }}
     />
   );
 };
