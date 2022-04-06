@@ -297,6 +297,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
       title: { type: 'string' },
       width: { typeof: ['string', 'number'] },
       align: { enum: ['left', 'center', 'right'] },
+      verticalAlign: { enum: ['top', 'middle', 'bottom'] },
       dataIndex: {
         anyOf: [
           { type: 'array', items: { type: 'string' } },

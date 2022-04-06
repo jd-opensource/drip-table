@@ -79,6 +79,10 @@ export interface DripTableDriver {
     }>;
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
+      gutter?: number | [number, number] | { xs: number; sm: number; md: number };
+      justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+      align?: 'top' | 'middle' | 'bottom';
+      wrap?: boolean;
     }>;
     Select: (
       <VT extends string | number | (string | number)[]>(props: React.PropsWithChildren<{

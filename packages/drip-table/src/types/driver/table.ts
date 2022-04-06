@@ -15,6 +15,7 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   columns?: {
     width?: string | number;
     align?: 'left' | 'center' | 'right';
+    className?: string;
     title?: string | JSX.Element;
     dataIndex?: string | string[];
     fixed?: 'left' | 'right' | boolean;
