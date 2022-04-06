@@ -52,9 +52,13 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   width?: string | number;
   /**
-   * 表格列对齐
+   * 表格列水平对齐方式
    */
   align?: 'left' | 'center' | 'right';
+  /**
+   * 表格列垂直对齐方式
+   */
+  verticalAlign?: 'top' | 'middle' | 'bottom';
   /**
    * 表头说明
    */

@@ -7,6 +7,7 @@
  */
 
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
+import DTCGroup from './group';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
@@ -37,5 +38,6 @@ const DripTableBuiltInComponents = {
   [DTCTag.componentName]: DTCTag,
   [DTCRenderHTML.componentName]: DTCRenderHTML,
   [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
+  [DTCGroup.componentName]: DTCGroup,
 };
 export default DripTableBuiltInComponents;

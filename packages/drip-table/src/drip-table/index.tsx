@@ -364,6 +364,7 @@ const DripTable = <
             value={value ?? schema.defaultValue}
             data={record}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
+            ext={props.ext}
             fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
           />
         );
@@ -410,6 +411,7 @@ const DripTable = <
     }
     const column: TableColumn = {
       width,
+      className: schemaColumn.verticalAlign ? classnames(styles[`drip-table-vertical-${schemaColumn.verticalAlign}`], props.className) : props.className,
       align: schemaColumn.align,
       title: schemaColumn.title,
       dataIndex: schemaColumn.dataIndex,
