@@ -1,5 +1,6 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import button from './button';
+import group from './group';
 import links from './links';
 import image from './picture';
 import renderHtml from './render-html';
@@ -14,11 +15,16 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   button,
 ];
 
+const containerComponentList: DripTableComponentAttrConfig[] = [
+  group,
+];
+
 const customComponentList: DripTableComponentAttrConfig[] = [
   renderHtml,
 ];
 
 export default [
   ...baseComponentList,
+  ...containerComponentList,
   ...customComponentList,
 ] as DripTableComponentAttrConfig[];

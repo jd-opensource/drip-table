@@ -13,7 +13,7 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents,
     {
-      name: 'ui:props.render',
+      name: 'options.render',
       group: '代码编辑',
       'ui:title': '代码编辑',
       'ui:type': 'code-editor',

@@ -9,6 +9,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Popover, Select } from 'antd';
 import React from 'react';
 
+import { DataSchema } from '@/typing';
+
 import { DTGComponentBaseProperty } from '..';
 
 type SelectProps = React.ComponentProps<typeof Select>;
@@ -63,6 +65,17 @@ export default class SelectComponent extends React.PureComponent<Props> {
     return { ...option };
   }
 
+  public transform(value: SelectValueType) {
+    const config = this.props.schema;
+    if (config.type === 'array'
+      && typeof config.items === 'object'
+      && (config.items as DataSchema).type === 'number'
+    ) {
+      return (value as string[]).map(item => Number(item));
+    }
+    return value;
+  }
+
   public render() {
     const config = this.props.schema;
     const uiProps = this.props.schema['ui:props'] || {};
@@ -78,7 +91,17 @@ export default class SelectComponent extends React.PureComponent<Props> {
         value={this.formattedValue}
         options={(this.options as SelectOptionType[] || [])}
         onChange={(value) => {
-          this.props.onChange?.(value);
+          const formattedValue = this.transform(value);
+          this.props.onChange?.(formattedValue);
+          if (config.validate) {
+            const res = config.validate(formattedValue);
+            (res instanceof Promise ? res : Promise.resolve(res))
+              .then((message) => {
+                this.props.onValidate?.(message);
+                return message;
+              })
+              .catch((error) => { throw error; });
+          }
         }}
       />
     );

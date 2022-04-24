@@ -157,13 +157,7 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
       containerWidth += Math.max(minWidth, width + 2, 120);
     }
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: `${containerWidth}px`,
-      }}
-      >
+      <div className={styles['draggable-container']} style={{ width: `${containerWidth}px` }}>
         { this.createDraggleComponent(value, style, uuid, render, codeKey) }
       </div>
     );

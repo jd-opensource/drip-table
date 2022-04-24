@@ -24,10 +24,8 @@ export type DTCGroupColumnSchema<CustomComponentSchema> = DripTableColumnSchema<
   horizontalAlign?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
   /** 布局配置：垂直排列对齐方式 */
   verticalAlign?: 'top' | 'middle' | 'bottom';
-  /** 布局配置：行数 */
-  row: number;
   /** 布局配置：每行列数 */
-  col: number[];
+  layout: number[];
   /** 布局配置：行列间隔 */
   gutter?: [number, number];
   /** 布局配置：是否自动换行 */
@@ -53,6 +51,42 @@ export default class DTCGroup<
  ExtraOptions extends Partial<DripTableExtraOptions> = never,
  > extends React.PureComponent<DTCGroupProps<RecordType, ExtraOptions>, DTCGroupState> {
   public static componentName: DTCGroupColumnSchema<DripTableExtraOptions['CustomColumnSchema']>['component'] = 'group';
+  public static schema: SchemaObject = {
+    properties: {
+      horizontalAlign: { enum: ['start', 'end', 'center', 'space-around', 'space-between'] },
+      verticalAlign: { enum: ['top', 'middle', 'bottom'] },
+      layout: { type: 'array', items: { type: 'number' } },
+      gutter: { type: 'array', items: { type: 'number' } },
+      wrap: { type: 'boolean' },
+      offset: { type: 'array', items: { type: 'number' } },
+      items: {
+        type: 'array',
+        items: {
+          oneOf: [
+            { type: 'null' },
+            {
+              type: 'object',
+              properties: {
+                key: { type: 'string' },
+                component: { type: 'string' },
+                options: { type: 'object' },
+                width: { typeof: ['string', 'number'] },
+                align: { enum: ['left', 'center', 'right'] },
+                verticalAlign: { enum: ['top', 'middle', 'bottom'] },
+                dataIndex: {
+                  anyOf: [
+                    { type: 'array', items: { type: 'string' } },
+                    { type: 'string' },
+                  ],
+                },
+              },
+              required: ['component'],
+            },
+          ],
+        },
+      },
+    },
+  };
 
   /**
    * 根据组件类型，生成表格渲染器
@@ -100,7 +134,7 @@ export default class DTCGroup<
     const schemaItems = schema.options.items ?? [];
     let index = 0;
     for (let i = 0; i < row; i++) {
-      index += schema.options.col[i];
+      index += schema.options.layout[i];
     }
     index += col;
     const schemaItem = schemaItems[index];
@@ -108,12 +142,15 @@ export default class DTCGroup<
   }
 
   public render() {
-    const schema = this.props.schema;
-    const rows = [...Array.from({ length: schema.options.row || 1 }).keys()];
-    if (schema.options.row !== schema.options.col.length) {
-      return 'rows cannot match cols';
-    }
     const { Row, Col } = this.props.driver.components;
+    const schema = this.props.schema;
+    const rowLength = schema.options.layout?.length;
+    const rows = [...Array.from({ length: rowLength }).keys()];
+    /*
+     * if (!schema.options.layout || !rowLength) {
+     *   return <Alert message="missing config of layout" type="error" showIcon />;
+     * }
+     */
     return (
       <div>
         {
@@ -129,7 +166,8 @@ export default class DTCGroup<
                align={schema.options.verticalAlign}
                wrap={schema.options.wrap}
              >
-               { [...Array.from({ length: schema.options.col[index] || 1 }).keys()]
+               { schema.options.layout[index]
+               && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
                  .map(col => <Col key={col}>{ this.renderCell(Number(row), Number(col)) }</Col>) }
              </Row>
            ))

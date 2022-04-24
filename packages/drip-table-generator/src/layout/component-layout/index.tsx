@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { DripTableColumnSchema } from 'drip-table';
 import chunk from 'lodash/chunk';
 import React from 'react';
 
@@ -16,6 +17,7 @@ import components from '@/table-components';
 import { DripTableComponentAttrConfig } from '@/typing';
 
 import { defaultComponentIcon } from '../configs';
+import { updateColumnItemByPath } from '../utils';
 
 import styles from './index.module.less';
 
@@ -31,6 +33,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
   const getGroups = () => {
     let groups = [
       '基础组件',
+      '容器组件',
       '自定义组件',
     ];
     if (props.customComponentPanel) {
@@ -61,6 +64,20 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
     <div
       className={styles['component-container']}
       onClick={() => {
+        if (state.currentColumn && (state.currentColumnPath?.length || 0) > 0) {
+          const columnItemSchema: DripTableColumnSchema = {
+            key: `${item['ui:type']}_${mockId()}`,
+            dataIndex: '',
+            title: item.title,
+            width: void 0,
+            description: '',
+            component: item['ui:type'],
+            options: {},
+          };
+          updateColumnItemByPath(state.currentColumn, state.currentColumnPath || [], columnItemSchema);
+          globalActions.editColumns(store);
+          return;
+        }
         const columnSchema: DripTableColumn = {
           key: `${item['ui:type']}_${mockId()}`,
           dataIndex: '',

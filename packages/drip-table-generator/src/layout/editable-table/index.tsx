@@ -7,9 +7,9 @@
  */
 
 import { CloseCircleTwoTone } from '@ant-design/icons';
-import { Empty, Result } from 'antd';
+import { Col, Empty, Result, Row } from 'antd';
 import classnames from 'classnames';
-import { builtInComponents, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
+import { builtInComponents, DripTableBuiltInColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
@@ -29,12 +29,19 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   const [state, actions] = props.store;
   const store = { state, setState: actions };
 
-  const previewComponentRender = (column: DripTableColumn) => {
-    const [libName, componentName] = column.component?.includes('::') ? column.component.split('::') : ['', column.component];
+  const previewComponentRender = (
+    column: DripTableBuiltInColumnSchema | null,
+    extraOptions?: {
+      isCurrentColumn?: boolean;
+      parentIndex?: number[];
+      isChildren?: boolean;
+    },
+  ) => {
+    const [libName, componentName] = column?.component?.includes('::') ? column.component.split('::') : ['', column?.component || ''];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
     const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
     const record = state.previewDataSource?.[0] || {} as Record<string, unknown>;
-    const value = column.dataIndex ? get(record, column.dataIndex) : record;
+    const value = column?.dataIndex ? get(record, column.dataIndex) : record;
 
     const errorBoundary = () => {
       let color = '#F00';
@@ -57,23 +64,90 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
       );
     };
 
-    return (
-      <div style={{ height: '120px', overflow: 'auto' }}>
-        <div className={styles['table-cell']} style={{ width: column.width || 120 }}>
-          { DripTableComponent && hasRecord
-            ? (
-              <DripTableComponent
-                driver={props.driver || DripTableDriverAntDesign}
-                value={value as unknown}
-                data={record}
-                schema={column}
-                preview={{}}
-              />
-            )
-            : errorBoundary() }
+    const isChecked = (currentCheckedIndex: number) => {
+      const currentColumnPath = [...extraOptions?.parentIndex || [], currentCheckedIndex];
+      const stateColumnPath = state.currentColumnPath || [];
+      return extraOptions?.isCurrentColumn && currentColumnPath.join('.') === stateColumnPath.join('.');
+    };
+
+    // render group column and handler options.items
+    if (column?.component === 'group') {
+      const gutter = column.options.gutter ?? [0, 0];
+      return (
+        <div style={{ height: '120px', overflow: 'hidden' }}>
+          <div className={styles['table-cell']} style={{ width: column?.width || 120 }}>
+            { column.options.layout?.map((layout, index) => (
+              <Row
+                key={index}
+                className={styles['row-margin']}
+                style={{
+                  flexFlow: column.options.wrap ? 'row wrap' : 'nowrap',
+                  justifyContent: column.options.horizontalAlign,
+                  width: 'calc(100% - 4px)',
+                  height: 120 / column.options.layout.length - gutter[1],
+                }}
+                gutter={gutter}
+                justify={column.options.horizontalAlign}
+                wrap={column.options.wrap}
+              >
+                { Array.from({ length: layout }, (v, i) => i).map((col, i) => {
+                  const currentCheckedIndex = column.options.layout.slice(0, index).reduce((sum, j) => sum + j, i);
+                  return (
+                    <Col
+                      className={classnames(styles['linear-stripe'], isChecked(currentCheckedIndex) ? styles['checked-stripe'] : '')}
+                      key={i}
+                      style={{
+                        width: (Number(column?.width) || 120) / layout - gutter[0],
+                        height: '100%',
+                        overflow: 'auto',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!extraOptions?.isCurrentColumn) { return; }
+                        state.currentColumnPath = isChecked(currentCheckedIndex)
+                          ? []
+                          : [...extraOptions?.parentIndex || [], currentCheckedIndex];
+                        globalActions.updateColumnPath(store);
+                      }}
+                    >
+                      { column.options.items[currentCheckedIndex]
+                        ? previewComponentRender(column.options.items[currentCheckedIndex], {
+                          isCurrentColumn: extraOptions?.isCurrentColumn,
+                          parentIndex: [...extraOptions?.parentIndex || [], currentCheckedIndex],
+                          isChildren: true,
+                        })
+                        : null }
+                    </Col>
+                  );
+                }) }
+              </Row>
+            )) }
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    // render normal column and preview component
+    const componentPreviewCell = DripTableComponent && hasRecord
+      ? (
+        <DripTableComponent
+          driver={props.driver || DripTableDriverAntDesign}
+          value={value as unknown}
+          data={record}
+          schema={column}
+          preview={{}}
+        />
+      )
+      : errorBoundary();
+    return extraOptions?.isChildren
+      ? componentPreviewCell
+      : (
+        <div style={{ height: '120px', overflow: 'auto' }}>
+          <div className={styles['table-cell']} style={{ width: column?.width || 120 }}>
+            { componentPreviewCell }
+          </div>
+        </div>
+      );
   };
 
   const renderTableCell = (col: DripTableColumn) => {
@@ -87,12 +161,18 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
         style={{ width }}
         className={classnames(styles.column, { checked: isCurrent })}
         onClick={() => {
+          if (col.key !== state.currentColumn?.key) {
+            state.currentColumnPath = [];
+          }
           state.currentColumn = isCurrent ? void 0 : col;
           globalActions.checkColumn(store);
         }}
       >
         <div className={styles['column-title']}>{ col.title }</div>
-        { previewComponentRender(col) }
+        { previewComponentRender(col as DripTableBuiltInColumnSchema,
+          {
+            isCurrentColumn: isCurrent ?? false,
+          }) }
         { isCurrent && (
         <CloseCircleTwoTone
           className={styles['close-icon']}

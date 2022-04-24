@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     ...dataIndexColumnAttrComponents(),
     {
-      name: 'ui:props.imgWidth',
+      name: 'options.imageWidth',
       group: '样式配置',
       'ui:title': '图片宽度',
       'ui:type': 'number',
@@ -23,7 +23,7 @@ export default {
       default: 100,
     },
     {
-      name: 'ui:props.imgHeight',
+      name: 'options.imageHeight',
       group: '样式配置',
       'ui:title': '图片高度',
       'ui:type': 'number',
@@ -32,9 +32,17 @@ export default {
       default: 100,
     },
     {
-      name: 'ui:props.previewImg',
+      name: 'options.preview',
       group: '组件属性',
       'ui:title': '是否预览图片',
+      'ui:type': 'switch',
+      type: 'boolean',
+      default: true,
+    },
+    {
+      name: 'options.popover',
+      group: '组件属性',
+      'ui:title': '是否展示大图',
       'ui:type': 'switch',
       type: 'boolean',
       default: true,
