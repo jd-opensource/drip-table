@@ -1,5 +1,6 @@
 .column {
   width: 120px;
+  min-width: 56px;
   border-radius: 2px;
   border: 2px dashed #f3f3f3;
 
@@ -45,4 +46,30 @@
   vertical-align: middle;
   display: table-cell;
   position: relative;
+}
+
+.row-margin {
+  margin: 0 !important;
+}
+
+.linear-stripe {
+  background:
+    linear-gradient(
+      45deg,
+      var(--drip-table-background-color) 0,
+      var(--drip-table-background-color) 25%,
+      transparent 25%,
+      transparent 50%,
+      var(--drip-table-background-color) 50%,
+      var(--drip-table-background-color) 75%,
+      transparent 75%,
+      transparent 100%
+    );
+  background-size: 50px 50px;
+  padding: 6px 6px;
+  border: 1px dashed var(--drip-table-border-color);
+}
+
+.checked-stripe {
+  border-style: solid;
 }

@@ -13,7 +13,7 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents,
     {
-      name: 'ui:props.mode',
+      name: 'options.mode',
       group: '组件属性',
       'ui:title': '模式',
       'ui:type': 'radio',
@@ -27,31 +27,31 @@ export default {
       default: 'single',
     },
     {
-      name: 'ui:props.label',
+      name: 'options.label',
       group: '组件属性',
       'ui:title': '链接文案',
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.href',
+      name: 'options.href',
       group: '组件属性',
       'ui:title': '链接地址',
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.target',
+      name: 'options.target',
       group: '组件属性',
       'ui:title': '链接打开方式',
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.event',
+      name: 'options.event',
       group: '组件属性',
       'ui:title': '事件名称',
       'ui:description': {
@@ -61,15 +61,15 @@ export default {
       },
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.operates',
+      name: 'options.operates',
       group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
       default: [],
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'multiple',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
       'ui:props': {
         items: [
           {

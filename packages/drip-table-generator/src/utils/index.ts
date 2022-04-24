@@ -46,6 +46,7 @@ export const filterAttributes = <T>(record: T, excludeAttrs: string | string[]) 
   if (typeof excludeAttrs === 'string') { excludeAttrs = [excludeAttrs]; }
   const finalObject = { ...record };
   excludeAttrs.forEach((key) => {
+    finalObject[key] = void 0;
     delete finalObject[key];
   });
   return { ...finalObject } as Omit<T, keyof typeof excludeAttrs>;
@@ -68,7 +69,10 @@ export const filterAttributesByRegExp = <T>(record: T, exp: RegExp) => {
  */
 export const generateColumn = (column: DripTableColumn) => {
   const columnSchema: (DripTableColumnSchema | DripTableBuiltInColumnSchema) = {
-    ...filterAttributes(column, ['index', 'sort', 'type']),
+    ...filterAttributes(
+      filterAttributesByRegExp(column, /^(options|ui:props)\./u) as DripTableColumnSchema,
+      ['index', 'sort', 'type', 'dataIndexMode'],
+    ),
     component: column.component,
     options: { ...column.options },
   };

@@ -8,7 +8,7 @@
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
-import { DripTableDriver, DripTableGenericRenderElement } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableDriver, DripTableGenericRenderElement } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
@@ -18,9 +18,11 @@ import { DripTableColumn, globalActions, GlobalSchema, GlobalStore } from '@/sto
 import CustomForm from '@/components/CustomForm';
 import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
+import { basicColumnAttrComponents } from '@/table-components/configs';
 import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from '../configs';
+import { getColumnItemByPath, updateColumnItemByPath } from '../utils';
 import { CollapseIcon, TabsIcon } from './icons';
 
 import styles from './index.module.less';
@@ -198,18 +200,40 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   };
 
   const encodeColumnConfigs = (formData: { [key: string]: unknown }): DripTableColumn => {
-    const uiProps = {};
+    const uiProps: Record<string, unknown> = {};
     const dataProps = {};
     Object.keys(formData).forEach((key) => {
-      if (key.startsWith('ui:props.')) {
+      if (key.startsWith('options.')) {
+        uiProps[key.replace('options.', '')] = formData[key];
+      } else if (key.startsWith('ui:props.')) {
         uiProps[key.replace('ui:props.', '')] = formData[key];
       } else {
         dataProps[key] = formData[key];
       }
     });
+    if (state.currentColumn?.component === 'group') {
+      const length = (uiProps.layout as number[])?.reduce((p, v) => p + v, 0) || 0;
+      uiProps.items = Array.from({ length }, _ => null);
+      if (state.currentColumn.options.items) {
+        (state.currentColumn.options.items as Record<string, unknown>[])
+          .slice(0, length)
+          .forEach((item, i) => { (uiProps.items as Record<string, unknown>[])[i] = item; });
+      }
+    }
     // const columnConfig = getComponents().find(item => item['ui:type'] === state.currentColumn?.component);
     return {
-      ...filterAttributes(dataProps, ['ui:props', 'ui:type', 'type', 'name', 'dataIndex', 'title', 'width', 'group']),
+      ...filterAttributes(dataProps, [
+        'options',
+        'component',
+        'ui:props',
+        'ui:type',
+        'type',
+        'name',
+        'dataIndex',
+        'title',
+        'width',
+        'group',
+      ]),
       key: state.currentColumn?.key ?? '',
       index: state.currentColumn?.index ?? 0,
       sort: state.currentColumn?.sort ?? 0,
@@ -219,6 +243,53 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       component: state.currentColumn?.component ?? '',
       options: uiProps,
     };
+  };
+
+  const encodeColumnConfigsByPath = (formData: { [key: string]: unknown }): DripTableColumnSchema | DripTableBuiltInColumnSchema | null => {
+    const uiProps: Record<string, unknown> = {};
+    const dataProps = {};
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith('options.')) {
+        uiProps[key.replace('options.', '')] = formData[key];
+      } else if (key.startsWith('ui:props.')) {
+        uiProps[key.replace('ui:props.', '')] = formData[key];
+      } else {
+        dataProps[key] = formData[key];
+      }
+    });
+    if (state.currentColumn) {
+      const currentColumnItem = getColumnItemByPath(state.currentColumn, state.currentColumnPath || []);
+      if (currentColumnItem?.component === 'group') {
+        const length = (uiProps.layout as number[])?.reduce((p, v) => p + v, 0) || 0;
+        uiProps.items = Array.from({ length }, _ => null);
+        if (currentColumnItem.options.items) {
+          currentColumnItem.options.items.slice(0, length).forEach((item, i) => {
+            (uiProps.items as Record<string, unknown>[])[i] = item;
+          });
+        }
+      }
+
+      return {
+        ...filterAttributes(dataProps, [
+          'options',
+          'component',
+          'ui:props',
+          'ui:type',
+          'type',
+          'name',
+          'dataIndex',
+          'title',
+          'width',
+          'group',
+        ]),
+        key: currentColumnItem.key,
+        title: '',
+        dataIndex: formData.dataIndex as string | string[],
+        component: currentColumnItem.component ?? '',
+        options: uiProps,
+      };
+    }
+    return null;
   };
 
   const submitTableData = (codeValue?: string) => {
@@ -261,16 +332,8 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     />
   );
 
-  const renderColumnForm = () => {
-    if (!state.currentColumn) {
-      return (
-        <Result
-          icon={<ExclamationCircleTwoTone />}
-          title={<div style={{ color: '#999' }}>请点击选择要编辑的列</div>}
-        />
-      );
-    }
-    const columnConfig = getComponents().find(schema => schema['ui:type'] === state.currentColumn?.component);
+  const getColumnConfigs = (componentType: string) => {
+    const columnConfig = getComponents().find(schema => schema['ui:type'] === componentType);
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {
@@ -295,13 +358,28 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         });
       }
     });
+    return columnConfig;
+  };
+
+  const errorBoundary = (message?: string) => (
+    <Result
+      icon={<ExclamationCircleTwoTone />}
+      title={<div style={{ color: '#999' }}>{ message }</div>}
+    />
+  );
+
+  const renderColumnForm = () => {
+    if (!state.currentColumn) {
+      return errorBoundary('请点击选择要编辑的列');
+    }
+    const columnConfig = getColumnConfigs(state.currentColumn?.component || '');
     return (
       <CustomForm<DripTableColumn>
         primaryKey="key"
         configs={columnConfig ? columnConfig.attrSchema || [] : []}
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
-        extendKeys={['ui:props']}
+        extendKeys={['ui:props', 'options']}
         groupType={formDisplayMode}
         theme={props.driver}
         onChange={(data) => {
@@ -312,6 +390,40 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           }
           globalActions.editColumns(store);
           globalActions.checkColumn(store);
+        }}
+      />
+    );
+  };
+
+  const renderColumnFormItem = () => {
+    if (!state.currentColumn || (state.currentColumnPath?.length || 0) <= 0) {
+      return errorBoundary('请点击选择要编辑的子元素');
+    }
+    const currentColumnItem = getColumnItemByPath(state.currentColumn, state.currentColumnPath || []);
+    const columnConfig = getColumnConfigs(currentColumnItem?.component || '');
+    const tableCellBaseProps = new Set(basicColumnAttrComponents.map(prop => prop.name));
+    if (columnConfig) {
+      columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !tableCellBaseProps.has(item.name));
+    }
+    if (!currentColumnItem || !currentColumnItem.component) {
+      return errorBoundary('子元素暂未配置组件');
+    }
+    return (
+      <CustomForm<DripTableColumnSchema | DripTableBuiltInColumnSchema | null>
+        primaryKey="key"
+        configs={columnConfig ? columnConfig.attrSchema || [] : []}
+        data={currentColumnItem}
+        encodeData={encodeColumnConfigsByPath}
+        extendKeys={['ui:props', 'options']}
+        groupType={formDisplayMode}
+        theme={props.driver}
+        onChange={(data) => {
+          console.debug(data);
+          if (data && state.currentColumn) {
+            const schema = { ...filterAttributes(data, ['index', 'sort', 'title']) };
+            updateColumnItemByPath(state.currentColumn, state.currentColumnPath || [], schema);
+            globalActions.editColumns(store);
+          }
         }}
       />
     );
@@ -342,6 +454,13 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
               { renderColumnForm() }
             </div>
           </TabPane>
+          { (state.currentColumnPath?.length || 0) > 0 && (
+          <TabPane tab="子组件属性" key="4" className={styles['attribute-panel']}>
+            <div className={styles['attributes-form-panel']}>
+              { renderColumnFormItem() }
+            </div>
+          </TabPane>
+          ) }
           <TabPane tab="全局设置" key="2" className={styles['attribute-panel']}>
             <div className={styles['attributes-form-panel']}>
               { renderGlobalForm() }

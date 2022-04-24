@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents,
     ...dataIndexColumnAttrComponents(),
     {
-      name: 'prefix',
+      name: 'options.prefix',
       group: '组件属性',
       'ui:title': '前缀文案',
       'ui:type': 'input',
@@ -22,7 +22,7 @@ export default {
       default: '',
     },
     {
-      name: 'suffix',
+      name: 'options.suffix',
       group: '组件属性',
       'ui:title': '后缀文案',
       'ui:type': 'input',
@@ -30,7 +30,7 @@ export default {
       default: '',
     },
     {
-      name: 'color',
+      name: 'options.color',
       group: '样式配置',
       required: false,
       'ui:title': '字体颜色',
@@ -39,7 +39,7 @@ export default {
       type: 'string',
     },
     {
-      name: 'borderColor',
+      name: 'options.borderColor',
       group: '样式配置',
       required: false,
       'ui:title': '边框颜色',
@@ -48,7 +48,7 @@ export default {
       type: 'string',
     },
     {
-      name: 'backgroundColor',
+      name: 'options.backgroundColor',
       group: '样式配置',
       required: false,
       'ui:title': '背景颜色',
@@ -57,7 +57,7 @@ export default {
       type: 'string',
     },
     {
-      name: 'radius',
+      name: 'options.radius',
       group: '样式配置',
       required: false,
       'ui:title': '圆角半径',
@@ -69,7 +69,7 @@ export default {
       type: 'string',
     },
     {
-      name: 'tagOptions',
+      name: 'options.tagOptions',
       group: '组件属性',
       required: false,
       'ui:title': '枚举值',

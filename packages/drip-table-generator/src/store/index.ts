@@ -21,6 +21,7 @@ export interface DripTableGeneratorState {
   isEdit: boolean;
   columns: DripTableColumn[];
   currentColumn?: DripTableColumn;
+  currentColumnPath?: number[];
   globalConfigs: GlobalSchema;
   /** 表格数据，generator不需要知道数据格式是什么，直接交给drip-table即可 */
   previewDataSource: DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>[];
@@ -32,6 +33,8 @@ export const defaultState: () => DripTableGeneratorState = () => ({
   columns: [],
   /** 当前选中的列 */
   currentColumn: void 0,
+  /** 当前选中列内部选中路径 */
+  currentColumnPath: [],
   /** 配置项 */
   globalConfigs: {
     pagination: false,
@@ -53,6 +56,7 @@ export type GlobalActions = {
   checkColumn: (store?: GlobalStoreObject) => void;
   updatePreviewDataSource: (store?: GlobalStoreObject) => void;
   updateGlobalConfig: (store?: GlobalStoreObject) => void;
+  updateColumnPath: (store?: GlobalStoreObject) => void;
 }
 
 export const globalActions: GlobalActions = {
@@ -71,6 +75,9 @@ export const globalActions: GlobalActions = {
   updateGlobalConfig(store) {
     const version = Number(store?.state.globalConfigs.$version) || 0;
     store?.setState({ ...store.state, globalConfigs: cloneDeep({ ...store.state.globalConfigs, $version: version + 1 }) });
+  },
+  updateColumnPath(store) {
+    store?.setState({ ...store.state, currentColumnPath: [...store.state?.currentColumnPath || []] });
   },
 };
 

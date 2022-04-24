@@ -72,8 +72,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       dataIndex: '',
       component: 'group',
       options: {
-        row: 2,
-        col: [1, 1],
+        layout: [1, 1],
         horizontalAlign: 'center',
         verticalAlign: 'middle',
         gutter: [16, 8],
@@ -81,7 +80,10 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         items: [
           {
             component: 'image',
-            options: {},
+            options: {
+              imageWidth: 86,
+              imageHeight: 86,
+            },
             dataIndex: 'pictureUrl',
           },
           {

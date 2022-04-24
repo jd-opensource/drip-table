@@ -15,7 +15,7 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents,
     {
-      name: 'ui:props.mode',
+      name: 'options.mode',
       group: '组件属性',
       'ui:title': '模式',
       'ui:type': 'radio',
@@ -29,15 +29,15 @@ export default {
       default: 'single',
     },
     {
-      name: 'ui:props.label',
+      name: 'options.label',
       group: '组件属性',
       'ui:title': '按钮文案',
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.icon',
+      name: 'options.icon',
       group: '组件属性',
       'ui:title': '按钮图标',
       'ui:type': 'auto-complete',
@@ -45,10 +45,10 @@ export default {
         options: iconOptions,
       },
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.buttonType',
+      name: 'options.buttonType',
       group: '组件属性',
       'ui:title': '按钮类型',
       'ui:type': 'radio',
@@ -62,10 +62,10 @@ export default {
         ],
       },
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.size',
+      name: 'options.size',
       group: '组件属性',
       'ui:title': '按钮尺寸',
       'ui:type': 'radio',
@@ -77,10 +77,10 @@ export default {
         ],
       },
       default: 'middle',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.shape',
+      name: 'options.shape',
       group: '组件属性',
       'ui:title': '按钮形状',
       'ui:type': 'radio',
@@ -92,10 +92,10 @@ export default {
         ],
       },
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.ghost',
+      name: 'options.ghost',
       group: '组件属性',
       'ui:title': '是否背景透明',
       'ui:type': 'switch',
@@ -104,10 +104,10 @@ export default {
         checkedChildren: '是',
       },
       default: false,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.danger',
+      name: 'options.danger',
       group: '组件属性',
       'ui:title': '是否危险按钮',
       'ui:type': 'switch',
@@ -116,10 +116,10 @@ export default {
         checkedChildren: '是',
       },
       default: false,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.event',
+      name: 'options.event',
       group: '组件属性',
       'ui:title': '事件名称',
       'ui:description': {
@@ -129,14 +129,14 @@ export default {
       },
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'single',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
-      name: 'ui:props.margin',
+      name: 'options.margin',
       group: '组件属性',
       'ui:title': '按钮间隔',
       'ui:type': 'number',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'multiple',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {
       name: 'buttons',
@@ -145,7 +145,7 @@ export default {
       'ui:type': 'array-list',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
       default: [],
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['ui:props.mode'] === 'multiple',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
       'ui:props': {
         items: [
           {

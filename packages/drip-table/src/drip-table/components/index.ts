@@ -7,7 +7,7 @@
  */
 
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
-import DTCGroup from './group';
+import DTCGroup, { DTCGroupColumnSchema } from './group';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
@@ -21,14 +21,15 @@ export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
   | DTCButtonEvent;
 
-export type DripTableBuiltInColumnSchema =
+export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCImageColumnSchema
   | DTCLinkColumnSchema
   | DTCButtonColumnSchema
   | DTCTextColumnSchema
   | DTCTagColumnSchema
   | DTCRenderHTMLColumnSchema
-  | DTCRenderHTMLRemoteColumnSchema;
+  | DTCRenderHTMLRemoteColumnSchema
+  | DTCGroupColumnSchema<CustomComponentSchema>;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,
