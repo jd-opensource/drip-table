@@ -4,6 +4,7 @@ import group from './group';
 import links from './links';
 import image from './picture';
 import renderHtml from './render-html';
+import renderHtmlRemote from './render-html-remote';
 import tag from './tag';
 import text from './text';
 
@@ -21,6 +22,7 @@ const containerComponentList: DripTableComponentAttrConfig[] = [
 
 const customComponentList: DripTableComponentAttrConfig[] = [
   renderHtml,
+  renderHtmlRemote,
 ];
 
 export default [

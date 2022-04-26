@@ -418,7 +418,6 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         groupType={formDisplayMode}
         theme={props.driver}
         onChange={(data) => {
-          console.debug(data);
           if (data && state.currentColumn) {
             const schema = { ...filterAttributes(data, ['index', 'sort', 'title']) };
             updateColumnItemByPath(state.currentColumn, state.currentColumnPath || [], schema);

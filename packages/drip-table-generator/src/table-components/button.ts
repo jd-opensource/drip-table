@@ -139,7 +139,7 @@ export default {
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {
-      name: 'buttons',
+      name: 'options.buttons',
       group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',

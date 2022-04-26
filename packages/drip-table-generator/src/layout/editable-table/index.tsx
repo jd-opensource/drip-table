@@ -74,8 +74,11 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     if (column?.component === 'group') {
       const gutter = column.options.gutter ?? [0, 0];
       return (
-        <div style={{ height: '120px', overflow: 'hidden' }}>
-          <div className={styles['table-cell']} style={{ width: column?.width || 120 }}>
+        <div style={{ height: extraOptions?.isChildren ? '100%' : '120px', overflow: 'hidden' }}>
+          <div
+            className={extraOptions?.isChildren ? '' : styles['table-cell']}
+            style={{ width: extraOptions?.isChildren ? '100%' : column?.width || 120 }}
+          >
             { column.options.layout?.map((layout, index) => (
               <Row
                 key={index}
