@@ -14,7 +14,7 @@ import { mockId } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import Icon from '@/components/Icon';
 import components from '@/table-components';
-import { DripTableComponentAttrConfig } from '@/typing';
+import { DripTableComponentAttrConfig, DripTableGeneratorPanel } from '@/typing';
 
 import { defaultComponentIcon } from '../configs';
 import { updateColumnItemByPath } from '../utils';
@@ -23,10 +23,7 @@ import styles from './index.module.less';
 
 interface Props {
   width: React.CSSProperties['width'];
-  customComponentPanel: {
-    mode: 'add' | 'replace';
-    components: DripTableComponentAttrConfig[];
-  } | undefined;
+  customComponentPanel: DripTableGeneratorPanel<DripTableComponentAttrConfig> | undefined;
 }
 
 const ComponentLayout = (props: Props & { store: GlobalStore }) => {
@@ -37,12 +34,12 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
       '自定义组件',
     ];
     if (props.customComponentPanel) {
-      const customGroups = props.customComponentPanel.components.map(item => item.group);
+      const customGroups = props.customComponentPanel.configs.map(item => item.group);
       if (props.customComponentPanel.mode === 'add') {
         const theSet = new Set([...groups, ...customGroups]);
         groups = [...theSet];
       } else {
-        groups = [...new Set(customGroups)];
+        groups = props.customComponentPanel.orders ?? [...new Set(customGroups)];
       }
     }
     return groups;
@@ -51,7 +48,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
   const getComponents = (groupName) => {
     let componentsToUse = components;
     if (props.customComponentPanel) {
-      const customComponents = props.customComponentPanel.components;
+      const customComponents = props.customComponentPanel.configs;
       componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
     }
     return [...componentsToUse].filter(item => item.group === groupName);

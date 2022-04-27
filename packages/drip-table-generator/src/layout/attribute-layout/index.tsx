@@ -19,7 +19,7 @@ import CustomForm from '@/components/CustomForm';
 import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
 import { basicColumnAttrComponents } from '@/table-components/configs';
-import { DripTableComponentAttrConfig, DTGComponentPropertySchema } from '@/typing';
+import { DripTableComponentAttrConfig, DripTableGeneratorPanel, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from '../configs';
 import { getColumnItemByPath, updateColumnItemByPath } from '../utils';
@@ -28,14 +28,8 @@ import { CollapseIcon, TabsIcon } from './icons';
 import styles from './index.module.less';
 
 interface Props {
-  customComponentPanel: {
-    mode: 'add' | 'replace';
-    components: DripTableComponentAttrConfig[];
-  } | undefined;
-  customGlobalConfigPanel: {
-    mode: 'add' | 'replace';
-    configs: DTGComponentPropertySchema[];
-  } | undefined;
+  customComponentPanel: DripTableGeneratorPanel<DripTableComponentAttrConfig> | undefined;
+  customGlobalConfigPanel: DripTableGeneratorPanel<DTGComponentPropertySchema> | undefined;
   driver: DripTableDriver;
 }
 
@@ -65,7 +59,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   const getComponents = () => {
     let componentsToUse = components;
     if (props.customComponentPanel) {
-      const customComponents = props.customComponentPanel.components;
+      const customComponents = props.customComponentPanel.configs;
       componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
     }
     return [...componentsToUse];

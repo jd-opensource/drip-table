@@ -180,9 +180,7 @@ const umiConfig: IConfig = {
         children: [
           '/drip-table-generator/functions/index.md',
           '/drip-table-generator/functions/refs.md',
-          '/drip-table-generator/functions/usage-pro.md',
           '/drip-table-generator/functions/custom.md',
-          '/drip-table-generator/functions/api.md',
         ],
       },
       {
@@ -197,6 +195,16 @@ const umiConfig: IConfig = {
           '/drip-table-generator/props/on-export-schema',
           '/drip-table-generator/props/show-component-layout',
           '/drip-table-generator/props/show-tool-layout',
+        ],
+      },
+      {
+        title: '内置组件库',
+        path: '/drip-table-generator/components',
+        children: [
+          '/drip-table-generator/components/index',
+          '/drip-table-generator/components/group',
+          '/drip-table-generator/components/lowcode',
+          '/drip-table-generator/components/cdn-link',
         ],
       },
       {

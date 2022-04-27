@@ -6,12 +6,9 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DTGComponentPropertySchema } from 'drip-table-generator';
+import { DripTableGeneratorPanel, DTGComponentPropertySchema } from 'drip-table-generator';
 
-export const CustomGlobalConfigPanel: {
-  mode: 'add' | 'replace';
-  configs: DTGComponentPropertySchema[];
-} = {
+export const CustomGlobalConfigPanel: DripTableGeneratorPanel<DTGComponentPropertySchema> = {
   mode: 'add',
   configs: [
     {

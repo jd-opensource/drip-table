@@ -2,7 +2,7 @@ import { DripTableGeneratorProps } from 'drip-table-generator';
 
 const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPanel'] = {
   mode: 'add',
-  components: [
+  configs: [
     {
       'ui:type': 'custom::TextComponent',
       type: 'string',
