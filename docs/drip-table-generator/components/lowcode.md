@@ -1,13 +1,4 @@
----
-order: 2
-title: 高级教程
----
-
-# 高级教程
-
-> 本篇主要介绍 `drip-table-generator` 的高级使用能力介绍
-
-## 一、在线 `LowCode` 组件
+# 自定义 LowCode 组件
 
 **Generator 提供了可在线编写简单代码的自定义组件，方便用户生成自己所想要的渲染HTML**
 
@@ -29,3 +20,4 @@ title: 高级教程
 ```js
 return `<a href="http://ace.jd.com/#/launch?config=${rec.price}" target="_blank">${rec.name}</a>`;
 ```
+
