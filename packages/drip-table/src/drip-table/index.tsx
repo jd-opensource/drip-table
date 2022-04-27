@@ -411,7 +411,9 @@ const DripTable = <
     }
     const column: TableColumn = {
       width,
-      className: schemaColumn.verticalAlign ? classnames(styles[`drip-table-vertical-${schemaColumn.verticalAlign}`], props.className) : props.className,
+      className: classnames(props.className, {
+        [styles[`drip-table-vertical-${schemaColumn.verticalAlign}`]]: schemaColumn.verticalAlign,
+      }),
       align: schemaColumn.align,
       title: schemaColumn.title,
       dataIndex: schemaColumn.dataIndex,

@@ -104,9 +104,6 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
       }}
     >
       <div>
-        { /* { typeof item.icon === 'string' && item.icon.startsWith('base64')
-          ? <div className={styles['component-icon']} style={{ backgroundImage: `url(${item.icon})` }} />
-          : <RichText html={item.icon || defaultComponentIcon} className={styles['component-icon']} /> } */ }
         <Icon svg={item.icon || defaultComponentIcon} className={styles['component-icon']} />
         <span>{ item.title }</span>
       </div>
