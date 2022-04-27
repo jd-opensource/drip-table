@@ -303,9 +303,9 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       return props.customGlobalConfigPanel?.mode === 'add'
         ? [
           ...GlobalAttrFormConfigs,
-          ...props.customGlobalConfigPanel?.configs,
+          ...props.customGlobalConfigPanel?.configs || [],
         ]
-        : [...props.customGlobalConfigPanel?.configs];
+        : [...props.customGlobalConfigPanel?.configs || []];
     }
     return GlobalAttrFormConfigs;
   };

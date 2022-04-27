@@ -1,6 +1,6 @@
 /**
- * This file is part of the jd-mkt5 launch.
- * @link     : https://ace.jd.com/
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
  * @author   : qianjing29 (qianjing29@jd.com)
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
@@ -146,11 +146,6 @@ export default class DTCGroup<
     const schema = this.props.schema;
     const rowLength = schema.options.layout?.length;
     const rows = [...Array.from({ length: rowLength }).keys()];
-    /*
-     * if (!schema.options.layout || !rowLength) {
-     *   return <Alert message="missing config of layout" type="error" showIcon />;
-     * }
-     */
     return (
       <div>
         {
