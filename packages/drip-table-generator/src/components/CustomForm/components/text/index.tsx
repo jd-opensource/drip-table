@@ -45,7 +45,7 @@ export default class TextComponent extends React.PureComponent<Props> {
         value={this.props.value as string}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 420, ...uiProps.style }}
+        style={{ width: 240, ...uiProps.style }}
         autoSize={{
           minRows: uiProps.minRows as number,
           maxRows: uiProps.maxRows as number,

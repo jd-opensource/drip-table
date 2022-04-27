@@ -42,7 +42,7 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
         const theSet = new Set([...groups, ...customGroups]);
         groups = [...theSet];
       } else {
-        groups = [...customGroups];
+        groups = [...new Set(customGroups)];
       }
     }
     return groups;

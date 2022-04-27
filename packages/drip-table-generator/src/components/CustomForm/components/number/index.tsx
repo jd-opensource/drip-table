@@ -29,7 +29,7 @@ export default class InputNumberComponent extends React.PureComponent<Props> {
         value={this.props.value}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 420, ...uiProps.style }}
+        style={{ width: 240, ...uiProps.style }}
         onChange={(value) => {
           this.props.onChange?.(Number(value));
           if (config.validate) {

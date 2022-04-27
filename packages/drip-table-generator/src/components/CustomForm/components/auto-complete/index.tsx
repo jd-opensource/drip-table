@@ -80,7 +80,7 @@ export default class AutoCompleteComponent extends React.PureComponent<Props> {
         value={this.props.value as string}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 420, ...uiProps.style }}
+        style={{ width: 240, ...uiProps.style }}
         options={this.options as LabeledValue}
         onChange={(value) => {
           const formattedValue = this.transform(value);

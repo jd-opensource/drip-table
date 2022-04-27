@@ -29,7 +29,7 @@ export default class CascadeComponent extends React.PureComponent<Props> {
         value={this.props.value}
         displayRender={uiProps.displayRender as CascadeProps['displayRender']}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 420, ...uiProps.style }}
+        style={{ width: 240, ...uiProps.style }}
         onChange={(value) => {
           this.props.onChange?.(value);
           if (config.validate) {

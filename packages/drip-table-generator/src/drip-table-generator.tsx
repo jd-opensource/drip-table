@@ -102,6 +102,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   );
 };
 
-const DripTableGeneratorProvider = forwardRef(Container);
+const DripTableGenerator = forwardRef(Container);
 
-export default DripTableGeneratorProvider;
+export default DripTableGenerator;

@@ -85,7 +85,7 @@ export default class SelectComponent extends React.PureComponent<Props> {
         {...uiProps}
         showSearch
         allowClear={uiProps.allowClear as boolean}
-        style={{ width: 420, ...uiProps.style }}
+        style={{ width: 240, ...uiProps.style }}
         mode={uiProps.mode as 'multiple' | 'tags'}
         defaultValue={config.default as SelectValueType}
         value={this.formattedValue}
