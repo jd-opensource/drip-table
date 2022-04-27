@@ -66,7 +66,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       ) }
       <div
         className={classnames(styles['layout-right-wrapper'], { [styles.preview]: !state.isEdit })}
-        style={showComponentLayout ? { width: `calc(100% - ${leftLayoutWidth})`, ...rightLayoutStyle } : {}}
+        style={showComponentLayout ? { width: `calc(100% - ${leftLayoutWidth})`, ...rightLayoutStyle } : { width: '100%' }}
       >
         <div className={styles['layout-right-title']}>
           <span style={{ margin: '0 12px', fontWeight: 'bold' }}>可视区</span>

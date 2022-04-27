@@ -11,20 +11,16 @@ import './sample.module.less';
 
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGeneratorProvider, { DripTableGeneratorHandler, DripTableGeneratorProps } from 'drip-table-generator';
+import DripTableGenerator from 'drip-table-generator';
 import React from 'react';
 
-import { mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
+import { mockData } from '../../demo-data';
 import components from './component-settings';
 import { CustomGlobalConfigPanel } from './custom-global-settings';
 import TextComponent from './text-component';
 
-const DripTableGenerator = DripTableGeneratorProvider as React.ForwardRefExoticComponent<
-DripTableGeneratorProps<SampleRecordType,
-Omit<DripTableExtraOptions, 'SubtableDataSourceKey'> & { SubtableDataSourceKey: SubtableDataSourceKey }
-> & React.RefAttributes<DripTableGeneratorHandler>>;
 const initialSchema: DripTableSchema = {
   pagination: false,
   columns: [

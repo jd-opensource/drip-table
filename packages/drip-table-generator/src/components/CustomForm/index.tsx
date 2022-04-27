@@ -132,8 +132,8 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         <RichText html={config.default as string} />
       );
     }
-    if (config['ui:type'].startsWith('custom::')) {
-      const ComponentName = config['ui:type'].replace('custom::', '');
+    if (config['ui:type']?.startsWith('custom::')) {
+      const ComponentName = config['ui:type']?.replace('custom::', '');
       const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
       return (
         <CustomComponent

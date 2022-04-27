@@ -186,6 +186,20 @@ const umiConfig: IConfig = {
         ],
       },
       {
+        title: '参数',
+        path: '/drip-table-generator/props',
+        children: [
+          '/drip-table-generator/props/index',
+          '/drip-table-generator/props/custom-component-panel',
+          '/drip-table-generator/props/custom-global-config-panel',
+          '/drip-table-generator/props/data-fields',
+          '/drip-table-generator/props/mock-data-source',
+          '/drip-table-generator/props/on-export-schema',
+          '/drip-table-generator/props/show-component-layout',
+          '/drip-table-generator/props/show-tool-layout',
+        ],
+      },
+      {
         title: '常见问题',
         path: '/drip-table-generator/faq',
       },
@@ -274,6 +288,7 @@ const umiConfig: IConfig = {
     '.__dumi-default-navbar nav > :nth-child(6) a { display: inline-block; width: 30px; }',
     '.__dumi-default-navbar nav > :nth-child(6) > a > svg, .__dumi-default-dark { display: none; }',
     '.__dumi-default-navbar { padding: 0 0 0 58px; }',
+    '.__dumi-default-previewer-demo { overflow: auto; }',
   ],
 };
 
