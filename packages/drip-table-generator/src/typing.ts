@@ -119,6 +119,12 @@ export interface DripTableGeneratorHandler extends DripTableGeneratorState {
   getDataSource: () => Record<string, unknown>[];
 }
 
+export interface DripTableGeneratorPanel<T> {
+  mode: 'add' | 'replace';
+  configs: T[];
+  orders?: string[];
+}
+
 export interface DripTableGeneratorProps<
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
@@ -139,14 +145,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     CustomComponentEvent: ExtraOptions['CustomComponentEvent'];
     CustomComponentExtraData: ExtraOptions['CustomComponentExtraData'];
   }>['components'];
-  customComponentPanel?: {
-    mode: 'add' | 'replace';
-    components: DripTableComponentAttrConfig[];
-  };
-  customGlobalConfigPanel?: {
-    mode: 'add' | 'replace';
-    configs: DTGComponentPropertySchema[];
-  };
+  customComponentPanel?: DripTableGeneratorPanel<DripTableComponentAttrConfig>;
+  customGlobalConfigPanel?: DripTableGeneratorPanel<DTGComponentPropertySchema>;
   /**
    * 组件插槽，可通过 Schema 控制自定义区域渲染
    */

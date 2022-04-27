@@ -1,7 +1,14 @@
 # customComponentPanel
 
 - 描述：自定义组件属性面板
-- 类型：`{ mode: 'add' | 'replace'; components: DripTableComponentAttrConfig[]; }`
+- 类型：
+```typescript
+type DripTableGeneratorPanel = {
+  mode: 'add' | 'replace';
+  configs: DripTableComponentAttrConfig[];
+  orders?: string[];
+}
+```
 - 默认值：无
 
 ### `DripTableComponentAttrConfig` 参数
@@ -52,11 +59,11 @@ import TextComponent from '../preview/text-component';
 
 const componentsPanelSetting: DripTableGeneratorProps['customComponentPanel'] = {
   mode: 'replace',
-  components: [
+  configs: [
     {
       'ui:type': 'text',
       type: 'string',
-      group: '业务组件',
+      group: '基础组件库',
       fieldKey: 'mock_builtin_text',
       title: '内置文本',
       attrSchema: [
@@ -100,7 +107,7 @@ const componentsPanelSetting: DripTableGeneratorProps['customComponentPanel'] = 
     {
       'ui:type': 'custom::TextComponent',
       type: 'string',
-      group: '业务组件',
+      group: '业务组件库',
       fieldKey: 'mock_custom_text',
       title: '自定义文本',
       attrSchema: [
@@ -154,6 +161,7 @@ const componentsPanelSetting: DripTableGeneratorProps['customComponentPanel'] = 
       ],
     },
   ],
+  orders: ['业务组件库', '基础组件库'],
 }
 
 const dataSource = [

@@ -1,7 +1,13 @@
 # customGlobalConfigPanel
 
 - 描述：自定义全局属性面板
-- 类型：`{ mode: 'add' | 'replace'; components: DripTableComponentAttrConfig[]; }`
+- 类型：
+```typescript
+type DripTableGeneratorPanel = {
+  mode: 'add' | 'replace';
+  components: DripTableComponentAttrConfig[];
+}
+```
 - 默认值：无
 
 ```jsx
