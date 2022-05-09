@@ -1,5 +1,5 @@
 import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableID, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
-import { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 import { DripTableGeneratorState } from './store';
 
@@ -139,6 +139,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   dataSource?: DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[];
   dataFields?: string[];
   mockDataSource?: boolean;
+  noDataFeedBack?: string | ReactNode;
   schema?: DripTableSchema<ExtraOptions['CustomColumnSchema']>;
   customComponents?: DripTableProps<DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>, {
     CustomColumnSchema: ExtraOptions['CustomColumnSchema'];

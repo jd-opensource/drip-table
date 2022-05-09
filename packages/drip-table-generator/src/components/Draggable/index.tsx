@@ -153,7 +153,7 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
     for (const item of value) {
       const width = typeof item.width === 'number'
         ? item.width
-        : Number(String(item.width).replace(/(px|%|r?em|pt|vw|cm|in|pc)$/gui, '')) || 0;
+        : Number(String(item.width).replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 0;
       containerWidth += Math.max(minWidth, width + 2, 120);
     }
     return (
