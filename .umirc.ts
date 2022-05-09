@@ -192,6 +192,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/props/custom-global-config-panel',
           '/drip-table-generator/props/data-fields',
           '/drip-table-generator/props/mock-data-source',
+          '/drip-table-generator/props/no-data-feedback',
           '/drip-table-generator/props/on-export-schema',
           '/drip-table-generator/props/show-component-layout',
           '/drip-table-generator/props/show-tool-layout',

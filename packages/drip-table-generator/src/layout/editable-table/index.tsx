@@ -7,7 +7,7 @@
  */
 
 import { CloseCircleTwoTone } from '@ant-design/icons';
-import { Col, Empty, Result, Row } from 'antd';
+import { Alert, Col, Empty, Row } from 'antd';
 import classnames from 'classnames';
 import { builtInComponents, DripTableBuiltInColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
@@ -16,18 +16,21 @@ import React from 'react';
 import { get } from '@/utils';
 import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import Draggable from '@/components/Draggable';
+import { useGlobalData } from '@/hooks';
 
 import styles from './index.module.less';
 
-type ResultProps = React.ComponentProps<typeof Result>;
 interface Props {
   driver: DripTableDriver;
   customComponents: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>['components'];
 }
 
 const EditableTable = (props: Props & { store: GlobalStore }) => {
+  const { noDataFeedBack } = useGlobalData();
   const [state, actions] = props.store;
   const store = { state, setState: actions };
+
+  const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
 
   const previewComponentRender = (
     column: DripTableBuiltInColumnSchema | null,
@@ -39,30 +42,8 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   ) => {
     const [libName, componentName] = column?.component?.includes('::') ? column.component.split('::') : ['', column?.component || ''];
     const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
-    const hasRecord = !(!state.previewDataSource || state.previewDataSource.length <= 0);
     const record = state.previewDataSource?.[0] || {} as Record<string, unknown>;
     const value = column?.dataIndex ? get(record, column.dataIndex) : record;
-
-    const errorBoundary = () => {
-      let color = '#F00';
-      let message = '未知错误';
-      let status: ResultProps['status'] = 'error';
-      if (!DripTableComponent) {
-        color = '#F00';
-        message = '未知组件';
-      } else if (!hasRecord) {
-        color = '#c9c9c9';
-        message = '暂无数据';
-        status = 'warning';
-      }
-      return (
-        <Result
-          style={{ color, fontSize: 14, padding: '0' }}
-          status={status}
-          subTitle={message}
-        />
-      );
-    };
 
     const isChecked = (currentCheckedIndex: number) => {
       const currentColumnPath = [...extraOptions?.parentIndex || [], currentCheckedIndex];
@@ -131,7 +112,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     }
 
     // render normal column and preview component
-    const componentPreviewCell = DripTableComponent && hasRecord
+    const componentPreviewCell = DripTableComponent
       ? (
         <DripTableComponent
           driver={props.driver || DripTableDriverAntDesign}
@@ -141,7 +122,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
           preview={{}}
         />
       )
-      : errorBoundary();
+      : <Alert type="error" message="未知组件" />;
     return extraOptions?.isChildren
       ? componentPreviewCell
       : (
@@ -172,10 +153,12 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
         }}
       >
         <div className={styles['column-title']}>{ col.title }</div>
-        { previewComponentRender(col as DripTableBuiltInColumnSchema,
-          {
-            isCurrentColumn: isCurrent ?? false,
-          }) }
+        { hasRecord
+          ? previewComponentRender(col as DripTableBuiltInColumnSchema,
+            {
+              isCurrentColumn: isCurrent ?? false,
+            })
+          : null }
         { isCurrent && (
         <CloseCircleTwoTone
           className={styles['close-icon']}
@@ -199,24 +182,38 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     );
   };
 
+  const emptyFeedBack = () => {
+    let message = '';
+    if (!hasRecord) {
+      if (noDataFeedBack) { return noDataFeedBack; }
+      message = '暂无数据';
+    }
+    if (!state.columns || state.columns?.length <= 0) { message = '暂无表格配置'; }
+    let width: number = 0;
+    state.columns?.forEach((item) => {
+      width += Number(String(item.width).replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 120;
+    });
+
+    return message ? <Empty style={{ width: width > 0 ? width : void 0 }} image={Empty.PRESENTED_IMAGE_SIMPLE} description={message} /> : null;
+  };
+
   return (
     <div style={{ padding: '12px 0 12px 12px', overflowX: 'auto' }}>
       {
-        state.columns && state.columns.length > 0
-          ? (
-            <Draggable<DripTableColumn>
-              value={(state.columns || [])}
-              codeKey="sort"
-              style={{ position: 'relative' }}
-              onChange={(data) => {
-                state.columns = [...data];
-                globalActions.editColumns(store);
-              }}
-              render={renderTableCell}
-            />
-          )
-          : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无表格配置" />
+      state.columns && state.columns.length > 0 && (
+        <Draggable<DripTableColumn>
+          value={(state.columns || [])}
+          codeKey="sort"
+          style={{ position: 'relative' }}
+          onChange={(data) => {
+            state.columns = [...data];
+            globalActions.editColumns(store);
+          }}
+          render={renderTableCell}
+        />
+      )
       }
+      { emptyFeedBack() }
     </div>
   );
 };
