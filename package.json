@@ -11,7 +11,8 @@
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
-    "build:docs": "dumi build",
+    "build:docs": "dumi build && yarn run build:docs-static",
+    "build:docs-static": "node ./docs-static/build.js",
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
     "clean": "lerna clean -y",
@@ -39,7 +40,7 @@
     "@types/react-window": "^1.8.5",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.1",
-    "@umijs/core": "^3.5.20",
+    "@umijs/core": "^3.5.24",
     "@umijs/plugin-esbuild": "^1.4.1",
     "ajv": "^8.11.0",
     "ajv-keywords": "^5.1.0",
@@ -49,7 +50,7 @@
     "drip-table": "link:packages/drip-table",
     "drip-table-driver-antd": "link:packages/drip-table-driver-antd",
     "drip-table-generator": "link:packages/drip-table-generator",
-    "dumi": "^1.1.35",
+    "dumi": "^1.1.42",
     "eslint": "^8.9.0",
     "eslint-config-lvmcn": "^0.0.46",
     "eslint-formatter-pretty": "^4.1.0",
@@ -64,21 +65,21 @@
     "eslint-plugin-unicorn": "^40.1.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "father-build-universal": "^1.21.3",
+    "html-minifier-terser": "^7.0.0-alpha.2",
     "husky": "^7.0.4",
     "jsoneditor": "^9.5.7",
     "jsoneditor-react": "^3.1.1",
     "lerna": "3.22.1",
     "lerna-changelog": "1.0.1",
+    "less": "3.9.0",
     "lint-staged": "10.0.7",
     "monaco-editor-webpack-plugin": "7.0.1",
     "react": "17.0.2",
-    "react-compare-slider": "^2.2.0",
     "stylelint": "13.8.0",
     "stylelint-config-standard": "20.0.0",
     "stylelint-formatter-pretty": "2.1.1",
     "tsc-alias": "^1.4.2",
-    "typescript": "^4.5.4",
-    "typewriter-effect": "^2.18.2"
+    "typescript": "^4.5.4"
   },
   "files": [
     "README.*",
@@ -93,5 +94,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "engines": {
+    "node": ">=12.0.0"
   }
 }
