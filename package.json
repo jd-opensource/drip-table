@@ -11,7 +11,7 @@
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
-    "build:docs": "dumi build && yarn run build:docs-static",
+    "build:docs": "node ./bin/fix-dep.js && dumi build && yarn run build:docs-static",
     "build:docs-static": "node ./docs-static/build.js",
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",

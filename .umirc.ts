@@ -229,6 +229,7 @@ const umiConfig: IConfig = {
   copy: [
     { from: './docs/assets', to: './assets' },
   ],
+  ssr: {},
   exportStatic: {},
   extraBabelPlugins: [
     [
