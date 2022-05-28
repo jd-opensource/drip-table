@@ -226,6 +226,9 @@ const umiConfig: IConfig = {
   mode: 'site',
   esbuild: {},
   publicPath: '/',
+  sitemap: {
+    hostname: 'https://drip-table.jd.com',
+  },
   copy: [
     { from: './docs/assets', to: './assets' },
   ],
