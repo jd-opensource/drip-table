@@ -188,6 +188,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
           showQuickJumper: formData['pagination.showQuickJumper'] as boolean,
           showSizeChanger: formData['pagination.showSizeChanger'] as boolean,
+          showTotal: formData['pagination.showTotal'] as string,
         }
         : false,
     };

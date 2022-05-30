@@ -466,6 +466,23 @@ const DripTable = <
         size: props.schema.pagination?.size === void 0 ? 'small' : props.schema.pagination.size,
         pageSize: tableState.pagination.pageSize,
         total: props.total === void 0 ? props.dataSource.length : props.total,
+        showTotal: React.useMemo(() => {
+          if (props.schema.pagination) {
+            if (typeof props.schema.pagination?.showTotal === 'string') {
+              return (total, range) => (props.schema.pagination
+                ? String(props.schema.pagination.showTotal ?? '')
+                  .replace('{{total}}', String(total))
+                  .replace('{{range[0]}}', String(range?.[0] ?? ''))
+                  .replace('{{range[1]}}', String(range?.[1] ?? ''))
+                : '');
+            }
+            if (props.schema.pagination?.showTotal) {
+              return (total, range) => (range ? `${range[0]}-${range[1]} of ${total}` : `${total} items`);
+            }
+          }
+
+          return void 0;
+        }, [props.schema.pagination?.showTotal]),
         current: props.currentPage || tableState.pagination.current,
         position: [props.schema.pagination?.position || 'bottomRight'],
         showLessItems: props.schema.pagination?.showLessItems,
