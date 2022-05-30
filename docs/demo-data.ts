@@ -57,6 +57,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
   },
   pagination: {
     pageSize: 10,
+    showTotal: '总共 {{total}} 条目',
     size: 'small',
     position: 'bottomRight',
     showQuickJumper: true,

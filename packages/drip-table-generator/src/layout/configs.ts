@@ -317,6 +317,22 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
   },
   {
+    name: 'pagination.showTotal',
+    group: '分页配置',
+    'ui:title': '是否展示总条目',
+    'ui:type': 'input',
+    'ui:description': {
+      type: 'icon',
+      trigger: 'hover',
+      title: '输入文本，总条目用 `{{total}}` 替换',
+    },
+    'ui:props': {
+      placeholder: '请输入',
+    },
+    type: 'string',
+    visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
+  },
+  {
     name: 'pagination.showQuickJumper',
     group: '分页配置',
     'ui:title': '是否展示快速跳转',

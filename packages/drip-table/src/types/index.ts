@@ -151,6 +151,8 @@ export interface DripTableSchema<
     size?: 'small' | 'default';
     pageSize: number;
     position?: 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+    showTotal?: boolean | string;
+    total?: number;
     showLessItems?: boolean;
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
@@ -229,6 +231,7 @@ export interface DripTablePagination {
   size?: 'small' | 'default';
   pageSize?: number;
   total?: number;
+  showTotal?: (total: number, range?: [number, number]) => string;
   current?: number;
   position?: ('topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight')[];
   showLessItems?: boolean;

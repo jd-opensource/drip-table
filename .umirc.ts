@@ -9,6 +9,7 @@ const umiConfig: IConfig = {
   logo: 'https://img11.360buyimg.com/imagetools/jfs/t1/156025/11/22552/175523/617fb164E678b9642/6b8c55c5079b9819.jpg',
   outputPath: 'docs-dist',
   hash: true,
+  mfsu: false,
   dynamicImport: {
     loading: '/docs/loading.js',
   },
