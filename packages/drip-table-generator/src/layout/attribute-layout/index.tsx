@@ -36,7 +36,7 @@ interface Props {
 const { TabPane } = Tabs;
 
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
-  const { dataFields, mockDataSource: isDemo } = useGlobalData();
+  const { dataFields, mockDataSource: isDemo, slots } = useGlobalData();
 
   const [state, setState] = props.store;
   const store = { state, setState };
@@ -300,15 +300,48 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
   };
 
   const getGlobalFormConfigs = () => {
+    let globalFormConfigs = GlobalAttrFormConfigs;
     if (props.customGlobalConfigPanel) {
-      return props.customGlobalConfigPanel?.mode === 'add'
+      globalFormConfigs = props.customGlobalConfigPanel?.mode === 'add'
         ? [
           ...GlobalAttrFormConfigs,
           ...props.customGlobalConfigPanel?.configs || [],
         ]
         : [...props.customGlobalConfigPanel?.configs || []];
     }
-    return GlobalAttrFormConfigs;
+    globalFormConfigs = globalFormConfigs.map((config) => {
+      const uiProps = config['ui:props'];
+      if (uiProps?.optionsParam === '$$SLOT_NAME_OPTIONS$$') {
+        config = {
+          ...config,
+          'ui:props': {
+            ...uiProps,
+            options: Object.keys(slots || {}).map(key => ({ label: key, value: key })),
+          },
+        };
+      }
+      if (uiProps?.items) {
+        const uiPropsItems = (uiProps.items as DTGComponentPropertySchema[])?.map((item, index) => {
+          const itemUiProps = item['ui:props'];
+          if (itemUiProps?.optionsParam === '$$SLOT_NAME_OPTIONS$$') {
+            itemUiProps.options = Object.keys(slots || {}).map(key => ({ label: key, value: key }));
+          }
+          return {
+            ...item,
+            'ui:props': itemUiProps,
+          };
+        });
+        config = {
+          ...config,
+          'ui:props': {
+            ...uiProps,
+            items: [...uiPropsItems],
+          },
+        };
+      }
+      return config;
+    });
+    return globalFormConfigs;
   };
 
   const renderGlobalForm = () => (

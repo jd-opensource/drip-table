@@ -97,8 +97,5 @@
   },
   "engines": {
     "node": ">=12.0.0"
-  },
-  "dependencies": {
-    "caniuse-lite": "^1.0.30001344"
   }
 }

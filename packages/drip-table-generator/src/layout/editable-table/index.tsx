@@ -18,6 +18,9 @@ import { DripTableColumn, globalActions, GlobalStore } from '@/store';
 import Draggable from '@/components/Draggable';
 import { useGlobalData } from '@/hooks';
 
+import EditableFooter from './footer';
+import EditableHeader from './header';
+
 import styles from './index.module.less';
 
 interface Props {
@@ -198,8 +201,10 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
   };
 
   return (
-    <div style={{ padding: '12px 0 12px 12px', overflowX: 'auto' }}>
-      {
+    <React.Fragment>
+      { state.globalConfigs.header && <EditableHeader driver={props.driver} store={props.store} /> }
+      <div style={{ padding: '12px 0 12px 12px', overflowX: 'auto' }}>
+        {
       state.columns && state.columns.length > 0 && (
         <Draggable<DripTableColumn>
           value={(state.columns || [])}
@@ -213,8 +218,10 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
         />
       )
       }
-      { emptyFeedBack() }
-    </div>
+        { emptyFeedBack() }
+      </div>
+      { state.globalConfigs.footer && <EditableFooter driver={props.driver} store={props.store} /> }
+    </React.Fragment>
   );
 };
 
