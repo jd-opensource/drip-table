@@ -73,7 +73,7 @@ const SlotItemConfigs = [
   {
     name: 'slot',
     'ui:title': '插槽名称',
-    'ui:type': 'auto-complete',
+    'ui:type': 'select',
     'ui:props': {
       placeholder: '请选择插槽名称',
       optionsParam: '$$SLOT_NAME_OPTIONS$$',
