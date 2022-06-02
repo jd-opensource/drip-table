@@ -94,7 +94,7 @@ const Demo = () => (
     )}
     rowExpandable={(record, parent) => parent.id === 'sample-table' && record.id === 5}
     expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.id})”行“${record.name}”的展开自定义渲染` }</div>)}
-
+    ajv={{ additionalProperties: true }}
   />
 );
 

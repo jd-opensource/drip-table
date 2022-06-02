@@ -1,6 +1,6 @@
 # customGlobalConfigPanel
 
-- 描述：自定义全局属性面板
+- 描述：自定义全局属性面板, 须注意的是当设置的属性为自定义全局属性，需要开启 `drip-table` 的 `ajv.additionalProperties` 选项，同样该属性支持在 `drip-table-generator` 的属性上透传。
 - 类型：
 ```typescript
 type DripTableGeneratorPanel = {
@@ -73,6 +73,7 @@ const Demo = () => {
       schema={schema}
       dataSource={dataSource}
       customGlobalConfigPanel={CustomGlobalConfigPanel}
+      ajv={{ additionalProperties: true }}
     />
   );
 };

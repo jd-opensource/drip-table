@@ -12,6 +12,7 @@
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
     hideOnSinglePage?: boolean;
+    showTotal?: boolean | string;
   };
   ```
 
@@ -26,6 +27,7 @@
     showQuickJumper: undefined,
     showSizeChanger: undefined,
     hideOnSinglePage: undefined,
+    showTotal: undefined,
   }
   ```
 
@@ -50,6 +52,7 @@ const schema = {
     showQuickJumper: true,
     showSizeChanger: true,
     hideOnSinglePage: true,
+    showTotal: 'Total: {{total}}',
   },
   columns: [
     {
