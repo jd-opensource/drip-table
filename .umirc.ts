@@ -182,6 +182,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/functions/index.md',
           '/drip-table-generator/functions/refs.md',
           '/drip-table-generator/functions/custom.md',
+          '/drip-table-generator/functions/header.md',
         ],
       },
       {
@@ -197,6 +198,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/props/on-export-schema',
           '/drip-table-generator/props/show-component-layout',
           '/drip-table-generator/props/show-tool-layout',
+          '/drip-table-generator/props/slots-schema',
         ],
       },
       {

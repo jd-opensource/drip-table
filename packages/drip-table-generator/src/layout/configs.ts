@@ -314,6 +314,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     },
     type: 'number',
     minimum: 1,
+    default: 10,
     visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
   },
   {

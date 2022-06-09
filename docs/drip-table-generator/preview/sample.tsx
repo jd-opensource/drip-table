@@ -11,15 +11,15 @@ import './sample.module.less';
 
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import { DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React from 'react';
 
-import { mockData } from '../../demo-data';
+import { mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
 import components from './component-settings';
 import { CustomGlobalConfigPanel } from './custom-global-settings';
-import TextComponent from './text-component';
+import TextComponent, { TextColumnSchema } from './text-component';
 
 const initialSchema: DripTableSchema = {
   pagination: false,
@@ -51,8 +51,12 @@ const initialSchema: DripTableSchema = {
   ],
 };
 
+type ExtraOptions = Omit<DripTableExtraOptions, 'CustomColumnSchema' | 'SubtableDataSourceKey'> & {
+  CustomColumnSchema: TextColumnSchema;
+  SubtableDataSourceKey: SubtableDataSourceKey;
+}
 const Demo = () => (
-  <DripTableGenerator
+  <DripTableGenerator<SampleRecordType, ExtraOptions>
     mockDataSource
     style={{ height: 756 }}
     driver={DripTableDriverAntDesign}
@@ -68,12 +72,22 @@ const Demo = () => (
         const [state, setState] = React.useState({ count: 0 });
         return (
           <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
-            <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Header Slot Sample</Button>
+            <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>{ props.title }</Button>
             <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
           </div>
         );
       }),
       default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
+    }}
+    slotsSchema={{
+      'header-slot-sample': [{
+        name: 'title',
+        group: '',
+        'ui:title': '自定义属性透传',
+        'ui:type': 'input',
+        'ui:props': {},
+        type: 'string',
+      }],
     }}
     subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
     subtableFooter={(record, index, parent, subtable) => (
