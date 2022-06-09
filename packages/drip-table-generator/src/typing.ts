@@ -162,6 +162,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
   };
+  slotsSchema?: {
+    [componentType: string]: DTGComponentPropertySchema[];
+  };
   /**
    * Schema 校验配置项
    */

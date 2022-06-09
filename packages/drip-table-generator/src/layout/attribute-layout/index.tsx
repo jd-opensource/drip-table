@@ -36,7 +36,7 @@ interface Props {
 const { TabPane } = Tabs;
 
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
-  const { dataFields, mockDataSource: isDemo, slots } = useGlobalData();
+  const { dataFields, mockDataSource: isDemo, slots, slotsSchema } = useGlobalData();
 
   const [state, setState] = props.store;
   const store = { state, setState };
@@ -81,6 +81,11 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         }
         if (headerItem.type === 'search') {
           headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
+        }
+        if (headerItem.type === 'slot') {
+          Object.keys(headerItem.props || {}).forEach((key) => {
+            headerItem[key] = headerItem.props?.[key];
+          });
         }
       }
       formData['header.items'] = headerElements;
@@ -127,7 +132,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       if (element.type === 'text') {
         return {
           type: 'text',
-          span: element.span,
+          span: Number.isNaN(Number(element.span)) ? element.span : Number(element.span),
           align: element.align,
           text: element.text,
         };
@@ -152,6 +157,13 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
           align: element.align,
           insertButtonText: element.insertButtonText,
           showIcon: element.showIcon,
+        };
+      }
+      if (element.type === 'slot') {
+        return {
+          type: 'slot',
+          slot: element.slot,
+          props: { ...filterAttributes(element, ['type', 'slot', 'props']) },
         };
       }
       return { ...element };
@@ -301,6 +313,19 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
 
   const getGlobalFormConfigs = () => {
     let globalFormConfigs = GlobalAttrFormConfigs;
+    if (slotsSchema) {
+      const headerConfigItems = globalFormConfigs.find(item => item.name === 'header.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
+      const footerConfigItems = globalFormConfigs.find(item => item.name === 'footer.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
+      Object.keys(slotsSchema).forEach((key) => {
+        const configs = slotsSchema[key];
+        headerConfigItems.push(...configs
+          .map(config => (typeof config.visible === 'undefined' ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
+          .filter(config => !headerConfigItems.some(item => item.name === config.name)));
+        footerConfigItems.push(...configs
+          .map(config => (typeof config.visible === 'undefined' ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
+          .filter(config => !headerConfigItems.some(item => item.name === config.name)));
+      });
+    }
     if (props.customGlobalConfigPanel) {
       globalFormConfigs = props.customGlobalConfigPanel?.mode === 'add'
         ? [

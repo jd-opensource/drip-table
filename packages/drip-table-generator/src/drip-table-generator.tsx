@@ -53,10 +53,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions>(
   return context;
 };
 
-const Container = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DripTableGeneratorHandler>) => {
+function Container<RecordType extends DripTableRecordTypeBase, ExtraOptions extends DripTableExtraOptions>(
+  props: DripTableGeneratorProps<RecordType, ExtraOptions>,
+  ref?: React.ForwardedRef<DripTableGeneratorHandler>,
+) {
   if (props.schema && props.schema.columns.some(c => c.component || c.options)) {
     props = {
       ...props,
@@ -100,8 +100,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       </Ctx.Provider>
     </ConfigProvider>
   );
-};
+}
 
-const DripTableGenerator = forwardRef(Container);
+const DripTableGenerator = forwardRef(Container) as typeof Container;
 
 export default DripTableGenerator;
