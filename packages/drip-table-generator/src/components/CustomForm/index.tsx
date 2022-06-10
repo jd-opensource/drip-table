@@ -175,7 +175,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         />
       );
     }
-    return null;
+    return <Alert message="未知表单组件" type="error" showIcon />;
   }
 
   public renderTitleLabel(config: DTGComponentPropertySchema) {

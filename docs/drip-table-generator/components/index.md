@@ -16,4 +16,5 @@ title: 总览
 | 标签组件 | 标签组件 | 暂无 |
 | [组合组件](/drip-table-generator/components/group) | 组合组件 | [🔗 示例](/drip-table-generator/components/group) |
 | [自定义组件](/drip-table-generator/components/lowcode) | 在线 LowCode 组件 | [🔗 示例](/drip-table-generator/components/lowcode) |
-| [CDN链接组件](/drip-table-generator/components/cdn-link) | 组合组件 | [🔗 示例](/drip-table-generator/components/cdn-link) |
+| [CDN链接组件](/drip-table-generator/components/cdn-link) | 通过自定义代码 CDN 地址渲染组件 | [🔗 示例](/drip-table-generator/components/cdn-link) |
+| [富文本组件](/drip-table-generator/components/rich-text) | 在线富文本编辑器生成组件 | [🔗 示例](/drip-table-generator/components/rich-text) |

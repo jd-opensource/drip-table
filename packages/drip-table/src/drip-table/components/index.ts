@@ -12,6 +12,7 @@ import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
+import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
 import DTCTag, { DTCTagColumnSchema } from './tag';
 import DTCText, { DTCTextColumnSchema } from './text';
 
@@ -29,7 +30,8 @@ export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCTagColumnSchema
   | DTCRenderHTMLColumnSchema
   | DTCRenderHTMLRemoteColumnSchema
-  | DTCGroupColumnSchema<CustomComponentSchema>;
+  | DTCGroupColumnSchema<CustomComponentSchema>
+  | DTCRichTextColumnSchema;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,
@@ -40,5 +42,6 @@ const DripTableBuiltInComponents = {
   [DTCRenderHTML.componentName]: DTCRenderHTML,
   [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
   [DTCGroup.componentName]: DTCGroup,
+  [DTCRichText.componentName]: DTCRichText,
 };
 export default DripTableBuiltInComponents;

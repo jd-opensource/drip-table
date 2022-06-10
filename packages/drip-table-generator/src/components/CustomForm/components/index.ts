@@ -19,6 +19,7 @@ import ColorPicker from './color-picker';
 import InputComponent from './input';
 import InputNumberComponent from './number';
 import RadioComponent from './radio';
+import RichTextEditorComponent from './rich-text-editor';
 import SelectComponent from './select';
 import SwitchComponent from './switch';
 import TextComponent from './text';
@@ -36,6 +37,7 @@ export default {
   [AutoComplete.componentName]: AutoComplete,
   [ArrayComponent.componentName]: ArrayComponent,
   [ColorPicker.componentName]: ColorPicker,
+  [RichTextEditorComponent.componentName]: RichTextEditorComponent,
 };
 
 export interface DTGComponentBaseProperty<T> {
