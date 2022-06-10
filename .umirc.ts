@@ -209,6 +209,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/components/group',
           '/drip-table-generator/components/lowcode',
           '/drip-table-generator/components/cdn-link',
+          '/drip-table-generator/components/rich-text',
         ],
       },
       {

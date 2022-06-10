@@ -5,6 +5,7 @@ import links from './links';
 import image from './picture';
 import renderHtml from './render-html';
 import renderHtmlRemote from './render-html-remote';
+import richText from './rich-text';
 import tag from './tag';
 import text from './text';
 
@@ -23,6 +24,7 @@ const containerComponentList: DripTableComponentAttrConfig[] = [
 const customComponentList: DripTableComponentAttrConfig[] = [
   renderHtml,
   renderHtmlRemote,
+  richText,
 ];
 
 export default [
