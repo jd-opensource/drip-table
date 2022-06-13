@@ -158,7 +158,7 @@ export interface DripTableSchema<
     showSizeChanger?: boolean;
     hideOnSinglePage?: boolean;
   };
-  size?: 'small' | 'middle' | 'large';
+  size?: 'small' | 'middle' | 'large' | 'default';
   /**
    * 粘性头部
    */

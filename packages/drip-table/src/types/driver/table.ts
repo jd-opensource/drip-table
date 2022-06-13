@@ -30,7 +30,7 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   dataSource?: RecordType[];
   pagination?: false | DripTablePagination;
   loading?: boolean;
-  size?: 'large' | 'middle' | 'small';
+  size?: 'large' | 'middle' | 'small' | 'default';
   bordered?: boolean;
   showHeader?: boolean;
   sticky?: boolean | {

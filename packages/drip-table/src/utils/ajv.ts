@@ -165,7 +165,7 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
           },
         ],
       },
-      size: { enum: ['small', 'middle', 'large'] },
+      size: { enum: ['small', 'middle', 'large', 'default'] },
       sticky: { type: 'boolean' },
       scroll: {
         properties: {
