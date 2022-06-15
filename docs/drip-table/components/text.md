@@ -65,6 +65,10 @@ export default Demo;
 | [defaultValue](/drip-table/components/text#defaultvalue) | 兜底文案 | × | [🔗 示例](/drip-table/components/text#defaultvalue) |
 | [prefix](/drip-table/components/text#prefix) | 前缀文案 | × | [🔗 示例](/drip-table/components/text#prefix) |
 | [suffix](/drip-table/components/text#suffix) | 后缀文案 | × | [🔗 示例](/drip-table/components/text#suffix) |
+| [parts](/drip-table/components/text#parts) | 多行文本段落配置 | × | [🔗 示例](/drip-table/components/text#parts) |
+| [maxRow](/drip-table/components/text#maxrow) | 最大行数 | × | [🔗 示例](/drip-table/components/text#maxrow) |
+| [lineHeight](/drip-table/components/text#lineheight) | 行高 | × | [🔗 示例](/drip-table/components/text#lineheight) |
+| [ellipsis](/drip-table/components/text#ellipsis) | 超出部分显示省略号 | × | [🔗 示例](/drip-table/components/text#ellipsis) |
 
 ## mode
 
