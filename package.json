@@ -5,13 +5,14 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && yarn run fix-deps",
     "start": "dumi dev",
+    "fix-deps": "node ./bin/fix-deps.js || exit 1",
     "build": "yarn run build:drip-table && yarn run build:drip-table-driver-antd && yarn run build:drip-table-generator && yarn run build:docs",
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
-    "build:docs": "node ./bin/fix-dep.js && dumi build && yarn run build:docs-static",
+    "build:docs": "yarn run fix-deps && dumi build && yarn run build:docs-static",
     "build:docs-static": "node ./docs-static/build.js",
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
