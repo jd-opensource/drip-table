@@ -161,7 +161,6 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
               showSizeChanger: { type: 'boolean' },
               hideOnSinglePage: { type: 'boolean' },
             },
-            required: ['pageSize'],
           },
         ],
       },

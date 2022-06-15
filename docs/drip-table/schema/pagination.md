@@ -6,7 +6,7 @@
   ```typescript
   type Pagination = false | {
     size?: 'small' | 'default';
-    pageSize: number;
+    pageSize?: number;
     position?: 'bottomLeft' | 'bottomCenter' | 'bottomRight';
     showLessItems?: boolean;
     showQuickJumper?: boolean;
@@ -21,7 +21,7 @@
   ```javascript
   {
     size: 'small',
-    pageSize: undefined,
+    pageSize: 10,
     position: 'bottomRight',
     showLessItems: undefined,
     showQuickJumper: undefined,
