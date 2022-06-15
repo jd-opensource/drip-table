@@ -157,6 +157,14 @@ const umiConfig: IConfig = {
         ],
       },
       {
+        title: '组件',
+        path: '/drip-table/components',
+        children: [
+          '/drip-table/components/index',
+          '/drip-table/components/text',
+        ],
+      },
+      {
         title: '常见问题',
         path: '/drip-table/faq',
       },
