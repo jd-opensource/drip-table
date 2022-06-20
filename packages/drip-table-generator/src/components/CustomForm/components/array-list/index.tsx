@@ -31,11 +31,12 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     if (schema['ui:type']?.startsWith('custom::')) {
       const ComponentName = schema['ui:type']?.replace('custom::', '');
       const CustomComponent = this.props.extraComponents?.[ComponentName] || schema['ui:externalComponent'];
+      if (!CustomComponent) { return <Alert message="未知表单组件" type="error" showIcon />; }
       return (
         <CustomComponent
           theme={this.props.theme}
           schema={schema}
-          value={currentValue[schema.name] as Record<string, string> | Record<string, string>[]}
+          value={currentValue[schema.name]}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
           onValidate={msg => this.props.onValidate?.(msg)}
           {...uiProps}

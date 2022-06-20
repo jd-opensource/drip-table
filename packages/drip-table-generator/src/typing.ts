@@ -81,7 +81,7 @@ export type DTGComponentPropertySchema = DataSchema & {
   'ui:type': string;
   'ui:props'?: Record<string, unknown> & { style?: CSSProperties; className?: string };
   'ui:wrapperStyle'?: CSSProperties;
-  'ui:externalComponent'?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
+  'ui:externalComponent'?: new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>;
   default?: unknown;
   disabled?: boolean | string | ((value?: unknown, formData?: Record<string, unknown>) => boolean);
   visible?: boolean | string | ((value?: unknown, formData?: Record<string, unknown>) => boolean);
