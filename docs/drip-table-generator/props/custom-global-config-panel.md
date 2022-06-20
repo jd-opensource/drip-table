@@ -5,7 +5,7 @@
 ```typescript
 type DripTableGeneratorPanel = {
   mode: 'add' | 'replace';
-  components: DripTableComponentAttrConfig[];
+  configs: DripTableComponentAttrConfig[];
 }
 ```
 - 默认值：无
