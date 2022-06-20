@@ -41,9 +41,10 @@ export default {
 };
 
 export interface CustomComponentProps {
+  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: unknown;
+  onChange?: (value: unknown) => void;
   onValidate?: (errorMessage: string) => void;
 }
 export interface DTGComponentBaseProperty<T> {

@@ -4,6 +4,7 @@
 - 类型：
 ```ts
 interface CustomComponentProps {
+  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
   value?: string;
   onChange?: (value: string) => void;

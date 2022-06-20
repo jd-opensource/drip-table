@@ -129,11 +129,12 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (config['ui:type']?.startsWith('custom::')) {
       const ComponentName = config['ui:type']?.replace('custom::', '');
       const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
+      if (!CustomComponent) { return <Alert message="未知表单组件" type="error" showIcon />; }
       return (
         <CustomComponent
           theme={this.props.theme}
           schema={config}
-          value={formValues[config.name] as Record<string, string> | Record<string, string>[]}
+          value={formValues[config.name]}
           onChange={(value) => {
             formValues[config.name] = value;
             this.setState({ formValues }, () => {
