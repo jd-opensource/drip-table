@@ -16,14 +16,8 @@ import React, { Component } from 'react';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
-import BuiltInComponents, { DTGComponentBaseProperty } from './components';
+import BuiltInComponents, { CustomComponentProps, DTGComponentBaseProperty } from './components';
 
-interface CustomComponentProps {
-  schema: DTGComponentPropertySchema;
-  value?: string;
-  onChange?: (value: string) => void;
-  onValidate?: (errorMessage: string) => void;
-}
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
   groupType?: boolean | 'collapse' | 'tabs';
@@ -161,6 +155,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
           theme={this.props.theme}
           schema={config}
           value={formValues[config.name]}
+          extraComponents={this.props.extraComponents}
           onChange={(value) => {
             formValues[config.name] = value;
             this.setState({ formValues }, () => {

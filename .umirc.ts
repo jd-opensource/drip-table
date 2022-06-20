@@ -200,6 +200,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/props/index',
           '/drip-table-generator/props/custom-component-panel',
           '/drip-table-generator/props/custom-global-config-panel',
+          '/drip-table-generator/props/custom-attribute-components',
           '/drip-table-generator/props/data-fields',
           '/drip-table-generator/props/mock-data-source',
           '/drip-table-generator/props/no-data-feedback',

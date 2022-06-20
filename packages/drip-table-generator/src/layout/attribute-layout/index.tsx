@@ -36,7 +36,7 @@ interface Props {
 const { TabPane } = Tabs;
 
 const AttributeLayout = (props: Props & { store: GlobalStore }) => {
-  const { dataFields, mockDataSource: isDemo, slots, slotsSchema } = useGlobalData();
+  const { dataFields, mockDataSource: isDemo, slots, slotsSchema, customAttributeComponents } = useGlobalData();
 
   const [state, setState] = props.store;
   const store = { state, setState };
@@ -378,6 +378,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       encodeData={encodeGlobalConfigs}
       groupType={formDisplayMode}
       theme={props.driver}
+      extraComponents={customAttributeComponents}
       onChange={(data) => {
         store.state.globalConfigs = cloneDeep({ ...data });
         globalActions.updateGlobalConfig(store);
@@ -433,10 +434,11 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         data={state.currentColumn}
         encodeData={encodeColumnConfigs}
         extendKeys={['ui:props', 'options']}
+        extraComponents={customAttributeComponents}
         groupType={formDisplayMode}
         theme={props.driver}
         onChange={(data) => {
-          state.currentColumn = Object.assign(state.currentColumn, data);
+          state.currentColumn = Object.assign(state.currentColumn || {}, data);
           const idx = state.columns.findIndex(item => item.key === state.currentColumn?.key);
           if (idx > -1 && state.currentColumn) {
             state.columns[idx] = state.currentColumn;
@@ -470,6 +472,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         extendKeys={['ui:props', 'options']}
         groupType={formDisplayMode}
         theme={props.driver}
+        extraComponents={customAttributeComponents}
         onChange={(data) => {
           if (data && state.currentColumn) {
             const schema = { ...filterAttributes(data, ['index', 'sort', 'title']) };
