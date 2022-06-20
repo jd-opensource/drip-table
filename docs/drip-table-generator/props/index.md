@@ -19,6 +19,7 @@ title: 总览
 | [dataFields](/drip-table-generator/props/data-fields) | 接口API默认字段名 | × | [🔗 示例](/drip-table-generator/props/data-fields) |
 | [customComponentPanel](/drip-table-generator/props/custom-component-panel) | 自定义组件面板 | × | [🔗 示例](/drip-table-generator/props/custom-component-panel) |
 | [customGlobalConfigPanel](/drip-table-generator/props/custom-global-config-panel) | 自定义全局属性面板 | × | [🔗 示例](/drip-table-generator/props/custom-global-config-panel) |
+| [customAttributeComponents](/drip-table-generator/props/custom-attribute-components) | 自定义属性面板组件 | × | [🔗 示例](/drip-table-generator/props/custom-attribute-components) |
 | [onExportSchema](/drip-table-generator/props/on-export-schema) | 导出表格 Schema | × | [🔗 示例](/drip-table-generator/props/on-export-schema) |
 | [driver](/drip-table/props/driver) | 底层组件驱动 | √ | [🔗 示例](/drip-table/props/driver) |
 | [schema](/drip-table/props/schema) | 初始化载入的表单 Schema | √ | [🔗 示例](/drip-table/props/schema) |

@@ -1,12 +1,11 @@
 import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { AutoComplete, Button, Col, Input, InputNumber, Popover, Radio, Row, Select, Switch } from 'antd';
-import { LabeledValue, SelectValue } from 'antd/lib/select';
+import { Alert, Button, Col, Popover, Row } from 'antd';
 import React from 'react';
 
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
-import { DTGComponentBaseProperty } from '..';
+import BuiltInComponents, { DTGComponentBaseProperty } from '..';
 
 import styles from './index.module.less';
 
@@ -28,93 +27,18 @@ export default class ArrayComponent extends React.PureComponent<Props> {
 
   private renderAttributeComponent(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
     const currentValue = (this.props.value || [])[parentIndex] || {};
-    const options = schema['ui:props']?.options as LabeledValue[] || this.props.fieldOptions || [];
-    if (schema['ui:type'] === 'radio') {
+    const uiProps = schema['ui:props'] || {};
+    if (schema['ui:type']?.startsWith('custom::')) {
+      const ComponentName = schema['ui:type']?.replace('custom::', '');
+      const CustomComponent = this.props.extraComponents?.[ComponentName] || schema['ui:externalComponent'];
       return (
-        <Radio.Group
-          style={{ width: '100%' }}
-          defaultValue={schema.default}
-          value={currentValue[schema.name]}
-          onChange={e => this.changeColumnItem(schema.name, e.target.value, parentIndex)}
-        >
-          {
-            options?.map(
-              (option, i) =>
-                <Radio key={i} value={option.value}>{ option.label }</Radio>,
-            )
-          }
-        </Radio.Group>
-      );
-    }
-    if (schema['ui:type'] === 'input') {
-      return (
-        <Input
-          style={{ width: '100%' }}
-          defaultValue={schema.default as string}
-          value={currentValue[schema.name] as string}
-          placeholder={schema['ui:props']?.placeholder as string}
-          onChange={e => this.changeColumnItem(schema.name, e.target.value, parentIndex)}
-        />
-      );
-    }
-    if (schema['ui:type'] === 'text') {
-      return (
-        <Input.TextArea
-          style={{ width: '100%' }}
-          autoSize={schema['ui:autoSize']}
-          defaultValue={schema.default as string}
-          value={currentValue[schema.name] as string}
-          placeholder={schema['ui:props']?.placeholder as string}
-          onChange={e => this.changeColumnItem(schema.name, e.target.value, parentIndex)}
-        />
-      );
-    }
-    if (schema['ui:type'] === 'auto-complete') {
-      return (
-        <AutoComplete
-          style={{ width: '100%' }}
-          defaultValue={schema.default as string}
-          value={currentValue[schema.name] as string}
-          options={options}
+        <CustomComponent
+          theme={this.props.theme}
+          schema={schema}
+          value={currentValue[schema.name] as Record<string, string> | Record<string, string>[]}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
-        />
-      );
-    }
-    if (schema['ui:type'] === 'number') {
-      return (
-        <InputNumber
-          style={{ width: '100%' }}
-          min={schema['ui:minium']}
-          max={schema['ui:maximum']}
-          step={schema['ui:step']}
-          defaultValue={Number(schema.default)}
-          value={Number(currentValue[schema.name])}
-          onChange={value => this.changeColumnItem(schema.name, Number(value), parentIndex)}
-        />
-      );
-    }
-    if (schema['ui:type'] === 'switch') {
-      const value = typeof currentValue[schema.name] === 'undefined' ? schema.default : currentValue[schema.name];
-      return (
-        <Switch
-          checked={value as boolean}
-          checkedChildren={schema['ui:checkedContent']}
-          unCheckedChildren={schema['ui:unCheckedContent']}
-          onChange={checked => this.changeColumnItem(schema.name, checked, parentIndex)}
-        />
-      );
-    }
-    if (schema['ui:type'] === 'select') {
-      const formattedValue = (schema['ui:mode'] === 'multiple' || schema['ui:mode'] === 'tags') && !Array.isArray(currentValue[schema.name]) ? [currentValue[schema.name]] : currentValue[schema.name];
-      return (
-        <Select
-          showSearch
-          style={{ width: '100%' }}
-          mode={schema['ui:mode']}
-          defaultValue={schema.default as SelectValue}
-          value={formattedValue as SelectValue}
-          options={options}
-          onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
+          onValidate={msg => this.props.onValidate?.(msg)}
+          {...uiProps}
         />
       );
     }
@@ -129,7 +53,21 @@ export default class ArrayComponent extends React.PureComponent<Props> {
         />
       );
     }
-    return null;
+    const BuiltInComponent = BuiltInComponents[schema['ui:type']] as React.JSXElementConstructor<DTGComponentBaseProperty<unknown>>;
+    if (BuiltInComponent) {
+      return (
+        <BuiltInComponent
+          theme={this.props.theme}
+          schema={schema}
+          value={currentValue[schema.name]}
+          extraComponents={this.props.extraComponents}
+          onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
+          onValidate={msg => this.props.onValidate?.(msg)}
+          {...uiProps}
+        />
+      );
+    }
+    return <Alert message="未知表单组件" type="error" showIcon />;
   }
 
   private visible(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {

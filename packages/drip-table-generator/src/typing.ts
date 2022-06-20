@@ -1,6 +1,7 @@
 import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableID, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import React, { CSSProperties, ReactNode } from 'react';
 
+import { CustomComponentProps } from './components/CustomForm/components';
 import { DripTableGeneratorState } from './store';
 
 export interface StringDataSchema {
@@ -148,6 +149,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   }>['components'];
   customComponentPanel?: DripTableGeneratorPanel<DripTableComponentAttrConfig>;
   customGlobalConfigPanel?: DripTableGeneratorPanel<DTGComponentPropertySchema>;
+  customAttributeComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   /**
    * 组件插槽，可通过 Schema 控制自定义区域渲染
    */

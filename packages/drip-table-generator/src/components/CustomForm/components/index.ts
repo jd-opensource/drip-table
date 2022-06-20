@@ -40,7 +40,14 @@ export default {
   [RichTextEditorComponent.componentName]: RichTextEditorComponent,
 };
 
+export interface CustomComponentProps {
+  schema: DTGComponentPropertySchema;
+  value?: string;
+  onChange?: (value: string) => void;
+  onValidate?: (errorMessage: string) => void;
+}
 export interface DTGComponentBaseProperty<T> {
+  extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   schema: DTGComponentPropertySchema;
   theme?: DripTableDriver;
   value?: T;
