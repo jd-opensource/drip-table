@@ -69,6 +69,7 @@ const umiConfig: IConfig = {
         title: '类型',
         path: '/drip-table/types',
         children: [
+          '/drip-table/types/table-information',
           '/drip-table/types/generic-render-element',
           '/drip-table/types/column-schema',
         ],

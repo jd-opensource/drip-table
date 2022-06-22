@@ -6,14 +6,12 @@
 ```typescript
   type RowExpandable = (
     record: RecordType,
-    parentTable: {
-      id: DripTableID;
-      dataSource: readonly RecordType[];
-    },
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => boolean;
 ```
 
 - 默认值：`undefined`
+- 更多内容：[`DripTableTableInformation<RecordType, ExtraOptions>`](/drip-table/types/table-information)
 
 ```jsx
 /**

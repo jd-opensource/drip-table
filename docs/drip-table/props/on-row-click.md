@@ -12,6 +12,7 @@ type OnRowClick = (
 ```
 
 - 默认值：`undefined`
+- 更多内容：[`DripTableTableInformation<RecordType, ExtraOptions>`](/drip-table/types/table-information)
 
 ```jsx
 /**
