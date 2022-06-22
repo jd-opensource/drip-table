@@ -102,17 +102,24 @@ const ToolLayout = (props: { store: GlobalStore }) => {
                 message.success('数据导入成功');
               }
             }
-          } else { // 导出复制
-            const aux = document.createElement('input');
-            aux.setAttribute('value', JSON.stringify(getSchemaValue()));
-            document.body.append(aux);
-            aux.select();
-            document.execCommand('copy');
-            aux.remove();
-            if (globalData.onExportSchema) {
-              globalData.onExportSchema(getSchemaValue());
+          } else if (modalStatus === 'export') { // 导出复制
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(JSON.stringify(getSchemaValue()))
+                .then(
+                  () => {
+                    globalData.onExportSchema?.(getSchemaValue());
+                    message.success('复制成功');
+                    return void 0;
+                  },
+                )
+                .catch(
+                  () => {
+                    message.error('复制失败');
+                  },
+                );
+            } else {
+              message.error('复制失败：您的浏览器不支持复制。');
             }
-            message.success('复制成功');
           }
           setModalStatus('');
           setCode('');
