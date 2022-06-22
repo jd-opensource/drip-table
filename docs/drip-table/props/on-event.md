@@ -8,7 +8,7 @@ type OnEvent = (
   event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
   record: RecordType,
   index: number,
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

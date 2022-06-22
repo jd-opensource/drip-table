@@ -138,8 +138,7 @@ export interface DripTableProps<
   subtableTitle?: (
     record: RecordType,
     recordIndex: number,
-    parentTable: DripTableTableInformation<RecordType>,
-    subtable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => React.ReactNode;
   /**
    * 子表底部自定义渲染函数
@@ -147,15 +146,14 @@ export interface DripTableProps<
   subtableFooter?: (
     record: RecordType,
     recordIndex: number,
-    parentTable: DripTableTableInformation<RecordType>,
-    subtable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => React.ReactNode;
   /**
    * 获取指定行是否可展开
    */
   rowExpandable?: (
     record: RecordType,
-    parentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => boolean;
   /**
    * 行展开自定义渲染函数
@@ -163,27 +161,27 @@ export interface DripTableProps<
   expandedRowRender?: (
     record: RecordType,
     index: number,
-    parentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => React.ReactNode;
   /**
    * 生命周期：组件加载完成
    */
-  componentDidMount?: (currentTable: DripTableTableInformation<RecordType>) => void;
+  componentDidMount?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void;
   /**
    * 生命周期：组件更新完成
    */
-  componentDidUpdate?: (currentTable: DripTableTableInformation<RecordType>) => void;
+  componentDidUpdate?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void;
   /**
    * 生命周期：组件即将卸载
    */
-  componentWillUnmount?: (currentTable: DripTableTableInformation<RecordType>) => void;
+  componentWillUnmount?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void;
   /**
    * 点击行
    */
   onRowClick?: (
     record: RecordType | RecordType[],
     index: number | string | (number | string)[],
-    parentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 双击行
@@ -191,7 +189,7 @@ export interface DripTableProps<
   onRowDoubleClick?: (
     record: RecordType | RecordType[],
     index: number | string | (number | string)[],
-    parentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 选择行变化
@@ -199,28 +197,28 @@ export interface DripTableProps<
   onSelectionChange?: (
     selectedKeys: React.Key[],
     selectedRows: RecordType[],
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 搜索触发
    */
   onSearch?: (
     searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>,
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 点击添加按钮触发
    */
   onInsertButtonClick?: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 过滤器触发
    */
   onFilterChange?: (
     filters: DripTableFilters,
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 页码/页大小变化
@@ -228,7 +226,7 @@ export interface DripTableProps<
   onPageChange?: (
     currentPage: number,
     pageSize: number,
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 过滤器、分页器 等配置变化
@@ -238,14 +236,14 @@ export interface DripTableProps<
       pagination: DripTablePagination;
       filters: DripTableFilters;
     },
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 用户修改展示的列时
    */
   onDisplayColumnKeysChange?: (
     displayColumnKeys: React.Key[],
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
    * 通用事件机制
@@ -254,8 +252,13 @@ export interface DripTableProps<
     event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
     record: RecordType,
     index: number,
-    currentTable: DripTableTableInformation<RecordType>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
+  /**
+   * 渲染子表时用于透传父级信息，仅限内部使用
+   * @internal
+   */
+  __PARENT_INFO__?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
 const DripTable = <
@@ -310,7 +313,11 @@ const DripTable = <
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref
 
-  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType> => ({ id: props.schema.id, dataSource: props.dataSource }), [props.schema.id, props.dataSource]);
+  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    schema: props.schema,
+    dataSource: props.dataSource,
+    parent: props.__PARENT_INFO__,
+  }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
 
   React.useEffect(() => {
     setTableState(state => ({
@@ -507,47 +514,51 @@ const DripTable = <
         const rowExpandable = props.rowExpandable;
         if (subtable || expandedRowRender) {
           return {
-            expandedRowRender: (record, index) => (
-              <React.Fragment>
-                {
-                  subtable && Array.isArray(record[subtable.dataSourceKey])
-                    ? (
-                      <DripTableWrapper<RecordType, ExtraOptions>
-                        {...props}
-                        schema={
-                            Object.fromEntries(
-                              Object.entries(subtable)
-                                .filter(([key]) => key !== 'dataSourceKey'),
-                            ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>
-                          }
-                        dataSource={record[subtable.dataSourceKey] as RecordType[]}
-                        title={
-                            props.subtableTitle
-                              ? subtableData => props.subtableTitle?.(
-                                record,
-                                index,
-                                tableInfo,
-                                { id: subtable.id, dataSource: subtableData },
-                              )
-                              : void 0
-                          }
-                        footer={
-                            props.subtableFooter
-                              ? subtableData => props.subtableFooter?.(
-                                record,
-                                index,
-                                tableInfo,
-                                { id: subtable.id, dataSource: subtableData },
-                              )
-                              : void 0
-                          }
-                      />
-                    )
-                    : void 0
-                }
-                { expandedRowRender?.(record, index, tableInfo) }
-              </React.Fragment>
-            ),
+            expandedRowRender: (record, index) => {
+              let subtableEl: React.ReactNode = null;
+              if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
+                const subtableSchema = Object.fromEntries(
+                  Object.entries(subtable)
+                    .filter(([key]) => key !== 'dataSourceKey'),
+                ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+                subtableEl = (
+                  <DripTableWrapper<RecordType, ExtraOptions>
+                    {...props}
+                    schema={subtableSchema}
+                    dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                    title={
+                        props.subtableTitle
+                          ? subtableData => props.subtableTitle?.(
+                            record,
+                            index,
+                            { schema: subtableSchema, dataSource: subtableData, parent: tableInfo },
+                          )
+                          : void 0
+                      }
+                    footer={
+                        props.subtableFooter
+                          ? subtableData => props.subtableFooter?.(
+                            record,
+                            index,
+                            { schema: subtableSchema, dataSource: subtableData, parent: tableInfo },
+                          )
+                          : void 0
+                      }
+                    __PARENT_INFO__={{
+                      parent: props.__PARENT_INFO__,
+                      schema: props.schema,
+                      dataSource: tableProps.dataSource || [],
+                    }}
+                  />
+                );
+              }
+              return (
+                <React.Fragment>
+                  { subtableEl }
+                  { expandedRowRender?.(record, index, tableInfo) }
+                </React.Fragment>
+              );
+            },
             rowExpandable: (record) => {
               if (rowExpandable?.(record, tableInfo)) {
                 return true;

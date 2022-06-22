@@ -221,9 +221,25 @@ export interface DripTableExtraOptions {
   SubtableDataSourceKey: React.Key;
 }
 
-export interface DripTableTableInformation<RecordType extends DripTableRecordTypeBase> {
-  id: DripTableID;
+/**
+ * 表格信息
+ */
+export interface DripTableTableInformation<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
+  /**
+   * 表格 Schema
+   */
+  schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+  /**
+   * 表格数据
+   */
   dataSource: readonly RecordType[];
+  /**
+   * 表格父级信息
+   */
+  parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
 export interface DripTablePagination {

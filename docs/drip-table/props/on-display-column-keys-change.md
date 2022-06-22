@@ -6,7 +6,7 @@
 ```typescript
 type OnDisplayColumnKeysChange = (
   displayColumnKeys: React.Key[],
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

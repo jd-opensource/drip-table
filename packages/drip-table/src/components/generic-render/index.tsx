@@ -14,7 +14,7 @@ import {
   type DripTableExtraOptions,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
-  DripTableTableInformation,
+  type DripTableTableInformation,
 } from '@/types';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
@@ -205,7 +205,11 @@ const GenericRender = <
 
   const [searchStr, setSearchStr] = React.useState('');
   const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
-  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType> => ({ id: tableProps.schema.id, dataSource: tableProps.dataSource }), [tableProps.schema.id, tableProps.dataSource]);
+  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    schema: tableProps.schema,
+    dataSource: tableProps.dataSource,
+    parent: tableProps.__PARENT_INFO__,
+  }), [tableProps.schema, tableProps.dataSource, tableProps.__PARENT_INFO__]);
 
   const renderColumnContent = (config: DripTableGenericRenderElement) => {
     if (config.type === 'spacer') {

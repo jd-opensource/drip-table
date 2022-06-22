@@ -6,7 +6,7 @@
 ```typescript
 type OnInsertButtonClick = (
   event: React.MouseEvent<HTMLElement, MouseEvent>,
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

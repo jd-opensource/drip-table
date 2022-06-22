@@ -7,7 +7,7 @@
 type OnSelectionChange = (
   selectedKeys: React.Key[],
   selectedRows: RecordType[],
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

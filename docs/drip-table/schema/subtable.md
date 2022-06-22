@@ -149,8 +149,8 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      onSelectionChange={(selectedKeys, selectedRows, currentTable) => {
-        message.info(selectedRows.length ? `表(${currentTable.id})，选中商品：KEYS(${selectedKeys.join(', ')})。` : '未选中商品。');
+      onSelectionChange={(selectedKeys, selectedRows, tableInfo) => {
+        message.info(selectedRows.length ? `表(${tableInfo.schema.id})，选中商品：KEYS(${selectedKeys.join(', ')})。` : '未选中商品。');
         console.log({ selectedKeys, selectedRows });
       }}
     />

@@ -6,7 +6,7 @@
 ```typescript
 type OnFilterChange = (
   (filters: DripTableFilters) => void,
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

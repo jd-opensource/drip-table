@@ -6,7 +6,7 @@
 ```typescript
 type OnSearch = (
   searchParams: { searchKey?: number | string; searchStr: string } | Record<string, unknown>,
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

@@ -251,6 +251,7 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       onChange: { instanceof: 'Function' },
       onDisplayColumnKeysChange: { instanceof: 'Function' },
       onEvent: { instanceof: 'Function' },
+      __PARENT_INFO__: { type: 'object' },
     },
     required: [
       'driver',

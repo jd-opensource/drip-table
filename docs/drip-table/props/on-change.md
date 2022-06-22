@@ -9,7 +9,7 @@ type OnChange = (
     pagination: DripTablePagination;
     filters: DripTableFilters;
   },
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

@@ -7,7 +7,7 @@
 type OnRowDoubleClick = (
   record: RecordType | RecordType[],
   index: number | string | (number | string)[],
-  parentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 

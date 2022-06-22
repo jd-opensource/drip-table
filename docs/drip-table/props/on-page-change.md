@@ -7,7 +7,7 @@
 type OnPageChange = (
   currentPage: number,
   pageSize: number,
-  currentTable: DripTableTableInformation<RecordType>,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
 
