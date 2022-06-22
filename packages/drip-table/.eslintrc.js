@@ -30,24 +30,6 @@ const javascriptRules = {
 
 const typescriptRules = {
   ...javascriptRules,
-  '@typescript-eslint/naming-convention': require('eslint-config-lvmcn/typescript/plugins/base')
-    .rules['@typescript-eslint/naming-convention']
-    .map((rule) => {
-      if (typeof rule === 'object' && rule.selector.some(selector => ['property', 'method', 'objectLiteralMethod'].includes(selector))) {
-        return {
-          ...rule,
-          filter: {
-            // you can expand this regex as you find more cases that require quoting that you want to allow
-            // allow `__low_case_const__` and `__UPPER_CASE_CONST__`, such as __REDUX_DEVTOOLS_EXTENSION__
-            // allow `ui:xxx`, such as "ui:props"
-            // allow `lowercase-property-name`, such as "sample-key-01"
-            regex: '(^__[a-z0-9](?:[a-z0-9_]*[a-z0-9]){0,1}__$|^__[A-Z0-9](?:[A-Z0-9_]*[A-Z0-9]){0,1}__$|^ui:.+$|^[a-z0-9]+(?:-[a-z0-9]+)*$)',
-            match: false,
-          },
-        };
-      }
-      return rule;
-    }),
 };
 
 const buildingToolsJavascriptRules = {
