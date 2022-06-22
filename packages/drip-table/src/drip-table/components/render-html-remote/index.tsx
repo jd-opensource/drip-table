@@ -48,7 +48,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
             resolve(res);
             return res;
           })
-          .catch((error) => {
+          .catch((error: unknown) => {
             CACHE_RENDERER.delete(url);
             throw error;
           });

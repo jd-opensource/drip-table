@@ -128,7 +128,8 @@ export default class Draggable<T extends Data> extends Component<Props<T>, State
     renderCell: (item: T) => JSX.Element,
     codeKey: string,
   ) {
-    return data.sort(this.compare()).map(item => (
+    data.sort(this.compare());
+    return data.map(item => (
       <div
         key={item[codeKey]}
         className={styles['draggable-droppedcontent']}

@@ -44,10 +44,8 @@ const SAFE_TAG_NAME: HTMLTagName[] = [
   'bdo',
   'big',
   'blockquote',
-  // 'body',
   'br',
   'button',
-  // 'canvas',
   'caption',
   'cite',
   'code',
@@ -69,7 +67,6 @@ const SAFE_TAG_NAME: HTMLTagName[] = [
   'figcaption',
   'figure',
   'footer',
-  // 'form',
   'h1',
   'h2',
   'h3',
@@ -82,16 +79,13 @@ const SAFE_TAG_NAME: HTMLTagName[] = [
   'hr',
   'html',
   'i',
-  // 'iframe',
   'img',
-  // 'input',
   'ins',
   'kbd',
   'keygen',
   'label',
   'legend',
   'li',
-  // 'link',
   'main',
   'map',
   'mark',
@@ -100,7 +94,6 @@ const SAFE_TAG_NAME: HTMLTagName[] = [
   'meta',
   'meter',
   'nav',
-  // 'noscript',
   'object',
   'ol',
   'optgroup',
@@ -118,7 +111,6 @@ const SAFE_TAG_NAME: HTMLTagName[] = [
   's',
   'samp',
   'slot',
-  // 'script',
   'section',
   'select',
   'small',
@@ -388,19 +380,19 @@ export default class RichText extends React.PureComponent<RichTextProps> {
         style.display = 'inline';
       }
       const props: Record<string, unknown> = {
-        // normal props
+        // normal props 通用属性
         ...Object.fromEntries(
           Object.entries(attribs)
             .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k) && !(k.toLowerCase() in domEvents)),
         ),
-        // event props
+        // event props 事件属性
         ...Object.fromEntries(
           Object.entries(attribs)
             .map(([k, v]) => [domEvents[k.toLowerCase()], v])
             .filter(([k, v]) => k)
             .map(([k, v]) => [k, new Function(v)]),
         ),
-        // static props
+        // static props 静态属性
         key,
         style,
         className: attribs.class,

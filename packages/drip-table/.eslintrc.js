@@ -11,6 +11,14 @@ const importResolverExtensions = [
 
 const javascriptRules = {
   'no-new-func': 'off',
+  'etc/no-internal': [
+    'error',
+    {
+      ignored: {
+        __PARENT_INFO__: 'name',
+      },
+    },
+  ],
   'react/jsx-no-bind': 'off',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',

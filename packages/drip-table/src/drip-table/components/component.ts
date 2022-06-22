@@ -25,11 +25,11 @@ export interface DripTableComponentProps<
    */
   schema: ColumnSchema;
   /**
-   * 当前渲染行数据结构 `list[i]`
+   * 当前渲染行数据结构（`list[i]`）
    */
   data: RecordType;
   /**
-   * 当前渲染单元格数据 `data[schema.dataIndex]`
+   * 当前渲染单元格数据（`data[schema.dataIndex]`）
    */
   value: unknown;
   /**

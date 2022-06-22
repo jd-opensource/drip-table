@@ -122,12 +122,12 @@ export default class Icon extends React.PureComponent<IconProps> {
         });
       }
       const props: Record<string, unknown> = {
-        // normal props
+        // normal props 通用属性
         ...Object.fromEntries(
           Object.entries(attribs)
             .filter(([k, v]) => !HIDDEN_TAG_PROP_NAME.has(k)),
         ),
-        // static props
+        // static props 静态属性
         key,
         style,
         className: attribs.class,

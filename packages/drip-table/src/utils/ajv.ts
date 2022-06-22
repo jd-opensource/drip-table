@@ -35,7 +35,6 @@ const getAjvErrorMessage = (
       return `${dataVar}${e.instancePath} ${e.message}${params ? `, ${params}` : ''}`;
     })
     .reduce((text, msg) => `${text}${separator}${msg}`);
-  // return ajv.errorsText(void 0, { dataVar: 'column' });
 };
 
 /**

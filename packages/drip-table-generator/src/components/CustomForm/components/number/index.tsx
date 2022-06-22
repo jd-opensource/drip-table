@@ -39,7 +39,7 @@ export default class InputNumberComponent extends React.PureComponent<Props> {
                 this.props.onValidate?.(msg);
                 return msg;
               })
-              .catch((error) => { throw error; });
+              .catch((error: unknown) => { throw error; });
           }
         }}
       />

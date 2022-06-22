@@ -54,7 +54,7 @@ export default class InputComponent extends React.PureComponent<Props> {
                 this.props.onValidate?.(msg);
                 return msg;
               })
-              .catch((error) => { throw error; });
+              .catch((error: unknown) => { throw error; });
           }
         }}
       />

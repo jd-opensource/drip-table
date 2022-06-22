@@ -100,7 +100,7 @@ export default class SelectComponent extends React.PureComponent<Props> {
                 this.props.onValidate?.(message);
                 return message;
               })
-              .catch((error) => { throw error; });
+              .catch((error: unknown) => { throw error; });
           }
         }}
       />

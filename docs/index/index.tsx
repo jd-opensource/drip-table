@@ -1,4 +1,5 @@
 /**
+ * ## DUMI CONFIG ##
  * transform: true
  * inline: true
  */

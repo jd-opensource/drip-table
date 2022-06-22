@@ -1,4 +1,5 @@
 /**
+ * ## DUMI CONFIG ##
  * transform: true
  * defaultShowCode: true
  * hideActions: ["CSB"]
