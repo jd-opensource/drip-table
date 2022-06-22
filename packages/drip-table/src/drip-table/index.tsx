@@ -28,16 +28,38 @@ import GenericRender, { DripTableGenericRenderElement } from '@/components/gener
 import RichText from '@/components/rich-text';
 import { useState, useTable } from '@/hooks';
 
-import DripTableWrapper from '..';
+import DripTableWrapper, { DripTableID } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
 import VirtualTable from './virtual-table';
 
 import styles from './index.module.less';
 
+/**
+ * 指定子表格的参数
+ */
+interface DripTableSubtableProps {
+  /**
+   * 指定表是否默认展开所有子表
+   */
+  defaultExpandAllRows?: boolean;
+  /**
+   * 指定表默认展开子表键列表
+   */
+  defaultExpandedRowKeys?: React.Key[];
+}
+
+/**
+ * 表格参数默认值，用于覆盖父表参数值防止透传到子表
+ */
+const DEFAULT_SUBTABLE_PROPS: DripTableSubtableProps = {
+  defaultExpandAllRows: void 0,
+  defaultExpandedRowKeys: void 0,
+};
+
 export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> {
+> extends DripTableSubtableProps {
   /**
    * 底层组件驱动
    */
@@ -86,6 +108,27 @@ export interface DripTableProps<
     offsetScroll?: number;
     getContainer?: () => HTMLElement;
   };
+  /**
+   * 子表参数匹配设置，可用于覆盖父表参数透传
+   */
+  subtableProps?: {
+    /**
+     * 根据子表 id 进行匹配
+     */
+    subtableID?: DripTableID;
+    /**
+     * 根据子表所在行 KEY 匹配
+     */
+    recordKeys?: unknown[];
+    /**
+     * 默认兜底设置
+     */
+    default?: boolean;
+    /**
+     * 子表参数
+     */
+    properties: DripTableSubtableProps;
+  }[];
   /**
    * 表格单元格组件库
    */
@@ -518,6 +561,20 @@ const DripTable = <
               const parentTableInfo: typeof tableInfo = { ...tableInfo, record };
               let subtableEl: React.ReactNode = null;
               if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
+                const subtableProps = Object.assign(
+                  {},
+                  DEFAULT_SUBTABLE_PROPS,
+                  props.subtableProps
+                    ? Object.assign(
+                      {},
+                      ...[
+                        ...props.subtableProps.filter(sp => sp.default) || [],
+                        ...subtable ? props.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
+                        ...props.subtableProps.filter(sp => sp.recordKeys && sp.recordKeys.length === 1 && sp.recordKeys[0] === record[tableProps.rowKey ?? 'key']) || [],
+                      ].map(sp => sp.properties),
+                    )
+                    : void 0,
+                );
                 const subtableSchema = Object.fromEntries(
                   Object.entries(subtable)
                     .filter(([key]) => key !== 'dataSourceKey'),
@@ -525,6 +582,7 @@ const DripTable = <
                 subtableEl = (
                   <DripTableWrapper<RecordType, ExtraOptions>
                     {...props}
+                    {...subtableProps}
                     schema={subtableSchema}
                     dataSource={record[subtable.dataSourceKey] as RecordType[]}
                     title={
@@ -545,6 +603,23 @@ const DripTable = <
                           )
                           : void 0
                       }
+                    subtableProps={
+                      props.subtableProps
+                        ?.map((sp) => {
+                          if (sp.recordKeys) {
+                            const recordKeys = tableProps.rowKey && sp.recordKeys[0] === record[tableProps.rowKey]
+                              ? [...sp.recordKeys]
+                              : [];
+                            recordKeys.shift();
+                            return {
+                              ...sp,
+                              recordKeys,
+                            };
+                          }
+                          return sp;
+                        })
+                        .filter(sp => sp.recordKeys?.length !== 0)
+                    }
                     __PARENT_INFO__={{
                       parent: props.__PARENT_INFO__,
                       schema: props.schema,
@@ -570,6 +645,8 @@ const DripTable = <
               }
               return false;
             },
+            defaultExpandAllRows: props.defaultExpandAllRows,
+            defaultExpandedRowKeys: props.defaultExpandedRowKeys,
           };
         }
         return void 0;

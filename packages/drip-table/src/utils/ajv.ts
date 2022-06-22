@@ -196,6 +196,17 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       'dataSourceKey',
     ],
   };
+  const subtablePropsSchema: SchemaObject = {
+    properties: {
+      defaultExpandAllRows: { type: 'boolean' },
+      defaultExpandedRowKeys: {
+        type: 'array',
+        items: { type: ['number', 'string'] },
+      },
+    },
+    required: [],
+    additionalProperties,
+  };
   const propsSchema: SchemaObject = {
     properties: {
       driver: {},
@@ -211,6 +222,7 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       total: { type: 'number' },
       currentPage: { type: 'number' },
       loading: { type: 'boolean' },
+      ...subtablePropsSchema.properties,
       components: {},
       slots: {},
       ajv: {
@@ -229,6 +241,19 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
           offsetHeader: { type: 'number' },
           offsetScroll: { type: 'number' },
           getContainer: { instanceof: 'Function' },
+        },
+      },
+      subtableProps: {
+        type: 'array',
+        items: {
+          properties: {
+            subtableID: { type: ['number', 'string'] },
+            recordKeys: { type: 'array', items: {} },
+            default: { type: 'boolean' },
+            properties: subtablePropsSchema,
+          },
+          required: ['properties'],
+          additionalProperties,
         },
       },
       title: { instanceof: 'Function' },
@@ -256,6 +281,7 @@ export const validateDripTableProps = (data: unknown, options?: AjvOptions) => {
       'driver',
       'schema',
       'dataSource',
+      ...subtablePropsSchema.required,
     ],
     additionalProperties,
   };

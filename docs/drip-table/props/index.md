@@ -19,10 +19,13 @@ title: 总览
 | [total](/drip-table/props/total) | 数据源总条数 | × | [🔗 示例](/drip-table/props/total) |
 | [currentPage](/drip-table/props/current-page) | 当前页码 | × | [🔗 示例](/drip-table/props/current-page) |
 | [loading](/drip-table/props/loading) | 加载中 | × | [🔗 示例](/drip-table/props/loading) |
+| [subtableProps](/drip-table/props/subtable-props) | 子表参数匹配设置 | × | [🔗 示例](/drip-table/props/subtable-props) |
 | [components](/drip-table/props/components) | 表格单元格组件库 | × | [🔗 示例](/drip-table/props/components) |
 | [slots](/drip-table/props/slots) | 组件插槽，可通过 Schema 控制自定义区域渲染 | × | [🔗 示例](/drip-table/props/slots) |
 | [ext](/drip-table/props/ext) | 自定义组件附加透传数据 | × | [🔗 示例](/drip-table/props/ext) |
 | [sticky](/drip-table/props/sticky) | 粘性头部和滚动条设置项 | × | [🔗 示例](/drip-table/props/sticky) |
+| [defaultExpandAllRows](/drip-table/props/default-expand-all-rows) | 默认展开全部子表 | × | [🔗 示例](/drip-table/props/default-expand-all-rows) |
+| [defaultExpandedRowKeys](/drip-table/props/default-expanded-row-keys) | 子表默认展开项 | × | [🔗 示例](/drip-table/props/default-expanded-row-keys) |
 | [title](/drip-table/props/title) | 顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/title) |
 | [footer](/drip-table/props/footer) | 底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/footer) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
