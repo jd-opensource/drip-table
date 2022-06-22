@@ -372,7 +372,7 @@ const DripTable = <
             data={record}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
             ext={props.ext}
-            fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
+            fireEvent={event => props.onEvent?.(event, record, index, { ...tableInfo, record })}
           />
         );
       }
@@ -397,7 +397,7 @@ const DripTable = <
               data={record}
               schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={props.ext}
-              fireEvent={event => props.onEvent?.(event, record, index, tableInfo)}
+              fireEvent={event => props.onEvent?.(event, record, index, { ...tableInfo, record })}
             />
           );
         }
@@ -515,6 +515,7 @@ const DripTable = <
         if (subtable || expandedRowRender) {
           return {
             expandedRowRender: (record, index) => {
+              const parentTableInfo: typeof tableInfo = { ...tableInfo, record };
               let subtableEl: React.ReactNode = null;
               if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
                 const subtableSchema = Object.fromEntries(
@@ -531,7 +532,7 @@ const DripTable = <
                           ? subtableData => props.subtableTitle?.(
                             record,
                             index,
-                            { schema: subtableSchema, dataSource: subtableData, parent: tableInfo },
+                            { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                           )
                           : void 0
                       }
@@ -540,7 +541,7 @@ const DripTable = <
                           ? subtableData => props.subtableFooter?.(
                             record,
                             index,
-                            { schema: subtableSchema, dataSource: subtableData, parent: tableInfo },
+                            { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                           )
                           : void 0
                       }
@@ -555,12 +556,12 @@ const DripTable = <
               return (
                 <React.Fragment>
                   { subtableEl }
-                  { expandedRowRender?.(record, index, tableInfo) }
+                  { expandedRowRender?.(record, index, parentTableInfo) }
                 </React.Fragment>
               );
             },
             rowExpandable: (record) => {
-              if (rowExpandable?.(record, tableInfo)) {
+              if (rowExpandable?.(record, { ...tableInfo, record })) {
                 return true;
               }
               if (subtable) {

@@ -237,6 +237,10 @@ export interface DripTableTableInformation<
    */
   dataSource: readonly RecordType[];
   /**
+   * 所属数据（通常用于子表寻找父级行数据）
+   */
+  record?: RecordType;
+  /**
    * 表格父级信息
    */
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
