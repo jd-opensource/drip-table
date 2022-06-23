@@ -47,3 +47,11 @@ export const getColumnItemByPath = (column: DripTableColumn | null, path: number
   }
   return null;
 };
+
+export const getLength = (value: string) => {
+  let length = 0;
+  for (const element of value) {
+    length += (/[\u4E00-\u9FA5]/ui).test(element) ? 2 : 1;
+  }
+  return length;
+};

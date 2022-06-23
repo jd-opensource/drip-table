@@ -46,7 +46,8 @@ export default {
         style: {
           width: '100%',
         },
-        minRow: 6,
+        autoSize: true,
+        rows: 6,
       },
       type: 'string',
       default: '<p><strong>{{rec.name}}</strong></p>',

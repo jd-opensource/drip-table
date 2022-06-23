@@ -46,10 +46,11 @@ export default class TextComponent extends React.PureComponent<Props> {
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
         style={{ width: 240, ...uiProps.style }}
-        autoSize={{
+        autoSize={uiProps.autoSize as boolean || {
           minRows: uiProps.minRows as number,
           maxRows: uiProps.maxRows as number,
         }}
+        rows={uiProps.rows as number}
         onChange={(e) => {
           const formattedValue = this.transform(e.target.value);
           this.props.onChange?.(formattedValue);
