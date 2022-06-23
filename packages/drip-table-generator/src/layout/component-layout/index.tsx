@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { Tooltip } from 'antd';
 import { DripTableColumnSchema } from 'drip-table';
 import chunk from 'lodash/chunk';
 import React from 'react';
@@ -17,7 +18,7 @@ import components from '@/table-components';
 import { DripTableComponentAttrConfig, DripTableGeneratorPanel } from '@/typing';
 
 import { defaultComponentIcon } from '../configs';
-import { updateColumnItemByPath } from '../utils';
+import { getLength, updateColumnItemByPath } from '../utils';
 
 import styles from './index.module.less';
 
@@ -105,7 +106,9 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
     >
       <div>
         <Icon svg={item.icon || defaultComponentIcon} className={styles['component-icon']} />
-        <span>{ item.title }</span>
+        { getLength(item.title) > 11
+          ? <Tooltip title={item.title}><span className={styles['component-title']} title={item.title}>{ item.title }</span></Tooltip>
+          : <span className={styles['component-title']} title={item.title}>{ item.title }</span> }
       </div>
     </div>
   );

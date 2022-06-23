@@ -12,6 +12,8 @@ import ReactQuill from 'react-quill';
 
 import { DTGComponentBaseProperty } from '..';
 
+import styles from './index.module.less';
+
 interface Props extends DTGComponentBaseProperty<string> {}
 
 export default class RichTextEditorComponent extends React.PureComponent<Props> {
@@ -40,6 +42,7 @@ export default class RichTextEditorComponent extends React.PureComponent<Props> 
       <div style={uiProps.style}>
         <ReactQuill
           theme="snow"
+          className={styles['quill-editor-container']}
           modules={this.modules}
           value={this.props.value}
           onChange={(value) => {

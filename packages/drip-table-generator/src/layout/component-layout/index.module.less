@@ -48,7 +48,7 @@
 .component {
   &-container {
     width: 100%;
-    padding: 8px;
+    padding: 8px 4px;
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -96,6 +96,13 @@
       height: 18px;
       margin: 1px;
     }
+  }
+
+  &-title {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 90px;
+    text-overflow: ellipsis;
   }
 
   img {
