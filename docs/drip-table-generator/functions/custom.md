@@ -15,7 +15,7 @@ title: 自定义属性面板
 
 **自定义全局属性需要手动关闭Ajv的额外属性校验**
 
-效果图如下所示：
+效果如下图所示：
 
 ![image](https://img14.360buyimg.com/imagetools/jfs/t1/89185/16/19861/127844/61cc2e59Ed75e2c20/27edac9d773fccb5.jpg)
 
