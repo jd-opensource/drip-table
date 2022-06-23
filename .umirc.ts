@@ -226,7 +226,6 @@ const umiConfig: IConfig = {
           '/drip-table-generator/props/slots-schema',
         ],
       },
-
       {
         title: '常见问题',
         path: '/drip-table-generator/faq',
