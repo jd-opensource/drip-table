@@ -22,7 +22,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import { type DripTableDriverTableProps } from '@/types/driver/table';
-import { AjvOptions, validateDripTableColumnSchema, validateDripTableProps } from '@/utils/ajv';
+import { AjvOptions, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { DripTableGenericRenderElement } from '@/components/generic-render';
 import RichText from '@/components/rich-text';
@@ -308,40 +308,48 @@ const DripTable = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
-  if (props.schema && props.schema.columns.some(c => c['ui:type'] || c['ui:props'])) {
+  if (props.schema?.columns?.some(c => c['ui:type'] || c['ui:props'])) {
     props = {
       ...props,
-      schema: {
-        ...props.schema,
-        columns: props.schema.columns.map((column) => {
+      schema: Object.assign(
+        {},
+        props.schema,
+        {
+          columns: props.schema?.columns?.map((column) => {
           // 兼容旧版本数据
-          if ('ui:type' in column || 'ui:props' in column) {
-            const key = column.key;
-            if ('ui:type' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
+            if ('ui:type' in column || 'ui:props' in column) {
+              const key = column.key;
+              if ('ui:type' in column) {
+                console.warn(`[DripTable] Column ${key} "ui:type" is deprecated, please use "component" instead.`);
+              }
+              if ('ui:props' in column) {
+                console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
+              }
+              return {
+                ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
+                options: column['ui:props'] || column.options || void 0,
+                component: column['ui:type'] || column.component,
+              } as typeof column;
             }
-            if ('ui:props' in column) {
-              console.warn(`[DripTable] Column ${key} "ui:props" is deprecated, please use "options" instead.`);
-            }
-            return {
-              ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
-              options: column['ui:props'] || column.options || void 0,
-              component: column['ui:type'] || column.component,
-            } as typeof column;
-          }
-          return column;
-        }),
-      },
+            return column;
+          }),
+        },
+      ),
     };
   }
 
-  if (props.ajv !== false) {
-    const errorMessage = validateDripTableProps(props, props.ajv);
+  const ajv = props.ajv;
+  if (ajv !== false) {
+    const errorMessage = validateDripTableRequiredProps(props, ajv)
+      || Object.entries(props)
+        .map(([k, v]) => React.useMemo(() => validateDripTableProp(k, v, ajv), [k, v, ajv]))
+        .filter(_ => _)
+        .join('\n');
     if (errorMessage) {
       return (
-        <div className={styles['ajv-error']}>
-          { `Props validate failed: ${errorMessage}` }
-        </div>
+        <pre className={styles['ajv-error']}>
+          { `Props validate failed: ${errorMessage.includes('\n') ? '\n' : ''}${errorMessage}` }
+        </pre>
       );
     }
   }
@@ -402,9 +410,9 @@ const DripTable = <
           const errorMessage = validateDripTableColumnSchema(schema, BuiltInComponent.schema, props.ajv);
           if (errorMessage) {
             return () => (
-              <div className={styles['ajv-error']}>
+              <pre className={styles['ajv-error']}>
                 { `Schema validate failed: ${errorMessage}` }
-              </div>
+              </pre>
             );
           }
         }
@@ -427,9 +435,9 @@ const DripTable = <
             const errorMessage = validateDripTableColumnSchema(schema, ExtraComponent.schema, props.ajv);
             if (errorMessage) {
               return () => (
-                <div className={styles['ajv-error']}>
+                <pre className={styles['ajv-error']}>
                   { `Schema validate failed: ${errorMessage}` }
-                </div>
+                </pre>
               );
             }
           }
