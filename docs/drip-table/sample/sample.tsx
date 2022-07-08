@@ -113,14 +113,14 @@ const Demo = () => {
           }),
           default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
         }}
-        subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
+        subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable?.dataSource?.length} 条）` }</div>}
         subtableFooter={(record, index, parent, subtable) => (
           subtable.id === 'sample-table-sub-level-1'
             ? (
               <div
                 style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
                 onClick={() => {
-                  message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable.dataSource.length} 条`);
+                  message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable?.dataSource?.length} 条`);
                   console.log('expandable-footer-click', record, index, parent, subtable);
                 }}
               >
