@@ -52,7 +52,7 @@ const umiConfig: IConfig = {
   menus: {
     '/drip-table': [
       {
-        title: '指南',
+        title: '指南 Guide',
         path: '/drip-table/guide',
         children: [
           '/drip-table/guide/index.md',
@@ -61,20 +61,24 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '案例展示',
+        title: '案例展示 Demo',
         path: '/drip-table/sample',
         children: [],
       },
       {
-        title: '组件',
+        title: '组件 Components',
         path: '/drip-table/components',
         children: [
           '/drip-table/components/index',
           '/drip-table/components/text',
+          '/drip-table/components/image',
+          '/drip-table/components/link',
+          '/drip-table/components/tag',
+          '/drip-table/components/button',
         ],
       },
       {
-        title: 'Schema',
+        title: '表格配置 Schema',
         path: '/drip-table/schema',
         children: [
           '/drip-table/schema/index',
@@ -115,16 +119,7 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '类型',
-        path: '/drip-table/types',
-        children: [
-          '/drip-table/types/table-information',
-          '/drip-table/types/generic-render-element',
-          '/drip-table/types/column-schema',
-        ],
-      },
-      {
-        title: '参数',
+        title: '属性参数 Props',
         path: '/drip-table/props',
         children: [
           '/drip-table/props/index',
@@ -169,18 +164,27 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '常见问题',
+        title: '类型 Types',
+        path: '/drip-table/types',
+        children: [
+          '/drip-table/types/table-information',
+          '/drip-table/types/generic-render-element',
+          '/drip-table/types/column-schema',
+        ],
+      },
+      {
+        title: '常见问题 FAQ',
         path: '/drip-table/faq',
       },
       {
-        title: '更新日志',
+        title: '更新日志 Changelog',
         path: '/drip-table/changelog',
         children: [],
       },
     ],
     '/drip-table-generator': [
       {
-        title: '使用指南',
+        title: '使用指南 Guide',
         path: '/drip-table-generator/guide',
         children: [
           '/drip-table-generator/guide/index.md',
@@ -188,7 +192,7 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '使用教程',
+        title: '使用教程 Tutorial',
         path: '/drip-table-generator/functions',
         children: [
           '/drip-table-generator/functions/index.md',
@@ -199,7 +203,7 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '内置组件库',
+        title: '内置组件库 components',
         path: '/drip-table-generator/components',
         children: [
           '/drip-table-generator/components/index',
@@ -210,7 +214,7 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '参数',
+        title: '属性参数 Props',
         path: '/drip-table-generator/props',
         children: [
           '/drip-table-generator/props/index',
@@ -227,15 +231,15 @@ const umiConfig: IConfig = {
         ],
       },
       {
-        title: '常见问题',
+        title: '常见问题 FAQ',
         path: '/drip-table-generator/faq',
       },
       {
-        title: '案例展示',
+        title: '案例展示 Demo',
         path: '/drip-table-generator/preview',
       },
       {
-        title: '更新日志',
+        title: '更新日志 Changelog',
         path: '/drip-table-generator/changelog',
         children: [],
       },
