@@ -74,10 +74,10 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   private visible(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
     const currentValue = (this.props.value || [])[parentIndex] || {};
     if (typeof schema.visible === 'function') {
-      return schema.visible(currentValue[schema.name], currentValue);
+      return schema.visible(currentValue[schema.name], currentValue, index, parentIndex);
     } if (typeof schema.visible === 'string') {
-      const visible = new Function('formData', schema.visible);
-      return visible(currentValue);
+      const visible = new Function('currentValue', 'formData', 'index', 'parentIndex', schema.visible);
+      return visible(currentValue[schema.name], currentValue, index, parentIndex);
     } if (typeof schema.visible === 'boolean') {
       return schema.visible;
     }

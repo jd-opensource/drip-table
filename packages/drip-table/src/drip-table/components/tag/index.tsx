@@ -15,7 +15,7 @@ import { DripTableComponentProps } from '../component';
 
 export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
   /** 字体颜色 */
-  color?: string;
+  color?: string | 'success' | 'processing' | 'error' | 'default' | 'warning';
   /** 边框颜色 */
   borderColor?: string;
   /** 背景色 */
@@ -29,7 +29,7 @@ export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
   /** 静态文案 */
   content?: string;
   /** 枚举 */
-  tagOptions?: { label: string; value: string | number }[];
+  tagOptions?: { label: string; value: string | number; color?: 'success' | 'processing' | 'error' | 'default' | 'warning' }[];
 }>;
 
 interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagColumnSchema> { }
@@ -54,6 +54,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
           properties: {
             label: { type: 'string' },
             value: { typeof: ['string', 'number'] },
+            color: { enum: ['success', 'processing', 'error', 'default', 'warning'] },
           },
           required: ['label', 'value'],
         },
@@ -71,11 +72,12 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
     const Tag = this.props.driver.components.Tag;
     const options = this.props.schema.options;
     const value = this.value;
+    const tagOption = options.tagOptions?.find(item => item.value === value);
     return (
       <div>
         { options.prefix || '' }
         <Tag
-          color={options.color}
+          color={tagOption ? tagOption.color : options.color}
           style={{
             color: options.color,
             borderColor: options.borderColor,
@@ -83,7 +85,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
             borderRadius: options.radius,
           }}
         >
-          { options.content || options.tagOptions?.find(item => item.value === value)?.label || value }
+          { options.content || tagOption?.label || value }
         </Tag>
         { options.suffix || '' }
       </div>
