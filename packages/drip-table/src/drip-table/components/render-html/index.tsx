@@ -33,6 +33,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
 
   public render(): JSX.Element {
     const { data, schema: { options } } = this.props;
+    const Alert = this.props.driver.components.Alert;
     try {
       const html = new Function('rec', options.render)(data);
       if (typeof html === 'object') {
@@ -44,6 +45,6 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
     } catch (error) {
       console.error(error);
     }
-    return <div style={{ color: 'red' }}>渲染异常</div>;
+    return <Alert type="error" showIcon message="渲染异常" />;
   }
 }

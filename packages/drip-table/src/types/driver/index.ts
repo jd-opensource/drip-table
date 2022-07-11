@@ -110,6 +110,13 @@ export interface DripTableDriver {
     & {
       Option: DripTableReactComponent<Record<string, unknown> & { value: string | number; children: React.ReactNode }>;
     };
+    Spin: DripTableReactComponent<{
+      delay?: number;
+      size?: 'small' | 'default' | 'large';
+      tip?: React.ReactNode;
+      spinning?: boolean;
+      wrapperClassName?: string;
+    }>;
     Table: DripTableDriverTable;
     Tag: DripTableReactComponent<{
       style?: React.CSSProperties;

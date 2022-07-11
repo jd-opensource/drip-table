@@ -225,10 +225,11 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   public render(): JSX.Element {
     const Tooltip = this.props.driver.components.Tooltip;
+    const Alert = this.props.driver.components.Alert;
     const wrapperClassName = this.wrapperClassName;
     const wrapperStyles = this.wrapperStyles;
     if (!this.configured) {
-      return <div style={{ color: 'red' }}>未配置字段</div>;
+      return <Alert message="未配置字段" showIcon type="error" />;
     }
     const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) }</div>);
     const wrapperEl = <div className={classnames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;

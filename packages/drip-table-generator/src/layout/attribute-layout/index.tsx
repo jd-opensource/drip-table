@@ -7,7 +7,7 @@
  */
 
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
-import { Alert, Button, Result, Tabs, Tooltip } from 'antd';
+import { Alert, Badge, Button, Result, Tabs, Tooltip } from 'antd';
 import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableDriver, DripTableGenericRenderElement } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
@@ -16,6 +16,7 @@ import MonacoEditor from 'react-monaco-editor';
 import { filterAttributes, filterAttributesByRegExp } from '@/utils';
 import { DripTableColumn, globalActions, GlobalSchema, GlobalStore } from '@/store';
 import CustomForm from '@/components/CustomForm';
+import Icon from '@/components/Icon';
 import { useGlobalData } from '@/hooks';
 import components from '@/table-components';
 import { basicColumnAttrComponents } from '@/table-components/configs';
@@ -422,6 +423,33 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     />
   );
 
+  const currentComponentRibbon = () => {
+    if (!state.currentColumn) {
+      return null;
+    }
+    const columnConfig = getComponents().find(schema => schema['ui:type'] === state.currentColumn?.component || '');
+    return (
+      <React.Fragment>
+        { columnConfig?.icon ? <Icon svg={columnConfig.icon} className={styles['attribute-component-icon']} /> : null }
+        <span>{ columnConfig?.title || '' }</span>
+      </React.Fragment>
+    );
+  };
+
+  const groupColumnItemRibbon = () => {
+    if (!state.currentColumn || (state.currentColumnPath?.length || 0) <= 0) {
+      return null;
+    }
+    const currentColumnItem = getColumnItemByPath(state.currentColumn, state.currentColumnPath || []);
+    const columnConfig = getComponents().find(schema => schema['ui:type'] === currentColumnItem?.component || '');
+    return (
+      <React.Fragment>
+        { columnConfig?.icon ? <Icon svg={columnConfig.icon} className={styles['attribute-component-icon']} /> : null }
+        <span>{ columnConfig?.title || '' }</span>
+      </React.Fragment>
+    );
+  };
+
   const renderColumnForm = () => {
     if (!state.currentColumn) {
       return errorBoundary('请点击选择要编辑的列');
@@ -504,16 +532,28 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
             )
             : null}
         >
-          <TabPane tab="属性配置" key="1" className={styles['attribute-panel']}>
-            <div className={styles['attributes-form-panel']}>
-              { renderColumnForm() }
-            </div>
+          <TabPane tab="组件属性配置" key="1" className={styles['attribute-panel']}>
+            { state.currentColumn
+              ? (
+                <Badge.Ribbon text={currentComponentRibbon()} style={{ marginRight: 16 }}>
+                  <div className={styles['attributes-form-panel']}>
+                    { renderColumnForm() }
+                  </div>
+                </Badge.Ribbon>
+              )
+              : (
+                <div className={styles['attributes-form-panel']}>
+                  { renderColumnForm() }
+                </div>
+              ) }
           </TabPane>
           { (state.currentColumnPath?.length || 0) > 0 && (
-          <TabPane tab="子组件属性" key="4" className={styles['attribute-panel']}>
-            <div className={styles['attributes-form-panel']}>
-              { renderColumnFormItem() }
-            </div>
+          <TabPane tab="子组件属性配置" key="4" className={styles['attribute-panel']}>
+            <Badge.Ribbon text={groupColumnItemRibbon()} style={{ marginRight: 16 }}>
+              <div className={styles['attributes-form-panel']}>
+                { renderColumnFormItem() }
+              </div>
+            </Badge.Ribbon>
           </TabPane>
           ) }
           <TabPane tab="全局设置" key="2" className={styles['attribute-panel']}>

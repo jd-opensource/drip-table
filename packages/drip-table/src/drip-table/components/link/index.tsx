@@ -79,8 +79,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   public render(): JSX.Element {
     const options = this.props.schema.options;
+    const Alert = this.props.driver.components.Alert;
     if (!this.configured) {
-      return <div style={{ color: 'red' }}>属性配置错误</div>;
+      return <Alert type="error" showIcon message="属性配置错误" />;
     }
     if (options.mode === 'single') {
       const event = options.event;
