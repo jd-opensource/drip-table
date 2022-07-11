@@ -130,8 +130,8 @@ const Demo = () => {
             )
             : void 0
         )}
-        rowExpandable={(record, parent) => parent.id === 'sample-table' && record.id === 5}
-        expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.id})”行“${record.name}”的展开自定义渲染` }</div>)}
+        rowExpandable={(record, parent) => parent.schema.id === 'sample-table' && record.id === 5}
+        expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
         onEvent={(event, record, index) => {
           if (event.type === 'drip-link-click') {
             const name = event.payload;
