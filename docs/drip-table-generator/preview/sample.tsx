@@ -90,15 +90,15 @@ const Demo = () => (
         type: 'string',
       }],
     }}
-    subtableTitle={(record, index, parent, subtable) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${parent.id})”行“${record.name}”的子表 （${subtable.dataSource.length} 条）` }</div>}
-    subtableFooter={(record, index, parent, subtable) => (
-      subtable.id === 'sample-table-sub-level-1'
+    subtableTitle={(record, index, tableInfo) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent.schema.id})”行“${record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>}
+    subtableFooter={(record, index, tableInfo) => (
+      tableInfo.schema.id === 'sample-table-sub-level-1'
         ? (
           <div
             style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
             onClick={() => {
-              message.info(`加载更多“表格(id:${parent.id})”行“${record.name}”(${index})的子表数据，已有 ${subtable.dataSource.length} 条`);
-              console.log('expandable-footer-click', record, index, parent, subtable);
+              message.info(`加载更多“表格(id:${tableInfo.parent.schema.id})”行“${record.name}”(${index})的子表数据，已有 ${tableInfo.dataSource.length} 条`);
+              console.log('expandable-footer-click', record, index, tableInfo);
             }}
           >
             <CloudSyncOutlined />
