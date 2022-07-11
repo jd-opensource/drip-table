@@ -36,6 +36,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
 
   public render(): JSX.Element {
     const { data, schema: { options } } = this.props;
+    const { Alert } = this.props.driver.components;
     try {
       const html = options.render.replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
         try {
@@ -59,6 +60,6 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     } catch (error) {
       console.error(error);
     }
-    return <div className={styles['error-message']}>渲染异常</div>;
+    return <Alert message="渲染异常" showIcon type="error" />;
   }
 }

@@ -89,8 +89,8 @@ const ComponentLayout = (props: Props & { store: GlobalStore }) => {
         };
         item.attrSchema.forEach((schema) => {
           if (typeof schema.default !== 'undefined') {
-            if (schema.name.startsWith('ui:props')) {
-              const key = schema.name.replace('ui:props.', '');
+            if (schema.name.startsWith('options.')) {
+              const key = schema.name.replace('options.', '');
               if (!columnSchema.options) {
                 columnSchema.options = {};
               }

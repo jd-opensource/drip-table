@@ -74,8 +74,9 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
   }
 
   public render(): JSX.Element {
+    const { Alert, Spin } = this.props.driver.components;
     if (!this.state.render) {
-      return <div>Loading</div>;
+      return <Spin tip="Loading" />;
     }
     try {
       const html = new Function('rec', this.state.render)(this.props.data);
@@ -88,6 +89,6 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
     } catch (error) {
       console.error(error);
     }
-    return <div style={{ color: 'red' }}>渲染异常</div>;
+    return <Alert message="渲染异常" showIcon type="error" />;
   }
 }
