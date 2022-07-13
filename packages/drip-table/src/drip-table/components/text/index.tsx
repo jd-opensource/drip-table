@@ -304,7 +304,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!this.configured) {
       return <Alert message="未配置字段" showIcon type="error" />;
     }
-    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) }</div>);
+    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>);
     const wrapperEl = <div className={classnames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
     if (this.props.schema.options.maxRow) {
       return (
