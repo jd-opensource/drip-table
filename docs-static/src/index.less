@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-@font-face {
+ @font-face {
   font-family: 'CircularStd';
   src: url(http://storage.360buyimg.com/drip-design/drip-table/circular-std.woff) format("woff");
   font-weight: 400;
@@ -109,6 +109,35 @@
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: center;
+  }
+
+  &-dropdown {
+    position: relative;
+    display: inline-block;
+
+    &:hover .drip-table-dropdown-content {
+      display: block;
+    }
+  }
+
+  &-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+  }
+
+  &-nav-title {
+    display: flex;
+    align-items: center;
+    color: #454d64;
+    font-size: 14px;
+
+    &:hover {
+      color: #2276f3;
+    }
   }
 
   /////////////
