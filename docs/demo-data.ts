@@ -11,6 +11,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
   ellipsis: false,
   sticky: true,
   rowSelection: true,
+  editable: true,
   virtual: false,
   scroll: {
     y: 500,

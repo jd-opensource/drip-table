@@ -33,6 +33,14 @@ export interface DripTableComponentProps<
    */
   value: unknown;
   /**
+   * 是否可通过点击进入编辑模式
+   */
+  editable?: boolean;
+  /**
+   * 单元格数据改变事件（例如编辑模式）
+   */
+  onChange?: (value: unknown) => void;
+  /**
    * 最外层额外透传的数据
    */
   ext?: ComponentExtraData;

@@ -148,6 +148,9 @@ const Demo = () => {
           console.log('onChange', nextPagination, nextFilters);
           fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
         }}
+        onDataSourceChange={(ds) => {
+          setDataSource(ds);
+        }}
         onSelectionChange={(selectedKeys, selectedRows) => {
           setAllSelected(selectedRows.length >= dataSource.length);
         }}
