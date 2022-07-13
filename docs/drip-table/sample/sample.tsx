@@ -100,8 +100,8 @@ const Demo = () => {
         loading={loading}
         total={totalNum}
         dataSource={dataSource}
-        components={{ custom: CustomComponents }}
-        slots={{
+        components={React.useMemo(() => ({ custom: CustomComponents }), [])}
+        slots={React.useMemo(() => ({
           'header-slot-sample': React.memo((props) => {
             const [state, setState] = React.useState({ count: 0 });
             return (
@@ -112,9 +112,11 @@ const Demo = () => {
             );
           }),
           default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
-        }}
-        subtableTitle={(record, index, tableInfo) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent.schema.id})”行“${tableInfo.parent.record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>}
-        subtableFooter={(record, index, tableInfo) => (
+        }), [])}
+        subtableTitle={React.useMemo(() => (record, index, tableInfo) => (
+          <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent.schema.id})”行“${tableInfo.parent.record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>
+        ), [])}
+        subtableFooter={React.useMemo(() => (record, index, tableInfo) => (
           tableInfo.schema.id === 'sample-table-sub-level-1'
             ? (
               <div
@@ -129,10 +131,12 @@ const Demo = () => {
               </div>
             )
             : void 0
-        )}
-        rowExpandable={(record, parent) => parent.schema.id === 'sample-table' && record.id === 5}
-        expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
-        onEvent={(event, record, index) => {
+        ), [])}
+        rowExpandable={React.useMemo(() => (record, parent) => parent.schema.id === 'sample-table' && record.id === 5, [])}
+        expandedRowRender={React.useMemo(() => (record, index, parent) => (
+          <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>
+        ), [])}
+        onEvent={React.useMemo(() => (event, record, index) => {
           if (event.type === 'drip-link-click') {
             const name = event.payload;
             message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
@@ -141,21 +145,21 @@ const Demo = () => {
             message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
             console.log(event, record, index);
           }
-        }}
-        onFilterChange={(...args) => { console.log('onFilterChange', ...args); }}
-        onPageChange={(...args) => { console.log('onPageChange', ...args); }}
-        onChange={(nextPagination, nextFilters) => {
+        }, [])}
+        onFilterChange={React.useMemo(() => (...args) => { console.log('onFilterChange', ...args); }, [])}
+        onPageChange={React.useMemo(() => (...args) => { console.log('onPageChange', ...args); }, [])}
+        onChange={React.useMemo(() => (nextPagination, nextFilters) => {
           console.log('onChange', nextPagination, nextFilters);
           fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
-        }}
-        onDataSourceChange={(ds) => {
+        }, [])}
+        onDataSourceChange={React.useMemo(() => (ds) => {
           setDataSource(ds);
-        }}
-        onSelectionChange={(selectedKeys, selectedRows) => {
+        }, [])}
+        onSelectionChange={React.useMemo(() => (selectedKeys, selectedRows) => {
           setAllSelected(selectedRows.length >= dataSource.length);
-        }}
-        onSearch={searchParams => console.log(searchParams)}
-        onInsertButtonClick={event => console.log(event)}
+        }, [])}
+        onSearch={React.useMemo(() => searchParams => console.log(searchParams), [])}
+        onInsertButtonClick={React.useMemo(() => event => console.log(event), [])}
       />
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
       <div className={styles['popup-layer']} style={{ height: editVisible ? '70%' : '0' }}>

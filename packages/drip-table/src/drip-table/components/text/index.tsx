@@ -7,6 +7,7 @@
  */
 
 import classnames from 'classnames';
+import Textarea from 'rc-textarea';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -84,6 +85,10 @@ interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripT
 
 interface DTCTextState {
   editState: 'none' | 'entering' | 'editing';
+  editLeft: number;
+  editTop: number;
+  editWidth: number;
+  editHeight: number;
   editValue: string;
 }
 
@@ -129,6 +134,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   public state: DTCTextState = {
     editState: 'none',
+    editLeft: 0,
+    editTop: 0,
+    editWidth: 0,
+    editHeight: 0,
     editValue: '',
   };
 
@@ -231,8 +240,23 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return [];
   }
 
-  private onClick = () => {
-    this.setState({ editState: 'entering' });
+  private onClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (this.state.editState !== 'none') {
+      return;
+    }
+    if (window.getSelection()?.type === 'Range') {
+      return;
+    }
+    const $div = e.currentTarget as HTMLDivElement;
+    const $cell = $div.parentElement as HTMLSpanElement;
+    const rect = $cell.getBoundingClientRect();
+    this.setState({
+      editState: 'entering',
+      editLeft: rect.left,
+      editTop: rect.top,
+      editWidth: rect.width,
+      editHeight: rect.height,
+    });
   };
 
   public componentDidUpdate() {
@@ -249,16 +273,26 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return null;
     }
     return (
-      <textarea
-        className={styles['edit-textarea']}
-        value={this.state.editValue}
-        autoFocus
-        onChange={(e) => { this.setState({ editValue: e.target.value }); }}
-        onBlur={() => {
-          this.props.onChange?.(this.state.editValue);
-          this.setState({ editState: 'none' });
-        }}
-      />
+      <div className={styles['edit-popup']}>
+        <div className={styles['edit-popup-body']} style={{ left: this.state.editLeft, right: 0, top: this.state.editTop, bottom: 0 }}>
+          <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
+          <Textarea
+            className={styles['edit-textarea']}
+            value={this.state.editValue}
+            autoFocus
+            autoSize
+            style={{ width: this.state.editWidth, height: this.state.editHeight, minHeight: this.state.editHeight }}
+            onResize={({ width, height }) => {
+              this.setState({ editWidth: width, editHeight: height });
+            }}
+            onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+            onBlur={() => {
+              this.props.onChange?.(this.state.editValue);
+              this.setState({ editState: 'none' });
+            }}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -270,7 +304,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!this.configured) {
       return <Alert message="未配置字段" showIcon type="error" />;
     }
-    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) }</div>);
+    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>);
     const wrapperEl = <div className={classnames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
     if (this.props.schema.options.maxRow) {
       return (
