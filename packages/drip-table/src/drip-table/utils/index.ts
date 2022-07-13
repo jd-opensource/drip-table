@@ -37,6 +37,35 @@ export const indexValue = (data: unknown, indexes: string | string[], defaultVal
 };
 
 /**
+ * 设置对象指定下标值
+ * @param data 基础对象
+ * @param indexes 下标或下标数组
+ * @param value 默认值
+ */
+export const setValue = (data: unknown, indexes: string | string[], value: unknown) => {
+  if (typeof data !== 'object' || !data) {
+    return;
+  }
+  if (typeof indexes === 'string') {
+    data[indexes] = value;
+  } else if (Array.isArray(indexes)) {
+    const prefixes = [...indexes];
+    const key = prefixes.pop();
+    for (const k of prefixes) {
+      if (data && typeof data === 'object') {
+        if (!data[k] || typeof data[k] !== 'object') {
+          data[k] = {};
+        }
+        data = data[k];
+      }
+    }
+    if (data && typeof data === 'object' && key) {
+      data[key] = value;
+    }
+  }
+};
+
+/**
  * 格式化变量用于提供给渲染函数
  * @param v 任意数据
  * @returns 渲染字符串

@@ -30,6 +30,7 @@ import { useState, useTable } from '@/hooks';
 
 import DripTableWrapper, { DripTableID } from '..';
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from './components';
+import { setValue } from './utils';
 import VirtualTable from './virtual-table';
 
 import styles from './index.module.less';
@@ -282,6 +283,13 @@ export interface DripTableProps<
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
+   * 数据源编辑变化事件
+   */
+  onDataSourceChange?: (
+    dataSource: RecordType[],
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => void;
+  /**
    * 用户修改展示的列时
    */
   onDisplayColumnKeysChange?: (
@@ -405,6 +413,13 @@ const DripTable = <
     if ('component' in schema) {
       const BuiltInComponent = DripTableBuiltInComponents[schema.component] as
         React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
+      const onChange = (record: RecordType, index: number, value: unknown) => {
+        const ds = [...props.dataSource];
+        const rec = { ...record };
+        setValue(rec, schema.dataIndex, value);
+        ds[index] = rec;
+        props.onDataSourceChange?.(ds, tableInfo);
+      };
       if (BuiltInComponent) {
         if (props.ajv !== false) {
           const errorMessage = validateDripTableColumnSchema(schema, BuiltInComponent.schema, props.ajv);
@@ -421,6 +436,8 @@ const DripTable = <
             driver={props.driver}
             value={value ?? schema.defaultValue}
             data={record}
+            editable={props.schema.editable}
+            onChange={v => onChange(record, index, v)}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
             ext={props.ext}
             fireEvent={event => props.onEvent?.(event, record, index, { ...tableInfo, record })}
@@ -446,6 +463,8 @@ const DripTable = <
               driver={props.driver}
               value={value ?? schema.defaultValue}
               data={record}
+              editable={props.schema.editable}
+              onChange={v => onChange(record, index, v)}
               schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={props.ext}
               fireEvent={event => props.onEvent?.(event, record, index, { ...tableInfo, record })}

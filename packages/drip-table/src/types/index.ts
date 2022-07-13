@@ -176,6 +176,10 @@ export interface DripTableSchema<
    */
   rowSelection?: boolean;
   /**
+   * 是否可通过点击进入编辑模式
+   */
+  editable?: boolean;
+  /**
    * 是否平均列宽
    */
   ellipsis?: boolean;

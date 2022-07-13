@@ -82,7 +82,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
 
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
 
-interface DTCTextState {}
+interface DTCTextState {
+  editState: 'none' | 'entering' | 'editing';
+  editValue: string;
+}
 
 const translate = (i18n: Record<string, string> | undefined, origin: string) => {
   if (typeof origin === 'string' && i18n && origin in i18n) {
@@ -122,6 +125,11 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       lineHeight: { type: 'number' },
       ellipsis: { type: 'boolean' },
     },
+  };
+
+  public state: DTCTextState = {
+    editState: 'none',
+    editValue: '',
   };
 
   private get configured() {
@@ -223,6 +231,37 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return [];
   }
 
+  private onClick = () => {
+    this.setState({ editState: 'entering' });
+  };
+
+  public componentDidUpdate() {
+    if (this.state.editState === 'entering') {
+      this.setState({
+        editState: 'editing',
+        editValue: String(this.props.value),
+      });
+    }
+  }
+
+  private renderEdit() {
+    if (this.state.editState === 'none') {
+      return null;
+    }
+    return (
+      <textarea
+        className={styles['edit-textarea']}
+        value={this.state.editValue}
+        autoFocus
+        onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+        onBlur={() => {
+          this.props.onChange?.(this.state.editValue);
+          this.setState({ editState: 'none' });
+        }}
+      />
+    );
+  }
+
   public render(): JSX.Element {
     const Tooltip = this.props.driver.components.Tooltip;
     const Alert = this.props.driver.components.Alert;
@@ -235,9 +274,12 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const wrapperEl = <div className={classnames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
     if (this.props.schema.options.maxRow) {
       return (
-        <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
-          { wrapperEl }
-        </Tooltip>
+        <div className={styles.main} onClick={this.onClick}>
+          <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
+            { wrapperEl }
+          </Tooltip>
+          { this.renderEdit() }
+        </div>
       );
     }
     return wrapperEl;
