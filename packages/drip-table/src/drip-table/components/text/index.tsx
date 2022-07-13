@@ -244,6 +244,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (this.state.editState !== 'none') {
       return;
     }
+    if (window.getSelection()?.type === 'Range') {
+      return;
+    }
     const $div = e.currentTarget as HTMLDivElement;
     const $cell = $div.parentElement as HTMLSpanElement;
     const rect = $cell.getBoundingClientRect();
