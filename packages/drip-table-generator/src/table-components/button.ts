@@ -232,7 +232,7 @@ export default {
             name: 'event',
             'ui:title': '事件名称',
             'ui:description': {
-              title: '事件机制详见<a href="http://drip-table.jd.com/drip-table/functions/event" target="_blank">官网文档</a>',
+              title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
               trigger: 'hover',
               type: 'icon',
             },
