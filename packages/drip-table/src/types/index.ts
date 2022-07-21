@@ -160,7 +160,7 @@ export interface DripTableSchema<
   };
   size?: 'small' | 'middle' | 'large' | 'default';
   /**
-   * 冻结首行
+   * 冻结表头
    */
   sticky?: boolean;
   /**

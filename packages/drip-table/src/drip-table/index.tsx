@@ -102,7 +102,7 @@ export interface DripTableProps<
    */
   loading?: boolean;
   /**
-   * 冻结首行和滚动条设置项
+   * 冻结表头和滚动条设置项
    */
   sticky?: {
     offsetHeader?: number;
