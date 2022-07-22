@@ -1,6 +1,6 @@
 # sticky
 
-- 描述：粘性头部
+- 描述：冻结表头
 - 类型：`boolean`
 - 默认值：`false`
 - 更多内容：页面如果存在导航栏或内部滚动，可能需要配合 [`props.sticky`](/drip-table/props/sticky) 属性使用。

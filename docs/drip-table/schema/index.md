@@ -19,7 +19,7 @@ title: 总览
 | [footer](/drip-table/schema/footer) | 是否展示尾部以及配置 | × | [🔗 示例](/drip-table/schema/footer) |
 | [pagination](/drip-table/schema/pagination) | 是否展示分页以及配置 | × | [🔗 示例](/drip-table/schema/pagination) |
 | [size](/drip-table/schema/size) | 表格大小 | × | [🔗 示例](/drip-table/schema/size) |
-| [sticky](/drip-table/schema/sticky) | 粘性头部 | × | [🔗 示例](/drip-table/schema/sticky) |
+| [sticky](/drip-table/schema/sticky) | 冻结表头 | × | [🔗 示例](/drip-table/schema/sticky) |
 | [scroll](/drip-table/schema/scroll) | 固定列、固定表头滚动设置 | × | [🔗 示例](/drip-table/schema/scroll) |
 | [rowSelection](/drip-table/schema/row-selection) | 是否支持选择栏 | × | [🔗 示例](/drip-table/schema/row-selection) |
 | [ellipsis](/drip-table/schema/ellipsis) | 是否平均列宽 | × | [🔗 示例](/drip-table/schema/ellipsis) |

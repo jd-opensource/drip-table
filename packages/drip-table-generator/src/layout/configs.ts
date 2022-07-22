@@ -393,7 +393,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'sticky',
     group: '全局属性',
-    'ui:title': '是否粘性头部',
+    'ui:title': '是否冻结表头',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',

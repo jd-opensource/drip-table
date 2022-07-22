@@ -28,7 +28,7 @@ title: 总览
 | [slots](/drip-table/props/slots) | 组件插槽，可通过 Schema 控制自定义区域渲染 | × | [🔗 示例](/drip-table/props/slots) |
 | [slotsSchema](/drip-table-generator/props/slots-schema) | 组件插槽属性配置，定义插槽的属性编辑框 | × | [🔗 示例](/drip-table-generator/props/slots-schema) |
 | [ext](/drip-table/props/ext) | 自定义组件附加透传数据 | × | [🔗 示例](/drip-table/props/ext) |
-| [sticky](/drip-table/props/sticky) | 粘性头部和滚动条设置项 | × | [🔗 示例](/drip-table/props/sticky) |
+| [sticky](/drip-table/props/sticky) | 冻结表头和滚动条设置项 | × | [🔗 示例](/drip-table/props/sticky) |
 | [title](/drip-table/props/title) | 顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/title) |
 | [footer](/drip-table/props/footer) | 底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/footer) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
