@@ -26,7 +26,7 @@ export default {
       type: 'string',
       default: 'single',
     },
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('文本'),
     ...dataIndexColumnAttrComponents(
       (_1, formData) => formData?.['options.mode'] === 'single',
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'direct',

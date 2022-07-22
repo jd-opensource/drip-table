@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('标签'),
     ...dataIndexColumnAttrComponents(),
     {
       name: 'options.prefix',

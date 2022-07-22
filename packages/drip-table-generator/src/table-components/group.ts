@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('组合组件'),
     {
       name: 'options.layout',
       group: '组件属性',

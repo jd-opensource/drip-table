@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('按钮'),
     {
       name: 'options.render',
       group: '代码编辑',

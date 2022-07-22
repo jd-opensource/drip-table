@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('富文本'),
     {
       name: 'options.render',
       group: '内容编辑',

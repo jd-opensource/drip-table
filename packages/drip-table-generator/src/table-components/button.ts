@@ -13,7 +13,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('按钮'),
     {
       name: 'options.mode',
       group: '组件属性',
