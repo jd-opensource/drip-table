@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents,
+    ...basicColumnAttrComponents('图片'),
     ...dataIndexColumnAttrComponents(),
     {
       name: 'options.imageWidth',

@@ -7,14 +7,14 @@
  */
 import { DTGComponentPropertySchema } from '../typing';
 
-export const basicColumnAttrComponents: DTGComponentPropertySchema[] = [
+export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPropertySchema[] => [
   {
     name: 'title',
     group: '组件属性',
     'ui:title': '表头名称',
     'ui:type': 'text',
     type: 'string',
-    default: '',
+    default: defaultValue || '',
   },
   {
     name: 'width',

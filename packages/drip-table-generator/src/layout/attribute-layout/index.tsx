@@ -484,7 +484,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
     }
     const currentColumnItem = getColumnItemByPath(state.currentColumn, state.currentColumnPath || []);
     const columnConfig = getColumnConfigs(currentColumnItem?.component || '');
-    const tableCellBaseProps = new Set(basicColumnAttrComponents.map(prop => prop.name));
+    const tableCellBaseProps = new Set(basicColumnAttrComponents('').map(prop => prop.name));
     if (columnConfig) {
       columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !tableCellBaseProps.has(item.name));
     }
