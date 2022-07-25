@@ -9,6 +9,7 @@
 import classNames from 'classnames';
 import Textarea from 'rc-textarea';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/utils/operator';
@@ -291,7 +292,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (this.state.editState === 'none') {
       return null;
     }
-    return (
+    return ReactDOM.createPortal(
       <div className={styles['edit-popup']}>
         <div className={styles['edit-popup-body']} style={{ left: this.state.editLeft, right: 0, top: this.state.editTop, bottom: 0 }}>
           <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
@@ -311,7 +312,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
             }}
           />
         </div>
-      </div>
+      </div>,
+      document.body,
     );
   }
 
