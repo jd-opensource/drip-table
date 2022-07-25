@@ -31,8 +31,9 @@ import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type Dri
 import Checkbox from '@/components/checkbox';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
-import { type IDripTableContext } from '@/context';
 import DripTableWrapper from '@/wrapper';
+
+import { TableLayoutComponentProps } from '../types';
 
 import styles from './index.module.less';
 
@@ -151,22 +152,10 @@ export const columnGenerator = <
   return column;
 };
 
-export interface TableProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> {
-  tableProps: DripTableProps<RecordType, ExtraOptions>;
-  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
-  tableState: IDripTableContext;
-  setTableState: IDripTableContext['setTableState'];
-  header?: (() => React.ReactNode) | React.ReactNode;
-  footer?: (() => React.ReactNode) | React.ReactNode;
-}
-
 const Table = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableProps<RecordType, ExtraOptions>): JSX.Element => {
+>(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
   const { tableProps, tableInfo, tableState, setTableState } = props;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
