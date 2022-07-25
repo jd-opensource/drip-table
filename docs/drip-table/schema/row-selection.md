@@ -1,7 +1,22 @@
 # rowSelection
 
 - 描述：是否支持选择栏
-- 类型：`boolean`
+
+- 类型：
+
+```typescript
+type RowSelection = boolean | {
+  /**
+   * 选择栏水平对齐方式
+   */
+  align?: 'left' | 'center' | 'right';
+  /**
+   * 选择栏垂直对齐方式
+   */
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
+};
+```
+
 - 默认值：`false`
 
 ```jsx
