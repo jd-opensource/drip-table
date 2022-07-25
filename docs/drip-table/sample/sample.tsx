@@ -67,11 +67,11 @@ const Demo = () => {
 
   function selectAllRecord() {
     const tableInstance = dripTable.current;
-    const allKeys = dataSource.map((rec, idx) => idx);
     if (tableInstance) {
+      const allRowKeys = dataSource.map(rec => rec[schema.rowKey]);
       const selectedKeys = tableInstance.selectedRowKeys;
-      if (selectedKeys.length < allKeys.length) {
-        tableInstance.select(allKeys);
+      if (selectedKeys.length < allRowKeys.length) {
+        tableInstance.select(allRowKeys);
         setAllSelected(true);
       } else {
         tableInstance.select([]);
@@ -157,7 +157,7 @@ const Demo = () => {
         }, [])}
         onSelectionChange={React.useMemo(() => (selectedKeys, selectedRows) => {
           setAllSelected(selectedRows.length >= dataSource.length);
-        }, [])}
+        }, [dataSource])}
         onSearch={React.useMemo(() => searchParams => console.log(searchParams), [])}
         onInsertButtonClick={React.useMemo(() => event => console.log(event), [])}
       />

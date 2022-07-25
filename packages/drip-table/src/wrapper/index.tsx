@@ -30,9 +30,9 @@ export interface DripTableWrapperContext extends IDripTableContext {
   /**
    * 通过接口选择行
    *
-   * @param indexes 行号数组
+   * @param selectedRowKeys 选中的行标识符数组
    */
-  select: (indexes: number[]) => void;
+  select: (selectedRowKeys: IDripTableContext['selectedRowKeys']) => void;
 }
 
 // 组件提供给外部的公共接口
@@ -43,24 +43,8 @@ const createTableContext = <
   const initialState = useTable();
   const [state, setState] = useState(initialState);
 
-  const select = (indexes: number[]) => {
-    let selectedKeys: React.Key[] = [];
-    const { dataSource, schema: { rowKey } } = props;
-    if (dataSource && rowKey) {
-      indexes.forEach((index) => {
-        const data = dataSource[index];
-        if (data) {
-          const value = data[rowKey];
-          const key = typeof value === 'string' || typeof value === 'number'
-            ? value
-            : index;
-          selectedKeys.push(key);
-        }
-      });
-    } else {
-      selectedKeys = [...indexes];
-    }
-    setState({ selectedRowKeys: selectedKeys });
+  const select = (selectedRowKeys: IDripTableContext['selectedRowKeys']) => {
+    setState({ selectedRowKeys });
   };
 
   const handler: DripTableWrapperContext = {

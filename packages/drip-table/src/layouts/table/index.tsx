@@ -168,7 +168,7 @@ RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonN
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableProps<RecordType, ExtraOptions>): JSX.Element => {
   const { tableProps, tableInfo, tableState, setTableState } = props;
-  const rowKey = tableProps.schema.rowKey ?? 'key';
+  const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
 
@@ -185,7 +185,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const dataSource = React.useMemo(
     () => tableProps.dataSource.map((item, index) => ({
       ...item,
-      [rowKey]: typeof item[rowKey] === 'undefined' ? `$$row-${index}$$` : item[rowKey],
+      [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
     })),
     [tableProps.dataSource, rowKey],
   );

@@ -4,7 +4,7 @@ import { CustomColumnSchema } from './drip-table/sample/custom-components';
 
 export type SubtableDataSourceKey = 'subtable' | 'subtableLevel2';
 
-export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceKey> = {
+export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceKey> & { rowKey: string } = {
   id: 'sample-table',
   size: 'middle',
   bordered: true,
@@ -16,6 +16,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
   scroll: {
     y: 500,
   },
+  rowKey: 'id',
   header: {
     style: { margin: '0', padding: '12px 0' },
     elements: [
