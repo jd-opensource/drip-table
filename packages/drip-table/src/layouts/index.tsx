@@ -20,7 +20,7 @@ import { validateDripTableProp, validateDripTableRequiredProps } from '@/utils/a
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
 import { useState, useTable } from '@/hooks';
-import Table from '@/layouts/table';
+import TableLayout from '@/layouts/table';
 
 import styles from './index.module.less';
 
@@ -123,7 +123,7 @@ const DripTableLayout = <
         style={Object.assign({}, props.style, props.schema.style)}
         ref={rootRef}
       >
-        <Table
+        <TableLayout
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}

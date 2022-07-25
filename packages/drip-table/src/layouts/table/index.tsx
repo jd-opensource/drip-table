@@ -152,7 +152,7 @@ export const columnGenerator = <
   return column;
 };
 
-const Table = <
+const TableLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
@@ -548,4 +548,4 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   );
 };
 
-export default Table;
+export default TableLayout;
