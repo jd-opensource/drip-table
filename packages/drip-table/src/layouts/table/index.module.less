@@ -78,6 +78,27 @@
   }
 
   // ====================================
+  // ==             Align              ==
+  // ====================================
+
+  &-cell--top { vertical-align: top; }
+  &-cell--middle { vertical-align: middle; }
+  &-cell--bottom { vertical-align: bottom; }
+  &-cell--stretch > * { height: 100%; }
+
+  &-virtual-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    &--top { justify-content: flex-start; }
+    &--middle { justify-content: center; }
+    &--bottom { justify-content: flex-end; }
+    &--stretch { justify-content: stretch; }
+    &--stretch > * { flex: 1 1 auto; }
+  }
+
+  // ====================================
   // ==             Column             ==
   // ====================================
 

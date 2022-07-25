@@ -61,7 +61,7 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
   /**
    * 表格列垂直对齐方式
    */
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
   /**
    * 表头说明
    */
@@ -177,7 +177,18 @@ export interface DripTableSchema<
   /**
    * 是否支持选择栏
    */
-  rowSelection?: boolean;
+  rowSelection?: boolean | {
+    /**
+     * 选择栏水平对齐方式
+     */
+    align: DripTableColumnSchema['align'];
+    /**
+     * 水平栏垂直对齐方式
+     *
+     * @type {DripTableColumnSchema['verticalAlign']}
+     */
+    verticalAlign: DripTableColumnSchema['verticalAlign'];
+  };
   /**
    * 是否可通过点击进入编辑模式
    */

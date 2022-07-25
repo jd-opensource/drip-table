@@ -183,10 +183,21 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             scrollToFirstRowOnChange: { type: 'boolean' },
           },
         },
-        rowSelection: { type: 'boolean' },
+        rowSelection: {
+          anyOf: [
+            { type: 'boolean' },
+            {
+              properties: {
+                align: { enum: ['left', 'center', 'right'] },
+                verticalAlign: { enum: ['top', 'middle', 'bottom', 'stretch'] },
+              },
+            },
+          ],
+        },
         editable: { type: 'boolean' },
         ellipsis: { type: 'boolean' },
         virtual: { type: 'boolean' },
+        rowHeight: { type: 'number' },
         scrollY: { type: 'number' },
         columns: {
           type: 'array',
@@ -383,7 +394,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
       title: { type: 'string' },
       width: { typeof: ['string', 'number'] },
       align: { enum: ['left', 'center', 'right'] },
-      verticalAlign: { enum: ['top', 'middle', 'bottom'] },
+      verticalAlign: { enum: ['top', 'middle', 'bottom', 'stretch'] },
       dataIndex: {
         anyOf: [
           { type: 'array', items: { type: 'string' } },

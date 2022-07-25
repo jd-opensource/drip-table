@@ -67,7 +67,10 @@ export const columnGenerator = <
   const column: TableColumnType<RecordType> = {
     width,
     className: classNames({
-      [styles[`drip-table-vertical-${columnSchema.verticalAlign}`]]: columnSchema.verticalAlign,
+      [styles['jfe-drip-table-cell--top']]: columnSchema.verticalAlign === 'top',
+      [styles['jfe-drip-table-cell--middle']]: columnSchema.verticalAlign === 'middle',
+      [styles['jfe-drip-table-cell--bottom']]: columnSchema.verticalAlign === 'bottom',
+      [styles['jfe-drip-table-cell--stretch']]: columnSchema.verticalAlign === 'stretch',
     }),
     align: columnSchema.align,
     title: columnSchema.title,
@@ -187,6 +190,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [tableProps.dataSource, rowKey],
   );
 
+  const rowSelection = React.useMemo(
+    (): Exclude<DripTableSchema['rowSelection'], boolean> => (
+      tableInfo.schema.rowSelection === true
+        ? {
+          align: 'center',
+          verticalAlign: 'middle',
+        }
+        : tableInfo.schema.rowSelection || void 0),
+    [tableInfo.schema.rowSelection],
+  );
+
   const filteredColumns = React.useMemo(
     () => {
       const extraProps = {
@@ -199,8 +213,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       const returnColumns = tableProps.schema.columns
         .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
         .map(column => columnGenerator(tableInfo, column, extraProps));
-      if (tableInfo.schema.rowSelection) {
+      if (rowSelection) {
         returnColumns.unshift({
+          align: rowSelection.align,
           width: 50,
           render: (_, record, index) => (
             <div className={styles['jfe-drip-table-column-selection']}>
@@ -376,11 +391,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   >
                     {
                     ({ columnIndex, rowIndex, style }) => {
+                      const schemaIndex = columnIndex - (rowSelection ? 1 : 0);
+                      const schema = schemaIndex === -1 ? rowSelection : tableInfo.schema.columns[schemaIndex];
                       const column = columns[columnIndex];
                       const record = dataSource[rowIndex];
                       return (
                         <div
-                          className={classNames(styles['jfe-drip-table-virtual-cell'])}
+                          className={classNames(styles['jfe-drip-table-virtual-cell'], {
+                            [styles['jfe-drip-table-virtual-cell--top']]: schema?.verticalAlign === 'top',
+                            [styles['jfe-drip-table-virtual-cell--middle']]: schema?.verticalAlign === 'middle',
+                            [styles['jfe-drip-table-virtual-cell--bottom']]: schema?.verticalAlign === 'bottom',
+                            [styles['jfe-drip-table-virtual-cell--stretch']]: schema?.verticalAlign === 'stretch',
+                          })}
                           style={style}
                         >
                           { column.render?.(indexValue(record, column.dataIndex), record, rowIndex) }
