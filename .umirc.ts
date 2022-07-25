@@ -114,6 +114,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-selection',
           '/drip-table/schema/ellipsis',
           '/drip-table/schema/virtual',
+          '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
           '/drip-table/schema/subtable',
         ],
