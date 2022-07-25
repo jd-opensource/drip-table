@@ -22,7 +22,9 @@ title: 总览
 | [sticky](/drip-table/schema/sticky) | 冻结表头 | × | [🔗 示例](/drip-table/schema/sticky) |
 | [scroll](/drip-table/schema/scroll) | 固定列、固定表头滚动设置 | × | [🔗 示例](/drip-table/schema/scroll) |
 | [rowSelection](/drip-table/schema/row-selection) | 是否支持选择栏 | × | [🔗 示例](/drip-table/schema/row-selection) |
+| [editable](/drip-table/schema/editable) | 是否支持数据编辑 | × | [🔗 示例](/drip-table/schema/editable) |
 | [ellipsis](/drip-table/schema/ellipsis) | 是否平均列宽 | × | [🔗 示例](/drip-table/schema/ellipsis) |
 | [virtual](/drip-table/schema/virtual) | 是否开启虚拟滚动 | × | [🔗 示例](/drip-table/schema/virtual) |
+| [rowHeight](/drip-table/schema/row-height) | 表格行高（虚拟滚动） | × | [🔗 示例](/drip-table/schema/row-height) |
 | [rowKey](/drip-table/schema/row-key) | 表格行主键 | × | [🔗 示例](/drip-table/schema/row-key) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
