@@ -14,6 +14,7 @@
 | [column.defaultValue](/drip-table/schema/columns/default-value) | 默认数据 | × | [🔗 示例](/drip-table/schema/columns/default-value) |
 | [column.width](/drip-table/schema/columns/width) | 表格列宽 | × | [🔗 示例](/drip-table/schema/columns/width) |
 | [column.align](/drip-table/schema/columns/align) | 表格列对齐 | × | [🔗 示例](/drip-table/schema/columns/align) |
+| [column.verticalAlign](/drip-table/schema/columns/vertical-align) | 表格列垂直对齐 | × | [🔗 示例](/drip-table/schema/columns/vertical-align) |
 | [column.description](/drip-table/schema/columns/description) | 表头说明 | × | [🔗 示例](/drip-table/schema/columns/description) |
 | [column.fixed](/drip-table/schema/columns/fixed) | 是否固定列 | × | [🔗 示例](/drip-table/schema/columns/fixed) |
 | [column.hidable](/drip-table/schema/columns/hidable) | 用户可控制该列显示隐藏 | × | [🔗 示例](/drip-table/schema/columns/hidable) |

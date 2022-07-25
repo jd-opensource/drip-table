@@ -183,9 +183,7 @@ export interface DripTableSchema<
      */
     align: DripTableColumnSchema['align'];
     /**
-     * 水平栏垂直对齐方式
-     *
-     * @type {DripTableColumnSchema['verticalAlign']}
+     * 选择栏垂直对齐方式
      */
     verticalAlign: DripTableColumnSchema['verticalAlign'];
   };

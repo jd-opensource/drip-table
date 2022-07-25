@@ -94,6 +94,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/columns/default-value',
           '/drip-table/schema/columns/width',
           '/drip-table/schema/columns/align',
+          '/drip-table/schema/columns/vertical-align',
           '/drip-table/schema/columns/description',
           '/drip-table/schema/columns/fixed',
           '/drip-table/schema/columns/hidable',
