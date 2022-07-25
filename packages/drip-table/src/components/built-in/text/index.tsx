@@ -257,6 +257,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private onClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!this.props.editable) {
+      return;
+    }
     if (this.state.editState !== 'none') {
       return;
     }
