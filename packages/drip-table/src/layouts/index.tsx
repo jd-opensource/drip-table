@@ -20,7 +20,8 @@ import { validateDripTableProp, validateDripTableRequiredProps } from '@/utils/a
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
 import { useState, useTable } from '@/hooks';
-import TableLayout from '@/layouts/table';
+
+import TableLayout from './table';
 
 import styles from './index.module.less';
 
