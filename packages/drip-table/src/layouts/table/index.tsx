@@ -14,26 +14,28 @@ import RcTable from 'rc-table';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import RcTooltip from 'rc-tooltip';
 import React from 'react';
-import { VariableSizeGrid } from 'react-window';
+import { type GridChildComponentProps, areEqual, VariableSizeGrid } from 'react-window';
 
 import {
+  type DripTableCellDisplayControl,
   type DripTableExtraOptions,
   type DripTableProps,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type DripTableSchema,
+  type DripTableSubtableProps,
   type DripTableTableInformation,
   type SchemaObject,
-  DripTableSubtableProps,
 } from '@/types';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
+import { type IDripTableContext } from '@/context';
 import DripTableWrapper from '@/wrapper';
 
-import { TableLayoutComponentProps } from '../types';
+import { type TableLayoutComponentProps } from '../types';
 
 import styles from './index.module.less';
 
@@ -152,6 +154,43 @@ export const columnGenerator = <
   return column;
 };
 
+interface VirtualCellItemData {
+  columns: TableColumnType<unknown>[];
+  columnsDisplayControl: DripTableCellDisplayControl[];
+  dataSource: unknown[];
+  rowKey: React.Key;
+  selectedRowKeys: IDripTableContext['selectedRowKeys'];
+  hoverRowKey: React.Key | undefined;
+  setHoverRowKey: (hoverRowKey: React.Key | undefined) => void;
+}
+
+const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style }: GridChildComponentProps<VirtualCellItemData>) => {
+  const { columns, columnsDisplayControl, dataSource, rowKey, selectedRowKeys, hoverRowKey, setHoverRowKey } = data;
+  const displayControl = columnsDisplayControl[columnIndex];
+  const column = columns[columnIndex];
+  const record = dataSource[rowIndex];
+  const recKey = indexValue(record, rowKey);
+  const selected = selectedRowKeys.includes(recKey);
+  return (
+    <div
+      className={classNames(styles['jfe-drip-table-virtual-cell'], {
+        [styles['jfe-drip-table-virtual-cell--top']]: displayControl?.verticalAlign === 'top',
+        [styles['jfe-drip-table-virtual-cell--middle']]: displayControl?.verticalAlign === 'middle',
+        [styles['jfe-drip-table-virtual-cell--bottom']]: displayControl?.verticalAlign === 'bottom',
+        [styles['jfe-drip-table-virtual-cell--stretch']]: displayControl?.verticalAlign === 'stretch',
+        [styles['jfe-drip-table--row-hover']]: hoverRowKey !== void 0 && hoverRowKey === recKey,
+        [styles['jfe-drip-table--row-selected']]: selected,
+        [styles['jfe-drip-table--row-selected-hover']]: selected && hoverRowKey !== void 0 && hoverRowKey === recKey,
+      })}
+      style={style}
+      onMouseEnter={React.useMemo(() => () => { setHoverRowKey(recKey); }, [recKey])}
+      onMouseLeave={React.useMemo(() => () => { setHoverRowKey(void 0); }, [recKey])}
+    >
+      { column.render?.(indexValue(record, column.dataIndex), record, rowIndex) }
+    </div>
+  );
+}, areEqual);
+
 const TableLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
@@ -160,6 +199,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
+  const [hoverRowKey, setHoverRowKey] = React.useState<React.Key | undefined>(void 0);
 
   const initialPagination = tableInfo.schema?.pagination || void 0;
   React.useEffect(() => {
@@ -179,8 +219,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [tableProps.dataSource, rowKey],
   );
 
-  const rowSelection = React.useMemo(
-    (): Exclude<DripTableSchema['rowSelection'], boolean> => (
+  const rowSelectionDisplayControl = React.useMemo(
+    (): DripTableCellDisplayControl | undefined => (
       tableInfo.schema.rowSelection === true
         ? {
           align: 'center',
@@ -188,6 +228,20 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         }
         : tableInfo.schema.rowSelection || void 0),
     [tableInfo.schema.rowSelection],
+  );
+
+  const columnsDisplayControl = React.useMemo(
+    (): DripTableCellDisplayControl[] => {
+      const dc: DripTableCellDisplayControl[] = tableInfo.schema.columns.map(c => ({
+        align: c.align,
+        verticalAlign: c.verticalAlign,
+      }));
+      if (rowSelectionDisplayControl) {
+        dc.unshift(rowSelectionDisplayControl);
+      }
+      return dc;
+    },
+    [tableInfo.schema.columns, rowSelectionDisplayControl],
   );
 
   const filteredColumns = React.useMemo(
@@ -202,9 +256,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       const returnColumns = tableProps.schema.columns
         .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
         .map(column => columnGenerator(tableInfo, column, extraProps));
-      if (rowSelection) {
+      if (rowSelectionDisplayControl) {
         returnColumns.unshift({
-          align: rowSelection.align,
+          align: rowSelectionDisplayControl.align,
           width: 50,
           render: (_, record, index) => (
             <div className={styles['jfe-drip-table-column-selection']}>
@@ -254,7 +308,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [filteredColumns, rcTableWidth],
   );
 
-  const columns = React.useMemo(
+  const columns: TableColumnType<RecordType>[] = React.useMemo(
     () => filteredColumns.map((c, i) => ({ ...c, width: columnsWidth[i] })),
     [filteredColumns, columnsWidth],
   );
@@ -360,12 +414,28 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           columns={columns}
           data={dataSource}
           scroll={tableProps.schema.scroll}
-          components={
+          rowClassName={React.useMemo(
+            () =>
+              record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)
+                ? styles['jfe-drip-table-row-selected']
+                : ''),
+            [tableState.selectedRowKeys],
+          )}
+          components={React.useMemo(() => (
             tableInfo.schema.virtual
               ? {
                 body: (rawData, { scrollbarSize, onScroll }) => (
                   <VariableSizeGrid
                     ref={refVirtualGrid}
+                    itemData={{
+                      columns: columns as TableColumnType<unknown>[],
+                      columnsDisplayControl,
+                      dataSource,
+                      rowKey,
+                      selectedRowKeys: tableState.selectedRowKeys,
+                      hoverRowKey,
+                      setHoverRowKey,
+                    }}
                     className={styles['jfe-drip-table-virtual-list']}
                     columnCount={columns.length}
                     columnWidth={(index) => {
@@ -378,32 +448,21 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     width={rcTableWidth}
                     onScroll={onScroll}
                   >
-                    {
-                    ({ columnIndex, rowIndex, style }) => {
-                      const schemaIndex = columnIndex - (rowSelection ? 1 : 0);
-                      const schema = schemaIndex === -1 ? rowSelection : tableInfo.schema.columns[schemaIndex];
-                      const column = columns[columnIndex];
-                      const record = dataSource[rowIndex];
-                      return (
-                        <div
-                          className={classNames(styles['jfe-drip-table-virtual-cell'], {
-                            [styles['jfe-drip-table-virtual-cell--top']]: schema?.verticalAlign === 'top',
-                            [styles['jfe-drip-table-virtual-cell--middle']]: schema?.verticalAlign === 'middle',
-                            [styles['jfe-drip-table-virtual-cell--bottom']]: schema?.verticalAlign === 'bottom',
-                            [styles['jfe-drip-table-virtual-cell--stretch']]: schema?.verticalAlign === 'stretch',
-                          })}
-                          style={style}
-                        >
-                          { column.render?.(indexValue(record, column.dataIndex), record, rowIndex) }
-                        </div>
-                      );
-                    }
-                  }
+                    { VirtualCell }
                   </VariableSizeGrid>
                 ),
               }
-              : void 0
-            }
+              : void 0),
+          [
+            tableInfo.schema.virtual,
+            columnsWidth,
+            columns,
+            tableInfo.schema.scroll?.y,
+            tableInfo.schema.rowHeight,
+            tableInfo.schema.columns,
+            tableState.selectedRowKeys,
+            hoverRowKey,
+          ])}
           /*
            * TODO：loading: props.loading,
            */

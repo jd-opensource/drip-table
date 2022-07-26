@@ -57,16 +57,18 @@
   }
 
   &-tbody > tr.@{prefixCls}-row:hover > td,
-  &-tbody > tr > td.@{prefixCls}-cell-row-hover {
+  &-virtual-list > div > .@{prefixCls}-virtual-cell.@{prefixCls}--row-hover {
     background: #fafafa;
   }
 
-  &-tbody > tr.@{prefixCls}-row-selected > td {
+  &-tbody > tr.@{prefixCls}-row-selected > td,
+  &-virtual-list > div > .@{prefixCls}-virtual-cell.@{prefixCls}--row-selected {
     background: #e6f7ff;
     border-color: #00000008;
   }
 
-  &-tbody > tr.@{prefixCls}-row-selected:hover > td {
+  &-tbody > tr.@{prefixCls}-row-selected:hover > td,
+  &-virtual-list > div > .@{prefixCls}-virtual-cell.@{prefixCls}--row-selected-hover {
     background: #dcf4ff;
   }
 
@@ -250,7 +252,7 @@
     & > .@{prefixCls}-container > .@{prefixCls}-summary > table > tfoot > tr > td,
     & > .@{prefixCls}-container > .@{prefixCls}-summary > table > tfoot > tr > th,
     & > .@{prefixCls}-container > .@{prefixCls}-summary > table > thead > tr > th,
-    & > .@{prefixCls}-container > .@{prefixCls}-virtual-list > .@{prefixCls}-virtual-cell {
+    & > .@{prefixCls}-container > .@{prefixCls}-virtual-list > div > .@{prefixCls}-virtual-cell {
       border-right: 1px solid #f0f0f0;
     }
 

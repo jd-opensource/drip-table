@@ -17,6 +17,17 @@ import type { DripTableDriver } from './driver';
 
 export { SchemaObject } from 'ajv';
 
+export interface DripTableCellDisplayControl {
+  /**
+   * 表格列水平对齐方式
+   */
+  align?: 'left' | 'center' | 'right';
+  /**
+   * 表格列垂直对齐方式
+   */
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
+}
+
 export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> {
   /**
    * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
@@ -57,11 +68,11 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
   /**
    * 表格列水平对齐方式
    */
-  align?: 'left' | 'center' | 'right';
+  align?: DripTableCellDisplayControl['align'];
   /**
    * 表格列垂直对齐方式
    */
-  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
+  verticalAlign?: DripTableCellDisplayControl['verticalAlign'];
   /**
    * 表头说明
    */
@@ -181,11 +192,11 @@ export interface DripTableSchema<
     /**
      * 选择栏水平对齐方式
      */
-    align: DripTableColumnSchema['align'];
+    align: DripTableCellDisplayControl['align'];
     /**
      * 选择栏垂直对齐方式
      */
-    verticalAlign: DripTableColumnSchema['verticalAlign'];
+    verticalAlign: DripTableCellDisplayControl['verticalAlign'];
   };
   /**
    * 是否可通过点击进入编辑模式
