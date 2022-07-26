@@ -41,20 +41,20 @@ html {
   box-shadow: 0 0 0 0 @primary-color;
   box-shadow: 0 0 0 0 var(--drip-wave-shadow-color);
   opacity: .2;
-  animation: fade-effect 2s @ease-out-circ, wave-effect .4s @ease-out-circ;
+  animation: jfe-drip-table-motion-fade-effect 2s @ease-out-circ, jfe-drip-table-motion-wave-effect .4s @ease-out-circ;
   animation-fill-mode: forwards;
   content: "";
   pointer-events: none;
 }
 
-@keyframes wave-effect {
+@keyframes jfe-drip-table-motion-wave-effect {
   100% {
     box-shadow: 0 0 0 @primary-color;
     box-shadow: 0 0 0 @wave-animation-width var(--drip-wave-shadow-color);
   }
 }
 
-@keyframes fade-effect {
+@keyframes jfe-drip-table-motion-fade-effect {
   100% {
     opacity: 0;
   }

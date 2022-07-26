@@ -26,16 +26,16 @@
   }
 }
 
-.zoom-motion(zoom, drip-zoom);
-.zoom-motion(zoom-big, drip-zoom-big);
-.zoom-motion(zoom-big-fast, drip-zoom-big, @animation-duration-fast);
+.zoom-motion(zoom, jfe-drip-table-motion-zoom);
+.zoom-motion(zoom-big, jfe-drip-table-motion-zoom-big);
+.zoom-motion(zoom-big-fast, jfe-drip-table-motion-zoom-big, @animation-duration-fast);
 
-.zoom-motion(zoom-up, drip-zoom-up);
-.zoom-motion(zoom-down, drip-zoom-down);
-.zoom-motion(zoom-left, drip-zoom-left);
-.zoom-motion(zoom-right, drip-zoom-right);
+.zoom-motion(zoom-up, jfe-drip-table-motion-zoom-up);
+.zoom-motion(zoom-down, jfe-drip-table-motion-zoom-down);
+.zoom-motion(zoom-left, jfe-drip-table-motion-zoom-left);
+.zoom-motion(zoom-right, jfe-drip-table-motion-zoom-right);
 
-@keyframes drip-zoom-in {
+@keyframes jfe-drip-table-motion-zoom-in {
   0% {
     transform: scale(.2);
     opacity: 0;
@@ -47,7 +47,7 @@
   }
 }
 
-@keyframes drip-zoom-out {
+@keyframes jfe-drip-table-motion-zoom-out {
   0% {
     transform: scale(1);
   }
@@ -58,7 +58,7 @@
   }
 }
 
-@keyframes drip-zoom-big-in {
+@keyframes jfe-drip-table-motion-zoom-big-in {
   0% {
     transform: scale(.8);
     opacity: 0;
@@ -70,7 +70,7 @@
   }
 }
 
-@keyframes drip-zoom-big-out {
+@keyframes jfe-drip-table-motion-zoom-big-out {
   0% {
     transform: scale(1);
   }
@@ -81,7 +81,7 @@
   }
 }
 
-@keyframes drip-zoom-up-in {
+@keyframes jfe-drip-table-motion-zoom-up-in {
   0% {
     transform: scale(.8);
     transform-origin: 50% 0%;
@@ -94,7 +94,7 @@
   }
 }
 
-@keyframes drip-zoom-up-out {
+@keyframes jfe-drip-table-motion-zoom-up-out {
   0% {
     transform: scale(1);
     transform-origin: 50% 0%;
@@ -107,7 +107,7 @@
   }
 }
 
-@keyframes drip-zoom-left-in {
+@keyframes jfe-drip-table-motion-zoom-left-in {
   0% {
     transform: scale(.8);
     transform-origin: 0% 50%;
@@ -120,7 +120,7 @@
   }
 }
 
-@keyframes drip-zoom-left-out {
+@keyframes jfe-drip-table-motion-zoom-left-out {
   0% {
     transform: scale(1);
     transform-origin: 0% 50%;
@@ -133,7 +133,7 @@
   }
 }
 
-@keyframes drip-zoom-right-in {
+@keyframes jfe-drip-table-motion-zoom-right-in {
   0% {
     transform: scale(.8);
     transform-origin: 100% 50%;
@@ -146,7 +146,7 @@
   }
 }
 
-@keyframes drip-zoom-right-out {
+@keyframes jfe-drip-table-motion-zoom-right-out {
   0% {
     transform: scale(1);
     transform-origin: 100% 50%;
@@ -159,7 +159,7 @@
   }
 }
 
-@keyframes drip-zoom-down-in {
+@keyframes jfe-drip-table-motion-zoom-down-in {
   0% {
     transform: scale(.8);
     transform-origin: 50% 100%;
@@ -172,7 +172,7 @@
   }
 }
 
-@keyframes drip-zoom-down-out {
+@keyframes jfe-drip-table-motion-zoom-down-out {
   0% {
     transform: scale(1);
     transform-origin: 50% 100%;
