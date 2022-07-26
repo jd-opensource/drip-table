@@ -26,6 +26,7 @@ const Select = Object.assign(
       className={classNames({
         [styles['jfe-drip-table-select-sm']]: mini,
       })}
+      transitionName="jfe-drip-table-motion-slide-up"
       listHeight={256}
       listItemHeight={24}
       inputIcon={(
