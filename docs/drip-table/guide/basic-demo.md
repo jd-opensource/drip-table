@@ -21,11 +21,6 @@ import "drip-table/dist/index.css";
 
 const schema = {
   size: "middle",
-  search: {
-    placeholder: "请输入",
-    searchText: "搜索",
-    position: "topRight",
-  },
   pagination: {
     pageSize: 10,
     position: "bottomRight",
@@ -57,6 +52,7 @@ const schema = {
       key: "mock_3",
       title: "库存状态",
       dataIndex: "status",
+      description: "这是一条提示信息",
       component: "text",
       options: {
         mode: "single",
@@ -64,7 +60,6 @@ const schema = {
           onSale: '售卖中',
           soldOut: '已售罄',
         },
-        description: "这是一条提示信息",
       },
     },
     {
@@ -83,7 +78,7 @@ const schema = {
       title: "操作",
       width: 118,
       dataIndex: "operate",
-      component: "links",
+      component: "link",
       options: {
         mode: "multiple",
         operates: [
