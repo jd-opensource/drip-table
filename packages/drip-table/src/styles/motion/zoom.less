@@ -1,0 +1,186 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-motion;
+
+.zoom-motion(@className, @keyframeName, @duration: @animation-duration-base) {
+  @name: ~"@{prefixCls}-@{className}";
+  .make-motion(@name, @keyframeName, @duration);
+  .@{name}-enter,
+  .@{name}-appear {
+    transform: scale(0);
+    opacity: 0;
+    animation-timing-function: @ease-out-circ;
+
+    &-prepare {
+      transform: none;
+    }
+  }
+  .@{name}-leave {
+    animation-timing-function: @ease-in-out-circ;
+  }
+}
+
+.zoom-motion(zoom, drip-zoom);
+.zoom-motion(zoom-big, drip-zoom-big);
+.zoom-motion(zoom-big-fast, drip-zoom-big, @animation-duration-fast);
+
+.zoom-motion(zoom-up, drip-zoom-up);
+.zoom-motion(zoom-down, drip-zoom-down);
+.zoom-motion(zoom-left, drip-zoom-left);
+.zoom-motion(zoom-right, drip-zoom-right);
+
+@keyframes drip-zoom-in {
+  0% {
+    transform: scale(.2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drip-zoom-out {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(.2);
+    opacity: 0;
+  }
+}
+
+@keyframes drip-zoom-big-in {
+  0% {
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drip-zoom-big-out {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(.8);
+    opacity: 0;
+  }
+}
+
+@keyframes drip-zoom-up-in {
+  0% {
+    transform: scale(.8);
+    transform-origin: 50% 0%;
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    transform-origin: 50% 0%;
+  }
+}
+
+@keyframes drip-zoom-up-out {
+  0% {
+    transform: scale(1);
+    transform-origin: 50% 0%;
+  }
+
+  100% {
+    transform: scale(.8);
+    transform-origin: 50% 0%;
+    opacity: 0;
+  }
+}
+
+@keyframes drip-zoom-left-in {
+  0% {
+    transform: scale(.8);
+    transform-origin: 0% 50%;
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    transform-origin: 0% 50%;
+  }
+}
+
+@keyframes drip-zoom-left-out {
+  0% {
+    transform: scale(1);
+    transform-origin: 0% 50%;
+  }
+
+  100% {
+    transform: scale(.8);
+    transform-origin: 0% 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes drip-zoom-right-in {
+  0% {
+    transform: scale(.8);
+    transform-origin: 100% 50%;
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    transform-origin: 100% 50%;
+  }
+}
+
+@keyframes drip-zoom-right-out {
+  0% {
+    transform: scale(1);
+    transform-origin: 100% 50%;
+  }
+
+  100% {
+    transform: scale(.8);
+    transform-origin: 100% 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes drip-zoom-down-in {
+  0% {
+    transform: scale(.8);
+    transform-origin: 50% 100%;
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    transform-origin: 50% 100%;
+  }
+}
+
+@keyframes drip-zoom-down-out {
+  0% {
+    transform: scale(1);
+    transform-origin: 50% 100%;
+  }
+
+  100% {
+    transform: scale(.8);
+    transform-origin: 50% 100%;
+    opacity: 0;
+  }
+}

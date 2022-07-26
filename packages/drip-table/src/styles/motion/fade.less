@@ -1,0 +1,44 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-motion;
+
+.fade-motion(@className, @keyframeName) {
+  @name: ~"@{prefixCls}-@{className}";
+  .make-motion(@name, @keyframeName);
+  .@{name}-enter,
+  .@{name}-appear {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+  .@{name}-leave {
+    animation-timing-function: linear;
+  }
+}
+
+.fade-motion(fade, drip-fade);
+
+@keyframes drip-fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes drip-fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

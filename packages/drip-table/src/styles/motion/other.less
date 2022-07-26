@@ -1,0 +1,61 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-motion;
+
+@keyframes loading-circle {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@click-animating-true: ~"[@{prefixCls}-click-animating='true']";
+@click-animating-with-extra-node-true: ~"[@{prefixCls}-click-animating-without-extra-node='true']";
+
+@{click-animating-true},
+@{click-animating-with-extra-node-true} {
+  position: relative;
+}
+
+html {
+  --drip-wave-shadow-color: @primary-color;
+  --scroll-bar: 0;
+}
+
+@click-animating-with-extra-node-true-after: ~"@{click-animating-with-extra-node-true}::after";
+
+@{click-animating-with-extra-node-true-after},
+.@{prefixCls}-click-animating-node {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 @primary-color;
+  box-shadow: 0 0 0 0 var(--drip-wave-shadow-color);
+  opacity: .2;
+  animation: fade-effect 2s @ease-out-circ, wave-effect .4s @ease-out-circ;
+  animation-fill-mode: forwards;
+  content: "";
+  pointer-events: none;
+}
+
+@keyframes wave-effect {
+  100% {
+    box-shadow: 0 0 0 @primary-color;
+    box-shadow: 0 0 0 @wave-animation-width var(--drip-wave-shadow-color);
+  }
+}
+
+@keyframes fade-effect {
+  100% {
+    opacity: 0;
+  }
+}
