@@ -120,7 +120,7 @@ export const columnGenerator = <
             onChange={v => onChange(record, index, v)}
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
             ext={extraProps.ext}
-            extraComponents={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
+            components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             fireEvent={event => extraProps.onEvent?.(event, record, index, { ...tableInfo, record })}
           />
         );
