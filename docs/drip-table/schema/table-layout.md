@@ -1,8 +1,8 @@
-# ellipsis
+# tableLayout
 
-- 描述：是否平均列宽，超过单元格宽度部分将不可见
-- 类型：`boolean`
-- 默认值：`undefined`
+- 描述：表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局。auto: 表格及单元格的宽度取决于其包含的内容。fixed: 表格和列的宽度通过表格的宽度来设置。
+- 类型：`auto` | `fixed`
+- 默认值：无
 
 ```jsx
 /**
@@ -17,7 +17,7 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
-  ellipsis: true,
+  tableLayout: 'fixed',
   columns: [
     {
       key: "mock_1",
@@ -32,7 +32,7 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      options: { mode: "single", ellipsis: true, maxRow: 1 },
+      options: { mode: "single", ellipsis: true, maxRow: 2 },
     },
     {
       key: "mock_3",
