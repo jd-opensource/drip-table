@@ -7,7 +7,7 @@
   type Pagination = false | {
     size?: 'small' | 'default';
     pageSize?: number;
-    position?: 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+    position?: 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
     showLessItems?: boolean;
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;

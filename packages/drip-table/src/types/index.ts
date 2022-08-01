@@ -203,9 +203,16 @@ export interface DripTableSchema<
    */
   editable?: boolean;
   /**
-   * 是否平均列宽
+   * @deprecated 已废弃，平均列宽请使用 tableLayout="fixed"
    */
   ellipsis?: boolean;
+  /**
+   * 表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局。
+   * auto: 表格及单元格的宽度取决于其包含的内容。
+   * fixed: 表格和列的宽度通过表格的宽度来设置。
+   * 注意：对于固定表头/列会使得表格布局为 fixed。
+   */
+  tableLayout?: 'auto' | 'fixed';
   /**
    * 是否开启虚拟滚动
    */

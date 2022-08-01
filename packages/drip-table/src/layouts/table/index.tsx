@@ -98,9 +98,7 @@ export const columnGenerator = <
       </div>
     );
   }
-  if (tableInfo.schema.ellipsis) {
-    column.ellipsis = true;
-  }
+
   if (!column.render) {
     if ('component' in columnSchema) {
       const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
@@ -122,6 +120,7 @@ export const columnGenerator = <
             onChange={v => onChange(record, index, v)}
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
             ext={extraProps.ext}
+            extraComponents={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             fireEvent={event => extraProps.onEvent?.(event, record, index, { ...tableInfo, record })}
           />
         );
@@ -342,13 +341,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     () => {
       const pagination = tableInfo.schema.pagination;
       if (pagination) {
-        if (pagination.position === 'bottomLeft') {
+        if (pagination.position === 'bottomLeft' || pagination.position === 'topLeft') {
           return 'left';
         }
-        if (pagination.position === 'bottomCenter') {
+        if (pagination.position === 'bottomCenter' || pagination.position === 'topCenter') {
           return 'center';
         }
-        if (pagination.position === 'bottomRight') {
+        if (pagination.position === 'bottomRight' || pagination.position === 'topRight') {
           return 'right';
         }
       }
@@ -412,6 +411,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           columns={columns}
           data={dataSource}
           scroll={tableProps.schema.scroll}
+          tableLayout={tableProps.schema.tableLayout}
           rowClassName={React.useMemo(
             () =>
               record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)

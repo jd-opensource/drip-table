@@ -281,12 +281,16 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     'ui:type': 'radio',
     'ui:props': {
       options: [
+        { label: '左上角', value: 'topLeft' },
+        { label: '正上方', value: 'topCenter' },
+        { label: '右上角', value: 'topRight' },
         { label: '左下角', value: 'bottomLeft' },
         { label: '正下方', value: 'bottomCenter' },
         { label: '右下角', value: 'bottomRight' },
       ],
     },
     type: 'string',
+    default: 'bottomRight',
     visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
   },
   {
@@ -426,6 +430,19 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
       min: 1,
     },
     type: 'number',
+  },
+  {
+    name: 'tableLayout',
+    group: '全局属性',
+    'ui:title': '表格布局',
+    'ui:type': 'radio',
+    'ui:props': {
+      options: [
+        { label: '自动布局', value: 'auto' },
+        { label: '固定布局', value: 'fixed' },
+      ],
+    },
+    type: 'string',
   },
   {
     name: 'scrollY',
