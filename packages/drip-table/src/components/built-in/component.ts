@@ -46,7 +46,10 @@ export interface DripTableComponentProps<
    * 最外层额外透传的数据
    */
   ext?: ComponentExtraData;
-  extraComponents?: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components'];
+  /**
+   * 透传 DripTable 属性里的 components 字段 (用于提供给组合组件渲染使用)
+   */
+  components?: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components'];
   /**
    * 是否处于预览模式（不响应事件）
    */

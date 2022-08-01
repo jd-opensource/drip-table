@@ -107,7 +107,7 @@ export default class DTCGroup<
     }
     const [libName, componentName] = schema.component.split('::');
     if (libName && componentName) {
-      const ExtraComponent = this.props.extraComponents?.[libName]?.[componentName];
+      const ExtraComponent = this.props.components?.[libName]?.[componentName];
       if (ExtraComponent) {
         return (
           <ExtraComponent
