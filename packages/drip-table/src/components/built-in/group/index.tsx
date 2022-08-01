@@ -8,8 +8,7 @@
 import React from 'react';
 
 import { type DripTableColumnSchema,
-  type DripTableExtraOptions,
-  type DripTableProps, type DripTableRecordTypeBase,
+  type DripTableExtraOptions, type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type SchemaObject } from '@/types';
 
@@ -37,7 +36,6 @@ interface DTCGroupProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
  > extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<ExtraOptions['CustomColumnSchema']>> {
-  extraComponents?: DripTableProps<RecordType, ExtraOptions>['components'];
   ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
 }
 

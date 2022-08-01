@@ -165,7 +165,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
               properties: {
                 size: { enum: ['small', 'default'] },
                 pageSize: { type: 'number' },
-                position: { enum: ['bottomLeft', 'bottomCenter', 'bottomRight'] },
+                position: { enum: ['topLeft', 'topCenter', 'topRight', 'bottomLeft', 'bottomCenter', 'bottomRight'] },
                 showLessItems: { type: 'boolean' },
                 showQuickJumper: { type: 'boolean' },
                 showSizeChanger: { type: 'boolean' },
@@ -196,6 +196,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
         editable: { type: 'boolean' },
         ellipsis: { type: 'boolean' },
+        tableLayout: { enum: ['auto', 'fixed'] },
         virtual: { type: 'boolean' },
         rowHeight: { type: 'number' },
         scrollY: { type: 'number' },

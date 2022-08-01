@@ -174,7 +174,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       $version: formData.$version as number,
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
-      ellipsis: formData.ellipsis as boolean,
+      tableLayout: formData.tableLayout as 'auto' | 'fixed',
       sticky: formData.sticky as boolean,
       rowSelection: formData.rowSelection as boolean,
       virtual: formData.virtual as boolean,
@@ -198,7 +198,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
         ? {
           size: formData['pagination.size'] as 'small' | 'default',
           pageSize: formData['pagination.pageSize'] as number,
-          position: formData['pagination.position'] as 'bottomLeft' | 'bottomCenter' | 'bottomRight',
+          position: formData['pagination.position'] as 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight',
           showQuickJumper: formData['pagination.showQuickJumper'] as boolean,
           showSizeChanger: formData['pagination.showSizeChanger'] as boolean,
           showTotal: formData['pagination.showTotal'] as string,
