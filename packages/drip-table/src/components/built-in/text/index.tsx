@@ -7,14 +7,17 @@
  */
 
 import classNames from 'classnames';
+import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { EventInjector } from 'react-event-injector';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
+import { preventEvent } from '../utils';
 
 import styles from './index.module.less';
 
@@ -94,9 +97,12 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
 
 interface DTCTextState {
+  windowInnerWidth: number;
+  cellLeft: number;
+  cellTop: number;
+  cellWidth: number;
+  cellHeight: number;
   editState: 'none' | 'entering' | 'editing';
-  editLeft: number;
-  editTop: number;
   editWidth: number;
   editHeight: number;
   editValue: string;
@@ -144,13 +150,18 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   public state: DTCTextState = {
+    windowInnerWidth: globalThis.window?.innerWidth || 0,
+    cellLeft: 0,
+    cellTop: 0,
+    cellWidth: 0,
+    cellHeight: 0,
     editState: 'none',
-    editLeft: 0,
-    editTop: 0,
     editWidth: 0,
     editHeight: 0,
     editValue: '',
   };
+
+  private $main = React.createRef<HTMLDivElement>();
 
   private get configured() {
     const schema = this.props.schema;
@@ -257,26 +268,47 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return [];
   }
 
-  private onClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  private updateCellRect = ($main: HTMLElement) => {
+    const $cell = $main.parentElement as HTMLSpanElement;
+    const rect = $cell.getBoundingClientRect();
+    this.setState({
+      cellLeft: rect.left,
+      cellTop: rect.top,
+      cellWidth: rect.width,
+      cellHeight: rect.height,
+      editWidth: rect.width,
+      editHeight: rect.height,
+    });
+  };
+
+  private onDoubleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!this.props.editable) {
       return;
     }
     if (this.state.editState !== 'none') {
       return;
     }
-    if (window.getSelection()?.type === 'Range') {
-      return;
+    this.updateCellRect(e.currentTarget);
+    this.setState({ editState: 'entering' });
+  };
+
+  private onWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
+    if (e.target instanceof HTMLTextAreaElement) {
+      const scrollable = e.deltaY < 0
+        ? Math.abs(e.target.scrollTop) > Number.EPSILON
+        : e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight > Number.EPSILON;
+      if (scrollable) {
+        return;
+      }
     }
-    const $div = e.currentTarget as HTMLDivElement;
-    const $cell = $div.parentElement as HTMLSpanElement;
-    const rect = $cell.getBoundingClientRect();
-    this.setState({
-      editState: 'entering',
-      editLeft: rect.left,
-      editTop: rect.top,
-      editWidth: rect.width,
-      editHeight: rect.height,
-    });
+    return preventEvent(e);
+  };
+
+  private onResize: React.ComponentProps<typeof ResizeObserver>['onResize'] = (sizeInfo, el) => {
+    if (this.$main.current) {
+      this.updateCellRect(this.$main.current);
+    }
+    this.setState({ windowInnerWidth: globalThis.window?.innerWidth ?? 0 });
   };
 
   public componentDidUpdate() {
@@ -292,27 +324,37 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (this.state.editState === 'none') {
       return null;
     }
+    const editMinWidth = this.state.windowInnerWidth < 768 ? 200 : 500;
+    const editMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
+    const editFinalWidth = Math.min(Math.max(this.state.cellWidth, editMinWidth), editMaxWidth);
     return ReactDOM.createPortal(
-      <div className={styles['edit-popup']}>
-        <div className={styles['edit-popup-body']} style={{ left: this.state.editLeft, right: 0, top: this.state.editTop, bottom: 0 }}>
-          <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
-          <Textarea
-            className={styles['edit-textarea']}
-            value={this.state.editValue}
-            autoFocus
-            autoSize
-            style={{ width: this.state.editWidth, height: this.state.editHeight, minHeight: this.state.editHeight }}
-            onResize={({ width, height }) => {
-              this.setState({ editWidth: width, editHeight: height });
-            }}
-            onChange={(e) => { this.setState({ editValue: e.target.value }); }}
-            onBlur={() => {
-              this.props.onChange?.(this.state.editValue);
-              this.setState({ editState: 'none' });
-            }}
-          />
-        </div>
-      </div>,
+      <ResizeObserver onResize={this.onResize}>
+        <EventInjector
+          onWheel={this.onWheel}
+          settings={{ capture: true, passive: false }}
+        >
+          <div className={styles['edit-popup']} onWheelCapture={e => preventEvent(e)}>
+            <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
+              <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
+              <Textarea
+                className={styles['edit-textarea']}
+                value={this.state.editValue}
+                autoFocus
+                autoSize={{ maxRows: 6 }}
+                style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
+                onResize={({ width, height }) => {
+                  this.setState({ editWidth: width, editHeight: height });
+                }}
+                onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+                onBlur={() => {
+                  this.props.onChange?.(this.state.editValue);
+                  this.setState({ editState: 'none' });
+                }}
+              />
+            </div>
+          </div>
+        </EventInjector>
+      </ResizeObserver>,
       document.body,
     );
   }
@@ -325,18 +367,32 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!this.configured) {
       return <Alert message="未配置字段" showIcon type="error" />;
     }
-    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>);
-    const wrapperEl = <div className={classNames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
+    const rawTextEl = this.rawText.map((s, i) => (
+      <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>
+    ));
+    let wrapperEl = (
+      <div
+        className={classNames(wrapperClassName, styles['word-break'])}
+        style={wrapperStyles}
+      >
+        { rawTextEl }
+      </div>
+    );
     if (this.props.schema.options.maxRow) {
-      return (
-        <div className={styles.main} onClick={this.onClick}>
-          <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
-            { wrapperEl }
-          </Tooltip>
-          { this.renderEdit() }
-        </div>
+      wrapperEl = (
+        <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
+          { wrapperEl }
+        </Tooltip>
       );
     }
-    return wrapperEl;
+    return (
+      <React.Fragment>
+        <div ref={this.$main} className={classNames(styles.main, { [styles.editable]: this.props.editable })} tabIndex={0} onDoubleClick={this.onDoubleClick}>
+          { wrapperEl }
+          { this.renderEdit() }
+        </div>
+        <div className={styles['focus-border']} />
+      </React.Fragment>
+    );
   }
 }

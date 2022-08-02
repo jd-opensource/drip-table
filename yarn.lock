@@ -14176,6 +14176,14 @@ react-dom@16.x, react-dom@^16.9.0:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
+react-event-injector@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-event-injector/-/react-event-injector-1.1.2.tgz#695d25969667650d5de4607d17e6050eb9bdd65d"
+  integrity sha512-gSBsMinT3yeqGOqL6VoeekqdWYgMQ6O2rfYr5zPhNvE5qR3aL+xbn9Kjv4dLeL25gOSRJA/roDre9L5fHj89og==
+  dependencies:
+    prop-types "^15.6.2"
+    tiny-invariant "^1.0.1"
+
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -16193,7 +16201,7 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-tiny-invariant@^1.0.2:
+tiny-invariant@^1.0.1, tiny-invariant@^1.0.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.2.0.tgz#a1141f86b672a9148c72e978a19a73b9b94a15a9"
   integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
