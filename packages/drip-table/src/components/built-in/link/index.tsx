@@ -27,6 +27,9 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
     event?: string;
     target?: string;
   }[];
+  /** 多选模式下最大平铺展示数量，如果配置，其余均通过更多收起 */
+  maxTiledCount?: number;
+  dropdownText?: string;
 }>;
 
 export interface DTCLinkEvent {
@@ -60,6 +63,8 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
           },
         },
       },
+      maxTiledCount: { type: 'number' },
+      dropdownText: { type: 'string' },
     },
   };
 
@@ -77,9 +82,51 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     return false;
   }
 
+  public renderMenu(): JSX.Element {
+    const options = this.props.schema.options;
+    const Menu = this.props.driver.components.Menu;
+    const menuList = options.operates?.slice(options.maxTiledCount);
+    return (
+      <Menu>
+        {
+          menuList?.map((config, index) => {
+            const event = config.event;
+            if (event) {
+              return (
+                <Menu.Item key={config.name || index}>
+                  <a
+                    onClick={() => {
+                      if (this.props.preview) {
+                        return;
+                      }
+                      this.props.fireEvent({ type: 'drip-link-click', payload: event });
+                    }}
+                  >
+                    { config.label }
+                  </a>
+                </Menu.Item>
+              );
+            }
+            return (
+              <Menu.Item key={config.name || index}>
+                <a
+                  href={finalizeString('pattern', config.href || '', this.props.data)}
+                  target={config.target}
+                >
+                  { config.label }
+                </a>
+              </Menu.Item>
+            );
+          })
+        }
+      </Menu>
+    );
+  }
+
   public render(): JSX.Element {
     const options = this.props.schema.options;
     const Alert = this.props.driver.components.Alert;
+    const DropDown = this.props.driver.components.Dropdown;
     if (!this.configured) {
       return <Alert type="error" showIcon message="属性配置错误" />;
     }
@@ -104,7 +151,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     return (
       <div>
         {
-          options.operates?.map((config, index) => {
+          options.operates?.slice(0, options.maxTiledCount).map((config, index) => {
             const event = config.event;
             if (event) {
               return (
@@ -134,6 +181,13 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             );
           })
         }
+        { options.maxTiledCount && options.maxTiledCount < (options.operates?.length || 0)
+          ? (
+            <DropDown overlay={this.renderMenu()}>
+              <a>{ options.dropdownText || 'more' }</a>
+            </DropDown>
+          )
+          : null }
       </div>
     );
   }
