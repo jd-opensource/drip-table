@@ -129,6 +129,13 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
               selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
             },
           },
+          {
+            properties: {
+              type: { const: 'layout-selector' },
+              selectorButtonText: { type: 'string' },
+              selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
+            },
+          },
         ],
       },
     };
@@ -194,6 +201,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             },
           ],
         },
+        layout: { enum: ['table', 'card'] },
         editable: { type: 'boolean' },
         ellipsis: { type: 'boolean' },
         tableLayout: { enum: ['auto', 'fixed'] },

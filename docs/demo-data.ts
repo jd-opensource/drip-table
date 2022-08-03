@@ -36,6 +36,11 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         text: '商品列表',
       },
       {
+        type: 'layout-selector',
+        selectorButtonType: 'primary',
+        selectorButtonText: '布局模式',
+      },
+      {
         type: 'slot',
         slot: 'header-slot-sample',
       },
