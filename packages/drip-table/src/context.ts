@@ -23,6 +23,7 @@ export interface IDripTableContext {
   };
   filters: Record<string, (boolean | React.Key)[] | null>;
   tableSize: 'default';
+  layout: 'table' | 'card';
   checkPassed: boolean;
   selectedRowKeys: React.Key[];
   displayColumnKeys: React.Key[];
@@ -46,6 +47,7 @@ export const DripTableContext = React.createContext<IDripTableContext>({
   displayColumnKeys: [],
   _CTX_SOURCE: 'CONTEXT',
   setTableState: () => void 0,
+  layout: 'table',
 });
 
 export const DripTableStoreContext = React.createContext({});
