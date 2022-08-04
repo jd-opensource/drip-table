@@ -21,6 +21,7 @@ import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
 import { useState, useTable } from '@/hooks';
 
+import CardLayout from './card';
 import TableLayout from './table';
 
 import styles from './index.module.less';
@@ -124,6 +125,8 @@ const DripTableLayout = <
         style={Object.assign({}, props.style, props.schema.style)}
         ref={rootRef}
       >
+        { tableState.layout === 'table'
+        && (
         <TableLayout
           tableProps={props}
           tableInfo={tableInfo}
@@ -156,6 +159,29 @@ const DripTableLayout = <
               : null
           }
         />
+        ) }
+        { tableState.layout === 'card'
+        && (
+          <CardLayout
+            header={
+              header
+                ? (
+                  <GenericRender
+                    style={header.style}
+                    schemas={header.schemas}
+                    tableProps={props}
+                    tableState={tableState}
+                    setTableState={setTableState}
+                  />
+                )
+                : null
+            }
+            tableProps={props}
+            tableInfo={tableInfo}
+            tableState={tableState}
+            setTableState={setTableState}
+          />
+        ) }
       </div>
     </ErrorBoundary>
   );
