@@ -163,6 +163,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   private $main = React.createRef<HTMLDivElement>();
+  private $editPopup = React.createRef<HTMLDivElement>();
 
   private get configured() {
     const schema = this.props.schema;
@@ -312,6 +313,20 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     this.setState({ windowInnerWidth: globalThis.window?.innerWidth ?? 0 });
   };
 
+  private focusEdit = () => {
+    const $editPopup = this.$editPopup.current;
+    if (!$editPopup) {
+      return;
+    }
+    const $editTextarea = $editPopup.querySelector(`.${styles['edit-textarea']}`);
+    if (!$editTextarea || !($editTextarea instanceof HTMLTextAreaElement)) {
+      return;
+    }
+    const end = $editTextarea.value.length;
+    $editTextarea.setSelectionRange(end, end);
+    $editTextarea.focus();
+  };
+
   public componentDidUpdate() {
     if (this.state.editState === 'entering') {
       this.setState({
@@ -353,6 +368,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       <Textarea
         className={styles['edit-textarea']}
         value={this.state.editValue}
+        ref={this.focusEdit}
         autoFocus
         autoSize={{ maxRows: 6 }}
         style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
@@ -378,7 +394,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
           onWheel={this.onWheel}
           settings={{ capture: true, passive: false }}
         >
-          <div className={styles['edit-popup']} onWheelCapture={e => preventEvent(e)}>
+          <div className={styles['edit-popup']} ref={this.$editPopup} onWheelCapture={e => preventEvent(e)}>
             <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
               <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
               { this.renderEditInput() }
