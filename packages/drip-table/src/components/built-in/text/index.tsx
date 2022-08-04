@@ -15,6 +15,7 @@ import { EventInjector } from 'react-event-injector';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/utils/operator';
+import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
 import { preventEvent } from '../utils';
@@ -320,13 +321,57 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     }
   }
 
-  private renderEdit() {
-    if (this.state.editState === 'none') {
-      return null;
+  private renderEditInput() {
+    if (this.props.schema.options.i18n) {
+      const selectMinWidth = 100;
+      const selectMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
+      const selectFinalWidth = Math.min(Math.max(this.state.cellWidth, selectMinWidth), selectMaxWidth);
+      return (
+        <Select
+          style={{ width: selectFinalWidth }}
+          autoFocus
+          value={this.state.editValue}
+          onChange={(value) => { this.setState({ editValue: value }); }}
+          onBlur={() => {
+            this.props.onChange?.(this.state.editValue);
+            this.setState({ editState: 'none' });
+          }}
+          dropdownClassName={styles['edit-select-dropdown']}
+        >
+          {
+            Object.entries(this.props.schema.options.i18n).map(([k, v]) => (
+              <Select.Option value={k}>{ v }</Select.Option>
+            ))
+          }
+        </Select>
+      );
     }
     const editMinWidth = this.state.windowInnerWidth < 768 ? 200 : 500;
     const editMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
     const editFinalWidth = Math.min(Math.max(this.state.cellWidth, editMinWidth), editMaxWidth);
+    return (
+      <Textarea
+        className={styles['edit-textarea']}
+        value={this.state.editValue}
+        autoFocus
+        autoSize={{ maxRows: 6 }}
+        style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
+        onResize={({ width, height }) => {
+          this.setState({ editWidth: width, editHeight: height });
+        }}
+        onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+        onBlur={() => {
+          this.props.onChange?.(this.state.editValue);
+          this.setState({ editState: 'none' });
+        }}
+      />
+    );
+  }
+
+  private renderEdit() {
+    if (this.state.editState === 'none') {
+      return null;
+    }
     return ReactDOM.createPortal(
       <ResizeObserver onResize={this.onResize}>
         <EventInjector
@@ -336,21 +381,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
           <div className={styles['edit-popup']} onWheelCapture={e => preventEvent(e)}>
             <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
               <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
-              <Textarea
-                className={styles['edit-textarea']}
-                value={this.state.editValue}
-                autoFocus
-                autoSize={{ maxRows: 6 }}
-                style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
-                onResize={({ width, height }) => {
-                  this.setState({ editWidth: width, editHeight: height });
-                }}
-                onChange={(e) => { this.setState({ editValue: e.target.value }); }}
-                onBlur={() => {
-                  this.props.onChange?.(this.state.editValue);
-                  this.setState({ editState: 'none' });
-                }}
-              />
+              { this.renderEditInput() }
             </div>
           </div>
         </EventInjector>
