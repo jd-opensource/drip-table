@@ -307,7 +307,14 @@ const GenericRender = <
       const menu = (
         <Menu
           onClick={(e) => {
-            setTableState(() => ({ layout: e.key as IDripTableContext['layout'] }));
+            setTableState((state) => {
+              const displayColumnKeys = state.displayColumnKeys.filter(k => k !== e.key) || [];
+              if (!state.displayColumnKeys.includes(e.key)) {
+                displayColumnKeys.push(e.key);
+              }
+              tableProps.onDisplayColumnKeysChange?.(displayColumnKeys, tableInfo);
+              return { displayColumnKeys };
+            });
           }}
         >
           {
@@ -342,14 +349,7 @@ const GenericRender = <
       const menu = (
         <Menu
           onClick={(e) => {
-            setTableState((state) => {
-              const displayColumnKeys = state.displayColumnKeys.filter(k => k !== e.key) || [];
-              if (!state.displayColumnKeys.includes(e.key)) {
-                displayColumnKeys.push(e.key);
-              }
-              tableProps.onDisplayColumnKeysChange?.(displayColumnKeys, tableInfo);
-              return { displayColumnKeys };
-            });
+            setTableState(() => ({ layout: e.key as IDripTableContext['layout'] }));
           }}
         >
           <Menu.Item
