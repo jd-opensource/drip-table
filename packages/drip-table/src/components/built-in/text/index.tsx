@@ -341,24 +341,35 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       const selectMinWidth = 100;
       const selectMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
       const selectFinalWidth = Math.min(Math.max(this.state.cellWidth, selectMinWidth), selectMaxWidth);
+      let justifyContent = 'center';
+      if (this.props.schema.verticalAlign === 'top' || this.props.schema.verticalAlign === 'stretch') {
+        justifyContent = 'flex-start';
+      } else if (this.props.schema.verticalAlign === 'bottom') {
+        justifyContent = 'flex-end';
+      }
       return (
-        <Select
-          style={{ width: selectFinalWidth }}
-          autoFocus
-          value={this.state.editValue}
-          onChange={(value) => { this.setState({ editValue: value }); }}
-          onBlur={() => {
-            this.props.onChange?.(this.state.editValue);
-            this.setState({ editState: 'none' });
-          }}
-          dropdownClassName={styles['edit-select-dropdown']}
+        <div
+          className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
+          style={{ width: selectFinalWidth, height: this.state.cellHeight, justifyContent }}
         >
-          {
-            Object.entries(this.props.schema.options.i18n).map(([k, v]) => (
-              <Select.Option value={k}>{ v }</Select.Option>
-            ))
-          }
-        </Select>
+          <Select
+            style={{ width: selectFinalWidth - 36 }}
+            autoFocus
+            value={this.state.editValue}
+            onChange={(value) => { this.setState({ editValue: value }); }}
+            onBlur={() => {
+              this.props.onChange?.(this.state.editValue);
+              this.setState({ editState: 'none' });
+            }}
+            dropdownClassName={styles['edit-select-dropdown']}
+          >
+            {
+              Object.entries(this.props.schema.options.i18n).map(([k, v]) => (
+                <Select.Option value={k}>{ v }</Select.Option>
+              ))
+            }
+          </Select>
+        </div>
       );
     }
     const editMinWidth = this.state.windowInnerWidth < 768 ? 200 : 500;
@@ -366,7 +377,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const editFinalWidth = Math.min(Math.max(this.state.cellWidth, editMinWidth), editMaxWidth);
     return (
       <Textarea
-        className={styles['edit-textarea']}
+        className={classNames(styles['edit-editing-outline'], styles['edit-textarea'])}
         value={this.state.editValue}
         ref={this.focusEdit}
         autoFocus
