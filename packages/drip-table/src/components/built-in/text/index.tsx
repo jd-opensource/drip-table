@@ -103,6 +103,10 @@ interface DTCTextState {
   cellTop: number;
   cellWidth: number;
   cellHeight: number;
+  cellPaddingLeft: number;
+  cellPaddingRight: number;
+  cellPaddingTop: number;
+  cellPaddingBottom: number;
   editState: 'none' | 'entering' | 'editing';
   editWidth: number;
   editHeight: number;
@@ -156,6 +160,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     cellTop: 0,
     cellWidth: 0,
     cellHeight: 0,
+    cellPaddingLeft: 0,
+    cellPaddingRight: 0,
+    cellPaddingTop: 0,
+    cellPaddingBottom: 0,
     editState: 'none',
     editWidth: 0,
     editHeight: 0,
@@ -271,15 +279,20 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private updateCellRect = ($main: HTMLElement) => {
-    const $cell = $main.parentElement as HTMLSpanElement;
-    const rect = $cell.getBoundingClientRect();
+    const innerRect = $main.getBoundingClientRect();
+    const $cell = $main.parentElement as HTMLElement;
+    const cellRect = $cell.getBoundingClientRect();
     this.setState({
-      cellLeft: rect.left,
-      cellTop: rect.top,
-      cellWidth: rect.width,
-      cellHeight: rect.height,
-      editWidth: rect.width,
-      editHeight: rect.height,
+      cellLeft: cellRect.left,
+      cellTop: cellRect.top,
+      cellWidth: cellRect.width,
+      cellHeight: cellRect.height,
+      cellPaddingLeft: innerRect.left - cellRect.left,
+      cellPaddingRight: cellRect.right - innerRect.right,
+      cellPaddingTop: innerRect.top - cellRect.top,
+      cellPaddingBottom: cellRect.bottom - innerRect.bottom,
+      editWidth: cellRect.width,
+      editHeight: cellRect.height,
     });
   };
 
@@ -396,24 +409,34 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private renderEdit() {
-    if (this.state.editState === 'none') {
+    if (!this.props.editable) {
       return null;
     }
-    return ReactDOM.createPortal(
-      <ResizeObserver onResize={this.onResize}>
-        <EventInjector
-          onWheel={this.onWheel}
-          settings={{ capture: true, passive: false }}
-        >
-          <div className={styles['edit-popup']} ref={this.$editPopup} onWheelCapture={e => preventEvent(e)}>
-            <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
-              <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
-              { this.renderEditInput() }
-            </div>
-          </div>
-        </EventInjector>
-      </ResizeObserver>,
-      document.body,
+    return (
+      <React.Fragment>
+        <div className={styles['edit-padding-left']} style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
+        <div className={styles['edit-padding-right']} style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
+        <div className={styles['edit-padding-top']} style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
+        <div className={styles['edit-padding-bottom']} style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
+        {
+          this.state.editState === 'none'
+            ? void 0
+            : ReactDOM.createPortal(
+              <EventInjector
+                onWheel={this.onWheel}
+                settings={{ capture: true, passive: false }}
+              >
+                <div className={styles['edit-popup']} ref={this.$editPopup} onWheelCapture={e => preventEvent(e)}>
+                  <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
+                    <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
+                    { this.renderEditInput() }
+                  </div>
+                </div>
+              </EventInjector>,
+              document.body,
+            )
+        }
+      </React.Fragment>
     );
   }
 
@@ -445,10 +468,12 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     }
     return (
       <React.Fragment>
-        <div ref={this.$main} className={classNames(styles.main, { [styles.editable]: this.props.editable })} tabIndex={0} onDoubleClick={this.onDoubleClick}>
-          { wrapperEl }
-          { this.renderEdit() }
-        </div>
+        <ResizeObserver onResize={this.onResize}>
+          <div ref={this.$main} className={classNames(styles.main, { [styles.editable]: this.props.editable })} tabIndex={0} onDoubleClick={this.onDoubleClick}>
+            { wrapperEl }
+            { this.renderEdit() }
+          </div>
+        </ResizeObserver>
         <div className={styles['focus-border']} />
       </React.Fragment>
     );
