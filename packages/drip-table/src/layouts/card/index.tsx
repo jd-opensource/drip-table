@@ -10,10 +10,11 @@ import chunk from 'lodash/chunk';
 import React, { useMemo } from 'react';
 
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from '@/types';
+import { indexValue } from '@/utils/operator';
 import Pagination from '@/components/pagination';
 
+import { columnGenerator } from '../table';
 import { TableLayoutComponentProps } from '../types';
-import CardItem from './card-item';
 
 import styles from './index.module.less';
 
@@ -84,21 +85,40 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     if (!tableInfo.schema.pagination) {
       return tableProps.dataSource;
     }
-    const chunkList = chunk(tableProps.dataSource, tableInfo.schema.pagination.pageSize);
+    const chunkList = chunk(tableProps.dataSource, tableState.pagination.pageSize);
     return chunkList[tableProps.currentPage || 0];
-  }, [tableProps.dataSource, tableInfo.schema.pagination]);
+  }, [tableProps.dataSource, tableInfo.schema.pagination, tableProps.currentPage, tableState.pagination]);
+
+  const extraProps = {
+    driver: tableProps.driver,
+    components: tableProps.components,
+    ext: tableProps.ext,
+    onEvent: tableProps.onEvent,
+    onDataSourceChange: tableProps.onDataSourceChange,
+  };
 
   return (
     <div className={styles.main}>
       { props.header }
       <div className={styles['card-container']}>
         {
-          dataForCurrentPage.map((data, index) => (
-            <CardItem
-              key={index}
-              data={data}
-              schema={tableInfo.schema}
-            />
+          dataForCurrentPage.map(record => (
+            <div
+              className={styles['card-item']}
+            >
+              {
+              tableInfo.schema.columns
+                .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
+                .map(column => columnGenerator(tableInfo, column, extraProps))
+                .map(col => (
+                  <div key={col.key}>
+                    <h4>{ col.title }</h4>
+                    { col.render?.(indexValue(record, col.dataIndex), record, 0) }
+
+                  </div>
+                ))
+            }
+            </div>
           ))
         }
       </div>
