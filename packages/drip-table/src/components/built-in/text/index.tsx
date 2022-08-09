@@ -307,6 +307,20 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     this.setState({ editState: 'entering' });
   };
 
+  private onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (this.state.editState === 'none' && e.key.length === 1 && !this.props.schema.options.i18n) {
+      this.setState({
+        editState: 'editing',
+        editValue: '',
+      });
+      this.updateCellRect(e.currentTarget);
+    } else if (this.state.editState === 'editing' && e.key === 'Escape') {
+      this.setState({ editState: 'none' });
+    } else if (this.state.editState === 'none') {
+      e.currentTarget.blur();
+    }
+  };
+
   private onWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
     if (e.target instanceof HTMLTextAreaElement) {
       const scrollable = e.deltaY < 0
@@ -469,7 +483,13 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return (
       <React.Fragment>
         <ResizeObserver onResize={this.onResize}>
-          <div ref={this.$main} className={classNames(styles.main, { [styles.editable]: this.props.editable })} tabIndex={0} onDoubleClick={this.onDoubleClick}>
+          <div
+            ref={this.$main}
+            className={classNames(styles.main, { [styles.editable]: this.props.editable })}
+            tabIndex={0}
+            onDoubleClick={this.onDoubleClick}
+            onKeyDown={this.onKeyDown}
+          >
             { wrapperEl }
             { this.renderEdit() }
           </div>
