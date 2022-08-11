@@ -92,7 +92,7 @@ export default {
       name: 'options.wrap',
       group: '组件属性',
       required: true,
-      'ui:title': '是否自动换行',
+      'ui:title': '允许自动换行',
       'ui:type': 'switch',
       'ui:props': {},
       type: 'boolean',
