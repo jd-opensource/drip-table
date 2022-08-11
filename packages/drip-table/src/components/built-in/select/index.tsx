@@ -126,16 +126,47 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     return !!options.disabled;
   }
 
+  private get options(): LabeledOptions[] {
+    const options = this.props.schema.options;
+    if (options.options) {
+      return options.options.map(item => ({
+        ...item,
+        disabled: this.finalizeOptionDisabled(item.disabled, item.value),
+      }));
+    }
+    if (options.url) {
+      return this.state.options || [];
+    }
+    return [];
+  }
+
+  private get value() {
+    const schema = this.props.schema;
+    const dataIndex = schema.dataIndex;
+    return indexValue(this.props.data, dataIndex, '');
+  }
+
   private finalizeOptionDisabled(disabled?: boolean | string, value?: unknown): boolean {
     if (typeof disabled === 'string') {
-      return !!new Function('rec', 'value', `return ${disabled}`)(this.props.data, value);
+      let isDisabled = false;
+      try {
+        isDisabled = !!new Function('rec', 'value', `return ${disabled}`)(this.props.data, value);
+      } catch {}
+      return isDisabled;
     }
     return !!disabled;
   }
 
   private finalizeRequestBody(body?: string | Record<string, unknown>) {
     if (typeof body === 'string') {
-      return new Function('rec', `return ${body}`)(this.props.data);
+      let finalBodyString: string | undefined = void 0;
+      try {
+        finalBodyString = new Function('rec', `return ${body}`)(this.props.data);
+        if (typeof finalBodyString !== 'string') {
+          return void 0;
+        }
+      } catch {}
+      return finalBodyString;
     }
     if (typeof body === 'object') {
       return JSON.stringify(body);
@@ -162,26 +193,6 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return new Function('response', `return ${options.response?.mapper || 'response'}`)(response);
     }
     return response;
-  }
-
-  private get options(): LabeledOptions[] {
-    const options = this.props.schema.options;
-    if (options.options) {
-      return options.options.map(item => ({
-        ...item,
-        disabled: this.finalizeOptionDisabled(item.disabled, item.value),
-      }));
-    }
-    if (options.url) {
-      return this.state.options || [];
-    }
-    return [];
-  }
-
-  private get value() {
-    const schema = this.props.schema;
-    const dataIndex = schema.dataIndex;
-    return indexValue(this.props.data, dataIndex, '');
   }
 
   public componentDidMount() {

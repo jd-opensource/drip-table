@@ -66,7 +66,7 @@ export default {
     {
       name: 'options.disabled',
       group: '组件属性',
-      'ui:title': '禁用组件',
+      'ui:title': '禁用组件条件',
       'ui:type': 'text',
       'ui:description': {
         title: '参数为rec, 可以填写代码片段或者，直接填 true/false',
@@ -120,7 +120,7 @@ export default {
           {
             name: 'disabled',
             group: '组件属性',
-            'ui:title': '禁用',
+            'ui:title': '禁用条件',
             'ui:type': 'text',
             'ui:description': {
               title: '参数为rec, 可以填写代码片段或者，直接填 true/false',
