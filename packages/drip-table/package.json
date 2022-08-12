@@ -24,6 +24,7 @@
     "stylelint:commit": "stylelint --custom-formatter=../../node_modules/stylelint-formatter-pretty"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "ajv": "^8.11.0",
     "ajv-keywords": "^5.1.0",
     "cheerio": "1.0.0-rc.10",

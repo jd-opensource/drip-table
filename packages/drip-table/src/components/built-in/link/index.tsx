@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import { InfoCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -48,6 +49,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       href: { type: 'string' },
       event: { type: 'string' },
       target: { type: 'string' },
+      tooltip: { type: 'boolean' },
       operates: {
         type: 'array',
         items: {
@@ -61,6 +63,23 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         },
       },
     },
+  };
+
+  private renderToolTip = (label?: string) => {
+    const Tooltip = this.props.driver.components.Tooltip;
+
+    const { tooltip } = this.props.schema;
+    if (tooltip) {
+      return (
+        <div style={{ marginLeft: 8 }}>
+          <Tooltip title={label}>
+            <InfoCircleOutlined />
+          </Tooltip>
+        </div>
+
+      );
+    }
+    return null;
   };
 
   private get configured() {
@@ -87,19 +106,28 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       const event = options.event;
       if (event) {
         return (
-          <a
-            onClick={() => {
-              if (this.props.preview) {
-                return;
-              }
-              this.props.fireEvent({ type: 'drip-link-click', payload: event });
-            }}
-          >
-            { options.label }
-          </a>
+          <div style={{ display: 'flex' }}>
+            <a
+              onClick={() => {
+                if (this.props.preview) {
+                  return;
+                }
+                this.props.fireEvent({ type: 'drip-link-click', payload: event });
+              }}
+            >
+              { options.label }
+            </a>
+            { this.renderToolTip(options.label) }
+          </div>
+
         );
       }
-      return <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>;
+      return (
+        <div style={{ display: 'flex' }}>
+          <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>
+          { this.renderToolTip(options.label) }
+        </div>
+      );
     }
     return (
       <div>
@@ -108,29 +136,37 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const event = config.event;
             if (event) {
               return (
-                <a
-                  style={{ marginRight: '5px' }}
-                  key={config.name || index}
-                  onClick={() => {
-                    if (this.props.preview) {
-                      return;
-                    }
-                    this.props.fireEvent({ type: 'drip-link-click', payload: event });
-                  }}
-                >
-                  { config.label }
-                </a>
+                <div style={{ display: 'flex' }}>
+                  <a
+                    style={{ marginRight: '5px' }}
+                    key={config.name || index}
+                    onClick={() => {
+                      if (this.props.preview) {
+                        return;
+                      }
+                      this.props.fireEvent({ type: 'drip-link-click', payload: event });
+                    }}
+                  >
+                    { config.label }
+                  </a>
+                  { this.renderToolTip(options.label) }
+                </div>
+
               );
             }
             return (
-              <a
-                style={{ marginRight: '5px' }}
-                key={config.name || index}
-                href={finalizeString('pattern', config.href || '', this.props.data)}
-                target={config.target}
-              >
-                { config.label }
-              </a>
+              <div style={{ display: 'flex' }}>
+                <a
+                  style={{ marginRight: '5px' }}
+                  key={config.name || index}
+                  href={finalizeString('pattern', config.href || '', this.props.data)}
+                  target={config.target}
+                >
+                  { config.label }
+                </a>
+                { this.renderToolTip(options.label) }
+              </div>
+
             );
           })
         }
