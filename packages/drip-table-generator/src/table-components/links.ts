@@ -69,7 +69,7 @@ export default {
       'ui:title': '禁用组件条件',
       'ui:type': 'text',
       'ui:description': {
-        title: '参数为rec, 可以填写代码片段或者，直接填 true/false',
+        title: '可以直接填写 true/false 或者代码片段，参数为rec',
         trigger: 'hover',
         type: 'icon',
       },
@@ -123,7 +123,7 @@ export default {
             'ui:title': '禁用条件',
             'ui:type': 'text',
             'ui:description': {
-              title: '参数为rec, 可以填写代码片段或者，直接填 true/false',
+              title: '可以直接填写 true/false 或者代码片段，参数为rec',
               trigger: 'hover',
               type: 'icon',
             },
