@@ -12,6 +12,7 @@ import Textarea from 'rc-textarea';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { EventInjector } from 'react-event-injector';
+import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/utils/operator';
@@ -170,8 +171,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     editValue: '',
   };
 
+  private componentUuid = `dtc-${uuidv4()}`;
   private $main = React.createRef<HTMLDivElement>();
-  private $editPopup = React.createRef<HTMLDivElement>();
 
   private get configured() {
     const schema = this.props.schema;
@@ -341,7 +342,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   private focusEdit = () => {
-    const $editPopup = this.$editPopup.current;
+    const $editPopup = document.querySelector(`#${this.componentUuid}-popup`);
     if (!$editPopup) {
       return;
     }
@@ -356,10 +357,13 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   public componentDidUpdate() {
     if (this.state.editState === 'entering') {
-      this.setState({
-        editState: 'editing',
-        editValue: String(this.props.value),
-      });
+      this.setState(
+        {
+          editState: 'editing',
+          editValue: String(this.props.value),
+        },
+        () => this.focusEdit(),
+      );
     }
   }
 
@@ -406,7 +410,6 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       <Textarea
         className={classNames(styles['edit-editing-outline'], styles['edit-textarea'])}
         value={this.state.editValue}
-        ref={this.focusEdit}
         autoFocus
         autoSize={{ maxRows: 6 }}
         style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
@@ -440,7 +443,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
                 onWheel={this.onWheel}
                 settings={{ capture: true, passive: false }}
               >
-                <div className={styles['edit-popup']} ref={this.$editPopup} onWheelCapture={e => preventEvent(e)}>
+                <div className={styles['edit-popup']} id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
                   <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
                     <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
                     { this.renderEditInput() }
