@@ -8,6 +8,7 @@
 
 .main {
   position: relative;
+  outline: none;
 }
 
 .focus-border {
@@ -67,6 +68,37 @@
   position: absolute;
 }
 
+.edit-padding-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.edit-padding-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.edit-padding-top {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.edit-padding-bottom {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.edit-editing-outline {
+  border: 2px solid #2a64ff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 3px 4px 10px -1px #00000066;
+}
+
 .edit-textarea {
   position: absolute;
   top: 0;
@@ -74,11 +106,7 @@
   left: 0;
   bottom: 0;
   padding: 14px;
-  border: 2px solid #2a64ff;
-  border-radius: 4px;
-  box-sizing: border-box;
   outline: none;
-  box-shadow: 3px 4px 10px -1px #00000066;
 
   &::-webkit-scrollbar {
     background-color: #ffffff;
@@ -97,5 +125,15 @@
 
   &::-webkit-scrollbar-button {
     display: none;
+  }
+}
+
+.edit-select {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+
+  &-dropdown {
+    z-index: 100000;
   }
 }
