@@ -405,6 +405,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
       defaultValue: {},
       description: { type: 'string' },
       tooltip: { type: 'boolean' },
+      clipboard: { type: 'boolean' },
       fixed: {
         anyOf: [
           { enum: ['left', 'right'] },

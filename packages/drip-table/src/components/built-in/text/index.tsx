@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { CopyOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
@@ -14,7 +15,7 @@ import ReactDOM from 'react-dom';
 import { EventInjector } from 'react-event-injector';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue, stringify } from '@/utils/operator';
+import { copyTextToClipboard, indexValue, stringify } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
 import { preventEvent } from '../utils';
@@ -92,6 +93,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    * 超出部分显示省略号
    */
   ellipsis?: boolean;
+  /**
+   * 超出部分显示省略号
+   */
+  clipboard?: boolean;
 }>;
 
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
@@ -359,6 +364,15 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     );
   }
 
+  private renderClipboard() {
+    const message = this.props.driver.components.message;
+    const showClipboard = this.props.schema.clipboard;
+    if (!showClipboard) { return null; }
+    return (
+      <CopyOutlined onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))} />
+    );
+  }
+
   public render(): JSX.Element {
     const Tooltip = this.props.driver.components.Tooltip;
     const Alert = this.props.driver.components.Alert;
@@ -385,11 +399,13 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         </Tooltip>
       );
     }
+
     return (
       <React.Fragment>
         <div ref={this.$main} className={classNames(styles.main, { [styles.editable]: this.props.editable })} tabIndex={0} onDoubleClick={this.onDoubleClick}>
           { wrapperEl }
           { this.renderEdit() }
+          { this.renderClipboard() }
         </div>
         <div className={styles['focus-border']} />
       </React.Fragment>
