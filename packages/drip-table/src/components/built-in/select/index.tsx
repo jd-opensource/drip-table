@@ -66,6 +66,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   public static schema: SchemaObject = {
     properties: {
       allowClear: { type: 'boolean' },
+      bordered: { type: 'boolean' },
       disabled: { anyOf: [{ type: 'string' }, { type: 'boolean' }] },
       event: { type: 'string' },
       mode: { enum: ['multiple', 'tags'] },
