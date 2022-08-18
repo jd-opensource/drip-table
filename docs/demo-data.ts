@@ -149,18 +149,6 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       },
     },
     {
-      key: 'mock_8',
-      title: '选择框',
-      width: 120,
-      dataIndex: 'select',
-      component: 'select',
-      options: {
-        style: { width: 120 },
-        options: [{ label: '选项一', value: 'A' }, { label: '选项二', value: 'B' }],
-        event: 'selectChange',
-      },
-    },
-    {
       key: 'mock_5',
       title: '渲染组件',
       width: 150,
@@ -330,7 +318,6 @@ export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, Subtabl
     description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
     status: 'onSale',
     price: 7999,
-    select: 'A',
     subtable: [
       {
         id: '1-1',
@@ -352,7 +339,6 @@ export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, Subtabl
     description: '商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。',
     status: 'onSale',
     price: 6488,
-    select: 'B',
     subtable: [
       { id: '2-1', name: '梨', description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族', status: 'onSale', price: 799 },
     ],

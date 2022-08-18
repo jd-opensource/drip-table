@@ -13,7 +13,6 @@ import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
-import DTCSelect, { DTCSelectColumnSchema, DTCSelectEvent } from './select';
 import DTCTag, { DTCTagColumnSchema } from './tag';
 import DTCText, { DTCTextColumnSchema } from './text';
 
@@ -21,8 +20,7 @@ export type { DripTableComponentProps } from './component';
 
 export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
-  | DTCButtonEvent
-  | DTCSelectEvent;
+  | DTCButtonEvent;
 
 export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCImageColumnSchema
@@ -33,8 +31,7 @@ export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCRenderHTMLColumnSchema
   | DTCRenderHTMLRemoteColumnSchema
   | DTCGroupColumnSchema<CustomComponentSchema>
-  | DTCRichTextColumnSchema
-  | DTCSelectColumnSchema;
+  | DTCRichTextColumnSchema;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,
@@ -46,6 +43,5 @@ const DripTableBuiltInComponents = {
   [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
   [DTCGroup.componentName]: DTCGroup,
   [DTCRichText.componentName]: DTCRichText,
-  [DTCSelect.componentName]: DTCSelect,
 };
 export default DripTableBuiltInComponents;

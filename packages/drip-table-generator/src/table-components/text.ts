@@ -61,7 +61,7 @@ export default {
       },
     },
     {
-      name: 'options.lineHeight',
+      name: 'options.linHeight',
       group: '样式配置',
       'ui:title': '行高',
       'ui:type': 'number',

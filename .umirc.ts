@@ -75,7 +75,6 @@ const umiConfig: IConfig = {
           '/drip-table/components/link',
           '/drip-table/components/tag',
           '/drip-table/components/button',
-          '/drip-table/components/select',
         ],
       },
       {

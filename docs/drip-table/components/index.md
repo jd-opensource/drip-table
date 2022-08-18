@@ -145,20 +145,6 @@ title: 总览 Index
       </div>
     </div>
   </a>
-  <a href="/drip-table/components/select">
-    <div class="card-container">
-      <div class="card-head">
-        <div class="card-head-title">
-          <div class="components-overview-title">下拉框组件 select</div>
-        </div>
-      </div>
-      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
-        <div class="components-overview-img">
-          <img src="https://gw.alipayobjects.com/zos/alicdn/_0XzgOis7/Select.svg" alt="select">
-        </div>
-      </div>
-    </div>
-  </a>
 </div>
 
 <!-- | 组件名 | 描述 | 详情 |
