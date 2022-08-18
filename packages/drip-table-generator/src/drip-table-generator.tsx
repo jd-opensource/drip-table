@@ -102,6 +102,6 @@ function Container<RecordType extends DripTableRecordTypeBase, ExtraOptions exte
   );
 }
 
-const DripTableGenerator = forwardRef(Container) as typeof Container;
+const DripTableGenerator = forwardRef(Container);
 
 export default DripTableGenerator;

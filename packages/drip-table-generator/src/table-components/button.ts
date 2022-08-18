@@ -97,7 +97,7 @@ export default {
     {
       name: 'options.ghost',
       group: '组件属性',
-      'ui:title': '是否背景透明',
+      'ui:title': '背景透明',
       'ui:type': 'switch',
       'ui:props': {
         uncheckedChildren: '否',
@@ -109,7 +109,7 @@ export default {
     {
       name: 'options.danger',
       group: '组件属性',
-      'ui:title': '是否危险按钮',
+      'ui:title': '危险按钮',
       'ui:type': 'switch',
       'ui:props': {
         uncheckedChildren: '否',
@@ -209,7 +209,7 @@ export default {
           {
             name: 'ghost',
             group: '组件属性',
-            'ui:title': '是否背景透明',
+            'ui:title': '背景透明',
             'ui:type': 'switch',
             'ui:props': {
               uncheckedChildren: '否',
@@ -220,7 +220,7 @@ export default {
           {
             name: 'danger',
             group: '组件属性',
-            'ui:title': '是否危险按钮',
+            'ui:title': '危险按钮',
             'ui:type': 'switch',
             'ui:props': {
               uncheckedChildren: '否',

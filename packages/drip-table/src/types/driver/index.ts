@@ -52,6 +52,7 @@ export interface DripTableDriver {
       trigger?: ('click' | 'hover' | 'contextMenu')[];
       overlay: React.ReactElement | (() => React.ReactElement);
       visible?: boolean;
+      placement?: 'bottom' | 'bottomLeft' | 'bottomRight' | 'top' | 'topLeft' | 'topRight';
       onVisibleChange?: (visible: boolean) => void;
     }>;
     Image: DripTableReactComponent<{
@@ -79,6 +80,7 @@ export interface DripTableDriver {
       Item: DripTableReactComponent<{
         key: React.Key;
         icon?: JSX.Element;
+        disabled?: boolean;
       }>;
     };
     Popover: DripTableReactComponent<{
@@ -101,8 +103,17 @@ export interface DripTableDriver {
     Select: (
       <VT extends string | number | (string | number)[]>(props: React.PropsWithChildren<{
         className?: string;
+        style?: React.CSSProperties;
         defaultValue?: string | number;
-        mode?: 'multiple';
+        mode?: 'multiple' | 'tags';
+        bordered?: boolean;
+        placeholder?: string;
+        placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+        size?: 'large' | 'middle' | 'small';
+        showSearch?: boolean;
+        disabled?: boolean;
+        loading?: boolean;
+        allowClear?: boolean;
         value?: VT;
         onChange?: (value: VT) => void;
       }>) => React.ReactElement | null
