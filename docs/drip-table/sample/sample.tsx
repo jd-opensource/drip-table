@@ -142,9 +142,9 @@ const Demo = () => {
             message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
             console.log(name, record, index);
           } else if (event.type === 'drip-select-change') {
-            const name = event.value;
-            message.info(`你选择了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”选项。`);
-            console.log(name, record, index);
+            const value = event.payload.value;
+            dataSource[index].status = value;
+            setDataBase([...dataSource]);
           } else if (event.type === 'custom') {
             message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
             console.log(event, record, index);
