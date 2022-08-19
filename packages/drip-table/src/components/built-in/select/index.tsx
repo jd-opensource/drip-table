@@ -50,8 +50,10 @@ export type DTCSelectColumnSchema = DripTableColumnSchema<'select', {
 
 export interface DTCSelectEvent {
   type: 'drip-select-change';
-  payload: string;
-  value: string | number | (string | number)[];
+  payload: {
+    name: string;
+    value: string | number | (string | number)[];
+  };
 }
 
 interface DTCSelectProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCSelectColumnSchema> { }
@@ -238,7 +240,13 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         onChange={(value) => {
           if (this.props.preview) { return; }
           if (options.event) {
-            this.props.fireEvent({ type: 'drip-select-change', payload: options.event, value });
+            this.props.fireEvent({
+              type: 'drip-select-change',
+              payload: {
+                name: options.event,
+                value,
+              },
+            });
           }
         }}
       >
