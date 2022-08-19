@@ -90,6 +90,7 @@ export default class SelectComponent extends React.PureComponent<Props> {
         defaultValue={config.default as SelectValueType}
         value={this.formattedValue}
         options={(this.options as SelectOptionType[] || [])}
+        getPopupContainer={triggerNode => triggerNode}
         onChange={(value) => {
           const formattedValue = this.transform(value);
           this.props.onChange?.(formattedValue);

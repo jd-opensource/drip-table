@@ -244,7 +244,7 @@ const umiConfig: IConfig = {
       },
       {
         title: '更新日志 Changelog',
-        path: '/drip-table-generator/changelog',
+        path: '/drip-table-generator/changelog.md',
         children: [],
       },
     ],

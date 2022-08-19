@@ -1,7 +1,16 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import { basicColumnAttrComponents } from './configs';
 
-const iconOptions = ['StepBackwardOutlined', 'StepForwardOutlined', 'QuestionCircleOutlined'].map(key => ({ value: key, label: key, icon: key }));
+const iconOptions = [
+  'StepBackwardOutlined',
+  'StepForwardOutlined',
+  'QuestionCircleOutlined',
+  'SearchOutlined',
+  'DownloadOutlined',
+  'PoweroffOutlined',
+  'PlusOutlined',
+  'EditOutlined',
+].map(key => ({ value: key, label: key, icon: key }));
 
 export default {
   $id: '$display_buttons',
@@ -40,6 +49,11 @@ export default {
       name: 'options.icon',
       group: '组件属性',
       'ui:title': '按钮图标',
+      'ui:description': {
+        title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
+        trigger: 'hover',
+        type: 'icon',
+      },
       'ui:type': 'auto-complete',
       'ui:props': {
         options: iconOptions,
@@ -158,6 +172,11 @@ export default {
           {
             name: 'icon',
             'ui:title': '按钮图标',
+            'ui:description': {
+              title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
+              trigger: 'hover',
+              type: 'icon',
+            },
             'ui:type': 'auto-complete',
             'ui:props': {
               options: iconOptions,

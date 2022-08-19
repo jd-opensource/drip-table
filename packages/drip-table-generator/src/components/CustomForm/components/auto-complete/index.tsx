@@ -82,6 +82,7 @@ export default class AutoCompleteComponent extends React.PureComponent<Props> {
         disabled={uiProps.disabled as boolean}
         style={{ width: 240, ...uiProps.style }}
         options={this.options as LabeledValue}
+        getPopupContainer={triggerNode => triggerNode}
         onChange={(value) => {
           const formattedValue = this.transform(value);
           this.props.onChange?.(formattedValue);

@@ -60,7 +60,8 @@ export const dataIndexColumnAttrComponents: (
   modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   directDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   nestedDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
-) => DTGComponentPropertySchema[] = (modeDiffFn, directDiffFn, nestedDiffFn) => [
+  dataIndex?: string,
+) => DTGComponentPropertySchema[] = (modeDiffFn, directDiffFn, nestedDiffFn, dataIndex) => [
   {
     name: 'dataIndexMode',
     group: '组件属性',
@@ -101,6 +102,7 @@ export const dataIndexColumnAttrComponents: (
       tokenSeparators: ['.', ',', '，'],
     },
     type: 'string',
+    default: dataIndex,
     visible: nestedDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'nested'),
   },
 ];

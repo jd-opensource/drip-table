@@ -63,6 +63,8 @@ const Demo = () => {
           ],
           event: "selectChange",
           bordered: false,
+          bindValue: false,
+          defaultValue: "A",
         },
       },
       {
@@ -79,6 +81,8 @@ const Demo = () => {
             { label: "选项二", value: "B" },
           ],
           mode: "multiple",
+          bindValue: false,
+          defaultValue: "A",
         },
       },
       {
@@ -95,6 +99,7 @@ const Demo = () => {
             { label: "选项二", value: "B" },
           ],
           placement: "topLeft",
+          bindValue: false,
         },
       },
       {
@@ -111,6 +116,7 @@ const Demo = () => {
             { label: "选项二", value: "B" },
           ],
           size: "large",
+          bindValue: false,
         },
       },
       {
@@ -128,6 +134,7 @@ const Demo = () => {
           ],
           showSearch: true,
           allowClear: true,
+          bindValue: false,
         },
       },
       {
@@ -144,6 +151,7 @@ const Demo = () => {
             { label: "选项二", value: "B" },
           ],
           suffixIcon: "CaretDownOutlined",
+          bindValue: false,
         },
       },
       {
@@ -160,6 +168,7 @@ const Demo = () => {
             { label: "选项一", value: "A" },
             { label: "选项二", value: "B", disabled: "rec.id === 2" },
           ],
+          bindValue: false,
         },
       },
     ],
@@ -196,6 +205,7 @@ export default Demo;
 | ----------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------- | ------------------------- | ---- |
 | allowClear  | 支持清除                                                                         | boolean                                                                       | 否       | false                     | --   |
 | bordered    | 是否有边框                                                                       | boolean                                                                       | 否       | true                      | --   |
+| bindValue   | 值回显强制与数据绑定，默认为 true                                                | boolean                                                                       | 否       | true                      | --   |
 | style       | 自定义样式                                                                       | React.CSSProperties                                                           | 否       | 无                        | --   |
 | mode        | 设置 Select 的模式为多选或标签                                                   | `multiple` \| `tags`                                                          | 否       | 无                        | --   |
 | placeholder | 选择框默认文本                                                                   | string                                                                        | 否       | 无                        | --   |

@@ -20,18 +20,34 @@ type LabeledOptions = {
   disabled?: boolean | string;
 }
 export type DTCSelectColumnSchema = DripTableColumnSchema<'select', {
+  /** 允许清空值 */
   allowClear?: boolean;
+  /** 展示边框，默认为 true */
   bordered?: boolean;
   style?: React.CSSProperties;
+  /** 多选和标签模式 */
   mode?: 'multiple' | 'tags';
+  /** 暗纹提示 */
   placeholder?: string;
+  /** 弹出框位置 */
   placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+  /** 尺寸大小 */
   size?: 'large' | 'middle' | 'small';
+  /**
+   * 值回显强制与数据绑定，默认为true
+   */
+  bindValue?: boolean;
+  /** 展示箭头，默认为 true */
   showArrow?: boolean;
+  /** 允许搜索，默认为 false */
   showSearch?: boolean;
+  /** 后缀图标 */
   suffixIcon?: string;
+  /** 事件名，给用户区分事件用 */
   event?: string;
+  /** 是否禁用，给用户区分事件用 */
   disabled?: string | boolean;
+  /** 默认值 */
   defaultValue?: string | number | (string | number)[];
   /** 自定义options */
   options?: LabeledOptions[];
@@ -91,6 +107,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       showArrow: { type: 'boolean' },
       showSearch: { type: 'boolean' },
       suffixIcon: { type: 'string' },
+      bindValue: { type: 'boolean' },
       size: { enum: ['large', 'middle', 'small'] },
       style: { type: 'object' },
       defaultValue: { anyOf: [
@@ -265,7 +282,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         disabled={this.disabled}
         loading={this.state.loading}
         defaultValue={options.defaultValue}
-        value={this.value}
+        value={options.bindValue === false ? void 0 : this.value}
         getPopupContainer={triggerNode => triggerNode}
         onChange={(value) => {
           if (this.props.preview) { return; }
