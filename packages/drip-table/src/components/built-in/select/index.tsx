@@ -27,9 +27,12 @@ export type DTCSelectColumnSchema = DripTableColumnSchema<'select', {
   placeholder?: string;
   placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
   size?: 'large' | 'middle' | 'small';
+  showArrow?: boolean;
   showSearch?: boolean;
+  suffixIcon?: string;
   event?: string;
   disabled?: string | boolean;
+  defaultValue?: string | number | (string | number)[];
   /** 自定义options */
   options?: LabeledOptions[];
   /** 从接口请求拿取 options */
@@ -85,10 +88,19 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       },
       placeholder: { type: 'string' },
       placement: { enum: ['bottomLeft', 'bottomRight', 'topLeft', 'topRight'] },
+      showArrow: { type: 'boolean' },
       showSearch: { type: 'boolean' },
+      suffixIcon: { type: 'string' },
       size: { enum: ['large', 'middle', 'small'] },
       style: { type: 'object' },
-      trigger: { enum: ['click', 'hover'] },
+      defaultValue: { anyOf: [
+        { type: 'string' },
+        { type: 'number' },
+        {
+          type: 'array',
+          items: { anyOf: [{ type: 'string' }, { type: 'number' }] },
+        },
+      ] },
       url: { type: 'string' },
       request: {
         type: 'object',
@@ -146,6 +158,9 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   private get value() {
     const schema = this.props.schema;
     const dataIndex = schema.dataIndex;
+    if (!this.props.data) {
+      return schema.defaultValue;
+    }
     return indexValue(this.props.data, dataIndex, '');
   }
 
@@ -221,6 +236,17 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     }
   }
 
+  private getIcon(iconName: string) {
+    const Icons = this.props.driver.icons;
+    const Icon = Icons?.[iconName];
+    if (Icon) {
+      return (
+        <Icon />
+      );
+    }
+    return null;
+  }
+
   public render() {
     const { Select } = this.props.driver.components;
     const options = this.props.schema.options;
@@ -233,10 +259,14 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         placeholder={options.placeholder}
         placement={options.placement}
         showSearch={options.showSearch}
+        showArrow={options.showArrow}
+        suffixIcon={options.suffixIcon ? this.getIcon(options.suffixIcon) : void 0}
         size={options.size}
         disabled={this.disabled}
         loading={this.state.loading}
-        defaultValue={this.value}
+        defaultValue={options.defaultValue}
+        value={this.value}
+        getPopupContainer={triggerNode => triggerNode}
         onChange={(value) => {
           if (this.props.preview) { return; }
           if (options.event) {

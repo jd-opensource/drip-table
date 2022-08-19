@@ -35,6 +35,7 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   maxTiledCount?: number;
   dropdownText?: string;
   textColor?: string;
+  suffixIcon?: string;
   trigger?: 'hover' | 'click';
   placement?: 'bottom' | 'bottomLeft' | 'bottomRight' | 'top' | 'topLeft' | 'topRight';
 }>;
@@ -75,6 +76,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       maxTiledCount: { type: 'number' },
       dropdownText: { type: 'string' },
       textColor: { type: 'string' },
+      suffixIcon: { type: 'string' },
       trigger: { enum: ['hover', 'click'] },
       placement: { enum: ['bottom', 'bottomLeft', 'bottomRight', 'top', 'topLeft', 'topRight'] },
     },
@@ -103,6 +105,17 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return !!isDisabled;
     }
     return !!disabled;
+  }
+
+  private getIcon(iconName: string) {
+    const Icons = this.props.driver.icons;
+    const Icon = Icons?.[iconName];
+    if (Icon) {
+      return (
+        <Icon />
+      );
+    }
+    return null;
   }
 
   public renderMenu(): JSX.Element {
@@ -215,7 +228,11 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               trigger={options.trigger ? [options.trigger] : void 0}
               placement={options.placement}
             >
-              <a style={{ color: options.textColor }}>{ options.dropdownText || 'more' }</a>
+              <a style={{ color: options.textColor }}>
+                { options.dropdownText || 'more' }
+                { options.suffixIcon ? ' ' : '' }
+                { options.suffixIcon ? this.getIcon(options.suffixIcon) : null }
+              </a>
             </DropDown>
           )
           : null }

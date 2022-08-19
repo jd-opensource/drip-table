@@ -104,18 +104,21 @@ export interface DripTableDriver {
       <VT extends string | number | (string | number)[]>(props: React.PropsWithChildren<{
         className?: string;
         style?: React.CSSProperties;
-        defaultValue?: string | number;
+        defaultValue?: string | number | (string | number)[];
         mode?: 'multiple' | 'tags';
         bordered?: boolean;
         placeholder?: string;
         placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
         size?: 'large' | 'middle' | 'small';
         showSearch?: boolean;
+        showArrow?: boolean;
+        suffixIcon?: React.ReactNode;
         disabled?: boolean;
         loading?: boolean;
         allowClear?: boolean;
         value?: VT;
         onChange?: (value: VT) => void;
+        getPopupContainer?: (triggerNode: React.ReactNode) => React.ReactNode;
       }>) => React.ReactElement | null
     )
     & {
