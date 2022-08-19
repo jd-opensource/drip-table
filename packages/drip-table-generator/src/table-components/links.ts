@@ -1,6 +1,31 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import { basicColumnAttrComponents } from './configs';
 
+const iconOptions = [
+  'DownOutlined',
+  'UpOutlined',
+  'LeftOutlined',
+  'RightOutlined',
+  'CaretUpOutlined',
+  'CaretDownOutlined',
+  'CaretLeftOutlined',
+  'CaretRightOutlined',
+  'UpCircleOutlined',
+  'DownCircleOutlined',
+  'LeftCircleOutlined',
+  'RightCircleOutlined',
+  'VerticalAlignTopOutlined',
+  'VerticalAlignBottomOutlined',
+  'ArrowUpOutlined',
+  'ArrowDownOutlined',
+  'ArrowLeftOutlined',
+  'ArrowRightOutlined',
+  'UpSquareOutlined',
+  'DownSquareOutlined',
+  'LeftSquareOutlined',
+  'RightSquareOutlined',
+].map(key => ({ value: key, label: key, icon: key }));
+
 export default {
   $id: '$display_links',
   'ui:type': 'link',
@@ -31,15 +56,20 @@ export default {
       group: '组件属性',
       'ui:title': '链接文案',
       'ui:type': 'text',
-      default: '',
+      default: '链接',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
       name: 'options.href',
       group: '组件属性',
       'ui:title': '链接地址',
+      'ui:description': {
+        title: '可以直接填写链接地址或者带字符串模板的地址，参数为rec，例如: http://api.jd.com/api_name?param={{rec.id}}',
+        trigger: 'hover',
+        type: 'icon',
+      },
       'ui:type': 'text',
-      default: '',
+      default: 'http://api.example.com/api_path',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
@@ -89,14 +119,17 @@ export default {
             'ui:title': '链接文案',
             'ui:type': 'input',
             type: 'string',
-            default: '',
           },
           {
             name: 'href',
             'ui:title': '链接地址',
             'ui:type': 'input',
+            'ui:description': {
+              title: '可以直接填写链接地址或者带字符串模板的地址，参数为rec，例如: http://api.jd.com/api_name?param={{rec.id}}',
+              trigger: 'hover',
+              type: 'icon',
+            },
             type: 'string',
-            default: '',
           },
           {
             name: 'target',
@@ -154,6 +187,21 @@ export default {
       group: '组件属性',
       'ui:title': '下拉文案颜色',
       'ui:type': 'color-picker',
+      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
+    },
+    {
+      name: 'options.suffixIcon',
+      group: '组件属性',
+      'ui:title': '后缀图标',
+      'ui:description': {
+        title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:type': 'auto-complete',
+      'ui:props': {
+        options: iconOptions,
+      },
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {

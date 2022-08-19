@@ -20,6 +20,7 @@ const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPan
             optionsParam: '$$FIELD_KEY_OPTIONS$$',
           },
           type: 'string',
+          default: 'id',
         },
         {
           name: 'ui:props.fontSize',
@@ -45,7 +46,7 @@ const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPan
             type: 'icon',
             title: '当数据不下发时展示的兜底文案',
           },
-          default: '',
+          default: 'AAA',
           visible: 'return formData.dataIndex',
           type: 'string',
         },

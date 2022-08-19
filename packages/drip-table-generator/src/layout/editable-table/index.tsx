@@ -57,11 +57,12 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
     // render group column and handler options.items
     if (column?.component === 'group') {
       const gutter = column.options.gutter ?? [0, 0];
+      const columnWidth = Number(String(column?.width || '').replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 120;
       return (
         <div style={{ height: extraOptions?.isChildren ? '100%' : '120px', overflow: 'hidden' }}>
           <div
             className={extraOptions?.isChildren ? '' : styles['table-cell']}
-            style={{ width: extraOptions?.isChildren ? '100%' : column?.width || 120 }}
+            style={{ width: extraOptions?.isChildren ? '100%' : columnWidth }}
           >
             { column.options.layout?.map((layout, index) => (
               <Row
@@ -84,7 +85,7 @@ const EditableTable = (props: Props & { store: GlobalStore }) => {
                       className={classnames(styles['linear-stripe'], isChecked(currentCheckedIndex) ? styles['checked-stripe'] : '')}
                       key={i}
                       style={{
-                        width: (Number(column?.width) || 120) / layout - gutter[0],
+                        width: columnWidth / layout - gutter[0],
                         height: '100%',
                         overflow: 'auto',
                       }}

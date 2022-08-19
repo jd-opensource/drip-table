@@ -1,6 +1,31 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import { basicColumnAttrComponents } from './configs';
 
+const iconOptions = [
+  'DownOutlined',
+  'UpOutlined',
+  'LeftOutlined',
+  'RightOutlined',
+  'CaretUpOutlined',
+  'CaretDownOutlined',
+  'CaretLeftOutlined',
+  'CaretRightOutlined',
+  'UpCircleOutlined',
+  'DownCircleOutlined',
+  'LeftCircleOutlined',
+  'RightCircleOutlined',
+  'VerticalAlignTopOutlined',
+  'VerticalAlignBottomOutlined',
+  'ArrowUpOutlined',
+  'ArrowDownOutlined',
+  'ArrowLeftOutlined',
+  'ArrowRightOutlined',
+  'UpSquareOutlined',
+  'DownSquareOutlined',
+  'LeftSquareOutlined',
+  'RightSquareOutlined',
+].map(key => ({ value: key, label: key, icon: key }));
+
 export default {
   $id: '$display_select',
   'ui:type': 'select',
@@ -35,6 +60,23 @@ export default {
       'ui:type': 'switch',
       'ui:props': {},
       type: 'boolean',
+    },
+    {
+      name: 'options.showArrow',
+      group: '组件属性',
+      'ui:title': '展示下拉箭头',
+      'ui:type': 'switch',
+      'ui:props': {},
+      type: 'boolean',
+    },
+    {
+      name: 'options.bindValue',
+      group: '组件属性',
+      'ui:title': '值回显强制与数据绑定',
+      'ui:type': 'switch',
+      'ui:props': {},
+      type: 'boolean',
+      default: true,
     },
     {
       name: 'options.mode',
@@ -98,6 +140,32 @@ export default {
         trigger: 'hover',
         type: 'icon',
       },
+    },
+    {
+      name: 'options.suffixIcon',
+      group: '组件属性',
+      'ui:title': '后缀图标',
+      'ui:description': {
+        title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:type': 'auto-complete',
+      'ui:props': {
+        options: iconOptions,
+      },
+    },
+    {
+      name: 'options.event',
+      group: '组件属性',
+      'ui:title': '事件名称',
+      'ui:description': {
+        title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:type': 'text',
+      default: '',
     },
     {
       name: 'options.options',
