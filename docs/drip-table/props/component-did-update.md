@@ -1,4 +1,4 @@
-# componentDidUpdate
+# 组件更新完成 componentDidUpdate
 
 - 描述：生命周期：组件更新完成
 - 类型：`(tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void`

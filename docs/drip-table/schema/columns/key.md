@@ -1,4 +1,4 @@
-# columns.key
+# 唯一标识 columns.key
 
 - 描述：唯一标识，不做展示用，React 需要的 key。
 - 类型：`string`

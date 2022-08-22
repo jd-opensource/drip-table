@@ -1,4 +1,4 @@
-# rowSelection
+# 行可选择 rowSelection
 
 - 描述：是否支持选择栏
 

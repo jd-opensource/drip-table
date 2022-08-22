@@ -1,4 +1,4 @@
-# columns.defaultFilteredValue
+# 过滤器默认值 columns.defaultFilteredValue
 
 - 描述：默认数据过滤器值
 - 类型：`React.Key[] | null`

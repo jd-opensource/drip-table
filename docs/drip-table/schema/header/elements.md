@@ -1,4 +1,4 @@
-# header.elements
+# 头部配置 header.elements
 
 - 描述：表格头部展示配置
 - 类型：[`DripTableGenericRenderElement[]`](/drip-table/types/generic-render-element)

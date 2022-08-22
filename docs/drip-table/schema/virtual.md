@@ -1,4 +1,4 @@
-# virtual
+# 虚拟滚动 virtual
 
 - 描述：是否开启虚拟滚动
 - 类型：`boolean`

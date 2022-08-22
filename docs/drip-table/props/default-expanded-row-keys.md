@@ -1,4 +1,4 @@
-# defaultExpandedRowKeys
+# 子表默认展开项 defaultExpandedRowKeys
 
 - 描述：子表默认展开项
 - 类型：`React.Key[]`

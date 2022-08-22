@@ -1,4 +1,4 @@
-# onFilterChange
+# 过滤器触发 onFilterChange
 
 - 描述：过滤器触发，需配合 [`schema.column.filter`](/drip-table/props/schema/columns/filter) 使用。
 - 类型：

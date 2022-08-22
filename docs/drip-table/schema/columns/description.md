@@ -1,4 +1,4 @@
-# columns.description
+# 表头描述 columns.description
 
 - 描述：表头说明
 - 类型：`string`

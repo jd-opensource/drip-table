@@ -1,4 +1,4 @@
-# header.style
+# 头部样式 header.style
 
 - 描述：头部自定义样式
 - 类型：`React.CSSProperties`
