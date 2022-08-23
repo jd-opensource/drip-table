@@ -33,6 +33,7 @@ const SlotItemConfigs = [
         { label: '自定义插槽', value: 'slot' },
         { label: '搜索框', value: 'search' },
         { label: '添加按钮', value: 'insert-button' },
+        { label: '布局模式', value: 'layout-selector' },
       ],
     },
   },

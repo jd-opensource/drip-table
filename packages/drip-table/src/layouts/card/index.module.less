@@ -1,0 +1,28 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : renwenci (ararakikon@163.com)
+ * @modifier : renwenci (ararakikon@163.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+.card-container {
+  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 32%);
+
+  .card-item {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 0 #26262615;
+    margin: 10px 0;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

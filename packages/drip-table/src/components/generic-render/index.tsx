@@ -144,6 +144,21 @@ interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
   showIcon?: boolean;
 }
 
+interface GenericRenderLayoutSelectorElement extends GenericRenderElementBasic {
+  /**
+   * table布局方式选择器
+   */
+  type: 'layout-selector';
+  /**
+   * 布局方式选择器提示文案
+   */
+  selectorButtonText?: string;
+  /**
+   * 选择器按钮样式
+   */
+  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+}
+
 interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElementBasic {
   /**
    * 展示列选择器
@@ -166,7 +181,8 @@ export type DripTableGenericRenderElement =
   | GenericRenderSearchElement
   | GenericRenderSlotElement
   | GenericRenderInsertButtonElement
-  | GenericRenderDisplayColumnSelectorElement;
+  | GenericRenderDisplayColumnSelectorElement
+  | GenericRenderLayoutSelectorElement;
 
 interface GenericRenderProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -202,6 +218,7 @@ const GenericRender = <
   const Select = tableProps.driver.components.Select;
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
+  const [layoutSelectorVisible, setLayoutSelectorVisible] = React.useState(false);
 
   const [searchStr, setSearchStr] = React.useState('');
   const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
@@ -322,6 +339,43 @@ const GenericRender = <
         >
           <Button type={config.selectorButtonType}>
             { config.selectorButtonText || '展示列' }
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    if (config.type === 'layout-selector') {
+      const menu = (
+        <Menu
+          onClick={(e) => {
+            setTableState(() => ({ layout: e.key as IDripTableContext['layout'] }));
+          }}
+        >
+          <Menu.Item
+            key="table"
+            icon={<span style={{ opacity: tableState.layout === 'table' ? 1 : 0 }}><CheckOutlined /></span>}
+          >
+            列表模式
+          </Menu.Item>
+          <Menu.Item
+            key="card"
+            icon={<span style={{ opacity: tableState.layout === 'card' ? 1 : 0 }}><CheckOutlined /></span>}
+          >
+            相册模式
+          </Menu.Item>
+        </Menu>
+      );
+      return (
+        <Dropdown
+          className={styles['generic-render-display-column-selector-element']}
+          trigger={['click']}
+          overlay={menu}
+          visible={layoutSelectorVisible}
+          onVisibleChange={(v) => { setLayoutSelectorVisible(v); }}
+        >
+          <Button type={config.selectorButtonType}>
+            { { table: '列表模式', card: '相册模式' }[tableState.layout] || '布局模式' }
             <DownOutlined />
           </Button>
         </Dropdown>
