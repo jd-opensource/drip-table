@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { InfoCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -34,6 +35,23 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     required: ['render'],
   };
 
+  private renderToolTip = (label?: string) => {
+    const Tooltip = this.props.driver.components.Tooltip;
+
+    const { tooltip } = this.props.schema;
+    if (tooltip) {
+      return (
+        <div style={{ marginLeft: 8 }}>
+          <Tooltip title={label}>
+            <InfoCircleOutlined />
+          </Tooltip>
+        </div>
+
+      );
+    }
+    return null;
+  };
+
   public render(): JSX.Element {
     const { data, schema: { options } } = this.props;
     const { Alert } = this.props.driver.components;
@@ -55,6 +73,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
       return (
         <div className={styles['rich-text-container']}>
           <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>
+          { this.renderToolTip(html) }
         </div>
       );
     } catch (error) {

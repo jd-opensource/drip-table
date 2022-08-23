@@ -13,6 +13,17 @@ export default {
   attrSchema: [
     ...basicColumnAttrComponents('富文本'),
     {
+      name: 'tooltip',
+      group: '组件属性',
+      'ui:title': '该列是否支持tooltip',
+      'ui:type': 'switch',
+      'ui:props': {
+        checkedChildren: '是',
+        unCheckedChildren: '否',
+      },
+      type: 'boolean',
+    },
+    {
       name: 'options.render',
       group: '内容编辑',
       'ui:title': '',

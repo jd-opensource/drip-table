@@ -52,6 +52,17 @@ export default {
       default: 'single',
     },
     {
+      name: 'tooltip',
+      group: '组件属性',
+      'ui:title': '该列是否支持tooltip',
+      'ui:type': 'switch',
+      'ui:props': {
+        checkedChildren: '是',
+        unCheckedChildren: '否',
+      },
+      type: 'boolean',
+    },
+    {
       name: 'options.label',
       group: '组件属性',
       'ui:title': '链接文案',

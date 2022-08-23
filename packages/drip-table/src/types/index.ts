@@ -96,6 +96,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
+  /**
+   * 是否展示toolTip
+   */
+  tooltip?: boolean;
 }
 
 export type DripTableID = string | number | undefined;

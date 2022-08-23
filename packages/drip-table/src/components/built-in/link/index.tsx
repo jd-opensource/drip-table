@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import { InfoCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -60,6 +61,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       event: { type: 'string' },
       target: { type: 'string' },
       disabled: { anyOf: [{ type: 'string' }, { type: 'boolean' }] },
+      tooltip: { type: 'boolean' },
       operates: {
         type: 'array',
         items: {
@@ -80,6 +82,23 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       trigger: { enum: ['hover', 'click'] },
       placement: { enum: ['bottom', 'bottomLeft', 'bottomRight', 'top', 'topLeft', 'topRight'] },
     },
+  };
+
+  private renderToolTip = (label?: string) => {
+    const Tooltip = this.props.driver.components.Tooltip;
+
+    const { tooltip } = this.props.schema;
+    if (tooltip) {
+      return (
+        <div style={{ marginLeft: 8 }}>
+          <Tooltip title={label}>
+            <InfoCircleOutlined />
+          </Tooltip>
+        </div>
+
+      );
+    }
+    return null;
   };
 
   private get configured() {
@@ -170,20 +189,29 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       const event = options.event;
       if (event) {
         return (
-          <a
-            className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
-            onClick={() => {
-              if (this.props.preview || this.finalizeDisabled(options.disabled)) {
-                return;
-              }
-              this.props.fireEvent({ type: 'drip-link-click', payload: event });
-            }}
-          >
-            { options.label }
-          </a>
+          <div style={{ display: 'flex' }}>
+            <a
+              className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
+              onClick={() => {
+                if (this.props.preview || this.finalizeDisabled(options.disabled)) {
+                  return;
+                }
+                this.props.fireEvent({ type: 'drip-link-click', payload: event });
+              }}
+            >
+              { options.label }
+            </a>
+            { this.renderToolTip(options.label) }
+          </div>
+
         );
       }
-      return <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>;
+      return (
+        <div style={{ display: 'flex' }}>
+          <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>
+          { this.renderToolTip(options.label) }
+        </div>
+      );
     }
     return (
       <div>
@@ -193,10 +221,32 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const disabled = this.finalizeDisabled(config.disabled);
             if (event) {
               return (
+                <div style={{ display: 'flex' }}>
+                  <a
+                    style={{ marginRight: '5px' }}
+                    key={config.name || index}
+                    onClick={() => {
+                      if (this.props.preview) {
+                        return;
+                      }
+                      this.props.fireEvent({ type: 'drip-link-click', payload: event });
+                    }}
+                  >
+                    { config.label }
+                  </a>
+                  { this.renderToolTip(options.label) }
+                </div>
+
+              );
+            }
+            return (
+              <div style={{ display: 'flex' }}>
                 <a
                   className={disabled ? styles['link-disabled'] : void 0}
                   style={{ marginRight: '5px' }}
                   key={config.name || index}
+                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
+                  target={disabled ? void 0 : config.target}
                   onClick={() => {
                     if (this.props.preview || disabled) {
                       return;
@@ -206,18 +256,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                 >
                   { config.label }
                 </a>
-              );
-            }
-            return (
-              <a
-                className={disabled ? styles['link-disabled'] : void 0}
-                style={{ marginRight: '5px' }}
-                key={config.name || index}
-                href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
-                target={disabled ? void 0 : config.target}
-              >
-                { config.label }
-              </a>
+                { this.renderToolTip(options.label) }
+              </div>
+
             );
           })
         }
