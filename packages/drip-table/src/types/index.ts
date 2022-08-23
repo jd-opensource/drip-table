@@ -100,6 +100,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 是否展示toolTip
    */
   tooltip?: boolean;
+  /**
+   * 是否展示clipboard
+   */
+  clipboard?: boolean;
 }
 
 export type DripTableID = string | number | undefined;

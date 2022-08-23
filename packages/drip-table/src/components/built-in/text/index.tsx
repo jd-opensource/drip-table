@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { CopyOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
@@ -15,7 +16,7 @@ import { EventInjector } from 'react-event-injector';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue, stringify } from '@/utils/operator';
+import { copyTextToClipboard, indexValue, stringify } from '@/utils/operator';
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
@@ -94,6 +95,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    * 超出部分显示省略号
    */
   ellipsis?: boolean;
+  /**
+   * 超出部分显示省略号
+   */
+  clipboard?: boolean;
 }>;
 
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
@@ -457,6 +462,15 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     );
   }
 
+  private renderClipboard() {
+    const message = this.props.driver.components.message;
+    const showClipboard = this.props.schema.clipboard;
+    if (!showClipboard) { return null; }
+    return (
+      <CopyOutlined onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))} />
+    );
+  }
+
   public render(): JSX.Element {
     const Tooltip = this.props.driver.components.Tooltip;
     const Alert = this.props.driver.components.Alert;
@@ -483,6 +497,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         </Tooltip>
       );
     }
+
     return (
       <React.Fragment>
         <ResizeObserver onResize={this.onResize}>
@@ -495,6 +510,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
           >
             { wrapperEl }
             { this.renderEdit() }
+            { this.renderClipboard() }
           </div>
         </ResizeObserver>
         <div className={styles['focus-border']} />

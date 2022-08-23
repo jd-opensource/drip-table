@@ -113,6 +113,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       dataIndex: 'description',
       tooltip: true,
       component: 'text',
+      clipboard: true,
       options: {
         mode: 'single',
         ellipsis: true,
