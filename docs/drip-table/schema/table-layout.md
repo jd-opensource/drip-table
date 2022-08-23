@@ -1,4 +1,4 @@
-# tableLayout
+# 表格布局 tableLayout
 
 - 描述：表格元素的 table-layout 属性，设为 fixed 表示内容不会影响列的布局。auto: 表格及单元格的宽度取决于其包含的内容。fixed: 表格和列的宽度通过表格的宽度来设置。
 - 类型：`auto` | `fixed`

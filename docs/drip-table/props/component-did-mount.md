@@ -1,4 +1,4 @@
-# componentDidMount
+# 组件加载完成 componentDidMount
 
 - 描述：生命周期：组件加载完成
 - 类型：`(tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void`

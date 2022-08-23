@@ -1,4 +1,4 @@
-# footer
+# 底部渲染函数 footer
 
 - 描述：底部自定义渲染函数
 - 类型：`(data: readonly RecordType[]) => React.ReactNode`

@@ -1,4 +1,4 @@
-# columns.fixed
+# 列固定 columns.fixed
 
 - 描述：是否固定列
 - 类型：`'left' | 'right' | boolean`

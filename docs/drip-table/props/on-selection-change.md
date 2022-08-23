@@ -1,4 +1,4 @@
-# onSelectionChange
+# 行变化触发 onSelectionChange
 
 - 描述：选择行变化，配合 [`rowSelection`](/drip-table/props/schema/row-selection) 使用
 - 类型：

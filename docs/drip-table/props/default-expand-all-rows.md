@@ -1,4 +1,4 @@
-# defaultExpandAllRows
+# 子表是否默认展开 defaultExpandAllRows
 
 - 描述：默认展开全部子表
 - 类型：`boolean`

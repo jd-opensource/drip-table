@@ -1,4 +1,4 @@
-# displayColumnKeys
+# 当前显示列键 displayColumnKeys
 
 - 描述：当前显示的列键
 - 类型：`React.Key[]`
