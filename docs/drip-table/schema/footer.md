@@ -1,4 +1,4 @@
-# footer
+# 表格尾部配置 footer
 
 - 描述：表格尾部展示配置
 - 说明：基本等同 [表格头部展示配置](/drip-table/schema/header)，唯一区别是尾部展示配置仅支持传入具体配置表，不支持传入 `boolean` 类型。

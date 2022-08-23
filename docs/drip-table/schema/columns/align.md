@@ -1,4 +1,4 @@
-# columns.align
+# 水平对齐 columns.align
 
 - 描述：表格列对齐
 - 类型：`'left' | 'center' | 'right'`

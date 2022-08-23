@@ -1,4 +1,4 @@
-# innerClassName
+# 内部组件类名 innerClassName
 
 - 描述：内部表格组件类名
 - 类型：`string`

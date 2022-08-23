@@ -1,4 +1,4 @@
-# currentPage
+# 当前页码 currentPage
 
 - 描述：当前页码
 - 类型：`number`

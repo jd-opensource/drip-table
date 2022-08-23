@@ -1,4 +1,4 @@
-# columns.defaultValue
+# 默认数据 columns.defaultValue
 
 - 描述：默认数据
 - 类型：`unknown`

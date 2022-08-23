@@ -1,4 +1,4 @@
-# sticky
+# 冻结表头 sticky
 
 - 描述：冻结表头
 - 类型：`boolean`

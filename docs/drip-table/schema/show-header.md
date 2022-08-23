@@ -1,4 +1,4 @@
-# showHeader
+# 显示表头 showHeader
 
 - 描述：是否显示表头
 - 类型：`boolean`

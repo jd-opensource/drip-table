@@ -1,6 +1,6 @@
-# schema
+# 表格 schema
 
-- 描述：表单 Schema
+- 描述：表格 Schema
 - 类型：`DripTableSchema`
 - 默认值：必填
 - 更多内容：[Schema 详细文档](/drip-table/schema)

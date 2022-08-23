@@ -1,4 +1,4 @@
-# componentWillUnmount
+# 组件即将卸载 componentWillUnmount
 
 - 描述：生命周期：组件即将卸载
 - 类型：`(tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void`

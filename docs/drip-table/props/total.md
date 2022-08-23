@@ -1,4 +1,4 @@
-# total
+# 总条数 total
 
 - 描述：数据源总条数
 - 类型：`number`

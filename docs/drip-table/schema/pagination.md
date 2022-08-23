@@ -1,4 +1,4 @@
-# pagination
+# 分页配置 pagination
 
 - 描述：是否展示分页以及配置
 - 类型：
