@@ -8,8 +8,7 @@
 import React from 'react';
 
 import { type DripTableColumnSchema,
-  type DripTableExtraOptions,
-  type DripTableProps, type DripTableRecordTypeBase,
+  type DripTableExtraOptions, type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type SchemaObject } from '@/types';
 
@@ -36,17 +35,16 @@ export type DTCGroupColumnSchema<CustomComponentSchema> = DripTableColumnSchema<
 interface DTCGroupProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
- > extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<ExtraOptions['CustomColumnSchema']>> {
-  extraComponents?: DripTableProps<RecordType, ExtraOptions>['components'];
+> extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<ExtraOptions['CustomColumnSchema']>> {
   ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
 }
 
 interface DTCGroupState {}
 
 export default class DTCGroup<
- RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
- ExtraOptions extends Partial<DripTableExtraOptions> = never,
- > extends React.PureComponent<DTCGroupProps<RecordType, ExtraOptions>, DTCGroupState> {
+RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> extends React.PureComponent<DTCGroupProps<RecordType, ExtraOptions>, DTCGroupState> {
   public static componentName: DTCGroupColumnSchema<DripTableExtraOptions['CustomColumnSchema']>['component'] = 'group';
   public static schema: SchemaObject = {
     properties: {
@@ -109,7 +107,7 @@ export default class DTCGroup<
     }
     const [libName, componentName] = schema.component.split('::');
     if (libName && componentName) {
-      const ExtraComponent = this.props.extraComponents?.[libName]?.[componentName];
+      const ExtraComponent = this.props.components?.[libName]?.[componentName];
       if (ExtraComponent) {
         return (
           <ExtraComponent
@@ -146,24 +144,24 @@ export default class DTCGroup<
     return (
       <div>
         {
-           rows.map((row, index) => (
-             <Row
-               key={index}
-               style={{
-                 marginTop: schema.options.gutter?.[1],
-                 marginBottom: schema.options.gutter?.[1],
-               }}
-               gutter={schema.options.gutter}
-               justify={schema.options.horizontalAlign}
-               align={schema.options.verticalAlign}
-               wrap={schema.options.wrap}
-             >
-               { schema.options.layout[index]
-               && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
-                 .map(col => <Col key={col}>{ this.renderCell(Number(row), Number(col)) }</Col>) }
-             </Row>
-           ))
-         }
+          rows.map((row, index) => (
+            <Row
+              key={index}
+              style={{
+                marginTop: schema.options.gutter?.[1],
+                marginBottom: schema.options.gutter?.[1],
+              }}
+              gutter={schema.options.gutter}
+              justify={schema.options.horizontalAlign}
+              align={schema.options.verticalAlign}
+              wrap={schema.options.wrap}
+            >
+              { schema.options.layout[index]
+              && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
+                .map(col => <Col key={col}>{ this.renderCell(Number(row), Number(col)) }</Col>) }
+            </Row>
+          ))
+        }
       </div>
     );
   }

@@ -8,6 +8,28 @@
 
 .main {
   position: relative;
+  outline: none;
+}
+
+.focus-border {
+  pointer-events: none;
+  display: none;
+}
+
+.main.editable:focus + .focus-border {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  border: 2px solid #2a64ff;
+  border-radius: 4px;
+}
+
+.main.editable:focus {
+  color: #2a64ff !important;
 }
 
 .word-break {
@@ -21,7 +43,7 @@
 
 .max-row {
   overflow: hidden;
-  display: box;
+  display: -webkit-box;
   -webkit-box-orient: vertical;
   cursor: pointer;
 }
@@ -46,11 +68,72 @@
   position: absolute;
 }
 
+.edit-padding-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.edit-padding-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.edit-padding-top {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.edit-padding-bottom {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.edit-editing-outline {
+  border: 2px solid #2a64ff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 3px 4px 10px -1px #00000066;
+}
+
 .edit-textarea {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
+  padding: 14px;
   outline: none;
+
+  &::-webkit-scrollbar {
+    background-color: #ffffff;
+    width: 16px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #ffffff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 16px;
+    border: 4px solid #ffffff;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+.edit-select {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+
+  &-dropdown {
+    z-index: 100000;
+  }
 }

@@ -40,6 +40,9 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [true, {
       ignorePseudoClasses: ['global'],
     }],
+    'value-no-vendor-prefix': [true, {
+      ignoreValues: ['box'],
+    }],
   },
   overrides: [
     {

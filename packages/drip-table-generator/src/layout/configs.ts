@@ -132,7 +132,7 @@ const SlotItemConfigs = [
   },
   {
     name: 'allowClear',
-    'ui:title': '是否支持清空',
+    'ui:title': '支持清空',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -193,7 +193,7 @@ const SlotItemConfigs = [
   },
   {
     name: 'showIcon',
-    'ui:title': '是否展示图标',
+    'ui:title': '展示图标',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -205,7 +205,7 @@ const HeaderAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'header',
     group: '头部设置',
-    'ui:title': '是否展示头部',
+    'ui:title': '展示头部',
     'ui:type': 'switch',
     'ui:layout': {
       labelCol: 6,
@@ -237,7 +237,7 @@ const FooterAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'footer',
     group: '底部设置',
-    'ui:title': '是否展示底部',
+    'ui:title': '展示底部',
     'ui:type': 'switch',
     'ui:layout': {
       labelCol: 6,
@@ -269,7 +269,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'pagination',
     group: '分页配置',
-    'ui:title': '是否展示分页',
+    'ui:title': '展示分页',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -282,12 +282,16 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     'ui:type': 'radio',
     'ui:props': {
       options: [
+        { label: '左上角', value: 'topLeft' },
+        { label: '正上方', value: 'topCenter' },
+        { label: '右上角', value: 'topRight' },
         { label: '左下角', value: 'bottomLeft' },
         { label: '正下方', value: 'bottomCenter' },
         { label: '右下角', value: 'bottomRight' },
       ],
     },
     type: 'string',
+    default: 'bottomRight',
     visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
   },
   {
@@ -321,7 +325,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'pagination.showTotal',
     group: '分页配置',
-    'ui:title': '是否展示总条目',
+    'ui:title': '展示总条目',
     'ui:type': 'input',
     'ui:description': {
       type: 'icon',
@@ -337,7 +341,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'pagination.showQuickJumper',
     group: '分页配置',
-    'ui:title': '是否展示快速跳转',
+    'ui:title': '展示快速跳转',
     'ui:type': 'switch',
     'ui:description': {
       type: 'icon',
@@ -352,7 +356,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'pagination.showSizeChanger',
     group: '分页配置',
-    'ui:title': '是否展示切换器',
+    'ui:title': '展示切换器',
     'ui:description': {
       type: 'text',
       trigger: 'hover',
@@ -385,7 +389,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'bordered',
     group: '全局属性',
-    'ui:title': '是否展示边框',
+    'ui:title': '展示边框',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -394,7 +398,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'sticky',
     group: '全局属性',
-    'ui:title': '是否冻结表头',
+    'ui:title': '冻结表头',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -412,7 +416,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'virtual',
     group: '全局属性',
-    'ui:title': '是否进入虚拟列表',
+    'ui:title': '进入虚拟列表',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -427,6 +431,19 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
       min: 1,
     },
     type: 'number',
+  },
+  {
+    name: 'tableLayout',
+    group: '全局属性',
+    'ui:title': '表格布局',
+    'ui:type': 'radio',
+    'ui:props': {
+      options: [
+        { label: '自动布局', value: 'auto' },
+        { label: '固定布局', value: 'fixed' },
+      ],
+    },
+    type: 'string',
   },
   {
     name: 'scrollY',

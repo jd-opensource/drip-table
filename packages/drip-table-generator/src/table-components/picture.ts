@@ -34,7 +34,7 @@ export default {
     {
       name: 'options.preview',
       group: '组件属性',
-      'ui:title': '是否预览图片',
+      'ui:title': '允许预览图片',
       'ui:type': 'switch',
       type: 'boolean',
       default: true,
@@ -42,7 +42,7 @@ export default {
     {
       name: 'options.popover',
       group: '组件属性',
-      'ui:title': '是否展示大图',
+      'ui:title': '允许展示大图',
       'ui:type': 'switch',
       type: 'boolean',
       default: true,

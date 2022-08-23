@@ -7,14 +7,19 @@
  */
 
 import classNames from 'classnames';
+import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { EventInjector } from 'react-event-injector';
+import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue, stringify } from '@/utils/operator';
+import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
+import { preventEvent } from '../utils';
 
 import styles from './index.module.less';
 
@@ -94,9 +99,16 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
 
 interface DTCTextState {
+  windowInnerWidth: number;
+  cellLeft: number;
+  cellTop: number;
+  cellWidth: number;
+  cellHeight: number;
+  cellPaddingLeft: number;
+  cellPaddingRight: number;
+  cellPaddingTop: number;
+  cellPaddingBottom: number;
   editState: 'none' | 'entering' | 'editing';
-  editLeft: number;
-  editTop: number;
   editWidth: number;
   editHeight: number;
   editValue: string;
@@ -144,13 +156,23 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   public state: DTCTextState = {
+    windowInnerWidth: globalThis.window?.innerWidth || 0,
+    cellLeft: 0,
+    cellTop: 0,
+    cellWidth: 0,
+    cellHeight: 0,
+    cellPaddingLeft: 0,
+    cellPaddingRight: 0,
+    cellPaddingTop: 0,
+    cellPaddingBottom: 0,
     editState: 'none',
-    editLeft: 0,
-    editTop: 0,
     editWidth: 0,
     editHeight: 0,
     editValue: '',
   };
+
+  private componentUuid = `dtc-${uuidv4()}`;
+  private $main = React.createRef<HTMLDivElement>();
 
   private get configured() {
     const schema = this.props.schema;
@@ -257,63 +279,181 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return [];
   }
 
-  private onClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  private updateCellRect = ($main: HTMLElement) => {
+    const innerRect = $main.getBoundingClientRect();
+    const $cell = $main.parentElement as HTMLElement;
+    const cellRect = $cell.getBoundingClientRect();
+    this.setState({
+      cellLeft: cellRect.left,
+      cellTop: cellRect.top,
+      cellWidth: cellRect.width,
+      cellHeight: cellRect.height,
+      cellPaddingLeft: innerRect.left - cellRect.left,
+      cellPaddingRight: cellRect.right - innerRect.right,
+      cellPaddingTop: innerRect.top - cellRect.top,
+      cellPaddingBottom: cellRect.bottom - innerRect.bottom,
+      editWidth: cellRect.width,
+      editHeight: cellRect.height,
+    });
+  };
+
+  private onDoubleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!this.props.editable) {
       return;
     }
     if (this.state.editState !== 'none') {
       return;
     }
-    if (window.getSelection()?.type === 'Range') {
+    this.updateCellRect(e.currentTarget);
+    this.setState({ editState: 'entering' });
+  };
+
+  private onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (this.state.editState === 'none' && e.key.length === 1 && !this.props.schema.options.i18n) {
+      this.setState({
+        editState: 'editing',
+        editValue: '',
+      });
+      this.updateCellRect(e.currentTarget);
+    } else if (this.state.editState === 'editing' && e.key === 'Escape') {
+      this.setState({ editState: 'none' });
+    } else if (this.state.editState === 'none') {
+      e.currentTarget.blur();
+    }
+  };
+
+  private onWheel: React.WheelEventHandler<HTMLDivElement> = (e) => {
+    if (e.target instanceof HTMLTextAreaElement) {
+      const scrollable = e.deltaY < 0
+        ? Math.abs(e.target.scrollTop) > Number.EPSILON
+        : e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight > Number.EPSILON;
+      if (scrollable) {
+        return;
+      }
+    }
+    return preventEvent(e);
+  };
+
+  private onResize: React.ComponentProps<typeof ResizeObserver>['onResize'] = (sizeInfo, el) => {
+    if (this.$main.current) {
+      this.updateCellRect(this.$main.current);
+    }
+    this.setState({ windowInnerWidth: globalThis.window?.innerWidth ?? 0 });
+  };
+
+  private focusEdit = () => {
+    const $editPopup = document.querySelector(`#${this.componentUuid}-popup`);
+    if (!$editPopup) {
       return;
     }
-    const $div = e.currentTarget as HTMLDivElement;
-    const $cell = $div.parentElement as HTMLSpanElement;
-    const rect = $cell.getBoundingClientRect();
-    this.setState({
-      editState: 'entering',
-      editLeft: rect.left,
-      editTop: rect.top,
-      editWidth: rect.width,
-      editHeight: rect.height,
-    });
+    const $editTextarea = $editPopup.querySelector(`.${styles['edit-textarea']}`);
+    if (!$editTextarea || !($editTextarea instanceof HTMLTextAreaElement)) {
+      return;
+    }
+    const end = $editTextarea.value.length;
+    $editTextarea.setSelectionRange(end, end);
+    $editTextarea.focus();
   };
 
   public componentDidUpdate() {
     if (this.state.editState === 'entering') {
-      this.setState({
-        editState: 'editing',
-        editValue: String(this.props.value),
-      });
+      this.setState(
+        {
+          editState: 'editing',
+          editValue: String(this.props.value),
+        },
+        () => this.focusEdit(),
+      );
     }
   }
 
-  private renderEdit() {
-    if (this.state.editState === 'none') {
-      return null;
-    }
-    return ReactDOM.createPortal(
-      <div className={styles['edit-popup']}>
-        <div className={styles['edit-popup-body']} style={{ left: this.state.editLeft, right: 0, top: this.state.editTop, bottom: 0 }}>
-          <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
-          <Textarea
-            className={styles['edit-textarea']}
-            value={this.state.editValue}
+  private renderEditInput() {
+    if (this.props.schema.options.i18n) {
+      const selectMinWidth = 100;
+      const selectMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
+      const selectFinalWidth = Math.min(Math.max(this.state.cellWidth, selectMinWidth), selectMaxWidth);
+      let justifyContent = 'center';
+      if (this.props.schema.verticalAlign === 'top' || this.props.schema.verticalAlign === 'stretch') {
+        justifyContent = 'flex-start';
+      } else if (this.props.schema.verticalAlign === 'bottom') {
+        justifyContent = 'flex-end';
+      }
+      return (
+        <div
+          className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
+          style={{ width: selectFinalWidth, height: this.state.cellHeight, justifyContent }}
+        >
+          <Select
+            style={{ width: selectFinalWidth - 36 }}
             autoFocus
-            autoSize
-            style={{ width: this.state.editWidth, height: this.state.editHeight, minHeight: this.state.editHeight }}
-            onResize={({ width, height }) => {
-              this.setState({ editWidth: width, editHeight: height });
-            }}
-            onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+            value={this.state.editValue}
+            onChange={(value) => { this.setState({ editValue: value }); }}
             onBlur={() => {
               this.props.onChange?.(this.state.editValue);
               this.setState({ editState: 'none' });
             }}
-          />
+            dropdownClassName={styles['edit-select-dropdown']}
+          >
+            {
+              Object.entries(this.props.schema.options.i18n).map(([k, v]) => (
+                <Select.Option value={k}>{ v }</Select.Option>
+              ))
+            }
+          </Select>
         </div>
-      </div>,
-      document.body,
+      );
+    }
+    const editMinWidth = this.state.windowInnerWidth < 768 ? 200 : 500;
+    const editMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
+    const editFinalWidth = Math.min(Math.max(this.state.cellWidth, editMinWidth), editMaxWidth);
+    return (
+      <Textarea
+        className={classNames(styles['edit-editing-outline'], styles['edit-textarea'])}
+        value={this.state.editValue}
+        autoFocus
+        autoSize={{ maxRows: 6 }}
+        style={{ width: editFinalWidth, height: this.state.editHeight, minHeight: this.state.cellHeight }}
+        onResize={({ width, height }) => {
+          this.setState({ editWidth: width, editHeight: height });
+        }}
+        onChange={(e) => { this.setState({ editValue: e.target.value }); }}
+        onBlur={() => {
+          this.props.onChange?.(this.state.editValue);
+          this.setState({ editState: 'none' });
+        }}
+      />
+    );
+  }
+
+  private renderEdit() {
+    if (!this.props.editable) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <div className={styles['edit-padding-left']} style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
+        <div className={styles['edit-padding-right']} style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
+        <div className={styles['edit-padding-top']} style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
+        <div className={styles['edit-padding-bottom']} style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
+        {
+          this.state.editState === 'none'
+            ? void 0
+            : ReactDOM.createPortal(
+              <EventInjector
+                onWheel={this.onWheel}
+                settings={{ capture: true, passive: false }}
+              >
+                <div className={styles['edit-popup']} id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
+                  <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
+                    <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
+                    { this.renderEditInput() }
+                  </div>
+                </div>
+              </EventInjector>,
+              document.body,
+            )
+        }
+      </React.Fragment>
     );
   }
 
@@ -325,18 +465,40 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!this.configured) {
       return <Alert message="未配置字段" showIcon type="error" />;
     }
-    const rawTextEl: JSX.Element | JSX.Element[] = this.rawText.map((s, i) => <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>);
-    const wrapperEl = <div className={classNames(wrapperClassName, styles['word-break'])} style={wrapperStyles}>{ rawTextEl }</div>;
+    const rawTextEl = this.rawText.map((s, i) => (
+      <div key={i}>{ stringify(s) || (i === 0 ? '' : <br />) }</div>
+    ));
+    let wrapperEl = (
+      <div
+        className={classNames(wrapperClassName, styles['word-break'])}
+        style={wrapperStyles}
+      >
+        { rawTextEl }
+      </div>
+    );
     if (this.props.schema.options.maxRow) {
-      return (
-        <div className={styles.main} onClick={this.onClick}>
-          <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
-            { wrapperEl }
-          </Tooltip>
-          { this.renderEdit() }
-        </div>
+      wrapperEl = (
+        <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
+          { wrapperEl }
+        </Tooltip>
       );
     }
-    return wrapperEl;
+    return (
+      <React.Fragment>
+        <ResizeObserver onResize={this.onResize}>
+          <div
+            ref={this.$main}
+            className={classNames(styles.main, { [styles.editable]: this.props.editable })}
+            tabIndex={0}
+            onDoubleClick={this.onDoubleClick}
+            onKeyDown={this.onKeyDown}
+          >
+            { wrapperEl }
+            { this.renderEdit() }
+          </div>
+        </ResizeObserver>
+        <div className={styles['focus-border']} />
+      </React.Fragment>
+    );
   }
 }

@@ -31,6 +31,7 @@ export default {
       (_1, formData) => formData?.['options.mode'] === 'single',
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'direct',
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'nested',
+      'id',
     ),
     {
       name: 'options.fontSize',
@@ -61,7 +62,7 @@ export default {
       },
     },
     {
-      name: 'options.linHeight',
+      name: 'options.lineHeight',
       group: '样式配置',
       'ui:title': '行高',
       'ui:type': 'number',

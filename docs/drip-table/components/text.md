@@ -773,3 +773,74 @@ const Demo = () => {
 
 export default Demo;
 ```
+
+## schema.editable
+
+- 描述：支持编辑模式
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import React from "react";
+import DripTable from "drip-table";
+import DripTableDriverAntDesign from "drip-table-driver-antd";
+import "antd/dist/antd.css";
+import "drip-table/dist/index.css";
+
+const schema = {
+  editable: true,
+  columns: [
+    {
+      key: "mock_1",
+      title: "商品描述",
+      dataIndex: "description",
+      component: "text",
+      options: {
+        mode: "single",
+        maxRow: 2,
+        ellipsis: true
+      },
+      width: "100px",
+    },
+    {
+      key: "mock_2",
+      title: "商品价格",
+      dataIndex: "price",
+      component: "text",
+      options: {
+        mode: "single"
+      },
+      width: "100px",
+    },
+  ],
+};
+
+const Demo = () => {
+  const [dataSource, setDataSource] = React.useState([
+    {
+      id: 1,
+      name: "商品一",
+      price: 7999,
+      status: "onSale",
+      description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    },
+  ]);
+  return (
+    <React.Fragment>
+      <DripTable
+        driver={DripTableDriverAntDesign}
+        schema={schema}
+        dataSource={dataSource}
+        onDataSourceChange={React.useMemo(() => (ds) => {
+          setDataSource(ds);
+        }, [])}
+      />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```

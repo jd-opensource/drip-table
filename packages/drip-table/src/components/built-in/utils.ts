@@ -62,3 +62,14 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
   }
   return value;
 };
+
+/**
+ * 抑制事件处理函数默认行为
+ * @param e 事件对象
+ * @returns boolean
+ */
+export const preventEvent = (e: React.BaseSyntheticEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+};

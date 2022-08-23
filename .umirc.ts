@@ -75,6 +75,7 @@ const umiConfig: IConfig = {
           '/drip-table/components/link',
           '/drip-table/components/tag',
           '/drip-table/components/button',
+          '/drip-table/components/select',
         ],
       },
       {
@@ -114,7 +115,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/scroll',
           '/drip-table/schema/row-selection',
           '/drip-table/schema/editable',
-          '/drip-table/schema/ellipsis',
+          '/drip-table/schema/table-layout',
           '/drip-table/schema/virtual',
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
@@ -243,7 +244,7 @@ const umiConfig: IConfig = {
       },
       {
         title: '更新日志 Changelog',
-        path: '/drip-table-generator/changelog',
+        path: '/drip-table-generator/changelog.md',
         children: [],
       },
     ],
