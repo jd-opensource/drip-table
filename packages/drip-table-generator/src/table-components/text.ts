@@ -27,7 +27,7 @@ export default {
       default: 'single',
     },
     {
-      name: 'clipboard',
+      name: 'options.clipboard',
       group: '组件属性',
       'ui:title': '一键复制',
       'ui:type': 'switch',

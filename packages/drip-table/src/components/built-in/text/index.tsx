@@ -464,7 +464,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   private renderClipboard() {
     const message = this.props.driver.components.message;
-    const showClipboard = this.props.schema.clipboard;
+    const showClipboard = this.props.schema.options.clipboard;
     if (!showClipboard) { return null; }
     return (
       <CopyOutlined onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))} />

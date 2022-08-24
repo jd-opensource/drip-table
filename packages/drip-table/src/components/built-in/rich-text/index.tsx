@@ -15,11 +15,13 @@ import ErrorBoundary from '@/components/error-boundary';
 import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps } from '../component';
+import { finalizeString } from '../utils';
 
 import styles from './index.module.less';
 
 export type DTCRichTextColumnSchema = DripTableColumnSchema<'rich-text', {
   render: string;
+  tooltip?: string;
 }>;
 
 interface DTCRichTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCRichTextColumnSchema> { }
@@ -35,14 +37,14 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     required: ['render'],
   };
 
-  private renderToolTip = (label?: string) => {
+  private renderToolTip = () => {
     const Tooltip = this.props.driver.components.Tooltip;
 
-    const { tooltip } = this.props.schema;
+    const { tooltip } = this.props.schema.options;
     if (tooltip) {
       return (
         <div style={{ marginLeft: 8 }}>
-          <Tooltip title={label}>
+          <Tooltip title={finalizeString('pattern', tooltip, this.props.data)}>
             <InfoCircleOutlined />
           </Tooltip>
         </div>
@@ -73,7 +75,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
       return (
         <div className={styles['rich-text-container']}>
           <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>
-          { this.renderToolTip(html) }
+          { this.renderToolTip() }
         </div>
       );
     } catch (error) {

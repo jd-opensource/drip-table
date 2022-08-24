@@ -52,15 +52,15 @@ export default {
       default: 'single',
     },
     {
-      name: 'tooltip',
+      name: 'options.tooltip',
       group: '组件属性',
-      'ui:title': '该列是否支持tooltip',
-      'ui:type': 'switch',
+      'ui:title': '设置tooltip内容(支持{{rec}}模版写法)',
+      'ui:type': 'text',
       'ui:props': {
         checkedChildren: '是',
         unCheckedChildren: '否',
       },
-      type: 'boolean',
+      type: 'string',
     },
     {
       name: 'options.label',
