@@ -162,6 +162,8 @@ export interface DripTableDriver {
     DownOutlined: DripTableReactComponent<unknown>;
     PlusOutlined: DripTableReactComponent<unknown>;
     QuestionCircleOutlined: DripTableReactComponent<unknown>;
+    InfoCircleOutlined: DripTableReactComponent<unknown>;
+    CopyOutlined: DripTableReactComponent<unknown>;
   };
   /**
    * 组件本地化翻译

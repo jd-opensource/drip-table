@@ -6,7 +6,6 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import { InfoCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -87,7 +86,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   private renderToolTip = (template?: string) => {
     const Tooltip = this.props.driver.components.Tooltip;
-
+    const { InfoCircleOutlined } = this.props.driver.icons;
     const { tooltip } = this.props.schema.options;
     if (tooltip) {
       return (

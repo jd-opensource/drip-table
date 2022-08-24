@@ -6,7 +6,6 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { CopyOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
@@ -463,11 +462,15 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private renderClipboard() {
+    const { CopyOutlined } = this.props.driver.icons;
+
     const message = this.props.driver.components.message;
     const showClipboard = this.props.schema.options.clipboard;
     if (!showClipboard) { return null; }
     return (
-      <CopyOutlined onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))} />
+      <div onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))}>
+        <CopyOutlined />
+      </div>
     );
   }
 
