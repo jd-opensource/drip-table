@@ -111,13 +111,13 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       align: 'center',
       hidable: true,
       dataIndex: 'description',
-      tooltip: true,
       component: 'text',
       clipboard: true,
       options: {
         mode: 'single',
         ellipsis: true,
         maxRow: 3,
+        tooltip: 'toolip示例{{rec.name}}',
       },
     },
     {
@@ -133,9 +133,9 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         target: '',
         event: '',
         operates: [],
+        tooltip: 'toolip示例{{rec.name}}',
       },
       align: 'center',
-      tooltip: true,
     },
     {
       key: 'rich-text_1828c32cb02-1392',
