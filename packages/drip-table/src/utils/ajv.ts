@@ -222,6 +222,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         editable: { type: 'boolean' },
         ellipsis: { type: 'boolean' },
         tableLayout: { enum: ['auto', 'fixed'] },
+        stripe: { type: 'boolean' },
         virtual: { type: 'boolean' },
         rowHeight: { type: 'number' },
         scrollY: { type: 'number' },

@@ -403,4 +403,17 @@
   &&-middle .@{prefixCls}-virtual-cell {
     padding: 12px 8px;
   }
+
+  // ====================================
+  // ==             stripe             ==
+  // ====================================
+
+  &&--stripe {
+    & > .@{prefixCls}-container > .@{prefixCls}-body > table > tbody > tr,
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tbody > tr {
+      &:nth-child(2n+2) {
+        background: #fafafa;
+      }
+    }
+  }
 }

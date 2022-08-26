@@ -25,6 +25,7 @@ title: 总览
 | [rowDraggable](/drip-table/schema/row-draggable) | 是否支持行拖拽 | × | [🔗 示例](/drip-table/schema/row-draggable) |
 | [editable](/drip-table/schema/editable) | 是否支持数据编辑 | × | [🔗 示例](/drip-table/schema/editable) |
 | [tableLayout](/drip-table/schema/table-layout) | 表格布局属性 | × | [🔗 示例](/drip-table/schema/table-layout) |
+| [stripe](/drip-table/schema/stripe) | 表格间隔斑马纹 | × | [🔗 示例](/drip-table/schema/stripe) |
 | [virtual](/drip-table/schema/virtual) | 是否开启虚拟滚动 | × | [🔗 示例](/drip-table/schema/virtual) |
 | [rowHeight](/drip-table/schema/row-height) | 表格行高（虚拟滚动） | × | [🔗 示例](/drip-table/schema/row-height) |
 | [rowKey](/drip-table/schema/row-key) | 表格行主键 | × | [🔗 示例](/drip-table/schema/row-key) |

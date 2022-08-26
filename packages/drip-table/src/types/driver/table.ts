@@ -32,6 +32,7 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   loading?: boolean;
   size?: 'large' | 'middle' | 'small' | 'default';
   bordered?: boolean;
+  stripe?: boolean;
   showHeader?: boolean;
   sticky?: boolean | {
     offsetHeader?: number;
