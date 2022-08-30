@@ -52,6 +52,17 @@ export default {
       default: 'single',
     },
     {
+      name: 'options.tooltip',
+      group: '组件属性',
+      'ui:title': '设置tooltip内容(支持{{rec}}模版写法)',
+      'ui:type': 'text',
+      'ui:props': {
+        checkedChildren: '是',
+        unCheckedChildren: '否',
+      },
+      type: 'string',
+    },
+    {
       name: 'options.label',
       group: '组件属性',
       'ui:title': '链接文案',

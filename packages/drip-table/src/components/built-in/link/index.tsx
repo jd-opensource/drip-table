@@ -22,6 +22,7 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   href?: string;
   event?: string;
   target?: string;
+  tooltip?: string;
   disabled?: boolean | string;
   operates?: {
     name?: string;
@@ -60,6 +61,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       event: { type: 'string' },
       target: { type: 'string' },
       disabled: { anyOf: [{ type: 'string' }, { type: 'boolean' }] },
+      tooltip: { type: 'text' },
       operates: {
         type: 'array',
         items: {
@@ -80,6 +82,23 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       trigger: { enum: ['hover', 'click'] },
       placement: { enum: ['bottom', 'bottomLeft', 'bottomRight', 'top', 'topLeft', 'topRight'] },
     },
+  };
+
+  private renderToolTip = (template?: string) => {
+    const Tooltip = this.props.driver.components.Tooltip;
+    const { InfoCircleOutlined } = this.props.driver.icons;
+    const { tooltip } = this.props.schema.options;
+    if (tooltip) {
+      return (
+        <div style={{ marginLeft: 8 }}>
+          <Tooltip title={finalizeString('pattern', tooltip, this.props.data)}>
+            <InfoCircleOutlined />
+          </Tooltip>
+        </div>
+
+      );
+    }
+    return null;
   };
 
   private get configured() {
@@ -170,20 +189,29 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       const event = options.event;
       if (event) {
         return (
-          <a
-            className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
-            onClick={() => {
-              if (this.props.preview || this.finalizeDisabled(options.disabled)) {
-                return;
-              }
-              this.props.fireEvent({ type: 'drip-link-click', payload: event });
-            }}
-          >
-            { options.label }
-          </a>
+          <div style={{ display: 'flex' }}>
+            <a
+              className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
+              onClick={() => {
+                if (this.props.preview || this.finalizeDisabled(options.disabled)) {
+                  return;
+                }
+                this.props.fireEvent({ type: 'drip-link-click', payload: event });
+              }}
+            >
+              { options.label }
+            </a>
+            { this.renderToolTip() }
+          </div>
+
         );
       }
-      return <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>;
+      return (
+        <div style={{ display: 'flex' }}>
+          <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>
+          { this.renderToolTip() }
+        </div>
+      );
     }
     return (
       <div>
@@ -193,31 +221,44 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const disabled = this.finalizeDisabled(config.disabled);
             if (event) {
               return (
+                <div style={{ display: 'flex' }}>
+                  <a
+                    style={{ marginRight: '5px' }}
+                    key={config.name || index}
+                    onClick={() => {
+                      if (this.props.preview) {
+                        return;
+                      }
+                      this.props.fireEvent({ type: 'drip-link-click', payload: event });
+                    }}
+                  >
+                    { config.label }
+                  </a>
+                  { this.renderToolTip() }
+                </div>
+
+              );
+            }
+            return (
+              <div style={{ display: 'flex' }}>
                 <a
                   className={disabled ? styles['link-disabled'] : void 0}
                   style={{ marginRight: '5px' }}
                   key={config.name || index}
+                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
+                  target={disabled ? void 0 : config.target}
                   onClick={() => {
                     if (this.props.preview || disabled) {
                       return;
                     }
-                    this.props.fireEvent({ type: 'drip-link-click', payload: event });
+                    this.props.fireEvent({ type: 'drip-link-click', payload: event as string });
                   }}
                 >
                   { config.label }
                 </a>
-              );
-            }
-            return (
-              <a
-                className={disabled ? styles['link-disabled'] : void 0}
-                style={{ marginRight: '5px' }}
-                key={config.name || index}
-                href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
-                target={disabled ? void 0 : config.target}
-              >
-                { config.label }
-              </a>
+                { this.renderToolTip() }
+              </div>
+
             );
           })
         }
