@@ -30,4 +30,7 @@ jobs:
     - run: yarn
     - run: yarn run build
     - run: yarn run lint
-    - run: yarn run commitlint --from HEAD~${{ github.event.pull_request.commits }} --to HEAD
+    - name: Run yarn run commitlint
+      run: |
+        printf "%s\n\n" "$(git log --pretty=format:'%ad %h by %an, %s' -n $((${{ github.event.pull_request.commits }} + 1)))"
+        yarn run commitlint --from HEAD~${{ github.event.pull_request.commits }} --to HEAD
