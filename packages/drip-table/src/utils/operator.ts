@@ -101,3 +101,22 @@ export const parseNumber = (value: string | number | undefined, defaultValue: nu
   }
   return defaultValue;
 };
+
+/**
+ * 复制文字到clipboard
+ * @param text 要复制的文字
+ * @param onSuccess 兜底数据
+ * @param onError 兜底数据
+ */
+export function copyTextToClipboard(text: string, onSuccess: () => void, onError: (error: Error) => void) {
+  if (!navigator.clipboard) {
+    onError(new Error('浏览器不支持复制功能 请手动复制'));
+    return;
+  }
+  navigator.clipboard.writeText(text).then(() => {
+    onSuccess();
+    return void 0;
+  }, () => {
+    onError(new Error('复制失败'));
+  });
+}
