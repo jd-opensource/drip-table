@@ -95,7 +95,7 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    */
   ellipsis?: boolean;
   /**
-   * 超出部分显示省略号
+   * 是否展示一键复制按钮
    */
   clipboard?: boolean;
 }>;
