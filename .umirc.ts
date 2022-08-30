@@ -167,6 +167,7 @@ const umiConfig: IConfig = {
           '/drip-table/props/on-change',
           '/drip-table/props/on-display-column-keys-change',
           '/drip-table/props/on-event',
+          '/drip-table/props/get-checkbox-props',
         ],
       },
       {
