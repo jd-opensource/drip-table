@@ -26,6 +26,13 @@ export default {
       type: 'string',
       default: 'single',
     },
+    {
+      name: 'options.clipboard',
+      group: '组件属性',
+      'ui:title': '一键复制',
+      'ui:type': 'switch',
+      type: 'boolean',
+    },
     ...basicColumnAttrComponents('文本'),
     ...dataIndexColumnAttrComponents(
       (_1, formData) => formData?.['options.mode'] === 'single',
