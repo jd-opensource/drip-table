@@ -1,5 +1,6 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import button from './button';
+import datePicker from './date-picker';
 import group from './group';
 import links from './links';
 import image from './picture';
@@ -17,6 +18,7 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   tag,
   button,
   select,
+  datePicker,
 ];
 
 const containerComponentList: DripTableComponentAttrConfig[] = [
