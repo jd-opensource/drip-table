@@ -61,7 +61,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       event: { type: 'string' },
       target: { type: 'string' },
       disabled: { anyOf: [{ type: 'string' }, { type: 'boolean' }] },
-      tooltip: { type: 'text' },
+      tooltip: { type: 'string' },
       operates: {
         type: 'array',
         items: {

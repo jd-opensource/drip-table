@@ -7,6 +7,7 @@
  */
 
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
+import DTCDate, { DTCDateColumnSchema } from './date';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
@@ -34,7 +35,9 @@ export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCRenderHTMLRemoteColumnSchema
   | DTCGroupColumnSchema<CustomComponentSchema>
   | DTCRichTextColumnSchema
-  | DTCSelectColumnSchema;
+  | DTCSelectColumnSchema
+  | DTCDateColumnSchema
+  | DTCRichTextColumnSchema;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,
@@ -47,5 +50,6 @@ const DripTableBuiltInComponents = {
   [DTCGroup.componentName]: DTCGroup,
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
+  [DTCDate.componentName]: DTCDate,
 };
 export default DripTableBuiltInComponents;

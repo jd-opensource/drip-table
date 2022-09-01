@@ -32,6 +32,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
   public static schema: SchemaObject = {
     properties: {
       render: { type: 'string' },
+      tooltip: { type: 'string' },
     },
     required: ['render'],
   };

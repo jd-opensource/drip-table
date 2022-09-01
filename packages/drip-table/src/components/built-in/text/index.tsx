@@ -91,6 +91,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    */
   lineHeight?: number;
   /**
+   *  固定高度
+   */
+  height?: number;
+  /**
    * 超出部分显示省略号
    */
   ellipsis?: boolean;
@@ -155,6 +159,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       },
       maxRow: { type: 'number' },
       lineHeight: { type: 'number' },
+      height: { type: 'number' },
       ellipsis: { type: 'boolean' },
     },
   };
@@ -235,6 +240,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       fontSize: this.fontSize,
       lineHeight,
     };
+    if (this.props.schema.options.height) {
+      textStyles.height = this.props.schema.options.height;
+    }
     return textStyles;
   }
 

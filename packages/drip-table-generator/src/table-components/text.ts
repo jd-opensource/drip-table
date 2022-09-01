@@ -73,6 +73,25 @@ export default {
       group: '样式配置',
       'ui:title': '行高',
       'ui:type': 'number',
+      'ui:description': {
+        trigger: 'hover',
+        type: 'icon',
+        title: '文字行高',
+      },
+      'ui:props': {
+        min: 1,
+      },
+    },
+    {
+      name: 'options.height',
+      group: '样式配置',
+      'ui:title': '固定高度',
+      'ui:type': 'number',
+      'ui:description': {
+        trigger: 'hover',
+        type: 'icon',
+        title: '文本组件的固定高度',
+      },
       'ui:props': {
         min: 1,
       },
