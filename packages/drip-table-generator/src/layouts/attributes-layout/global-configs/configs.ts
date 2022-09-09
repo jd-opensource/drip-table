@@ -5,7 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DTGComponentPropertySchema } from '../typing';
+import { DTGComponentPropertySchema } from '@/typing';
 
 const AlignConfigs = {
   'ui:type': 'radio',
@@ -26,6 +26,7 @@ const SlotItemConfigs = [
     'ui:title': '类型',
     'ui:type': 'select',
     'ui:props': {
+      style: { width: 142 },
       options: [
         { label: '列展示筛选器', value: 'display-column-selector' },
         { label: '空白栏', value: 'spacer' },
@@ -42,11 +43,14 @@ const SlotItemConfigs = [
     'ui:title': '列选择器按钮类型',
     'ui:type': 'radio',
     'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
       options: [
         { label: '主按钮', value: 'primary' },
         { label: '虚线按钮', value: 'dashed' },
       ],
     },
+    'ui:layout': { labelCol: 24, wrapperCol: 24 },
     type: 'string',
     default: 'primary',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
@@ -56,8 +60,10 @@ const SlotItemConfigs = [
     'ui:title': '列选择器按钮名称',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入按钮名称',
     },
+    'ui:layout': { labelCol: 24, wrapperCol: 24 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
   },
@@ -66,6 +72,7 @@ const SlotItemConfigs = [
     'ui:title': '宽度',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入宽度',
     },
     type: 'string',
@@ -87,6 +94,7 @@ const SlotItemConfigs = [
     'ui:title': '标题名称',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入标题名称',
     },
     type: 'string',
@@ -96,6 +104,7 @@ const SlotItemConfigs = [
     name: 'align',
     'ui:title': '对齐方式',
     ...AlignConfigs,
+    'ui:layout': { labelCol: 10, wrapperCol: 24 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) =>
       formData?.type === 'text' || formData?.type === 'search' || formData?.type === 'insert-button',
@@ -105,6 +114,7 @@ const SlotItemConfigs = [
     'ui:title': '跨度',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入"1-24", 或者"flex-auto"',
     },
     type: 'string',
@@ -115,8 +125,10 @@ const SlotItemConfigs = [
     'ui:title': '搜索框宽度',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入宽度',
     },
+    'ui:layout': { labelCol: 11, wrapperCol: 13 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
@@ -125,8 +137,10 @@ const SlotItemConfigs = [
     'ui:title': '搜索框提示语',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入提示语',
     },
+    'ui:layout': { labelCol: 11, wrapperCol: 13 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
@@ -143,8 +157,10 @@ const SlotItemConfigs = [
     'ui:title': '搜索按钮文本',
     'ui:type': 'input',
     'ui:props': {
+      style: { width: '100%' },
       placeholder: '请输入',
     },
+    'ui:layout': { labelCol: 11, wrapperCol: 13 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
@@ -168,6 +184,7 @@ const SlotItemConfigs = [
         },
       ],
     },
+    'ui:layout': { labelCol: 16, wrapperCol: 24 },
     type: 'array',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
@@ -178,6 +195,7 @@ const SlotItemConfigs = [
     'ui:props': {
       placeholder: '请输入搜索维度',
     },
+    'ui:layout': { labelCol: 11, wrapperCol: 13 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
@@ -188,6 +206,7 @@ const SlotItemConfigs = [
     'ui:props': {
       placeholder: '请输入',
     },
+    'ui:layout': { labelCol: 11, wrapperCol: 13 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'insert-button',
   },
@@ -221,10 +240,11 @@ const HeaderAttrConfigs: DTGComponentPropertySchema[] = [
     'ui:title': '头部插槽配置',
     'ui:type': 'array-list',
     'ui:layout': {
-      labelCol: 6,
-      wrapperCol: 18,
+      labelCol: 24,
+      wrapperCol: 24,
     },
     'ui:props': {
+      toolWidth: 42,
       items: [...SlotItemConfigs],
     },
     type: 'boolean',
@@ -253,8 +273,8 @@ const FooterAttrConfigs: DTGComponentPropertySchema[] = [
     'ui:title': '底部插槽配置',
     'ui:type': 'array-list',
     'ui:layout': {
-      labelCol: 6,
-      wrapperCol: 18,
+      labelCol: 24,
+      wrapperCol: 24,
     },
     'ui:props': {
       items: [...SlotItemConfigs],
@@ -377,6 +397,8 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:title': '表格尺寸',
     'ui:type': 'radio',
     'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
       options: [
         { label: '大号', value: 'large' },
         { label: '中等', value: 'middle' },
@@ -430,6 +452,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:props': {
       min: 1,
     },
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     type: 'number',
   },
   {
@@ -438,6 +461,8 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:title': '表格布局',
     'ui:type': 'radio',
     'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
       options: [
         { label: '自动布局', value: 'auto' },
         { label: '固定布局', value: 'fixed' },
@@ -469,7 +494,3 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   ...PaginationAttrConfigs,
   ...FooterAttrConfigs,
 ];
-
-export const defaultComponentIcon = `
-<svg t="1627123986728" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3506" width="48" height="48"><path d="M917.376 243.456L500.8 4.8a34.144 34.144 0 0 0-34.336 0.096l0.16-0.096L50.112 243.52a33.952 33.952 0 0 0-17.088 29.376v477.44c0 12.16 6.528 23.296 17.088 29.44l416.512 238.72a34.88 34.88 0 0 0 34.336-0.064l-0.16 0.096 416.576-238.72c10.272-5.952 17.088-16.896 17.088-29.44V272.928c0-12.544-6.816-23.488-16.928-29.344l-0.16-0.096z m-51.264 487.36l-382.4 219.136-382.336-219.136V292.48l382.336-219.136 382.4 219.136v438.272zM198.784 360.512a33.76 33.76 0 0 0 12.384 46.304l0.16 0.096 237.824 136.32V812.8c0 18.816 15.232 33.92 34.176 33.92h0.256a33.92 33.92 0 0 0 33.92-33.92v-269.184l238.656-136.832a33.92 33.92 0 0 0 12.48-46.528l0.096 0.16a34.4 34.4 0 0 0-46.88-12.32l0.16-0.096-238.272 136.512-238.208-136.512a34.464 34.464 0 0 0-46.624 12.384l-0.096 0.16z" p-id="3507"></path></svg>
-`;

@@ -21,6 +21,7 @@ import BuiltInComponents, { CustomComponentProps, DTGComponentBaseProperty } fro
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
   groupType?: boolean | 'collapse' | 'tabs';
+  labelAlign?: 'left' | 'right';
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   primaryKey?: string;
@@ -214,6 +215,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         <Form.Item
           key={key}
           label={this.renderTitleLabel(config)}
+          labelAlign={this.props.labelAlign || 'left'}
           colon={false}
           validateStatus={helpMsg[key] ? 'error' : 'success'}
           help={config['ui:layout']?.customHelpMsg ? '' : helpMsg[key]}

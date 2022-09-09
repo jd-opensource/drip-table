@@ -1,0 +1,84 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+.component-icon {
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: top;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.components-container {
+  width: 65px;
+  background: #ffffff;
+  border-right: 1px solid rgb(~"0 0 0 / 15%");
+  text-align: center;
+  z-index: 1;
+}
+
+.components-navigator {
+  z-index: 10;
+  position: relative;
+  background: #ffffff;
+  padding: 8px;
+
+  & .component-button {
+    width: 48px;
+    padding: 4px;
+
+    &:hover {
+      color: var(--drip-table-primary-color);
+      fill: var(--drip-table-primary-color);
+    }
+  }
+}
+
+.components-drawer {
+  position: absolute;
+  width: 320px;
+  height: 100%;
+  top: 0;
+  left: 65px;
+  background: #ffffff;
+  box-shadow: 1px 1px 6px -2px rgb(~"0 0 0 / 25%");
+  transition: all ease-in-out .3s;
+  z-index: 0;
+  padding: 8px;
+
+  & .component-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+
+    & button {
+      margin: 4px 0;
+    }
+  }
+
+  .component-icon {
+    fill: #ffffff;
+    height: 20px;
+    width: 24px;
+
+    svg {
+      margin-top: 2px;
+    }
+  }
+}
+
+.component-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 4px 0;
+}
