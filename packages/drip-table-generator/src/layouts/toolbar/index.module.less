@@ -1,0 +1,55 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+.toolbar-container {
+  width: 100%;
+  height: 48px;
+  padding: 8px;
+  border-bottom: 1px solid rgb(~"0 0 0 / 15%");
+  box-shadow: 0 0 4px -1px rgb(~"0 0 0 / 25%");
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+
+  &-leftbar {
+    display: flex;
+  }
+
+  &-rightbar {
+    display: flex;
+  }
+
+  & .tool-cell {
+    margin-right: 8px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 4px;
+    height: 32px;
+    transition: all ease-in-out .3s;
+
+    &:hover,
+    &.checked {
+      background: #f0f0f0;
+    }
+
+    & .tool-icon {
+      line-height: 26px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.overlay-wrapper {
+  width: 96px;
+  background: #ffffff;
+  padding: 12px;
+  margin-top: 3px;
+  border: 1px solid rgb(~"0 0 0 / 15%");
+  box-shadow: 0 2px 4px -1px rgb(~"0 0 0 / 25%");
+  border-radius: 2px;
+}

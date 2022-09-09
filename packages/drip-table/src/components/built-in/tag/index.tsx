@@ -29,7 +29,7 @@ export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
   /** 静态文案 */
   content?: string;
   /** 枚举 */
-  tagOptions?: { label: string; value: string | number; color?: 'success' | 'processing' | 'error' | 'default' | 'warning' }[];
+  tagOptions?: { label: string; value: string | number; color?: 'success' | 'processing' | 'error' | 'default' | 'warning' | string }[];
 }>;
 
 interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagColumnSchema> { }
@@ -54,7 +54,10 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
           properties: {
             label: { type: 'string' },
             value: { typeof: ['string', 'number'] },
-            color: { enum: ['success', 'processing', 'error', 'default', 'warning'] },
+            color: { anyOf: [
+              { enum: ['success', 'processing', 'error', 'default', 'warning'] },
+              { type: 'string' },
+            ] },
           },
           required: ['label', 'value'],
         },

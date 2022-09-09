@@ -6,10 +6,6 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableBuiltInColumnSchema, DripTableColumnSchema } from 'drip-table';
-
-import { DripTableColumn } from '@/store';
-
 window.mockCount = Number((Math.random() * 1000 + 4096).toFixed(0));
 export const mockId = () => {
   window.mockCount += 1;
@@ -60,21 +56,4 @@ export const filterAttributesByRegExp = <T>(record: T, exp: RegExp) => {
     }
   });
   return finalObject;
-};
-
-/**
- * 根据column信息转成DripTableColumnSchema
- * @param {DripTableColumn} column 列配置
- * @returns {DripTableColumnSchema | DripTableBuiltInColumnSchema} schema
- */
-export const generateColumn = (column: DripTableColumn) => {
-  const columnSchema: (DripTableColumnSchema | DripTableBuiltInColumnSchema) = {
-    ...filterAttributes(
-      filterAttributesByRegExp(column, /^(options|ui:props)\./u) as DripTableColumnSchema,
-      ['index', 'sort', 'type', 'dataIndexMode'],
-    ),
-    component: column.component,
-    options: { ...column.options },
-  };
-  return columnSchema;
 };

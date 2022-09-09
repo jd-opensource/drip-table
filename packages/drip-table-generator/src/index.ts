@@ -1,3 +1,5 @@
+import './styles/index.less';
+
 export * from './typing';
 
-export { default } from './drip-table-generator';
+export { default } from './wrapper';

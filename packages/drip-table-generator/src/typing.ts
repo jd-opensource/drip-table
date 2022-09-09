@@ -1,8 +1,7 @@
-import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { CustomComponentProps } from './components/CustomForm/components';
-import { DripTableGeneratorState } from './store';
 
 export interface StringDataSchema {
   type: 'string';
@@ -60,8 +59,12 @@ export type DataSchema =
   | NullDataSchema
   | ArrayDataSchema;
 
+export type DTGAttributeComponentProps = Record<string, unknown> & { style?: CSSProperties; className?: string };
 /** 组件属性的表单配置项 */
-export type DTGComponentPropertySchema = DataSchema & {
+export type DTGComponentPropertySchema<
+ComponentType = string,
+ComponentProps extends DTGAttributeComponentProps = DTGAttributeComponentProps,
+> = DataSchema & {
   name: string;
   group: string;
   required?: boolean;
@@ -78,8 +81,8 @@ export type DTGComponentPropertySchema = DataSchema & {
     title: string;
   };
   'ui:titleStyle'?: CSSProperties;
-  'ui:type': string;
-  'ui:props'?: Record<string, unknown> & { style?: CSSProperties; className?: string };
+  'ui:type': ComponentType;
+  'ui:props'?: ComponentProps;
   'ui:wrapperStyle'?: CSSProperties;
   'ui:externalComponent'?: new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>;
   default?: unknown;
@@ -105,22 +108,6 @@ export interface DripTableComponentAttrConfig {
   icon?: React.ReactSVG | string;
 }
 
-export interface DripTableGeneratorHandler extends DripTableGeneratorState {
-  /**
-   * 通过接口获取配置
-   *
-   * @returns { DripTableSchema } 返回DripTableSchema配置
-   */
-  getSchemaValue: () => DripTableSchema<DripTableColumnSchema>;
-
-  /**
-   * 通过接口获取预览用表格数据
-   *
-   * @returns {Record<string, unknown>[]} 返回预览用表格数据
-   */
-  getDataSource: () => Record<string, unknown>[];
-}
-
 export interface DripTableGeneratorPanel<T> {
   mode: 'add' | 'replace';
   configs: T[];
@@ -136,12 +123,22 @@ export interface DripTableGeneratorProps<
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 > extends DripTableExtraProps<RecordType, ExtraOptions> {
+  /** 全局样式 */
   style?: CSSProperties;
+  /** 样式主题驱动, 展示组件以及透传给 drip-table 用 */
   driver: DripTableDriver;
+  /** 展示组件栏 */
   showComponentLayout?: boolean;
+  /** 组件栏自定义样式 */
   componentLayoutStyle?: CSSProperties;
+  /** 右侧属性栏展示形式 */
+  rightLayoutMode?: 'drawer' | 'fixed';
+  /** 右侧属性栏自定义样式 */
   rightLayoutStyle?: CSSProperties;
+  /** 展示工具栏 */
   showToolLayout?: boolean;
+  /** 工具栏样式 */
+  toolbarStyle?: CSSProperties;
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
   dataSource?: DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[];
   dataFields?: string[];

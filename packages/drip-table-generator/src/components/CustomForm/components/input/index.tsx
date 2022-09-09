@@ -43,7 +43,7 @@ export default class InputComponent extends React.PureComponent<Props> {
         value={this.props.value as string}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 240, ...uiProps.style }}
+        style={{ width: 120, ...uiProps.style }}
         onChange={(e) => {
           const value = this.transform(e.target.value);
           this.props.onChange?.(value);

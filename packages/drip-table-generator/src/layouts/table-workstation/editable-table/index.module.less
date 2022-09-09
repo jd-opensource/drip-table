@@ -1,0 +1,68 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+.table-column-skeleton {
+  width: 100%;
+  border: 1px dashed var(--drip-table-primary-color);
+  padding: 16px;
+  text-align: center;
+  font-size: 16px;
+  color: #969696;
+  border-radius: 2px;
+}
+
+.component-icon {
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: top;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin: 2px 0;
+  }
+}
+
+.editable-table {
+  background: #ffffff;
+  display: flex;
+  width: fit-content;
+  min-width: 100%;
+
+  &-column {
+    border: 1px solid rgb(~"0 0 0 / 6%");
+    min-width: 180px;
+    cursor: pointer;
+
+    &.checked {
+      border-color: var(--drip-table-primary-color);
+    }
+  }
+
+  &-thead {
+    color: #000000d9;
+    font-weight: 500;
+    text-align: left;
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all .3s ease;
+    padding: 8px;
+
+    & .action-button {
+      float: right;
+      line-height: 26px;
+    }
+  }
+
+  &-cell {
+    border-bottom: 1px solid rgb(~"0 0 0 / 6%");
+    transition: all ease .3s;
+    padding: 6px;
+  }
+}
