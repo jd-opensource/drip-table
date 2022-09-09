@@ -16,7 +16,6 @@ import {
   type DripTableRecordTypeWithSubtable,
   type DripTableTableInformation,
 } from '@/types';
-import { validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
 import Spin from '@/components/spin';
@@ -26,28 +25,10 @@ import CalendarLayout from './calendar';
 import CardLayout from './card';
 import TableLayout from './table';
 
-import styles from './index.module.less';
-
 const DripTableLayout = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
-  const ajv = props.ajv;
-  if (ajv !== false) {
-    const errorMessage = validateDripTableRequiredProps(props, ajv)
-      || Object.entries(props)
-        .map(([k, v]) => React.useMemo(() => validateDripTableProp(k, v, ajv), [k, v, ajv]))
-        .filter(_ => _)
-        .join('\n');
-    if (errorMessage) {
-      return (
-        <pre className={styles['ajv-error']}>
-          { `Props validate failed: ${errorMessage.includes('\n') ? '\n' : ''}${errorMessage}` }
-        </pre>
-      );
-    }
-  }
-
   const initialState = useTable();
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
   const rootRef = useRef<HTMLDivElement>(null); // ProTable组件的ref

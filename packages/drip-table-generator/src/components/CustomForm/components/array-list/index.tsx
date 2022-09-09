@@ -85,10 +85,11 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   }
 
   private renderAttributeItem(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
+    const layout = schema['ui:layout'];
     if (!this.visible(schema, index, parentIndex)) { return null; }
     return (
       <Row key={index} style={{ lineHeight: '32px', margin: '6px 0' }}>
-        <Col span={8}>
+        <Col span={layout?.labelCol || 8}>
           { schema['ui:title'] }
           {
             schema['ui:description']
@@ -100,23 +101,27 @@ export default class ArrayComponent extends React.PureComponent<Props> {
               : null
           }
         </Col>
-        <Col span={16}>{ this.renderAttributeComponent(schema, index, parentIndex) }</Col>
+        <Col span={layout?.wrapperCol || 16}>{ this.renderAttributeComponent(schema, index, parentIndex) }</Col>
       </Row>
     );
   }
 
   public renderFormItem(item: unknown, index: number) {
+    const uiProps = this.props.schema['ui:props'] || {};
+    const maxLength = uiProps.max as number;
+    const toolWidth = uiProps.toolWidth as number | undefined;
     return (
       <div className={styles['array-component-form-container']} key={index}>
-        <div className={styles['array-component-left-container']}>
+        <div className={styles['array-component-left-container']} style={{ width: toolWidth ? `calc(100% - ${toolWidth}px)` : void 0 }}>
           { (this.props.schema['ui:props']?.items as DTGComponentPropertySchema[])
             .map((schema, i) => this.renderAttributeItem(schema, i, index)) }
         </div>
-        <div className={styles['array-component-right-container']}>
+        <div className={styles['array-component-right-container']} style={{ width: toolWidth }}>
           <Button
             icon={<PlusCircleOutlined />}
             shape="circle"
             size="small"
+            disabled={!!(maxLength && (this.props.value || []).length >= maxLength)}
             onClick={() => {
               const currentValue = this.props.value?.slice() || [];
               currentValue.splice(index + 1, 0, { paramName: '', prefix: '', suffix: '' });
@@ -139,21 +144,27 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   }
 
   public render() {
+    const uiProps = this.props.schema['ui:props'] || {};
+    const maxLength = uiProps.max as number;
     return (
       <div className={styles['array-component-container']}>
         { (this.props.value || []).map((item, index) => this.renderFormItem(item, index)) }
-        <Button
-          icon={<PlusOutlined />}
-          onClick={() => {
-            const value: Record<string, unknown>[] = [
-              ...this.props.value || [],
-              {},
-            ];
-            this.props.onChange?.(value);
-          }}
-        >
-          添加
-        </Button>
+        { maxLength && (this.props.value || []).length >= maxLength
+          ? null
+          : (
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() => {
+                const value: Record<string, unknown>[] = [
+                  ...this.props.value || [],
+                  {},
+                ];
+                this.props.onChange?.(value);
+              }}
+            >
+              添加
+            </Button>
+          ) }
       </div>
     );
   }
