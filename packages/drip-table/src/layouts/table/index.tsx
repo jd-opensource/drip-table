@@ -34,6 +34,7 @@ import { type IDripTableContext } from '@/context';
 import DripTableWrapper from '@/wrapper';
 
 import { type TableLayoutComponentProps } from '../types';
+import HeaderCell, { HeaderCellProps } from './components/header-cell';
 
 import styles from './index.module.less';
 
@@ -77,6 +78,7 @@ export const columnGenerator = <
     title: columnSchema.title,
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
+    onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps['additionalProps']> } as React.TdHTMLAttributes<Element>),
     /*
      * TODO：
      * filters: schemaColumn.filters,
@@ -419,39 +421,69 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 : ''),
             [tableState.selectedRowKeys],
           )}
-          components={React.useMemo(() => (
-            tableInfo.schema.virtual
-              ? {
-                body: (rawData, { scrollbarSize, onScroll }) => (
-                  <VariableSizeGrid
-                    ref={refVirtualGrid}
-                    itemData={{
-                      columns: columns as TableColumnType<unknown>[],
-                      columnsDisplayControl,
-                      dataSource,
-                      rowKey,
-                      selectedRowKeys: tableState.selectedRowKeys,
-                      hoverRowKey,
-                      setHoverRowKey,
-                    }}
-                    className={styles['jfe-drip-table-virtual-list']}
-                    columnCount={columns.length}
-                    columnWidth={(index) => {
-                      const width = columnsWidth[index];
-                      return index === columns.length - 1 ? width - scrollbarSize - 1 : width;
-                    }}
-                    height={parseNumber(tableInfo.schema.scroll?.y, 500)}
-                    rowCount={rawData.length}
-                    rowHeight={() => tableInfo.schema.rowHeight ?? 50}
-                    width={rcTableWidth}
-                    onScroll={onScroll}
-                  >
-                    { VirtualCell }
-                  </VariableSizeGrid>
-                ),
-              }
-              : void 0),
+          components={React.useMemo(() => ({
+            header: {
+              cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps['additionalProps'] }) => {
+                const dataIndex = additionalProps?.columnSchema.dataIndex;
+                return (
+                  <th {...wrapperProps}>
+                    <HeaderCell
+                      additionalProps={
+                      additionalProps
+                        ? {
+                          ...additionalProps,
+                          filter: typeof dataIndex === 'string' ? tableState.filters[dataIndex] : void 0,
+                          onFilterChange: (filter) => {
+                            const filters = Object.fromEntries(Object.entries(tableState.filters).filter(([k]) => k !== dataIndex));
+                            if (typeof dataIndex === 'string' && filter?.length) {
+                              filters[dataIndex] = filter;
+                            }
+                            setTableState({ filters });
+                            tableProps.onFilterChange?.(filters, tableInfo);
+                            tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
+                          },
+                        }
+                        : void 0
+                      }
+                    >
+                      { wrapperProps.children }
+                    </HeaderCell>
+                  </th>
+                );
+              },
+            },
+            body: tableInfo.schema.virtual
+              ? (rawData, { scrollbarSize, onScroll }) => (
+                <VariableSizeGrid
+                  ref={refVirtualGrid}
+                  itemData={{
+                    columns: columns as TableColumnType<unknown>[],
+                    columnsDisplayControl,
+                    dataSource,
+                    rowKey,
+                    selectedRowKeys: tableState.selectedRowKeys,
+                    hoverRowKey,
+                    setHoverRowKey,
+                  }}
+                  className={styles['jfe-drip-table-virtual-list']}
+                  columnCount={columns.length}
+                  columnWidth={(index) => {
+                    const width = columnsWidth[index];
+                    return index === columns.length - 1 ? width - scrollbarSize - 1 : width;
+                  }}
+                  height={parseNumber(tableInfo.schema.scroll?.y, 500)}
+                  rowCount={rawData.length}
+                  rowHeight={() => tableInfo.schema.rowHeight ?? 50}
+                  width={rcTableWidth}
+                  onScroll={onScroll}
+                >
+                  { VirtualCell }
+                </VariableSizeGrid>
+              )
+              : void 0,
+          }),
           [
+            tableInfo,
             tableInfo.schema.virtual,
             columnsWidth,
             columns,
@@ -459,6 +491,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             tableInfo.schema.rowHeight,
             tableInfo.schema.columns,
             tableState.selectedRowKeys,
+            tableState.filters,
             hoverRowKey,
           ])}
           /*
