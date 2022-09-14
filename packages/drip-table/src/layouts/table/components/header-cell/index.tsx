@@ -45,74 +45,74 @@ const HeaderCell = React.memo((props: HeaderCellProps) => {
       <div className={styles['jfe-drip-table-th-cell-toolbox-title']}>
         { props.children }
       </div>
-      <div className={styles['jfe-drip-table-th-cell-toolbox-icon']}>
-        <RcTooltip
-          prefixCls="jfe-drip-table-tooltip"
-          transitionName="jfe-drip-table-motion-zoom-big"
-          placement="bottom"
-          trigger="click"
-          overlay={(
-            <div className={styles['jfe-drip-table-th-cell-toolbox-filters']}>
-              <ul className={styles['jfe-drip-table-th-cell-toolbox-filters-list']}>
-                {
-                  columnSchema.filters.map((f, i) => {
-                    const checked = filter?.includes(f.value);
-                    return (
-                      <li
-                        className={styles['jfe-drip-table-th-cell-toolbox-filters-item']}
-                        onClick={() => {
-                          const value = filter.filter(v => v !== f.value);
-                          if (!checked) {
-                            value.push(f.value);
-                          }
-                          setFilter(value);
-                        }}
-                      >
-                        <span className={styles['jfe-drip-table-th-cell-toolbox-filters-item-content']}>
-                          <Checkbox key={i} checked={checked} />
-                          <span className={styles['jfe-drip-table-th-cell-toolbox-filters-item-content-text']}>{ f.text }</span>
-                        </span>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-              <div className={styles['jfe-drip-table-th-cell-toolbox-filters-btns']}>
-                <button
-                  type="button"
-                  // ?className="ant-btn ant-btn-link ant-btn-sm"
-                  className={styles['jfe-drip-table-th-cell-toolbox-filters-btn-reset']}
-                  disabled={isEqual(additionalProps.filter || [], filter)}
-                  onClick={() => {
-                    setFilter(additionalProps.filter || []);
-                  }}
-                >
-                  <span>重置</span>
-                </button>
-                <button
-                  type="button"
-                  // ?className="ant-btn ant-btn-primary ant-btn-sm"
-                  className={styles['jfe-drip-table-th-cell-toolbox-filters-btn-sure']}
-                  onClick={() => { onFilterChange(filter); }}
-                >
-                  <span>确 定</span>
-                </button>
-              </div>
+      <RcTooltip
+        prefixCls="jfe-drip-table-tooltip"
+        transitionName="jfe-drip-table-motion-zoom-big"
+        placement="bottom"
+        trigger="click"
+        overlay={(
+          <div className={styles['jfe-drip-table-th-cell-toolbox-filters']}>
+            <ul className={styles['jfe-drip-table-th-cell-toolbox-filters-list']}>
+              {
+                columnSchema.filters.map((f, i) => {
+                  const checked = filter?.includes(f.value);
+                  return (
+                    <li
+                      className={styles['jfe-drip-table-th-cell-toolbox-filters-item']}
+                      onClick={() => {
+                        const value = filter.filter(v => v !== f.value);
+                        if (!checked) {
+                          value.push(f.value);
+                        }
+                        setFilter(value);
+                      }}
+                    >
+                      <span className={styles['jfe-drip-table-th-cell-toolbox-filters-item-content']}>
+                        <Checkbox key={i} checked={checked} />
+                        <span className={styles['jfe-drip-table-th-cell-toolbox-filters-item-content-text']}>{ f.text }</span>
+                      </span>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+            <div className={styles['jfe-drip-table-th-cell-toolbox-filters-btns']}>
+              <button
+                type="button"
+                // ?className="ant-btn ant-btn-link ant-btn-sm"
+                className={styles['jfe-drip-table-th-cell-toolbox-filters-btn-reset']}
+                disabled={isEqual(additionalProps.filter || [], filter)}
+                onClick={() => {
+                  setFilter(additionalProps.filter || []);
+                }}
+              >
+                <span>重置</span>
+              </button>
+              <button
+                type="button"
+                // ?className="ant-btn ant-btn-primary ant-btn-sm"
+                className={styles['jfe-drip-table-th-cell-toolbox-filters-btn-sure']}
+                onClick={() => { onFilterChange(filter); }}
+              >
+                <span>确 定</span>
+              </button>
             </div>
-          )}
-          onVisibleChange={(visible) => {
-            if (visible) {
-              setFilter(additionalProps.filter || []);
-            }
-          }}
-        >
+          </div>
+        )}
+        onVisibleChange={(visible) => {
+          if (visible) {
+            setFilter(additionalProps.filter || []);
+          }
+        }}
+      >
+        <div className={styles['jfe-drip-table-th-cell-toolbox-icon']}>
           <span role="img" aria-label="filter" className={styles['jfe-drip-table-th-cell-toolbox-icon-filter']}>
             <svg viewBox="64 64 896 896" focusable="false" data-icon="filter" width="1em" height="1em" fill="currentColor" aria-hidden="true">
               <path d="M349 838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V642H349v196zm531.1-684H143.9c-24.5 0-39.8 26.7-27.5 48l221.3 376h348.8l221.3-376c12.1-21.3-3.2-48-27.7-48z" />
             </svg>
           </span>
-        </RcTooltip>
-      </div>
+        </div>
+      </RcTooltip>
     </div>
   );
 });
