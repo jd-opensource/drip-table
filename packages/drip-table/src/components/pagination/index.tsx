@@ -56,7 +56,7 @@ const Pagination = React.memo((props: RcPaginationProps & { align?: 'left' | 'ce
       </a>
     )}
     jumpNextIcon={(
-      <a className={styles['jfe-drip-table-pagination-item-link']} one-link-mark="yes">
+      <a className={styles['jfe-drip-table-pagination-item-link']}>
         <div className={styles['jfe-drip-table-pagination-item-container']}>
           <span role="img" aria-label="double-right" className={styles['jfe-drip-table-pagination-item-link-icon']}>
             <svg viewBox="64 64 896 896" focusable="false" data-icon="double-right" width="1em" height="1em" fill="currentColor" aria-hidden="true">
