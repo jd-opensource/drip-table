@@ -11,6 +11,9 @@ import AjvKeywords from 'ajv-keywords';
 
 import { DripTableSchema, SchemaObject } from '@/types';
 
+import RecursiveCache from './cache';
+import { encodeJSON } from './json';
+
 export interface AjvOptions {
   /**
    * Schema 校验时是否允许多余的数据
@@ -18,7 +21,14 @@ export interface AjvOptions {
   additionalProperties?: boolean;
 }
 
-const createAjv = (): Ajv => AjvKeywords(new Ajv({ discriminator: true, strictTypes: false }));
+let AJV_CACHE: Ajv | undefined;
+
+const createAjv = (): Ajv => {
+  if (!AJV_CACHE) {
+    AJV_CACHE = AjvKeywords(new Ajv({ discriminator: true, strictTypes: false }));
+  }
+  return AJV_CACHE;
+};
 
 const getAjvErrorMessage = (
   ajv: Ajv,
@@ -344,6 +354,8 @@ export const validateDripTableRequiredProps = (props: unknown, options?: AjvOpti
   return null;
 };
 
+const DRIP_TABLE_AJV_PROPS_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();
+const DRIP_TABLE_AJV_PROPS_KEY_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();
 /**
  * 校验 DripTable Props 是否符合 Schema 要求
  * @param key DripTable Props key
@@ -351,7 +363,17 @@ export const validateDripTableRequiredProps = (props: unknown, options?: AjvOpti
  * @param options ajv 校验选项
  * @returns 校验失败提示内容，成功返回 null
  */
-export const validateDripTableProp = (key: string, value: unknown, options?: AjvOptions) => {
+export const validateDripTableProp = (key: string, value: unknown, options?: AjvOptions): string | null => {
+  // 检查缓存
+  if (DRIP_TABLE_AJV_PROPS_CACHE.has(key, value, options)) {
+    return DRIP_TABLE_AJV_PROPS_CACHE.get(key, value, options) || null;
+  }
+  const valueKey = encodeJSON(value);
+  const optionsKey = encodeJSON(options);
+  if (valueKey && optionsKey && DRIP_TABLE_AJV_PROPS_KEY_CACHE.has(key, valueKey, optionsKey)) {
+    return DRIP_TABLE_AJV_PROPS_KEY_CACHE.get(key, valueKey, optionsKey) || null;
+  }
+  // 缓存未命中
   const ajv = createAjv();
   const schemas = getDripTablePropsAjvSchema(options);
   // 校验指定的 Props Schema
@@ -365,23 +387,28 @@ export const validateDripTableProp = (key: string, value: unknown, options?: Ajv
   if (!schema && !options?.additionalProperties) {
     return `props must NOT have additional properties, additionalProperty: "${key}"`;
   }
+  let res: string | null = null;
   if (schema && !ajv.validate(schema, value)) {
-    return getAjvErrorMessage(ajv, { dataVar: `props.${key}`, separator: '; ' });
-  }
-  // 递归校验子表 Schema
-  if (key === 'schema') {
+    res = getAjvErrorMessage(ajv, { dataVar: `props.${key}`, separator: '; ' });
+  } else if (key === 'schema') {
+    // 递归校验子表 Schema
     let subtable = (value as DripTableSchema).subtable;
     let prefix = 'props.schema.subtable';
     while (subtable) {
       if (!ajv.validate(schemas.subtable, subtable)) {
-        return getAjvErrorMessage(ajv, { dataVar: prefix, separator: '; ' });
+        res = getAjvErrorMessage(ajv, { dataVar: prefix, separator: '; ' });
+        break;
       }
       subtable = subtable.subtable;
       prefix += '.subtable';
     }
   }
-  return null;
+  DRIP_TABLE_AJV_PROPS_CACHE.set(key, value, options, res);
+  DRIP_TABLE_AJV_PROPS_KEY_CACHE.set(key, valueKey, optionsKey, res);
+  return res;
 };
+
+const DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableColumnSchema>>();
 
 /**
  * 校验 DripTableColumnSchema 是否符合 Schema 要求
@@ -390,7 +417,18 @@ export const validateDripTableProp = (key: string, value: unknown, options?: Ajv
  * @param options ajv 校验选项
  * @returns 校验失败提示内容，成功返回 null
  */
-export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObject, options?: AjvOptions) => {
+export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObject, options?: AjvOptions): string | null => {
+  // 检查缓存
+  if (DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.has(data, schema, options)) {
+    return DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.get(data, schema, options) || null;
+  }
+  const dataKey = encodeJSON(data);
+  const schemaKey = encodeJSON(schema);
+  const optionsKey = encodeJSON(options);
+  if (dataKey && schemaKey && optionsKey && DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.has(dataKey, schemaKey, optionsKey)) {
+    return DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.get(dataKey, schemaKey, optionsKey) || null;
+  }
+  // 缓存未命中
   const ajv = createAjv();
   const additionalProperties = options?.additionalProperties ?? false;
   const dripTableColumnSchema: SchemaObject = {
@@ -441,8 +479,10 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
     ].map(_ => _),
     additionalProperties,
   };
-  if (!ajv.validate(dripTableColumnSchema, data)) {
-    return getAjvErrorMessage(ajv, { dataVar: 'column', separator: '; ' });
-  }
-  return null;
+  const res = ajv.validate(dripTableColumnSchema, data)
+    ? null
+    : getAjvErrorMessage(ajv, { dataVar: 'column', separator: '; ' });
+  DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.set(data, schema, options, res);
+  DRIP_TABLE_AJV_COLUMN_SCHEMA_RESULT_CACHE.set(dataKey, schemaKey, optionsKey, res);
+  return res;
 };
