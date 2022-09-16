@@ -495,9 +495,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             tableState.filters,
             hoverRowKey,
           ])}
-          /*
-           * TODO：loading: props.loading,
-           */
           showHeader={tableProps.schema.showHeader}
           sticky={
             tableProps.schema.sticky

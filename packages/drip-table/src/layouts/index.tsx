@@ -19,6 +19,7 @@ import {
 import { validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import ErrorBoundary from '@/components/error-boundary';
 import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
+import Spin from '@/components/spin';
 import { useState, useTable } from '@/hooks';
 
 import CardLayout from './card';
@@ -118,71 +119,68 @@ const DripTableLayout = <
     [props.schema.footer],
   );
 
-  return (
-    <ErrorBoundary driver={props.driver}>
-      <div
-        className={classnames(props.className, props.schema.className)}
-        style={Object.assign({}, props.style, props.schema.style)}
-        ref={rootRef}
-      >
-        { tableState.layout === 'table'
-        && (
+  const headerNode = header
+    ? (
+      <GenericRender
+        style={header.style}
+        schemas={header.schemas}
+        tableProps={props}
+        tableState={tableState}
+        setTableState={setTableState}
+      />
+    )
+    : null;
+
+  const footerNode = footer
+    ? (
+      <GenericRender
+        style={footer.style}
+        schemas={footer.schemas}
+        tableProps={props}
+        tableState={tableState}
+        setTableState={setTableState}
+      />
+    )
+    : null;
+
+  const layoutNode = React.useMemo(() => {
+    if (tableState.layout === 'table') {
+      return (
         <TableLayout
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
           setTableState={setTableState}
-          header={
-            header
-              ? (
-                <GenericRender
-                  style={header.style}
-                  schemas={header.schemas}
-                  tableProps={props}
-                  tableState={tableState}
-                  setTableState={setTableState}
-                />
-              )
-              : null
-          }
-          footer={
-            footer
-              ? (
-                <GenericRender
-                  style={footer.style}
-                  schemas={footer.schemas}
-                  tableProps={props}
-                  tableState={tableState}
-                  setTableState={setTableState}
-                />
-              )
-              : null
-          }
+          header={headerNode}
+          footer={footerNode}
         />
-        ) }
-        { tableState.layout === 'card'
-        && (
-          <CardLayout
-            header={
-              header
-                ? (
-                  <GenericRender
-                    style={header.style}
-                    schemas={header.schemas}
-                    tableProps={props}
-                    tableState={tableState}
-                    setTableState={setTableState}
-                  />
-                )
-                : null
-            }
-            tableProps={props}
-            tableInfo={tableInfo}
-            tableState={tableState}
-            setTableState={setTableState}
-          />
-        ) }
-      </div>
+      );
+    }
+    if (tableState.layout === 'card') {
+      return (
+        <CardLayout
+          tableProps={props}
+          tableInfo={tableInfo}
+          tableState={tableState}
+          setTableState={setTableState}
+          header={headerNode}
+        />
+      );
+    }
+    return null;
+  }, [props, tableInfo, tableState, setTableState, headerNode, footerNode]);
+
+  return (
+    <ErrorBoundary driver={props.driver}>
+      <Spin spinning={props.loading}>
+        <div
+          className={classnames(props.className, props.schema.className)}
+          style={Object.assign({}, props.style, props.schema.style)}
+          ref={rootRef}
+        >
+          { layoutNode }
+        </div>
+      </Spin>
     </ErrorBoundary>
   );
 };
