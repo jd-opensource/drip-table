@@ -170,6 +170,7 @@ export interface DripTableSchema<
     showLessItems?: boolean;
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
+    pageSizeOptions?: string[] | number[];
     hideOnSinglePage?: boolean;
   };
   size?: 'small' | 'middle' | 'large' | 'default';

@@ -186,6 +186,12 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
                 showLessItems: { type: 'boolean' },
                 showQuickJumper: { type: 'boolean' },
                 showSizeChanger: { type: 'boolean' },
+                pageSizeOptions: {
+                  anyOf: [
+                    { type: 'array', items: { type: 'number' } },
+                    { type: 'array', items: { type: 'string' } },
+                  ],
+                },
                 hideOnSinglePage: { type: 'boolean' },
               },
             },

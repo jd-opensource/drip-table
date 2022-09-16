@@ -69,6 +69,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     position: 'bottomRight',
     showQuickJumper: true,
     showSizeChanger: true,
+    pageSizeOptions: [3, 5, 10, 20, 50, 100],
   },
   columns: [
     {

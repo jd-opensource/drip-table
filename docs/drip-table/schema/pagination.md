@@ -11,6 +11,7 @@
     showLessItems?: boolean;
     showQuickJumper?: boolean;
     showSizeChanger?: boolean;
+    pageSizeOptions?: string[] | number[];
     hideOnSinglePage?: boolean;
     showTotal?: boolean | string;
   };
@@ -26,6 +27,7 @@
     showLessItems: undefined,
     showQuickJumper: undefined,
     showSizeChanger: undefined,
+    pageSizeOptions: undefined,
     hideOnSinglePage: undefined,
     showTotal: undefined,
   }
@@ -51,6 +53,7 @@ const schema = {
     showLessItems: true,
     showQuickJumper: true,
     showSizeChanger: true,
+    pageSizeOptions: [3, 5, 10, 20, 50],
     hideOnSinglePage: true,
     showTotal: 'Total: {{total}}',
   },

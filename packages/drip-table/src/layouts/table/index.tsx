@@ -386,6 +386,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         showLessItems={tableInfo.schema.pagination?.showLessItems}
         showQuickJumper={tableInfo.schema.pagination?.showQuickJumper}
         showSizeChanger={tableInfo.schema.pagination?.showSizeChanger}
+        pageSizeOptions={tableInfo.schema.pagination?.pageSizeOptions}
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
         onChange={(page, pageSize) => {
           const pagination = { ...tableState.pagination, current: page, pageSize };
