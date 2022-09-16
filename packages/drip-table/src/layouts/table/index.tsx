@@ -79,11 +79,6 @@ export const columnGenerator = <
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
     onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps['additionalProps']> } as React.TdHTMLAttributes<Element>),
-    /*
-     * TODO：
-     * filters: schemaColumn.filters,
-     * defaultFilteredValue: schemaColumn.defaultFilteredValue,
-     */
   };
   if (columnSchema.description) {
     column.title = (

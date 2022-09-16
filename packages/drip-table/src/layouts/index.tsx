@@ -59,6 +59,7 @@ const DripTableLayout = <
 
   React.useEffect(() => {
     setTableState(state => ({
+      filters: Object.fromEntries(props.schema.columns.map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
       displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),
     }));
   }, [props.displayColumnKeys]);
