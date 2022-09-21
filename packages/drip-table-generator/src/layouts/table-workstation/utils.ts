@@ -1,0 +1,61 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : qianjing29 (qianjing29@jd.com)
+ * @modifier : qianjing29 (qianjing29@jd.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+import { DripTableBuiltInColumnSchema, DripTableColumnSchema } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
+
+import { DripTableGeneratorContext } from '@/context';
+
+export const updateColumnItemByPath = <
+CustomColumnSchema extends DripTableColumnSchema = DripTableColumnSchema,
+>(
+    column: NonNullable<DripTableGeneratorContext<CustomColumnSchema>['currentColumn']>,
+    path: number[],
+    schema: DripTableColumnSchema | DripTableBuiltInColumnSchema | null,
+  ) => {
+  const newSchema = cloneDeep(schema);
+  const [key, ...rest] = path;
+  if (column.component === 'group') {
+    if (!column.options.items) {
+      column.options.items = [];
+    }
+    const items = column.options.items as (DripTableColumnSchema | DripTableBuiltInColumnSchema | null)[];
+    if (rest.length === 0) {
+      items[key] = newSchema;
+    } else {
+      column = updateColumnItemByPath(column[key], rest, newSchema);
+    }
+  }
+  return column;
+};
+
+export const getColumnItemByPath = <
+CustomColumnSchema extends DripTableColumnSchema = DripTableColumnSchema,
+>(column: DripTableGeneratorContext<CustomColumnSchema>['currentColumn'], path: number[]) => {
+  const [key, ...rest] = path;
+  if (!column) {
+    return null;
+  }
+  const newColumn = cloneDeep(column);
+  if (newColumn.component === 'group') {
+    const items = newColumn.options.items as DripTableGeneratorContext<CustomColumnSchema>['columns'] || [];
+    if (rest.length > 0) {
+      return getColumnItemByPath(items[key], rest);
+    }
+    return typeof key === 'number' ? items[key] : null;
+  }
+  return null;
+};
+
+export const getLength = (value: string) => {
+  let length = 0;
+  for (const element of value) {
+    length += (/[\u4E00-\u9FA5]/ui).test(element) ? 2 : 1;
+  }
+  return length;
+};

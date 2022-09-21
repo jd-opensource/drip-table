@@ -32,7 +32,7 @@ const EditableTableHeader = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: EditableTableHeaderProps<RecordType, ExtraOptions>) => {
-  const { columns, previewDataSource } = React.useContext(GeneratorContext);
+  const context = React.useContext(GeneratorContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
   const [currentCell, setCurrentCell] = React.useState<DripTableGenericRenderElement>();
 
@@ -88,8 +88,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             className={classNames(styles['generic-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
             slotType={config.slot}
             driver={props.driver}
-            schema={{ ...globalConfigs, columns: columns.map(item => ({ ...filterAttributes(item, 'index') })) } as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
-            dataSource={previewDataSource as DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[] || []}
+            schema={{ ...globalConfigs, columns: context.columns.map(item => ({ ...filterAttributes(item, 'index') })) } as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
+            dataSource={context.previewDataSource as DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[] || []}
             onSearch={() => void 0}
           />
         );
@@ -158,7 +158,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     }
     if (typeof showTotal === 'string') {
       return (total, range) => String(showTotal ?? '')
-        .replace('{{total}}', String(previewDataSource.length))
+        .replace('{{total}}', String(context.previewDataSource.length))
         .replace('{{range[0]}}', String(range?.[0] ?? ''))
         .replace('{{range[1]}}', String(range?.[1] ?? ''));
     }
@@ -166,15 +166,16 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   };
   return (
     <GeneratorContext.Consumer>
-      { ({ globalConfigs, setState }) => {
+      { ({ globalConfigs, previewDataSource, setState }) => {
         const paginationInHeader = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('top');
         return (
-          <div>
+          <div style={{ marginBottom: '12px' }}>
             { paginationInHeader && (
             <Pagination
               style={{ textAlign: typeof globalConfigs.pagination === 'object' ? textAlignMapper[globalConfigs.pagination?.position || ''] : void 0 }}
               {...filterAttributes(globalConfigs.pagination, 'showTotal')}
               showTotal={globalConfigs.pagination ? renderShowTotal(globalConfigs.pagination.showTotal) : void 0}
+              total={previewDataSource.length}
             />
             ) }
             <div className={styles['draggable-container']} style={{ padding: '8px 0 0 8px', overflowX: 'auto' }}>

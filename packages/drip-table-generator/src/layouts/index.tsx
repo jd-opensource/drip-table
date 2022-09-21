@@ -22,7 +22,7 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (
   <div style={props.style}>
-    { props.showToolLayout === false ? null : <Toolbar style={props.toolbarStyle} /> }
+    { props.showToolLayout === false ? null : <Toolbar style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }
     <div className={styles.wrapper}>
       <ComponentsBar customComponentPanel={props.customComponentPanel} />
       <TableWorkStation

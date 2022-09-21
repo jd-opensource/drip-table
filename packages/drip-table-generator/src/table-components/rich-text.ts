@@ -15,7 +15,12 @@ export default {
     {
       name: 'options.tooltip',
       group: '组件属性',
-      'ui:title': '设置tooltip内容(支持{{rec}}模版写法)',
+      'ui:title': '设置提示内容',
+      'ui:description': {
+        title: '(支持{{rec}}模版写法)',
+        type: 'icon',
+        trigger: 'hover',
+      },
       'ui:type': 'text',
       'ui:props': {
         checkedChildren: '是',
