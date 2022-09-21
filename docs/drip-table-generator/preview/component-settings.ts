@@ -17,6 +17,7 @@ const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPan
           'ui:title': '字段选择',
           'ui:type': 'select',
           'ui:props': {
+            style: { width: 120 },
             optionsParam: '$$FIELD_KEY_OPTIONS$$',
           },
           type: 'string',

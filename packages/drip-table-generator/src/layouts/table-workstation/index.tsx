@@ -33,10 +33,11 @@ const TableWorkStation = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: TableWorkStationProps<RecordType, ExtraOptions>) => {
-  const states = React.useContext(GeneratorContext);
+  const context = React.useContext(GeneratorContext);
+  const tableWrapper = React.useRef<HTMLDivElement>(null);
   return (
-    <div className={styles['generator-workstation']}>
-      { states.mode === 'edit'
+    <div className={styles['generator-workstation']} ref={tableWrapper}>
+      { context.mode === 'edit'
         ? (
           <React.Fragment>
             <EditableTableHeader driver={props.driver} slots={props.slots} />
@@ -44,6 +45,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               customComponentPanel={props.customComponentPanel}
               customComponents={props.customComponents}
               driver={props.driver}
+              onDropComponent={() => {
+                setTimeout(() => {
+                  const scrollWidth = tableWrapper.current?.scrollWidth || 0;
+                  tableWrapper.current?.scroll({ left: scrollWidth });
+                }, 100);
+              }}
             />
             <EditableTableFooter driver={props.driver} slots={props.slots} />
           </React.Fragment>
