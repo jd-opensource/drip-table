@@ -10,6 +10,8 @@ import { DTGComponentPropertySchema } from '@/typing';
 const AlignConfigs = {
   'ui:type': 'radio',
   'ui:props': {
+    mode: 'button',
+    buttonStyle: 'solid',
     options: [
       { label: '左对齐', value: 'flex-start' },
       { label: '右对齐', value: 'flex-end' },

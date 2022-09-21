@@ -24,7 +24,7 @@ export interface DripTableGeneratorContext<ExtraColumnSchema extends DripTableCo
   /** 中间工作区域属于编辑（edit）模式还是预览（preview）模式 */
   mode: 'edit' | 'preview';
   /** 属性栏类型，根据类型展示不同的抽屉 */
-  drawerType?: 'datasource' | 'global' | 'column';
+  drawerType?: 'datasource' | 'global' | 'column' | 'column-item';
   /** 更新 Context 方法 */
   setState: (states: Partial<Omit<DripTableGeneratorContext<ExtraColumnSchema>, 'setState'>>, callback?: (states?: Omit<DripTableGeneratorContext<ExtraColumnSchema>, 'setState'>) => void) => void;
 }

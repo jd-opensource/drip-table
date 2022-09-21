@@ -34,10 +34,12 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:title': '对齐方式',
     'ui:type': 'radio',
     'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
       options: [
-        { label: '居中对齐', value: 'center' },
-        { label: '靠左对齐', value: 'left' },
-        { label: '靠右对齐', value: 'right' },
+        { label: '居中', value: 'center' },
+        { label: '左对齐', value: 'left' },
+        { label: '右对齐', value: 'right' },
       ],
     },
     type: 'string',
@@ -52,6 +54,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     type: 'boolean',
   },
 ];
@@ -86,6 +89,7 @@ export const dataIndexColumnAttrComponents: (
     'ui:type': 'auto-complete',
     'ui:props': {
       optionsParam: '$$FIELD_KEY_OPTIONS$$',
+      style: { width: 120 },
     },
     type: 'string',
     visible: directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'direct'),
@@ -100,6 +104,7 @@ export const dataIndexColumnAttrComponents: (
       optionsParam: '$$FIELD_KEY_OPTIONS$$',
       mode: 'tags',
       tokenSeparators: ['.', ',', '，'],
+      style: { width: 120 },
     },
     type: 'string',
     default: dataIndex,
