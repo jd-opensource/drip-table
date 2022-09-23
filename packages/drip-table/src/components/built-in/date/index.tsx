@@ -37,17 +37,14 @@ export type DTCDateColumnSchema = DripTableColumnSchema<'date-picker', {
 }>;
 
 interface DTCDateState {
-  windowInnerWidth: number;
   cellLeft: number;
   cellTop: number;
   cellWidth: number;
-  cellHeight: number;
   cellPaddingLeft: number;
   cellPaddingRight: number;
   cellPaddingTop: number;
   cellPaddingBottom: number;
   editState: 'none' | 'entering' | 'editing';
-  editHeight: number;
 }
 
 interface DTCDateProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCDateColumnSchema> { }
@@ -77,17 +74,14 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
   };
 
   public state: DTCDateState = {
-    windowInnerWidth: globalThis.window?.innerWidth || 0,
     cellLeft: 0,
     cellTop: 0,
     cellWidth: 0,
-    cellHeight: 0,
     cellPaddingLeft: 0,
     cellPaddingRight: 0,
     cellPaddingTop: 0,
     cellPaddingBottom: 0,
     editState: 'none',
-    editHeight: 0,
   };
 
   private get configured() {
@@ -97,10 +91,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       return true;
     }
     if (options.mode === 'range') {
-      if (options.parts) {
-        return options.parts.length === 2;
-      }
-      return false;
+      return true;
     }
     return false;
   }
@@ -115,11 +106,20 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       return indexValue(data, dataIndex, '');
     }
     if (options.mode === 'range') {
-      const { parts } = options;
-      return (parts || [])
-        .map((config, i) => indexValue(data, config.dataIndex, defaultValue));
+      return indexValue(data, dataIndex, '');
     }
     return defaultValue;
+  }
+
+  public componentDidUpdate() {
+    if (this.state.editState === 'entering') {
+      this.setState(
+        {
+          editState: 'editing',
+        },
+        () => this.focusEdit(),
+      );
+    }
   }
 
   private onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
@@ -138,8 +138,22 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
   private componentUuid = `dtc-${uuidv4()}`;
   private $main = React.createRef<HTMLDivElement>();
 
+  private focusEdit = () => {
+    const $editPopup = document.querySelector(`#${this.componentUuid}-popup`);
+    if (!$editPopup) {
+      return;
+    }
+    const $editTextarea = $editPopup.querySelector(`.${styles['edit-textarea']}`);
+    if (!$editTextarea || !($editTextarea instanceof HTMLTextAreaElement)) {
+      return;
+    }
+    const end = $editTextarea.value.length;
+    $editTextarea.setSelectionRange(end, end);
+    $editTextarea.focus();
+  };
+
   private onDoubleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!this.props.editable || this.props.schema.options.mode === 'range') {
+    if (!this.props.editable) {
       return;
     }
     if (this.state.editState !== 'none') {
@@ -156,20 +170,17 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     this.setState({
       cellLeft: cellRect.left,
       cellTop: cellRect.top,
-      cellHeight: cellRect.height,
       cellPaddingLeft: innerRect.left - cellRect.left,
       cellPaddingRight: cellRect.right - innerRect.right,
       cellPaddingTop: innerRect.top - cellRect.top,
       cellPaddingBottom: cellRect.bottom - innerRect.bottom,
-      editHeight: cellRect.height,
     });
   };
 
   private renderEditDate() {
     const { options } = this.props.schema;
     const selectMinWidth = 100;
-    const selectMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
-    const selectFinalWidth = Math.min(Math.max(this.state.cellWidth, selectMinWidth), selectMaxWidth);
+    const selectFinalWidth = Math.max(Math.max(this.state.cellWidth, selectMinWidth), 210);
     let justifyContent = 'center';
     if (this.props.schema.verticalAlign === 'top' || this.props.schema.verticalAlign === 'stretch') {
       justifyContent = 'flex-start';
@@ -180,13 +191,18 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div
           className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
-          style={{ width: selectFinalWidth, height: this.state.cellHeight, justifyContent }}
+          style={{ width: selectFinalWidth, height: 300, justifyContent }}
         >
           <Picker.DatePicker
+            autoFocus
             date={this.value}
             onChange={(value) => {
               if (this.props.preview) { return; }
               this.props.onChange?.(moment(value).format(options.format));
+              this.setState({ editState: 'none' });
+            }}
+            style={{ width: 170 }}
+            onBlur={() => {
               this.setState({ editState: 'none' });
             }}
           />
@@ -197,19 +213,24 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div
           className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
-          style={{ width: 300, height: this.state.cellHeight, justifyContent }}
+          style={{ width: 380, height: 300, justifyContent }}
         >
           <Picker.DateRangePicker
             date={this.value}
-            style={Object.assign({}, { width: 300 })}
+            autoFocus
+            style={Object.assign({}, { width: 340 })}
             format={options.format}
             onChange={(value, dataString) => {
               if (this.props.preview) { return; }
               this.setState({ editState: 'none' });
               if (value) {
                 // 暂时不支持修改2个dataIndex的值
+                this.props.onChange?.([moment(value[0]).format(options.format), moment(value[1]).format(options.format)]);
                 this.setState({ editState: 'none' });
               }
+            }}
+            onBlur={() => {
+              this.setState({ editState: 'none' });
             }}
           />
         </div>
@@ -234,9 +255,6 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (!this.props.editable) {
       return null;
     }
-    const selectMinWidth = 100;
-    const selectMaxWidth = this.state.windowInnerWidth - this.state.cellLeft - 17;
-    const selectFinalWidth = Math.min(Math.max(this.state.cellWidth, selectMinWidth), selectMaxWidth);
     return (
       <React.Fragment>
         <div className={styles['edit-padding-left']} style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
@@ -253,7 +271,6 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
               >
                 <div className={styles['edit-popup']} id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
                   <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
-                    <div className={styles['edit-popup-bg']} style={{ width: selectFinalWidth, height: this.state.editHeight }} />
                     { this.renderEditDate() }
                   </div>
                 </div>
@@ -273,16 +290,20 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       return <Alert message="未正确配置字段" showIcon type="error" />;
     }
     return (
-      <div
-        ref={this.$main}
-        className={classNames(styles.main, { [styles.editable]: this.props.editable })}
-        tabIndex={0}
-        onDoubleClick={this.onDoubleClick}
-        onKeyDown={this.onKeyDown}
-      >
-        { Array.isArray(this.value) ? this.value.map(v => moment(v).format(format)).join(' - ') : moment(this.value).format(format) }
-        { this.renderEdit() }
-      </div>
+      <React.Fragment>
+        <div
+          ref={this.$main}
+          className={classNames(styles.main, { [styles.editable]: this.props.editable })}
+          tabIndex={0}
+          onDoubleClick={this.onDoubleClick}
+          onKeyDown={this.onKeyDown}
+        >
+          { Array.isArray(this.value) ? this.value.map(v => moment(v).format(format)).join(' - ') : moment(this.value).format(format) }
+          { this.renderEdit() }
+        </div>
+        <div className={styles['focus-border']} />
+      </React.Fragment>
+
     );
   }
 }

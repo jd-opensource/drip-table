@@ -364,6 +364,12 @@ const GenericRender = <
           >
             相册模式
           </Menu.Item>
+          <Menu.Item
+            key="calendar"
+            icon={<span style={{ opacity: tableState.layout === 'calendar' ? 1 : 0 }}><CheckOutlined /></span>}
+          >
+            日历模式
+          </Menu.Item>
         </Menu>
       );
       return (
@@ -375,7 +381,7 @@ const GenericRender = <
           onVisibleChange={(v) => { setLayoutSelectorVisible(v); }}
         >
           <Button type={config.selectorButtonType}>
-            { { table: '列表模式', card: '相册模式' }[tableState.layout] || '布局模式' }
+            { { table: '列表模式', card: '相册模式', calendar: '日历模式' }[tableState.layout] || '布局模式' }
             <DownOutlined />
           </Button>
         </Dropdown>
