@@ -206,11 +206,16 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [initialPagination?.pageSize]);
 
   const dataSource = React.useMemo(
-    () => tableProps.dataSource.map((item, index) => ({
-      ...item,
-      [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
-    })),
-    [tableProps.dataSource, rowKey],
+    () => {
+      const ds = tableProps.dataSource.length > tableState.pagination.pageSize
+        ? tableProps.dataSource.slice(tableState.pagination.pageSize * (tableState.pagination.current - 1), tableState.pagination.pageSize * tableState.pagination.current - 1)
+        : tableProps.dataSource;
+      return ds.map((item, index) => ({
+        ...item,
+        [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
+      }));
+    },
+    [tableProps.dataSource, rowKey, tableState.pagination.current, tableState.pagination.pageSize],
   );
 
   const rowSelectionDisplayControl = React.useMemo(
