@@ -330,6 +330,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [filteredColumns, columnsWidth],
   );
 
+  const scroll = React.useMemo(() => {
+    const sc = Object.assign({}, tableProps.schema.scroll);
+    const scrollX = columnsWidth.reduce((v, w) => v + w, 0);
+    if (sc.x === void 0 && rcTableWidth < scrollX) {
+      sc.x = scrollX;
+    }
+    return sc;
+  }, [tableProps.schema.scroll, columnsWidth, rcTableWidth]);
+
   const refVirtualGrid = React.useRef<VariableSizeGrid>(null);
   const resetVirtualGrid = () => {
     refVirtualGrid.current?.resetAfterIndices({
@@ -419,234 +428,236 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <React.Fragment>
       { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
-      <ResizeObserver onResize={({ width }) => { setRcTableWidth(width); }}>
-        <RcTable<RecordType>
-          prefixCls="jfe-drip-table"
-          className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {
-            [styles['jfe-drip-table-small']]: tableProps.schema.size === 'small',
-            [styles['jfe-drip-table-middle']]: tableProps.schema.size === 'middle',
-            [styles['jfe-drip-table--bordered']]: tableProps.schema.bordered,
-          })}
-          style={tableProps.schema.innerStyle}
-          rowKey={rowKey}
-          columns={columns}
-          data={dataSource}
-          scroll={tableProps.schema.scroll}
-          tableLayout={tableProps.schema.tableLayout}
-          rowClassName={React.useMemo(
-            () =>
-              record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)
-                ? styles['jfe-drip-table-row-selected']
-                : ''),
-            [tableState.selectedRowKeys],
-          )}
-          components={React.useMemo(() => ({
-            header: {
-              cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps['additionalProps'] }) => {
-                const dataIndex = additionalProps?.columnSchema.dataIndex;
-                return (
-                  <th {...wrapperProps}>
-                    <HeaderCell
-                      additionalProps={
-                      additionalProps
-                        ? {
-                          ...additionalProps,
-                          filter: typeof dataIndex === 'string' ? tableState.filters[dataIndex] : void 0,
-                          onFilterChange: (filter) => {
-                            const filters = Object.fromEntries(Object.entries(tableState.filters).filter(([k]) => k !== dataIndex));
-                            if (typeof dataIndex === 'string' && filter?.length) {
-                              filters[dataIndex] = filter;
-                            }
-                            setTableState({ filters });
-                            tableProps.onFilterChange?.(filters, tableInfo);
-                            tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
-                          },
+      <ResizeObserver onResize={React.useMemo(() => ({ width }) => { setRcTableWidth(width); }, [setRcTableWidth])}>
+        <div className={styles['jfe-drip-table-resize-observer']}>
+          <RcTable<RecordType>
+            prefixCls="jfe-drip-table"
+            className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {
+              [styles['jfe-drip-table-small']]: tableProps.schema.size === 'small',
+              [styles['jfe-drip-table-middle']]: tableProps.schema.size === 'middle',
+              [styles['jfe-drip-table--bordered']]: tableProps.schema.bordered,
+            })}
+            style={tableProps.schema.innerStyle}
+            rowKey={rowKey}
+            columns={columns}
+            data={dataSource}
+            scroll={scroll}
+            tableLayout={tableProps.schema.tableLayout}
+            rowClassName={React.useMemo(
+              () =>
+                record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)
+                  ? styles['jfe-drip-table-row-selected']
+                  : ''),
+              [tableState.selectedRowKeys],
+            )}
+            components={React.useMemo(() => ({
+              header: {
+                cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps['additionalProps'] }) => {
+                  const dataIndex = additionalProps?.columnSchema.dataIndex;
+                  return (
+                    <th {...wrapperProps}>
+                      <HeaderCell
+                        additionalProps={
+                        additionalProps
+                          ? {
+                            ...additionalProps,
+                            filter: typeof dataIndex === 'string' ? tableState.filters[dataIndex] : void 0,
+                            onFilterChange: (filter) => {
+                              const filters = Object.fromEntries(Object.entries(tableState.filters).filter(([k]) => k !== dataIndex));
+                              if (typeof dataIndex === 'string' && filter?.length) {
+                                filters[dataIndex] = filter;
+                              }
+                              setTableState({ filters });
+                              tableProps.onFilterChange?.(filters, tableInfo);
+                              tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
+                            },
+                          }
+                          : void 0
                         }
-                        : void 0
-                      }
-                    >
-                      { wrapperProps.children }
-                    </HeaderCell>
-                  </th>
-                );
+                      >
+                        { wrapperProps.children }
+                      </HeaderCell>
+                    </th>
+                  );
+                },
               },
-            },
-            body: tableInfo.schema.virtual
-              ? (rawData, { scrollbarSize, onScroll }) => (
-                <VariableSizeGrid
-                  ref={refVirtualGrid}
-                  itemData={{
-                    columns: columns as TableColumnType<unknown>[],
-                    columnsDisplayControl,
-                    dataSource,
-                    rowKey,
-                    selectedRowKeys: tableState.selectedRowKeys,
-                    hoverRowKey,
-                    setHoverRowKey,
-                  }}
-                  className={styles['jfe-drip-table-virtual-list']}
-                  columnCount={columns.length}
-                  columnWidth={(index) => {
-                    const width = columnsWidth[index];
-                    return index === columns.length - 1 ? width - scrollbarSize - 1 : width;
-                  }}
-                  height={parseNumber(tableInfo.schema.scroll?.y, 500)}
-                  rowCount={rawData.length}
-                  rowHeight={() => tableInfo.schema.rowHeight ?? 50}
-                  width={rcTableWidth}
-                  onScroll={onScroll}
-                >
-                  { VirtualCell }
-                </VariableSizeGrid>
-              )
-              : void 0,
-          }),
-          [
-            tableInfo,
-            tableInfo.schema.virtual,
-            columnsWidth,
-            columns,
-            tableInfo.schema.scroll?.y,
-            tableInfo.schema.rowHeight,
-            tableInfo.schema.columns,
-            tableState.selectedRowKeys,
-            tableState.filters,
-            hoverRowKey,
-          ])}
-          showHeader={tableProps.schema.showHeader}
-          sticky={
-            tableProps.schema.sticky
-              ? tableProps.sticky ?? true
-              : false
-          }
-          title={tableProps.title}
-          footer={tableProps.footer}
-          expandable={React.useMemo(
-            () => {
-              const subtable = tableProps.schema.subtable;
-              const expandedRowRender = tableProps.expandedRowRender;
-              const rowExpandable = tableProps.rowExpandable;
-              if (subtable || expandedRowRender) {
-                return {
-                  expandIcon: (expandIconProps) => {
-                    if (!expandIconProps.expandable) {
-                      return null;
-                    }
-                    return (
-                      <div className={styles['jfe-drip-table-row-expand-icon-wrapper']}>
-                        <button
-                          type="button"
-                          className={classNames(
-                            styles['jfe-drip-table-row-expand-icon'],
-                            expandIconProps.expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
-                          )}
-                          aria-label={expandIconProps.expanded ? '关闭行' : '展开行'}
-                          onClick={(e) => { expandIconProps.onExpand(expandIconProps.record, e); }}
-                        />
-                      </div>
-                    );
-                  },
-                  expandedRowRender: (record, index) => {
-                    const parentTableInfo: typeof tableInfo = { ...tableInfo, record };
-                    let subtableEl: React.ReactNode = null;
-                    if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
-                      const subtableProps = Object.assign(
-                        {},
-                        DEFAULT_SUBTABLE_PROPS,
-                        tableProps.subtableProps
-                          ? Object.assign(
-                            {},
-                            ...[
-                              ...tableProps.subtableProps.filter(sp => sp.default) || [],
-                              ...subtable ? tableProps.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
-                              ...tableProps.subtableProps.filter(
-                                sp => sp.recordKeys
-                            && sp.recordKeys.length === 1
-                            && sp.recordKeys[0] === record[rowKey],
-                              ) || [],
-                            ].map(sp => sp.properties),
-                          )
-                          : void 0,
-                      );
-                      const subtableSchema = Object.fromEntries(
-                        Object.entries(subtable)
-                          .filter(([key]) => key !== 'dataSourceKey'),
-                      ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
-                      subtableEl = (
-                        <DripTableWrapper<RecordType, ExtraOptions>
-                          {...tableProps}
-                          {...subtableProps}
-                          schema={subtableSchema}
-                          dataSource={record[subtable.dataSourceKey] as RecordType[]}
-                          title={
-                          tableProps.subtableTitle
-                            ? subtableData => tableProps.subtableTitle?.(
-                              record,
-                              index,
-                              { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                            )
-                            : void 0
-                        }
-                          footer={
-                          tableProps.subtableFooter
-                            ? subtableData => tableProps.subtableFooter?.(
-                              record,
-                              index,
-                              { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                            )
-                            : void 0
-                        }
-                          subtableProps={
-                        tableProps.subtableProps
-                          ?.map((sp) => {
-                            if (sp.recordKeys) {
-                              const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === record[rowKey]
-                                ? [...sp.recordKeys]
-                                : [];
-                              recordKeys.shift();
-                              return {
-                                ...sp,
-                                recordKeys,
-                              };
-                            }
-                            return sp;
-                          })
-                          .filter(sp => sp.recordKeys?.length !== 0)
+              body: tableInfo.schema.virtual
+                ? (rawData, { scrollbarSize, onScroll }) => (
+                  <VariableSizeGrid
+                    ref={refVirtualGrid}
+                    itemData={{
+                      columns: columns as TableColumnType<unknown>[],
+                      columnsDisplayControl,
+                      dataSource,
+                      rowKey,
+                      selectedRowKeys: tableState.selectedRowKeys,
+                      hoverRowKey,
+                      setHoverRowKey,
+                    }}
+                    className={styles['jfe-drip-table-virtual-list']}
+                    columnCount={columns.length}
+                    columnWidth={(index) => {
+                      const width = columnsWidth[index];
+                      return index === columns.length - 1 ? width - scrollbarSize - 1 : width;
+                    }}
+                    height={parseNumber(tableInfo.schema.scroll?.y, 500)}
+                    rowCount={rawData.length}
+                    rowHeight={() => tableInfo.schema.rowHeight ?? 50}
+                    width={rcTableWidth}
+                    onScroll={onScroll}
+                  >
+                    { VirtualCell }
+                  </VariableSizeGrid>
+                )
+                : void 0,
+            }),
+            [
+              tableInfo,
+              tableInfo.schema.virtual,
+              columnsWidth,
+              columns,
+              tableInfo.schema.scroll?.y,
+              tableInfo.schema.rowHeight,
+              tableInfo.schema.columns,
+              tableState.selectedRowKeys,
+              tableState.filters,
+              hoverRowKey,
+            ])}
+            showHeader={tableProps.schema.showHeader}
+            sticky={
+              tableProps.schema.sticky
+                ? tableProps.sticky ?? true
+                : false
+            }
+            title={tableProps.title}
+            footer={tableProps.footer}
+            expandable={React.useMemo(
+              () => {
+                const subtable = tableProps.schema.subtable;
+                const expandedRowRender = tableProps.expandedRowRender;
+                const rowExpandable = tableProps.rowExpandable;
+                if (subtable || expandedRowRender) {
+                  return {
+                    expandIcon: (expandIconProps) => {
+                      if (!expandIconProps.expandable) {
+                        return null;
                       }
-                          __PARENT_INFO__={{
-                            parent: tableProps.__PARENT_INFO__,
-                            schema: tableProps.schema,
-                            dataSource: tableProps.dataSource || [],
-                          }}
-                        />
+                      return (
+                        <div className={styles['jfe-drip-table-row-expand-icon-wrapper']}>
+                          <button
+                            type="button"
+                            className={classNames(
+                              styles['jfe-drip-table-row-expand-icon'],
+                              expandIconProps.expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
+                            )}
+                            aria-label={expandIconProps.expanded ? '关闭行' : '展开行'}
+                            onClick={(e) => { expandIconProps.onExpand(expandIconProps.record, e); }}
+                          />
+                        </div>
                       );
-                    }
-                    return (
-                      <React.Fragment>
-                        { subtableEl }
-                        { expandedRowRender?.(record, index, parentTableInfo) }
-                      </React.Fragment>
-                    );
-                  },
-                  rowExpandable: (record) => {
-                    if (rowExpandable?.(record, { ...tableInfo, record })) {
-                      return true;
-                    }
-                    if (subtable) {
-                      const ds = record[subtable.dataSourceKey];
-                      return Array.isArray(ds) && ds.length > 0;
-                    }
-                    return false;
-                  },
-                  defaultExpandAllRows: tableProps.defaultExpandAllRows,
-                  defaultExpandedRowKeys: tableProps.defaultExpandedRowKeys,
-                };
-              }
-              return void 0;
-            },
-            [tableProps.schema.subtable, tableProps.expandedRowRender, tableProps.rowExpandable],
-          )}
-        />
+                    },
+                    expandedRowRender: (record, index) => {
+                      const parentTableInfo: typeof tableInfo = { ...tableInfo, record };
+                      let subtableEl: React.ReactNode = null;
+                      if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
+                        const subtableProps = Object.assign(
+                          {},
+                          DEFAULT_SUBTABLE_PROPS,
+                          tableProps.subtableProps
+                            ? Object.assign(
+                              {},
+                              ...[
+                                ...tableProps.subtableProps.filter(sp => sp.default) || [],
+                                ...subtable ? tableProps.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
+                                ...tableProps.subtableProps.filter(
+                                  sp => sp.recordKeys
+                              && sp.recordKeys.length === 1
+                              && sp.recordKeys[0] === record[rowKey],
+                                ) || [],
+                              ].map(sp => sp.properties),
+                            )
+                            : void 0,
+                        );
+                        const subtableSchema = Object.fromEntries(
+                          Object.entries(subtable)
+                            .filter(([key]) => key !== 'dataSourceKey'),
+                        ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+                        subtableEl = (
+                          <DripTableWrapper<RecordType, ExtraOptions>
+                            {...tableProps}
+                            {...subtableProps}
+                            schema={subtableSchema}
+                            dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                            title={
+                            tableProps.subtableTitle
+                              ? subtableData => tableProps.subtableTitle?.(
+                                record,
+                                index,
+                                { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                              )
+                              : void 0
+                          }
+                            footer={
+                            tableProps.subtableFooter
+                              ? subtableData => tableProps.subtableFooter?.(
+                                record,
+                                index,
+                                { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                              )
+                              : void 0
+                          }
+                            subtableProps={
+                          tableProps.subtableProps
+                            ?.map((sp) => {
+                              if (sp.recordKeys) {
+                                const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === record[rowKey]
+                                  ? [...sp.recordKeys]
+                                  : [];
+                                recordKeys.shift();
+                                return {
+                                  ...sp,
+                                  recordKeys,
+                                };
+                              }
+                              return sp;
+                            })
+                            .filter(sp => sp.recordKeys?.length !== 0)
+                        }
+                            __PARENT_INFO__={{
+                              parent: tableProps.__PARENT_INFO__,
+                              schema: tableProps.schema,
+                              dataSource: tableProps.dataSource || [],
+                            }}
+                          />
+                        );
+                      }
+                      return (
+                        <React.Fragment>
+                          { subtableEl }
+                          { expandedRowRender?.(record, index, parentTableInfo) }
+                        </React.Fragment>
+                      );
+                    },
+                    rowExpandable: (record) => {
+                      if (rowExpandable?.(record, { ...tableInfo, record })) {
+                        return true;
+                      }
+                      if (subtable) {
+                        const ds = record[subtable.dataSourceKey];
+                        return Array.isArray(ds) && ds.length > 0;
+                      }
+                      return false;
+                    },
+                    defaultExpandAllRows: tableProps.defaultExpandAllRows,
+                    defaultExpandedRowKeys: tableProps.defaultExpandedRowKeys,
+                  };
+                }
+                return void 0;
+              },
+              [tableProps.schema.subtable, tableProps.expandedRowRender, tableProps.rowExpandable],
+            )}
+          />
+        </div>
       </ResizeObserver>
       { props.footer }
       { paginationPosition === 'bottom' ? renderPagination : void 0 }
