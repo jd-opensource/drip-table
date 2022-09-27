@@ -259,6 +259,24 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         returnColumns.unshift({
           align: rowSelectionDisplayControl.align,
           width: 50,
+          title: (
+            <div className={styles['jfe-drip-table-column-title-selection']}>
+              <Checkbox
+                checked={!dataSource.some(d => !tableState.selectedRowKeys.includes(d[rowKey] as React.Key))}
+                onChange={(e) => {
+                  const selectedRowKeys = indexValue(e.target, 'checked')
+                    ? dataSource.map(d => d[rowKey] as React.Key)
+                    : [];
+                  const selectedRows = dataSource
+                    .map((d, i) => ({ d, i }))
+                    .filter(({ d }) => selectedRowKeys.includes(d[rowKey] as React.Key))
+                    .map(({ i }) => tableInfo.dataSource[i]);
+                  setTableState({ selectedRowKeys });
+                  tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
+                }}
+              />
+            </div>
+          ),
           render: (_, record, index) => (
             <div className={styles['jfe-drip-table-column-selection']}>
               <Checkbox
