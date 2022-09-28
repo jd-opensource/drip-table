@@ -14,7 +14,8 @@ import React from 'react';
 
 import { get, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import components from '@/table-components';
+import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { updateColumnItemByPath } from '../../utils';
 
@@ -28,6 +29,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
+  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 interface EditableGroupComponentProps <
@@ -41,6 +45,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   isCurrentColumn?: boolean;
   parentIndex?: number[];
   isChildren?: boolean;
+  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 const EditableGroupComponent = <
@@ -48,6 +55,44 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: EditableGroupComponentProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
+
+  const getAllComponentsConfigs = () => {
+    let componentsToUse = components;
+    if (props.customComponentPanel) {
+      const customComponents = props.customComponentPanel.configs;
+      componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
+    }
+    return [...componentsToUse];
+  };
+
+  const getColumnConfigs = (componentType: string) => {
+    const columnConfig = getAllComponentsConfigs().find(schema => schema['ui:type'] === componentType);
+    columnConfig?.attrSchema.forEach((schema) => {
+      const uiProps = schema['ui:props'];
+      if (!uiProps) {
+        return;
+      }
+      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+        uiProps.options = props.mockDataSource
+          ? Object.keys(context.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+          : props.dataFields?.map(key => ({ label: key, value: key })) || [];
+      }
+      if (uiProps.items) {
+        (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
+          const itemUiProps = item['ui:props'];
+          if (!itemUiProps) {
+            return;
+          }
+          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+            itemUiProps.options = props.mockDataSource
+              ? Object.keys(context.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+              : props.dataFields?.map(key => ({ label: key, value: key })) || [];
+          }
+        });
+      }
+    });
+    return columnConfig;
+  };
 
   const isChecked = (currentCheckedIndex: number) => {
     const currentColumnPath = [...props?.parentIndex || [], currentCheckedIndex];
@@ -113,6 +158,16 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           event.stopPropagation();
                           event.preventDefault();
                           if (currentColumn && props.isCurrentColumn && columnToAdd) {
+                            const configs = getColumnConfigs(columnToAdd.component);
+                            const options = {};
+                            const additionalProps = {};
+                            configs?.attrSchema.forEach((schema) => {
+                              if (schema.name.startsWith('options.')) {
+                                options[schema.name.replace('options.', '')] = schema.default;
+                              } else {
+                                additionalProps[schema.name] = schema.default;
+                              }
+                            });
                             const columnItemSchema: DripTableColumnSchema = {
                               key: `${columnToAdd.component}_${mockId()}`,
                               dataIndex: '',
@@ -120,7 +175,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                               width: void 0,
                               description: '',
                               component: columnToAdd.component,
-                              options: {},
+                              options,
+                              ...additionalProps,
                             };
                             updateColumnItemByPath(currentColumn, currentColumnPath || [], columnItemSchema);
                             const columnIndex = columns.findIndex(item => item.key === currentColumn.key);
@@ -139,6 +195,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                               driver={props.driver}
                               record={props.record}
                               customComponents={props.customComponents}
+                              customComponentPanel={props.customComponentPanel}
+                              mockDataSource={props.mockDataSource}
+                              dataFields={props.dataFields}
                             />
                           )
                           : null }
@@ -193,6 +252,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         driver={props.driver}
         record={props.record}
         customComponents={props.customComponents}
+        customComponentPanel={props.customComponentPanel}
+        mockDataSource={props.mockDataSource}
+        dataFields={props.dataFields}
       />
     );
   }

@@ -48,7 +48,7 @@ export const filterAttributes = <T>(record: T, excludeAttrs: string | string[]) 
   return { ...finalObject } as Omit<T, keyof typeof excludeAttrs>;
 };
 
-export const filterAttributesByRegExp = <T>(record: T, exp: RegExp) => {
+export const filterAttributesByRegExp = <T extends Record<string, unknown>>(record: T, exp: RegExp) => {
   const finalObject = {};
   Object.keys(record).forEach((key) => {
     if (!exp.test(key)) {

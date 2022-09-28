@@ -13,7 +13,8 @@ import React from 'react';
 import { mockId } from '@/utils';
 import Icon from '@/components/Icon';
 import { DripTableColumn, DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
+import components from '@/table-components';
+import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getComponents, getGroups } from '../utils';
 import { defaultComponentIcon } from './configs';
@@ -25,6 +26,8 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 > {
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 const ComponentsBar = <
@@ -32,9 +35,57 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: ComponentsBarProps<RecordType, ExtraOptions>) => {
   const [collapsed, setCollapsed] = React.useState(true);
-  const { columns } = React.useContext(GeneratorContext);
+  const { columns, previewDataSource } = React.useContext(GeneratorContext);
+
+  const getAllComponentsConfigs = () => {
+    let componentsToUse = components;
+    if (props.customComponentPanel) {
+      const customComponents = props.customComponentPanel.configs;
+      componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
+    }
+    return [...componentsToUse];
+  };
+
+  const getColumnConfigs = (componentType: string) => {
+    const columnConfig = getAllComponentsConfigs().find(schema => schema['ui:type'] === componentType);
+    columnConfig?.attrSchema.forEach((schema) => {
+      const uiProps = schema['ui:props'];
+      if (!uiProps) {
+        return;
+      }
+      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+        uiProps.options = props.mockDataSource
+          ? Object.keys(previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+          : props.dataFields?.map(key => ({ label: key, value: key })) || [];
+      }
+      if (uiProps.items) {
+        (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
+          const itemUiProps = item['ui:props'];
+          if (!itemUiProps) {
+            return;
+          }
+          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+            itemUiProps.options = props.mockDataSource
+              ? Object.keys(previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+              : props.dataFields?.map(key => ({ label: key, value: key })) || [];
+          }
+        });
+      }
+    });
+    return columnConfig;
+  };
 
   const addComponentToColumn = (component: DripTableComponentAttrConfig, setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState']) => {
+    const configs = getColumnConfigs(component['ui:type']);
+    const options = {};
+    const additionalProps = {};
+    configs?.attrSchema.forEach((schema) => {
+      if (schema.name.startsWith('options.')) {
+        options[schema.name.replace('options.', '')] = schema.default;
+      } else {
+        additionalProps[schema.name] = schema.default;
+      }
+    });
     const columnSchema: DripTableColumn<ExtraOptions['CustomColumnSchema']> = {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',
@@ -42,8 +93,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       width: void 0,
       description: '',
       component: component['ui:type'] as 'text',
-      options: {},
+      options,
       index: columns.length,
+      ...additionalProps,
     };
     setState({ columnToAdd: columnSchema });
   };
