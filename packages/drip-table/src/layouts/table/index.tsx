@@ -284,7 +284,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   setTableState({ selectedRowKeys });
                   tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
                 }}
-                disabled={tableProps?.getCheckboxProps ? tableProps?.getCheckboxProps(record).disabled : false}
+                disabled={tableProps?.getSelectableConfigs ? tableProps?.getSelectableConfigs(record).disabled : false}
               />
             </div>
           ),

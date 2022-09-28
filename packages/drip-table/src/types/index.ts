@@ -585,7 +585,7 @@ export interface DripTableProps<
   /**
    * 选择框的默认属性配置
    */
-  getCheckboxProps?: (record: RecordType | RecordType[]) => Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>;
+  getSelectableConfigs?: (record: RecordType | RecordType[]) => Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>;
 }
 
 export type EventLike<T = { type: string }> = T extends { type: string } ? T : never;

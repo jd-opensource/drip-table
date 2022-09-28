@@ -328,7 +328,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         onDisplayColumnKeysChange: { instanceof: 'Function' },
         onEvent: { instanceof: 'Function' },
         __PARENT_INFO__: { type: 'object' },
-        getCheckboxProps: { instanceof: 'Function' },
+        getSelectableConfigs: { instanceof: 'Function' },
       },
       required: [
         'driver',

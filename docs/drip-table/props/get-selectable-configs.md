@@ -1,10 +1,10 @@
-# 选择框默认属性配置 getCheckboxProps
+# 选择框默认属性配置 getSelectableConfigs
 
-- 描述：选择框的默认属性配置 rowSelection: true时生效
+- 描述：选择框的默认属性配置
 - 类型：
 
 ```typescript
-type getCheckboxProps = (
+type getSelectableConfigs = (
   record: RecordType | RecordType[],
 ) => Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>;
 ```
@@ -83,7 +83,7 @@ const Demo = () => {
       schema={schema}
       dataSource={dataSource}
       loading={true}
-      getCheckboxProps={(record) => ({
+      getSelectableConfigs={(record) => ({
         disabled: record.id === 1, 
       })}
     />

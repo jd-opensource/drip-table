@@ -164,7 +164,7 @@ const Demo = () => {
         }, [dataSource])}
         onSearch={React.useMemo(() => searchParams => console.log(searchParams), [])}
         onInsertButtonClick={React.useMemo(() => event => console.log(event), [])}
-        getCheckboxProps={record => ({ disabled: record.id === 1 })}
+        getSelectableConfigs={record => ({ disabled: record.id === 1 })}
       />
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
       <div className={styles['popup-layer']} style={{ height: editVisible ? '70%' : '0' }}>
