@@ -200,6 +200,10 @@ export interface DripTableSchema<
     verticalAlign: DripTableCellDisplayControl['verticalAlign'];
   };
   /**
+   * 是否支持行拖拽
+   */
+  rowDraggable?: boolean;
+  /**
    * 是否可通过点击进入编辑模式
    */
   editable?: boolean;

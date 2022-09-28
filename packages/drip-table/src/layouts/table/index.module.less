@@ -128,6 +128,27 @@
     align-items: center;
   }
 
+  &-column-draggable-row {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--drag-in {
+      background-color: #f7f7f7;
+    }
+
+    &__draggable {
+      display: flex;
+      width: 20px;
+      cursor: grab;
+    }
+  }
+
   // ====================================
   // ==           Expandable           ==
   // ====================================

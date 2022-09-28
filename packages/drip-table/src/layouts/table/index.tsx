@@ -194,6 +194,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
   const [hoverRowKey, setHoverRowKey] = React.useState<React.Key | undefined>(void 0);
+  const [dragInIndex, setDragInIndex] = React.useState(-1);
 
   const initialPagination = tableInfo.schema?.pagination || void 0;
   React.useEffect(() => {
@@ -206,16 +207,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [initialPagination?.pageSize]);
 
   const dataSource = React.useMemo(
-    () => {
-      const ds = tableProps.dataSource.length > tableState.pagination.pageSize
-        ? tableProps.dataSource.slice(tableState.pagination.pageSize * (tableState.pagination.current - 1), tableState.pagination.pageSize * tableState.pagination.current - 1)
-        : tableProps.dataSource;
-      return ds.map((item, index) => ({
-        ...item,
-        [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
-      }));
-    },
-    [tableProps.dataSource, rowKey, tableState.pagination.current, tableState.pagination.pageSize],
+    () => tableProps.dataSource.map((item, index) => ({
+      ...item,
+      [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
+    })),
+    [tableProps.dataSource, rowKey],
+  );
+
+  const currentPageDataSourceOffset = React.useMemo(
+    () => (dataSource.length > tableState.pagination.pageSize
+      ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
+      : 0),
+    [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
+  );
+
+  const currentPageDataSource = React.useMemo(
+    () => (dataSource.length > tableState.pagination.pageSize
+      ? dataSource.slice(tableState.pagination.pageSize * (tableState.pagination.current - 1), tableState.pagination.pageSize * tableState.pagination.current - 1)
+      : dataSource),
+    [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
   );
 
   const rowSelectionDisplayControl = React.useMemo(
@@ -298,9 +308,55 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           ),
         });
       }
+      if (tableInfo.schema.rowDraggable) {
+        returnColumns.unshift({
+          align: 'center',
+          width: 50,
+          render: (_, record, index) => (
+            <div
+              className={classNames(styles['jfe-drip-table-column-draggable-row'], {
+                [styles['jfe-drip-table-column-draggable-row--drag-in']]: index === dragInIndex,
+              })}
+              onDrop={(e) => {
+                if (e.dataTransfer.getData('type') === `drip-table-draggable-row--${tableInfo.schema.id}`) {
+                  const sourceIndex = Number.parseInt(e.dataTransfer.getData('index'), 10);
+                  if (sourceIndex !== index) {
+                    const ds = [...tableProps.dataSource];
+                    const absSourceIndex = currentPageDataSourceOffset + sourceIndex;
+                    const absTargetIndex = currentPageDataSourceOffset + index;
+                    ds.splice(absSourceIndex, 1);
+                    ds.splice(absTargetIndex, 0, tableProps.dataSource[absSourceIndex]);
+                    tableProps.onDataSourceChange?.(ds, tableInfo);
+                  }
+                  setDragInIndex(-1);
+                  e.preventDefault();
+                }
+              }}
+              onDragEnter={(e) => { setDragInIndex(index); e.preventDefault(); }}
+              onDragLeave={(e) => { e.preventDefault(); }}
+              onDragOver={(e) => { e.preventDefault(); }}
+            >
+              <div
+                className={styles['jfe-drip-table-column-draggable-row__draggable']}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.effectAllowed = 'move';
+                  e.dataTransfer.setData('type', `drip-table-draggable-row--${tableInfo.schema.id}`);
+                  e.dataTransfer.setData('index', String(index));
+                  e.dataTransfer.setDragImage(e.currentTarget.parentElement?.parentElement?.parentElement || e.currentTarget, 0, 0);
+                }}
+                onDragEnd={() => { setDragInIndex(-1); }}
+              >
+                <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
+              </div>
+            </div>
+          ),
+        });
+      }
       return returnColumns;
     },
     [
+      dragInIndex,
       tableInfo,
       tableProps.schema.columns,
       tableProps.driver,
@@ -440,7 +496,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             style={tableProps.schema.innerStyle}
             rowKey={rowKey}
             columns={columns}
-            data={dataSource}
+            data={currentPageDataSource}
             scroll={scroll}
             tableLayout={tableProps.schema.tableLayout}
             rowClassName={React.useMemo(
@@ -488,7 +544,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     itemData={{
                       columns: columns as TableColumnType<unknown>[],
                       columnsDisplayControl,
-                      dataSource,
+                      dataSource: currentPageDataSource,
                       rowKey,
                       selectedRowKeys: tableState.selectedRowKeys,
                       hoverRowKey,
