@@ -175,6 +175,7 @@ const AttributeLayout = (props: Props & { store: GlobalStore }) => {
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
+      stripe: formData.stripe as boolean,
       sticky: formData.sticky as boolean,
       rowSelection: formData.rowSelection as boolean,
       virtual: formData.virtual as boolean,

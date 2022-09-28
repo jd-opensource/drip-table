@@ -117,6 +117,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-draggable',
           '/drip-table/schema/editable',
           '/drip-table/schema/table-layout',
+          '/drip-table/schema/stripe',
           '/drip-table/schema/virtual',
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',

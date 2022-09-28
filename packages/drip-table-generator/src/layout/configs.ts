@@ -446,6 +446,15 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     type: 'string',
   },
   {
+    name: 'stripe',
+    group: '全局属性',
+    'ui:title': '间隔斑马纹',
+    'ui:type': 'switch',
+    'ui:props': {},
+    type: 'boolean',
+    default: false,
+  },
+  {
     name: 'scrollY',
     group: '全局属性',
     'ui:title': '虚拟滚动高度',

@@ -227,6 +227,10 @@ export interface DripTableSchema<
    */
   rowHeight?: number;
   /**
+   * 是否配置间隔斑马纹
+   */
+  stripe?: boolean;
+  /**
    * 虚拟列表滚动高度
    * @deprecated 请使用 scroll.y
    */

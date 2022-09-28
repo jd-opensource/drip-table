@@ -492,6 +492,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               [styles['jfe-drip-table-small']]: tableProps.schema.size === 'small',
               [styles['jfe-drip-table-middle']]: tableProps.schema.size === 'middle',
               [styles['jfe-drip-table--bordered']]: tableProps.schema.bordered,
+              [styles['jfe-drip-table--stripe']]: tableProps.schema.stripe,
             })}
             style={tableProps.schema.innerStyle}
             rowKey={rowKey}
