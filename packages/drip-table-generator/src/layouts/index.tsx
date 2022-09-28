@@ -24,12 +24,18 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   <div style={props.style}>
     { props.showToolLayout === false ? null : <Toolbar style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }
     <div className={styles.wrapper}>
-      <ComponentsBar customComponentPanel={props.customComponentPanel} />
+      <ComponentsBar
+        customComponentPanel={props.customComponentPanel}
+        mockDataSource={props.mockDataSource}
+        dataFields={props.dataFields}
+      />
       <TableWorkStation
         customComponentPanel={props.customComponentPanel}
         customComponents={props.customComponents}
         driver={props.driver}
         slots={props.slots}
+        mockDataSource={props.mockDataSource}
+        dataFields={props.dataFields}
       />
       <AttributesLayout
         {...props}

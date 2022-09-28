@@ -27,6 +27,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
+  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 const TableWorkStation = <
@@ -45,6 +47,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               customComponentPanel={props.customComponentPanel}
               customComponents={props.customComponents}
               driver={props.driver}
+              mockDataSource={props.mockDataSource}
+              dataFields={props.dataFields}
               onDropComponent={() => {
                 setTimeout(() => {
                   const scrollWidth = tableWrapper.current?.scrollWidth || 0;
