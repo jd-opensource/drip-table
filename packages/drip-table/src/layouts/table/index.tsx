@@ -215,14 +215,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   );
 
   const currentPageDataSourceOffset = React.useMemo(
-    () => (dataSource.length > tableState.pagination.pageSize
+    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
       ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
       : 0),
     [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
   );
 
   const currentPageDataSource = React.useMemo(
-    () => (dataSource.length > tableState.pagination.pageSize
+    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
       ? dataSource.slice(tableState.pagination.pageSize * (tableState.pagination.current - 1), tableState.pagination.pageSize * tableState.pagination.current - 1)
       : dataSource),
     [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
