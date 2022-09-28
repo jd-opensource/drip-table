@@ -136,6 +136,7 @@ const Demo = () => {
         expandedRowRender={React.useMemo(() => (record, index, parent) => (
           <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>
         ), [])}
+        rowSelectable={React.useMemo(() => record => record.id !== 1, [])}
         onEvent={React.useMemo(() => (event, record, index) => {
           if (event.type === 'drip-link-click') {
             const name = event.payload;
@@ -164,7 +165,6 @@ const Demo = () => {
         }, [dataSource])}
         onSearch={React.useMemo(() => searchParams => console.log(searchParams), [])}
         onInsertButtonClick={React.useMemo(() => event => console.log(event), [])}
-        getCheckboxProps={record => ({ disabled: record.id === 1 })}
       />
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
       <div className={styles['popup-layer']} style={{ height: editVisible ? '70%' : '0' }}>

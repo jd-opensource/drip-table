@@ -32,6 +32,7 @@ title: 总览
 | [subtableFooter](/drip-table/props/subtable-footer) | 子表底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-footer) |
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
 | [expandedRowRender](/drip-table/props/expanded-row-render) | 行展开自定义渲染函数 | × | [🔗 示例](/drip-table/props/expanded-row-render) |
+| [rowSelectable](/drip-table/props/row-selectable) | 获取指定行是否可选择 | × | [🔗 示例](/drip-table/props/row-selectable) |
 | [componentDidMount](/drip-table/props/component-did-mount) | 生命周期：组件加载完成 | × | [🔗 示例](/drip-table/props/component-did-mount) |
 | [componentDidUpdate](/drip-table/props/component-did-update) | 生命周期：组件更新完成 | × | [🔗 示例](/drip-table/props/component-did-update) |
 | [componentWillUnmount](/drip-table/props/component-will-unmount) | 生命周期：组件即将卸载 | × | [🔗 示例](/drip-table/props/component-will-unmount) |
@@ -45,5 +46,3 @@ title: 总览
 | [onChange](/drip-table/props/on-change) | 过滤器、分页器 等配置变化 | × | [🔗 示例](/drip-table/props/on-change) |
 | [onDisplayColumnKeysChange](/drip-table/props/on-display-column-keys-change) | 用户修改展示的列时 | × | [🔗 示例](/drip-table/props/on-display-column-keys-change) |
 | [onEvent](/drip-table/props/on-event) | 通用事件机制 | × | [🔗 示例](/drip-table/props/on-event) |
-| [getCheckboxProps](/drip-table/props/get-checkbox-props) | 选择框的默认属性配置 | × | [🔗 示例](/drip-table/props/get-checkbox-props) |
-

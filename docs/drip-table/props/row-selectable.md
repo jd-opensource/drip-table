@@ -1,16 +1,17 @@
-# 选择框默认属性配置 getCheckboxProps
+# 行是否可选择 rowSelectable
 
-- 描述：选择框的默认属性配置 rowSelection: true时生效
+- 描述：获取指定行是否可选择，需要配合 [`rowSelection`](/drip-table/schema/rowSelection) 使用
 - 类型：
 
 ```typescript
-type getCheckboxProps = (
-  record: RecordType | RecordType[],
-) => Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>;
+  type RowSelectable = (
+    record: RecordType,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => boolean;
 ```
-- 默认值：`undefined`
-- 更多内容：[`Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>`](/drip-table/types/table-information)
 
+- 默认值：`undefined`
+- 更多内容：[`DripTableTableInformation<RecordType, ExtraOptions>`](/drip-table/types/table-information)
 
 ```jsx
 /**
@@ -82,10 +83,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      loading={true}
-      getCheckboxProps={(record) => ({
-        disabled: record.id === 1, 
-      })}
+      rowSelectable={record => record.id !== 1}
     />
   );
 };

@@ -7,7 +7,6 @@
  */
 
 import type { SchemaObject } from 'ajv';
-import type { Props as RcCheckboxProps } from 'rc-checkbox';
 import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
@@ -480,6 +479,13 @@ export interface DripTableProps<
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => React.ReactNode;
   /**
+   * 获取指定行是否可选择
+   */
+  rowSelectable?: (
+    record: RecordType,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => boolean;
+  /**
    * 生命周期：组件加载完成
    */
   componentDidMount?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => void;
@@ -582,10 +588,6 @@ export interface DripTableProps<
    * @internal
    */
   __PARENT_INFO__?: DripTableTableInformation<RecordType, ExtraOptions>;
-  /**
-   * 选择框的默认属性配置
-   */
-  getCheckboxProps?: (record: RecordType | RecordType[]) => Partial<Omit<RcCheckboxProps, 'checked' | 'defaultChecked'>>;
 }
 
 export type EventLike<T = { type: string }> = T extends { type: string } ? T : never;

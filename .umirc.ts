@@ -154,6 +154,7 @@ const umiConfig: IConfig = {
           '/drip-table/props/subtable-footer',
           '/drip-table/props/row-expandable',
           '/drip-table/props/expanded-row-render',
+          '/drip-table/props/row-selectable',
           '/drip-table/props/component-did-mount',
           '/drip-table/props/component-did-update',
           '/drip-table/props/component-will-unmount',
@@ -167,7 +168,6 @@ const umiConfig: IConfig = {
           '/drip-table/props/on-change',
           '/drip-table/props/on-display-column-keys-change',
           '/drip-table/props/on-event',
-          '/drip-table/props/get-checkbox-props',
         ],
       },
       {
