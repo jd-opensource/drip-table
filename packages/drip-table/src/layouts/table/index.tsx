@@ -303,7 +303,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   setTableState({ selectedRowKeys });
                   tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
                 }}
-                disabled={tableProps?.rowSelectable?.(record, tableInfo) || false}
+                disabled={!(tableProps?.rowSelectable?.(record, tableInfo) ?? true)}
               />
             </div>
           ),

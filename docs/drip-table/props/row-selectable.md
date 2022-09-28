@@ -1,4 +1,4 @@
-# 行是否可选择 rowSelectable
+# 指定行可选择 rowSelectable
 
 - 描述：获取指定行是否可选择，需要配合 [`rowSelection`](/drip-table/schema/rowSelection) 使用
 - 类型：
