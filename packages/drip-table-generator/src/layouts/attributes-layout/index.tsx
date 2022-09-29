@@ -36,9 +36,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const drawerWidth = {
     datasource: 680,
-    global: 520,
-    column: 540,
-    'column-item': 540,
+    global: 560,
+    column: 560,
+    'column-item': 560,
   };
 
   return (

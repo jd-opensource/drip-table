@@ -77,7 +77,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const addComponentToColumn = (component: DripTableComponentAttrConfig, setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState']) => {
     const configs = getColumnConfigs(component['ui:type']);
-    const options = {};
+    const options: Record<string, unknown> = {};
     const additionalProps = {};
     configs?.attrSchema.forEach((schema) => {
       if (schema.name.startsWith('options.')) {
@@ -86,6 +86,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         additionalProps[schema.name] = schema.default;
       }
     });
+    if (component['ui:type'] === 'group') {
+      options.items = [null, null];
+    }
     const columnSchema: DripTableColumn<ExtraOptions['CustomColumnSchema']> = {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',

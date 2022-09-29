@@ -35,28 +35,28 @@ export default {
       'ui:type': 'rich-text-editor',
       'ui:layout': {
         labelCol: 1,
-        wrapperCol: 20,
+        wrapperCol: 23,
         extraRow: true,
         customHelpMsg: true,
       },
       'ui:props': {
         style: {
-          height: 370,
+          height: 420,
           marginTop: '-16px',
         },
       },
-      'ui:wrapperStyle': { minWidth: 680 },
+      'ui:wrapperStyle': {},
       type: 'string',
       default: '<p><strong>{{rec.name}}</strong></p>',
     },
     {
       name: 'options.render',
-      group: '代码编辑',
+      group: '原始值编辑',
       'ui:title': '',
       'ui:type': 'text',
       'ui:layout': {
-        labelCol: 0,
-        wrapperCol: 24,
+        labelCol: 1,
+        wrapperCol: 23,
       },
       'ui:props': {
         style: {

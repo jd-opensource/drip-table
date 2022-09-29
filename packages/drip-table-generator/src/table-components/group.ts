@@ -27,7 +27,7 @@ export default {
       items: {
         type: 'number',
       },
-      default: [],
+      default: [1, 1],
       validate: (value: string[]): string => {
         if (Array.isArray(value) && value.length > 0) {
           let errorCount = 0;
@@ -75,7 +75,7 @@ export default {
       name: 'options.horizontalAlign',
       group: '组件属性',
       'ui:title': '水平排列方式',
-      'ui:type': 'radio',
+      'ui:type': 'select',
       'ui:props': {
         options: [
           { label: '左对齐', value: 'start' },

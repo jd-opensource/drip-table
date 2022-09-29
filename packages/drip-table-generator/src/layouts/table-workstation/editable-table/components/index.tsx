@@ -159,7 +159,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           event.preventDefault();
                           if (currentColumn && props.isCurrentColumn && columnToAdd) {
                             const configs = getColumnConfigs(columnToAdd.component);
-                            const options = {};
+                            const options: Record<string, unknown> = {};
                             const additionalProps = {};
                             configs?.attrSchema.forEach((schema) => {
                               if (schema.name.startsWith('options.')) {
@@ -168,6 +168,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                                 additionalProps[schema.name] = schema.default;
                               }
                             });
+                            if (columnToAdd.component === 'group') {
+                              options.items = [null, null];
+                            }
                             const columnItemSchema: DripTableColumnSchema = {
                               key: `${columnToAdd.component}_${mockId()}`,
                               dataIndex: '',

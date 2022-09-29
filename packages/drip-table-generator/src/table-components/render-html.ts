@@ -11,7 +11,7 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
-    ...basicColumnAttrComponents('按钮'),
+    ...basicColumnAttrComponents('自定义'),
     {
       name: 'options.render',
       group: '代码编辑',
@@ -19,17 +19,17 @@ export default {
       'ui:type': 'code-editor',
       'ui:layout': {
         labelCol: 1,
-        wrapperCol: 20,
+        wrapperCol: 23,
         extraRow: true,
         customHelpMsg: true,
       },
       'ui:props': {
         style: {
-          height: 370,
+          height: 420,
           marginTop: '-16px',
         },
       },
-      'ui:wrapperStyle': { minWidth: 680 },
+      'ui:wrapperStyle': {},
       type: 'string',
       default: 'return rec.name',
     },

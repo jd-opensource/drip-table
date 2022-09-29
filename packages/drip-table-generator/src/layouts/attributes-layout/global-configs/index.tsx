@@ -89,7 +89,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       if (element.type === 'spacer') {
         const width = element['style.width'];
-        element['style.width'] = void 0;
         return {
           type: 'spacer',
           style: { width },
@@ -105,7 +104,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       if (element.type === 'search') {
         const width = element['wrapperStyle.width'];
-        element['wrapperStyle.width'] = void 0;
         return {
           type: 'search',
           wrapperStyle: { width },

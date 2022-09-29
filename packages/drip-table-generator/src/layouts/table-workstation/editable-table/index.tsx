@@ -7,7 +7,7 @@
  */
 
 import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import { Dropdown, Input, Menu, message, Modal } from 'antd';
+import { Checkbox, Dropdown, Input, Menu, message, Modal } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
@@ -171,7 +171,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               onClick={() => {
                 setCellHeight(void 0);
                 const configs = getColumnConfigs(component['ui:type']);
-                const options = {};
+                const options: Record<string, unknown> = {};
                 const additionalProps = {};
                 configs?.attrSchema.forEach((schema) => {
                   if (schema.name.startsWith('options.')) {
@@ -180,6 +180,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     additionalProps[schema.name] = schema.default;
                   }
                 });
+                if (component['ui:type'] === 'group') {
+                  options.items = [null, null];
+                }
                 setState({ columns: [...columns, {
                   key: `${component['ui:type']}_${mockId()}`,
                   dataIndex: '',
@@ -239,7 +242,23 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           }
         });
         return (
-          <div className={styles['editable-table']}>
+          <div className={classNames(styles['editable-table'], { [styles.bordered]: globalConfigs.bordered })}>
+            { globalConfigs.rowSelection
+              ? (
+                <div className={styles['editable-table-column']} style={{ minWidth: 48, width: 48 }}>
+                  <div className={styles['editable-table-thead']} style={{ textAlign: 'center' }}><Checkbox /></div>
+                  <div className={styles['editable-table-tbody']} style={{ textAlign: 'center' }}>
+                    {
+                      previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
+                        <div className={styles['editable-table-cell']} style={{ height: cellHeight, textAlign: 'center' }}>
+                          <Checkbox />
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+              : null }
             { columns.map((column, columnIndex) => (
               <div
                 key={columnIndex}
@@ -277,7 +296,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 </div>
                 <div className={styles['editable-table-tbody']}>
                   { previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
-                    <div key={index} className={styles['editable-table-cell']} style={{ height: cellHeight, width: column.width || void 0 }}>
+                    <div
+                      key={index}
+                      className={styles['editable-table-cell']}
+                      style={{
+                        height: cellHeight,
+                        width: column.width || void 0,
+                        textAlign: column.align,
+                      }}
+                    >
                       <EditableComponents
                         record={record}
                         column={column}

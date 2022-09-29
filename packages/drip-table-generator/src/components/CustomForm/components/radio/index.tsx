@@ -42,6 +42,7 @@ export default class RadioComponent extends React.PureComponent<Props> {
         {...filterAttributes(uiProps, 'options')}
         defaultValue={config.default as RadioGroupProps['defaultValue']}
         buttonStyle={uiProps.mode === 'button' ? uiProps.buttonStyle as 'outline' | 'solid' : void 0}
+        size={uiProps.size as 'small' | 'large'}
         value={this.props.value}
         onChange={(e) => {
           this.props.onChange?.(e.target.value);

@@ -126,11 +126,13 @@ export default {
     {
       name: 'options.operates',
       group: '组件属性',
-      'ui:title': '字段配置',
+      'ui:title': '多链接配置',
       'ui:type': 'array-list',
+      'ui:layout': { labelCol: 12, wrapperCol: 24 },
       default: [],
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
       'ui:props': {
+        style: { border: '1px solid #3e3e3e', borderRadius: 2 },
         items: [
           {
             name: 'label',
@@ -236,7 +238,7 @@ export default {
       name: 'options.placement',
       group: '组件属性',
       'ui:title': '菜单弹出位置',
-      'ui:type': 'radio',
+      'ui:type': 'select',
       'ui:props': {
         options: [
           { label: '左上角', value: 'topLeft' },
