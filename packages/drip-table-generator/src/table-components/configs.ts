@@ -36,6 +36,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:props': {
       mode: 'button',
       buttonStyle: 'solid',
+      size: 'small',
       options: [
         { label: '居中', value: 'center' },
         { label: '左对齐', value: 'left' },

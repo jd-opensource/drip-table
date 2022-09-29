@@ -23,7 +23,7 @@ export default {
         ],
       },
       type: 'string',
-      default: 'single',
+      default: 'basic',
     },
     {
       name: 'options.format',

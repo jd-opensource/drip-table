@@ -8,10 +8,8 @@
 import { DTGComponentPropertySchema } from '@/typing';
 
 const AlignConfigs = {
-  'ui:type': 'radio',
+  'ui:type': 'select',
   'ui:props': {
-    mode: 'button',
-    buttonStyle: 'solid',
     options: [
       { label: '左对齐', value: 'flex-start' },
       { label: '右对齐', value: 'flex-end' },
@@ -106,7 +104,7 @@ const SlotItemConfigs = [
     name: 'align',
     'ui:title': '对齐方式',
     ...AlignConfigs,
-    'ui:layout': { labelCol: 10, wrapperCol: 24 },
+    'ui:layout': { labelCol: 8, wrapperCol: 16 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) =>
       formData?.type === 'text' || formData?.type === 'search' || formData?.type === 'insert-button',
@@ -293,6 +291,10 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     group: '分页配置',
     'ui:title': '展示分页',
     'ui:type': 'switch',
+    'ui:layout': {
+      labelCol: 6,
+      wrapperCol: 18,
+    },
     'ui:props': {},
     type: 'boolean',
     default: false,

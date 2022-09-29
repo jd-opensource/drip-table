@@ -155,9 +155,9 @@ export default {
     {
       name: 'options.buttons',
       group: '组件属性',
-      'ui:title': '字段配置',
+      'ui:title': '多按钮配置',
       'ui:type': 'array-list',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 24 },
       default: [],
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
       'ui:props': {
@@ -186,7 +186,7 @@ export default {
           {
             name: 'buttonType',
             'ui:title': '按钮类型',
-            'ui:type': 'radio',
+            'ui:type': 'select',
             'ui:props': {
               options: [
                 { label: '默认', value: '' },

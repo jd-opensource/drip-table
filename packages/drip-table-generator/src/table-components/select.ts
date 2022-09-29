@@ -73,6 +73,7 @@ export default {
       name: 'options.bindValue',
       group: '组件属性',
       'ui:title': '值回显强制与数据绑定',
+      'ui:layout': { labelCol: 12, wrapperCol: 8 },
       'ui:type': 'switch',
       'ui:props': {},
       type: 'boolean',
@@ -98,6 +99,9 @@ export default {
       'ui:title': '弹出位置',
       'ui:type': 'radio',
       'ui:props': {
+        mode: 'button',
+        buttonStyle: 'solid',
+        size: 'small',
         options: [
           { label: '左下', value: 'bottomLeft' },
           { label: '右下', value: 'bottomRight' },
@@ -171,6 +175,7 @@ export default {
       name: 'options.options',
       group: '组件属性',
       'ui:title': '自定义下拉菜单',
+      'ui:layout': { labelCol: 12, wrapperCol: 24 },
       'ui:type': 'array-list',
       default: [],
       'ui:props': {

@@ -74,6 +74,7 @@ export default {
       required: false,
       'ui:title': '枚举值',
       'ui:type': 'array-list',
+      'ui:layout': { labelCol: 12, wrapperCol: 24 },
       'ui:props': {
         items: [
           {
