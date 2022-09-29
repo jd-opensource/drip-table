@@ -59,6 +59,12 @@ const DripTableLayout = <
   }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
 
   React.useEffect(() => {
+    if (props.selectedRowKeys) {
+      setTableState({ selectedRowKeys: props.selectedRowKeys });
+    }
+  }, [props.selectedRowKeys]);
+
+  React.useEffect(() => {
     setTableState(state => ({
       filters: Object.fromEntries(props.schema.columns.map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
       displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),

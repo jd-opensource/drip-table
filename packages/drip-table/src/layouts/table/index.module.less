@@ -116,10 +116,37 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  &-column-title-selection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &-column-selection {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &-column-draggable-row {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--drag-in {
+      background-color: #f7f7f7;
+    }
+
+    &__draggable {
+      display: flex;
+      width: 20px;
+      cursor: grab;
+    }
   }
 
   // ====================================
@@ -375,5 +402,18 @@
   &&-middle tfoot > tr > th,
   &&-middle .@{prefixCls}-virtual-cell {
     padding: 12px 8px;
+  }
+
+  // ====================================
+  // ==             stripe             ==
+  // ====================================
+
+  &&--stripe {
+    & > .@{prefixCls}-container > .@{prefixCls}-body > table > tbody > tr,
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tbody > tr {
+      &:nth-child(2n+2) {
+        background: #fafafa;
+      }
+    }
   }
 }

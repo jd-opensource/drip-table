@@ -5,7 +5,7 @@
   </h1>
 </a>
 
-English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.jd.com/) | [Discussions](https://github.com/JDFED/drip-table/discussions)｜[Gitter](https://gitter.im/drip-table/community)
+English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.jd.com/) | [Discussions](https://github.com/JDFED/drip-table/discussions)｜[Gitter](https://gitter.im/drip-table/community) | [Official Wechat group](./Contact.md)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -183,6 +183,9 @@ If you're interested in this project, you're welcome to create ✨[issue](https:
 
 For more commands, see [DEVELOP](./DEVELOP.md) .
 Please visit the official website address [drip-table](http://drip-table.jd.com/) 。
+
+## Communication
+[Official Wechat group](./Contact.md)
 
 ## License
 

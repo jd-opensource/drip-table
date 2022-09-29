@@ -200,6 +200,10 @@ export interface DripTableSchema<
     verticalAlign: DripTableCellDisplayControl['verticalAlign'];
   };
   /**
+   * 是否支持行拖拽
+   */
+  rowDraggable?: boolean;
+  /**
    * 是否可通过点击进入编辑模式
    */
   editable?: boolean;
@@ -222,6 +226,10 @@ export interface DripTableSchema<
    * 行高，用于虚拟滚动渲染
    */
   rowHeight?: number;
+  /**
+   * 是否配置间隔斑马纹
+   */
+  stripe?: boolean;
   /**
    * 虚拟列表滚动高度
    * @deprecated 请使用 scroll.y
@@ -470,6 +478,13 @@ export interface DripTableProps<
     index: number,
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => React.ReactNode;
+  /**
+   * 获取指定行是否可选择
+   */
+  rowSelectable?: (
+    record: RecordType,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => boolean;
   /**
    * 生命周期：组件加载完成
    */

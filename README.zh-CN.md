@@ -5,7 +5,7 @@
   </h1>
 </a>
 
-[English](./README.md) | 简体中文 | [官方文档](http://drip-table.jd.com/) | [讨论组](https://github.com/JDFED/drip-table/discussions)｜[Gitter 群聊](https://gitter.im/drip-table/community)
+[English](./README.md) | 简体中文 | [官方文档](http://drip-table.jd.com/) | [讨论组](https://github.com/JDFED/drip-table/discussions)｜[Gitter 群聊](https://gitter.im/drip-table/community) | [官方交流微信群](./Contact.md)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -183,6 +183,9 @@
 
 更多命令请查看 [DEVELOP](./DEVELOP.zh-CN.md) 。
 官网地址请访问 [drip-table](http://drip-table.jd.com/) 。
+
+## 开发交流
+[官方交流微信群](./Contact.md)
 
 ## License
 

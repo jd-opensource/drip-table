@@ -24,7 +24,7 @@ const Demo = () => {
   const [loading, setLoading] = React.useState(false);
   const [filters, setFilters] = React.useState<{ key: string; values: unknown[] }[] | undefined>(void 0);
   const [pageNum, setPageNum] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(3);
   const [dataBase, setDataBase] = React.useState(mockData);
   const [totalNum, setTotalNum] = React.useState(dataBase.length);
   const [dataSource, setDataSource] = React.useState(dataBase);
@@ -136,6 +136,7 @@ const Demo = () => {
         expandedRowRender={React.useMemo(() => (record, index, parent) => (
           <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>
         ), [])}
+        rowSelectable={React.useMemo(() => record => record.id !== 1, [])}
         onEvent={React.useMemo(() => (event, record, index) => {
           if (event.type === 'drip-link-click') {
             const name = event.payload;
