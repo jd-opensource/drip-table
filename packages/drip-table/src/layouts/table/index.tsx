@@ -228,6 +228,23 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
   );
 
+  const rowExpandColumnVisible = React.useMemo(
+    () => {
+      const subtable = tableProps.schema.subtable;
+      const expandedRowRender = tableProps.expandedRowRender;
+      if (subtable || expandedRowRender) {
+        return true;
+      }
+      return false;
+    },
+    [tableProps.schema.subtable, tableProps.expandedRowRender],
+  );
+
+  const rowExpandColumnWidth = React.useMemo(
+    () => (rowExpandColumnVisible ? 48 : 0),
+    [rowExpandColumnVisible],
+  );
+
   const rowSelectionDisplayControl = React.useMemo(
     (): DripTableCellDisplayControl | undefined => (
       tableInfo.schema.rowSelection === true
@@ -373,7 +390,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const columnsWidth = React.useMemo(
     () => {
       const csWidth = filteredColumns.map(c => parseNumber(c.width, 0));
-      const restWidth = Math.max(rcTableWidth - csWidth.reduce((v, w) => v + w, 0), 0);
+      const restWidth = Math.max(rcTableWidth - csWidth.reduce((v, w) => v + w, 0) - rowExpandColumnWidth, 0);
       const flexibleCount = csWidth.filter(w => w === 0).length;
       return flexibleCount === 0
         ? csWidth.map(w => w + restWidth / csWidth.length)
@@ -594,7 +611,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 const subtable = tableProps.schema.subtable;
                 const expandedRowRender = tableProps.expandedRowRender;
                 const rowExpandable = tableProps.rowExpandable;
-                if (subtable || expandedRowRender) {
+                if (rowExpandColumnVisible) {
                   return {
                     expandIcon: (expandIconProps) => {
                       if (!expandIconProps.expandable) {
