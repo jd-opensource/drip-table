@@ -10,11 +10,18 @@ import { DTGComponentPropertySchema } from '../typing';
 export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPropertySchema[] => [
   {
     name: 'title',
-    group: '组件属性',
+    group: '表头配置',
     'ui:title': '表头名称',
     'ui:type': 'text',
     type: 'string',
     default: defaultValue || '',
+  },
+  {
+    name: 'description',
+    group: '表头配置',
+    'ui:title': '表头说明',
+    'ui:type': 'text',
+    type: 'string',
   },
   {
     name: 'width',

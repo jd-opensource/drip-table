@@ -38,7 +38,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   const context = React.useContext(GeneratorContext);
   const tableWrapper = React.useRef<HTMLDivElement>(null);
   return (
-    <div className={styles['generator-workstation']} ref={tableWrapper}>
+    <div
+      className={styles['generator-workstation']}
+      style={{ overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto' }}
+      ref={tableWrapper}
+    >
       { context.mode === 'edit'
         ? (
           <React.Fragment>

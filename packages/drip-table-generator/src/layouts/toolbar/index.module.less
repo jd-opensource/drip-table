@@ -29,12 +29,17 @@
     cursor: pointer;
     padding: 6px 8px;
     border-radius: 4px;
+    border: 1px solid transparent;
     height: 32px;
     transition: all ease-in-out .3s;
 
-    &:hover,
+    &:hover {
+      border-color: #c6c6c6;
+      box-shadow: 0 1px 1px rgb(~"0 0 0 / 10%");
+    }
+
     &.checked {
-      background: #f0f0f0;
+      background-color: #e7e7e7;
     }
 
     & .tool-icon {

@@ -153,7 +153,11 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const options = this.props.schema.options;
     if (typeof options.disabled === 'string') {
-      return !!new Function('rec', `return ${options.disabled}`)(this.props.data);
+      try {
+        return !!new Function('rec', `return ${options.disabled}`)(this.props.data);
+      } catch {
+        return false;
+      }
     }
     return !!options.disabled;
   }

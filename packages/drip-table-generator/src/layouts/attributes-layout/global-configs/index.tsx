@@ -75,6 +75,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         formData[`pagination.${key}`] = globalConfigs?.pagination?.[key];
       });
     }
+    formData.scrollX = globalConfigs?.scroll?.x;
+    formData.scrollY = globalConfigs?.scroll?.y;
     return formData;
   };
 

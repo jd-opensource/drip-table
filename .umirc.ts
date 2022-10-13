@@ -330,7 +330,7 @@ const umiConfig: IConfig = {
     '.__dumi-default-navbar nav > :nth-child(6) a { display: inline-block; width: 30px; }',
     '.__dumi-default-navbar nav > :nth-child(6) > a > svg, .__dumi-default-dark { display: none; }',
     '.__dumi-default-navbar { padding: 0 0 0 58px; }',
-    '.__dumi-default-previewer-demo { overflow: auto; }',
+    '.__dumi-default-previewer-demo { padding: 0 !important; overflow: auto; }',
   ],
 };
 
