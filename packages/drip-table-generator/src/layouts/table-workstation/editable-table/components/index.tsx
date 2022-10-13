@@ -56,17 +56,17 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: EditableGroupComponentProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
 
-  const getAllComponentsConfigs = () => {
+  const getAllComponentsConfigs = React.useMemo(() => {
     let componentsToUse = components;
     if (props.customComponentPanel) {
       const customComponents = props.customComponentPanel.configs;
       componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
     }
     return [...componentsToUse];
-  };
+  }, [props.customComponentPanel]);
 
   const getColumnConfigs = (componentType: string) => {
-    const columnConfig = getAllComponentsConfigs().find(schema => schema['ui:type'] === componentType);
+    const columnConfig = getAllComponentsConfigs.find(schema => schema['ui:type'] === componentType);
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {

@@ -460,6 +460,17 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     type: 'number',
   },
   {
+    name: 'scrollY',
+    group: '全局属性',
+    'ui:title': '垂直滚动高度限制',
+    'ui:type': 'number',
+    'ui:props': {
+      min: 1,
+    },
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
+    type: 'number',
+  },
+  {
     name: 'tableLayout',
     group: '全局属性',
     'ui:title': '表格布局',
@@ -482,17 +493,6 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:props': {},
     type: 'boolean',
     default: false,
-  },
-  {
-    name: 'scrollY',
-    group: '全局属性',
-    'ui:title': '虚拟滚动高度',
-    'ui:type': 'number',
-    'ui:props': {
-      min: 1,
-    },
-    type: 'number',
-    visible: (value: unknown, formData?: Record<string, unknown>) => formData?.virtual === true,
   },
   ...HeaderAttrConfigs,
   ...PaginationAttrConfigs,

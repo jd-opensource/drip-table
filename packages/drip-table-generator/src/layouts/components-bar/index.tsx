@@ -135,7 +135,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             ))
           }
           </div>
-          <div className={styles['components-drawer']} style={{ transform: collapsed ? 'translateX(-360px)' : void 0 }}>
+          <div
+            className={styles['components-drawer']}
+            style={{
+              transform: collapsed ? 'translateX(-360px)' : void 0,
+              opacity: collapsed ? '0' : void 0,
+            }}
+          >
             {
             getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
               <div key={groupIndex}>

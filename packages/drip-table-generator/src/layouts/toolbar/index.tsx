@@ -32,6 +32,7 @@ export type ToolBarConfig = {
   type?: 'switch' | 'dropdown';
   overlay?: 'radio' | 'checkbox';
   options?: { label: string; value: string | number }[];
+  default?: unknown;
 };
 
 interface ToolbarProps<
@@ -93,6 +94,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         { label: '中等', value: 'middle' },
         { label: '小号', value: 'small' },
       ],
+      default: 'middle',
     },
     { icon: <DatabaseOutlined className={styles['tool-icon']} />, label: '虚拟列表', type: 'switch', name: 'virtual' },
     { icon: <FilterOutlined className={styles['tool-icon']} />, label: '过滤', name: 'filter' },
@@ -125,7 +127,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         overlay = (
           <div className={styles['overlay-wrapper']}>
             <Radio.Group
-              value={globalConfig[config.name]}
+              value={globalConfig[config.name] || config.default}
               onChange={(e) => {
                 const newTableGlobalConfig = Object.assign({}, globalConfig, { [config.name]: e.target.value });
                 setState({ globalConfigs: newTableGlobalConfig });
