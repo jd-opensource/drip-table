@@ -30,6 +30,14 @@
     min-width: 180px;
     cursor: pointer;
 
+    &-title {
+      display: inline;
+
+      * {
+        display: inline;
+      }
+    }
+
     &.checked {
       border-color: var(--drip-table-primary-color);
     }
@@ -52,20 +60,23 @@
 
   &-cell {
     border-bottom: 1px solid rgb(~"0 0 0 / 6%");
-    transition: all ease .3s;
+    transition: width ease .3s;
     padding: 6px;
   }
 }
 
 .large {
   padding: 16px;
+  height: 55px;
 }
 
 .middle,
 .default {
   padding: 12px 8px;
+  height: 48px;
 }
 
 .small {
   padding: 8px;
+  height: 39px;
 }

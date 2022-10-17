@@ -84,7 +84,7 @@ export const columnGenerator = <
   if (columnSchema.description) {
     column.title = (
       <div>
-        <span style={{ marginRight: '6px' }}>{ columnSchema.title }</span>
+        <span style={{ marginRight: '6px' }}><RichText className={styles['jfe-drip-table-column-title']} html={columnSchema.title} /></span>
         <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
           <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>
             <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">

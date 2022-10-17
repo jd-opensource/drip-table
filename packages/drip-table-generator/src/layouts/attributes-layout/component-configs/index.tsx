@@ -83,7 +83,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     currentColumn: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'],
   ): DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'] => {
     const uiProps: Record<string, unknown> = {};
-    const dataProps = {};
+    const dataProps: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
         uiProps[key.replace('options.', '')] = formData[key];
@@ -93,6 +93,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         dataProps[key] = formData[key];
       }
     });
+    if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
+      dataProps.width = Number(dataProps.width);
+    }
     if (currentColumn?.component === 'group') {
       const length = (uiProps.layout as number[])?.reduce((p, v) => p + v, 0) || 0;
       uiProps.items = Array.from({ length }, _ => null);

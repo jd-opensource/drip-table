@@ -6,8 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import { Checkbox, Dropdown, Input, Menu, message, Modal } from 'antd';
+import { Checkbox } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
@@ -18,6 +17,9 @@ import components from '@/table-components';
 import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import BlankPanel from './blank-panel';
+import ColumnCopyModal from './colum-copy-modal';
+import ColumnHeader from './column-header';
+import ColumnInsertModal from './column-insert-modal';
 import EditableComponents from './components';
 
 import styles from './index.module.less';
@@ -122,8 +124,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       const siblingHeight = columnsDOM[columnsDOM.length - 1]?.scrollHeight;
       const tableHeight = table.current?.scrollHeight;
       setBlankHeight(siblingHeight || tableHeight);
-    }, 800);
-  }, [context.globalConfigs.size, context.globalConfigs.sticky, context.globalConfigs.scroll?.y]);
+    }, 50);
+  }, [context.globalConfigs.size, context.globalConfigs.sticky, context.globalConfigs.scroll?.y, context.globalConfigs.pagination]);
 
   const columnWidth = React.useMemo(() => {
     let width = '';
@@ -140,64 +142,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     });
     return width;
   }, [context.columns, context.currentColumn]);
-
-  const columnActions = (
-    columnIndex: number,
-    columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
-  ) => (
-    <Menu key={columnIndex}>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        setColumnIndexToInsert(columnIndex);
-      }}
-      >
-        <ArrowLeftOutlined style={{ marginRight: 5 }} />
-        <span>向左插入列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        setColumnIndexToInsert(columnIndex + 1);
-      }}
-      >
-        <ArrowRightOutlined style={{ marginRight: 5 }} />
-        <span>向右插入列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        setColumnIndexToCopy(columnIndex);
-      }}
-      >
-        <CopyOutlined
-          style={{ marginRight: 5 }}
-        />
-        <span>复制列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        Modal.confirm({
-          title: '删除列提醒',
-          content: `确认删除该列（${columns[columnIndex]?.title}）吗？`,
-          okText: '删除',
-          okButtonProps: { type: 'primary', danger: true },
-          cancelText: '取消',
-          onOk: () => {
-            setCellHeight(void 0);
-            columns.splice(columnIndex, 1);
-            setState({ columns: [...columns] });
-          },
-        });
-      }}
-      >
-        <DeleteOutlined style={{ marginRight: 5 }} />
-        <span>删除列</span>
-      </Menu.Item>
-    </Menu>
-  );
 
   const onMenuClick = (
     component: DripTableComponentAttrConfig,
@@ -252,16 +196,14 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               <div style={{ display: 'flex' }}>
                 { globalConfigs.rowSelection && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
                 { columns.map((column, columnIndex) => (
-                  <div
-                    key={columnIndex}
-                    className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
-                    style={{ minWidth: 180, border: '1px solid #f0f0f0', width: column.width || void 0 }}
-                  >
-                    { column.title }
-                    <Dropdown overlay={columnActions(columnIndex, columns, setState)} trigger={['click']}>
-                      <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
-                    </Dropdown>
-                  </div>
+                  <ColumnHeader
+                    style={{ minWidth: 180, border: '1px solid #f0f0f0' }}
+                    index={columnIndex}
+                    column={column}
+                    onInsert={index => setColumnIndexToInsert(index)}
+                    onCopy={index => setColumnIndexToCopy(index)}
+                    onDelete={() => setCellHeight(void 0)}
+                  />
                 )) }
               </div>
             ) }
@@ -280,7 +222,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     <div className={styles['editable-table-tbody']} style={{ textAlign: 'center' }}>
                       {
                       previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
-                        <div className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])} style={{ height: cellHeight, textAlign: 'center' }}>
+                        <div className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])} style={{ height: cellHeight, textAlign: 'center', backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0 }}>
                           <Checkbox />
                         </div>
                       ))
@@ -319,12 +261,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                   }}
                 >
                   { !globalConfigs.sticky && (
-                  <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}>
-                    { column.title }
-                    <Dropdown overlay={columnActions(columnIndex, columns, setState)} trigger={['click']}>
-                      <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
-                    </Dropdown>
-                  </div>
+                    <ColumnHeader
+                      index={columnIndex}
+                      column={column}
+                      onInsert={index => setColumnIndexToInsert(index)}
+                      onCopy={index => setColumnIndexToCopy(index)}
+                      onDelete={() => setCellHeight(void 0)}
+                    />
                   ) }
                   <div className={styles['editable-table-tbody']}>
                     { previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
@@ -335,6 +278,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           height: cellHeight,
                           width: column.width || void 0,
                           textAlign: column.align,
+                          backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}
                       >
                         <EditableComponents
@@ -367,53 +311,18 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               />
 
             </div>
-            <Modal
-              title="复制列"
+            <ColumnCopyModal
               visible={columnIndexToCopy > -1}
-              onCancel={() => setColumnIndexToCopy(-1)}
-              onOk={() => {
-                if (navigator.clipboard) {
-                  navigator.clipboard.writeText(JSON.stringify({ ...columns[columnIndexToCopy], index: void 0 }, null, 4))
-                    .then(
-                      () => {
-                        message.success('复制成功');
-                        return void 0;
-                      },
-                    )
-                    .catch(
-                      () => {
-                        message.error('复制失败');
-                      },
-                    );
-                } else {
-                  message.error('复制失败：您的浏览器不支持复制。');
-                }
-                setColumnIndexToCopy(-1);
-              }}
-            >
-              <Input.TextArea value={JSON.stringify({ ...columns[columnIndexToCopy], index: void 0 }, null, 4)} style={{ minHeight: '560px' }} />
-            </Modal>
-            <Modal
-              title="插入列"
+              value={columns[columnIndexToCopy]}
+              onClose={() => setColumnIndexToCopy(-1)}
+            />
+            <ColumnInsertModal
               visible={columnIndexToInsert >= 0 && columnIndexToInsert <= columns.length}
-              onCancel={() => { setColumnIndexToInsert(-1); setColumnToInsert(''); }}
-              onOk={() => {
-                try {
-                  const jsonVal = JSON.parse(columnToInsert);
-                  const column = { ...jsonVal, index: columnIndexToInsert };
-                  columns.splice(columnIndexToInsert, 0, column);
-                  for (let i = columnIndexToInsert + 1; i < columns.length; i++) { columns[i].index += 1; }
-                  setState({ columns: [...columns] }, () => {
-                    setColumnIndexToInsert(-1);
-                    setColumnToInsert('');
-                  });
-                } catch {
-                  message.error('参数输入不合法');
-                }
-              }}
-            >
-              <Input.TextArea style={{ minHeight: '560px' }} onChange={e => setColumnToInsert(e.target.value)} />
-            </Modal>
+              value={columnToInsert}
+              index={columnIndexToInsert}
+              onChange={value => setColumnToInsert(value)}
+              onClose={() => { setColumnIndexToInsert(-1); setColumnToInsert(''); }}
+            />
           </React.Fragment>
         );
       } }

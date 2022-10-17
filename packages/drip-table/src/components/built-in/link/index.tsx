@@ -189,7 +189,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       const event = options.event;
       if (event) {
         return (
-          <div style={{ display: 'flex' }}>
+          <div>
             <a
               className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
               onClick={() => {
@@ -207,7 +207,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         );
       }
       return (
-        <div style={{ display: 'flex' }}>
+        <div>
           <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>
           { this.renderToolTip() }
         </div>
