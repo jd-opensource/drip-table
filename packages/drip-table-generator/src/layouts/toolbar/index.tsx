@@ -12,6 +12,7 @@ import { BorderOuterOutlined,
   FilterOutlined,
   FontSizeOutlined,
   InsertRowAboveOutlined,
+  MenuOutlined,
   SettingOutlined,
   SortAscendingOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, message, Modal, Radio } from 'antd';
@@ -83,6 +84,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     { icon: <InsertRowAboveOutlined className={styles['tool-icon']} />, label: '冻结表头', type: 'switch', name: 'sticky' },
     { icon: <BorderOuterOutlined className={styles['tool-icon']} />, label: '边框', type: 'switch', name: 'bordered' },
     { icon: <CheckSquareOutlined className={styles['tool-icon']} />, label: '行可选择', type: 'switch', name: 'rowSelection' },
+    { icon: <MenuOutlined className={styles['tool-icon']} />, label: '间隔斑马纹', type: 'switch', name: 'stripe' },
     {
       icon: <FontSizeOutlined className={styles['tool-icon']} />,
       label: '尺寸',
