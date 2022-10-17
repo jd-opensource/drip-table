@@ -13,14 +13,24 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     group: '表头配置',
     'ui:title': '表头名称',
     'ui:type': 'text',
+    'ui:props': {
+      style: { width: '100%' },
+      placeholder: '可输入文本或者HTML, 例如: <strong>表头标题</strong>',
+    },
+    'ui:layout': { labelCol: 6, wrapperCol: 18 },
     type: 'string',
     default: defaultValue || '',
   },
   {
     name: 'description',
     group: '表头配置',
-    'ui:title': '表头说明',
+    'ui:title': '表头提示',
     'ui:type': 'text',
+    'ui:props': {
+      style: { width: '100%' },
+      placeholder: '可输入文本或者HTML, 例如: <strong>提示说明</strong>',
+    },
+    'ui:layout': { labelCol: 6, wrapperCol: 18 },
     type: 'string',
   },
   {
