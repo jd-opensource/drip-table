@@ -15,7 +15,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
-import { validateDripTableColumnSchema } from '@/utils/ajv';
+import { validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import DripTableBuiltInComponents from '@/components/built-in';
 import { type IDripTableContext, DripTableContext } from '@/context';
 import { useState, useTable } from '@/hooks';
@@ -139,6 +139,23 @@ const DripTableWrapper: <
     },
     [props],
   );
+
+  // 校验参数
+  const ajv = props.ajv;
+  if (ajv !== false) {
+    const errorMessage = validateDripTableRequiredProps(props, ajv)
+      || Object.entries(props)
+        .map(([k, v]) => React.useMemo(() => validateDripTableProp(k, v, ajv), [k, v, ajv]))
+        .filter(_ => _)
+        .join('\n');
+    if (errorMessage) {
+      return (
+        <pre className={styles['jfe-drip-table-column-ajv-error']}>
+          { `Props validate failed: ${errorMessage.includes('\n') ? '\n' : ''}${errorMessage}` }
+        </pre>
+      );
+    }
+  }
 
   const ConfigProvider = tableProps.driver.components.ConfigProvider;
   const context = createTableContext(tableProps);
