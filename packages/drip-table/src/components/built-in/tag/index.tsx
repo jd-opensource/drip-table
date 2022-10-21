@@ -29,7 +29,13 @@ export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
   /** 静态文案 */
   content?: string;
   /** 枚举 */
-  tagOptions?: { label: string; value: string | number; color?: 'success' | 'processing' | 'error' | 'default' | 'warning' | string }[];
+  tagOptions?: {
+    label: string;
+    value: string | number;
+    color?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+  }[];
 }>;
 
 interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagColumnSchema> { }
@@ -54,10 +60,9 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
           properties: {
             label: { type: 'string' },
             value: { typeof: ['string', 'number'] },
-            color: { anyOf: [
-              { enum: ['success', 'processing', 'error', 'default', 'warning'] },
-              { type: 'string' },
-            ] },
+            color: { type: 'string' },
+            borderColor: { type: 'string' },
+            backgroundColor: { type: 'string' },
           },
           required: ['label', 'value'],
         },
@@ -83,8 +88,8 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
           color={tagOption ? tagOption.color : options.color}
           style={{
             color: tagOption ? tagOption.color : options.color,
-            borderColor: options.borderColor,
-            backgroundColor: options.backgroundColor,
+            borderColor: tagOption ? tagOption.borderColor : options.borderColor,
+            backgroundColor: tagOption ? tagOption.backgroundColor : options.backgroundColor,
             borderRadius: options.radius,
           }}
         >
