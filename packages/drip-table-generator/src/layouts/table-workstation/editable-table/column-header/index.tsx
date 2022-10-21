@@ -107,7 +107,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           <RichText className={styles['editable-table-column-title']} html={props.column.title} />
           { props.column.description && (
             <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
-              <span style={{ marginLeft: 6 }}><QuestionCircleOutlined /></span>
+              <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
             </Tooltip>
           ) }
           <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
