@@ -27,7 +27,7 @@
     "cheerio": "1.0.0-rc.10",
     "classnames": "^2.3.1",
     "domhandler": "^4.3.0",
-    "lodash": "^4.4.2",
+    "lodash": "^4.17.21",
     "monaco-editor": "0.31.1",
     "rc-color-picker": "^1.2.6",
     "react-monaco-editor": "0.46.0",
