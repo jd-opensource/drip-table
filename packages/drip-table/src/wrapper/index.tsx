@@ -15,7 +15,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
-import { validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
+import { getDripTableValidatePropsCount, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import DripTableBuiltInComponents from '@/components/built-in';
 import { type IDripTableContext, DripTableContext } from '@/context';
 import { useState, useTable } from '@/hooks';
@@ -143,11 +143,18 @@ const DripTableWrapper: <
   // 校验参数
   const ajv = props.ajv;
   if (ajv !== false) {
-    const errorMessage = validateDripTableRequiredProps(props, ajv)
-      || Object.entries(props)
-        .map(([k, v]) => React.useMemo(() => validateDripTableProp(k, v, ajv), [k, v, ajv]))
+    let errorMessage = validateDripTableRequiredProps(props, ajv);
+    if (!errorMessage) {
+      const pkv = Object.entries(props);
+      const max = getDripTableValidatePropsCount(ajv) + 1;
+      for (let i = pkv.length; i < max; i++) {
+        pkv.push(['', void 0]);
+      }
+      errorMessage = pkv
+        .map(([k, v]) => React.useMemo(() => (k ? validateDripTableProp(k, v, ajv) : ''), [k, v, ajv]))
         .filter(_ => _)
         .join('\n');
+    }
     if (errorMessage) {
       return (
         <pre className={styles['jfe-drip-table-column-ajv-error']}>

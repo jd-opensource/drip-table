@@ -363,6 +363,14 @@ export const validateDripTableRequiredProps = (props: unknown, options?: AjvOpti
   return null;
 };
 
+export const getDripTableValidatePropsCount = (options?: AjvOptions) => {
+  if (options?.additionalProperties) {
+    return 100;
+  }
+  const schemas = getDripTablePropsAjvSchema(options);
+  return Object.keys(schemas.props.properties).length;
+};
+
 const DRIP_TABLE_AJV_PROPS_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();
 const DRIP_TABLE_AJV_PROPS_KEY_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();
 /**
