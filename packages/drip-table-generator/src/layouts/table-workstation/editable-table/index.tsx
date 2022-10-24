@@ -135,9 +135,14 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     context.columns.forEach((item) => {
       if (item.width) {
         if (Number.isNaN(Number(item.width))) {
-          width += (/(px|%|r?em|pt|vw|cm|in|pc)$/ui).test(String(item.width)) ? ` - ${String(item.width)}` : ' - 180px';
+          if ((/^[0-9]+px$/ui).test(String(item.width))) {
+            const itemWidth = Number(String(item.width).replace('px', ''));
+            width += itemWidth < 180 ? ' - 180px' : ` - ${String(item.width)}`;
+          } else {
+            width += (/(px|%|r?em|pt|vw|cm|in|pc)$/ui).test(String(item.width)) ? ` - ${String(item.width)}` : ' - 180px';
+          }
         } else {
-          width += ` - ${Number(item.width)}px`;
+          width += Number(item.width) < 180 ? ' - 180px' : ` - ${Number(item.width)}px`;
         }
       } else {
         width += ' - 180px';
