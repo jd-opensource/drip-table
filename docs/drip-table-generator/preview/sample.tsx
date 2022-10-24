@@ -24,7 +24,32 @@ import TextComponent, { TextColumnSchema } from './text-component';
 
 const initialSchema: DripTableSchema = {
   pagination: false,
-  columns: [],
+  columns: [
+    {
+      key: 'mock_2',
+      title: '商品名称',
+      width: '96px',
+      component: 'text',
+      options: {
+        mode: 'single',
+        maxRow: 2,
+      },
+      type: 'string',
+      dataIndex: 'name',
+    },
+    {
+      key: 'mock_1',
+      dataIndex: '',
+      title: '自定义',
+      description: '',
+      component: 'render-html',
+      width: '200px',
+      options: {
+        render: "if (rec.id == 1) {\n  return '<span style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 10px; background: #f6ffed\\\">进行中</span>';\n}\nif (rec.id == 2) {\n  return '<span style=\\\"padding: 2px 4px;color:#000; border: 1px solid #000; border-radius: 10px; background: #f6ffed\\\">已完成</span>';\n}\nreturn '';",
+      },
+      type: 'string',
+    },
+  ],
 };
 
 type ExtraOptions = Omit<DripTableExtraOptions, 'CustomColumnSchema' | 'SubtableDataSourceKey'> & {
