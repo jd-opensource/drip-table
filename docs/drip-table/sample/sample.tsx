@@ -9,7 +9,7 @@ import 'jsoneditor-react/es/editor.min.css';
 import 'drip-table/dist/index.css';
 
 import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
-import { Button, message, Tabs } from 'antd';
+import { Button, message, Switch, Tabs } from 'antd';
 import DripTable, { DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
@@ -88,6 +88,16 @@ const Demo = () => {
           { allSelected && '取消' }
           全选
         </Button>
+        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <label style={{ paddingLeft: '5px' }}>分页：</label>
+          <Switch style={{ marginRight: '5px' }} checked={!!schema.pagination} onChange={(v) => { setSchema({ ...schema, pagination: v ? initSchema.pagination : false }); }} />
+          <label style={{ paddingLeft: '5px' }}>行选择：</label>
+          <Switch style={{ marginRight: '5px' }} checked={!!schema.rowSelection} onChange={(v) => { setSchema({ ...schema, rowSelection: v }); }} />
+          <label style={{ paddingLeft: '5px' }}>斑马纹：</label>
+          <Switch style={{ marginRight: '5px' }} checked={schema.stripe} onChange={(v) => { setSchema({ ...schema, stripe: v }); }} />
+          <label style={{ paddingLeft: '5px' }}>拖拽换行：</label>
+          <Switch style={{ marginRight: '5px' }} checked={schema.rowDraggable} onChange={(v) => { setSchema({ ...schema, rowDraggable: v }); }} />
+        </div>
       </div>
       <DripTable<SampleRecordType, {
         CustomColumnSchema: CustomColumnSchema;
