@@ -137,15 +137,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         if (Number.isNaN(Number(item.width))) {
           if ((/^[0-9]+px$/ui).test(String(item.width))) {
             const itemWidth = Number(String(item.width).replace('px', ''));
-            width += itemWidth < 180 ? ' - 180px' : ` - ${String(item.width)}`;
+            width += itemWidth < 100 ? ' - 100px' : ` - ${String(item.width)}`;
           } else {
-            width += (/(px|%|r?em|pt|vw|cm|in|pc)$/ui).test(String(item.width)) ? ` - ${String(item.width)}` : ' - 180px';
+            width += (/(px|%|r?em|pt|vw|cm|in|pc)$/ui).test(String(item.width)) ? ` - ${String(item.width)}` : ' - 100px';
           }
         } else {
-          width += Number(item.width) < 180 ? ' - 180px' : ` - ${Number(item.width)}px`;
+          width += Number(item.width) < 180 ? ' - 100px' : ` - ${Number(item.width)}px`;
         }
       } else {
-        width += ' - 180px';
+        width += ' - 100px';
       }
     });
     return width;
@@ -323,7 +323,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
                           height: cellHeight,
-                          minWidth: 180,
+                          minWidth: 100,
                           width: Number.isNaN(Number(column.width)) ? column.width || void 0 : Number(column.width),
                           textAlign: column.align,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,

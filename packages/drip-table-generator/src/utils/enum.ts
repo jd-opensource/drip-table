@@ -5,19 +5,9 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-
-.container {
-  min-width: 1106px;
-}
-
-.navbar {
-  width: 65px;
-  height: 100%;
-  overflow: hidden;
-}
-
-.wrapper {
-  display: flex;
-  height: calc(~"100% - 48px");
-  position: relative;
-}
+export const drawerWidth = {
+  datasource: 680,
+  global: 480,
+  column: 480,
+  'column-item': 480,
+};

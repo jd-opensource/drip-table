@@ -102,6 +102,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           style={{
             ...props.style,
             width,
+            minWidth: 100,
           }}
         >
           <RichText className={styles['editable-table-column-title']} html={props.column.title} />

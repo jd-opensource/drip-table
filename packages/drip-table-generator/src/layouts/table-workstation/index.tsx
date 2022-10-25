@@ -9,6 +9,7 @@
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
 
+import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
 import { DripTableGeneratorProps } from '@/typing';
 
@@ -40,7 +41,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   return (
     <div
       className={styles['generator-workstation']}
-      style={{ overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto' }}
+      style={{
+        overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto',
+        width: context.drawerType ? `calc(100% - 65px - ${drawerWidth[context.drawerType]}px)` : void 0,
+      }}
       ref={tableWrapper}
     >
       { context.mode === 'edit'

@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
 
+import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
 import { DripTableGeneratorProps } from '@/typing';
 
@@ -32,13 +33,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     global: '全局配置',
     column: '组件配置',
     'column-item': '子组件配置',
-  };
-
-  const drawerWidth = {
-    datasource: 680,
-    global: 560,
-    column: 560,
-    'column-item': 560,
   };
 
   return (
