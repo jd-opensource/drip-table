@@ -34,9 +34,10 @@ export default {
     },
     ...basicColumnAttrComponents('日期'),
     ...dataIndexColumnAttrComponents(
-      (_1, formData) => formData?.['options.mode'] === 'basic',
-      (_1, formData) => formData?.['options.mode'] === 'basic' && formData?.dataIndexMode === 'direct',
-      (_1, formData) => formData?.['options.mode'] === 'basic' && formData?.dataIndexMode === 'nested',
+      void 0,
+      (_1, formData) => true,
+      (_1, formData) => true && formData?.dataIndexMode === 'direct',
+      (_1, formData) => true && formData?.dataIndexMode === 'nested',
     ),
     {
       name: 'options.parts',

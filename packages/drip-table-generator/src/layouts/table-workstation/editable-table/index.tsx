@@ -60,6 +60,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   const [columnIndexToCopy, setColumnIndexToCopy] = React.useState<number>(-1);
   const [columnIndexToInsert, setColumnIndexToInsert] = React.useState<number>(-1);
   const [columnToInsert, setColumnToInsert] = React.useState<string>('');
+  const [checkedList, setCheckedList] = React.useState<number[]>([]);
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const [checkAll, setCheckAll] = React.useState(false);
   const context = React.useContext(GeneratorContext);
   const table = React.useRef<HTMLDivElement>(null);
 
@@ -143,6 +146,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return width;
   }, [context.columns, context.currentColumn]);
 
+  const dataSource = React.useMemo(() => {
+    const { previewDataSource, globalConfigs: { pagination } } = context;
+    return previewDataSource.slice(0, pagination ? pagination.pageSize : void 0);
+  }, [context.globalConfigs.pagination, context.previewDataSource]);
+
   const onMenuClick = (
     component: DripTableComponentAttrConfig,
     columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
@@ -197,7 +205,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 { globalConfigs.rowSelection && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
                 { columns.map((column, columnIndex) => (
                   <ColumnHeader
-                    style={{ minWidth: 180, border: '1px solid #f0f0f0' }}
+                    style={{ border: '1px solid #f0f0f0' }}
+                    sticky
                     index={columnIndex}
                     column={column}
                     onInsert={index => setColumnIndexToInsert(index)}
@@ -218,12 +227,43 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               { globalConfigs.rowSelection
                 ? (
                   <div className={styles['editable-table-column']} style={{ minWidth: 48, width: 48 }}>
-                    { !globalConfigs.sticky && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center' }}><Checkbox /></div> }
+                    { !globalConfigs.sticky && (
+                    <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center' }}>
+                      <Checkbox
+                        indeterminate={indeterminate}
+                        checked={checkAll}
+                        onChange={(e) => {
+                          const options = Array.from({ length: dataSource.length }, (item, i) => i);
+                          setCheckedList(e.target.checked ? options : []);
+                          setIndeterminate(false);
+                          setCheckAll(e.target.checked);
+                        }}
+                      />
+                    </div>
+                    ) }
                     <div className={styles['editable-table-tbody']} style={{ textAlign: 'center' }}>
                       {
-                      previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
-                        <div className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])} style={{ height: cellHeight, textAlign: 'center', backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0 }}>
-                          <Checkbox />
+                      dataSource.map((record, index) => (
+                        <div
+                          key={index}
+                          className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
+                          style={{ height: cellHeight, textAlign: 'center', backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0 }}
+                        >
+                          <Checkbox
+                            checked={checkedList.includes(index)}
+                            onChange={(e) => {
+                              const list = [...checkedList];
+                              if (e.target.checked) {
+                                list.push(index);
+                              } else {
+                                const point = list.indexOf(index);
+                                if (point > -1) { list.splice(point, 1); }
+                              }
+                              setCheckedList(list);
+                              setIndeterminate(!!list.length && list.length < dataSource.length);
+                              setCheckAll(list.length === dataSource.length);
+                            }}
+                          />
                         </div>
                       ))
                     }
@@ -235,7 +275,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 <div
                   key={columnIndex}
                   className={classNames(styles['editable-table-column'], { [styles.checked]: currentColumn?.key === column.key })}
-                  style={{ width: column.width || void 0 }}
+                  style={{
+                    width: Number.isNaN(Number(column.width)) ? column.width || void 0 : Number(column.width),
+                  }}
                   onClick={(event) => {
                     event.preventDefault();
                     setState({
@@ -270,13 +312,14 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     />
                   ) }
                   <div className={styles['editable-table-tbody']}>
-                    { previewDataSource.slice(0, globalConfigs.pagination ? globalConfigs.pagination.pageSize : void 0).map((record, index) => (
+                    { dataSource.map((record, index) => (
                       <div
                         key={index}
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
                           height: cellHeight,
-                          width: column.width || void 0,
+                          minWidth: 180,
+                          width: Number.isNaN(Number(column.width)) ? column.width || void 0 : Number(column.width),
                           textAlign: column.align,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}

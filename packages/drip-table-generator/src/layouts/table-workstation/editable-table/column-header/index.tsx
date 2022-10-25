@@ -20,6 +20,7 @@ interface ColumnHeaderProps<
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >{
   style?: React.CSSProperties;
+  sticky?: boolean;
   index: number;
   column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
   onInsert: (index: number) => void;
@@ -84,13 +85,24 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       </Menu.Item>
     </Menu>
   );
+
+  const width = React.useMemo(() => {
+    if (props.sticky) {
+      return Number.isNaN(Number(props.column.width)) ? props.column.width || 180 : Number(props.column.width);
+    }
+    return void 0;
+  }, [props.column.width, props.sticky]);
+
   return (
     <GeneratorContext.Consumer>
       { ({ columns, globalConfigs, setState }) => (
         <div
           key={props.index}
           className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
-          style={{ ...props.style, width: props.column.width || void 0 }}
+          style={{
+            ...props.style,
+            width,
+          }}
         >
           <RichText className={styles['editable-table-column-title']} html={props.column.title} />
           { props.column.description && (

@@ -53,7 +53,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   const context = React.useContext(GeneratorContext);
 
   const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
-    ...filterAttributes(context.globalConfigs, '$version'),
+    ...context.globalConfigs,
     columns: context.columns.map(item => ({ ...item, index: void 0 })),
   });
 

@@ -7,6 +7,8 @@
  */
 
 import { message } from 'antd';
+import ConfigProvider from 'antd/es/config-provider';
+import zhCN from 'antd/es/locale/zh_CN';
 import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
@@ -58,7 +60,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   React.useImperativeHandle(ref, () => ({
     getState: () => generatorContext,
     getSchemaValue: () => ({
-      ...filterAttributes(generatorContext.globalConfigs, '$version'),
+      ...generatorContext.globalConfigs,
       columns: generatorContext.columns.map(item => ({ ...item })),
     }),
   }));
@@ -66,9 +68,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   message.config({ maxCount: 1 });
 
   return (
-    <GeneratorContext.Provider value={generatorContext}>
-      <GeneratorLayout {...props} />
-    </GeneratorContext.Provider>
+    <ConfigProvider locale={zhCN}>
+      <GeneratorContext.Provider value={generatorContext}>
+        <GeneratorLayout {...props} />
+      </GeneratorContext.Provider>
+    </ConfigProvider>
   );
 });
 

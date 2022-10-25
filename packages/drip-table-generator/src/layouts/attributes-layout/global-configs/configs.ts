@@ -26,7 +26,7 @@ const SlotItemConfigs = [
     'ui:title': '类型',
     'ui:type': 'select',
     'ui:props': {
-      style: { width: 142 },
+      style: { width: 160 },
       options: [
         { label: '列展示筛选器', value: 'display-column-selector' },
         { label: '空白栏', value: 'spacer' },
@@ -50,7 +50,7 @@ const SlotItemConfigs = [
         { label: '虚线按钮', value: 'dashed' },
       ],
     },
-    'ui:layout': { labelCol: 24, wrapperCol: 24 },
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     type: 'string',
     default: 'primary',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
@@ -63,7 +63,7 @@ const SlotItemConfigs = [
       style: { width: '100%' },
       placeholder: '请输入按钮名称',
     },
-    'ui:layout': { labelCol: 24, wrapperCol: 24 },
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     type: 'string',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
   },
@@ -169,6 +169,7 @@ const SlotItemConfigs = [
     'ui:title': '搜索分类过滤',
     'ui:type': 'array-list',
     'ui:props': {
+      mode: 'narrow',
       items: [
         {
           name: 'label',
@@ -244,7 +245,7 @@ const HeaderAttrConfigs: DTGComponentPropertySchema[] = [
       wrapperCol: 24,
     },
     'ui:props': {
-      toolWidth: 42,
+      mode: 'narrow',
       items: [...SlotItemConfigs],
     },
     type: 'boolean',

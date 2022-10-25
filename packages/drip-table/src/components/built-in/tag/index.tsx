@@ -82,7 +82,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
         <Tag
           color={tagOption ? tagOption.color : options.color}
           style={{
-            color: options.color,
+            color: tagOption ? tagOption.color : options.color,
             borderColor: options.borderColor,
             backgroundColor: options.backgroundColor,
             borderRadius: options.radius,

@@ -12,7 +12,7 @@ export default {
   default: '',
   attrSchema: [
     ...basicColumnAttrComponents('图片'),
-    ...dataIndexColumnAttrComponents(),
+    ...dataIndexColumnAttrComponents('pictureUrl'),
     {
       name: 'options.imageWidth',
       group: '样式配置',

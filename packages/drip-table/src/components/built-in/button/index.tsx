@@ -10,6 +10,7 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 
 import { DripTableComponentProps } from '../component';
+import { finalizeString } from '../utils';
 
 export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   /** 展示模式：单按钮、多按钮 */
@@ -87,6 +88,11 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     return true;
   }
 
+  private get label() {
+    const options = this.props.schema.options;
+    return finalizeString('pattern', options.label || '', this.props.data);
+  }
+
   private getIcon(iconName: string) {
     const Icons = this.props.driver.icons;
     const Icon = Icons?.[iconName];
@@ -120,7 +126,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             }
           }}
         >
-          { options.label }
+          { this.label }
         </Button>
       );
     }
@@ -142,7 +148,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             }
           }}
         >
-          { config.label }
+          { this.label }
         </Button>
       ));
     }

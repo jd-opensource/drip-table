@@ -6,7 +6,7 @@ export type DripTableColumn<ExtraColumnSchema extends DripTableColumnSchema = ne
   index: number;
 };
 
-export type GlobalSchema<ExtraColumnSchema extends DripTableColumnSchema = never> = Omit<DripTableSchema<ExtraColumnSchema>, 'columns'> & { '$version'?: number };
+export type GlobalSchema<ExtraColumnSchema extends DripTableColumnSchema = never> = Omit<DripTableSchema<ExtraColumnSchema>, 'columns'>;
 
 export interface DripTableGeneratorContext<ExtraColumnSchema extends DripTableColumnSchema = never> {
   /** 生成的列配置 */

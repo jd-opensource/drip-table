@@ -176,6 +176,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               {...filterAttributes(globalConfigs.pagination, 'showTotal')}
               showTotal={globalConfigs.pagination ? renderShowTotal(globalConfigs.pagination.showTotal) : void 0}
               total={previewDataSource.length}
+              onShowSizeChange={(current, size) => {
+                const configs = { ...globalConfigs };
+                if (typeof configs.pagination === 'object') {
+                  configs.pagination.pageSize = size;
+                }
+                setState({ globalConfigs: configs });
+              }}
             />
             ) }
             <div className={styles['draggable-container']} style={{ padding: '8px 0 0 8px', overflowX: 'auto' }}>

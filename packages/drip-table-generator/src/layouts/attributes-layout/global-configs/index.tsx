@@ -31,6 +31,12 @@ const GlobalConfigForm = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: GlobalConfigFormProps<RecordType, ExtraOptions>) => {
+  const context = React.useContext(GeneratorContext);
+  const form = React.useRef<CustomForm<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs']>>(null);
+
+  React.useEffect(() => {
+    form.current?.formForceUpdate();
+  }, [context.globalConfigs]);
   /**
    * 将全局配置转换成FormData
    * @param {GlobalSchema} globalConfigs 全局配置
@@ -136,7 +142,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     };
     return {
       ...filterAttributesByRegExp(formData, /^(footer|header|pagination)\./u),
-      $version: formData.$version as number,
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -234,7 +239,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     <GeneratorContext.Consumer>
       { ({ globalConfigs, setState }) => (
         <CustomForm
-          primaryKey="$version"
+          ref={form}
           configs={getGlobalFormConfigs()}
           data={cloneDeep(globalConfigs)}
           decodeData={decodeGlobalConfigs}

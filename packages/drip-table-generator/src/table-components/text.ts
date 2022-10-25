@@ -35,10 +35,10 @@ export default {
     },
     ...basicColumnAttrComponents('文本'),
     ...dataIndexColumnAttrComponents(
+      'id',
       (_1, formData) => formData?.['options.mode'] === 'single',
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'direct',
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'nested',
-      'id',
     ),
     {
       name: 'options.fontSize',
