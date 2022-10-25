@@ -102,12 +102,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   if (props.column?.component === 'group') {
     const gutter = props.column.options.gutter ?? [0, 0];
-    const columnWidth = (Number(String(props.column?.width || '').replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 180) - 12;
+    const columnWidth = (Number(String(props.column?.width || '').replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 100) - 12;
     const componentOptions = props.column.options;
     return (
       <GeneratorContext.Consumer>
         { ({ columns, columnToAdd, currentColumn, currentColumnPath, setState }) => (
-          <div style={{ height: props.isChildren ? '100%' : '180px', overflow: 'hidden' }}>
+          <div style={{ height: props.isChildren ? '100%' : '100px', overflow: 'hidden' }}>
             <div
               className={props.isChildren ? '' : styles['table-cell']}
               style={{ width: props.isChildren ? '100%' : columnWidth }}

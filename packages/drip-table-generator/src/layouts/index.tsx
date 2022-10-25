@@ -21,14 +21,16 @@ const GeneratorLayout = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (
-  <div style={props.style}>
+  <div style={props.style} className={styles.container}>
     { props.showToolLayout === false ? null : <Toolbar style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }
     <div className={styles.wrapper}>
-      <ComponentsBar
-        customComponentPanel={props.customComponentPanel}
-        mockDataSource={props.mockDataSource}
-        dataFields={props.dataFields}
-      />
+      <div className={styles.navbar} style={{ height: props.style?.height ? `calc(${props.style?.height} - 48px)` : void 0 }}>
+        <ComponentsBar
+          customComponentPanel={props.customComponentPanel}
+          mockDataSource={props.mockDataSource}
+          dataFields={props.dataFields}
+        />
+      </div>
       <TableWorkStation
         customComponentPanel={props.customComponentPanel}
         customComponents={props.customComponents}
