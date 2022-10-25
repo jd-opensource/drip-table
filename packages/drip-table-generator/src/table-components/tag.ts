@@ -12,7 +12,7 @@ export default {
   default: '',
   attrSchema: [
     ...basicColumnAttrComponents('标签'),
-    ...dataIndexColumnAttrComponents(),
+    ...dataIndexColumnAttrComponents('status'),
     {
       name: 'options.prefix',
       group: '组件属性',
@@ -88,6 +88,18 @@ export default {
             name: 'label',
             'ui:title': '展示文案',
             'ui:type': 'input',
+            type: 'string',
+            default: '',
+          },
+          {
+            name: 'color',
+            'ui:title': '颜色',
+            'ui:type': 'input',
+            'ui:description': {
+              title: "可输入'success', 'processing', 'error', 'default', 'warning' 或者颜色值(#rrggbb)",
+              trigger: 'hover',
+              type: 'icon',
+            },
             type: 'string',
             default: '',
           },

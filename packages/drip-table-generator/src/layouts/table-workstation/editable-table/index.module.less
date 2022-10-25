@@ -31,7 +31,11 @@
     cursor: pointer;
 
     &-title {
-      display: inline;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: calc(~"100% - 14px");
 
       * {
         display: inline;

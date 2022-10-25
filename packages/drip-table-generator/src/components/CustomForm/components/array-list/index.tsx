@@ -1,4 +1,4 @@
-import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Button, Col, Popover, Row } from 'antd';
 import React from 'react';
 
@@ -11,6 +11,7 @@ import styles from './index.module.less';
 
 interface Props extends DTGComponentBaseProperty<Record<string, unknown>[]> {
   fieldOptions?: { label: string; value: string }[];
+  mode?: 'wide' | 'narrow';
 }
 
 export default class ArrayComponent extends React.PureComponent<Props> {
@@ -110,6 +111,27 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     const uiProps = this.props.schema['ui:props'] || {};
     const maxLength = uiProps.max as number;
     const toolWidth = uiProps.toolWidth as number | undefined;
+    const mode = uiProps.mode as 'wide' | 'narrow' || 'wide';
+    if (mode === 'narrow') {
+      return (
+        <div className={styles['array-component-form-container']} key={index}>
+          <div
+            className={styles['array-component-close-button']}
+            onClick={() => {
+              const currentValue = this.props.value?.slice() || [];
+              currentValue.splice(index, 1);
+              this.props.onChange?.(currentValue);
+            }}
+          >
+            <CloseCircleOutlined />
+          </div>
+          <div>
+            { (this.props.schema['ui:props']?.items as DTGComponentPropertySchema[])
+              .map((schema, i) => this.renderAttributeItem(schema, i, index)) }
+          </div>
+        </div>
+      );
+    }
     return (
       <div className={styles['array-component-form-container']} key={index}>
         <div className={styles['array-component-left-container']} style={{ width: toolWidth ? `calc(100% - ${toolWidth}px)` : void 0 }}>

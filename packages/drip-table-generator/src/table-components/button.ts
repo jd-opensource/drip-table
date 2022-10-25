@@ -42,7 +42,7 @@ export default {
       group: '组件属性',
       'ui:title': '按钮文案',
       'ui:type': 'text',
-      default: '',
+      default: '按钮',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
@@ -68,14 +68,14 @@ export default {
       'ui:type': 'radio',
       'ui:props': {
         options: [
-          { label: '默认', value: '' },
+          { label: '默认', value: void 0 },
           { label: '主按钮', value: 'primary' },
           { label: '虚线按钮', value: 'dashed' },
           { label: '文本按钮', value: 'text' },
           { label: '链接按钮', value: 'link' },
         ],
       },
-      default: '',
+      default: void 0,
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
@@ -102,10 +102,10 @@ export default {
         options: [
           { label: '圆形', value: 'circle' },
           { label: '圆角', value: 'round' },
-          { label: '默认', value: '' },
+          { label: '默认', value: void 0 },
         ],
       },
-      default: '',
+      default: void 0,
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {

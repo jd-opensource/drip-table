@@ -78,11 +78,11 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
 ];
 
 export const dataIndexColumnAttrComponents: (
+  dataIndex?: string,
   modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   directDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   nestedDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
-  dataIndex?: string,
-) => DTGComponentPropertySchema[] = (modeDiffFn, directDiffFn, nestedDiffFn, dataIndex) => [
+) => DTGComponentPropertySchema[] = (dataIndex, modeDiffFn, directDiffFn, nestedDiffFn) => [
   {
     name: 'dataIndexMode',
     group: '组件属性',

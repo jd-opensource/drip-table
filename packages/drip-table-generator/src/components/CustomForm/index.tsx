@@ -59,6 +59,10 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     }
   }
 
+  public formForceUpdate(data?: T) {
+    this.setState({ formValues: this.decodeData(data || this.props.data), helpMsg: {} });
+  }
+
   public decodeData(material?: T) {
     let obj: { [key: string]: unknown } = {};
     // 注入 defaultValue

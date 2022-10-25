@@ -10,7 +10,7 @@ import React from 'react';
 
 import { DTGComponentBaseProperty } from '..';
 
-interface Props extends DTGComponentBaseProperty<number> {
+interface Props extends DTGComponentBaseProperty<number | undefined> {
 }
 
 export default class InputNumberComponent extends React.PureComponent<Props> {
@@ -31,9 +31,10 @@ export default class InputNumberComponent extends React.PureComponent<Props> {
         disabled={uiProps.disabled as boolean}
         style={{ width: 120, ...uiProps.style }}
         onChange={(value) => {
-          this.props.onChange?.(Number(value));
+          const formedValue = value === void 0 || value === null ? void 0 : Number(value);
+          this.props.onChange?.(formedValue);
           if (config.validate) {
-            const res = config.validate(Number(value));
+            const res = config.validate(formedValue);
             (res instanceof Promise ? res : Promise.resolve(res))
               .then((msg) => {
                 this.props.onValidate?.(msg);
