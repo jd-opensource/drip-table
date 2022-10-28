@@ -9,7 +9,7 @@
 import './index.module.less';
 
 import moment, { Moment } from 'moment';
-import RcPicker, { PickerProps, RangePicker, RangePickerProps } from 'rc-picker';
+import RcPicker, { PickerPanel, PickerPanelProps, PickerProps, RangePicker, RangePickerProps } from 'rc-picker';
 import momentGenerateConfig from 'rc-picker/lib/generate/moment';
 import zh from 'rc-picker/lib/locale/zh_CN';
 import React from 'react';
@@ -31,6 +31,7 @@ const DatePicker = React.memo<DatePickerProps>(({ ...props }) => {
       {...props}
       value={value}
       locale={zh}
+      open
       showToday
       prefixCls="jfe-drip-table-date-picker"
       generateConfig={momentGenerateConfig}
@@ -52,6 +53,7 @@ const DateRangePicker = React.memo<DateRangePickerProps>((props) => {
   return (
     <RangePicker
       {...props}
+      open
       prefixCls="jfe-drip-table-date-picker"
       generateConfig={momentGenerateConfig}
       locale={zh}
@@ -61,4 +63,19 @@ const DateRangePicker = React.memo<DateRangePickerProps>((props) => {
   );
 });
 
-export default { DatePicker, DateRangePicker };
+export type CalendarProps = Omit<PickerPanelProps<Moment>, 'locale' | 'prefixCls' | 'generateConfig'>
+
+const Calendar = React.memo<CalendarProps>((props) => {
+  const { dateRender } = props;
+
+  return (
+    <PickerPanel<Moment>
+      locale={zh}
+      prefixCls="jfe-drip-table-date-picker"
+      generateConfig={momentGenerateConfig}
+      dateRender={dateRender}
+    />
+  );
+});
+
+export default { DatePicker, DateRangePicker, Calendar };

@@ -40,6 +40,7 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [true, {
       ignorePseudoClasses: ['global'],
     }],
+    'color-function-notation': null,
     'value-no-vendor-prefix': [true, {
       ignoreValues: ['box'],
     }],

@@ -31,8 +31,8 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     properties: {
       popover: { type: 'boolean' },
       preview: { type: 'boolean' },
-      imageWidth: { type: 'number' },
-      imageHeight: { type: 'number' },
+      imageWidth: { typeof: ['string', 'number'] },
+      imageHeight: { typeof: ['string', 'number'] },
       imagePlaceholder: { type: 'string' },
     },
   };

@@ -21,6 +21,7 @@ import GenericRender, { type DripTableGenericRenderElement } from '@/components/
 import Spin from '@/components/spin';
 import { useState, useTable } from '@/hooks';
 
+import CalendarLayout from './calendar';
 import CardLayout from './card';
 import TableLayout from './table';
 
@@ -147,6 +148,17 @@ const DripTableLayout = <
     if (tableState.layout === 'card') {
       return (
         <CardLayout
+          tableProps={props}
+          tableInfo={tableInfo}
+          tableState={tableState}
+          setTableState={setTableState}
+          header={headerNode}
+        />
+      );
+    }
+    if (tableState.layout === 'calendar') {
+      return (
+        <CalendarLayout
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}

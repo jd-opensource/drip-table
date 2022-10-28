@@ -76,6 +76,7 @@ const umiConfig: IConfig = {
           '/drip-table/components/tag',
           '/drip-table/components/button',
           '/drip-table/components/select',
+          '/drip-table/components/date-picker',
         ],
       },
       {
@@ -122,6 +123,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
           '/drip-table/schema/subtable',
+          '/drip-table/schema/layout',
         ],
       },
       {
