@@ -24,7 +24,7 @@ const Demo = () => {
   const [loading, setLoading] = React.useState(false);
   const [filters, setFilters] = React.useState<{ key: string; values: unknown[] }[] | undefined>(void 0);
   const [pageNum, setPageNum] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(3);
+  const [pageSize, setPageSize] = React.useState(20);
   const [dataBase, setDataBase] = React.useState(mockData);
   const [totalNum, setTotalNum] = React.useState(dataBase.length);
   const [dataSource, setDataSource] = React.useState(dataBase);

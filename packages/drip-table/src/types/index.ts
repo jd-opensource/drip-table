@@ -86,6 +86,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   hidable?: boolean;
   /**
+   * 在当前布局下是否隐藏
+   */
+  hideInLayout?: boolean;
+  /**
    * 数据过滤器设置
    */
   filters?: {
@@ -96,6 +100,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
+  /**
+   * 自定义cell样式
+   */
+  style?: React.CSSProperties;
 }
 
 export type DripTableID = string | number | undefined;
@@ -252,6 +260,21 @@ export interface DripTableSchema<
      */
     dataSourceKey: SubtableDataSourceKey;
   } & DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>;
+  /**
+   * 卡片布局配置 会对table布局进行覆盖
+   */
+  layout?: {
+    card?: {
+      /**
+       * 会与覆盖最外层的columns并合并
+       */
+      columns: DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>['columns'];
+      /**
+       * 一行多少个
+       */
+      rowSize: number;
+    };
+  };
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;

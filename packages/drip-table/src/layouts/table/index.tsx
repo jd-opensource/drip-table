@@ -79,6 +79,7 @@ export const columnGenerator = <
     title: columnSchema.title,
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
+    style: columnSchema.style,
     onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps['additionalProps']> } as React.TdHTMLAttributes<Element>),
   };
   if (columnSchema.description) {

@@ -30,3 +30,5 @@ title: 总览
 | [rowHeight](/drip-table/schema/row-height) | 表格行高（虚拟滚动） | × | [🔗 示例](/drip-table/schema/row-height) |
 | [rowKey](/drip-table/schema/row-key) | 表格行主键 | × | [🔗 示例](/drip-table/schema/row-key) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
+| [layout](/drip-table/schema/layout) | 表格布局方式配置 | × | [🔗 示例](/drip-table/schema/layout) |
+

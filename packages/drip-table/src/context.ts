@@ -23,7 +23,7 @@ export interface IDripTableContext {
   };
   filters: Record<string, (boolean | React.Key)[] | null>;
   tableSize: 'default';
-  layout: 'table' | 'card';
+  layout: 'table' | 'card' | 'calendar';
   checkPassed: boolean;
   selectedRowKeys: React.Key[];
   displayColumnKeys: React.Key[];

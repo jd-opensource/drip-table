@@ -1,0 +1,29 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : renwenci (ararakikon@163.com)
+ * @modifier : renwenci (ararakikon@163.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+.container {
+  width: calc((100vw - 150px) / 7);
+  height: 380px;
+  border-top: 3px solid #cccccc;
+  display: flex;
+  flex-direction: column;
+
+  .record {
+    flex: 1;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  .record::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+
+  .record::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+  }
+}

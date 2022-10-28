@@ -218,7 +218,23 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           ],
         },
         rowDraggable: { type: 'boolean' },
-        layout: { enum: ['table', 'card'] },
+        layout: {
+          properties: {
+            card: { properties: {
+              columns: {
+                type: 'array',
+                items: {},
+              },
+              rowSize: { type: 'number' },
+            } },
+            calendar: { properties: {
+              columns: {
+                type: 'array',
+                items: {},
+              },
+            } },
+          },
+        },
         editable: { type: 'boolean' },
         ellipsis: { type: 'boolean' },
         tableLayout: { enum: ['auto', 'fixed'] },
