@@ -80,7 +80,7 @@ export default class AutoCompleteComponent extends React.PureComponent<Props> {
         value={this.props.value as string}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
-        style={{ width: 120, ...uiProps.style }}
+        style={{ width: '100%', ...uiProps.style }}
         options={this.options as LabeledValue}
         getPopupContainer={triggerNode => triggerNode}
         onChange={(value) => {

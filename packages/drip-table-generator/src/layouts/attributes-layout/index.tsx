@@ -46,14 +46,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             })}
             style={{
               width: drawerType ? drawerWidth[drawerType] : void 0,
-              transform: drawerType ? 'translateX(0)' : void 0,
-              opacity: drawerType ? 1 : 0,
               zIndex: drawerType ? void 0 : -1,
             }}
           >
             <div className={styles['attributes-drawer-header']}>
-              <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0 })} />
+              <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0, currentColumn: drawerType === 'column' ? void 0 : currentColumn })} />
               <span>{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
+              { drawerType === 'column' || drawerType === 'column-item' ? (<span />) : null }
             </div>
             <div className={styles['attributes-drawer-body']} ref={body}>
               {

@@ -6,9 +6,13 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-.generator-workstation {
-  padding: 24px;
-  width: calc(~"100% - 65px");
-  background-color: var(--drip-table-background-color);
-  overflow: auto;
+.custom-form-item {
+  :global(.ant-form-item-label) {
+    white-space: break-spaces;
+    word-break: break-word;
+  }
+
+  :global(.ant-form-item-label > label) {
+    height: 100%;
+  }
 }

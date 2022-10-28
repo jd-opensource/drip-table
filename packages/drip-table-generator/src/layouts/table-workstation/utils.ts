@@ -59,3 +59,21 @@ export const getLength = (value: string) => {
   }
   return length;
 };
+
+export const MIN_WIDTH = 120;
+
+export const getWidth = (originWidth?: string | number, format?: 'px' | '%', delta?: number) => {
+  let width = MIN_WIDTH;
+  if (typeof originWidth === 'number') {
+    width = Number.isNaN(originWidth) ? MIN_WIDTH : originWidth;
+  } else if (typeof originWidth === 'string') {
+    if ((/^[0-9]+px$/ui).test(originWidth)) {
+      width = Number(originWidth.replace('px', ''));
+    } else if ((/^[0-9]+(%|r?em|pt|vw|cm|in|pc)$/ui).test(originWidth)) {
+      return originWidth;
+    }
+  }
+  if (width < MIN_WIDTH) { width = MIN_WIDTH; }
+  if (delta) { width += delta; }
+  return typeof format === 'string' ? `${width}${format}` : width;
+};

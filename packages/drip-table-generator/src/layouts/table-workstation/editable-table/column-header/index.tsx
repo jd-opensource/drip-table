@@ -14,6 +14,8 @@ import React from 'react';
 import RichText from '@/components/RichText';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 
+import { getWidth } from '../../utils';
+
 import styles from '../index.module.less';
 
 interface ColumnHeaderProps<
@@ -86,13 +88,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     </Menu>
   );
 
-  const width = React.useMemo(() => {
-    if (props.sticky) {
-      return Number.isNaN(Number(props.column.width)) ? props.column.width || 180 : Number(props.column.width);
-    }
-    return void 0;
-  }, [props.column.width, props.sticky]);
-
   return (
     <GeneratorContext.Consumer>
       { ({ columns, globalConfigs, setState }) => (
@@ -101,8 +96,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
           style={{
             ...props.style,
-            width,
-            minWidth: 100,
+            width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
           }}
         >
           <RichText className={styles['editable-table-column-title']} html={typeof props.column.title === 'string' ? props.column.title : props.column.title.body} />
