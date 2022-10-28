@@ -70,20 +70,20 @@
   border: 1px dashed var(--drip-table-border-color);
 }
 
-.checked-stripe {
-  border-style: solid;
-  border-color: #ff5500;
-}
-
 .draggable {
   &-container {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
   }
 
   &-cell {
     padding: 6px 12px;
     border: 1px dashed var(--drip-table-border-color);
+
+    &.text-cell {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 

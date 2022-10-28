@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { Checkbox } from 'antd';
+import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
@@ -16,6 +16,7 @@ import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
 import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
+import { getWidth, MIN_WIDTH } from '../utils';
 import BlankPanel from './blank-panel';
 import ColumnCopyModal from './colum-copy-modal';
 import ColumnHeader from './column-header';
@@ -119,7 +120,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       });
       setCellHeight(maxHeight);
     }, 50);
-  }, [context.columns.length, context.currentColumn, context.globalConfigs.size]);
+  }, [context.columns.length, context.currentColumn, context.globalConfigs.size, context.previewDataSource]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -128,25 +129,20 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       const tableHeight = table.current?.scrollHeight;
       setBlankHeight(siblingHeight || tableHeight);
     }, 50);
-  }, [context.globalConfigs.size, context.globalConfigs.sticky, context.globalConfigs.scroll?.y, context.globalConfigs.pagination]);
+  }, [
+    context.columns.length,
+    context.currentColumn,
+    context.globalConfigs.size,
+    context.globalConfigs.sticky,
+    context.globalConfigs.scroll?.y,
+    context.globalConfigs.pagination,
+    context.previewDataSource,
+  ]);
 
-  const columnWidth = React.useMemo(() => {
+  const columnsWidth = React.useMemo(() => {
     let width = '';
     context.columns.forEach((item) => {
-      if (item.width) {
-        if (Number.isNaN(Number(item.width))) {
-          if ((/^[0-9]+px$/ui).test(String(item.width))) {
-            const itemWidth = Number(String(item.width).replace('px', ''));
-            width += itemWidth < 100 ? ' - 100px' : ` - ${String(item.width)}`;
-          } else {
-            width += (/(px|%|r?em|pt|vw|cm|in|pc)$/ui).test(String(item.width)) ? ` - ${String(item.width)}` : ' - 100px';
-          }
-        } else {
-          width += Number(item.width) < 180 ? ' - 100px' : ` - ${Number(item.width)}px`;
-        }
-      } else {
-        width += ' - 100px';
-      }
+      width += ` - ${getWidth(item.width, 'px')}`;
     });
     return width;
   }, [context.columns, context.currentColumn]);
@@ -206,18 +202,37 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         return (
           <React.Fragment>
             { globalConfigs.sticky && (
-              <div style={{ display: 'flex' }}>
+              <div className={styles['editable-table-sticky-headers']}>
                 { globalConfigs.rowSelection && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
                 { columns.map((column, columnIndex) => (
-                  <ColumnHeader
-                    style={{ border: '1px solid #f0f0f0' }}
-                    sticky
-                    index={columnIndex}
-                    column={column}
-                    onInsert={index => setColumnIndexToInsert(index)}
-                    onCopy={index => setColumnIndexToCopy(index)}
-                    onDelete={() => setCellHeight(void 0)}
-                  />
+                  <div
+                    draggable
+                    onDragStart={() => setColumnIndexToDrag(columnIndex)}
+                    onDragOver={(event) => {
+                      event.stopPropagation();
+                      event.preventDefault();
+                    }}
+                    onDrop={(event) => {
+                      event.stopPropagation();
+                      event.preventDefault();
+                      if (columnIndexToDrag >= 0 && columnIndex !== columnIndexToDrag) {
+                        const tempColumnInfo = Object.assign({}, columns[columnIndexToDrag]);
+                        columns.splice(columnIndexToDrag, 1);
+                        columns.splice(columnIndex, 0, tempColumnInfo);
+                        setState({ columns });
+                      }
+                    }}
+                  >
+                    <ColumnHeader
+                      style={{ border: '1px solid #f0f0f0' }}
+                      sticky
+                      index={columnIndex}
+                      column={column}
+                      onInsert={index => setColumnIndexToInsert(index)}
+                      onCopy={index => setColumnIndexToCopy(index)}
+                      onDelete={() => setCellHeight(void 0)}
+                    />
+                  </div>
                 )) }
               </div>
             ) }
@@ -226,7 +241,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 [styles.bordered]: globalConfigs.bordered,
                 [styles.sticky]: globalConfigs.sticky || globalConfigs.scroll?.y,
               })}
-              style={{ height: globalConfigs.sticky ? globalConfigs.scroll?.y || `calc(100% - 42px${headerHeight[globalConfigs.size || 'default']})` : globalConfigs.scroll?.y }}
+              style={{
+                maxHeight: globalConfigs.sticky ? globalConfigs.scroll?.y || `calc(100% - 42px${headerHeight[globalConfigs.size || 'default']})` : globalConfigs.scroll?.y,
+              }}
               ref={table}
             >
               { globalConfigs.rowSelection
@@ -281,7 +298,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                   key={columnIndex}
                   className={classNames(styles['editable-table-column'], { [styles.checked]: currentColumn?.key === column.key })}
                   style={{
-                    width: Number.isNaN(Number(column.width)) ? column.width || void 0 : Number(column.width),
+                    width: getWidth(column.width, 'px'),
                   }}
                   onClick={(event) => {
                     event.preventDefault();
@@ -323,8 +340,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
                           height: cellHeight,
-                          minWidth: 100,
-                          width: Number.isNaN(Number(column.width)) ? column.width || void 0 : Number(column.width),
+                          width: getWidth(column.width, 'px'),
                           textAlign: column.align,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}
@@ -345,8 +361,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               )) }
               <BlankPanel
                 style={{
-                  minWidth: 120,
-                  width: columnWidth.length > 0 ? `calc(100% ${columnWidth})` : void 0,
+                  minWidth: MIN_WIDTH,
+                  width: columnsWidth.length > 0 ? `calc(100% ${columnsWidth})` : void 0,
                   height: globalConfigs.sticky || globalConfigs.scroll?.y ? blankHeight : void 0,
                 }}
                 customComponentPanel={props.customComponentPanel}
@@ -357,8 +373,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                   return columnToAdd ? setState({ columns: [...columns, columnToAdd], columnToAdd: void 0 }) : void 0;
                 }}
               />
-
             </div>
+            { previewDataSource.length <= 0 && <Empty className={styles['empty-body']} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
             <ColumnCopyModal
               visible={columnIndexToCopy > -1}
               value={columns[columnIndexToCopy]}

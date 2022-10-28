@@ -105,7 +105,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       if (element.type === 'text') {
         return {
           type: 'text',
-          span: Number.isNaN(Number(element.span)) ? element.span : Number(element.span),
+          span: Number(element.span) || element.span,
           align: element.align,
           text: element.text,
         };

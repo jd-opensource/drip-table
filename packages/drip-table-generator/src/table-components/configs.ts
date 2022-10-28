@@ -72,7 +72,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    'ui:layout': { labelCol: 10, wrapperCol: 14 },
+    'ui:layout': { labelCol: 8, wrapperCol: 14 },
     type: 'boolean',
   },
 ];

@@ -11,12 +11,16 @@ export default {
   paramName: '',
   default: '',
   attrSchema: [
+    ...basicColumnAttrComponents('文本'),
     {
       name: 'options.mode',
       group: '组件属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
+        mode: 'button',
+        buttonStyle: 'solid',
+        size: 'small',
         options: [
           { label: '单行文本', value: 'single' },
           { label: '多行文本', value: 'multiple' },
@@ -33,7 +37,6 @@ export default {
       'ui:type': 'switch',
       type: 'boolean',
     },
-    ...basicColumnAttrComponents('文本'),
     ...dataIndexColumnAttrComponents(
       'id',
       (_1, formData) => formData?.['options.mode'] === 'single',
@@ -46,6 +49,7 @@ export default {
       'ui:title': '字体大小',
       'ui:type': 'input',
       'ui:props': {
+        style: { width: 160 },
         placeholder: '请输入字体大小',
       },
       'ui:description': {
@@ -65,6 +69,7 @@ export default {
         title: '文字展示的最大行数，超过该行数则展示...',
       },
       'ui:props': {
+        style: { width: 160 },
         min: 0,
       },
     },
@@ -79,6 +84,7 @@ export default {
         title: '文字行高',
       },
       'ui:props': {
+        style: { width: 160 },
         min: 1,
       },
     },
@@ -93,6 +99,7 @@ export default {
         title: '文本组件的固定高度',
       },
       'ui:props': {
+        style: { width: 160 },
         min: 1,
       },
     },

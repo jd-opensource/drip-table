@@ -195,8 +195,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     onDrop={(e) => { e.preventDefault(); dropFooterCell(element, index, globalConfigs, setState); }}
                     onDragOver={e => e.preventDefault()}
                     key={index}
-                    className={styles['draggable-cell']}
-                    style={element.style}
+                    className={classNames(styles['draggable-cell'], { [styles['text-cell']]: element.type === 'text' })}
+                    style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >
                     { renderColumnContent(element, globalConfigs) }
                   </div>

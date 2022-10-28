@@ -12,13 +12,18 @@
   width: fit-content;
   min-width: 100%;
 
+  &-sticky-headers {
+    display: flex;
+    min-width: 100%;
+    width: fit-content;
+  }
+
   &.bordered {
     border: 1px solid var(--drip-table-primary-color);
   }
 
   &.sticky {
-    overflow: auto;
-    height: calc(~"100% - 42px");
+    overflow-y: auto;
 
     .editable-table-column {
       height: max-content;
@@ -28,6 +33,7 @@
   &-column {
     border: 1px solid rgb(~"0 0 0 / 6%");
     min-width: 100px;
+    min-height: 60px;
     cursor: pointer;
 
     &-title {
@@ -66,6 +72,7 @@
     border-bottom: 1px solid rgb(~"0 0 0 / 6%");
     transition: width ease .3s;
     padding: 6px;
+    height: max-content;
   }
 }
 
@@ -83,4 +90,12 @@
 .small {
   padding: 8px;
   height: 39px;
+}
+
+.empty-body {
+  margin: 0;
+  color: rgb(0 0 0 / 25%);
+  background: #ffffff;
+  padding: 24px 0;
+  width: 100%;
 }

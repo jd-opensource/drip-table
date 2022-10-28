@@ -106,8 +106,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     const componentOptions = props.column.options;
     return (
       <GeneratorContext.Consumer>
-        { ({ columns, columnToAdd, currentColumn, currentColumnPath, setState }) => (
-          <div style={{ height: props.isChildren ? '100%' : '100px', overflow: 'hidden' }}>
+        { ({ columns, columnToAdd, setState }) => (
+          <div style={{ height: props.isChildren ? '100%' : 'max-content', overflow: 'hidden' }}>
             <div
               className={props.isChildren ? '' : styles['table-cell']}
               style={{ width: props.isChildren ? '100%' : columnWidth }}
@@ -120,7 +120,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     flexFlow: componentOptions.wrap ? 'row wrap' : 'nowrap',
                     justifyContent: componentOptions.horizontalAlign,
                     width: 'calc(100% - 4px)',
-                    height: 180 / componentOptions.layout.length - gutter[1],
                   }}
                   gutter={gutter}
                   justify={componentOptions.horizontalAlign}
@@ -157,7 +156,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         onDrop={(event) => {
                           event.stopPropagation();
                           event.preventDefault();
-                          if (currentColumn && props.isCurrentColumn && columnToAdd) {
+                          const path = isChecked(currentCheckedIndex) ? [] : [...props.parentIndex || [], currentCheckedIndex];
+                          if (props.column && columnToAdd) {
                             const configs = getColumnConfigs(columnToAdd.component);
                             const options: Record<string, unknown> = {};
                             const additionalProps = {};
@@ -181,10 +181,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                               options,
                               ...additionalProps,
                             };
-                            updateColumnItemByPath(currentColumn, currentColumnPath || [], columnItemSchema);
-                            const columnIndex = columns.findIndex(item => item.key === currentColumn.key);
-                            columns[columnIndex] = currentColumn;
-                            setState({ currentColumn, columns });
+                            const theColumn = columns.find(item => item.key === props.column?.key);
+                            if (theColumn) {
+                              updateColumnItemByPath(theColumn, path || [], columnItemSchema);
+                              const columnIndex = columns.findIndex(item => item.key === theColumn.key);
+                              columns[columnIndex] = theColumn;
+                              setState({ currentColumn: theColumn, columns });
+                            }
                           }
                         }}
                       >
