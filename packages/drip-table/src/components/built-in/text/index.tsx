@@ -102,6 +102,8 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    * 是否展示一键复制按钮
    */
   clipboard?: boolean;
+  /** 数据处理 */
+  dataProcess?: string;
 }>;
 
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
@@ -161,6 +163,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       lineHeight: { type: 'number' },
       height: { type: 'number' },
       ellipsis: { type: 'boolean' },
+      dataProcess: { type: 'string' },
     },
   };
 
@@ -277,11 +280,11 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         .split('\n');
     }
     if (mode === 'single') {
-      return `${prefix ?? ''}${translate(schema.options.i18n, indexValue(data, dataIndex, defaultValue)) ?? ''}${suffix ?? ''}`.split('\n');
+      return `${prefix ?? ''}${translate(schema.options.i18n, indexValue(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
       return (params || [])
-        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, indexValue(data, config.dataIndex, defaultValue)) ?? ''}${config.suffix || ''}`)
+        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, indexValue(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
         .join('\n')
         .split('\n');
     }

@@ -14,6 +14,8 @@ export type TextColumnSchema = DripTableColumnSchema<'custom::TextComponent', {
   fontSize?: string;
   /** 兜底文案 */
   noDataValue?: string;
+  /** 数据处理 */
+  dataProcess?: string;
 }>;
 
 interface TextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, TextColumnSchema> { }
@@ -32,8 +34,8 @@ export default class TextComponent<RecordType extends DripTableRecordTypeBase> e
   public render(): JSX.Element {
     const { schema, data } = this.props;
     const { dataIndex,
-      options: { noDataValue } } = schema;
-    const value = indexValue(data, dataIndex, '');
+      options: { noDataValue, dataProcess } } = schema;
+    const value = indexValue(data, dataIndex, '', dataProcess);
     const contentStr = `${value || noDataValue}`;
     return (
       <div style={{ fontSize: this.fontSize, color: '#6d0fff' }}>

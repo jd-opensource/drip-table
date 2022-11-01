@@ -136,6 +136,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         mode: 'single',
         ellipsis: true,
         maxRow: 3,
+        dataProcess: 'return {{rec.status}} === "soldOut" ? "该商品已售罄" : {{rec.description}}',
       },
     },
     {
@@ -481,7 +482,7 @@ export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, Subtabl
         id: '1-1',
         name: '苹果',
         description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素',
-        status: 'onSale',
+        status: 'soldOut',
         price: 799,
         subtableLevel2: [
           { id: '1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },

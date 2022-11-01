@@ -7,13 +7,30 @@
  */
 
 /**
+ * 格式化变量用于提供给渲染函数
+ * @param v 任意数据
+ * @returns 渲染字符串
+ */
+export const stringify = (v: unknown) => {
+  if (typeof v === 'object' && v !== null) {
+    try {
+      v = JSON.stringify(v);
+    } catch {}
+  }
+  if (v === void 0) {
+    return '';
+  }
+  return String(v);
+};
+
+/**
  * 获取对象指定下标值
  * @param data 基础对象
  * @param indexes 下标或下标数组
  * @param defaultValue 默认值
  * @returns 值
  */
-export const indexValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0) => {
+const getValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0) => {
   if (typeof data !== 'object' || !data) {
     return defaultValue;
   }
@@ -34,6 +51,33 @@ export const indexValue = (data: unknown, indexes: string | number | readonly (s
     return data;
   }
   return defaultValue;
+};
+
+/**
+ * 获取对象的经过数据处理后的最终值
+ * @param data 基础对象
+ * @param indexes 下标或下标数组
+ * @param defaultValue 默认值
+ * @param dataProcess 数据处理的语句
+ * @returns 值
+ */
+export const indexValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess?: string) => {
+  if (dataProcess) {
+    // 先将模版换成值
+    try {
+      const fucBody = dataProcess
+        .replace(/\{\{(.+?)\}\}/guis, (s, s1) => JSON.stringify(new Function('rec', `return ${s1}`)(data)));
+      const processFunc = new Function('', fucBody);
+      const processedValue = processFunc();
+      return processedValue;
+    } catch (error) {
+      return error instanceof Error
+        ? `{{Render Error: ${error.message}}}`
+        : '{{Unknown Render Error}}';
+    }
+  }
+  const value = getValue(data, indexes, defaultValue);
+  return value;
 };
 
 /**
@@ -63,23 +107,6 @@ export const setValue = (data: unknown, indexes: string | string[], value: unkno
       data[key] = value;
     }
   }
-};
-
-/**
- * 格式化变量用于提供给渲染函数
- * @param v 任意数据
- * @returns 渲染字符串
- */
-export const stringify = (v: unknown) => {
-  if (typeof v === 'object' && v !== null) {
-    try {
-      v = JSON.stringify(v);
-    } catch {}
-  }
-  if (v === void 0) {
-    return '';
-  }
-  return String(v);
 };
 
 /**
