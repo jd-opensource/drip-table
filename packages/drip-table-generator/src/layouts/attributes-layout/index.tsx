@@ -47,6 +47,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             style={{
               width: drawerType ? drawerWidth[drawerType] : void 0,
               zIndex: drawerType ? void 0 : -1,
+              opacity: drawerType ? 1 : 0,
             }}
           >
             <div className={styles['attributes-drawer-header']}>
