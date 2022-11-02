@@ -22,6 +22,7 @@ import { DripTableGeneratorProps } from '../typing';
 export type GeneratorWrapperHandler = {
   getState: () => DripTableGeneratorContext<DripTableColumnSchema>;
   getSchemaValue: () => DripTableSchema<DripTableColumnSchema>;
+  getDataSource: () => DripTableGeneratorContext<DripTableColumnSchema>['previewDataSource'];
 }
 
 const generateStates: <
@@ -63,6 +64,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       ...generatorContext.globalConfigs,
       columns: generatorContext.columns.map(item => ({ ...item })),
     }),
+    getDataSource: () => generatorContext.previewDataSource,
   }));
 
   message.config({ maxCount: 1 });
