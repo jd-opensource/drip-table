@@ -34,11 +34,14 @@ const DataSourceEditor = (props: DataSourceEditorProps) => {
             value={code || ''}
             onChange={(value) => {
               setCodeErrorMessage('');
-              setCode(value || '');
               try {
                 const customDataSource = JSON.parse(value || '');
-                setState({ previewDataSource: customDataSource });
+                if (Array.isArray(customDataSource)) {
+                  setState({ previewDataSource: customDataSource });
+                  setCode(JSON.stringify(customDataSource, null, 4));
+                }
               } catch (error) {
+                setCode(value || '');
                 setCodeErrorMessage((error as Error).message);
               }
             }}
