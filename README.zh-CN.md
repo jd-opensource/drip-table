@@ -72,7 +72,7 @@
 
    配置端正常渲染效果如下：
 
-   ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/209919/9/12490/4540144/61b71921Ee35a9a3c/e2f7167fef822f17.gif)
+   ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/83544/7/17486/359800/63620e25Ed7185bc1/caf5173d381cb4c0.png)
 
 ### 应用端
 
@@ -113,18 +113,18 @@
 
    ```js
    const schema = {
-    size: "middle",
-    columns: [
-      {
-        key: "columnKey",
-        title: "列标题",
-        dataIndex: "dataIndexName",
-        component: "text",
-        options: {
-          mode: "single",
-        },
-      },
-    ],
+     size: "middle",
+     columns: [
+       {
+         key: "columnKey",
+         title: "列标题",
+         dataIndex: "dataIndexName",
+         component: "text",
+         options: {
+           mode: "single",
+         },
+       },
+     ],
    };
    return (
      <DripTable
@@ -185,6 +185,7 @@
 官网地址请访问 [drip-table](http://drip-table.jd.com/) 。
 
 ## 开发交流
+
 [官方交流微信群](./Contact.md)
 
 ## License

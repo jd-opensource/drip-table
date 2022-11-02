@@ -113,18 +113,18 @@ The introduction of each sub-project are as follows:
 
    ```js
    const schema = {
-    size: "middle",
-    columns: [
-      {
-        key: "columnKey",
-        title: "Column Title",
-        dataIndex: "dataIndexName",
-        component: "text",
-        options: {
-          mode: "single",
-        },
-      },
-    ],
+     size: "middle",
+     columns: [
+       {
+         key: "columnKey",
+         title: "Column Title",
+         dataIndex: "dataIndexName",
+         component: "text",
+         options: {
+           mode: "single",
+         },
+       },
+     ],
    };
    return (
      <DripTable
@@ -137,7 +137,7 @@ The introduction of each sub-project are as follows:
 
    Then the application side can be rendered normally, as the sample screenshot below:
 
-   ![drip-table-demo](https://img13.360buyimg.com/imagetools/jfs/t1/217000/18/7528/191045/61b6d9ebE1c96d83b/a63b8edce7757bd8.png)
+   ![drip-table-demo](https://img10.360buyimg.com/imagetools/jfs/t1/83544/7/17486/359800/63620e25Ed7185bc1/caf5173d381cb4c0.png)
 
 ## 🤝 Contribution
 
@@ -185,6 +185,7 @@ For more commands, see [DEVELOP](./DEVELOP.md) .
 Please visit the official website address [drip-table](http://drip-table.jd.com/) 。
 
 ## Communication
+
 [Official Wechat group](./Contact.md)
 
 ## License

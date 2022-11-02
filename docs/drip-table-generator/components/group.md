@@ -7,65 +7,66 @@
 操作过程如下所示：
 
 <video style="width: 800px; height: 500px;" id="video" controls="" preload="none" poster="封面">
-  <source id="mp4" src="https://storage.360buyimg.com/launch/drip-table/group.mp4" type="video/mp4">
+  <source id="mp4" src="https://storage.360buyimg.com/launch/drip-table/lowcode-2022-11-02.mp4" type="video/mp4">
 </video>
 
 示例：
+
 ```jsx
 /**
  * transform: true
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import 'antd/dist/antd.css';
-import 'drip-table/dist/index.css';
-import 'drip-table-generator/dist/index.css';
+import "antd/dist/antd.css";
+import "drip-table/dist/index.css";
+import "drip-table-generator/dist/index.css";
 
-import { Input } from 'antd';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGenerator from 'drip-table-generator';
-import React, { useState } from 'react';
+import { Input } from "antd";
+import { DripTableExtraOptions, DripTableSchema } from "drip-table";
+import DripTableDriverAntDesign from "drip-table-driver-antd";
+import DripTableGenerator from "drip-table-generator";
+import React, { useState } from "react";
 
 const schema = {
   columns: [
     {
-      key: 'mock_1',
-      title: '商品图名',
+      key: "mock_1",
+      title: "商品图名",
       width: 120,
-      align: 'center',
-      verticalAlign: 'middle',
-      dataIndex: '',
-      component: 'group',
+      align: "center",
+      verticalAlign: "middle",
+      dataIndex: "",
+      component: "group",
       options: {
         layout: [1, 2],
-        horizontalAlign: 'center',
-        verticalAlign: 'middle',
+        horizontalAlign: "center",
+        verticalAlign: "middle",
         gutter: [16, 8],
         wrap: false,
         items: [
           {
-            component: 'image',
+            component: "image",
             options: {
               imageWidth: 86,
               imageHeight: 86,
             },
-            dataIndex: 'pictureUrl',
+            dataIndex: "pictureUrl",
           },
           {
-            component: 'text',
+            component: "text",
             options: {
-              mode: 'single',
+              mode: "single",
             },
-            dataIndex: 'name',
+            dataIndex: "name",
           },
           {
-            component: 'text',
+            component: "text",
             options: {
-              mode: 'single',
-              prefix: '￥',
+              mode: "single",
+              prefix: "￥",
             },
-            dataIndex: 'price',
+            dataIndex: "price",
           },
         ],
       },
@@ -79,8 +80,10 @@ const dataSource = [
     name: "商品一",
     price: 7999,
     status: "onSale",
-    pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
-    description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    pictureUrl:
+      "https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
   },
 ];
 
