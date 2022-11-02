@@ -207,6 +207,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/functions/index.md',
           '/drip-table-generator/functions/refs.md',
           '/drip-table-generator/functions/custom.md',
+          '/drip-table-generator/functions/title.md',
           '/drip-table-generator/functions/header.md',
           '/drip-table-generator/functions/data-source.md',
         ],

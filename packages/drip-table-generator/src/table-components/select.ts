@@ -32,7 +32,7 @@ export default {
   type: 'string',
   group: '基础组件',
   fieldKey: 'select_qywxDIIO',
-  title: '选择组件',
+  title: '下拉组件',
   paramName: '',
   default: '',
   attrSchema: [

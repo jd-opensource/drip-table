@@ -19,34 +19,41 @@ title: 基本用法
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import React from 'react';
-import { DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
-import 'antd/dist/antd.css';
-import 'drip-table-generator/dist/index.css';
+import React from "react";
+import { DripTableSchema } from "drip-table";
+import DripTableDriverAntDesign from "drip-table-driver-antd";
+import DripTableGenerator, {
+  DripTableGeneratorHandler,
+} from "drip-table-generator";
+import "antd/dist/antd.css";
+import "drip-table-generator/dist/index.css";
 
 const initialSchema = {
-  "pagination": false,
-  "columns": [
+  pagination: false,
+  columns: [
     {
-      "$id": "mock_1",
-      "dataIndex": "",
-      "title": "自定义111",
-      "description": "",
-      "component": "render-html",
-      "width": '200px',
-      "options": {
-        "render": "if (rec.id == 1) {\r\n  return '<span style=\\\"padding: 2px 4px; border: 1px solid #2baa55; border-radius: 2px; background: #99ffad99\\\">壹</span>';\r\n}\r\nreturn '';"
+      $id: "mock_1",
+      dataIndex: "",
+      title: "自定义111",
+      description: "",
+      component: "render-html",
+      width: "200px",
+      options: {
+        render:
+          "if (rec.id == 1) {\r\n  return '<span style=\\\"padding: 2px 4px; border: 1px solid #2baa55; border-radius: 2px; background: #99ffad99\\\">壹</span>';\r\n}\r\nreturn '';",
       },
-      "type": "string"
+      type: "string",
     },
-  ]
-}
+  ],
+};
 
 const Demo = () => {
   return (
-    <DripTableGenerator driver={DripTableDriverAntDesign} dataSource={[]} schema={initialSchema} />
+    <DripTableGenerator
+      driver={DripTableDriverAntDesign}
+      dataSource={[]}
+      schema={initialSchema}
+    />
   );
 };
 
@@ -57,13 +64,18 @@ export default Demo;
 
 `drip-table-generator` 支持通过修改 `CSS` 变量、传入 `style` 以及手动覆盖样式这三种方式修改样式。
 
-`CSS` 变量目前包括以下三个：
+`CSS` 变量目前包括以下四个：
 
 ```css
 * {
-  --drip-table-primary-color: #FFFFFF;
-  --drip-table-background-color: #FFFFFF;
-  --drip-table-border-color: #FFFFFF;
+  /** 主题色 */
+  --drip-table-primary-color: #ffffff;
+  /** 主背景色，宜偏淡，用于主页面背景，下拉框选中背景等 */
+  --drip-table-background-color: #ffffff;
+  /** 组件边框色 */
+  --drip-table-border-color: #ffffff;
+  /** 按钮悬浮状态下背景色，较接近主题色 */
+  --drip-table-button-hover-color: #ffffff;
 }
 ```
 
@@ -75,20 +87,21 @@ export default Demo;
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import React from 'react';
-import { DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
-import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
-import 'antd/dist/antd.css';
-import 'drip-table-generator/dist/index.css';
+import React from "react";
+import { DripTableSchema } from "drip-table";
+import DripTableDriverAntDesign from "drip-table-driver-antd";
+import DripTableGenerator, {
+  DripTableGeneratorHandler,
+} from "drip-table-generator";
+import "antd/dist/antd.css";
+import "drip-table-generator/dist/index.css";
+import "./theme.module.css";
 
 const Demo = () => {
   return (
-    <DripTableGenerator
-      driver={DripTableDriverAntDesign}
-      dataSource={[]}
-      style={{ height: 500, background: '#EEFFEE6A', border: '1px solid #dedede' }}
-    />
+    <div>
+      <DripTableGenerator driver={DripTableDriverAntDesign} dataSource={[]} />
+    </div>
   );
 };
 
