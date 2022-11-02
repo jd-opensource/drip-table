@@ -105,7 +105,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             minWidth: 100,
           }}
         >
-          <RichText className={styles['editable-table-column-title']} html={props.column.title} />
+          <RichText className={styles['editable-table-column-title']} html={typeof props.column.title === 'string' ? props.column.title : props.column.title.body} />
           { props.column.description && (
             <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
               <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>

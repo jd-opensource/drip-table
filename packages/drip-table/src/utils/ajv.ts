@@ -21,6 +21,89 @@ export interface AjvOptions {
   additionalProperties?: boolean;
 }
 
+const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
+  type: 'array',
+  items: {
+    typeof: 'object',
+    discriminator: { propertyName: 'type' },
+    required: ['type'],
+    oneOf: [
+      {
+        properties: {
+          type: { const: 'spacer' },
+        },
+      },
+      {
+        properties: {
+          type: { const: 'text' },
+          text: { type: 'string' },
+        },
+        required: ['text'],
+      },
+      {
+        properties: {
+          type: { const: 'html' },
+          html: { type: 'string' },
+        },
+        required: ['html'],
+      },
+      {
+        properties: {
+          type: { const: 'search' },
+          wrapperClassName: { type: 'string' },
+          wrapperStyle: { typeof: 'object' },
+          placeholder: { type: 'string' },
+          allowClear: { type: 'boolean' },
+          searchButtonText: { type: 'string' },
+          searchButtonSize: { enum: ['large', 'middle', 'small'] },
+          searchKeys: {
+            type: 'array',
+            items: {
+              properties: {
+                label: { type: 'string' },
+                value: { typeof: ['number', 'string'] },
+              },
+              required: ['label', 'value'],
+            },
+          },
+          searchKeyDefaultValue: { typeof: ['number', 'string'] },
+        },
+      },
+      {
+        properties: {
+          type: { const: 'slot' },
+          slot: { type: 'string' },
+          props: { typeof: 'object' },
+        },
+        required: ['slot'],
+      },
+      {
+        properties: {
+          type: { const: 'insert-button' },
+          insertButtonClassName: { type: 'string' },
+          insertButtonStyle: { typeof: 'object' },
+          insertButtonText: { type: 'string' },
+          showIcon: { type: 'boolean' },
+        },
+      },
+      {
+        properties: {
+          type: { const: 'display-column-selector' },
+          selectorButtonText: { type: 'string' },
+          selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
+        },
+      },
+      {
+        properties: {
+          type: { const: 'layout-selector' },
+          selectorButtonText: { type: 'string' },
+          selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
+        },
+      },
+    ],
+  },
+};
+
 let AJV_CACHE: Ajv | undefined;
 
 const createAjv = (): Ajv => {
@@ -67,88 +150,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
   const additionalProperties = options?.additionalProperties ?? false;
   const key = `CK-${additionalProperties ? 1 : 0}`;
   if (!DRIP_TABLE_PROPS_AJV_SCHEMA_CACHE.has(key)) {
-    const dripTableGenericRenderElementSchema: SchemaObject = {
-      type: 'array',
-      items: {
-        typeof: 'object',
-        discriminator: { propertyName: 'type' },
-        required: ['type'],
-        oneOf: [
-          {
-            properties: {
-              type: { const: 'spacer' },
-            },
-          },
-          {
-            properties: {
-              type: { const: 'text' },
-              text: { type: 'string' },
-            },
-            required: ['text'],
-          },
-          {
-            properties: {
-              type: { const: 'html' },
-              html: { type: 'string' },
-            },
-            required: ['html'],
-          },
-          {
-            properties: {
-              type: { const: 'search' },
-              wrapperClassName: { type: 'string' },
-              wrapperStyle: { typeof: 'object' },
-              placeholder: { type: 'string' },
-              allowClear: { type: 'boolean' },
-              searchButtonText: { type: 'string' },
-              searchButtonSize: { enum: ['large', 'middle', 'small'] },
-              searchKeys: {
-                type: 'array',
-                items: {
-                  properties: {
-                    label: { type: 'string' },
-                    value: { typeof: ['number', 'string'] },
-                  },
-                  required: ['label', 'value'],
-                },
-              },
-              searchKeyDefaultValue: { typeof: ['number', 'string'] },
-            },
-          },
-          {
-            properties: {
-              type: { const: 'slot' },
-              slot: { type: 'string' },
-              props: { typeof: 'object' },
-            },
-            required: ['slot'],
-          },
-          {
-            properties: {
-              type: { const: 'insert-button' },
-              insertButtonClassName: { type: 'string' },
-              insertButtonStyle: { typeof: 'object' },
-              insertButtonText: { type: 'string' },
-              showIcon: { type: 'boolean' },
-            },
-          },
-          {
-            properties: {
-              type: { const: 'display-column-selector' },
-              selectorButtonText: { type: 'string' },
-              selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
-            },
-          },
-          {
-            properties: {
-              type: { const: 'layout-selector' },
-              selectorButtonText: { type: 'string' },
-              selectorButtonType: { enum: ['ghost', 'primary', 'dashed', 'link', 'text', 'default'] },
-            },
-          },
-        ],
-      },
-    };
     const dripTableSchema: SchemaObject = {
       properties: {
         id: { typeof: ['number', 'string'] },
@@ -164,7 +165,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             {
               properties: {
                 style: { typeof: 'object' },
-                elements: dripTableGenericRenderElementSchema,
+                elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
               },
             },
           ],
@@ -172,7 +173,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         footer: {
           properties: {
             style: { typeof: 'object' },
-            elements: dripTableGenericRenderElementSchema,
+            elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
           },
         },
         pagination: {
@@ -471,7 +472,29 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
         ? { ...schema, additionalProperties }
         : {},
       key: { type: 'string' },
-      title: { type: 'string' },
+      title: {
+        anyOf: [
+          { type: 'string' },
+          {
+            properties: {
+              body: { type: 'string' },
+              header: {
+                properties: {
+                  style: { typeof: 'object' },
+                  elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
+                },
+              },
+              footer: {
+                properties: {
+                  style: { typeof: 'object' },
+                  elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
+                },
+              },
+            },
+            required: ['body'],
+          },
+        ],
+      },
       width: { typeof: ['string', 'number'] },
       align: { enum: ['left', 'center', 'right'] },
       verticalAlign: { enum: ['top', 'middle', 'bottom', 'stretch'] },

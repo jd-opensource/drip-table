@@ -52,7 +52,38 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
   /**
    * 表头，组件名
    */
-  title: string;
+  title: string | {
+    /**
+     * 表头内容
+     */
+    body: string;
+    /**
+     * 是否展示头部以及配置
+     */
+    header?: {
+      /**
+       * 尾部自定义样式
+       */
+      style?: React.CSSProperties;
+      /**
+       * 尾部展示元素配置
+       */
+      elements?: DripTableGenericRenderElement[];
+    };
+    /**
+     * 是否展示尾部以及配置
+     */
+    footer?: {
+      /**
+       * 尾部自定义样式
+       */
+      style?: React.CSSProperties;
+      /**
+       * 尾部展示元素配置
+       */
+      elements?: DripTableGenericRenderElement[];
+    };
+  };
   /**
    * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
    */

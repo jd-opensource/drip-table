@@ -74,8 +74,26 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
   columns: [
     {
       key: 'mock_1',
-      title: '商品图名',
-      width: 120,
+      title: {
+        body: '商品图名',
+        header: {
+          elements: [{
+            type: 'text',
+            span: 'flex-auto',
+            align: 'flex-start',
+            text: '⌚',
+          }],
+        },
+        footer: {
+          elements: [{
+            type: 'text',
+            span: 'flex-auto',
+            align: 'flex-start',
+            text: '🖼️',
+          }],
+        },
+      },
+      width: 140,
       align: 'center',
       verticalAlign: 'middle',
       dataIndex: '',

@@ -18,7 +18,7 @@ import {
 } from '@/types';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
-import { type DripTableProps } from '@/index';
+import { type DripTableBuiltInColumnSchema, type DripTableProps } from '@/index';
 
 import styles from './index.module.less';
 
@@ -196,9 +196,22 @@ interface GenericRenderProps<
    * 展示元素配置
    */
   schemas: DripTableGenericRenderElement[];
+  /**
+   * 表格属性
+   */
   tableProps: DripTableProps<RecordType, ExtraOptions>;
+  /**
+   * 表格状态
+   */
   tableState: IDripTableContext;
+  /**
+   * 设置表格状态
+   */
   setTableState: IDripTableContext['setTableState'];
+  /**
+   * 表格列 Schema
+   */
+  columnSchema?: DripTableBuiltInColumnSchema | ExtraOptions['CustomColumnSchema'];
 }
 
 const GenericRender = <

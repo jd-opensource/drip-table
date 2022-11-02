@@ -76,16 +76,18 @@ export const columnGenerator = <
       [styles['jfe-drip-table-cell--stretch']]: columnSchema.verticalAlign === 'stretch',
     }),
     align: columnSchema.align,
-    title: columnSchema.title,
+    title: typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title.body,
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
     style: columnSchema.style,
-    onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps['additionalProps']> } as React.TdHTMLAttributes<Element>),
+    onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps<RecordType, ExtraOptions>['additionalProps']> } as React.TdHTMLAttributes<Element>),
   };
   if (columnSchema.description) {
     column.title = (
       <div>
-        <span style={{ marginRight: '6px' }}><RichText className={styles['jfe-drip-table-column-title']} html={columnSchema.title} /></span>
+        <span style={{ marginRight: '6px' }}>
+          <RichText className={styles['jfe-drip-table-column-title']} html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title.body} />
+        </span>
         <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
           <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>
             <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
@@ -519,7 +521,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   const components: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
-      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps['additionalProps'] }) => {
+      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps<RecordType, ExtraOptions>['additionalProps'] }) => {
         const dataIndex = additionalProps?.columnSchema.dataIndex;
         return (
           <th {...wrapperProps}>
@@ -538,6 +540,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     tableProps.onFilterChange?.(filters, tableInfo);
                     tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
                   },
+                  tableProps,
+                  tableState,
+                  setTableState,
                 }
                 : void 0
               }
