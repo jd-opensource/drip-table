@@ -45,7 +45,7 @@ export default {
       (_1, formData) => true && formData?.dataIndexMode === 'nested',
     ),
     {
-      name: 'options.data_process',
+      name: 'options.dataProcess',
       group: '组件属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
