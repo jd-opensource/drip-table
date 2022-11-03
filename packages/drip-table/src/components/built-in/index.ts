@@ -11,6 +11,7 @@ import DTCDate, { DTCDateColumnSchema } from './date';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
+import DTCPopUpPage, { DTCPopUpPageColumnSchema } from './pop-up-page';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
@@ -37,7 +38,8 @@ export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
   | DTCDateColumnSchema
-  | DTCRichTextColumnSchema;
+  | DTCRichTextColumnSchema
+  | DTCPopUpPageColumnSchema;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,
@@ -51,5 +53,6 @@ const DripTableBuiltInComponents = {
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
   [DTCDate.componentName]: DTCDate,
+  [DTCPopUpPage.componentName]: DTCPopUpPage,
 };
 export default DripTableBuiltInComponents;

@@ -32,6 +32,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "rc-checkbox": "^2.3.2",
+    "rc-dialog": "^9.0.2",
     "rc-pagination": "^3.1.17",
     "rc-picker": "^3.0.0-4",
     "rc-resize-observer": "^1.0.1",
