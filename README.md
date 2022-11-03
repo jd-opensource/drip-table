@@ -72,7 +72,7 @@ The introduction of each sub-project are as follows:
 
    Then the configuration side can be rendered normally, as the sample screenshot below:
 
-   ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/209919/9/12490/4540144/61b71921Ee35a9a3c/e2f7167fef822f17.gif)
+   ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/83544/7/17486/359800/63620e25Ed7185bc1/caf5173d381cb4c0.png)
 
 ### The application side
 
@@ -137,7 +137,7 @@ The introduction of each sub-project are as follows:
 
    Then the application side can be rendered normally, as the sample screenshot below:
 
-   ![drip-table-demo](https://img10.360buyimg.com/imagetools/jfs/t1/83544/7/17486/359800/63620e25Ed7185bc1/caf5173d381cb4c0.png)
+   ![drip-table-demo](https://img13.360buyimg.com/imagetools/jfs/t1/136130/29/29966/659037/6363944fEd6a71fa1/2bec620460de4f3c.png)
 
 ## 🤝 Contribution
 
