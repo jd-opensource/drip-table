@@ -4,6 +4,7 @@ import datePicker from './date-picker';
 import group from './group';
 import links from './links';
 import image from './picture';
+import popUpPage from './pop-up-page';
 import renderHtml from './render-html';
 import renderHtmlRemote from './render-html-remote';
 import richText from './rich-text';
@@ -19,6 +20,7 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   button,
   select,
   datePicker,
+  popUpPage,
 ];
 
 const containerComponentList: DripTableComponentAttrConfig[] = [

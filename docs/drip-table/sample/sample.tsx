@@ -82,22 +82,24 @@ const Demo = () => {
 
   return (
     <React.Fragment>
-      <div style={{ padding: '0 0 30px', textAlign: 'left' }}>
-        <Button style={{ marginRight: '5px' }} type="primary" onClick={() => { setEditVisible(!editVisible); }}>编辑</Button>
-        <Button style={{ marginRight: '5px' }} type="primary" onClick={selectAllRecord}>
-          { allSelected && '取消' }
-          全选
-        </Button>
-        <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <label style={{ paddingLeft: '5px' }}>分页：</label>
-          <Switch style={{ marginRight: '5px' }} checked={!!schema.pagination} onChange={(v) => { setSchema({ ...schema, pagination: v ? initSchema.pagination : false }); }} />
-          <label style={{ paddingLeft: '5px' }}>行选择：</label>
-          <Switch style={{ marginRight: '5px' }} checked={!!schema.rowSelection} onChange={(v) => { setSchema({ ...schema, rowSelection: v }); }} />
-          <label style={{ paddingLeft: '5px' }}>斑马纹：</label>
-          <Switch style={{ marginRight: '5px' }} checked={schema.stripe} onChange={(v) => { setSchema({ ...schema, stripe: v }); }} />
-          <label style={{ paddingLeft: '5px' }}>拖拽换行：</label>
-          <Switch style={{ marginRight: '5px' }} checked={schema.rowDraggable} onChange={(v) => { setSchema({ ...schema, rowDraggable: v }); }} />
+      <div style={{ padding: '0 0 30px', display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <Button style={{ marginRight: '5px' }} type="primary" onClick={selectAllRecord}>
+            { allSelected && '取消' }
+            全选
+          </Button>
+          <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <label style={{ paddingLeft: '5px' }}>分页：</label>
+            <Switch style={{ marginRight: '5px' }} checked={!!schema.pagination} onChange={(v) => { setSchema({ ...schema, pagination: v ? initSchema.pagination : false }); }} />
+            <label style={{ paddingLeft: '5px' }}>行选择：</label>
+            <Switch style={{ marginRight: '5px' }} checked={!!schema.rowSelection} onChange={(v) => { setSchema({ ...schema, rowSelection: v }); }} />
+            <label style={{ paddingLeft: '5px' }}>斑马纹：</label>
+            <Switch style={{ marginRight: '5px' }} checked={schema.stripe} onChange={(v) => { setSchema({ ...schema, stripe: v }); }} />
+            <label style={{ paddingLeft: '5px' }}>拖拽换行：</label>
+            <Switch style={{ marginRight: '5px' }} checked={schema.rowDraggable} onChange={(v) => { setSchema({ ...schema, rowDraggable: v }); }} />
+          </div>
         </div>
+        <Button style={{ display: 'inline-flex', alignItems: 'right' }} type="primary" onClick={() => { setEditVisible(!editVisible); }}>json编辑</Button>
       </div>
       <DripTable<SampleRecordType, {
         CustomColumnSchema: CustomColumnSchema;

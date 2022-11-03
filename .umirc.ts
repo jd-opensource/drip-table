@@ -77,6 +77,7 @@ const umiConfig: IConfig = {
           '/drip-table/components/button',
           '/drip-table/components/select',
           '/drip-table/components/date-picker',
+          '/drip-table/components/pop-up-page',
         ],
       },
       {
