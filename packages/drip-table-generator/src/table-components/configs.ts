@@ -75,23 +75,6 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:layout': { labelCol: 8, wrapperCol: 14 },
     type: 'boolean',
   },
-  {
-    name: 'data_process',
-    group: '组件属性',
-    'ui:title': '数据处理',
-    'ui:type': 'text',
-    'ui:props': {
-      style: { width: '100%' },
-      placeholder: '可输入文本或者HTML, 例如: <strong>表头标题</strong>',
-    },
-    'ui:description': {
-      title: '{{$xxx$}}获取页面变量值,{{rec.xxx}}获取该行字段值,return 语句写法: `return props.rec.flag ? "xxx" : "yyy"`',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    'ui:layout': { labelCol: 6, wrapperCol: 18 },
-    type: 'string',
-  },
 ];
 
 export const dataIndexColumnAttrComponents: (

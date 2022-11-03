@@ -15,7 +15,7 @@ import { EventInjector } from 'react-event-injector';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { copyTextToClipboard, indexValue, stringify } from '@/utils/operator';
+import { copyTextToClipboard, dataProcessValue, indexValue, stringify } from '@/utils/operator';
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
@@ -104,6 +104,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
   clipboard?: boolean;
   /** 数据处理 */
   dataProcess?: string;
+  /** 禁用的数据处理 */
+  disableFunc?: string;
+  /** 显隐的数据处理 */
+  visibleFunc?: string;
 }>;
 
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
@@ -164,6 +168,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       height: { type: 'number' },
       ellipsis: { type: 'boolean' },
       dataProcess: { type: 'string' },
+      disableFunc: { type: 'string' },
+      visibleFunc: { type: 'string' },
     },
   };
 
@@ -292,6 +298,26 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return (options.static || '').split('\n');
     }
     return [];
+  }
+
+  private get visiable(): boolean {
+    const { schema, data } = this.props;
+    const { dataIndex, options } = schema;
+    const { mode, visibleFunc } = options;
+    if (mode === 'single' && visibleFunc) {
+      return dataProcessValue(data, dataIndex, visibleFunc);
+    }
+    return true;
+  }
+
+  private get disabled(): boolean {
+    const { schema, data } = this.props;
+    const { dataIndex, options } = schema;
+    const { mode, disableFunc } = options;
+    if (mode === 'single' && disableFunc) {
+      return dataProcessValue(data, dataIndex, disableFunc);
+    }
+    return false;
   }
 
   private updateCellRect = ($main: HTMLElement) => {
@@ -490,6 +516,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const Alert = this.props.driver.components.Alert;
     const wrapperClassName = this.wrapperClassName;
     const wrapperStyles = this.wrapperStyles;
+    if (!this.visiable) {
+      return <div />;
+    }
     if (!this.configured) {
       return <Alert message="未配置字段" showIcon type="error" />;
     }
@@ -517,13 +546,13 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         <ResizeObserver onResize={this.onResize}>
           <div
             ref={this.$main}
-            className={classNames(styles.main, { [styles.editable]: this.props.editable })}
+            className={classNames(styles.main, { [styles.editable]: this.props.editable, [styles.disabled]: this.disabled })}
             tabIndex={0}
             onDoubleClick={this.onDoubleClick}
             onKeyDown={this.onKeyDown}
           >
             { wrapperEl }
-            { this.renderEdit() }
+            { !this.disabled && this.renderEdit() }
             { this.renderClipboard() }
           </div>
         </ResizeObserver>

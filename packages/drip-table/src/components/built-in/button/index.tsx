@@ -8,6 +8,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { dataProcessValue } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -24,6 +25,8 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   icon?: string;
   event?: string;
   margin?: number;
+  disableFunc?: string;
+  visibleFunc?: string;
   buttons?: {
     label?: string;
     event?: string;
@@ -33,6 +36,8 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
     danger?: boolean;
     ghost?: boolean;
     icon?: string;
+    disableFunc?: string;
+    visibleFunc?: string;
   }[];
 }>;
 
@@ -59,6 +64,8 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       icon: { type: 'string' },
       event: { type: 'string' },
       margin: { type: 'number' },
+      disableFunc: { type: 'string' },
+      visibleFunc: { type: 'string' },
       buttons: {
         type: 'array',
         items: {
@@ -71,6 +78,8 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             danger: { type: 'boolean' },
             ghost: { type: 'boolean' },
             icon: { type: 'string' },
+            disableFunc: { type: 'string' },
+            visibleFunc: { type: 'string' },
           },
         },
       },
@@ -104,6 +113,24 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     return null;
   }
 
+  private getVisible(visibleFunc?: string): boolean {
+    const { schema, data } = this.props;
+    const { dataIndex } = schema;
+    if (!visibleFunc) {
+      return true;
+    }
+    return dataProcessValue(data, dataIndex, visibleFunc);
+  }
+
+  private getDisabled(disableFunc?: string): boolean {
+    const { schema, data } = this.props;
+    const { dataIndex } = schema;
+    if (!disableFunc) {
+      return false;
+    }
+    return dataProcessValue(data, dataIndex, disableFunc);
+  }
+
   public render() {
     const Button = this.props.driver.components.Button;
     const options = this.props.schema.options;
@@ -111,6 +138,9 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       return <div style={{ color: 'red' }}>属性配置错误</div>;
     }
     if (options.mode === 'single') {
+      if (!this.getVisible(options.visibleFunc)) {
+        return null;
+      }
       return (
         <Button
           type={options.buttonType}
@@ -118,6 +148,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           shape={options.shape}
           danger={options.danger}
           ghost={options.ghost}
+          disabled={this.getDisabled(options.disableFunc)}
           icon={options.icon ? this.getIcon(options.icon) : void 0}
           onClick={() => {
             if (this.props.preview) { return; }
@@ -131,7 +162,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       );
     }
     if (options.mode === 'multiple') {
-      return options.buttons?.map((config, index) => (
+      return options.buttons?.map((config, index) => this.getVisible(config.visibleFunc) && (
         <Button
           key={index}
           style={{ marginLeft: options.margin, marginRight: options.margin }}
@@ -139,6 +170,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           size={config.size}
           shape={config.shape}
           danger={config.danger}
+          disabled={this.getDisabled(config.disableFunc)}
           ghost={config.ghost}
           icon={config.icon ? this.getIcon(config.icon) : void 0}
           onClick={() => {
@@ -148,7 +180,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             }
           }}
         >
-          { this.label }
+          { config.label }
         </Button>
       ));
     }
