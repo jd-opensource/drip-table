@@ -136,7 +136,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         mode: 'single',
         ellipsis: true,
         maxRow: 3,
-        dataProcess: 'return {{rec.status}} === "soldOut" ? "该商品已售罄" : {{rec.description}}',
+        dataProcess: 'return rec.status === "soldOut" ? "该商品已售罄" : value',
       },
     },
     {

@@ -133,6 +133,42 @@ export default {
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
+      name: 'options.disableFunc',
+      group: '组件属性',
+      'ui:title': '禁用判断',
+      'ui:type': 'text',
+      'ui:props': {
+        style: { width: '100%' },
+        placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+      },
+      'ui:description': {
+        title: '根据逻辑语句返回的布尔值决定该组件是否被禁用,true为禁用,false为正常',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      type: 'string',
+    },
+    {
+      name: 'options.visibleFunc',
+      group: '组件属性',
+      'ui:title': '显隐组件条件',
+      'ui:type': 'text',
+      'ui:props': {
+        style: { width: '100%' },
+        placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+      },
+      'ui:description': {
+        title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      type: 'string',
+    },
+    {
       name: 'options.event',
       group: '组件属性',
       'ui:title': '事件名称',
@@ -246,6 +282,40 @@ export default {
               checkedChildren: '是',
             },
             default: false,
+          },
+          {
+            name: 'disableFunc',
+            group: '组件属性',
+            'ui:title': '禁用判断',
+            'ui:type': 'text',
+            'ui:props': {
+              style: { width: '100%' },
+              placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+            },
+            'ui:description': {
+              title: '根据逻辑语句返回的布尔值决定该组件是否被禁用,true为禁用,false为正常',
+              trigger: 'hover',
+              type: 'icon',
+            },
+            type: 'string',
+          },
+          {
+            name: 'visibleFunc',
+            group: '组件属性',
+            'ui:title': '显隐组件条件',
+            'ui:type': 'text',
+            'ui:props': {
+              style: { width: '100%' },
+              placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+            },
+            'ui:description': {
+              title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
+              trigger: 'hover',
+              type: 'icon',
+            },
+            type: 'string',
           },
           {
             name: 'event',

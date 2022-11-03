@@ -62,13 +62,11 @@ const getValue = (data: unknown, indexes: string | number | readonly (string | n
  * @returns 值
  */
 export const indexValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess?: string) => {
+  const value = getValue(data, indexes, defaultValue);
   if (dataProcess) {
-    // 先将模版换成值
     try {
-      const fucBody = dataProcess
-        .replace(/\{\{(.+?)\}\}/guis, (s, s1) => JSON.stringify(new Function('rec', `return ${s1}`)(data)));
-      const processFunc = new Function('', fucBody);
-      const processedValue = processFunc();
+      const processFunc = new Function('value', 'rec', dataProcess);
+      const processedValue = processFunc(value, data);
       return processedValue;
     } catch (error) {
       return error instanceof Error
@@ -76,8 +74,29 @@ export const indexValue = (data: unknown, indexes: string | number | readonly (s
         : '{{Unknown Render Error}}';
     }
   }
-  const value = getValue(data, indexes, defaultValue);
   return value;
+};
+
+/**
+ * 获取数据处理的运行结果
+ * @param data 基础对象
+ * @param indexes 下标或下标数组
+ * @param funcText 数据处理的语句
+ * @returns 值
+ */
+export const dataProcessValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, funcText?: string) => {
+  const value = getValue(data, indexes, '');
+  if (funcText) {
+    try {
+      const processFunc = new Function('value', 'rec', funcText);
+      const processedValue = processFunc(value, data);
+      return processedValue;
+    } catch (error) {
+      return error instanceof Error
+        ? `{{Render Error: ${error.message}}}`
+        : '{{Unknown Render Error}}';
+    }
+  }
 };
 
 /**

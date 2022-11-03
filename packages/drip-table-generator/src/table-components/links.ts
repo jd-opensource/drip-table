@@ -111,6 +111,40 @@ export default {
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
     },
     {
+      name: 'options.dataProcess',
+      group: '组件属性',
+      'ui:title': '数据处理',
+      'ui:type': 'text',
+      'ui:props': {
+        style: { width: '100%' },
+      },
+      'ui:description': {
+        title: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value || "暂无数据"`',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      type: 'string',
+    },
+    {
+      name: 'options.visibleFunc',
+      group: '组件属性',
+      'ui:title': '显隐组件条件',
+      'ui:type': 'text',
+      'ui:props': {
+        style: { width: '100%' },
+        placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+      },
+      'ui:description': {
+        title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      type: 'string',
+    },
+    {
       name: 'options.disabled',
       group: '组件属性',
       'ui:title': '禁用组件条件',
@@ -180,6 +214,23 @@ export default {
               trigger: 'hover',
               type: 'icon',
             },
+          },
+          {
+            name: 'visibleFunc',
+            group: '组件属性',
+            'ui:title': '显隐组件条件',
+            'ui:type': 'text',
+            'ui:props': {
+              style: { width: '100%' },
+              placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+
+            },
+            'ui:description': {
+              title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
+              trigger: 'hover',
+              type: 'icon',
+            },
+            type: 'string',
           },
         ],
       },

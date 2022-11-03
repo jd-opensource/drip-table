@@ -14,6 +14,22 @@ export default {
     ...basicColumnAttrComponents('图片'),
     ...dataIndexColumnAttrComponents('pictureUrl'),
     {
+      name: 'options.dataProcess',
+      group: '组件属性',
+      'ui:title': '数据处理',
+      'ui:type': 'text',
+      'ui:props': {
+        style: { width: '100%' },
+      },
+      'ui:description': {
+        title: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value || "暂无数据"`',
+        trigger: 'hover',
+        type: 'icon',
+      },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      type: 'string',
+    },
+    {
       name: 'options.imageWidth',
       group: '样式配置',
       'ui:title': '图片宽度',

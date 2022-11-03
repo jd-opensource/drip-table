@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { dataProcessValue } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -31,6 +32,8 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
     event?: string;
     target?: string;
     disabled?: boolean | string;
+    /** 显隐的数据处理 */
+    visibleFunc?: string;
   }[];
   /** 多选模式下最大平铺展示数量，如果配置，其余均通过更多收起 */
   maxTiledCount?: number;
@@ -39,6 +42,10 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   suffixIcon?: string;
   trigger?: 'hover' | 'click';
   placement?: 'bottom' | 'bottomLeft' | 'bottomRight' | 'top' | 'topLeft' | 'topRight';
+  /** 禁用的数据处理 */
+  disableFunc?: string;
+  /** 显隐的数据处理 */
+  visibleFunc?: string;
 }>;
 
 export interface DTCLinkEvent {
@@ -72,6 +79,8 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             event: { type: 'string' },
             target: { type: 'string' },
             disabled: { anyOf: [{ type: 'string' }, { type: 'boolean' }] },
+            disableFunc: { type: 'string' },
+            visibleFunc: { type: 'string' },
           },
         },
       },
@@ -81,6 +90,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       suffixIcon: { type: 'string' },
       trigger: { enum: ['hover', 'click'] },
       placement: { enum: ['bottom', 'bottomLeft', 'bottomRight', 'top', 'topLeft', 'topRight'] },
+      dataProcess: { type: 'string' },
+      disableFunc: { type: 'string' },
+      visibleFunc: { type: 'string' },
     },
   };
 
@@ -124,6 +136,16 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return !!isDisabled;
     }
     return !!disabled;
+  }
+
+  private get visiable(): boolean {
+    const { schema, data } = this.props;
+    const { dataIndex, options } = schema;
+    const { mode, visibleFunc } = options;
+    if (mode === 'single' && visibleFunc) {
+      return dataProcessValue(data, dataIndex, visibleFunc);
+    }
+    return true;
   }
 
   private getIcon(iconName: string) {
@@ -182,6 +204,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     const options = this.props.schema.options;
     const Alert = this.props.driver.components.Alert;
     const DropDown = this.props.driver.components.Dropdown;
+    if (!this.visiable && options.mode === 'single') {
+      return <div />;
+    }
     if (!this.configured) {
       return <Alert type="error" showIcon message="属性配置错误" />;
     }
@@ -240,7 +265,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
                 <a
                   className={disabled ? styles['link-disabled'] : void 0}
                   style={{ marginRight: '5px' }}

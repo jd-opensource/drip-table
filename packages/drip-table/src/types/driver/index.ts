@@ -39,6 +39,7 @@ export interface DripTableDriver {
       danger?: boolean;
       ghost?: boolean;
       icon?: React.ReactNode;
+      disabled?: boolean;
       onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     Col: DripTableReactComponent<{
