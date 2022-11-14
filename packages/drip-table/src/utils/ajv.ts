@@ -219,6 +219,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           ],
         },
         rowDraggable: { type: 'boolean' },
+        defaultTableLayout: { enum: ['card', 'table'] },
         layout: {
           properties: {
             card: { properties: {

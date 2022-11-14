@@ -133,8 +133,8 @@ const DripTableLayout = <
     : null;
 
   useEffect(() => {
-    if (tableInfo.schema.layout?.card?.default) {
-      setTableState({ layout: 'card' });
+    if (tableInfo.schema.defaultTableLayout) {
+      setTableState({ layout: tableInfo.schema.defaultTableLayout });
     }
   }, []);
 

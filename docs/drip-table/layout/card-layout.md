@@ -16,12 +16,13 @@
        * 一行多少个
        */
       rowSize: number;
-      /**
-       * 是否是默认布局
-       */
-      default?: boolean;
     };
   };
+  /**
+   * 默认布局模式,不写默认为table
+   */
+  defaultTableLayout?: 'table' | 'card';
+
 ```
 - 默认值：`undefined`
 
@@ -237,6 +238,7 @@ const schema = {
       },
     },
   ],
+  defaultTableLayout: 'card',
   layout: {
     card: {
       columns: [
@@ -296,7 +298,6 @@ const schema = {
         },
       ],
       rowSize: 4,
-      default: true,
     },
   },
 };
