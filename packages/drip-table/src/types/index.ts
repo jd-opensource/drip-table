@@ -304,12 +304,13 @@ export interface DripTableSchema<
        * 一行多少个
        */
       rowSize: number;
-      /**
-       * 是否是默认布局
-       */
-      default?: boolean;
+
     };
   };
+  /**
+   * 默认布局模式
+   */
+  defaultTableLayout?: 'table' | 'card';
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
