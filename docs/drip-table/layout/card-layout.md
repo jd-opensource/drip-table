@@ -16,6 +16,10 @@
        * 一行多少个
        */
       rowSize: number;
+      /**
+       * 是否是默认布局
+       */
+      default?: boolean;
     };
   };
 ```
@@ -37,16 +41,6 @@ const schema = {
   innerStyle: {
     background: "#7088ca",
     border: "1px solid #7088ca",
-  },
-  header: {
-    style: { margin: '0', padding: '12px 0' },
-    elements: [
-      {
-        type: 'layout-selector',
-        selectorButtonType: 'primary',
-        selectorButtonText: '布局模式',
-      },
-    ],
   },
   columns: [
     {
@@ -302,6 +296,7 @@ const schema = {
         },
       ],
       rowSize: 4,
+      default: true,
     },
   },
 };

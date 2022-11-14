@@ -124,7 +124,17 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
           '/drip-table/schema/subtable',
-          '/drip-table/schema/layout',
+          '/drip-table/schema/data-process',
+          '/drip-table/schema/disable-func',
+          '/drip-table/schema/visible-func',
+        ],
+      },
+      {
+        title: '布局差异化配置',
+        path: '/drip-table/layout',
+        children: [
+          '/drip-table/layout/index',
+          '/drip-table/layout/card-layout',
         ],
       },
       {
