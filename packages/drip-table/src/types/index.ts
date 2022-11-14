@@ -304,6 +304,10 @@ export interface DripTableSchema<
        * 一行多少个
        */
       rowSize: number;
+      /**
+       * 是否是默认布局
+       */
+      default?: boolean;
     };
   };
 }

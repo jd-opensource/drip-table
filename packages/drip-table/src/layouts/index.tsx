@@ -7,7 +7,7 @@
  */
 
 import classnames from 'classnames';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   type DripTableExtraOptions,
@@ -131,6 +131,12 @@ const DripTableLayout = <
       />
     )
     : null;
+
+  useEffect(() => {
+    if (tableInfo.schema.layout?.card?.default) {
+      setTableState({ layout: 'card' });
+    }
+  }, []);
 
   const layoutNode = React.useMemo(() => {
     if (tableState.layout === 'table') {
