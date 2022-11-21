@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import React from 'react';
 
-import { filterAttributes } from '@/utils';
+import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { DripTableGeneratorProps } from '@/typing';
 
@@ -187,7 +187,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 try {
                   const json = JSON.parse(value);
                   const globalConfigsToImport = filterAttributes(json, ['columns']);
-                  const columnsToImport = json.columns?.map((item, index) => ({ index, ...item })) as DripTableGeneratorContext['columns'];
+                  const columnsToImport = json.columns?.map((item, index) => ({ key: `${item.component}_${mockId()}`, index, ...item })) as DripTableGeneratorContext['columns'];
                   setState({
                     globalConfigs: globalConfigsToImport,
                     columns: columnsToImport,

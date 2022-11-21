@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Row } from 'antd';
 import classNames from 'classnames';
 import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
@@ -17,7 +18,7 @@ import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
 import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
-import { updateColumnItemByPath } from '../../utils';
+import { getWidth, updateColumnItemByPath } from '../../utils';
 
 import styles from './index.module.less';
 
@@ -102,11 +103,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   if (props.column?.component === 'group') {
     const gutter = props.column.options.gutter ?? [0, 0];
-    const columnWidth = (Number(String(props.column?.width || '').replace(/(px|%|r?em|pt|vw|cm|in|pc)$/ui, '')) || 100) - 12;
+    const columnWidth = Number(getWidth(props.column?.width || '', void 0, -18));
     const componentOptions = props.column.options;
     return (
       <GeneratorContext.Consumer>
-        { ({ columns, columnToAdd, setState }) => (
+        { ({ columns, columnToAdd, drawerType, setState }) => (
           <div style={{ height: props.isChildren ? '100%' : 'max-content', overflow: 'hidden' }}>
             <div
               className={props.isChildren ? '' : styles['table-cell']}
@@ -119,7 +120,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                   style={{
                     flexFlow: componentOptions.wrap ? 'row wrap' : 'nowrap',
                     justifyContent: componentOptions.horizontalAlign,
-                    width: 'calc(100% - 4px)',
                   }}
                   gutter={gutter}
                   justify={componentOptions.horizontalAlign}
@@ -156,7 +156,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         onDrop={(event) => {
                           event.stopPropagation();
                           event.preventDefault();
-                          const path = isChecked(currentCheckedIndex) ? [] : [...props.parentIndex || [], currentCheckedIndex];
+                          const path = [...props.parentIndex || [], currentCheckedIndex];
                           if (props.column && columnToAdd) {
                             const configs = getColumnConfigs(columnToAdd.component);
                             const options: Record<string, unknown> = {};
@@ -191,6 +191,19 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           }
                         }}
                       >
+                        { componentOptions.items[currentCheckedIndex]
+                          && (
+                          <CloseCircleOutlined
+                            className={styles['close-column-item']}
+                            onClick={() => {
+                              componentOptions.items[currentCheckedIndex] = null;
+                              setState({
+                                currentColumnPath: [],
+                                drawerType: drawerType === 'column-item' ? 'column' : drawerType,
+                              });
+                            }}
+                          />
+                          ) }
                         { componentOptions.items[currentCheckedIndex]?.component === 'group'
                           ? (
                             <EditableGroupComponent

@@ -103,9 +103,13 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     if (tooltip) {
       return (
         <div style={{ marginLeft: 8 }}>
-          <Tooltip title={finalizeString('pattern', tooltip, this.props.data)}>
-            <InfoCircleOutlined />
-          </Tooltip>
+          { this.props.preview
+            ? <InfoCircleOutlined />
+            : (
+              <Tooltip title={finalizeString('pattern', tooltip, this.props.data)}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            ) }
         </div>
 
       );

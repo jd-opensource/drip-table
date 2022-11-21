@@ -18,6 +18,11 @@ export default {
       required: true,
       'ui:title': '每行列数',
       'ui:type': 'select',
+      'ui:description': {
+        type: 'icon',
+        trigger: 'hover',
+        title: '删除时当总空间格数小于子组件个数时，系统会为了保持同步主动舍去溢出的组件！',
+      },
       'ui:props': {
         placeholder: '请输入每行列数，以逗号隔开',
         mode: 'tags',

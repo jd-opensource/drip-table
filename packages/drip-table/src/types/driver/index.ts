@@ -118,6 +118,7 @@ export interface DripTableDriver {
         loading?: boolean;
         allowClear?: boolean;
         value?: VT;
+        open?: boolean;
         onChange?: (value: VT) => void;
         getPopupContainer?: (triggerNode: React.ReactNode) => React.ReactNode;
       }>) => React.ReactElement | null

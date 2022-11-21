@@ -144,8 +144,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     context.columns.forEach((item) => {
       width += ` - ${getWidth(item.width, 'px')}`;
     });
+    if (context.globalConfigs.rowSelection) {
+      width += ' - 48px';
+    }
     return width;
-  }, [context.columns, context.currentColumn]);
+  }, [context.columns, context.currentColumn, context.globalConfigs.rowSelection]);
 
   const dataSource = React.useMemo(() => {
     const { previewDataSource, globalConfigs: { pagination } } = context;
@@ -320,6 +323,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                       const tempColumnInfo = Object.assign({}, columns[columnIndexToDrag]);
                       columns.splice(columnIndexToDrag, 1);
                       columns.splice(columnIndex, 0, tempColumnInfo);
+                      columns.forEach((item, i) => { item.index = i; });
                       setState({ columns });
                     }
                   }}
@@ -340,7 +344,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
                           height: cellHeight,
-                          width: getWidth(column.width, 'px'),
+                          width: getWidth(column.width, 'px', -2),
                           textAlign: column.align,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}

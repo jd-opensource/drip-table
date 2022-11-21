@@ -339,6 +339,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   private onDoubleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (this.props.preview) { return; }
     if (!this.props.editable) {
       return;
     }
@@ -350,6 +351,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   };
 
   private onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (this.props.preview) { return; }
     if (this.state.editState === 'none' && e.key.length === 1 && !this.props.schema.options.i18n) {
       this.setState({
         editState: 'editing',

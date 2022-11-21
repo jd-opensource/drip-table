@@ -67,7 +67,9 @@ export const getWidth = (originWidth?: string | number, format?: 'px' | '%', del
   if (typeof originWidth === 'number') {
     width = Number.isNaN(originWidth) ? MIN_WIDTH : originWidth;
   } else if (typeof originWidth === 'string') {
-    if ((/^[0-9]+px$/ui).test(originWidth)) {
+    if ((/^[0-9]+$/ui).test(originWidth)) {
+      width = Number(originWidth);
+    } else if ((/^[0-9]+px$/ui).test(originWidth)) {
       width = Number(originWidth.replace('px', ''));
     } else if ((/^[0-9]+(%|r?em|pt|vw|cm|in|pc)$/ui).test(originWidth)) {
       return originWidth;

@@ -288,6 +288,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         defaultValue={options.defaultValue}
         value={options.bindValue === false ? void 0 : this.value}
         getPopupContainer={triggerNode => triggerNode}
+        open={this.props.preview ? false : void 0}
         onChange={(value) => {
           if (this.props.preview) { return; }
           if (options.event) {

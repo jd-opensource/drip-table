@@ -26,6 +26,15 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     this.props.onChange?.(currentValue);
   }
 
+  private get defaultValue() {
+    const defaultObject = {};
+    (this.props.schema['ui:props']?.items as DTGComponentPropertySchema[])
+      .forEach((schema, i) => {
+        defaultObject[schema.name] = schema.default;
+      });
+    return defaultObject;
+  }
+
   private renderAttributeComponent(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
     const currentValue = (this.props.value || [])[parentIndex] || {};
     const uiProps = schema['ui:props'] || {};
@@ -179,7 +188,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
               onClick={() => {
                 const value: Record<string, unknown>[] = [
                   ...this.props.value || [],
-                  {},
+                  { ...this.defaultValue },
                 ];
                 this.props.onChange?.(value);
               }}
