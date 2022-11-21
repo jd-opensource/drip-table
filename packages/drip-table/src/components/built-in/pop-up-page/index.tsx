@@ -65,6 +65,7 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
   }
 
   private handlePopUpVisible = () => {
+    if (this.props.preview) { return; }
     this.setState({
       visible: true,
     });
@@ -99,7 +100,7 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
               <span>{ options.title }</span>
               <span className={styles['auxiliary-desc']}>{ this.auxiliaryDesc }</span>
             </div>
-           )}
+          )}
           onClose={this.onClose}
           width={options.width || 520}
           style={{ maxHeight: options.maxHeight || 730, maxWidth: options.maxWidth || 1152, height: options.height || 'unset' }}

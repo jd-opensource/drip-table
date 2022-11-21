@@ -8,6 +8,7 @@
 import { Input, message, Modal } from 'antd';
 import React from 'react';
 
+import { mockId } from '@/utils';
 import { GeneratorContext } from '@/context';
 
 interface ColumnInsertModalProps {
@@ -29,6 +30,7 @@ const ColumnInsertModal = (props: ColumnInsertModalProps) => (
           try {
             const jsonVal = JSON.parse(props.value);
             const column = { ...jsonVal, index: props.index };
+            column.key = `${column.component}_${mockId()}`;
             columns.splice(props.index, 0, column);
             for (let i = props.index + 1; i < columns.length; i++) { columns[i].index += 1; }
             setState({ columns: [...columns] }, () => {

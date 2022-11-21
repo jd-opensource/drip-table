@@ -123,6 +123,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       dataIndex: formData.dataIndex as string | string[],
       title: formData.title as string,
       width: formData.width as string,
+      align: formData.align as 'left' | 'center' | 'right',
       component: currentColumn?.component ?? '',
       options: uiProps,
     } as DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'];
@@ -147,7 +148,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             onChange={(data) => {
               const newCurrentColumn = Object.assign({}, currentColumn, data);
               const index = currentColumn.index;
-              columns[index] = Object.assign({}, newCurrentColumn);
+              const keyIndex = columns.findIndex(item => item.key === currentColumn.key);
+              if (keyIndex === index) {
+                columns[index] = Object.assign({}, newCurrentColumn);
+              } else {
+                columns[keyIndex] = Object.assign({}, newCurrentColumn);
+                newCurrentColumn.index = keyIndex;
+              }
               setState({
                 currentColumn: newCurrentColumn,
                 columns: [...columns],
