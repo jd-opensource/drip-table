@@ -33,6 +33,7 @@
     "moment": "^2.29.4",
     "rc-checkbox": "^2.3.2",
     "rc-dialog": "^9.0.2",
+    "rc-input-number": "^7.3.11",
     "rc-pagination": "^3.1.17",
     "rc-picker": "^3.0.0-4",
     "rc-resize-observer": "^1.0.1",
