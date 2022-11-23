@@ -19,6 +19,7 @@ import { Button, Dropdown, Input, message, Modal, Radio } from 'antd';
 import classNames from 'classnames';
 import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
 import React from 'react';
+import Clipboard from 'react-clipboard.js';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
@@ -177,53 +178,61 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             width={720}
             title={modalStatus === 'export' ? '导出数据' : '导入数据'}
             visible={modalStatus === 'export' || modalStatus === 'import'}
-            cancelText={modalStatus === 'export' ? '确认' : '取消'}
-            okText={modalStatus === 'export' ? '复制文本' : '确认导入'}
+            footer={
+              modalStatus === 'export'
+                ? [ // 导出复制
+                  <Button onClick={() => setModalStatus('')}>确认</Button>,
+                  <Clipboard
+                    style={{ marginLeft: '8px' }}
+                    component="span"
+                    option-text={() => JSON.stringify(getSchemaValue())}
+                    onSuccess={() => {
+                      props.onExportSchema?.(getSchemaValue());
+                      message.success('复制成功');
+                      setModalStatus('');
+                      setCode('');
+                    }}
+                    onError={(e) => {
+                      message.error('复制失败：您的浏览器不支持复制。');
+                    }}
+                  >
+                    <Button type="primary">复制文本</Button>
+                  </Clipboard>,
+                ]
+                : [ // 导入解析
+                  <Button onClick={() => setModalStatus('')}>取消</Button>,
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      const value = (code || '').trim();
+                      let hasError = false;
+                      try {
+                        const json = JSON.parse(value);
+                        const globalConfigsToImport = filterAttributes(json, ['columns']);
+                        const columnsToImport = json.columns?.map((item, index) => ({ key: `${item.component}_${mockId()}`, index, ...item })) as DripTableGeneratorContext['columns'];
+                        setState({
+                          globalConfigs: globalConfigsToImport,
+                          columns: columnsToImport,
+                          currentColumn: void 0,
+                          currentColumnPath: void 0,
+                        });
+                      } catch {
+                        hasError = true;
+                        message.error('解析出错, 请传入正确的格式');
+                      } finally {
+                        if (!hasError) {
+                          message.success('数据导入成功');
+                        }
+                      }
+                      setModalStatus('');
+                      setCode('');
+                    }}
+                  >
+                    确认导入
+                  </Button>,
+                ]
+            }
             onCancel={() => setModalStatus('')}
-            onOk={() => {
-              if (modalStatus === 'import') { // 导入解析
-                const value = (code || '').trim();
-                let hasError = false;
-                try {
-                  const json = JSON.parse(value);
-                  const globalConfigsToImport = filterAttributes(json, ['columns']);
-                  const columnsToImport = json.columns?.map((item, index) => ({ key: `${item.component}_${mockId()}`, index, ...item })) as DripTableGeneratorContext['columns'];
-                  setState({
-                    globalConfigs: globalConfigsToImport,
-                    columns: columnsToImport,
-                    currentColumn: void 0,
-                    currentColumnPath: void 0,
-                  });
-                } catch {
-                  hasError = true;
-                  message.error('解析出错, 请传入正确的格式');
-                } finally {
-                  if (!hasError) {
-                    message.success('数据导入成功');
-                  }
-                }
-              } else if (modalStatus === 'export') { // 导出复制
-                if (navigator.clipboard) {
-                  navigator.clipboard.writeText(JSON.stringify(getSchemaValue()))
-                    .then(
-                      () => {
-                        props.onExportSchema?.(getSchemaValue());
-                        message.success('复制成功');
-                        return void 0;
-                      },
-                    )
-                    .catch(
-                      () => {
-                        message.error('复制失败');
-                      },
-                    );
-                } else {
-                  message.error('复制失败：您的浏览器不支持复制。');
-                }
-              }
-              setModalStatus('');
-              setCode('');
-            }}
           >
             { renderSchemaModal() }
           </Modal>
