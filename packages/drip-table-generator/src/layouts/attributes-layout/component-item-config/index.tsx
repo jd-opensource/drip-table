@@ -17,6 +17,8 @@ import { getColumnItemByPath, updateColumnItemByPath } from '@/layouts/table-wor
 import components from '@/table-components';
 import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
+import styles from './index.module.less';
+
 interface ComponentItemConfigFormProps<
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
@@ -30,6 +32,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
 const errorBoundary = (message?: string) => (
   <Result
+    className={styles.result}
     icon={<ExclamationCircleTwoTone />}
     title={<div style={{ color: '#999' }}>{ message }</div>}
   />

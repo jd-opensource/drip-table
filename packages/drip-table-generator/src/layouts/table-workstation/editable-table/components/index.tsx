@@ -107,7 +107,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     const componentOptions = props.column.options;
     return (
       <GeneratorContext.Consumer>
-        { ({ columns, columnToAdd, drawerType, setState }) => (
+        { ({ currentColumn, columns, columnToAdd, drawerType, setState }) => (
           <div style={{ height: props.isChildren ? '100%' : 'max-content', overflow: 'hidden' }}>
             <div
               className={props.isChildren ? '' : styles['table-cell']}
@@ -142,9 +142,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (!props.isCurrentColumn) { return; }
                           const path = isChecked(currentCheckedIndex) ? [] : [...props.parentIndex || [], currentCheckedIndex];
                           setState({
+                            currentColumn: !props.isCurrentColumn ? columns.find(item => item.key === props.column?.key) : currentColumn,
                             currentColumnPath: path,
                             drawerType: isChecked(currentCheckedIndex) ? 'column' : 'column-item',
                           });

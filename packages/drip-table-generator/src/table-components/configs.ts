@@ -55,8 +55,8 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
       buttonStyle: 'solid',
       size: 'small',
       options: [
-        { label: '居中', value: 'center' },
         { label: '左对齐', value: 'left' },
+        { label: '居中', value: 'center' },
         { label: '右对齐', value: 'right' },
       ],
     },

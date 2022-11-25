@@ -76,7 +76,7 @@ export const columnGenerator = <
       [styles['jfe-drip-table-cell--stretch']]: columnSchema.verticalAlign === 'stretch',
     }),
     align: columnSchema.align,
-    title: typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title.body,
+    title: <RichText html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title?.body} />,
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
     style: columnSchema.style,
@@ -86,7 +86,7 @@ export const columnGenerator = <
     column.title = (
       <div>
         <span style={{ marginRight: '6px' }}>
-          <RichText className={styles['jfe-drip-table-column-title']} html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title.body} />
+          <RichText className={styles['jfe-drip-table-column-title']} html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title?.body} />
         </span>
         <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
           <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>

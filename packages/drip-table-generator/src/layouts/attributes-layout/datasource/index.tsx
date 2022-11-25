@@ -11,15 +11,25 @@ import MonacoEditor from 'react-monaco-editor';
 
 import { GeneratorContext } from '@/context';
 
+export type DataSourceHandler = {
+  formatDataSource: () => void;
+}
+
 interface DataSourceEditorProps {
   width?: number;
   height?: number;
 }
 
-const DataSourceEditor = (props: DataSourceEditorProps) => {
+const DataSourceEditor = (props: DataSourceEditorProps, ref: React.ForwardedRef<DataSourceHandler>) => {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
   const [code, setCode] = React.useState(JSON.stringify(previewDataSource, null, 4));
+
+  React.useImperativeHandle(ref, () => ({
+    formatDataSource: () => {
+      setCode(JSON.stringify(previewDataSource, null, 4));
+    },
+  }));
 
   return (
     <GeneratorContext.Consumer>
@@ -34,14 +44,13 @@ const DataSourceEditor = (props: DataSourceEditorProps) => {
             value={code || ''}
             onChange={(value) => {
               setCodeErrorMessage('');
+              setCode(value || '');
               try {
                 const customDataSource = JSON.parse(value || '');
                 if (Array.isArray(customDataSource)) {
                   setState({ previewDataSource: customDataSource });
-                  setCode(JSON.stringify(customDataSource, null, 4));
                 }
               } catch (error) {
-                setCode(value || '');
                 setCodeErrorMessage((error as Error).message);
               }
             }}
@@ -53,4 +62,4 @@ const DataSourceEditor = (props: DataSourceEditorProps) => {
   );
 };
 
-export default DataSourceEditor;
+export default React.forwardRef(DataSourceEditor);

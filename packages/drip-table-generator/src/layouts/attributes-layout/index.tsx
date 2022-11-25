@@ -14,11 +14,13 @@ import React from 'react';
 
 import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
+import components from '@/table-components';
 import { DripTableGeneratorProps } from '@/typing';
 
+import { getColumnItemByPath } from '../table-workstation/utils';
 import ComponentConfigForm from './component-configs';
 import ComponentItemConfigForm from './component-item-config';
-import DataSourceEditor from './datasource';
+import DataSourceEditor, { DataSourceHandler } from './datasource';
 import GlobalConfigForm from './global-configs';
 
 import styles from './index.module.less';
@@ -28,11 +30,26 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const body = React.useRef<HTMLDivElement>(null);
+  const editor = React.useRef<DataSourceHandler>(null);
   const drawerTitleMapper = {
     datasource: '数据源配置',
     global: '全局配置',
     column: '组件配置',
     'column-item': '子组件配置',
+  };
+
+  const getAllComponentsConfigs = () => {
+    let componentsToUse = components;
+    if (props.customComponentPanel) {
+      const customComponents = props.customComponentPanel.configs;
+      componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
+    }
+    return [...componentsToUse];
+  };
+
+  const getComponentName = (componentType: string) => {
+    const columnConfig = getAllComponentsConfigs().find(schema => schema['ui:type'] === componentType);
+    return columnConfig?.title || '未知组件';
   };
 
   return (
@@ -52,13 +69,24 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           >
             <div className={styles['attributes-drawer-header']}>
               <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0, currentColumn: drawerType === 'column' ? void 0 : currentColumn })} />
-              <span>{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
-              { drawerType === 'column' || drawerType === 'column-item' ? (<span />) : null }
+              <span className={styles.title}>{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
+              { drawerType === 'column' ? (<span className={styles['component-title']}>{ getComponentName(currentColumn?.component || '') }</span>) : null }
+              { drawerType === 'column-item'
+                ? (
+                  <span className={styles['component-title']}>
+                    { currentColumnPath ? getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component) : '' }
+                  </span>
+                )
+                : null }
+              { drawerType === 'datasource' && (
+                <Button onClick={() => { editor.current?.formatDataSource(); }}>格式化</Button>
+              ) }
             </div>
             <div className={styles['attributes-drawer-body']} ref={body}>
               {
               drawerType === 'datasource' && (
               <DataSourceEditor
+                ref={editor}
                 width={(drawerWidth[drawerType] || 0)}
                 height={(body.current?.offsetHeight || 0)}
               />
