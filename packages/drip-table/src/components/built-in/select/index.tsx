@@ -10,6 +10,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue } from '@/utils/operator';
+import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -41,8 +42,6 @@ export type DTCSelectColumnSchema = DripTableColumnSchema<'select', {
   showArrow?: boolean;
   /** 允许搜索，默认为 false */
   showSearch?: boolean;
-  /** 后缀图标 */
-  suffixIcon?: string;
   /** 事件名，给用户区分事件用 */
   event?: string;
   /** 是否禁用，给用户区分事件用 */
@@ -106,7 +105,6 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       placement: { enum: ['bottomLeft', 'bottomRight', 'topLeft', 'topRight'] },
       showArrow: { type: 'boolean' },
       showSearch: { type: 'boolean' },
-      suffixIcon: { type: 'string' },
       bindValue: { type: 'boolean' },
       size: { enum: ['large', 'middle', 'small'] },
       style: { type: 'object' },
@@ -257,19 +255,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     }
   }
 
-  private getIcon(iconName: string) {
-    const Icons = this.props.driver.icons;
-    const Icon = Icons?.[iconName];
-    if (Icon) {
-      return (
-        <Icon />
-      );
-    }
-    return null;
-  }
-
   public render() {
-    const { Select } = this.props.driver.components;
     const options = this.props.schema.options;
     return (
       <Select
@@ -281,8 +267,6 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         placement={options.placement}
         showSearch={options.showSearch}
         showArrow={options.showArrow}
-        suffixIcon={options.suffixIcon ? this.getIcon(options.suffixIcon) : void 0}
-        size={options.size}
         disabled={this.disabled}
         loading={this.state.loading}
         defaultValue={options.defaultValue}

@@ -17,7 +17,7 @@
   transition: all .2s;
   border: 1px solid #d9d9d9;
 
-  .@{prefixCls}-borderless {
+  &-borderless {
     background-color: transparent;
     border: none;
     box-shadow: none;
@@ -114,6 +114,24 @@
     &[type="number"]::-webkit-outer-spin-button {
       margin: 0;
       appearance: none;
+    }
+  }
+
+  &-lg {
+    padding: 0;
+    font-size: 14px;
+
+    input {
+      height: 38px;
+    }
+  }
+
+  &-sm {
+    padding: 0;
+
+    input {
+      height: 22px;
+      padding: 0 7px;
     }
   }
 

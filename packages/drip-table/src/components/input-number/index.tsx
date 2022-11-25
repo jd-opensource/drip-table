@@ -19,6 +19,7 @@ export interface InputNumberProps<T extends ValueType = ValueType>
   extends Omit<RcInputNumberProps<T>, 'prefix' | 'size'> {
   prefixCls?: string;
   bordered?: boolean;
+  size?: 'large' | 'middle' | 'small';
 }
 const prefixCls = 'jfe-drip-table-input-number';
 
@@ -29,20 +30,22 @@ const InputNumber = React.memo(({ ...props }: InputNumberProps) => {
     className,
     bordered = true,
     readOnly,
+    size,
     ...others
   } = props;
 
   const inputNumberClass = classNames(
     {
-      [`${prefixCls}-readonly`]: readOnly,
-      [`${prefixCls}-borderless`]: !bordered,
+      [styles[`${prefixCls}-readonly`]]: readOnly,
+      [styles[`${prefixCls}-borderless`]]: !bordered,
+      [styles[`${prefixCls}-lg`]]: size === 'large',
+      [styles[`${prefixCls}-sm`]]: size === 'small',
     },
     className,
   );
 
   return (
     <RcInputNumber
-      {...props}
       prefixCls={prefixCls}
       ref={inputRef}
       className={inputNumberClass}

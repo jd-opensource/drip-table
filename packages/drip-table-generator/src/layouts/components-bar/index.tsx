@@ -5,8 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
+import { Button } from 'antd';
 import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
 
@@ -34,7 +33,6 @@ const ComponentsBar = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: ComponentsBarProps<RecordType, ExtraOptions>) => {
-  const [collapsed, setCollapsed] = React.useState(true);
   const context = React.useContext(GeneratorContext);
 
   const getAllComponentsConfigs = () => {
@@ -113,69 +111,32 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       { ({ columns, setState }) => (
         <div className={styles['components-container']}>
           <div className={styles['components-navigator']}>
-            <div className={styles['component-title']}>组件库</div>
-            <Button className={styles['component-button']} onClick={() => setCollapsed(!collapsed)} type="text">
-              { collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined /> }
-            </Button>
             {
             getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
               <div key={groupIndex}>
                 <div className={styles['component-title']}>{ groupName.replace(/组件$/u, '') }</div>
                 {
                   getComponents(groupName, props.customComponentPanel).map((component, index) => (
-                    <Tooltip title={component.title} key={index} placement="right">
+                    <div
+                      className={styles['component-title-item']}
+                      draggable
+                      onDragStart={() => addComponentToColumn(component, setState)}
+                      onDragEnd={() => setState({ columnToAdd: void 0 })}
+                      onClick={() => {
+                        const columnSchema = initComponentColumnSchema(component);
+                        setState({ columns: [...columns, columnSchema] });
+                      }}
+                    >
                       <Button
-                        draggable
-                        onDragStart={() => addComponentToColumn(component, setState)}
-                        onDragEnd={() => setState({ columnToAdd: void 0 })}
-                        onClick={() => {
-                          const columnSchema = initComponentColumnSchema(component);
-                          setState({ columns: [...columns, columnSchema] });
-                        }}
                         type="text"
                         className={styles['component-button']}
                       >
                         <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
                       </Button>
-                    </Tooltip>
+                      <span className={styles['component-text']}>{ component.title.replace(/组件$/u, '') }</span>
+                    </div>
                   ))
                 }
-              </div>
-            ))
-          }
-          </div>
-          <div
-            className={styles['components-drawer']}
-            style={{
-              transform: collapsed ? 'translateX(-360px)' : void 0,
-              opacity: collapsed ? '0' : void 0,
-            }}
-          >
-            {
-            getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
-              <div key={groupIndex}>
-                <div className={styles['component-title']}>{ groupName }</div>
-                <div className={styles['component-group']}>
-                  {
-                    getComponents(groupName, props.customComponentPanel).map((component, index) => (
-                      <Button
-                        key={index}
-                        type="primary"
-                        size="small"
-                        style={{ height: 32, minWidth: 108 }}
-                        draggable
-                        onDragEnd={() => {
-                          setCollapsed(!collapsed);
-                          setState({ columnToAdd: void 0 });
-                        }}
-                        onDragStart={() => addComponentToColumn(component, setState)}
-                      >
-                        <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
-                        { component.title }
-                      </Button>
-                    ))
-                  }
-                </div>
               </div>
             ))
           }

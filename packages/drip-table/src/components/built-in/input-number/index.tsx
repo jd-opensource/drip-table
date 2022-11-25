@@ -28,6 +28,12 @@ export type DTCInputNumberColumnSchema = DripTableColumnSchema<'input-number', {
   placeholder?: string;
   defaultValue?: number;
   disabled?: boolean;
+  /**
+   * 是否编辑态
+   */
+  isEdit?: boolean;
+  /** 输入框大小 */
+  size?: 'large' | 'middle' | 'small';
 }>;
 
 interface DTCInputNumberState {
@@ -48,6 +54,8 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
       placeholder: { type: 'string' },
       defaultValue: { type: 'string' },
       disabled: { type: 'boolean' },
+      isEdit: { type: 'boolean' },
+      size: { enum: ['large', 'middle', 'small'] },
     },
   };
 
@@ -60,20 +68,32 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
     return indexValue(this.props.data, dataIndex, '');
   }
 
+  private get isEdit() {
+    const { isEdit = true } = this.props.schema.options;
+    return isEdit || false;
+  }
+
   public render() {
     const options = this.props.schema.options;
-    return (
-      <InputNumber
-        min={options.min}
-        max={options.max}
-        step={options.step}
-        style={options.style}
-        bordered={options.bordered}
-        placeholder={options.placeholder}
-        defaultValue={options.defaultValue}
-        value={options.bindValue === false ? void 0 : this.value}
-        disabled={options.disabled}
-      />
-    );
+    if (this.isEdit) {
+      return (
+        <InputNumber
+          min={options.min}
+          max={options.max}
+          step={options.step}
+          style={options.style}
+          bordered={options.bordered}
+          placeholder={options.placeholder}
+          defaultValue={this.value}
+          disabled={options.disabled}
+          size={options.size}
+          onChange={(value) => {
+            if (this.props.preview) { return; }
+            this.props.onChange?.(value);
+          }}
+        />
+      );
+    }
+    return <span>{ this.value }</span>;
   }
 }

@@ -391,6 +391,7 @@
 }
 
 .@{prefixCls} {
+  min-width: 100px;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -403,6 +404,12 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+
+  &-borderless {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 .@{prefixCls}:not(.@{prefixCls}-customize-input) .@{prefixCls}-selector {

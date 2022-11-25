@@ -24,7 +24,7 @@ const dataSource = [
   {
     id: 1,
     name: "商品一",
-    price: 7999,
+    num: 3,
     status: 1,
     description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
     pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
@@ -38,11 +38,13 @@ const Demo = () => {
         title: '数字组件设步数',
         align: 'center',
         hidable: true,
-        dataIndex: 'operate',
+        dataIndex: 'num',
         component: 'input-number',
         options: {
           step: 5,
           min: 0,
+          isEdit: true,
+          bordered: true,
         },
       },
       {
@@ -50,12 +52,14 @@ const Demo = () => {
         title: '数字组件设最大值',
         align: 'center',
         hidable: true,
-        dataIndex: 'operate',
+        dataIndex: 'num',
         component: 'input-number',
         options: {
           step: 1,
           min: 0,
           max: 20,
+          isEdit: true,
+          bordered: true,
         },
       }
     ],
@@ -80,3 +84,7 @@ export default Demo;
 | step | 步数 | string/number | 1 | - | - |
 | min | 最小值 | number | 0 | - | - |
 | max | 最大值 | number | - | - | - |
+| isEdit | 编辑态 | boolean | - | - | - |
+| bordered | 边框 | boolean | - | - | - |
+| disabled | 禁用 | boolean | - | - | - |
+| size | 输入框大小 | string | - | middle | large、middle、small |
