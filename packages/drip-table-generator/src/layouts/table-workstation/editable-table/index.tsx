@@ -223,6 +223,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         columns.splice(columnIndexToDrag, 1);
                         columns.splice(columnIndex, 0, tempColumnInfo);
                         setState({ columns });
+                        setColumnIndexToDrag(-1);
                       }
                     }}
                   >
@@ -325,6 +326,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                       columns.splice(columnIndex, 0, tempColumnInfo);
                       columns.forEach((item, i) => { item.index = i; });
                       setState({ columns });
+                      setColumnIndexToDrag(-1);
                     }
                   }}
                 >
