@@ -1,30 +1,5 @@
 import { DripTableComponentAttrConfig } from '../typing';
-import { basicColumnAttrComponents } from './configs';
-
-const iconOptions = [
-  'DownOutlined',
-  'UpOutlined',
-  'LeftOutlined',
-  'RightOutlined',
-  'CaretUpOutlined',
-  'CaretDownOutlined',
-  'CaretLeftOutlined',
-  'CaretRightOutlined',
-  'UpCircleOutlined',
-  'DownCircleOutlined',
-  'LeftCircleOutlined',
-  'RightCircleOutlined',
-  'VerticalAlignTopOutlined',
-  'VerticalAlignBottomOutlined',
-  'ArrowUpOutlined',
-  'ArrowDownOutlined',
-  'ArrowLeftOutlined',
-  'ArrowRightOutlined',
-  'UpSquareOutlined',
-  'DownSquareOutlined',
-  'LeftSquareOutlined',
-  'RightSquareOutlined',
-].map(key => ({ value: key, label: key, icon: key }));
+import { basicColumnAttrComponents, dataIndexColumnAttrComponents } from './configs';
 
 export default {
   $id: '$display_select',
@@ -37,6 +12,7 @@ export default {
   default: '',
   attrSchema: [
     ...basicColumnAttrComponents('选择器'),
+    ...dataIndexColumnAttrComponents('status'),
     {
       name: 'options.allowClear',
       group: '组件属性',
@@ -52,6 +28,7 @@ export default {
       'ui:type': 'switch',
       'ui:props': {},
       type: 'boolean',
+      default: true,
     },
     {
       name: 'options.showSearch',
@@ -113,21 +90,6 @@ export default {
       default: 'bottomLeft',
     },
     {
-      name: 'options.size',
-      group: '组件属性',
-      'ui:title': '选中模式',
-      'ui:type': 'radio',
-      'ui:props': {
-        options: [
-          { label: '大', value: 'large' },
-          { label: '中', value: 'middle' },
-          { label: '小', value: 'small' },
-        ],
-      },
-      type: 'string',
-      default: 'middle',
-    },
-    {
       name: 'options.placeholder',
       group: '组件属性',
       'ui:title': '暗纹提示文案',
@@ -143,20 +105,6 @@ export default {
         title: '可以直接填写 true/false 或者代码片段，参数为rec',
         trigger: 'hover',
         type: 'icon',
-      },
-    },
-    {
-      name: 'options.suffixIcon',
-      group: '组件属性',
-      'ui:title': '后缀图标',
-      'ui:description': {
-        title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
-        trigger: 'hover',
-        type: 'icon',
-      },
-      'ui:type': 'auto-complete',
-      'ui:props': {
-        options: iconOptions,
       },
     },
     {

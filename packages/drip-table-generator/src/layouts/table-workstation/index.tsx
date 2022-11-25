@@ -43,7 +43,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       className={styles['generator-workstation']}
       style={{
         overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto',
-        width: context.drawerType ? `calc(100% - 65px - ${drawerWidth[context.drawerType]}px)` : void 0,
+        width: context.drawerType ? `calc(100% - 140px - ${drawerWidth[context.drawerType]}px)` : void 0,
       }}
       ref={tableWrapper}
     >

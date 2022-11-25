@@ -230,6 +230,19 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       },
     },
     {
+      key: 'mock_9',
+      title: '数字显示',
+      width: 120,
+      dataIndex: 'num',
+      component: 'input-number',
+      options: {
+        style: { width: 100 },
+        step: 2,
+        isEdit: true,
+        bordered: true,
+      },
+    },
+    {
       key: 'mock_4',
       title: '商品价格',
       width: 150,
