@@ -39,7 +39,7 @@ export default {
     },
     ...basicColumnAttrComponents('日期'),
     ...dataIndexColumnAttrComponents(
-      void 0,
+      'startDate',
       (_1, formData) => true,
       (_1, formData) => true && formData?.dataIndexMode === 'direct',
       (_1, formData) => true && formData?.dataIndexMode === 'nested',

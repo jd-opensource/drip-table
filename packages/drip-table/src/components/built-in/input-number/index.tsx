@@ -18,10 +18,6 @@ export type DTCInputNumberColumnSchema = DripTableColumnSchema<'input-number', {
   min?: number;
   max?: number;
   style?: React.CSSProperties;
-  /**
-   * 值回显强制与数据绑定，默认为true
-   */
-  bindValue?: boolean;
   /** 展示边框，默认为 true */
   bordered?: boolean;
   /** 暗纹提示 */
@@ -41,7 +37,7 @@ interface DTCInputNumberState {
 
 interface DTCInputNumberProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCInputNumberColumnSchema> { }
 
-export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCInputNumberProps<RecordType>, DTCInputNumberState> {
+export default class DTCInputNumber<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCInputNumberProps<RecordType>, DTCInputNumberState> {
   public static componentName: DTCInputNumberColumnSchema['component'] = 'input-number';
   public static schema: SchemaObject = {
     properties: {
@@ -49,7 +45,6 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
       min: { type: 'number' },
       max: { type: 'number' },
       style: { type: 'object' },
-      bindValue: { type: 'boolean' },
       bordered: { type: 'boolean' },
       placeholder: { type: 'string' },
       defaultValue: { type: 'string' },
@@ -87,10 +82,6 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
           defaultValue={this.value}
           disabled={options.disabled}
           size={options.size}
-          onChange={(value) => {
-            if (this.props.preview) { return; }
-            this.props.onChange?.(value);
-          }}
         />
       );
     }

@@ -349,15 +349,17 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}
                       >
-                        <EditableComponents
-                          record={record}
-                          column={column}
-                          driver={props.driver}
-                          customComponents={props.customComponents}
-                          customComponentPanel={props.customComponentPanel}
-                          mockDataSource={props.mockDataSource}
-                          dataFields={props.dataFields}
-                        />
+                        <div onClick={e => e.stopPropagation()}>
+                          <EditableComponents
+                            record={record}
+                            column={column}
+                            driver={props.driver}
+                            customComponents={props.customComponents}
+                            customComponentPanel={props.customComponentPanel}
+                            mockDataSource={props.mockDataSource}
+                            dataFields={props.dataFields}
+                          />
+                        </div>
                       </div>
                     )) }
                   </div>

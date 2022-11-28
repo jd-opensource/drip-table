@@ -12,7 +12,12 @@ export default {
   default: '',
   attrSchema: [
     ...basicColumnAttrComponents('数字'),
-    ...dataIndexColumnAttrComponents('price'),
+    ...dataIndexColumnAttrComponents(
+      'price',
+      (_1, formData) => true,
+      (_1, formData) => true && formData?.dataIndexMode === 'direct',
+      (_1, formData) => true && formData?.dataIndexMode === 'nested',
+    ),
     {
       name: 'options.isEdit',
       group: '组件属性',
@@ -43,21 +48,21 @@ export default {
       name: 'options.step',
       group: '组件属性',
       'ui:title': '步数',
-      'ui:type': 'text',
-      default: '1',
+      'ui:type': 'number',
+      default: 1,
     },
     {
       name: 'options.min',
       group: '组件属性',
       'ui:title': '最小值',
-      'ui:type': 'text',
-      default: '0',
+      'ui:type': 'number',
+      default: 0,
     },
     {
       name: 'options.max',
       group: '组件属性',
       'ui:title': '最大值',
-      'ui:type': 'text',
+      'ui:type': 'number',
     },
     {
       name: 'options.size',
