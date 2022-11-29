@@ -70,21 +70,21 @@ export default class DTCInputNumber<RecordType extends DripTableRecordTypeBase> 
 
   public render() {
     const options = this.props.schema.options;
-    if (this.isEdit) {
-      return (
-        <InputNumber
-          min={options.min}
-          max={options.max}
-          step={options.step}
-          style={options.style}
-          bordered={options.bordered}
-          placeholder={options.placeholder}
-          defaultValue={this.value}
-          disabled={options.disabled}
-          size={options.size}
-        />
-      );
+    if (this.props.preview || !this.isEdit) {
+      return <span>{ this.value }</span>;
     }
-    return <span>{ this.value }</span>;
+    return (
+      <InputNumber
+        min={options.min}
+        max={options.max}
+        step={options.step}
+        style={options.style}
+        bordered={options.bordered}
+        placeholder={options.placeholder}
+        defaultValue={this.value}
+        disabled={options.disabled}
+        size={options.size}
+      />
+    );
   }
 }
