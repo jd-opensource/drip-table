@@ -30,7 +30,8 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     const defaultObject = {};
     (this.props.schema['ui:props']?.items as DTGComponentPropertySchema[])
       .forEach((schema, i) => {
-        defaultObject[schema.name] = schema.default;
+        const visible = this.visible(schema, i, (this.props.value || []).length);
+        if (visible) { defaultObject[schema.name] = schema.default; }
       });
     return defaultObject;
   }

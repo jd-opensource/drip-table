@@ -41,11 +41,12 @@ export const get = (data: unknown, indexes: string | number | (string | number)[
 export const filterAttributes = <T>(record: T, excludeAttrs: string | string[]) => {
   if (typeof excludeAttrs === 'string') { excludeAttrs = [excludeAttrs]; }
   const finalObject = { ...record };
+  const props = Object.fromEntries(excludeAttrs.map(item => [item, item]));
   excludeAttrs.forEach((key) => {
     finalObject[key] = void 0;
     delete finalObject[key];
   });
-  return { ...finalObject } as Omit<T, keyof typeof excludeAttrs>;
+  return { ...finalObject } as Omit<T, keyof typeof props>;
 };
 
 export const filterAttributesByRegExp = <T extends Record<string, unknown>>(record: T, exp: RegExp) => {

@@ -10,17 +10,22 @@ import DripTable, { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRec
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
+import { filterAttributes } from '@/utils';
 import { GeneratorContext } from '@/context';
+import { DripTableGeneratorProps } from '@/typing';
 
-const PreviewTable = () => {
+const PreviewTable = <
+RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
+ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const { columns, globalConfigs, previewDataSource } = React.useContext(GeneratorContext);
   return (
     <DripTable<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>
-      driver={(DripTableDriverAntDesign)}
+      driver={DripTableDriverAntDesign}
       schema={{ ...globalConfigs, columns: columns.map(item => ({ ...item, index: void 0 })) }}
       dataSource={previewDataSource}
-      // TODO
       ajv={{ additionalProperties: true }}
+      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv'])}
     />
   );
 };

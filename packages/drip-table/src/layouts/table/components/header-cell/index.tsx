@@ -49,8 +49,8 @@ const HeaderCell = <
   if (!additionalProps) {
     return children;
   }
-  const header = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title.header;
-  const footer = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title.footer;
+  const header = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.header;
+  const footer = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.footer;
   const { columnSchema, onFilterChange } = additionalProps;
   if ((!onFilterChange || !columnSchema.filters?.length) && !header && !footer) {
     return children;

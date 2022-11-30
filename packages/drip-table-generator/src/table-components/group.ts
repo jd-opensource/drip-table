@@ -24,6 +24,7 @@ export default {
         title: '删除时当总空间格数小于子组件个数时，系统会为了保持同步主动舍去溢出的组件！',
       },
       'ui:props': {
+        style: { width: '100%' },
         placeholder: '请输入每行列数，以逗号隔开',
         mode: 'tags',
         tokenSeparators: ['.', ',', '，'],
@@ -53,6 +54,7 @@ export default {
       'ui:title': '栅格间隔',
       'ui:type': 'select',
       'ui:props': {
+        style: { width: '100%' },
         placeholder: '请输入栅格间隔，以逗号隔开',
         mode: 'tags',
         tokenSeparators: ['.', ',', '，'],

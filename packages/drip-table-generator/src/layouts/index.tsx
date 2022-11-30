@@ -31,17 +31,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           dataFields={props.dataFields}
         />
       </div>
-      <TableWorkStation
-        customComponentPanel={props.customComponentPanel}
-        customComponents={props.customComponents}
-        driver={props.driver}
-        slots={props.slots}
-        mockDataSource={props.mockDataSource}
-        dataFields={props.dataFields}
-      />
-      <AttributesLayout
-        {...props}
-      />
+      <TableWorkStation {...props} />
+      <AttributesLayout {...props} />
     </div>
   </div>
   );
