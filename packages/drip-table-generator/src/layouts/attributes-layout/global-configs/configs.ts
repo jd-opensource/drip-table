@@ -443,6 +443,15 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     default: false,
   },
   {
+    name: 'editable',
+    group: '全局属性',
+    'ui:title': '允许编辑表格',
+    'ui:type': 'switch',
+    'ui:props': {},
+    type: 'boolean',
+    default: false,
+  },
+  {
     name: 'virtual',
     group: '全局属性',
     'ui:title': '进入虚拟列表',

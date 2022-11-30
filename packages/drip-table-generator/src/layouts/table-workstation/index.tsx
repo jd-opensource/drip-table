@@ -20,22 +20,10 @@ import PreviewTable from './table-preview';
 
 import styles from './index.module.less';
 
-interface TableWorkStationProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
-> {
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
-  customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
-  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
-  slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
-  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
-  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
-}
-
 const TableWorkStation = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: TableWorkStationProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const tableWrapper = React.useRef<HTMLDivElement>(null);
   return (
@@ -68,7 +56,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           </React.Fragment>
         )
         : (
-          <PreviewTable />
+          <PreviewTable {...props} />
         ) }
     </div>
   );

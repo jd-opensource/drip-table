@@ -67,6 +67,19 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     getDataSource: () => generatorContext.previewDataSource,
   }));
 
+  React.useEffect(() => {
+    const schema: DripTableSchema<ExtraOptions['CustomColumnSchema']> = {
+      ...generatorContext.globalConfigs,
+      columns: generatorContext.columns.map((item) => {
+        const schemaItem = { ...item, index: void 0, dataIndexMode: void 0 };
+        delete schemaItem.index;
+        delete schemaItem.dataIndexMode;
+        return schemaItem;
+      }),
+    };
+    props.onSchemaChange?.(JSON.parse(JSON.stringify(schema)));
+  }, [generatorContext.columns, generatorContext.globalConfigs]);
+
   message.config({ maxCount: 1 });
 
   return (

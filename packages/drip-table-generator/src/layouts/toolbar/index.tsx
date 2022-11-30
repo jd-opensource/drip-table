@@ -55,7 +55,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
     ...context.globalConfigs,
-    columns: context.columns.map(item => ({ ...item, index: void 0 })),
+    columns: context.columns.map(item => ({ ...item, index: void 0, dataIndexMode: void 0 })),
   });
 
   /**

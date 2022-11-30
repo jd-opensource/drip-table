@@ -86,6 +86,7 @@ export interface DripTableDriver {
     };
     Popover: DripTableReactComponent<{
       placement?: 'top';
+      trigger?: 'click' | 'hover' | 'focus';
       title?: string;
       content?: React.ReactNode;
     }>;

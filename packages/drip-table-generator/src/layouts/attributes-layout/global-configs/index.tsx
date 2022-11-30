@@ -40,10 +40,18 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   /**
    * 将全局配置转换成FormData
    * @param {GlobalSchema} globalConfigs 全局配置
+   * @param {Record<string, unknown>} defaultData 默认值
    * @returns {Record<string, unknown>} 表单数据
    */
-  const decodeGlobalConfigs = (globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs']) => {
-    const formData: Record<string, unknown> = { ...filterAttributes(globalConfigs, 'header') };
+  const decodeGlobalConfigs = (
+    globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
+    defaultData?: Record<string, unknown>,
+  ) => {
+    const formData: Record<string, unknown> = {
+      ...defaultData,
+      ...filterAttributes(globalConfigs, ['header', 'footer', 'pagination', 'ext']),
+    };
+
     if (typeof globalConfigs?.header === 'object') {
       formData.header = true;
       const headerElements = globalConfigs?.header?.elements || [];
@@ -79,6 +87,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       formData.pagination = true;
       Object.keys(globalConfigs?.pagination || {}).forEach((key) => {
         formData[`pagination.${key}`] = globalConfigs?.pagination?.[key];
+      });
+    }
+    if (typeof globalConfigs?.ext === 'object') {
+      Object.keys(globalConfigs?.ext || {}).forEach((key) => {
+        formData[`ext.${key}`] = globalConfigs?.ext?.[key];
       });
     }
     formData.scrollX = globalConfigs?.scroll?.x;
@@ -140,8 +153,14 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       return { ...element };
     };
+    const ext: Record<string, unknown> = {};
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith('ext.')) {
+        ext[key.replace('ext.', '')] = formData[key];
+      }
+    });
     return {
-      ...filterAttributesByRegExp(formData, /^(footer|header|pagination)\./u),
+      ...filterAttributesByRegExp(formData, /^(footer|header|pagination|ext)\./u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -174,6 +193,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           showTotal: formData['pagination.showTotal'] as string,
         }
         : false,
+      ext: Object.keys(ext).length > 0 ? { ...ext } : void 0,
     };
   };
 

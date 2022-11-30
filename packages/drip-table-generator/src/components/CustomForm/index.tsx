@@ -29,7 +29,7 @@ interface Props<T> {
   primaryKey?: string;
   extendKeys?: string[];
   theme?: DripTableDriver;
-  decodeData?: (data?: T) => Record<string, unknown>;
+  decodeData?: (data?: T, defaultData?: Record<string, unknown>) => Record<string, unknown>;
   encodeData: (formData: Record<string, unknown>) => T;
   onChange?: (data?: T) => void;
 }
@@ -69,7 +69,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     let obj: { [key: string]: unknown } = {};
     // 注入 defaultValue
     this.props.configs.forEach((item) => {
-      if (typeof item.default !== 'undefined') { obj[item.name] = item.default; }
+      if (typeof item.default !== 'undefined' && this.visible(item)) { obj[item.name] = item.default; }
     });
     if (material) {
       Object.keys(material)
@@ -81,7 +81,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
             .forEach((key) => { obj[`${extKey}.${key}`] = (material[extKey] || {})[key]; }));
       }
       if (this.props.decodeData) {
-        obj = { ...obj, ...this.props.decodeData(material) };
+        obj = { ...obj, ...this.props.decodeData(material, obj) };
       }
     }
     return obj;

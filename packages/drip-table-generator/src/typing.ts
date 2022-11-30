@@ -157,4 +157,5 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     [componentType: string]: DTGComponentPropertySchema[];
   };
   onExportSchema?: (schema: DripTableSchema<ExtraOptions['CustomColumnSchema']>) => void;
+  onSchemaChange?: (schema: DripTableSchema<ExtraOptions['CustomColumnSchema']>) => void;
 }

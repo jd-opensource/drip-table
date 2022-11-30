@@ -222,6 +222,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/functions/title.md',
           '/drip-table-generator/functions/header.md',
           '/drip-table-generator/functions/data-source.md',
+          '/drip-table-generator/functions/table-props.md',
         ],
       },
       {

@@ -15,6 +15,7 @@ import { DripTableComponentProps } from '../component';
 
 export type DTCImageColumnSchema = DripTableColumnSchema<'image', {
   popover?: boolean;
+  trigger?: 'click' | 'hover';
   preview?: boolean;
   imageWidth?: number;
   imageHeight?: number;
@@ -31,6 +32,7 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     properties: {
       popover: { type: 'boolean' },
       preview: { type: 'boolean' },
+      trigger: { enum: ['click', 'hover'] },
       imageWidth: { typeof: ['string', 'number'] },
       imageHeight: { typeof: ['string', 'number'] },
       imagePlaceholder: { type: 'string' },
@@ -46,7 +48,7 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
   }
 
   public render() {
-    const { popover, imageWidth, imageHeight, imagePlaceholder: noDataUrl, preview } = this.props.schema.options;
+    const { popover, imageWidth, imageHeight, imagePlaceholder: noDataUrl, preview, trigger } = this.props.schema.options;
     const Popover = this.props.driver.components.Popover;
     const Image = this.props.driver.components.Image;
     const imgFragment = (
@@ -60,7 +62,7 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     );
     return popover && !this.props.preview
       ? (
-        <Popover content={(<img src={this.value} />)}>
+        <Popover trigger={trigger} content={(<img src={this.value} />)}>
           { imgFragment }
         </Popover>
       )
