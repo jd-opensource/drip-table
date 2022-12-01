@@ -292,6 +292,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         returnColumns.unshift({
           align: rowSelectionDisplayControl.align,
           width: 50,
+          fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
           title: (
             <div className={styles['jfe-drip-table-column-title-selection']}>
               <Checkbox
@@ -336,6 +337,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         returnColumns.unshift({
           align: 'center',
           width: 50,
+          fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
           render: (_, record, index) => (
             <div
               className={classNames(styles['jfe-drip-table-column-draggable-row'], {
