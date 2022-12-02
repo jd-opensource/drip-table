@@ -108,6 +108,14 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 - For more details of `drip-table`, see [README](./packages/drip-table/README.md);
 - For more details of `drip-table-generator`, see [README](./packages/drip-table-generator/README.md);
 
+## NPM Publish
+
+If you changed `drip-table` source code，you should update [package.json](packages/drip-table/package.json) and  [changelog](docs/drip-table/changelog.md) ， enter the [ drip-table catalogue](packages/drip-table) and execute `npm publish`。
+
+If you changed `drip-table-generator` source code，you should update [package.json](packages/drip-table-generator/package.json) and  [changelog](docs/drip-table-generator/changelog.md) ， enter the [ drip-table-generator catalogue](packages/drip-table-generator) and execute `npm publish`。
+
+> If you don't have permission to publish npm package, go to the [Official Wechat group] (./Contact. md) and contact the group owner to add permission, ` npm owner add<username><package name>`
+
 ## Release official website
 
 ```
