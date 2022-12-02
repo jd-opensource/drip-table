@@ -19,6 +19,9 @@ module.exports = {
     ]],
     'invalid-subject-chars': [2, 'always'],
   },
+  ignores: [
+    message => message.startsWith('Publish\n'),
+  ],
   plugins: [
     {
       rules: {
