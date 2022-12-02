@@ -1,6 +1,7 @@
 {
 	"name": "drip-table-driver-antd",
 	"version": "1.0.1",
+  "private": true,
   "description": "A drip-table driver based on Ant Design.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
