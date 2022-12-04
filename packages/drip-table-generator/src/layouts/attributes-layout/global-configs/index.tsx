@@ -49,7 +49,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   ) => {
     const formData: Record<string, unknown> = {
       ...defaultData,
-      ...filterAttributes(globalConfigs, ['header', 'footer', 'pagination', 'ext']),
+      ...filterAttributes(globalConfigs, ['header', 'footer', 'pagination', 'ext', 'innerStyle']),
     };
 
     if (typeof globalConfigs?.header === 'object') {
@@ -92,6 +92,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     if (typeof globalConfigs?.ext === 'object') {
       Object.keys(globalConfigs?.ext || {}).forEach((key) => {
         formData[`ext.${key}`] = globalConfigs?.ext?.[key];
+      });
+    }
+    if (typeof globalConfigs?.innerStyle === 'object') {
+      Object.keys(globalConfigs?.innerStyle || {}).forEach((key) => {
+        formData[`innerStyle.${key}`] = globalConfigs?.innerStyle?.[key];
       });
     }
     formData.scrollX = globalConfigs?.scroll?.x;
@@ -153,6 +158,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       return { ...element };
     };
+    const innerStyle: React.CSSProperties = {};
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith('innerStyle.')) {
+        innerStyle[key.replace('innerStyle.', '')] = formData[key];
+      }
+    });
     const ext: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('ext.')) {
@@ -160,7 +171,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^(footer|header|pagination|ext)\./u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle)\.|scroll)/u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -171,6 +182,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         x: formData.scrollX as number,
         y: formData.scrollY as number,
       },
+      innerStyle,
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
