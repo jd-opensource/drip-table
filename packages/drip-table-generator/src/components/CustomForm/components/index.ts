@@ -21,6 +21,7 @@ import InputNumberComponent from './number';
 import RadioComponent from './radio';
 import RichTextEditorComponent from './rich-text-editor';
 import SelectComponent from './select';
+import StyleNumbersComponent from './style-numbers';
 import SwitchComponent from './switch';
 import TextComponent from './text';
 
@@ -38,6 +39,7 @@ export default {
   [ArrayComponent.componentName]: ArrayComponent,
   [ColorPicker.componentName]: ColorPicker,
   [RichTextEditorComponent.componentName]: RichTextEditorComponent,
+  [StyleNumbersComponent.componentName]: StyleNumbersComponent,
 };
 
 export interface CustomComponentProps {

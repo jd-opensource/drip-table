@@ -190,6 +190,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   return (
     <GeneratorContext.Consumer>
       { ({ columns, columnToAdd, currentColumn, globalConfigs, previewDataSource, setState }) => {
+        const editColumnsWidth = columns.reduce((p, v) => p + (Number(getWidth(v.width)) || MIN_WIDTH), 0) + 120;
+        const innerStyleMinWidth = Number(getWidth(globalConfigs.innerStyle?.minWidth));
         if (columns.length <= 0) {
           return (
             <BlankPanel
@@ -246,6 +248,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 [styles.sticky]: globalConfigs.sticky || globalConfigs.scroll?.y,
               })}
               style={{
+                ...globalConfigs.innerStyle,
+                width: void 0,
+                height: void 0,
+                minWidth: globalConfigs.innerStyle?.minWidth ? Math.max(editColumnsWidth, innerStyleMinWidth) : void 0,
                 maxHeight: globalConfigs.sticky ? globalConfigs.scroll?.y || `calc(100% - 42px${headerHeight[globalConfigs.size || 'default']})` : globalConfigs.scroll?.y,
               }}
               ref={table}
