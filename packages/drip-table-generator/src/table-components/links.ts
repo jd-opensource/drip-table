@@ -65,6 +65,19 @@ export default {
       type: 'string',
     },
     {
+      name: 'options.lineHeight',
+      group: '组件属性',
+      'ui:title': '行高',
+      'ui:description': {
+        title: '默认单位为“px”，支持手动指定单位后缀。',
+        type: 'icon',
+        trigger: 'hover',
+      },
+      'ui:type': 'text',
+      'ui:props': { style: { width: '100%' } },
+      type: 'string',
+    },
+    {
       name: 'options.label',
       group: '组件属性',
       'ui:title': '链接文案',

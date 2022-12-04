@@ -18,6 +18,7 @@ import styles from './index.module.less';
 
 export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   mode?: 'single' | 'multiple';
+  lineHeight?: string;
   name?: string;
   label?: string;
   href?: string;
@@ -63,6 +64,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     properties: {
       mode: { enum: ['single', 'multiple'] },
       name: { type: 'string' },
+      lineHeight: { type: 'string' },
       label: { type: 'string' },
       href: { type: 'string' },
       event: { type: 'string' },
@@ -192,6 +194,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               <Menu.Item key={config.name || index} disabled={this.finalizeDisabled(config.disabled)}>
                 <a
                   href={finalizeString('pattern', config.href || '', this.props.data)}
+                  onClick={this.props.preview ? e => e.preventDefault() : void 0}
                   target={config.target}
                 >
                   { config.label }
@@ -221,6 +224,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
           <div>
             <a
               className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
+              style={{ lineHeight: options.lineHeight }}
               onClick={() => {
                 if (this.props.preview || this.finalizeDisabled(options.disabled)) {
                   return;
@@ -237,7 +241,15 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       }
       return (
         <div>
-          <a href={finalizeString('pattern', options.href || '', this.props.data)} target={options.target}>{ options.label }</a>
+          <a
+            href={finalizeString('pattern', options.href || '', this.props.data)}
+            target={options.target}
+            onClick={this.props.preview ? e => e.preventDefault() : void 0}
+            style={{ lineHeight: options.lineHeight }}
+          >
+            { options.label }
+
+          </a>
           { this.renderToolTip() }
         </div>
       );
@@ -252,7 +264,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               return (
                 <div style={{ display: 'flex' }}>
                   <a
-                    style={{ marginRight: '5px' }}
+                    style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                     key={config.name || index}
                     onClick={() => {
                       if (this.props.preview) {
@@ -272,12 +284,13 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               <div style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
                 <a
                   className={disabled ? styles['link-disabled'] : void 0}
-                  style={{ marginRight: '5px' }}
+                  style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                   key={config.name || index}
                   href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
                   target={disabled ? void 0 : config.target}
-                  onClick={() => {
+                  onClick={(e) => {
                     if (this.props.preview || disabled) {
+                      e.preventDefault();
                       return;
                     }
                     this.props.fireEvent({ type: 'drip-link-click', payload: event as string });
