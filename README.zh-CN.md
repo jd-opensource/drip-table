@@ -187,6 +187,7 @@
 ## 开发交流
 
 [官方交流微信群](./Contact.md)
+![Drip table 开发交流群1](https://storage.360buyimg.com/icepublic/drip-table/driptable_contact_me_qr.png)
 
 ## License
 
