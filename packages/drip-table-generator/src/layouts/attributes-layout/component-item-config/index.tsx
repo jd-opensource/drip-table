@@ -133,7 +133,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       { ({ columns, currentColumn, currentColumnPath, setState }) => {
         const currentColumnItem = getColumnItemByPath(currentColumn, currentColumnPath || []);
         if (!currentColumnItem || !currentColumn) {
-          return errorBoundary('请点击选择要编辑的组件');
+          return errorBoundary('请选择要载入的组件');
         }
         const columnConfig = getColumnConfigs(currentColumnItem?.component);
         return (

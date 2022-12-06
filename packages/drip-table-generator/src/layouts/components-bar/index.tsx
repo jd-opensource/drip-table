@@ -114,10 +114,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             {
             getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
               <div key={groupIndex}>
-                <div className={styles['component-title']}>{ groupName.replace(/组件$/u, '') }</div>
+                <div className={styles['component-title']}>{ groupName.length > 6 ? groupName.replace(/组件$/u, '') : groupName }</div>
                 {
                   getComponents(groupName, props.customComponentPanel).map((component, index) => (
-                    <div
+                    <Button
+                      type="text"
                       className={styles['component-title-item']}
                       draggable
                       onDragStart={() => addComponentToColumn(component, setState)}
@@ -127,14 +128,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         setState({ columns: [...columns, columnSchema] });
                       }}
                     >
-                      <Button
-                        type="text"
-                        className={styles['component-button']}
-                      >
-                        <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
-                      </Button>
-                      <span className={styles['component-text']}>{ component.title.replace(/组件$/u, '') }</span>
-                    </div>
+                      <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
+                      <span className={styles['component-text']}>{ component.title.length > 5 ? component.title.replace(/组件$/u, '') : component.title }</span>
+                    </Button>
                   ))
                 }
               </div>

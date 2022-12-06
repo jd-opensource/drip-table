@@ -15,6 +15,7 @@
   svg {
     width: 18px;
     height: 18px;
+    margin: 3px 0;
   }
 }
 
@@ -30,7 +31,6 @@
   border-right: 1px solid rgb(~"0 0 0 / 15%");
   z-index: 2;
   height: 100%;
-  overflow-y: scroll;
 }
 
 .components-navigator {
@@ -38,16 +38,10 @@
   position: relative;
   background: #ffffff;
   padding: 8px;
-  width: 64px;
 
   & .component-button {
     width: 36px;
     padding: 4px;
-
-    &:hover {
-      color: var(--drip-table-primary-color);
-      fill: var(--drip-table-primary-color);
-    }
   }
 }
 
@@ -71,6 +65,7 @@
 
     & button {
       margin: 4px 0;
+      border: 1px solid transparent;
     }
   }
 
@@ -80,7 +75,7 @@
     width: 24px;
 
     svg {
-      margin-top: 2px;
+      margin: 3px 0;
     }
   }
 }
@@ -95,5 +90,18 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    padding: 2px 2px 2px 8px;
+    width: 100%;
+    margin: 2px;
+
+    &:hover {
+      border-color: var(--drip-table-border-color);
+      fill: var(--drip-table-primary-color);
+      color: var(--drip-table-primary-color);
+
+      .component-text {
+        color: var(--drip-table-primary-color);
+      }
+    }
   }
 }

@@ -51,6 +51,19 @@ const headerHeight = {
   large: ' - 59px',
 };
 
+const alignItems = {
+  top: 'flex-start',
+  middle: 'center',
+  bottom: 'flex-end',
+  stretch: 'stretch',
+};
+
+const justifyContent = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
 const EditableTable = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
@@ -111,7 +124,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       let maxHeight = 0;
       columnsDOM.forEach((dom) => {
         const index = context.globalConfigs.sticky ? 0 : 1;
-        const cell = (dom.childNodes[index]?.childNodes[0]?.firstChild as HTMLDivElement) || null;
+        const cell = (dom.childNodes[index]?.childNodes[0]?.firstChild?.firstChild as HTMLDivElement) || null;
         const delta = sizePadding[context.globalConfigs.size || 'default'];
         const cellNodeHeight = ((cell?.offsetHeight || 0) + delta * 2 + 2) || 0;
         if (cellNodeHeight >= maxHeight) {
@@ -357,7 +370,14 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                           backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}
                       >
-                        <div onClick={e => e.stopPropagation()}>
+                        <div
+                          className={styles['component-container']}
+                          style={{
+                            alignItems: alignItems[column.verticalAlign || 'top'],
+                            justifyContent: justifyContent[column.align || 'left'],
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
                           <EditableComponents
                             record={record}
                             column={column}

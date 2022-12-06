@@ -35,7 +35,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
   {
     name: 'width',
-    group: '组件属性',
+    group: '样式配置',
     'ui:title': '表格列宽',
     'ui:type': 'text',
     'ui:description': {
@@ -48,7 +48,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   {
     name: 'align',
     group: '样式配置',
-    'ui:title': '对齐方式',
+    'ui:title': '水平对齐方式',
     'ui:type': 'radio',
     'ui:props': {
       mode: 'button',
@@ -61,7 +61,26 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
       ],
     },
     type: 'string',
-    default: 'center',
+    default: 'left',
+  },
+  {
+    name: 'verticalAlign',
+    group: '样式配置',
+    'ui:title': '垂直对齐方式',
+    'ui:type': 'radio',
+    'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
+      size: 'small',
+      options: [
+        { label: '顶部', value: 'top' },
+        { label: '居中', value: 'middle' },
+        { label: '底部', value: 'bottom' },
+        { label: '拉伸', value: 'stretch' },
+      ],
+    },
+    type: 'string',
+    default: 'top',
   },
   {
     name: 'hidable',

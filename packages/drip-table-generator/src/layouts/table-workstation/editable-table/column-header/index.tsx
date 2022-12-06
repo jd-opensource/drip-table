@@ -32,6 +32,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 const ColumnHeader = <
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: ColumnHeaderProps<ExtraOptions>) => {
+  const context = React.useContext(GeneratorContext);
   const columnActions = (
     columnIndex: number,
     columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
@@ -75,9 +76,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           okButtonProps: { type: 'primary', danger: true },
           cancelText: '取消',
           onOk: () => {
+            const isCurrentColumn = context.currentColumn?.key === columns[columnIndex]?.key;
+            const isAttributePanelOpen = context.drawerType === 'column' && isCurrentColumn;
             props.onDelete(columnIndex);
             columns.splice(columnIndex, 1);
-            setState({ columns: [...columns] });
+            setState({
+              columns: [...columns],
+              currentColumn: isCurrentColumn ? void 0 : context.currentColumn,
+              drawerType: isAttributePanelOpen ? void 0 : context.drawerType,
+            });
           },
         });
       }}
