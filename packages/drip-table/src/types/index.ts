@@ -488,6 +488,7 @@ export interface DripTableProps<
       slotType: string;
       driver: DripTableDriver;
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      ext: ExtraOptions['CustomComponentExtraData'];
       dataSource: readonly RecordType[];
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
