@@ -25,6 +25,7 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 > {
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
+  ext: ExtraOptions['CustomComponentExtraData'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
 }
 
@@ -88,6 +89,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             className={classNames(styles['generic-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
             slotType={config.slot}
             driver={props.driver}
+            ext={props.ext}
             schema={{ ...globalConfigs, columns: context.columns.map(item => ({ ...filterAttributes(item, 'index') })) } as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
             dataSource={context.previewDataSource as DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[] || []}
             onSearch={() => void 0}
