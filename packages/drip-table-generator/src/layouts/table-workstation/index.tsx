@@ -38,7 +38,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       { context.mode === 'edit'
         ? (
           <React.Fragment>
-            <EditableTableHeader driver={props.driver} slots={props.slots} />
+            <EditableTableHeader driver={props.driver} slots={props.slots} ext={props.ext} />
             <EditableTable
               customComponentPanel={props.customComponentPanel}
               customComponents={props.customComponents}
@@ -52,7 +52,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 }, 100);
               }}
             />
-            <EditableTableFooter driver={props.driver} slots={props.slots} />
+            <EditableTableFooter driver={props.driver} slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
         : (

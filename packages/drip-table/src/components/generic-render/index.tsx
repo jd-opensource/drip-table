@@ -290,6 +290,7 @@ const GenericRender = <
             slotType={config.slot}
             driver={tableProps.driver}
             schema={tableProps.schema}
+            ext={tableProps.ext}
             dataSource={tableProps.dataSource}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
           />
