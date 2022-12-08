@@ -179,12 +179,26 @@ export interface DripTableSchema<
    * 内部表格组件样式
    */
   innerStyle?: React.CSSProperties;
+  /** 表格头部样式，注意：这是表格标题栏所在头部 (<thead>) 而不是 drip-table 自定义的头部 */
+  headerStyle?: React.CSSProperties;
+  /** 表头标题样式 (<th>) */
+  headerCellStyle?: React.CSSProperties;
+  /** 行样式-行间距 */
+  rowGap?: number;
+  /** 行样式-圆角半径 */
+  rowRadius?: number;
+  /** 行样式 */
+  rowStyle?: React.CSSProperties;
+  /** 行鼠标悬浮样式 */
+  rowHoverStyle?: React.CSSProperties;
+  /** 单元格样式 */
+  tableCellStyle?: React.CSSProperties;
   /**
    * 是否展示表格边框
    */
   bordered?: boolean;
   /**
-   * 是否显示表头
+   * 是否显示表头，注意：这是表格标题栏所在头部 (<thead>) 而不是 drip-table 自定义的头部
    */
   showHeader?: boolean;
   /**

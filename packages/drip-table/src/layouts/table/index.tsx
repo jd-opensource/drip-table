@@ -27,6 +27,7 @@ import {
 } from '@/types';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor } from '@/utils/sandbox';
+import { translateStyleToClass } from '@/utils/styles';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import GenericRender from '@/components/generic-render';
@@ -255,6 +256,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
   const { tableProps, tableInfo, tableState, setTableState } = props;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
+
+  const tableContainer = React.useRef<HTMLDivElement>(null);
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
   const [hoverRowKey, setHoverRowKey] = React.useState<React.Key | undefined>(void 0);
@@ -647,6 +650,79 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   React.useEffect(() => resetVirtualGrid, [rcTableWidth]);
 
+  React.useEffect(() => {
+    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header', tableProps.schema.headerStyle || {});
+    const styleDom = document.querySelector('#table-header-style');
+    if (styleDom) {
+      styleDom.innerHTML = customHeaderClass;
+    } else {
+      document.head.innerHTML += `<style id="table-header-style" type="text/css">${customHeaderClass}</style>`;
+    }
+  }, [tableProps.schema.headerStyle]);
+
+  React.useEffect(() => {
+    const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
+    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th`, tableProps.schema.headerCellStyle || {});
+    const styleDom = document.querySelector('#table-header-cell-style');
+    if (styleDom) {
+      styleDom.innerHTML = customHeaderItemClass;
+    } else {
+      document.head.innerHTML += `<style id="table-header-cell-style" type="text/css">${customHeaderItemClass}</style>`;
+    }
+  }, [tableProps.schema.headerCellStyle]);
+
+  React.useEffect(() => {
+    const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
+    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td`, tableProps.schema.tableCellStyle || {});
+    const styleDom = document.querySelector('#table-cell-style');
+    if (styleDom) {
+      styleDom.innerHTML = tableCellClass;
+    } else {
+      document.head.innerHTML += `<style id="table-cell-style" type="text/css">${tableCellClass}</style>`;
+    }
+  }, [tableProps.schema.tableCellStyle]);
+
+  React.useEffect(() => {
+    const rowHoverClass = translateStyleToClass('.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr.jfe-drip-table-row:hover > td, .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover', tableProps.schema.rowHoverStyle || {});
+    const styleDom = document.querySelector('#table-row-hover-style');
+    if (styleDom) {
+      styleDom.innerHTML = rowHoverClass;
+    } else {
+      document.head.innerHTML += `<style id="table-row-hover-style" type="text/css">${rowHoverClass}</style>`;
+    }
+  }, [tableProps.schema.rowHoverStyle]);
+
+  React.useEffect(() => {
+    const tbody = tableContainer.current?.querySelector<HTMLTableRowElement>('.jfe-drip-table-body tbody');
+    if (tbody) {
+      tbody.childNodes.forEach(item => ((item as HTMLTableCellElement).tagName === 'DIV' ? item.remove() : ''));
+    }
+    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('.jfe-drip-table-body tbody > tr.jfe-drip-table-row');
+    if (tableProps.schema.rowGap) {
+      setTimeout(() => {
+        rows?.forEach((row) => {
+          if (row.nextSibling && row.nextSibling.nodeName === 'TR') {
+            const node = document.createElement('div');
+            node.style.height = `${tableProps.schema.rowGap}px`;
+            row.parentElement?.insertBefore(node, row.nextSibling);
+          }
+        });
+      }, 20);
+    }
+  }, [dataSource, tableState.pagination.current, tableState.pagination.pageSize, tableProps.schema.rowGap]);
+
+  React.useEffect(() => {
+    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('.jfe-drip-table-body tbody > tr.jfe-drip-table-row');
+    if (tableProps.schema.rowRadius) {
+      setTimeout(() => {
+        rows?.forEach((row) => {
+          (row.firstChild as HTMLTableCellElement).style.borderRadius = `${tableProps.schema.rowRadius}px 0 0 ${tableProps.schema.rowRadius}px`;
+          (row.lastChild as HTMLTableCellElement).style.borderRadius = `0 ${tableProps.schema.rowRadius}px ${tableProps.schema.rowRadius}px 0`;
+        });
+      }, 20);
+    }
+  }, [dataSource, tableState.pagination.current, tableState.pagination.pageSize, tableProps.schema.rowRadius]);
+
   const paginationPosition = React.useMemo(
     () => {
       const pagination = tableInfo.schema.pagination;
@@ -951,7 +1027,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
       <ResizeObserver onResize={rcTableOnResize}>
-        <div className={styles['jfe-drip-table-resize-observer']}>
+        <div className={styles['jfe-drip-table-resize-observer']} ref={tableContainer}>
           <RcTable<RcTableRecordType<RecordType>>
             prefixCls="jfe-drip-table"
             className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {

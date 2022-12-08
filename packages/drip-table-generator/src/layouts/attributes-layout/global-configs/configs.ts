@@ -397,7 +397,7 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   },
 ];
 
-const StyleAttrConfigs: (prefix: string, group: string) => DTGComponentPropertySchema[] = (prefix, group) => [
+const StyleAttrConfigs = (prefix: string, group: string, filterStyles?: string[]) => [
   {
     name: `${prefix}.width`,
     group,
@@ -535,7 +535,7 @@ const StyleAttrConfigs: (prefix: string, group: string) => DTGComponentPropertyS
     },
     'ui:props': {
       count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
     },
     type: 'string',
     default: '',
@@ -552,7 +552,7 @@ const StyleAttrConfigs: (prefix: string, group: string) => DTGComponentPropertyS
     },
     'ui:props': {
       count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
     },
     type: 'string',
     default: '',
@@ -569,12 +569,30 @@ const StyleAttrConfigs: (prefix: string, group: string) => DTGComponentPropertyS
     },
     'ui:props': {
       count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
     },
     type: 'string',
     default: '',
   },
-];
+  {
+    name: `${prefix}.boxShadow`,
+    group,
+    'ui:title': '阴影',
+    'ui:type': 'box-shadow',
+    'ui:description': {
+      title: '用于在元素的框架上添加阴影效果，该属性可设置的值包括阴影的 X轴偏移量、Y轴偏移量、模糊半径、扩散半径和颜色',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    'ui:props': {
+      defaultColor: '#ffffff',
+      count: 4,
+      dimensions: ['px', 'cm', 'em'],
+    },
+    type: 'string',
+    default: '',
+  },
+].filter(item => (filterStyles ? filterStyles.includes(item.name.replace(`${prefix}.`, '')) : item)) as DTGComponentPropertySchema[];
 
 export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
@@ -689,4 +707,25 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     type: 'number',
   },
   ...StyleAttrConfigs('innerStyle', '全局样式'),
+  ...StyleAttrConfigs('headerStyle', '表头样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
+  ...StyleAttrConfigs('headerCellStyle', '列头样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
+  {
+    name: 'rowGap',
+    group: '行样式',
+    'ui:title': '行间距',
+    'ui:type': 'number',
+    'ui:props': {},
+    type: 'number',
+  },
+  {
+    name: 'rowRadius',
+    group: '行样式',
+    'ui:title': '圆角半径',
+    'ui:type': 'number',
+    'ui:props': {},
+    type: 'number',
+  },
+  ...StyleAttrConfigs('rowStyle', '行样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
+  ...StyleAttrConfigs('rowHoverStyle', '行样式', ['backgroundColor']),
+  ...StyleAttrConfigs('tableCellStyle', '单元格样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
 ];

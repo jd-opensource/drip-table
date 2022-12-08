@@ -5,8 +5,11 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import 'rc-color-picker/assets/index.css';
+
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Select } from 'antd';
+import ColorPicker from 'rc-color-picker';
 import React from 'react';
 
 import { DTGComponentBaseProperty } from '..';
@@ -16,13 +19,22 @@ import styles from './index.module.less';
 type SelectProps = React.ComponentProps<typeof Select>;
 type SelectOptionType = NonNullable<SelectProps['options']>[number];
 
+interface FormattedValue {
+  color: string;
+  positions: {
+    value: number | undefined;
+    unit: string;
+  }[];
+}
+
 interface Props extends DTGComponentBaseProperty<string> {
+  defaultColor?: string;
   count: number;
   dimensions: string[];
 }
 
-export default class StyleNumbersComponent extends React.PureComponent<Props> {
-  public static componentName = 'style-numbers';
+export default class BoxShadowComponent extends React.PureComponent<Props> {
+  public static componentName = 'box-shadow';
 
   private get options() {
     const uiProps = this.props.schema['ui:props'] || {};
@@ -34,19 +46,20 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
 
   private get value() {
     const valueArray = this.props.value?.split(' ') || [];
-    const formattedValue = valueArray.map((item) => {
+    const color = valueArray[0] && valueArray[0].startsWith('#') ? valueArray[0] : '';
+    const positions = valueArray.slice(1).map((item) => {
       const unit = item.match(/^(-)?[0-9]+(px|%|r?em|pt|vw|cm|in|pc)$/ui)?.[1] || '';
-      const value = Number(item.replace(unit, '')) || void 0;
-      return { value, unit };
+      const value = Number(item.replace(unit, ''));
+      return { value: Number.isNaN(value) ? void 0 : value, unit };
     });
-    return formattedValue;
+    return { color, positions };
   }
 
-  private formatValue(originValue: { value: number | undefined; unit: string }[]) {
-    return originValue.map(item => `${item.value || 0}${item.unit}`).join(' ');
+  private formatValue(originValue: FormattedValue) {
+    return `${originValue.color} ${originValue.positions.map(item => `${item.value || 0}${item.unit}`).join(' ')}`;
   }
 
-  private onChangeValue(value: { value: number | undefined; unit: string }[]) {
+  private onChangeValue(value: FormattedValue) {
     const config = this.props.schema;
     const formattedValue = this.formatValue(value);
     this.props.onChange?.(formattedValue);
@@ -63,17 +76,28 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
 
   public render() {
     return (
-      <div className={styles['component-container']}>
-        { this.value.map((item, index) => (
+      <div className={styles['box-shadow-container']}>
+        <ColorPicker
+          placement="bottomLeft"
+          defaultAlpha={100}
+          color={this.value.color}
+          defaultColor={this.props.defaultColor || '#000000'}
+          onChange={(event) => {
+            this.onChangeValue({ color: event.color, positions: [...this.value.positions] });
+          }}
+        >
+          <span className={styles['picker-trigger']} />
+        </ColorPicker>
+        { this.value.positions.map((item, index) => (
           <div className={styles['item-container']}>
             <InputNumber
               controls={false}
               className={styles['number-input']}
               value={item.value}
               onChange={(val) => {
-                const value = [...this.value];
-                value[index].value = val;
-                this.onChangeValue(value);
+                const positions = [...this.value.positions];
+                positions[index].value = val;
+                this.onChangeValue({ color: this.value.color, positions });
               }}
               addonAfter={(
                 <Select
@@ -83,31 +107,30 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
                   showArrow={false}
                   getPopupContainer={triggerNode => triggerNode}
                   onChange={(val) => {
-                    const value = [...this.value];
-                    value[index].unit = val;
-                    this.onChangeValue(value);
+                    const positions = [...this.value.positions];
+                    positions[index].unit = val;
+                    this.onChangeValue({ color: this.value.color, positions });
                   }}
                 />
               )}
             />
-
             <MinusCircleTwoTone
               className={styles.minus}
               twoToneColor="#ff4d4f"
               onClick={() => {
-                const value = [...this.value];
-                value.splice(index, 1);
-                this.onChangeValue(value);
+                const positions = [...this.value.positions];
+                positions.splice(index, 1);
+                this.onChangeValue({ color: this.value.color, positions });
               }}
             />
           </div>
         )) }
-        { this.value.length < this.props.count && (
+        { this.value.positions.length < this.props.count && (
         <Button
           icon={<PlusOutlined />}
           onClick={() => {
-            const value = [...this.value, { value: void 0, unit: '' }];
-            this.onChangeValue(value);
+            const positions = [...this.value.positions, { value: void 0, unit: '' }];
+            this.onChangeValue({ color: this.value.color, positions });
           }}
         />
         ) }

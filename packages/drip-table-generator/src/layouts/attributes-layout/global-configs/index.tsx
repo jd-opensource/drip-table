@@ -37,6 +37,23 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   React.useEffect(() => {
     form.current?.formForceUpdate();
   }, [context.globalConfigs]);
+
+  const decodeConfigsWithPrefix = (prefix: string, globalConfigs: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'], formData: Record<string, unknown>) => {
+    if (typeof globalConfigs?.[prefix] === 'object') {
+      Object.keys(globalConfigs?.[prefix] || {}).forEach((key) => {
+        formData[`${prefix}.${key}`] = globalConfigs?.[prefix]?.[key];
+      });
+    }
+  };
+  const encodeStyles = (prefix: string, formData: Record<string, unknown>) => {
+    const styles: React.CSSProperties = {};
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith(`${prefix}.`)) {
+        styles[key.replace(`${prefix}.`, '')] = formData[key];
+      }
+    });
+    return styles;
+  };
   /**
    * 将全局配置转换成FormData
    * @param {GlobalSchema} globalConfigs 全局配置
@@ -47,9 +64,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
     defaultData?: Record<string, unknown>,
   ) => {
+    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle', 'headerStyle', 'headerCellStyle', 'rowStyle', 'rowHoverStyle', 'tableCellStyle'];
     const formData: Record<string, unknown> = {
       ...defaultData,
-      ...filterAttributes(globalConfigs, ['header', 'footer', 'pagination', 'ext', 'innerStyle']),
+      ...filterAttributes(globalConfigs, ['header', 'footer', ...globalConfigsPrefix]),
     };
 
     if (typeof globalConfigs?.header === 'object') {
@@ -85,18 +103,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     }
     if (typeof globalConfigs?.pagination === 'object') {
       formData.pagination = true;
-      Object.keys(globalConfigs?.pagination || {}).forEach((key) => {
-        formData[`pagination.${key}`] = globalConfigs?.pagination?.[key];
-      });
     }
-    if (typeof globalConfigs?.ext === 'object') {
-      Object.keys(globalConfigs?.ext || {}).forEach((key) => {
-        formData[`ext.${key}`] = globalConfigs?.ext?.[key];
-      });
-    }
-    if (typeof globalConfigs?.innerStyle === 'object') {
-      Object.keys(globalConfigs?.innerStyle || {}).forEach((key) => {
-        formData[`innerStyle.${key}`] = globalConfigs?.innerStyle?.[key];
+    if (globalConfigs) {
+      globalConfigsPrefix.forEach((prefix) => {
+        decodeConfigsWithPrefix(prefix, globalConfigs, formData);
       });
     }
     formData.scrollX = globalConfigs?.scroll?.x;
@@ -158,12 +168,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       return { ...element };
     };
-    const innerStyle: React.CSSProperties = {};
-    Object.keys(formData).forEach((key) => {
-      if (key.startsWith('innerStyle.')) {
-        innerStyle[key.replace('innerStyle.', '')] = formData[key];
-      }
-    });
+    const innerStyle = encodeStyles('innerStyle', formData);
+    const headerStyle = encodeStyles('headerStyle', formData);
+    const headerCellStyle = encodeStyles('headerCellStyle', formData);
+    const rowStyle = encodeStyles('rowStyle', formData);
+    const rowHoverStyle = encodeStyles('rowHoverStyle', formData);
+    const tableCellStyle = encodeStyles('tableCellStyle', formData);
     const ext: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('ext.')) {
@@ -171,7 +181,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|header(Cell)?Style|row(Hover)?Style|tableCellStyle)\.|scroll)/u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -183,6 +193,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         y: formData.scrollY as number,
       },
       innerStyle,
+      headerStyle,
+      headerCellStyle,
+      rowStyle,
+      rowHoverStyle,
+      tableCellStyle,
+      rowGap: formData.rowGap as number,
+      rowRadius: formData.rowRadius as number,
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
