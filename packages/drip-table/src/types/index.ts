@@ -379,7 +379,10 @@ export type { DripTableDriver, DripTableReactComponent, DripTableReactComponentP
 /**
  * 指定子表格的参数
  */
-export interface DripTableSubtableProps {
+export interface DripTableSubtableProps<
+RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   /**
    * 数据源总条数
    */
@@ -392,6 +395,20 @@ export interface DripTableSubtableProps {
    * 指定表默认展开子表键列表
    */
   defaultExpandedRowKeys?: React.Key[];
+  /**
+   * 行展开
+   */
+  onRowExpand?: (
+    record: RecordType | RecordType[],
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => void;
+  /**
+   * 行收起
+   */
+  onRowCollapse?: (
+    record: RecordType | RecordType[],
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => void;
 }
 
 /**
@@ -400,7 +417,7 @@ export interface DripTableSubtableProps {
 export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> extends DripTableSubtableProps {
+> extends DripTableSubtableProps<RecordType, ExtraOptions> {
   /**
    * 底层组件驱动
    */
@@ -464,7 +481,7 @@ export interface DripTableProps<
     /**
      * 子表参数
      */
-    properties: DripTableSubtableProps;
+    properties: DripTableSubtableProps<RecordType, ExtraOptions>;
   }[];
   /**
    * 表格单元格组件库
