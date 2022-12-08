@@ -38,6 +38,8 @@ title: 总览
 | [componentWillUnmount](/drip-table/props/component-will-unmount) | 生命周期：组件即将卸载 | × | [🔗 示例](/drip-table/props/component-will-unmount) |
 | [onRowClick](/drip-table/props/on-row-click) | 点击行 | × | [🔗 示例](/drip-table/props/on-row-click) |
 | [onRowDoubleClick](/drip-table/props/on-row-double-click) | 双击行 | × | [🔗 示例](/drip-table/props/on-row-double-click) |
+| [onRowExpand](/drip-table/props/on-row-expand) | 行展开触发 | × | [🔗 示例](/drip-table/props/on-row-expand) |
+| [onRowCollapse](/drip-table/props/on-row-collapse) | 行收起触发 | × | [🔗 示例](/drip-table/props/on-row-collapse) |
 | [onSelectionChange](/drip-table/props/on-selection-change) | 选择行变化 | × | [🔗 示例](/drip-table/props/on-selection-change) |
 | [onSearch](/drip-table/props/on-search) | 搜索触发 | × | [🔗 示例](/drip-table/props/on-search) |
 | [onInsertButtonClick](/drip-table/props/on-insert-button-click) | 点击添加按钮触发 | × | [🔗 示例](/drip-table/props/on-insert-button-click) |

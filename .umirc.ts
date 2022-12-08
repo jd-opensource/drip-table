@@ -175,6 +175,8 @@ const umiConfig: IConfig = {
           '/drip-table/props/component-will-unmount',
           '/drip-table/props/on-row-click',
           '/drip-table/props/on-row-double-click',
+          '/drip-table/props/on-row-expand',
+          '/drip-table/props/on-row-collapse',
           '/drip-table/props/on-selection-change',
           '/drip-table/props/on-search',
           '/drip-table/props/on-insert-button-click',

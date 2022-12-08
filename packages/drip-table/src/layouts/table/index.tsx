@@ -42,7 +42,7 @@ import styles from './index.module.less';
 /**
  * 表格参数默认值，用于覆盖父表参数值防止透传到子表
  */
-const DEFAULT_SUBTABLE_PROPS: DripTableSubtableProps = {
+const DEFAULT_SUBTABLE_PROPS: DripTableSubtableProps<never, never> = {
   total: void 0,
   defaultExpandAllRows: void 0,
   defaultExpandedRowKeys: void 0,
@@ -671,7 +671,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     expandIconProps.expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
                   )}
                   aria-label={expandIconProps.expanded ? '关闭行' : '展开行'}
-                  onClick={(e) => { expandIconProps.onExpand(expandIconProps.record, e); }}
+                  onClick={(e) => {
+                    if (expandIconProps.expanded) {
+                      tableProps.onRowCollapse?.(expandIconProps.record, tableInfo);
+                    } else {
+                      tableProps.onRowExpand?.(expandIconProps.record, tableInfo);
+                    }
+                    expandIconProps.onExpand(expandIconProps.record, e);
+                  }}
                 />
               </div>
             );

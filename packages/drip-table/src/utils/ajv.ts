@@ -338,6 +338,8 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         componentWillUnmount: { instanceof: 'Function' },
         onRowClick: { instanceof: 'Function' },
         onRowDoubleClick: { instanceof: 'Function' },
+        onRowExpand: { instanceof: 'Function' },
+        onRowCollapse: { instanceof: 'Function' },
         onSelectionChange: { instanceof: 'Function' },
         onSearch: { instanceof: 'Function' },
         onInsertButtonClick: { instanceof: 'Function' },
