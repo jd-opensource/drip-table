@@ -283,6 +283,10 @@ export interface DripTableSchema<
    */
   rowKey?: string;
   /**
+   * 表格行插槽渲染模式的插槽ID所在字段的字段名
+   */
+  rowSlotKey?: string;
+  /**
    * 子表设置项
    */
   subtable?: {
@@ -490,6 +494,9 @@ export interface DripTableProps<
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
       ext: ExtraOptions['CustomComponentExtraData'];
       dataSource: readonly RecordType[];
+      row?: RecordType;
+      rowIndex?: number;
+      children?: React.ReactNode;
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
   };
