@@ -249,6 +249,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           items: {},
         },
         rowKey: { type: 'string' },
+        rowSlotKey: { type: 'string' },
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
       },
       required: ['columns'],

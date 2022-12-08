@@ -56,6 +56,12 @@
     overflow-wrap: break-word;
   }
 
+  &-tbody > tr > td.@{prefixCls}--slot,
+  & tfoot > tr > td.@{prefixCls}--slot,
+  & .@{prefixCls}-virtual-cell.@{prefixCls}--slot {
+    padding: 0;
+  }
+
   &-tbody > tr.@{prefixCls}-row:hover > td,
   &-virtual-list > div > .@{prefixCls}-virtual-cell.@{prefixCls}--row-hover {
     background: #fafafa;
@@ -424,4 +430,16 @@
       }
     }
   }
+}
+
+.@{prefixCls}-row-slot__error {
+  padding: 3px 8px;
+  font-size: 14px;
+  color: #ff0000;
+  background: #feebeb;
+  border: 1px solid #ff0000;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }

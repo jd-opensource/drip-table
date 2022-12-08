@@ -124,6 +124,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/virtual',
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
+          '/drip-table/schema/row-slot-key',
           '/drip-table/schema/subtable',
           '/drip-table/schema/data-process',
           '/drip-table/schema/disable-func',

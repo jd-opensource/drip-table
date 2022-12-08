@@ -29,8 +29,8 @@ title: 总览
 | [virtual](/drip-table/schema/virtual) | 是否开启虚拟滚动 | × | [🔗 示例](/drip-table/schema/virtual) |
 | [rowHeight](/drip-table/schema/row-height) | 表格行高（虚拟滚动） | × | [🔗 示例](/drip-table/schema/row-height) |
 | [rowKey](/drip-table/schema/row-key) | 表格行主键 | × | [🔗 示例](/drip-table/schema/row-key) |
+| [rowSlotKey](/drip-table/schema/row-slot-key) | 行插槽键名 | × | [🔗 示例](/drip-table/schema/row-slot-key) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
 | [dataProcess](/drip-table/schema/data-process) | 数据处理 | × | [🔗 示例](/drip-table/schema/data-process) |
 | [visibleFunc](/drip-table/schema/data-process) | 显隐判断 | × | [🔗 示例](/drip-table/schema/visible-func) |
 | [disableFunc](/drip-table/schema/data-process) | 禁用判断 | × | [🔗 示例](/drip-table/schema/disable-func) |
-

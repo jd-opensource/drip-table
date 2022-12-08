@@ -379,6 +379,59 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           ),
         });
       }
+      const rowSlotKey = tableInfo.schema.rowSlotKey;
+      if (rowSlotKey) {
+        {
+          const render = returnColumns[0].render;
+          returnColumns[0].render = (o, row, index) => {
+            const slotType = rowSlotKey in row ? String(row[rowSlotKey]) : void 0;
+            if (slotType) {
+              const Slot = tableProps.slots?.[slotType] || tableProps.slots?.default;
+              return {
+                children: Slot
+                  ? (
+                    <Slot
+                      row={row}
+                      rowIndex={index}
+                      slotType={slotType}
+                      driver={tableProps.driver}
+                      schema={tableProps.schema}
+                      ext={tableProps.ext}
+                      dataSource={tableProps.dataSource}
+                      onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
+                    >
+                      { o }
+                    </Slot>
+                  )
+                  : (
+                    <span className={styles['jfe-drip-table-row-slot__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
+                  ),
+                props: {
+                  colSpan: returnColumns.length,
+                  className: styles['jfe-drip-table--slot'],
+                },
+              };
+            }
+            return render?.(o, row, index);
+          };
+        }
+        for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
+          const render = returnColumns[columnIndex].render;
+          returnColumns[columnIndex].render = (o, row, index) => {
+            const slotType = rowSlotKey in row ? String(row[rowSlotKey]) : void 0;
+            if (slotType) {
+              return {
+                children: o,
+                props: {
+                  colSpan: 0,
+                  className: styles['jfe-drip-table--slot'],
+                },
+              };
+            }
+            return render?.(o, row, index);
+          };
+        }
+      }
       return returnColumns;
     },
     [
