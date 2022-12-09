@@ -193,8 +193,8 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style }: GridChil
   const record = dataSource[rowIndex];
   const recKey = indexValue(record, rowKey);
   const selected = selectedRowKeys.includes(recKey);
-  const onMouseEnter = React.useCallback(() => () => { setHoverRowKey(recKey); }, [recKey]);
-  const onMouseLeave = React.useCallback(() => () => { setHoverRowKey(void 0); }, [recKey]);
+  const onMouseEnter = React.useCallback(() => { setHoverRowKey(recKey); }, [recKey]);
+  const onMouseLeave = React.useCallback(() => { setHoverRowKey(void 0); }, [recKey]);
   return (
     <div
       className={classNames(styles['jfe-drip-table-virtual-cell'], {
