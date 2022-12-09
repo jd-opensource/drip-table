@@ -30,6 +30,7 @@
  */
 import React from "react";
 import DripTable from "drip-table";
+import { Button } from "antd";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
@@ -40,13 +41,24 @@ const schema = {
     style: {
       background: "#dfe8ff",
       border: "1px solid #dfe8ff",
-      marginBottom: '5px',
+      marginTop: '5px',
       paddingLeft: '10px',
     },
-    elements: [{
-      type: 'text',
-      text: '🛒 行头部插槽',
-    }],
+    elements: [
+      {
+        type: 'slot',
+        slot: 'row-slot-sample',
+      },
+      {
+        type: 'spacer',
+        span: 'flex-auto',
+      },
+      {
+        type: 'text',
+        text: '行头部插槽',
+        style: { marginRight: '20px' },
+      },
+    ],
   },
   columns: [
     {
@@ -99,6 +111,21 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
+      slots={{
+        'row-slot-sample': React.memo((props) => {
+          const [state, setState] = React.useState({ count: 0 });
+          return (
+            <React.Fragment>
+              <div style={{ fontSize: '1.17em', margin: '12px 20px 12px 0', lineHeight: '32px' }}>🛒 {props.record?.name}</div>
+              <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
+                <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Row Slot Sample</Button>
+                <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
+              </div>
+            </React.Fragment>
+          );
+        }),
+        default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
+      }}
     />
   );
 };

@@ -3331,6 +3331,13 @@
   dependencies:
     esquery "^1.0.1"
 
+"@rc-component/mini-decimal@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rc-component/mini-decimal/-/mini-decimal-1.0.1.tgz#e5dbc20a6a5b0e234d279bc71ce730ab865d3910"
+  integrity sha512-9N8nRk0oKj1qJzANKl+n9eNSMUGsZtjwNuDCiZ/KA+dt1fE3zq5x2XxclRcAbOIXnZcJ53ozP2Pa60gyELXagA==
+  dependencies:
+    "@babel/runtime" "^7.18.0"
+
 "@rc-component/portal@^1.0.0-8":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@rc-component/portal/-/portal-1.0.3.tgz#3aa2c229a7a20ac2412d864e8977e6377973416e"
@@ -13837,6 +13844,16 @@ rc-image@~5.2.5:
     rc-dialog "~8.6.0"
     rc-util "^5.0.6"
 
+rc-input-number@^7.3.11:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/rc-input-number/-/rc-input-number-7.4.0.tgz#b8b4ffa8bbc04198e79ce8b9611756d046d128ec"
+  integrity sha512-r/Oub/sPYbzqLNUOHnnc9sbCu78a81KX+RCbRwmpvB4W6nptUySbdWS5KHV4Hak5CAE1LAd+wWm5JjvZizG1FA==
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    "@rc-component/mini-decimal" "^1.0.1"
+    classnames "^2.2.5"
+    rc-util "^5.23.0"
+
 rc-input-number@~7.3.0:
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/rc-input-number/-/rc-input-number-7.3.4.tgz#674aea98260250287d36e330a7e065b174486e9d"
@@ -14217,6 +14234,15 @@ rc-util@^5.22.5:
   version "5.22.5"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.22.5.tgz#d4d6d886c5ecb6a2a51dde1840d780a2b70f5179"
   integrity sha512-awD2TGMGU97OZftT2R3JwrHWjR8k/xIwqjwcivPskciweUdgXE7QsyXkBKVSBHXS+c17AWWMDWuKWsJSheQy8g==
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    react-is "^16.12.0"
+    shallowequal "^1.1.0"
+
+rc-util@^5.23.0:
+  version "5.25.2"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.25.2.tgz#09fd3ce88da7d2149427d51e40a84e3527f5a263"
+  integrity sha512-OyCO675K/rh4zG3e+LYaHw54WQFEYGV9ibkGawQxqCvf0G0PzUrLQjgZ6SfoHORdbEKN7eQMFn3hHQyA/P8Y5Q==
   dependencies:
     "@babel/runtime" "^7.18.3"
     react-is "^16.12.0"
