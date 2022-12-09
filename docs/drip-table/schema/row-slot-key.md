@@ -74,8 +74,8 @@ const Demo = () => {
       slots={{
         CustomRowSlotComponent: (props) => (
           <div className={props.className} style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px 15px 15px', background: '#fafafa' }}>
-            <div style={{ 'font-weight': '600', color: 'black', 'font-size': '16px' }}>🛒<span style={{ marginLeft: '8px' }}>订单号：{props.row.shopId}</span></div>
-            <div>包含{props.row.itemCount}个商品，价格：{props.row.price}元</div>
+            <div style={{ 'font-weight': '600', color: 'black', 'font-size': '16px' }}>🛒<span style={{ marginLeft: '8px' }}>订单号：{props.record.shopId}</span></div>
+            <div>包含{props.record.itemCount}个商品，价格：{props.record.price}元</div>
           </div>
         ),
       }}
