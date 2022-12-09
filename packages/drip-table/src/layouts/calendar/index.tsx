@@ -50,8 +50,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               .map(col => (
                 <div key={col.key}>
                   <h4>{ col.title }</h4>
-                  { col.render?.(indexValue(record, col.dataIndex), record, 0) }
-
+                  { /* TODO: 这写的什么鬼垃圾，为什么会跨 layout 依赖？扯淡呢？ */ }
+                  { col.render?.(indexValue(record, col.dataIndex), { record, index: 0, type: 'body', key: '0' }, 0) }
                 </div>
               ))
           }

@@ -287,6 +287,32 @@ export interface DripTableSchema<
    */
   rowSlotKey?: string;
   /**
+   * 行头部插槽
+   */
+  rowHeader?: {
+    /**
+     * 行头部插槽自定义样式
+     */
+    style?: React.CSSProperties;
+    /**
+     * 行头部插槽展示元素配置
+     */
+    elements?: DripTableGenericRenderElement[];
+  };
+  /**
+   * 行尾部插槽
+   */
+  rowFooter?: {
+    /**
+     * 行尾部插槽自定义样式
+     */
+    style?: React.CSSProperties;
+    /**
+     * 行尾部插槽展示元素配置
+     */
+    elements?: DripTableGenericRenderElement[];
+  };
+  /**
    * 子表设置项
    */
   subtable?: {
@@ -308,7 +334,6 @@ export interface DripTableSchema<
        * 一行多少个
        */
       rowSize: number;
-
     };
   };
   /**
@@ -511,8 +536,8 @@ export interface DripTableProps<
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
       ext: ExtraOptions['CustomComponentExtraData'];
       dataSource: readonly RecordType[];
-      row?: RecordType;
-      rowIndex?: number;
+      record?: RecordType;
+      recordIndex?: number;
       children?: React.ReactNode;
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;
@@ -554,6 +579,22 @@ export interface DripTableProps<
    */
   rowExpandable?: (
     record: RecordType,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => boolean;
+  /**
+   * 行头部插槽是否显示
+   */
+  rowHeaderVisible?: (
+    record: RecordType,
+    index: number,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => boolean;
+  /**
+   * 行尾部插槽是否显示
+   */
+  rowFooterVisible?: (
+    record: RecordType,
+    index: number,
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => boolean;
   /**

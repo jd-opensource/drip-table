@@ -28,6 +28,7 @@ import {
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
+import GenericRender from '@/components/generic-render';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
 import Tooltip from '@/components/tooltip';
@@ -48,6 +49,16 @@ const DEFAULT_SUBTABLE_PROPS: DripTableSubtableProps<never, never> = {
   defaultExpandedRowKeys: void 0,
 };
 
+interface RcTableRecordType<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
+  type: 'header' | 'body' | 'footer';
+  key: string;
+  index: number;
+  record: RecordType;
+}
+
 /**
  * 根据列 Schema，生成表格列配置
  * @param tableInfo 表格信息
@@ -62,12 +73,12 @@ export const columnGenerator = <
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
-  ): TableColumnType<RecordType> & { style?: React.CSSProperties } => {
+  ): TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
     width += 'px';
   }
-  const column: TableColumnType<RecordType> & { style?: React.CSSProperties } = {
+  const column: TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } = {
     width,
     className: classNames({
       [styles['jfe-drip-table-cell--top']]: columnSchema.verticalAlign === 'top',
@@ -112,17 +123,17 @@ export const columnGenerator = <
         extraProps.onDataSourceChange?.(ds, tableInfo);
       };
       if (BuiltInComponent) {
-        column.render = (value, record, index) => (
+        column.render = (_, row) => (
           <BuiltInComponent
             driver={extraProps.driver}
-            value={value ?? columnSchema.defaultValue}
-            data={record}
+            value={indexValue(row.record, columnSchema.dataIndex) ?? columnSchema.defaultValue}
+            data={row.record}
             editable={tableInfo.schema.editable}
-            onChange={v => onChange(record, index, v)}
+            onChange={v => onChange(row.record, row.index, v)}
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
             ext={extraProps.ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
-            fireEvent={event => extraProps.onEvent?.(event, record, index, { ...tableInfo, record })}
+            fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
           />
         );
       }
@@ -130,16 +141,16 @@ export const columnGenerator = <
       if (libName && componentName) {
         const ExtraComponent = extraProps.components?.[libName]?.[componentName];
         if (ExtraComponent) {
-          column.render = (value, record, index) => (
+          column.render = (_, row) => (
             <ExtraComponent
               driver={extraProps.driver}
-              value={value ?? columnSchema.defaultValue}
-              data={record}
+              value={indexValue(row.record, columnSchema.dataIndex) ?? columnSchema.defaultValue}
+              data={row.record}
               editable={tableInfo.schema.editable}
-              onChange={v => onChange(record, index, v)}
+              onChange={v => onChange(row.record, row.index, v)}
               schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={extraProps.ext}
-              fireEvent={event => extraProps.onEvent?.(event, record, index, { ...tableInfo, record })}
+              fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
             />
           );
         }
@@ -212,6 +223,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }));
   }, [initialPagination?.pageSize]);
 
+  // 原始数据源
   const dataSource = React.useMemo(
     () => tableProps.dataSource.map((item, index) => ({
       ...item,
@@ -220,18 +232,45 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [tableProps.dataSource, rowKey],
   );
 
-  const currentPageDataSourceOffset = React.useMemo(
-    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-      ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
-      : 0),
-    [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
-  );
+  // 原始数据行转 RcTable 数据行包装
+  const packRcTableRecord = React.useCallback((record: RecordType, index: number, type: RcTableRecordType<RecordType>['type']): RcTableRecordType<RecordType> => ({
+    type,
+    key: `${record[rowKey]}__DRIP_TABLE_ROW_PACK__${type}`,
+    index,
+    record,
+  }), []);
 
-  const currentPageDataSource = React.useMemo(
-    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-      ? dataSource.slice(tableState.pagination.pageSize * (tableState.pagination.current - 1), tableState.pagination.pageSize * tableState.pagination.current)
-      : dataSource),
-    [dataSource, tableState.pagination.current, tableState.pagination.pageSize],
+  // RcTable 数据源
+  const rcTableDataSource = React.useMemo(
+    () => {
+      const offset = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
+        ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
+        : 0;
+      const ds = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
+        ? dataSource.slice(offset, tableState.pagination.pageSize * tableState.pagination.current)
+        : dataSource;
+      // 行头部/尾部插槽存在，通过内部 dataSource 插入行实现
+      const spreadDs: RcTableRecordType<RecordType>[] = [];
+      for (const [index, record] of ds.entries()) {
+        if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, offset + index, tableInfo))) {
+          spreadDs.push(packRcTableRecord(record, offset + index, 'header'));
+        }
+        spreadDs.push(packRcTableRecord(record, offset + index, 'body'));
+        if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, offset + index, tableInfo))) {
+          spreadDs.push(packRcTableRecord(record, offset + index, 'footer'));
+        }
+      }
+      return spreadDs;
+    },
+    [
+      dataSource,
+      tableState.pagination.current,
+      tableState.pagination.pageSize,
+      tableProps.rowHeaderVisible,
+      tableProps.rowFooterVisible,
+      tableProps.schema.rowHeader,
+      tableProps.schema.rowFooter,
+    ],
   );
 
   const rowExpandColumnVisible = React.useMemo(
@@ -277,7 +316,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   );
 
   const filteredColumns = React.useMemo(
-    () => {
+    (): TableColumnType<RcTableRecordType<RecordType>>[] => {
       const extraProps = {
         driver: tableProps.driver,
         components: tableProps.components,
@@ -296,38 +335,36 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           title: (
             <div className={styles['jfe-drip-table-column-title-selection']}>
               <Checkbox
-                checked={!dataSource.some(d => !tableState.selectedRowKeys.includes(d[rowKey] as React.Key))}
+                checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
                 onChange={(e) => {
                   const selectedRowKeys = indexValue(e.target, 'checked')
-                    ? dataSource.map(d => d[rowKey] as React.Key)
+                    ? rcTableDataSource.map(d => d.record[rowKey] as React.Key)
                     : [];
-                  const selectedRows = dataSource
-                    .map((d, i) => ({ d, i }))
-                    .filter(({ d }) => selectedRowKeys.includes(d[rowKey] as React.Key))
-                    .map(({ i }) => tableInfo.dataSource[i]);
+                  const selectedRows = rcTableDataSource
+                    .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
+                    .map(d => tableInfo.dataSource[d.index]);
                   setTableState({ selectedRowKeys });
                   tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
                 }}
               />
             </div>
           ),
-          render: (_, record, index) => (
+          render: (_, row) => (
             <div className={styles['jfe-drip-table-column-selection']}>
               <Checkbox
-                checked={tableState.selectedRowKeys.includes(record[rowKey] as React.Key)}
+                checked={tableState.selectedRowKeys.includes(row.record[rowKey] as React.Key)}
                 onChange={(e) => {
-                  const selectedRowKeys = tableState.selectedRowKeys.filter(k => k !== record[rowKey]);
+                  const selectedRowKeys = tableState.selectedRowKeys.filter(k => k !== row.record[rowKey]);
                   if (indexValue(e.target, 'checked')) {
-                    selectedRowKeys.push(record[rowKey] as React.Key);
+                    selectedRowKeys.push(row.record[rowKey] as React.Key);
                   }
-                  const selectedRows = dataSource
-                    .map((d, i) => ({ d, i }))
-                    .filter(({ d }) => selectedRowKeys.includes(d[rowKey] as React.Key))
-                    .map(({ i }) => tableInfo.dataSource[i]);
+                  const selectedRows = rcTableDataSource
+                    .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
+                    .map(d => tableInfo.dataSource[d.index]);
                   setTableState({ selectedRowKeys });
                   tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
                 }}
-                disabled={!(tableProps?.rowSelectable?.(record, tableInfo) ?? true)}
+                disabled={!(tableProps?.rowSelectable?.(row.record, tableInfo) ?? true)}
               />
             </div>
           ),
@@ -338,18 +375,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           align: 'center',
           width: 50,
           fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
-          render: (_, record, index) => (
+          render: (_, row) => (
             <div
               className={classNames(styles['jfe-drip-table-column-draggable-row'], {
-                [styles['jfe-drip-table-column-draggable-row--drag-in']]: index === dragInIndex,
+                [styles['jfe-drip-table-column-draggable-row--drag-in']]: row.index === dragInIndex,
               })}
               onDrop={(e) => {
                 if (e.dataTransfer.getData('type') === `drip-table-draggable-row--${tableInfo.schema.id}`) {
                   const sourceIndex = Number.parseInt(e.dataTransfer.getData('index'), 10);
-                  if (sourceIndex !== index) {
+                  if (sourceIndex !== row.index) {
                     const ds = [...tableProps.dataSource];
-                    const absSourceIndex = currentPageDataSourceOffset + sourceIndex;
-                    const absTargetIndex = currentPageDataSourceOffset + index;
+                    const absSourceIndex = sourceIndex;
+                    const absTargetIndex = row.index;
                     ds.splice(absSourceIndex, 1);
                     ds.splice(absTargetIndex, 0, tableProps.dataSource[absSourceIndex]);
                     tableProps.onDataSourceChange?.(ds, tableInfo);
@@ -358,7 +395,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   e.preventDefault();
                 }
               }}
-              onDragEnter={(e) => { setDragInIndex(index); e.preventDefault(); }}
+              onDragEnter={(e) => { setDragInIndex(row.index); e.preventDefault(); }}
               onDragLeave={(e) => { e.preventDefault(); }}
               onDragOver={(e) => { e.preventDefault(); }}
             >
@@ -368,7 +405,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onDragStart={(e) => {
                   e.dataTransfer.effectAllowed = 'move';
                   e.dataTransfer.setData('type', `drip-table-draggable-row--${tableInfo.schema.id}`);
-                  e.dataTransfer.setData('index', String(index));
+                  e.dataTransfer.setData('index', String(row.index));
                   e.dataTransfer.setDragImage(e.currentTarget.parentElement?.parentElement?.parentElement || e.currentTarget, 0, 0);
                 }}
                 onDragEnd={() => { setDragInIndex(-1); }}
@@ -379,25 +416,29 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           ),
         });
       }
+      if (returnColumns.length === 0) {
+        return returnColumns;
+      }
+      // 整行自定义插槽
       const rowSlotKey = tableInfo.schema.rowSlotKey;
       if (rowSlotKey) {
         {
           const render = returnColumns[0].render;
           returnColumns[0].render = (o, row, index) => {
-            const slotType = rowSlotKey in row ? String(row[rowSlotKey]) : void 0;
+            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               const Slot = tableProps.slots?.[slotType] || tableProps.slots?.default;
               return {
                 children: Slot
                   ? (
                     <Slot
-                      row={row}
-                      rowIndex={index}
                       slotType={slotType}
                       driver={tableProps.driver}
                       schema={tableProps.schema}
                       ext={tableProps.ext}
                       dataSource={tableProps.dataSource}
+                      record={row.record}
+                      recordIndex={row.index}
                       onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
                     >
                       { o }
@@ -418,8 +459,70 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
           const render = returnColumns[columnIndex].render;
           returnColumns[columnIndex].render = (o, row, index) => {
-            const slotType = rowSlotKey in row ? String(row[rowSlotKey]) : void 0;
+            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
+              return {
+                children: o,
+                props: {
+                  colSpan: 0,
+                  className: styles['jfe-drip-table--slot'],
+                },
+              };
+            }
+            return render?.(o, row, index);
+          };
+        }
+      }
+      // 行头尾插槽
+      if (tableProps.schema.rowHeader || tableProps.schema.rowFooter) {
+        {
+          const render = returnColumns[0].render;
+          returnColumns[0].render = (o, row, index) => {
+            if (row.type === 'header' && tableProps.schema.rowHeader) {
+              return {
+                children: (
+                  <GenericRender
+                    style={tableProps.schema.rowHeader.style}
+                    schemas={tableProps.schema.rowHeader.elements ?? []}
+                    tableProps={tableProps}
+                    tableState={tableState}
+                    setTableState={setTableState}
+                    record={row.record}
+                    recordIndex={row.index}
+                  />
+                ),
+                props: {
+                  colSpan: returnColumns.length,
+                  className: styles['jfe-drip-table--slot'],
+                },
+              };
+            }
+            if (row.type === 'footer' && tableProps.schema.rowFooter) {
+              return {
+                children: (
+                  <GenericRender
+                    style={tableProps.schema.rowFooter.style}
+                    schemas={tableProps.schema.rowFooter.elements ?? []}
+                    tableProps={tableProps}
+                    tableState={tableState}
+                    setTableState={setTableState}
+                    record={row.record}
+                    recordIndex={row.index}
+                  />
+                ),
+                props: {
+                  colSpan: returnColumns.length,
+                  className: styles['jfe-drip-table--slot'],
+                },
+              };
+            }
+            return render?.(o, row, index);
+          };
+        }
+        for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
+          const render = returnColumns[columnIndex].render;
+          returnColumns[columnIndex].render = (o, row, index) => {
+            if (row.type === 'header' || row.type === 'footer') {
               return {
                 children: o,
                 props: {
@@ -445,6 +548,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       tableProps.onDataSourceChange,
       tableState.displayColumnKeys,
       tableState.selectedRowKeys,
+      tableInfo.schema.rowSlotKey,
+      tableProps.schema.rowHeader,
+      tableProps.schema.rowFooter,
     ],
   );
 
@@ -460,8 +566,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [filteredColumns, rcTableWidth],
   );
 
-  const columns: TableColumnType<RecordType>[] = React.useMemo(
-    () => filteredColumns.map((c, i) => ({ ...c, width: columnsWidth[i] })),
+  const columns = React.useMemo(
+    (): TableColumnType<RcTableRecordType<RecordType>>[] =>
+      filteredColumns.map((c, i) => ({ ...c, width: columnsWidth[i] })),
     [filteredColumns, columnsWidth],
   );
 
@@ -615,7 +722,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           itemData={{
             columns: columns as TableColumnType<unknown>[],
             columnsDisplayControl,
-            dataSource: currentPageDataSource,
+            dataSource: rcTableDataSource,
             rowKey,
             selectedRowKeys: tableState.selectedRowKeys,
             hoverRowKey,
@@ -651,7 +758,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     hoverRowKey,
   ]);
 
-  const expandable: RcTableProps<RecordType>['expandable'] = React.useMemo(
+  const expandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(
     () => {
       const subtable = tableProps.schema.subtable;
       const expandedRowRender = tableProps.expandedRowRender;
@@ -673,9 +780,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   aria-label={expandIconProps.expanded ? '关闭行' : '展开行'}
                   onClick={(e) => {
                     if (expandIconProps.expanded) {
-                      tableProps.onRowCollapse?.(expandIconProps.record, tableInfo);
+                      tableProps.onRowCollapse?.(expandIconProps.record.record, tableInfo);
                     } else {
-                      tableProps.onRowExpand?.(expandIconProps.record, tableInfo);
+                      tableProps.onRowExpand?.(expandIconProps.record.record, tableInfo);
                     }
                     expandIconProps.onExpand(expandIconProps.record, e);
                   }}
@@ -683,10 +790,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               </div>
             );
           },
-          expandedRowRender: (record, index) => {
-            const parentTableInfo: typeof tableInfo = { ...tableInfo, record };
+          expandedRowRender: (row) => {
+            const parentTableInfo: typeof tableInfo = { ...tableInfo, record: row.record };
             let subtableEl: React.ReactNode = null;
-            if (subtable && Array.isArray(record[subtable.dataSourceKey])) {
+            if (subtable && Array.isArray(row.record[subtable.dataSourceKey])) {
               const subtableProps = Object.assign(
                 {},
                 DEFAULT_SUBTABLE_PROPS,
@@ -699,7 +806,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       ...tableProps.subtableProps.filter(
                         sp => sp.recordKeys
                     && sp.recordKeys.length === 1
-                    && sp.recordKeys[0] === record[rowKey],
+                    && sp.recordKeys[0] === row.record[rowKey],
                       ) || [],
                     ].map(sp => sp.properties),
                   )
@@ -714,42 +821,42 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   {...tableProps}
                   {...subtableProps}
                   schema={subtableSchema}
-                  dataSource={record[subtable.dataSourceKey] as RecordType[]}
+                  dataSource={row.record[subtable.dataSourceKey] as RecordType[]}
                   title={
-                  tableProps.subtableTitle
-                    ? subtableData => tableProps.subtableTitle?.(
-                      record,
-                      index,
-                      { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                    )
-                    : void 0
-                }
+                    tableProps.subtableTitle
+                      ? subtableData => tableProps.subtableTitle?.(
+                        row.record,
+                        row.index,
+                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                      )
+                      : void 0
+                  }
                   footer={
-                  tableProps.subtableFooter
-                    ? subtableData => tableProps.subtableFooter?.(
-                      record,
-                      index,
-                      { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                    )
-                    : void 0
-                }
+                    tableProps.subtableFooter
+                      ? subtableData => tableProps.subtableFooter?.(
+                        row.record,
+                        row.index,
+                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                      )
+                      : void 0
+                  }
                   subtableProps={
-                tableProps.subtableProps
-                  ?.map((sp) => {
-                    if (sp.recordKeys) {
-                      const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === record[rowKey]
-                        ? [...sp.recordKeys]
-                        : [];
-                      recordKeys.shift();
-                      return {
-                        ...sp,
-                        recordKeys,
-                      };
-                    }
-                    return sp;
-                  })
-                  .filter(sp => sp.recordKeys?.length !== 0)
-              }
+                    tableProps.subtableProps
+                      ?.map((sp) => {
+                        if (sp.recordKeys) {
+                          const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === row.record[rowKey]
+                            ? [...sp.recordKeys]
+                            : [];
+                          recordKeys.shift();
+                          return {
+                            ...sp,
+                            recordKeys,
+                          };
+                        }
+                        return sp;
+                      })
+                      .filter(sp => sp.recordKeys?.length !== 0)
+                  }
                   __PARENT_INFO__={{
                     parent: tableProps.__PARENT_INFO__,
                     schema: tableProps.schema,
@@ -761,16 +868,16 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             return (
               <React.Fragment>
                 { subtableEl }
-                { expandedRowRender?.(record, index, parentTableInfo) }
+                { expandedRowRender?.(row.record, row.index, parentTableInfo) }
               </React.Fragment>
             );
           },
-          rowExpandable: (record) => {
-            if (rowExpandable?.(record, { ...tableInfo, record })) {
+          rowExpandable: (row) => {
+            if (rowExpandable?.(row.record, { ...tableInfo, record: row.record })) {
               return true;
             }
             if (subtable) {
-              const ds = record[subtable.dataSourceKey];
+              const ds = row.record[subtable.dataSourceKey];
               return Array.isArray(ds) && ds.length > 0;
             }
             return false;
@@ -790,7 +897,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { props.header }
       <ResizeObserver onResize={onResize}>
         <div className={styles['jfe-drip-table-resize-observer']}>
-          <RcTable<RecordType>
+          <RcTable<RcTableRecordType<RecordType>>
             prefixCls="jfe-drip-table"
             className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {
               [styles['jfe-drip-table-small']]: tableProps.schema.size === 'small',
@@ -799,9 +906,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               [styles['jfe-drip-table--stripe']]: tableProps.schema.stripe,
             })}
             style={tableProps.schema.innerStyle}
-            rowKey={rowKey}
+            rowKey="key"
             columns={columns}
-            data={currentPageDataSource}
+            data={rcTableDataSource}
             scroll={scroll}
             tableLayout={tableProps.schema.tableLayout}
             rowClassName={rowClassName}
@@ -812,8 +919,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 ? tableProps.sticky ?? true
                 : false
             }
-            title={tableProps.title}
-            footer={tableProps.footer}
+            title={
+              React.useMemo(
+                () => (
+                  tableProps.title
+                    ? rows => tableProps.title?.(rows.map(r => r.record))
+                    : void 0
+                ),
+                [tableProps.title],
+              )
+            }
+            footer={
+              React.useMemo(
+                () => (
+                  tableProps.footer
+                    ? rows => tableProps.footer?.(rows.map(r => r.record))
+                    : void 0
+                ),
+                [tableProps.footer],
+              )
+            }
             expandable={expandable}
           />
         </div>
