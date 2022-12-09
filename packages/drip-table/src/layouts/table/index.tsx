@@ -428,32 +428,36 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               const Slot = tableProps.slots?.[slotType] || tableProps.slots?.default;
-              return {
-                children: Slot
-                  ? (
-                    <Slot
-                      slotType={slotType}
-                      driver={tableProps.driver}
-                      schema={tableProps.schema}
-                      ext={tableProps.ext}
-                      dataSource={tableProps.dataSource}
-                      record={row.record}
-                      recordIndex={row.index}
-                      onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
-                    >
-                      { o }
-                    </Slot>
-                  )
-                  : (
-                    <span className={styles['jfe-drip-table-row-slot__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
-                  ),
-                props: {
-                  colSpan: returnColumns.length,
-                  className: styles['jfe-drip-table--slot'],
-                },
-              };
+              return Slot
+                ? (
+                  <Slot
+                    slotType={slotType}
+                    driver={tableProps.driver}
+                    schema={tableProps.schema}
+                    ext={tableProps.ext}
+                    dataSource={tableProps.dataSource}
+                    record={row.record}
+                    recordIndex={row.index}
+                    onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
+                  >
+                    { o }
+                  </Slot>
+                )
+                : (
+                  <span className={styles['jfe-drip-table-row-slot__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
+                );
             }
             return render?.(o, row, index);
+          };
+          returnColumns[0].onCell = (row, index) => {
+            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
+            if (slotType) {
+              return {
+                colSpan: returnColumns.length,
+                className: styles['jfe-drip-table--slot'],
+              };
+            }
+            return {};
           };
         }
         for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
@@ -461,15 +465,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           returnColumns[columnIndex].render = (o, row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
-              return {
-                children: o,
-                props: {
-                  colSpan: 0,
-                  className: styles['jfe-drip-table--slot'],
-                },
-              };
+              return null;
             }
             return render?.(o, row, index);
+          };
+          returnColumns[columnIndex].onCell = (row, index) => {
+            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
+            if (slotType) {
+              return {
+                colSpan: 0,
+                className: styles['jfe-drip-table--slot'],
+              };
+            }
+            return {};
           };
         }
       }
@@ -479,59 +487,59 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           const render = returnColumns[0].render;
           returnColumns[0].render = (o, row, index) => {
             if (row.type === 'header' && tableProps.schema.rowHeader) {
-              return {
-                children: (
-                  <GenericRender
-                    style={tableProps.schema.rowHeader.style}
-                    schemas={tableProps.schema.rowHeader.elements ?? []}
-                    tableProps={tableProps}
-                    tableState={tableState}
-                    setTableState={setTableState}
-                    record={row.record}
-                    recordIndex={row.index}
-                  />
-                ),
-                props: {
-                  colSpan: returnColumns.length,
-                  className: styles['jfe-drip-table--slot'],
-                },
-              };
+              return (
+                <GenericRender
+                  style={tableProps.schema.rowHeader.style}
+                  schemas={tableProps.schema.rowHeader.elements ?? []}
+                  tableProps={tableProps}
+                  tableState={tableState}
+                  setTableState={setTableState}
+                  record={row.record}
+                  recordIndex={row.index}
+                />
+              );
             }
             if (row.type === 'footer' && tableProps.schema.rowFooter) {
-              return {
-                children: (
-                  <GenericRender
-                    style={tableProps.schema.rowFooter.style}
-                    schemas={tableProps.schema.rowFooter.elements ?? []}
-                    tableProps={tableProps}
-                    tableState={tableState}
-                    setTableState={setTableState}
-                    record={row.record}
-                    recordIndex={row.index}
-                  />
-                ),
-                props: {
-                  colSpan: returnColumns.length,
-                  className: styles['jfe-drip-table--slot'],
-                },
-              };
+              return (
+                <GenericRender
+                  style={tableProps.schema.rowFooter.style}
+                  schemas={tableProps.schema.rowFooter.elements ?? []}
+                  tableProps={tableProps}
+                  tableState={tableState}
+                  setTableState={setTableState}
+                  record={row.record}
+                  recordIndex={row.index}
+                />
+              );
             }
             return render?.(o, row, index);
+          };
+          returnColumns[0].onCell = (row, index) => {
+            if ((row.type === 'header' && tableProps.schema.rowHeader) || (row.type === 'footer' && tableProps.schema.rowFooter)) {
+              return {
+                colSpan: returnColumns.length,
+                className: styles['jfe-drip-table--slot'],
+              };
+            }
+            return {};
           };
         }
         for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
           const render = returnColumns[columnIndex].render;
           returnColumns[columnIndex].render = (o, row, index) => {
             if (row.type === 'header' || row.type === 'footer') {
-              return {
-                children: o,
-                props: {
-                  colSpan: 0,
-                  className: styles['jfe-drip-table--slot'],
-                },
-              };
+              return null;
             }
             return render?.(o, row, index);
+          };
+          returnColumns[columnIndex].onCell = (row, index) => {
+            if (row.type === 'header' || row.type === 'footer') {
+              return {
+                colSpan: 0,
+                className: styles['jfe-drip-table--slot'],
+              };
+            }
+            return {};
           };
         }
       }
