@@ -651,18 +651,34 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   React.useEffect(() => resetVirtualGrid, [rcTableWidth]);
 
   React.useEffect(() => {
-    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header', tableProps.schema.headerStyle || {});
+    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.headerStyle || {});
     const styleDom = document.querySelector('#table-header-style');
     if (styleDom) {
       styleDom.innerHTML = customHeaderClass;
     } else {
       document.head.innerHTML += `<style id="table-header-style" type="text/css">${customHeaderClass}</style>`;
     }
+    const header = document.querySelector('.jfe-drip-table-header');
+    if (!header) {
+      const thead = document.querySelector('.jfe-drip-table-thead');
+      if (thead) {
+        if ((thead.nextSibling as HTMLTableCellElement).tagName === 'DIV') {
+          thead.nextSibling?.remove();
+        }
+        const margin = (tableProps.schema.headerStyle?.margin as string || '').split(' ');
+        let marginBottom = margin.length === 4 ? margin[2] : margin[0];
+        if (tableProps.schema.headerStyle?.marginBottom) { marginBottom = tableProps.schema.headerStyle?.marginBottom as string; }
+        const node = document.createElement('div');
+        node.style.height = `${marginBottom}px`;
+        thead.parentElement?.insertBefore(node, thead.nextSibling);
+      }
+    }
   }, [tableProps.schema.headerStyle]);
 
   React.useEffect(() => {
     const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
-    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th`, tableProps.schema.headerCellStyle || {});
+    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
+    .jfe-drip-table-thead > tr > th`, tableProps.schema.headerCellStyle || {});
     const styleDom = document.querySelector('#table-header-cell-style');
     if (styleDom) {
       styleDom.innerHTML = customHeaderItemClass;
@@ -673,7 +689,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   React.useEffect(() => {
     const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
-    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td`, tableProps.schema.tableCellStyle || {});
+    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
+    .jfe-drip-table-tbody > tr > td`, tableProps.schema.tableCellStyle || {});
     const styleDom = document.querySelector('#table-cell-style');
     if (styleDom) {
       styleDom.innerHTML = tableCellClass;
@@ -693,11 +710,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [tableProps.schema.rowHoverStyle]);
 
   React.useEffect(() => {
-    const tbody = tableContainer.current?.querySelector<HTMLTableRowElement>('.jfe-drip-table-body tbody');
+    const tbody = tableContainer.current?.querySelector<HTMLTableRowElement>('tbody');
     if (tbody) {
       tbody.childNodes.forEach(item => ((item as HTMLTableCellElement).tagName === 'DIV' ? item.remove() : ''));
     }
-    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('.jfe-drip-table-body tbody > tr.jfe-drip-table-row');
+    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('tbody > tr.jfe-drip-table-row');
     if (tableProps.schema.rowGap) {
       setTimeout(() => {
         rows?.forEach((row) => {
@@ -712,7 +729,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [dataSource, tableState.pagination.current, tableState.pagination.pageSize, tableProps.schema.rowGap]);
 
   React.useEffect(() => {
-    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('.jfe-drip-table-body tbody > tr.jfe-drip-table-row');
+    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('tbody > tr.jfe-drip-table-row');
     if (tableProps.schema.rowRadius) {
       setTimeout(() => {
         rows?.forEach((row) => {

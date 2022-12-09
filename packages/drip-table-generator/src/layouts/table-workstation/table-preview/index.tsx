@@ -17,15 +17,16 @@ import { DripTableGeneratorProps } from '@/typing';
 const PreviewTable = <
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
   const { columns, globalConfigs, previewDataSource } = React.useContext(GeneratorContext);
   return (
     <DripTable<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>
+      style={{ ...props.style, display: props.visible ? void 0 : 'none' }}
       driver={DripTableDriverAntDesign}
       schema={{ ...globalConfigs, columns: columns.map(item => ({ ...item, index: void 0 })) }}
       dataSource={previewDataSource}
       ajv={{ additionalProperties: true }}
-      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv'])}
+      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv', 'style'])}
     />
   );
 };

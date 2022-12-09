@@ -6,15 +6,15 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { BorderOuterOutlined,
-  CheckSquareOutlined,
+import { CheckSquareOutlined,
   DatabaseOutlined,
   FilterOutlined,
   FontSizeOutlined,
   InsertRowAboveOutlined,
   MenuOutlined,
   SettingOutlined,
-  SortAscendingOutlined } from '@ant-design/icons';
+  SortAscendingOutlined,
+  ThunderboltOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, message, Modal, Radio } from 'antd';
 import classNames from 'classnames';
 import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
@@ -25,6 +25,10 @@ import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { DripTableGeneratorProps } from '@/typing';
 
+import { DropDownRadio } from './components/dropdown';
+import { SwitchButton } from './components/switch';
+import { themeList } from './config';
+
 import styles from './index.module.less';
 
 export type ToolBarConfig = {
@@ -32,7 +36,7 @@ export type ToolBarConfig = {
   label: string;
   name: string;
   type?: 'switch' | 'dropdown';
-  overlay?: 'radio' | 'checkbox';
+  overlay?: 'radio' | React.ReactElement;
   options?: { label: string; value: string | number }[];
   default?: unknown;
 };
@@ -51,6 +55,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: ToolbarProps<RecordType, ExtraOptions>) => {
   const [modalStatus, setModalStatus] = React.useState('');
   const [code, setCode] = React.useState('');
+  const [theme, setTheme] = React.useState('');
   const context = React.useContext(GeneratorContext);
 
   const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
@@ -82,8 +87,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   };
 
   const configs: ToolBarConfig[] = [
-    { icon: <InsertRowAboveOutlined className={styles['tool-icon']} />, label: '冻结表头', type: 'switch', name: 'sticky' },
-    { icon: <BorderOuterOutlined className={styles['tool-icon']} />, label: '边框', type: 'switch', name: 'bordered' },
     { icon: <CheckSquareOutlined className={styles['tool-icon']} />, label: '行可选择', type: 'switch', name: 'rowSelection' },
     { icon: <MenuOutlined className={styles['tool-icon']} />, label: '间隔斑马纹', type: 'switch', name: 'stripe' },
     {
@@ -126,8 +129,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     }
     if (config.type === 'dropdown') {
       let overlay: React.ReactElement = <div />;
-      if (config.overlay === 'radio') {
-        overlay = (
+      overlay = config.overlay === 'radio'
+        ? (
           <div className={styles['overlay-wrapper']}>
             <Radio.Group
               value={globalConfig[config.name] || config.default}
@@ -141,8 +144,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               )) }
             </Radio.Group>
           </div>
-        );
-      }
+        )
+        : config.overlay || <div />;
       return (
         <Dropdown overlay={overlay} trigger={['click']} placement="bottomLeft" key={config.name}>
           <div className={styles['tool-cell']}>
@@ -165,6 +168,19 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       { ({ drawerType, globalConfigs, mode, setState }) => (
         <div className={styles['toolbar-container']} style={props.style}>
           <div className={styles['toolbar-container-leftbar']}>
+            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className={styles['tool-icon']} />} label="冻结表头" />
+            <DropDownRadio
+              icon={<ThunderboltOutlined className={styles['tool-icon']} />}
+              label="主题"
+              overlayType="image-radio"
+              options={themeList}
+              value={theme}
+              onChange={(value) => {
+                setTheme(value || '');
+                const style = themeList.find(item => item.value === value)?.style;
+                setState({ globalConfigs: Object.assign({}, globalConfigs, style || {}) });
+              }}
+            />
             { configs.map(item => renderToolbarCell(item, globalConfigs, setState)) }
           </div>
           <div className={styles['toolbar-container-rightbar']}>

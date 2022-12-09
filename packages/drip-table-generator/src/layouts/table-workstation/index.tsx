@@ -55,9 +55,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             <EditableTableFooter driver={props.driver} slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
-        : (
-          <PreviewTable {...props} />
-        ) }
+        : null }
+      <PreviewTable visible={context.mode === 'preview'} {...props} />
     </div>
   );
 };
