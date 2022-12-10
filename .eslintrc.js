@@ -11,7 +11,6 @@ const importResolverExtensions = [
 
 const javascriptRules = {
   'no-console': 'off',
-  'no-new-func': 'off',
   'react/jsx-no-bind': 'off',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',

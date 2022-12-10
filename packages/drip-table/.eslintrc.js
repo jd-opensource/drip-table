@@ -10,7 +10,6 @@ const importResolverExtensions = [
 ];
 
 const javascriptRules = {
-  'no-new-func': 'off',
   'etc/no-internal': [
     'error',
     {
@@ -160,6 +159,13 @@ module.exports = {
       rules: {
         'react/no-typos': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+    // utils sandbox
+    {
+      files: ['src/utils/sandbox.ts'],
+      rules: {
+        'no-new-func': 'off',
       },
     },
   ],

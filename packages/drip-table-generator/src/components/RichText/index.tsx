@@ -13,6 +13,7 @@ import * as DOMHandler from 'domhandler';
 import React from 'react';
 import ViewerJS from 'viewerjs';
 
+import { execute } from '@/utils/sandbox';
 import Highlight, { HighlightProps } from '@/components/Highlight';
 
 type UppercaseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
@@ -390,7 +391,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
           Object.entries(attribs)
             .map(([k, v]) => [domEvents[k.toLowerCase()], v])
             .filter(([k, v]) => k)
-            .map(([k, v]) => [k, new Function(v)]),
+            .map(([k, v]) => [k, execute(v)]),
         ),
         // static props 静态属性
         key,

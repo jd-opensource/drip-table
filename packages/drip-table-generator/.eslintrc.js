@@ -10,7 +10,6 @@ const importResolverExtensions = [
 ];
 
 const javascriptRules = {
-  'no-new-func': 'off',
   'react/jsx-no-bind': 'off',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',
@@ -155,9 +154,9 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
-    // utils
+    // utils sandbox
     {
-      files: ['src/utils/*.ts'],
+      files: ['src/utils/sandbox.ts'],
       rules: {
         'no-new-func': 'off',
       },

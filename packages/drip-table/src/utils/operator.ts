@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import { execute } from './sandbox';
+
 /**
  * 格式化变量用于提供给渲染函数
  * @param v 任意数据
@@ -65,9 +67,7 @@ export const indexValue = (data: unknown, indexes: string | number | readonly (s
   const value = getValue(data, indexes, defaultValue);
   if (dataProcess) {
     try {
-      const processFunc = new Function('value', 'rec', dataProcess);
-      const processedValue = processFunc(value, data);
-      return processedValue;
+      return execute(dataProcess, { rec: data, value });
     } catch (error) {
       return error instanceof Error
         ? `{{Render Error: ${error.message}}}`
@@ -88,9 +88,7 @@ export const dataProcessValue = (data: unknown, indexes: string | number | reado
   const value = getValue(data, indexes, '');
   if (funcText) {
     try {
-      const processFunc = new Function('value', 'rec', funcText);
-      const processedValue = processFunc(value, data);
-      return processedValue;
+      return execute(funcText, { rec: data, value });
     } catch (error) {
       return error instanceof Error
         ? `{{Render Error: ${error.message}}}`
