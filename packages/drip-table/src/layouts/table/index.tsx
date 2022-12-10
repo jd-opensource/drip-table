@@ -193,7 +193,7 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style }: GridChil
         [styles['jfe-drip-table--row-selected']]: selected,
         [styles['jfe-drip-table--row-selected-hover']]: selected && hoverRowKey !== void 0 && hoverRowKey === recKey,
       })}
-      style={style}
+      style={Object.assign({ textAlign: column.align }, style)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
