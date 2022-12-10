@@ -7,6 +7,19 @@
  */
 
 /**
+ * 执行器缓存，优化性能
+ */
+const executorCache = new Map<string, ReturnType<FunctionConstructor>>();
+let timerExecutorGC = 0;
+const executorGC = () => { executorCache.clear(); };
+const resetExecutorGC = () => {
+  if (timerExecutorGC) {
+    window.clearTimeout(timerExecutorGC);
+  }
+  timerExecutorGC = window.setTimeout(executorGC, 2000);
+};
+
+/**
  * 通过 JavaScript 代码字符串创建函数
  *
  * @param script JavaScript 代码段
@@ -14,7 +27,18 @@
  * @returns 创建的函数
  * @throws Error 创建异常
  */
-export const createFunction = (script: string, contextKeys: string[]) => new Function(...contextKeys, script);
+export const createExecutor = (script: string, contextKeys: string[]) => {
+  const key = script + JSON.stringify(contextKeys);
+  let executor = executorCache.has(key)
+    ? executorCache.get(key)
+    : void 0;
+  if (!executor) {
+    executor = new Function(...contextKeys, script);
+    executorCache.set(key, executor);
+  }
+  resetExecutorGC();
+  return executor;
+};
 
 /**
  * 指定上下文，执行 JavaScript 代码段
@@ -24,7 +48,7 @@ export const createFunction = (script: string, contextKeys: string[]) => new Fun
  * @returns 代码段返回结果
  * @throws Error 代码执行异常
  */
-export const execute = (script: string, context: Record<string, unknown>) => createFunction(script, Object.keys(context))(...Object.values(context));
+export const execute = (script: string, context: Record<string, unknown>) => createExecutor(script, Object.keys(context))(...Object.values(context));
 
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误
