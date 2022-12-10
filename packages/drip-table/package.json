@@ -42,6 +42,7 @@
     "rc-textarea": "^0.3.7",
     "rc-tooltip": "^5.2.2",
     "rc-util": "^5.22.5",
+    "react-clipboard.js": "^2.0.16",
     "react-dom": "^16.9.0",
     "react-event-injector": "^1.1.2",
     "react-window": "^1.8.6",

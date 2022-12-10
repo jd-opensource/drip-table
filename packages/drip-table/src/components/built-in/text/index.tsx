@@ -10,16 +10,17 @@ import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
 import React from 'react';
+import Clipboard from 'react-clipboard.js';
 import ReactDOM from 'react-dom';
 import { EventInjector } from 'react-event-injector';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { copyTextToClipboard, dataProcessValue, indexValue, stringify } from '@/utils/operator';
+import { stringify } from '@/utils/operator';
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString, preventEvent } from '../utils';
+import { dataProcessIndex, dataProcessValue, finalizeString, preventEvent } from '../utils';
 
 import styles from './index.module.less';
 
@@ -281,11 +282,11 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         .split('\n');
     }
     if (mode === 'single') {
-      return `${prefix ?? ''}${translate(schema.options.i18n, indexValue(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
+      return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
       return (params || [])
-        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, indexValue(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
+        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, dataProcessIndex(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
         .join('\n')
         .split('\n');
     }
@@ -502,9 +503,15 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const showClipboard = this.props.schema.options.clipboard;
     if (!showClipboard) { return null; }
     return (
-      <div onClick={() => copyTextToClipboard(this.rawText.join(' '), () => message.success('复制成功'), e => message.success(e.message))}>
+      <Clipboard
+        component="div"
+        option-text={() => this.rawText.join(' ')}
+        onSuccess={() => { message.success('复制成功'); }}
+        onError={() => { message.success('复制失败'); }}
+      >
+        { /* DO NOT USE THE FUCKING ANTD!! */ }
         <CopyOutlined />
-      </div>
+      </Clipboard>
     );
   }
 

@@ -9,11 +9,10 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { dataProcessValue } from '@/utils/operator';
 import { safeExecute } from '@/utils/sandbox';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
+import { dataProcessValue, finalizeString } from '../utils';
 
 import styles from './index.module.less';
 
