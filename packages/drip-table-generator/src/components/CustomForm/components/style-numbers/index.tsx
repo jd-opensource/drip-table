@@ -35,7 +35,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
   private get value() {
     const valueArray = this.props.value?.split(' ') || [];
     const formattedValue = valueArray.map((item) => {
-      const unit = item.match(/^(-)?[0-9]+(px|%|r?em|pt|vw|cm|in|pc)$/ui)?.[1] || '';
+      const unit = item.match(/^(-)?[0-9]+(px|%|r?em|pt|vw|cm|in|pc)$/ui)?.[2] || '';
       const value = Number(item.replace(unit, '')) || void 0;
       return { value, unit };
     });

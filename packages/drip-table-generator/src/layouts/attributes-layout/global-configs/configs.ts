@@ -681,6 +681,18 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     type: 'boolean',
     default: false,
   },
+  {
+    name: 'rowSlotKey',
+    group: '全局属性',
+    'ui:title': '行插槽名称',
+    'ui:type': 'select',
+    'ui:props': {
+      style: { width: '100%' },
+      placeholder: '请选择行插槽名称',
+      optionsParam: '$$SLOT_NAME_OPTIONS$$',
+    },
+    type: 'string',
+  },
   ...HeaderAttrConfigs,
   ...PaginationAttrConfigs,
   ...FooterAttrConfigs,

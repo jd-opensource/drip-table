@@ -668,9 +668,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         const margin = (tableProps.schema.headerStyle?.margin as string || '').split(' ');
         let marginBottom = margin.length === 4 ? margin[2] : margin[0];
         if (tableProps.schema.headerStyle?.marginBottom) { marginBottom = tableProps.schema.headerStyle?.marginBottom as string; }
-        const node = document.createElement('div');
-        node.style.height = `${marginBottom}px`;
-        thead.parentElement?.insertBefore(node, thead.nextSibling);
+        if (marginBottom) {
+          const node = document.createElement('div');
+          node.style.height = (/^(-)?[0-9]+(.[0-9]+)?$/u).test(marginBottom) ? `${marginBottom}px` : marginBottom;
+          thead.parentElement?.insertBefore(node, thead.nextSibling);
+        }
       }
     }
   }, [tableProps.schema.headerStyle]);
@@ -700,7 +702,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [tableProps.schema.tableCellStyle]);
 
   React.useEffect(() => {
-    const rowHoverClass = translateStyleToClass('.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr.jfe-drip-table-row:hover > td, .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover', tableProps.schema.rowHoverStyle || {});
+    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr.jfe-drip-table-row:hover > td,
+    .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover,
+    .jfe-drip-table tbody > tr.jfe-drip-table-row:hover > td`, tableProps.schema.rowHoverStyle || {});
     const styleDom = document.querySelector('#table-row-hover-style');
     if (styleDom) {
       styleDom.innerHTML = rowHoverClass;
@@ -726,7 +730,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         });
       }, 20);
     }
-  }, [dataSource, tableState.pagination.current, tableState.pagination.pageSize, tableProps.schema.rowGap]);
+  }, [
+    dataSource,
+    tableState.pagination.current,
+    tableState.pagination.pageSize,
+    tableProps.schema.rowGap,
+    tableProps.schema.rowSelection,
+    tableProps.schema.rowSlotKey,
+  ]);
 
   React.useEffect(() => {
     const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('tbody > tr.jfe-drip-table-row');
@@ -738,7 +749,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         });
       }, 20);
     }
-  }, [dataSource, tableState.pagination.current, tableState.pagination.pageSize, tableProps.schema.rowRadius]);
+  }, [
+    dataSource,
+    tableState.pagination.current,
+    tableState.pagination.pageSize,
+    tableProps.schema.rowRadius,
+    tableProps.schema.rowSelection,
+    tableProps.schema.rowSlotKey,
+  ]);
 
   const paginationPosition = React.useMemo(
     () => {
