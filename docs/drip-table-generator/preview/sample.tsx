@@ -189,14 +189,14 @@ const Demo = () => (
         type: 'string',
       }],
     }}
-    subtableTitle={(record, index, tableInfo) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent.schema.id})”行“${record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>}
+    subtableTitle={(record, index, tableInfo) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>}
     subtableFooter={(record, index, tableInfo) => (
       tableInfo.schema.id === 'sample-table-sub-level-1'
         ? (
           <div
             style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
             onClick={() => {
-              message.info(`加载更多“表格(id:${tableInfo.parent.schema.id})”行“${record.name}”(${index})的子表数据，已有 ${tableInfo.dataSource.length} 条`);
+              message.info(`加载更多“表格(id:${tableInfo.parent?.schema.id})”行“${record.name}”(${index})的子表数据，已有 ${tableInfo.dataSource.length} 条`);
               console.log('expandable-footer-click', record, index, tableInfo);
             }}
           >
@@ -206,7 +206,7 @@ const Demo = () => (
         )
         : void 0
     )}
-    rowExpandable={(record, parent) => parent.schema.id === 'sample-table' && record.id === 5}
+    rowExpandable={(record, index, parent) => parent.schema.id === 'sample-table' && record.id === 5}
     expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
     ajv={{ additionalProperties: true }}
   />

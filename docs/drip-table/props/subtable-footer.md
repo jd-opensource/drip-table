@@ -156,7 +156,7 @@ const Demo = () => {
             <div
               style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
               onClick={() => {
-                message.info(`加载更多“表格(id:${tableInfo.parent.schema.id})”行“${record.name}”(${index})的子表数据，已有 ${tableInfo.dataSource.length} 条`);
+                message.info(`加载更多“表格(id:${tableInfo.parent?.schema.id})”行“${record.name}”(${index})的子表数据，已有 ${tableInfo.dataSource.length} 条`);
                 console.log('expandable-footer-click', record, index, tableInfo);
               }}
             >

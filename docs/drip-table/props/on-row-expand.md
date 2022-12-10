@@ -210,7 +210,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      rowExpandable={(record, parent) => ['sample-table', 'sample-table-sub-level-1'].includes(parent.schema.id) && record.id !== '3'}
+      rowExpandable={(record, index, parent) => ['sample-table', 'sample-table-sub-level-1'].includes(parent.schema.id) && record.id !== '3'}
       expandedRowRender={(record, index, parent) => (
         record[`subtableLevel${record.id.split('-').length}`]
           ? null
@@ -220,7 +220,7 @@ const Demo = () => {
             </div>
           )
       )}
-      onRowExpand={(record, parent) => {
+      onRowExpand={(record, index, parent) => {
         if (record.subtableLevel1) {
           return;
         }

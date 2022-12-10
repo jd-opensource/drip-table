@@ -76,7 +76,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      rowExpandable={(record, parent) => parent.schema.id === 'sample-table' && record.id === 1}
+      rowExpandable={(record, index, parent) => parent.schema.id === 'sample-table' && record.id === 1}
       expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
     />
   );
