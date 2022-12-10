@@ -89,6 +89,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   dataIndex: string | string[];
   /**
+   * 数据预处理，对单元格数据进行变换
+   */
+  dataTranslation?: string;
+  /**
    * 默认数据
    */
   defaultValue?: unknown;

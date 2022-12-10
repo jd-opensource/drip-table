@@ -122,11 +122,23 @@ export const columnGenerator = <
         ds[index] = rec;
         extraProps.onDataSourceChange?.(ds, tableInfo);
       };
+      let dataTranslation: (v: unknown, r: RecordType, i: number) => unknown = v => v;
+      if (columnSchema.dataTranslation) {
+        try {
+          const translate = new Function('props', columnSchema.dataTranslation);
+          dataTranslation = (v, r, i) => {
+            try {
+              return translate({ value: v, record: r, recordIndex: i });
+            } catch {}
+            return void 0;
+          };
+        } catch {}
+      }
       if (BuiltInComponent) {
         column.render = (_, row) => (
           <BuiltInComponent
             driver={extraProps.driver}
-            value={indexValue(row.record, columnSchema.dataIndex) ?? columnSchema.defaultValue}
+            value={dataTranslation(indexValue(row.record, columnSchema.dataIndex), row.record, row.index) ?? columnSchema.defaultValue}
             data={row.record}
             editable={tableInfo.schema.editable}
             onChange={v => onChange(row.record, row.index, v)}
@@ -144,7 +156,7 @@ export const columnGenerator = <
           column.render = (_, row) => (
             <ExtraComponent
               driver={extraProps.driver}
-              value={indexValue(row.record, columnSchema.dataIndex) ?? columnSchema.defaultValue}
+              value={dataTranslation(indexValue(row.record, columnSchema.dataIndex), row.record, row.index) ?? columnSchema.defaultValue}
               data={row.record}
               editable={tableInfo.schema.editable}
               onChange={v => onChange(row.record, row.index, v)}

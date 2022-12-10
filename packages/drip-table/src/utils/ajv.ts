@@ -499,6 +499,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'string' },
         ],
       },
+      dataTranslation: { type: 'string' },
       defaultValue: {},
       description: { type: 'string' },
       clipboard: { type: 'boolean' },

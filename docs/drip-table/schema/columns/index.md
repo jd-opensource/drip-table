@@ -11,6 +11,7 @@
 | [column.key](/drip-table/schema/columns/key) | 唯一标识，不做展示用，React 需要的 key | √ | [🔗 示例](/drip-table/schema/columns/key) |
 | [column.title](/drip-table/schema/columns/title) | 表头，组件名 | √ | [🔗 示例](/drip-table/schema/columns/title) |
 | [column.dataIndex](/drip-table/schema/columns/data-index) | 列数据在数据项中对应的路径 | √ | [🔗 示例](/drip-table/schema/columns/data-index) |
+| [column.dataTranslation](/drip-table/schema/columns/data-translation) | 列数据处理 | √ | [🔗 示例](/drip-table/schema/columns/data-translation) |
 | [column.defaultValue](/drip-table/schema/columns/default-value) | 默认数据 | × | [🔗 示例](/drip-table/schema/columns/default-value) |
 | [column.width](/drip-table/schema/columns/width) | 表格列宽 | × | [🔗 示例](/drip-table/schema/columns/width) |
 | [column.align](/drip-table/schema/columns/align) | 表格列对齐 | × | [🔗 示例](/drip-table/schema/columns/align) |
