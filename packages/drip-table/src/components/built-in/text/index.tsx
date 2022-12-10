@@ -19,7 +19,7 @@ import { copyTextToClipboard, dataProcessValue, indexValue, stringify } from '@/
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
-import { preventEvent } from '../utils';
+import { finalizeString, preventEvent } from '../utils';
 
 import styles from './index.module.less';
 
@@ -274,15 +274,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
     if (mode === 'custom') {
       return (format || '')
-        .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
-          try {
-            return stringify(new Function('rec', `return ${s1}`)(data));
-          } catch (error) {
-            return error instanceof Error
-              ? `{{Render Error: ${error.message}}}`
-              : '{{Unknown Render Error}}';
-          }
-        })
+        .replace(
+          /\{\{(.+?)\}\}/guis, (s, s1) =>
+            finalizeString('script', `return ${s1}`, data),
+        )
         .split('\n');
     }
     if (mode === 'single') {

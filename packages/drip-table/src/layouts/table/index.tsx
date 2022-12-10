@@ -26,6 +26,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
+import { createExecutor } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import GenericRender from '@/components/generic-render';
@@ -125,7 +126,7 @@ export const columnGenerator = <
       let dataTranslation: (v: unknown, r: RecordType, i: number) => unknown = v => v;
       if (columnSchema.dataTranslation) {
         try {
-          const translate = new Function('props', columnSchema.dataTranslation);
+          const translate = createExecutor(columnSchema.dataTranslation, ['props']);
           dataTranslation = (v, r, i) => {
             try {
               return translate({ value: v, record: r, recordIndex: i });

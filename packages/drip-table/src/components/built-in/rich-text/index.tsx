@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { stringify } from '@/utils/operator';
 import ErrorBoundary from '@/components/error-boundary';
 import RichText from '@/components/rich-text';
 
@@ -59,15 +58,10 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     const { data, schema: { options } } = this.props;
     const { Alert } = this.props.driver.components;
     try {
-      const html = options.render.replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
-        try {
-          return stringify(new Function('rec', `return ${s1}`)(data));
-        } catch (error) {
-          return error instanceof Error
-            ? `{{Render Error: ${error.message}}}`
-            : '{{Unknown Render Error}}';
-        }
-      });
+      const html = options.render.replace(
+        /\{\{(.+?)\}\}/guis, (s, s1) =>
+          finalizeString('script', `return ${s1}`, data),
+      );
       if (typeof html === 'object') {
         return (
           <div>{ Object.prototype.toString.call(html) }</div>

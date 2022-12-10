@@ -10,6 +10,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { dataProcessValue } from '@/utils/operator';
+import { safeExecute } from '@/utils/sandbox';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -135,11 +136,13 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   private finalizeDisabled(disabled?: boolean | string): boolean {
     if (typeof disabled === 'string') {
-      let isDisabled = false;
-      try {
-        isDisabled = new Function('rec', `return ${disabled}`)(this.props.data);
-      } catch {}
-      return !!isDisabled;
+      return safeExecute(`return ${disabled}`, {
+        props: {
+          value: this.props.value,
+          record: this.props.data,
+        },
+        rec: this.props.data,
+      }, false);
     }
     return !!disabled;
   }

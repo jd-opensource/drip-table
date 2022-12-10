@@ -192,7 +192,7 @@ export default Demo;
 
 ### mode = "custom"
 
-> 自定义渲染模式，将通过 `format` 字段获取格式化字符用于单元格渲染，可通过嵌入双花括号插入代码块通过 `rec` 获取该行数据。
+> 自定义渲染模式，将通过 `format` 字段获取格式化字符用于单元格渲染，可通过嵌入双花括号插入代码块通过 `props.record` 获取该行数据。
 
 ```jsx
 /**
@@ -215,7 +215,7 @@ const schema = {
       component: "text",
       options: {
         mode: "custom",
-        format: "这是一个自定义渲染，商品名称为“{{rec.name}}”，价格为“{{rec.price}}元”。"
+        format: "这是一个自定义渲染，商品名称为“{{props.record.name}}”，价格为“{{props.record.price}}元”。"
       },
     },
   ],

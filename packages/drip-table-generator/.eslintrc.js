@@ -155,5 +155,12 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
+    // utils
+    {
+      files: ['src/utils/*.ts'],
+      rules: {
+        'no-new-func': 'off',
+      },
+    },
   ],
 };

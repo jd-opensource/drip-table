@@ -9,6 +9,7 @@
 import get from 'lodash/get';
 
 import { DripTableRecordTypeBase } from '@/types';
+import { execute } from '@/utils/sandbox';
 
 /**
  * 格式化变量用于提供给渲染函数
@@ -44,7 +45,12 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
     value = stringify(text)
       .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
         try {
-          return stringify(new Function('rec', `return ${s1}`)(rec));
+          return execute(`return ${s1}`, {
+            props: {
+              record: rec,
+            },
+            rec,
+          });
         } catch (error) {
           return error instanceof Error
             ? `{{Render Error: ${error.message}}}`
@@ -53,7 +59,12 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
       });
   } else if (mode === 'script') {
     try {
-      value = stringify(new Function('rec', text)(rec));
+      value = stringify(execute(text, {
+        props: {
+          record: rec,
+        },
+        rec,
+      }));
     } catch (error) {
       value = error instanceof Error
         ? `Render Error: ${error.message}`
