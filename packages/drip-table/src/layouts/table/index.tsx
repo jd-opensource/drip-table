@@ -364,7 +364,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   setTableState({ selectedRowKeys });
                   tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
                 }}
-                disabled={!(tableProps?.rowSelectable?.(row.record, tableInfo) ?? true)}
+                disabled={!(tableProps?.rowSelectable?.(row.record, row.index, tableInfo) ?? true)}
               />
             </div>
           ),
@@ -574,13 +574,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [filteredColumns, rcTableWidth],
   );
 
-  const columns = React.useMemo(
+  const rcTableColumns = React.useMemo(
     (): TableColumnType<RcTableRecordType<RecordType>>[] =>
       filteredColumns.map((c, i) => ({ ...c, width: columnsWidth[i] })),
     [filteredColumns, columnsWidth],
   );
 
-  const scroll = React.useMemo(() => {
+  const rcTableScroll = React.useMemo(() => {
     const sc = Object.assign({}, tableProps.schema.scroll);
     const scrollX = columnsWidth.reduce((v, w) => v + w, 0);
     if (sc.x === void 0 && rcTableWidth < scrollX) {
@@ -676,12 +676,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       />
     );
 
-  const onResize: React.ComponentProps<typeof ResizeObserver>['onResize'] = React.useMemo(
+  const rcTableOnResize: React.ComponentProps<typeof ResizeObserver>['onResize'] = React.useMemo(
     () => ({ width }) => { setRcTableWidth(width); },
     [setRcTableWidth],
   );
 
-  const rowClassName: React.ComponentProps<typeof RcTable>['rowClassName'] = React.useMemo(
+  const rcTableRowClassName: React.ComponentProps<typeof RcTable>['rowClassName'] = React.useMemo(
     () =>
       record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)
         ? styles['jfe-drip-table-row-selected']
@@ -689,7 +689,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [tableState.selectedRowKeys],
   );
 
-  const components: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
+  const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
       cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps<RecordType, ExtraOptions>['additionalProps'] }) => {
         const dataIndex = additionalProps?.columnSchema.dataIndex;
@@ -728,19 +728,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         <VariableSizeGrid
           ref={refVirtualGrid}
           itemData={{
-            columns: columns as TableColumnType<unknown>[],
+            columns: rcTableColumns as TableColumnType<unknown>[],
             columnsDisplayControl,
             dataSource: rcTableDataSource,
-            rowKey,
+            rowKey: 'key',
             selectedRowKeys: tableState.selectedRowKeys,
             hoverRowKey,
             setHoverRowKey,
           }}
           className={styles['jfe-drip-table-virtual-list']}
-          columnCount={columns.length}
+          columnCount={rcTableColumns.length}
           columnWidth={(index) => {
             const width = columnsWidth[index];
-            return index === columns.length - 1 ? width - scrollbarSize - 1 : width;
+            return index === rcTableColumns.length - 1 ? width - scrollbarSize - 1 : width;
           }}
           height={parseNumber(tableInfo.schema.scroll?.y, 500)}
           rowCount={rawData.length}
@@ -757,7 +757,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     tableInfo,
     tableInfo.schema.virtual,
     columnsWidth,
-    columns,
+    rcTableColumns,
     tableInfo.schema.scroll?.y,
     tableInfo.schema.rowHeight,
     tableInfo.schema.columns,
@@ -766,15 +766,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     hoverRowKey,
   ]);
 
-  const expandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(
+  const rcTableExpandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(
     () => {
       const subtable = tableProps.schema.subtable;
       const expandedRowRender = tableProps.expandedRowRender;
       const rowExpandable = tableProps.rowExpandable;
       if (rowExpandColumnVisible) {
         return {
-          expandIcon: (expandIconProps) => {
-            if (!expandIconProps.expandable) {
+          expandIcon: ({ expandable, expanded, record: row, onExpand }) => {
+            if (!expandable) {
               return null;
             }
             return (
@@ -783,16 +783,16 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   type="button"
                   className={classNames(
                     styles['jfe-drip-table-row-expand-icon'],
-                    expandIconProps.expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
+                    expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
                   )}
-                  aria-label={expandIconProps.expanded ? '关闭行' : '展开行'}
+                  aria-label={expanded ? '关闭行' : '展开行'}
                   onClick={(e) => {
-                    if (expandIconProps.expanded) {
-                      tableProps.onRowCollapse?.(expandIconProps.record.record, tableInfo);
+                    if (expanded) {
+                      tableProps.onRowCollapse?.(row.record, row.index, tableInfo);
                     } else {
-                      tableProps.onRowExpand?.(expandIconProps.record.record, tableInfo);
+                      tableProps.onRowExpand?.(row.record, row.index, tableInfo);
                     }
-                    expandIconProps.onExpand(expandIconProps.record, e);
+                    onExpand(row, e);
                   }}
                 />
               </div>
@@ -881,7 +881,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             );
           },
           rowExpandable: (row) => {
-            if (rowExpandable?.(row.record, { ...tableInfo, record: row.record })) {
+            if (rowExpandable?.(row.record, row.index, { ...tableInfo, record: row.record })) {
               return true;
             }
             if (subtable) {
@@ -903,7 +903,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <React.Fragment>
       { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
-      <ResizeObserver onResize={onResize}>
+      <ResizeObserver onResize={rcTableOnResize}>
         <div className={styles['jfe-drip-table-resize-observer']}>
           <RcTable<RcTableRecordType<RecordType>>
             prefixCls="jfe-drip-table"
@@ -915,12 +915,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             })}
             style={tableProps.schema.innerStyle}
             rowKey="key"
-            columns={columns}
+            columns={rcTableColumns}
             data={rcTableDataSource}
-            scroll={scroll}
+            scroll={rcTableScroll}
             tableLayout={tableProps.schema.tableLayout}
-            rowClassName={rowClassName}
-            components={components}
+            rowClassName={rcTableRowClassName}
+            components={rcTableComponents}
             showHeader={tableProps.schema.showHeader}
             sticky={
               tableProps.schema.sticky
@@ -947,7 +947,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 [tableProps.footer],
               )
             }
-            expandable={expandable}
+            expandable={rcTableExpandable}
           />
         </div>
       </ResizeObserver>

@@ -383,6 +383,31 @@ export interface DripTableTableInformation<
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
+/**
+ * 单行事件
+ */
+export type DripTableRowEvent<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> = (
+  record: RecordType,
+  index: number,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+) => void;
+
+/**
+ * 单行功能函数
+ */
+export type DripTableRowCallback<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RetType = void,
+> = (
+  record: RecordType,
+  index: number,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+) => RetType;
+
 export interface DripTablePagination {
   onChange?: (page: number, pageSize?: number) => void;
   size?: 'small' | 'default';
@@ -423,17 +448,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   /**
    * 行展开
    */
-  onRowExpand?: (
-    record: RecordType | RecordType[],
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => void;
+  onRowExpand?: DripTableRowEvent<RecordType, ExtraOptions>;
   /**
    * 行收起
    */
-  onRowCollapse?: (
-    record: RecordType | RecordType[],
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => void;
+  onRowCollapse?: DripTableRowEvent<RecordType, ExtraOptions>;
 }
 
 /**
@@ -561,57 +580,31 @@ export interface DripTableProps<
   /**
    * 子表顶部自定义渲染函数
    */
-  subtableTitle?: (
-    record: RecordType,
-    recordIndex: number,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => React.ReactNode;
+  subtableTitle?: DripTableRowCallback<RecordType, ExtraOptions, React.ReactNode>;
   /**
    * 子表底部自定义渲染函数
    */
-  subtableFooter?: (
-    record: RecordType,
-    recordIndex: number,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => React.ReactNode;
+  subtableFooter?: DripTableRowCallback<RecordType, ExtraOptions, React.ReactNode>;
   /**
    * 获取指定行是否可展开
    */
-  rowExpandable?: (
-    record: RecordType,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => boolean;
+  rowExpandable?: DripTableRowCallback<RecordType, ExtraOptions, boolean>;
   /**
    * 行头部插槽是否显示
    */
-  rowHeaderVisible?: (
-    record: RecordType,
-    index: number,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => boolean;
+  rowHeaderVisible?: DripTableRowCallback<RecordType, ExtraOptions, boolean>;
   /**
    * 行尾部插槽是否显示
    */
-  rowFooterVisible?: (
-    record: RecordType,
-    index: number,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => boolean;
+  rowFooterVisible?: DripTableRowCallback<RecordType, ExtraOptions, boolean>;
   /**
    * 行展开自定义渲染函数
    */
-  expandedRowRender?: (
-    record: RecordType,
-    index: number,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => React.ReactNode;
+  expandedRowRender?: DripTableRowCallback<RecordType, ExtraOptions, React.ReactNode>;
   /**
    * 获取指定行是否可选择
    */
-  rowSelectable?: (
-    record: RecordType,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => boolean;
+  rowSelectable?: DripTableRowCallback<RecordType, ExtraOptions, boolean>;
   /**
    * 生命周期：组件加载完成
    */
@@ -627,19 +620,11 @@ export interface DripTableProps<
   /**
    * 点击行
    */
-  onRowClick?: (
-    record: RecordType | RecordType[],
-    index: number | string | (number | string)[],
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => void;
+  onRowClick?: DripTableRowEvent<RecordType, ExtraOptions>;
   /**
    * 双击行
    */
-  onRowDoubleClick?: (
-    record: RecordType | RecordType[],
-    index: number | string | (number | string)[],
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-  ) => void;
+  onRowDoubleClick?: DripTableRowEvent<RecordType, ExtraOptions>;
   /**
    * 选择行变化
    */
