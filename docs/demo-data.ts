@@ -17,28 +17,6 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     y: 500,
   },
   rowKey: 'id',
-  headerStyle: {
-    marginBottom: '12px',
-    backgroundColor: '#f60',
-    borderRadius: '6px',
-  },
-  headerCellStyle: {
-    borderWidth: '0px',
-    padding: '2px 6px',
-    backgroundColor: '#fff6f0',
-  },
-  rowGap: 12,
-  rowRadius: 6,
-  rowStyle: {
-    boxShadow: '#2c2c2c 0 4px 8px -4px',
-  },
-  rowHoverStyle: {
-    backgroundColor: '#9e9e90',
-  },
-  tableCellStyle: {
-    backgroundColor: '#6e6e60',
-    borderColor: '#6e6e60',
-  },
   header: {
     style: { margin: '0', padding: '12px 0' },
     elements: [
