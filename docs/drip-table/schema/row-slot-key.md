@@ -22,6 +22,7 @@ const schema = {
   rowKey: "id",
   rowSlotKey: "@@slotTypeXXXMustNotInNormalData@@",
   rowSelection: true,
+  bordered: true,
   columns: [
     {
       key: "mock_1",
@@ -64,6 +65,7 @@ for (let i = 1; i < 5; i++) {
 const Demo = () => {
   return (
     <DripTable
+      style={{ margin: '10px' }}
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
