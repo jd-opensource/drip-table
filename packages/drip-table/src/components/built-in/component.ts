@@ -35,6 +35,10 @@ export interface DripTableComponentProps<
    */
   value: unknown;
   /**
+   * 获取该行其他渲染单元格数据（`data[dataIndex]`）
+   */
+  indexValue: (dataIndex: ColumnSchema['dataIndex'], defaultValue?: unknown) => unknown;
+  /**
    * 是否处于禁用状态
    */
   disable?: boolean;

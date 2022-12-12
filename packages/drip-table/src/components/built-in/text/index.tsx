@@ -269,7 +269,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get rawText(): string[] {
-    const { schema, data } = this.props;
+    const { schema, value, data, indexValue } = this.props;
     const { dataIndex, options } = schema;
     const { mode, format, prefix, suffix, parts: params } = options;
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
@@ -282,11 +282,22 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         .split('\n');
     }
     if (mode === 'single') {
-      return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
+      if (options.dataProcess) {
+        console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
+        return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
+      }
+      return `${prefix ?? ''}${translate(schema.options.i18n, `${value}`)}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
+      if (options.dataProcess) {
+        console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
+        return (params || [])
+          .map((config, i) => `${config.prefix || ''}${translate(config.i18n, dataProcessIndex(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
+          .join('\n')
+          .split('\n');
+      }
       return (params || [])
-        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, dataProcessIndex(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
+        .map((config, i) => `${config.prefix || ''}${translate(config.i18n, `${indexValue(config.dataIndex, defaultValue)}`)}${config.suffix || ''}`)
         .join('\n')
         .split('\n');
     }
@@ -301,6 +312,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
     if (mode === 'single' && visibleFunc) {
+      console.warn('schema.columns[].options.visibleFunc is deprecated, use schema.columns[].hidden instead.');
       return dataProcessValue(data, dataIndex, visibleFunc);
     }
     return true;
@@ -311,6 +323,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const { dataIndex, options } = schema;
     const { mode, disableFunc } = options;
     if (mode === 'single' && disableFunc) {
+      console.warn('schema.columns[].options.disableFunc is deprecated, use schema.columns[].disable instead.');
       return dataProcessValue(data, dataIndex, disableFunc);
     }
     return this.props.disable ?? false;
