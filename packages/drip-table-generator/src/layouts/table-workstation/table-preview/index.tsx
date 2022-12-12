@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import DripTable, { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
+import DripTable, { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
@@ -26,7 +26,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       schema={{ ...globalConfigs, columns: columns.map(item => ({ ...item, index: void 0 })) }}
       dataSource={previewDataSource}
       ajv={{ additionalProperties: true }}
-      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv', 'style'])}
+      components={props.customComponents as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>['components']}
+      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv', 'style', 'customComponents'])}
     />
   );
 };
