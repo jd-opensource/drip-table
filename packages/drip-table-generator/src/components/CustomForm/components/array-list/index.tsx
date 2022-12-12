@@ -2,6 +2,7 @@ import { CloseCircleOutlined, MinusCircleOutlined, PlusCircleOutlined, PlusOutli
 import { Alert, Button, Col, Popover, Row } from 'antd';
 import React from 'react';
 
+import { safeExecute } from '@/utils/sandbox';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
@@ -87,8 +88,12 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     if (typeof schema.visible === 'function') {
       return schema.visible(currentValue[schema.name], currentValue, index, parentIndex);
     } if (typeof schema.visible === 'string') {
-      const visible = new Function('currentValue', 'formData', 'index', 'parentIndex', schema.visible);
-      return visible(currentValue[schema.name], currentValue, index, parentIndex);
+      return safeExecute(schema.visible, {
+        currentValue: currentValue[schema.name],
+        formData: currentValue,
+        index,
+        parentIndex,
+      }, false);
     } if (typeof schema.visible === 'boolean') {
       return schema.visible;
     }

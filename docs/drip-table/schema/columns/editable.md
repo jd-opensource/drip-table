@@ -1,9 +1,9 @@
-# 列固定 columns.fixed
+# 列可编辑 columns.editable
 
-- 描述：是否固定列
-- 类型：`'left' | 'right' | boolean`
-- 默认值：`undefined`
-- 更多内容：`true` 等同于 `'left'`。
+- 描述：根据行数据控制当前单元格组件是否隐藏不可见，用于覆盖全局 [`editable`](/drip-table/schema/editable) 属性
+- 类型：`boolean | string`
+- 默认值：`false`
+- 注：当传入脚本字符串控制时，可通过 `props.record` 获取当前行数据，通过 `props.recordIndex` 获取当前行号，通过 `props.value` 获取当前单元格数据。
 
 ```jsx
 /**
@@ -11,6 +11,7 @@
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
+import { message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
@@ -18,17 +19,12 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
-  scroll: {
-    x: 1280,
-  },
+  editable: true,
   columns: [
     {
       key: "mock_1",
       title: "商品名称",
       dataIndex: "name",
-      width: 200,
-      fixed: true,
-      description: "商品名称就是商品的名称。",
       component: "text",
       options: { mode: "single", maxRow: 1 },
     },
@@ -36,7 +32,7 @@ const schema = {
       key: "mock_2",
       title: "商品详情",
       align: "center",
-      width: 500,
+      editable: false,
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
@@ -44,19 +40,9 @@ const schema = {
     {
       key: "mock_3",
       title: "商品价格",
-      width: 200,
       align: "center",
+      editable: 'return [2, 5, 7].includes(props.record.id)',
       dataIndex: "price",
-      component: "text",
-      options: { mode: "single", ellipsis: true, maxRow: 1 },
-    },
-    {
-      key: "mock_3",
-      title: "商品状态",
-      width: 200,
-      fixed: 'right',
-      align: "center",
-      dataIndex: "status",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },

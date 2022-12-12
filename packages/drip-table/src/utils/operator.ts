@@ -30,7 +30,7 @@ export const stringify = (v: unknown) => {
  * @param defaultValue 默认值
  * @returns 值
  */
-const getValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0) => {
+export const indexValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0) => {
   if (typeof data !== 'object' || !data) {
     return defaultValue;
   }
@@ -51,52 +51,6 @@ const getValue = (data: unknown, indexes: string | number | readonly (string | n
     return data;
   }
   return defaultValue;
-};
-
-/**
- * 获取对象的经过数据处理后的最终值
- * @param data 基础对象
- * @param indexes 下标或下标数组
- * @param defaultValue 默认值
- * @param dataProcess 数据处理的语句
- * @returns 值
- */
-export const indexValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess?: string) => {
-  const value = getValue(data, indexes, defaultValue);
-  if (dataProcess) {
-    try {
-      const processFunc = new Function('value', 'rec', dataProcess);
-      const processedValue = processFunc(value, data);
-      return processedValue;
-    } catch (error) {
-      return error instanceof Error
-        ? `{{Render Error: ${error.message}}}`
-        : '{{Unknown Render Error}}';
-    }
-  }
-  return value;
-};
-
-/**
- * 获取数据处理的运行结果
- * @param data 基础对象
- * @param indexes 下标或下标数组
- * @param funcText 数据处理的语句
- * @returns 值
- */
-export const dataProcessValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, funcText?: string) => {
-  const value = getValue(data, indexes, '');
-  if (funcText) {
-    try {
-      const processFunc = new Function('value', 'rec', funcText);
-      const processedValue = processFunc(value, data);
-      return processedValue;
-    } catch (error) {
-      return error instanceof Error
-        ? `{{Render Error: ${error.message}}}`
-        : '{{Unknown Render Error}}';
-    }
-  }
 };
 
 /**
@@ -147,22 +101,3 @@ export const parseNumber = (value: string | number | undefined, defaultValue: nu
   }
   return defaultValue;
 };
-
-/**
- * 复制文字到clipboard
- * @param text 要复制的文字
- * @param onSuccess 兜底数据
- * @param onError 兜底数据
- */
-export function copyTextToClipboard(text: string, onSuccess: () => void, onError: (error: Error) => void) {
-  if (!navigator.clipboard) {
-    onError(new Error('浏览器不支持复制功能 请手动复制'));
-    return;
-  }
-  navigator.clipboard.writeText(text).then(() => {
-    onSuccess();
-    return void 0;
-  }, () => {
-    onError(new Error('复制失败'));
-  });
-}

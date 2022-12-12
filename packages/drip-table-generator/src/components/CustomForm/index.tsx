@@ -13,6 +13,7 @@ import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
 import { DripTableDriver } from 'drip-table';
 import React, { Component } from 'react';
 
+import { safeExecute } from '@/utils/sandbox';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
@@ -92,8 +93,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (typeof config.visible === 'function') {
       return config.visible(formValues[config.name], formValues);
     } if (typeof config.visible === 'string') {
-      const visible = new Function('formData', config.visible);
-      return visible(formValues);
+      return safeExecute(config.visible, { formData: formValues }, false);
     } if (typeof config.visible === 'boolean') {
       return config.visible;
     }

@@ -1,9 +1,21 @@
-# 列固定 columns.fixed
+# 列数据处理 columns.dataTranslation
 
-- 描述：是否固定列
-- 类型：`'left' | 'right' | boolean`
+- 描述：列数据预处理，对单元格数据进行变换
+- 类型：`string`
 - 默认值：`undefined`
-- 更多内容：`true` 等同于 `'left'`。
+
+- 注：处理逻辑通过`return`返回结果，可通过`props`获取传入数据：
+
+    ```typescript
+    type Props {
+      /** 原始单元格数据 */
+      value: unknown;
+      /** 原始行数据 */
+      record：RecordType;
+      /** 原始行号 */
+      recordIndex：number;
+    }
+    ```
 
 ```jsx
 /**
@@ -18,17 +30,11 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
-  scroll: {
-    x: 1280,
-  },
   columns: [
     {
       key: "mock_1",
       title: "商品名称",
       dataIndex: "name",
-      width: 200,
-      fixed: true,
-      description: "商品名称就是商品的名称。",
       component: "text",
       options: { mode: "single", maxRow: 1 },
     },
@@ -36,14 +42,14 @@ const schema = {
       key: "mock_2",
       title: "商品详情",
       align: "center",
-      width: 500,
       dataIndex: "description",
+      dataTranslation: "return '[' + props.record.count + '件] ' + value",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
     {
       key: "mock_3",
-      title: "商品价格",
+      title: "商品单价",
       width: 200,
       align: "center",
       dataIndex: "price",
@@ -51,12 +57,12 @@ const schema = {
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
     {
-      key: "mock_3",
-      title: "商品状态",
+      key: "mock_4",
+      title: "商品总价",
       width: 200,
-      fixed: 'right',
       align: "center",
-      dataIndex: "status",
+      dataIndex: "price",
+      dataTranslation: "return value * props.record.count",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
@@ -67,6 +73,7 @@ const dataSource = Array(10).fill(0).map((_, i) => ({
   id: i,
   name: "商品" + i,
   price: 7999,
+  count: 3,
   status: "onSale",
   description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
 }));

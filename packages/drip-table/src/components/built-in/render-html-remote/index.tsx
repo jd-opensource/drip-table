@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { execute } from '@/utils/sandbox';
 import RichText from '@/components/rich-text';
 
 import { DripTableComponentProps } from '../component';
@@ -79,7 +80,13 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       return <Spin tip="Loading" />;
     }
     try {
-      const html = new Function('rec', this.state.render)(this.props.data);
+      const html = execute(this.state.render, {
+        props: {
+          value: this.props.value,
+          record: this.props.data,
+        },
+        rec: this.props.data,
+      });
       if (typeof html === 'object') {
         return (
           <div>{ Object.prototype.toString.call(html) }</div>

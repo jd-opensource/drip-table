@@ -9,6 +9,8 @@
 import get from 'lodash/get';
 
 import { DripTableRecordTypeBase } from '@/types';
+import { indexValue } from '@/utils/operator';
+import { execute } from '@/utils/sandbox';
 
 /**
  * 格式化变量用于提供给渲染函数
@@ -44,7 +46,12 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
     value = stringify(text)
       .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
         try {
-          return stringify(new Function('rec', `return ${s1}`)(rec));
+          return execute(`return ${s1}`, {
+            props: {
+              record: rec,
+            },
+            rec,
+          });
         } catch (error) {
           return error instanceof Error
             ? `{{Render Error: ${error.message}}}`
@@ -53,7 +60,12 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
       });
   } else if (mode === 'script') {
     try {
-      value = stringify(new Function('rec', text)(rec));
+      value = stringify(execute(text, {
+        props: {
+          record: rec,
+        },
+        rec,
+      }));
     } catch (error) {
       value = error instanceof Error
         ? `Render Error: ${error.message}`
@@ -72,4 +84,46 @@ export const preventEvent = (e: React.BaseSyntheticEvent) => {
   e.preventDefault();
   e.stopPropagation();
   return false;
+};
+
+/**
+ * 获取对象的经过数据处理后的最终值 WHAT THE HELL IS THIS??
+ * @param data 基础对象
+ * @param indexes 下标或下标数组
+ * @param defaultValue 默认值
+ * @param dataProcess 数据处理的语句
+ * @returns 值
+ */
+export const dataProcessIndex = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess?: string) => {
+  const value = indexValue(data, indexes, defaultValue);
+  if (dataProcess) {
+    try {
+      return execute(dataProcess, { rec: data, value });
+    } catch (error) {
+      return error instanceof Error
+        ? `{{Render Error: ${error.message}}}`
+        : '{{Unknown Render Error}}';
+    }
+  }
+  return value;
+};
+
+/**
+ * 获取数据处理的运行结果 WHAT THE HELL IS THIS??
+ * @param data 基础对象
+ * @param indexes 下标或下标数组
+ * @param funcText 数据处理的语句
+ * @returns 值
+ */
+export const dataProcessValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, funcText?: string) => {
+  const value = indexValue(data, indexes, '');
+  if (funcText) {
+    try {
+      return execute(funcText, { rec: data, value });
+    } catch (error) {
+      return error instanceof Error
+        ? `{{Render Error: ${error.message}}}`
+        : '{{Unknown Render Error}}';
+    }
+  }
 };

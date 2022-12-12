@@ -8,10 +8,9 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { dataProcessValue } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
+import { dataProcessValue, finalizeString } from '../utils';
 
 export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   /** 展示模式：单按钮、多按钮 */
@@ -126,7 +125,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     const { schema, data } = this.props;
     const { dataIndex } = schema;
     if (!disableFunc) {
-      return false;
+      return this.props.disable ?? false;
     }
     return dataProcessValue(data, dataIndex, disableFunc);
   }

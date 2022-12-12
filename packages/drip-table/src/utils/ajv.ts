@@ -104,6 +104,13 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
   },
 };
 
+const DROP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
+  properties: {
+    style: { typeof: 'object' },
+    elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
+  },
+};
+
 let AJV_CACHE: Ajv | undefined;
 
 const createAjv = (): Ajv => {
@@ -162,20 +169,10 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         header: {
           anyOf: [
             { type: 'boolean' },
-            {
-              properties: {
-                style: { typeof: 'object' },
-                elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
-              },
-            },
+            DROP_TABLE_GENERIC_RENDER_SCHEMA,
           ],
         },
-        footer: {
-          properties: {
-            style: { typeof: 'object' },
-            elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
-          },
-        },
+        footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
         pagination: {
           anyOf: [
             { type: 'boolean' },
@@ -249,6 +246,9 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           items: {},
         },
         rowKey: { type: 'string' },
+        rowSlotKey: { type: 'string' },
+        rowHeader: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+        rowFooter: DROP_TABLE_GENERIC_RENDER_SCHEMA,
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
       },
       required: ['columns'],
@@ -331,12 +331,16 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         subtableFooter: { instanceof: 'Function' },
         rowExpandable: { instanceof: 'Function' },
         expandedRowRender: { instanceof: 'Function' },
+        rowHeaderVisible: { instanceof: 'Function' },
+        rowFooterVisible: { instanceof: 'Function' },
         rowSelectable: { instanceof: 'Function' },
         componentDidMount: { instanceof: 'Function' },
         componentDidUpdate: { instanceof: 'Function' },
         componentWillUnmount: { instanceof: 'Function' },
         onRowClick: { instanceof: 'Function' },
         onRowDoubleClick: { instanceof: 'Function' },
+        onRowExpand: { instanceof: 'Function' },
+        onRowCollapse: { instanceof: 'Function' },
         onSelectionChange: { instanceof: 'Function' },
         onSearch: { instanceof: 'Function' },
         onInsertButtonClick: { instanceof: 'Function' },
@@ -479,18 +483,8 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           {
             properties: {
               body: { type: 'string' },
-              header: {
-                properties: {
-                  style: { typeof: 'object' },
-                  elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
-                },
-              },
-              footer: {
-                properties: {
-                  style: { typeof: 'object' },
-                  elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
-                },
-              },
+              header: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+              footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
             },
             required: ['body'],
           },
@@ -505,12 +499,31 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'string' },
         ],
       },
+      dataTranslation: { type: 'string' },
       defaultValue: {},
       description: { type: 'string' },
       clipboard: { type: 'boolean' },
       fixed: {
         anyOf: [
           { enum: ['left', 'right'] },
+          { type: 'boolean' },
+        ],
+      },
+      hidden: {
+        anyOf: [
+          { type: 'string' },
+          { type: 'boolean' },
+        ],
+      },
+      disable: {
+        anyOf: [
+          { type: 'string' },
+          { type: 'boolean' },
+        ],
+      },
+      editable: {
+        anyOf: [
+          { type: 'string' },
           { type: 'boolean' },
         ],
       },

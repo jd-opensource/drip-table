@@ -10,6 +10,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue } from '@/utils/operator';
+import { execute, safeExecute } from '@/utils/sandbox';
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
@@ -151,11 +152,13 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const options = this.props.schema.options;
     if (typeof options.disabled === 'string') {
-      try {
-        return !!new Function('rec', `return ${options.disabled}`)(this.props.data);
-      } catch {
-        return false;
-      }
+      return safeExecute(`return ${options.disabled}`, {
+        props: {
+          value: this.props.value,
+          record: this.props.data,
+        },
+        rec: this.props.data,
+      }, false);
     }
     return !!options.disabled;
   }
@@ -185,11 +188,14 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
 
   private finalizeOptionDisabled(disabled?: boolean | string, value?: unknown): boolean {
     if (typeof disabled === 'string') {
-      let isDisabled = false;
-      try {
-        isDisabled = !!new Function('rec', 'value', `return ${disabled}`)(this.props.data, value);
-      } catch {}
-      return isDisabled;
+      return safeExecute(`return ${disabled}`, {
+        props: {
+          value,
+          record: this.props.data,
+        },
+        value,
+        rec: this.props.data,
+      }, false);
     }
     return !!disabled;
   }
@@ -198,7 +204,12 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     if (typeof body === 'string') {
       let finalBodyString: string | undefined = void 0;
       try {
-        finalBodyString = new Function('rec', `return ${body}`)(this.props.data);
+        finalBodyString = execute(`return ${body}`, {
+          props: {
+            rec: this.props.data,
+          },
+          rec: this.props.data,
+        });
         if (typeof finalBodyString !== 'string') {
           return void 0;
         }
@@ -227,7 +238,12 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return response;
     }
     if (options.response?.mapper) {
-      return new Function('response', `return ${options.response?.mapper || 'response'}`)(response);
+      return safeExecute(`return ${options.response?.mapper || 'response'}`, {
+        props: {
+          response,
+        },
+        response,
+      }, response);
     }
     return response;
   }

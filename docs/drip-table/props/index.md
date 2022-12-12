@@ -33,11 +33,15 @@ title: 总览
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
 | [expandedRowRender](/drip-table/props/expanded-row-render) | 行展开自定义渲染函数 | × | [🔗 示例](/drip-table/props/expanded-row-render) |
 | [rowSelectable](/drip-table/props/row-selectable) | 获取指定行是否可选择 | × | [🔗 示例](/drip-table/props/row-selectable) |
+| [rowHeaderVisible](/drip-table/schema/row-header-visible) | 行头部插槽是否可见 | × | [🔗 示例](/drip-table/schema/row-header-visible) |
+| [rowFooterVisible](/drip-table/schema/row-footer-visible) | 行尾部插槽是否可见 | × | [🔗 示例](/drip-table/schema/row-footer-visible) |
 | [componentDidMount](/drip-table/props/component-did-mount) | 生命周期：组件加载完成 | × | [🔗 示例](/drip-table/props/component-did-mount) |
 | [componentDidUpdate](/drip-table/props/component-did-update) | 生命周期：组件更新完成 | × | [🔗 示例](/drip-table/props/component-did-update) |
 | [componentWillUnmount](/drip-table/props/component-will-unmount) | 生命周期：组件即将卸载 | × | [🔗 示例](/drip-table/props/component-will-unmount) |
 | [onRowClick](/drip-table/props/on-row-click) | 点击行 | × | [🔗 示例](/drip-table/props/on-row-click) |
 | [onRowDoubleClick](/drip-table/props/on-row-double-click) | 双击行 | × | [🔗 示例](/drip-table/props/on-row-double-click) |
+| [onRowExpand](/drip-table/props/on-row-expand) | 行展开触发 | × | [🔗 示例](/drip-table/props/on-row-expand) |
+| [onRowCollapse](/drip-table/props/on-row-collapse) | 行收起触发 | × | [🔗 示例](/drip-table/props/on-row-collapse) |
 | [onSelectionChange](/drip-table/props/on-selection-change) | 选择行变化 | × | [🔗 示例](/drip-table/props/on-selection-change) |
 | [onSearch](/drip-table/props/on-search) | 搜索触发 | × | [🔗 示例](/drip-table/props/on-search) |
 | [onInsertButtonClick](/drip-table/props/on-insert-button-click) | 点击添加按钮触发 | × | [🔗 示例](/drip-table/props/on-insert-button-click) |

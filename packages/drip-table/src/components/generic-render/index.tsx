@@ -212,6 +212,14 @@ interface GenericRenderProps<
    * 表格列 Schema
    */
   columnSchema?: DripTableBuiltInColumnSchema | ExtraOptions['CustomColumnSchema'];
+  /**
+   * 当前插槽位置行数据（仅位于行插槽可用）
+   */
+  record?: RecordType;
+  /**
+   * 当前插槽位置行下标（仅位于行插槽可用）
+   */
+  recordIndex?: number;
 }
 
 const GenericRender = <
@@ -292,6 +300,8 @@ const GenericRender = <
             schema={tableProps.schema}
             ext={tableProps.ext}
             dataSource={tableProps.dataSource}
+            record={props.record}
+            recordIndex={props.recordIndex}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
           />
         );

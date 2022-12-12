@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { execute } from '@/utils/sandbox';
 import ErrorBoundary from '@/components/error-boundary';
 import RichText from '@/components/rich-text';
 
@@ -35,7 +36,13 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
     const { data, schema: { options } } = this.props;
     const Alert = this.props.driver.components.Alert;
     try {
-      const html = new Function('rec', options.render)(data);
+      const html = execute(options.render, {
+        props: {
+          value: this.props.value,
+          record: data,
+        },
+        rec: data,
+      });
       if (typeof html === 'object') {
         return (
           <div>{ Object.prototype.toString.call(html) }</div>

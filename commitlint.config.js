@@ -27,7 +27,7 @@ module.exports = {
       rules: {
         'invalid-subject-chars': (data) => {
           if (typeof data.subject === 'string') {
-            const invalidChars = data.subject.match(/[^a-zA-Z0-9,.'"\-_ /\\#():]/gu);
+            const invalidChars = data.subject.match(/[^a-zA-Z0-9,.'"\-_ /\\#():@]/gu);
             if (invalidChars && invalidChars.length > 0) {
               return [false, `Subject contains invalid characters: ${invalidChars.join('')}`];
             }

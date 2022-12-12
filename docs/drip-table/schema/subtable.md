@@ -17,7 +17,7 @@ interface Subtable {
 ```jsx
 /**
  * transform: true
- * defaultShowCode: false
+ * defaultShowCode: true
  * hideActions: ["CSB"]
  */
 import { message } from "antd";
