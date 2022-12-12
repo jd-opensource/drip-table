@@ -12,7 +12,7 @@ title: 表头自定义配置
 ```jsx
 /**
  * transform: true
- * defaultShowCode: false
+ * defaultShowCode: true
  * hideActions: ["CSB"]
  */
 import "drip-table/dist/index.css";

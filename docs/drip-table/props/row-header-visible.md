@@ -20,7 +20,7 @@
 ```jsx
 /**
  * transform: true
- * defaultShowCode: false
+ * defaultShowCode: true
  * hideActions: ["CSB"]
  */
 import React from "react";
