@@ -198,8 +198,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       rowStyle,
       rowHoverStyle,
       tableCellStyle,
-      rowGap: formData.rowGap as number,
-      rowRadius: formData.rowRadius as number,
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },

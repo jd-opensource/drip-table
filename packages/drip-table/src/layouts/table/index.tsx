@@ -652,28 +652,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   React.useEffect(() => {
     const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.headerStyle || {});
-    const styleDom = document.querySelector('#table-header-style');
-    if (styleDom) {
-      styleDom.innerHTML = customHeaderClass;
-    } else {
-      document.head.innerHTML += `<style id="table-header-style" type="text/css">${customHeaderClass}</style>`;
+    let borderRadiusClass = '';
+    if (tableProps.schema.headerStyle?.borderRadius) {
+      const originBorderRadius = tableProps.schema.headerStyle?.borderRadius || 0;
+      const radius = typeof originBorderRadius === 'string' ? originBorderRadius.split(' ')[0] : originBorderRadius;
+      borderRadiusClass += ` .jfe-drip-table-thead > tr > th:first-of-type{ border-radius: ${radius} 0 0 ${radius}; }`;
+      borderRadiusClass += ` .jfe-drip-table-thead > tr > th:last-of-type{ border-radius: 0 ${radius} ${radius} 0; }`;
     }
-    const header = document.querySelector('.jfe-drip-table-header');
-    if (!header) {
-      const thead = document.querySelector('.jfe-drip-table-thead');
-      if (thead) {
-        if ((thead.nextSibling as HTMLTableCellElement).tagName === 'DIV') {
-          thead.nextSibling?.remove();
-        }
-        const margin = (tableProps.schema.headerStyle?.margin as string || '').split(' ');
-        let marginBottom = margin.length === 4 ? margin[2] : margin[0];
-        if (tableProps.schema.headerStyle?.marginBottom) { marginBottom = tableProps.schema.headerStyle?.marginBottom as string; }
-        if (marginBottom) {
-          const node = document.createElement('div');
-          node.style.height = (/^(-)?[0-9]+(.[0-9]+)?$/u).test(marginBottom) ? `${marginBottom}px` : marginBottom;
-          thead.parentElement?.insertBefore(node, thead.nextSibling);
-        }
-      }
+    const styleSheet = document.querySelector('#table-header-style');
+    if (styleSheet) {
+      styleSheet.innerHTML = customHeaderClass + borderRadiusClass;
+    } else {
+      document.head.innerHTML += `<style id="table-header-style" type="text/css">${customHeaderClass + borderRadiusClass}</style>`;
     }
   }, [tableProps.schema.headerStyle]);
 
@@ -681,9 +671,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
     .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
     .jfe-drip-table-thead > tr > th`, tableProps.schema.headerCellStyle || {});
-    const styleDom = document.querySelector('#table-header-cell-style');
-    if (styleDom) {
-      styleDom.innerHTML = customHeaderItemClass;
+    const styleSheet = document.querySelector('#table-header-cell-style');
+    if (styleSheet) {
+      styleSheet.innerHTML = customHeaderItemClass;
     } else {
       document.head.innerHTML += `<style id="table-header-cell-style" type="text/css">${customHeaderItemClass}</style>`;
     }
@@ -693,70 +683,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
     .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
     .jfe-drip-table-tbody > tr > td`, tableProps.schema.tableCellStyle || {});
-    const styleDom = document.querySelector('#table-cell-style');
-    if (styleDom) {
-      styleDom.innerHTML = tableCellClass;
+    const styleSheet = document.querySelector('#table-cell-style');
+    if (styleSheet) {
+      styleSheet.innerHTML = tableCellClass;
     } else {
       document.head.innerHTML += `<style id="table-cell-style" type="text/css">${tableCellClass}</style>`;
     }
   }, [tableProps.schema.tableCellStyle]);
 
   React.useEffect(() => {
-    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr.jfe-drip-table-row:hover > td,
+    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr[data-row-key].jfe-drip-table-row:hover > td,
     .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover,
-    .jfe-drip-table tbody > tr.jfe-drip-table-row:hover > td`, tableProps.schema.rowHoverStyle || {});
-    const styleDom = document.querySelector('#table-row-hover-style');
-    if (styleDom) {
-      styleDom.innerHTML = rowHoverClass;
+    .jfe-drip-table tbody > tr[data-row-key].jfe-drip-table-row:hover > td`, tableProps.schema.rowHoverStyle || {});
+    const styleSheet = document.querySelector('#table-row-hover-style');
+    if (styleSheet) {
+      styleSheet.innerHTML = rowHoverClass;
     } else {
       document.head.innerHTML += `<style id="table-row-hover-style" type="text/css">${rowHoverClass}</style>`;
     }
   }, [tableProps.schema.rowHoverStyle]);
-
-  React.useEffect(() => {
-    const tbody = tableContainer.current?.querySelector<HTMLTableRowElement>('tbody');
-    if (tbody) {
-      tbody.childNodes.forEach(item => ((item as HTMLTableCellElement).tagName === 'DIV' ? item.remove() : ''));
-    }
-    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('tbody > tr.jfe-drip-table-row');
-    if (tableProps.schema.rowGap) {
-      setTimeout(() => {
-        rows?.forEach((row) => {
-          if (row.nextSibling && row.nextSibling.nodeName === 'TR') {
-            const node = document.createElement('div');
-            node.style.height = `${tableProps.schema.rowGap}px`;
-            row.parentElement?.insertBefore(node, row.nextSibling);
-          }
-        });
-      }, 20);
-    }
-  }, [
-    dataSource,
-    tableState.pagination.current,
-    tableState.pagination.pageSize,
-    tableProps.schema.rowGap,
-    tableProps.schema.rowSelection,
-    tableProps.schema.rowSlotKey,
-  ]);
-
-  React.useEffect(() => {
-    const rows = tableContainer.current?.querySelectorAll<HTMLTableRowElement>('tbody > tr.jfe-drip-table-row');
-    if (tableProps.schema.rowRadius) {
-      setTimeout(() => {
-        rows?.forEach((row) => {
-          (row.firstChild as HTMLTableCellElement).style.borderRadius = `${tableProps.schema.rowRadius}px 0 0 ${tableProps.schema.rowRadius}px`;
-          (row.lastChild as HTMLTableCellElement).style.borderRadius = `0 ${tableProps.schema.rowRadius}px ${tableProps.schema.rowRadius}px 0`;
-        });
-      }, 20);
-    }
-  }, [
-    dataSource,
-    tableState.pagination.current,
-    tableState.pagination.pageSize,
-    tableProps.schema.rowRadius,
-    tableProps.schema.rowSelection,
-    tableProps.schema.rowSlotKey,
-  ]);
 
   const paginationPosition = React.useMemo(
     () => {

@@ -130,8 +130,6 @@ const umiConfig: IConfig = {
           '/drip-table/schema/virtual',
           '/drip-table/schema/row-height',
           '/drip-table/schema/row-key',
-          '/drip-table/schema/row-gap',
-          '/drip-table/schema/row-radius',
           '/drip-table/schema/row-hover-style',
           '/drip-table/schema/row-slot-key',
           '/drip-table/schema/row-header',
