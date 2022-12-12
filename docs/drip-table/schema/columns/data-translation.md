@@ -62,7 +62,7 @@ const schema = {
       width: 200,
       align: "center",
       dataIndex: "price",
-      dataTranslation: "return value * props.record.count",
+      dataTranslation: "return props.value * props.record.count",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
