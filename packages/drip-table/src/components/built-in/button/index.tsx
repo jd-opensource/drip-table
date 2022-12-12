@@ -125,7 +125,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     const { schema, data } = this.props;
     const { dataIndex } = schema;
     if (!disableFunc) {
-      return false;
+      return this.props.disable ?? false;
     }
     return dataProcessValue(data, dataIndex, disableFunc);
   }

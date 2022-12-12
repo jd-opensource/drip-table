@@ -117,6 +117,18 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   fixed?: 'left' | 'right' | boolean;
   /**
+   * 是否处于隐藏状态
+   */
+  hidden?: boolean | string;
+  /**
+   * 是否处于禁用状态
+   */
+  disable?: boolean | string;
+  /**
+   * 是否可通过点击进入编辑模式
+   */
+  editable?: boolean | string;
+  /**
    * 用户可控制该列显示隐藏
    */
   hidable?: boolean;

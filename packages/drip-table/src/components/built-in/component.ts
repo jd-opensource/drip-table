@@ -35,6 +35,10 @@ export interface DripTableComponentProps<
    */
   value: unknown;
   /**
+   * 是否处于禁用状态
+   */
+  disable?: boolean;
+  /**
    * 是否可通过点击进入编辑模式
    */
   editable?: boolean;

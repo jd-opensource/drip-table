@@ -123,49 +123,81 @@ export const columnGenerator = <
         ds[index] = rec;
         extraProps.onDataSourceChange?.(ds, tableInfo);
       };
-      let dataTranslation: (v: unknown, r: RecordType, i: number) => unknown = v => v;
-      if (columnSchema.dataTranslation) {
-        try {
-          const translate = createExecutor(columnSchema.dataTranslation, ['props']);
-          dataTranslation = (v, r, i) => {
-            try {
-              return translate({ value: v, record: r, recordIndex: i });
-            } catch {}
-            return void 0;
-          };
-        } catch {}
-      }
+      type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number }) => unknown;
+      const generatePropsTranslator = (translatorSchema: unknown): PropsTranslator => {
+        if (typeof translatorSchema === 'undefined') {
+          return (v, c) => v;
+        }
+        if (typeof translatorSchema === 'string') {
+          try {
+            const translate = createExecutor(translatorSchema, ['props']);
+            return (v, c) => {
+              try {
+                return translate(c);
+              } catch {}
+              return void 0;
+            };
+          } catch {}
+        }
+        return () => translatorSchema;
+      };
+      const dataTranslator = generatePropsTranslator(columnSchema.dataTranslation);
+      const hiddenTranslator = generatePropsTranslator(columnSchema.hidden);
+      const disableTranslator = generatePropsTranslator(columnSchema.disable);
+      const editableTranslator = generatePropsTranslator(columnSchema.editable);
       if (BuiltInComponent) {
-        column.render = (_, row) => (
-          <BuiltInComponent
-            driver={extraProps.driver}
-            value={dataTranslation(indexValue(row.record, columnSchema.dataIndex), row.record, row.index) ?? columnSchema.defaultValue}
-            data={row.record}
-            editable={tableInfo.schema.editable}
-            onChange={v => onChange(row.record, row.index, v)}
-            schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
-            ext={extraProps.ext}
-            components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
-            fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
-          />
-        );
+        column.render = (_, row) => {
+          const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
+          const record = row.record;
+          const recordIndex = row.index;
+          const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
+          const translatorContext = { value, record, recordIndex };
+          if (hiddenTranslator(false, translatorContext)) {
+            return null;
+          }
+          return (
+            <BuiltInComponent
+              driver={extraProps.driver}
+              value={value}
+              data={record}
+              disable={Boolean(disableTranslator(false, translatorContext))}
+              editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
+              onChange={v => onChange(record, recordIndex, v)}
+              schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
+              ext={extraProps.ext}
+              components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
+              fireEvent={event => extraProps.onEvent?.(event, record, recordIndex, { ...tableInfo, record })}
+            />
+          );
+        };
       }
       const [libName, componentName] = columnSchema.component.split('::');
       if (libName && componentName) {
         const ExtraComponent = extraProps.components?.[libName]?.[componentName];
         if (ExtraComponent) {
-          column.render = (_, row) => (
-            <ExtraComponent
-              driver={extraProps.driver}
-              value={dataTranslation(indexValue(row.record, columnSchema.dataIndex), row.record, row.index) ?? columnSchema.defaultValue}
-              data={row.record}
-              editable={tableInfo.schema.editable}
-              onChange={v => onChange(row.record, row.index, v)}
-              schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
-              ext={extraProps.ext}
-              fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
-            />
-          );
+          column.render = (_, row) => {
+            const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
+            const record = row.record;
+            const recordIndex = row.index;
+            const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
+            const translatorContext = { value, record, recordIndex };
+            if (hiddenTranslator(false, translatorContext)) {
+              return null;
+            }
+            return (
+              <ExtraComponent
+                driver={extraProps.driver}
+                value={value}
+                data={record}
+                disable={Boolean(disableTranslator(false, translatorContext))}
+                editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
+                onChange={v => onChange(row.record, row.index, v)}
+                schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
+                ext={extraProps.ext}
+                fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
+              />
+            );
+          };
         }
       }
     }

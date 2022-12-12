@@ -313,7 +313,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (mode === 'single' && disableFunc) {
       return dataProcessValue(data, dataIndex, disableFunc);
     }
-    return false;
+    return this.props.disable ?? false;
   }
 
   private updateCellRect = ($main: HTMLElement) => {

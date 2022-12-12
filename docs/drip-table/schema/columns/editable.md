@@ -1,9 +1,9 @@
-# 列可隐藏 columns.hidable
+# 列可编辑 columns.editable
 
-- 描述：用户可控制该列显示隐藏
-- 类型：`boolean`
+- 描述：根据行数据控制当前单元格组件是否隐藏不可见，用于覆盖全局 [`editable`](/drip-table/schema/editable) 属性
+- 类型：`boolean | string`
 - 默认值：`false`
-- 更多内容：用于搭配隐藏列按钮 [`header.elements.GenericRenderDisplayColumnSelectorElement`](/drip-table/schema/header/elements#%E5%B1%95%E7%A4%BA%E5%88%97%E9%80%89%E6%8B%A9%E5%99%A8-genericrenderdisplaycolumnselectorelement)、隐藏列事件 [`props.onDisplayColumnKeysChange`](/drip-table/props/on-display-column-keys-change) 使用。
+- 注：当传入脚本字符串控制时，可通过 `props.record` 获取当前行数据，通过 `props.recordIndex` 获取当前行号，通过 `props.value` 获取当前单元格数据。
 
 ```jsx
 /**
@@ -19,6 +19,7 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
+  editable: true,
   columns: [
     {
       key: "mock_1",
@@ -31,7 +32,7 @@ const schema = {
       key: "mock_2",
       title: "商品详情",
       align: "center",
-      hidable: true,
+      editable: false,
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
@@ -40,17 +41,12 @@ const schema = {
       key: "mock_3",
       title: "商品价格",
       align: "center",
-      hidable: true,
+      editable: 'return [2, 5, 7].includes(props.record.id)',
       dataIndex: "price",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
   ],
-  header: {
-    elements: [
-      { type: 'display-column-selector' },
-    ],
-  },
 };
 
 const dataSource = Array(10).fill(0).map((_, i) => ({
@@ -67,10 +63,6 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      onDisplayColumnKeysChange={(displayColumnKeys) => {
-        message.info(`修改展示列：${JSON.stringify(displayColumnKeys)}。`)
-        console.log('onDisplayColumnKeysChange', displayColumnKeys);
-      }}
     />
   );
 };

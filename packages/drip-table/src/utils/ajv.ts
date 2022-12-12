@@ -509,6 +509,24 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'boolean' },
         ],
       },
+      hidden: {
+        anyOf: [
+          { type: 'string' },
+          { type: 'boolean' },
+        ],
+      },
+      disable: {
+        anyOf: [
+          { type: 'string' },
+          { type: 'boolean' },
+        ],
+      },
+      editable: {
+        anyOf: [
+          { type: 'string' },
+          { type: 'boolean' },
+        ],
+      },
       hidable: { type: 'boolean' },
       filters: {
         type: 'array',
