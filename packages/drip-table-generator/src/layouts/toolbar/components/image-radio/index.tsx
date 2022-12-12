@@ -13,7 +13,7 @@ import styles from './index.module.less';
 
 interface ImageRadioProps<Type> {
   value: Type;
-  options: { label: string; value: Type; image?: string }[];
+  options: { label: string | React.ReactNode; value: Type; image?: string }[];
   onChange?: (value?: Type) => void;
 }
 

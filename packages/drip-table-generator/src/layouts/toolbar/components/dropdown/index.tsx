@@ -20,7 +20,7 @@ interface DropDownRadioProps<T> {
   icon: React.ReactNode;
   label: string | React.ReactNode;
   overlayType: 'radio' | 'image-radio';
-  options: { label: string; value: T; image?: string }[];
+  options: ({ label: string | React.ReactNode; value: T; image?: string } & Record<string, unknown>)[];
   default?: T;
   onChange?: (value?: T) => void;
 }

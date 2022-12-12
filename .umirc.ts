@@ -238,8 +238,7 @@ const umiConfig: IConfig = {
           '/drip-table-generator/functions/header.md',
           '/drip-table-generator/functions/data-source.md',
           '/drip-table-generator/functions/table-props.md',
-          '/drip-table-generator/functions/custom-style.md',
-          '/drip-table-generator/functions/row-with-slots.md',
+          '/drip-table-generator/functions/custom-theme.md',
         ],
       },
       {

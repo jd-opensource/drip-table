@@ -64,10 +64,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
     defaultData?: Record<string, unknown>,
   ) => {
-    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle', 'headerStyle', 'headerCellStyle', 'rowStyle', 'rowHoverStyle', 'tableCellStyle'];
+    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle', 'headerStyle', 'headerCellStyle', 'rowHoverStyle', 'tableCellStyle'];
     const formData: Record<string, unknown> = {
       ...defaultData,
-      ...filterAttributes(globalConfigs, ['header', 'footer', ...globalConfigsPrefix]),
+      ...filterAttributes(globalConfigs, ['header', 'footer', 'rowHeader', ...globalConfigsPrefix]),
     };
 
     if (typeof globalConfigs?.header === 'object') {
@@ -100,6 +100,26 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         }
       }
       formData['footer.items'] = footerElements;
+    }
+    if (typeof globalConfigs?.rowHeader === 'object') {
+      Object.keys(globalConfigs?.rowHeader.style || {}).forEach((key) => {
+        formData[`rowHeaderStyle.${key}`] = globalConfigs?.rowHeader?.style?.[key];
+      });
+      const rowHeaderElements = globalConfigs?.rowHeader?.elements || [];
+      for (const headerItem of rowHeaderElements) {
+        if (headerItem.type === 'spacer') {
+          headerItem['style.width'] = headerItem.style?.width;
+        }
+        if (headerItem.type === 'search') {
+          headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
+        }
+        if (headerItem.type === 'slot') {
+          Object.keys(headerItem.props || {}).forEach((key) => {
+            headerItem[key] = headerItem.props?.[key];
+          });
+        }
+      }
+      formData['rowHeader.items'] = rowHeaderElements;
     }
     if (typeof globalConfigs?.pagination === 'object') {
       formData.pagination = true;
@@ -171,9 +191,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     const innerStyle = encodeStyles('innerStyle', formData);
     const headerStyle = encodeStyles('headerStyle', formData);
     const headerCellStyle = encodeStyles('headerCellStyle', formData);
-    const rowStyle = encodeStyles('rowStyle', formData);
     const rowHoverStyle = encodeStyles('rowHoverStyle', formData);
     const tableCellStyle = encodeStyles('tableCellStyle', formData);
+    const rowHeaderStyle = encodeStyles('rowHeaderStyle', formData);
     const ext: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('ext.')) {
@@ -181,7 +201,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|header(Cell)?Style|row(Hover)?Style|tableCellStyle)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|header(Cell)?Style|rowHoverStyle|tableCellStyle|rowHeader)\.|scroll)/u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -195,9 +215,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       innerStyle,
       headerStyle,
       headerCellStyle,
-      rowStyle,
       rowHoverStyle,
       tableCellStyle,
+      rowHeader: {
+        style: { ...rowHeaderStyle },
+        elements: (formData['rowHeader.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+      },
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },

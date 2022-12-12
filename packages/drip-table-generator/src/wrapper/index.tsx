@@ -16,6 +16,7 @@ import React from 'react';
 import { filterAttributes } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import GeneratorLayout from '@/layouts';
+import { themeList } from '@/layouts/toolbar/config';
 
 import { DripTableGeneratorProps } from '../typing';
 
@@ -30,13 +31,15 @@ RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => Omit<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>, 'setState'> = (props) => {
   const schema = props.schema;
+  const themeOptions = [...themeList, ...props.customThemeOptions || []];
+  const defaultTheme = themeOptions.find(item => item.value === props.defaultTheme)?.style || {};
   return {
     globalConfigs: schema
-      ? { ...filterAttributes(schema, 'column') }
+      ? { ...filterAttributes(schema, 'column'), ...defaultTheme }
       : { pagination: false, header: false },
     columns: schema?.columns.map((item, index) => ({ index, ...item })) || [],
     previewDataSource: [...props.dataSource || []],
-    mode: 'edit',
+    mode: props.defaultMode || 'edit',
   };
 };
 

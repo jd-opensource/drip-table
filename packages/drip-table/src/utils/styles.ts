@@ -8,11 +8,11 @@
 
 import React from 'react';
 
-export const translateStyleToClass = (className: string, styleProperties: React.CSSProperties) => {
+export const translateStyleToClass = (selector: string, styleProperties: React.CSSProperties) => {
   let styles = '';
   Object.keys(styleProperties).forEach((key) => {
     const lineKey = key.replace(/([A-Z])/ug, '-$1').toLowerCase();
     styles += `${lineKey}:${styleProperties[key]};`;
   });
-  return `${className.startsWith('.') ? '' : '.'}${className} {${styles}}`;
+  return `${selector.startsWith('.') ? '' : '.'}${selector} {${styles}}`;
 };

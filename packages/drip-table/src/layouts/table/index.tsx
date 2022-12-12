@@ -652,6 +652,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   React.useEffect(() => {
     const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.headerStyle || {});
+    const originHeaderClass = '.jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-content > table, .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table { border-top: none; }';
     let borderRadiusClass = '';
     if (tableProps.schema.headerStyle?.borderRadius) {
       const originBorderRadius = tableProps.schema.headerStyle?.borderRadius || 0;
@@ -659,47 +660,61 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       borderRadiusClass += ` .jfe-drip-table-thead > tr > th:first-of-type{ border-radius: ${radius} 0 0 ${radius}; }`;
       borderRadiusClass += ` .jfe-drip-table-thead > tr > th:last-of-type{ border-radius: 0 ${radius} ${radius} 0; }`;
     }
-    const styleSheet = document.querySelector('#table-header-style');
+    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-header-style]');
     if (styleSheet) {
-      styleSheet.innerHTML = customHeaderClass + borderRadiusClass;
+      styleSheet.innerHTML = customHeaderClass + originHeaderClass + borderRadiusClass;
     } else {
-      document.head.innerHTML += `<style id="table-header-style" type="text/css">${customHeaderClass + borderRadiusClass}</style>`;
+      const styleNode = document.createElement('style');
+      styleNode.setAttribute('key', 'table-header-style');
+      styleNode.setAttribute('type', 'text/css');
+      styleNode.innerHTML = customHeaderClass + originHeaderClass + borderRadiusClass;
+      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
     }
   }, [tableProps.schema.headerStyle]);
 
   React.useEffect(() => {
     const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
-    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
-    .jfe-drip-table-thead > tr > th`, tableProps.schema.headerCellStyle || {});
-    const styleSheet = document.querySelector('#table-header-cell-style');
+    .jfe-drip-table > .jfe-drip-table-container .jfe-drip-table-thead > tr > th`, tableProps.schema.headerCellStyle || {});
+    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-header-cell-style]');
     if (styleSheet) {
       styleSheet.innerHTML = customHeaderItemClass;
     } else {
-      document.head.innerHTML += `<style id="table-header-cell-style" type="text/css">${customHeaderItemClass}</style>`;
+      const styleNode = document.createElement('style');
+      styleNode.setAttribute('key', 'table-header-cell-style');
+      styleNode.setAttribute('type', 'text/css');
+      styleNode.innerHTML = customHeaderItemClass;
+      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
     }
   }, [tableProps.schema.headerCellStyle]);
 
   React.useEffect(() => {
-    const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
-    .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td,
-    .jfe-drip-table-tbody > tr > td`, tableProps.schema.tableCellStyle || {});
-    const styleSheet = document.querySelector('#table-cell-style');
+    const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td:not(.jfe-drip-table--slot),
+    .jfe-drip-table > .jfe-drip-table-container .jfe-drip-table-tbody > tr > td:not(.jfe-drip-table--slot)`, tableProps.schema.tableCellStyle || {});
+    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-cell-style]');
     if (styleSheet) {
       styleSheet.innerHTML = tableCellClass;
     } else {
-      document.head.innerHTML += `<style id="table-cell-style" type="text/css">${tableCellClass}</style>`;
+      const styleNode = document.createElement('style');
+      styleNode.setAttribute('key', 'table-cell-style');
+      styleNode.setAttribute('type', 'text/css');
+      styleNode.innerHTML = tableCellClass;
+      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
     }
   }, [tableProps.schema.tableCellStyle]);
 
   React.useEffect(() => {
-    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr[data-row-key].jfe-drip-table-row:hover > td,
+    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr:hover > td,
     .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover,
-    .jfe-drip-table tbody > tr[data-row-key].jfe-drip-table-row:hover > td`, tableProps.schema.rowHoverStyle || {});
-    const styleSheet = document.querySelector('#table-row-hover-style');
+    .jfe-drip-table > .jfe-drip-table-container tbody > tr:hover > td`, tableProps.schema.rowHoverStyle || {});
+    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-row-hover-style]');
     if (styleSheet) {
       styleSheet.innerHTML = rowHoverClass;
     } else {
-      document.head.innerHTML += `<style id="table-row-hover-style" type="text/css">${rowHoverClass}</style>`;
+      const styleNode = document.createElement('style');
+      styleNode.setAttribute('key', 'table-row-hover-style');
+      styleNode.setAttribute('type', 'text/css');
+      styleNode.innerHTML = rowHoverClass;
+      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
     }
   }, [tableProps.schema.rowHoverStyle]);
 

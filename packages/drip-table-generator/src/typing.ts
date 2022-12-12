@@ -139,6 +139,20 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   showToolLayout?: boolean;
   /** 工具栏样式 */
   toolbarStyle?: CSSProperties;
+  /** 默认主题 */
+  defaultTheme?: string;
+  customThemeOptions?: {
+    /** 主题选项中文名 */
+    label: string | React.ReactNode;
+    /** 主题选项英文名，也是主题的唯一键值 */
+    value: string;
+    /** drip-table 的 schema 配置，但不允许配置 columns */
+    style: Partial<Omit<DripTableSchema<ExtraOptions['CustomColumnSchema']>, 'columns'>>;
+    /** 主题缩略图 */
+    image: string;
+  }[];
+  /** 默认打开编辑模式还是预览模式 */
+  defaultMode?: 'edit' | 'preview';
   /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
   dataSource?: DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[];
   dataFields?: string[];

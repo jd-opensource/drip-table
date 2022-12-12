@@ -44,7 +44,7 @@ export type ToolBarConfig = {
 interface ToolbarProps<
 RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
 ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
-> {
+> extends DripTableGeneratorProps<RecordType, ExtraOptions> {
   style?: React.CSSProperties;
   onExportSchema?: DripTableGeneratorProps<RecordType, ExtraOptions>['onExportSchema'];
 }
@@ -55,13 +55,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 >(props: ToolbarProps<RecordType, ExtraOptions>) => {
   const [modalStatus, setModalStatus] = React.useState('');
   const [code, setCode] = React.useState('');
-  const [theme, setTheme] = React.useState('');
+  const [theme, setTheme] = React.useState(props.defaultTheme);
   const context = React.useContext(GeneratorContext);
 
   const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
     ...context.globalConfigs,
     columns: context.columns.map(item => ({ ...item, index: void 0, dataIndexMode: void 0 })),
   });
+
+  const themeOptions = React.useMemo(() => [...themeList, ...props.customThemeOptions || []], [props.customThemeOptions]);
 
   /**
    * 渲染一个Modal用来展示JSON Schema配置
@@ -173,11 +175,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               icon={<ThunderboltOutlined className={styles['tool-icon']} />}
               label="主题"
               overlayType="image-radio"
-              options={themeList}
+              options={themeOptions}
               value={theme}
               onChange={(value) => {
                 setTheme(value || '');
-                const style = themeList.find(item => item.value === value)?.style;
+                const style = themeOptions.find(item => item.value === value)?.style;
                 setState({ globalConfigs: Object.assign({}, globalConfigs, style || {}) });
               }}
             />
