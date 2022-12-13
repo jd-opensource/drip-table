@@ -220,7 +220,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         return (
           <React.Fragment>
             { globalConfigs.sticky && (
-              <div className={styles['editable-table-sticky-headers']} style={globalConfigs.headerStyle}>
+              <div className={styles['editable-table-sticky-headers']}>
                 { globalConfigs.rowSelection && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
                 { columns.map((column, columnIndex) => (
                   <div
@@ -243,7 +243,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     }}
                   >
                     <ColumnHeader
-                      style={{ ...globalConfigs.headerCellStyle, border: '1px solid #f0f0f0' }}
+                      style={{ border: '1px solid #f0f0f0' }}
                       sticky
                       index={columnIndex}
                       column={column}
@@ -351,7 +351,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 >
                   { !globalConfigs.sticky && (
                     <ColumnHeader
-                      style={{ ...globalConfigs.headerCellStyle }}
                       index={columnIndex}
                       column={column}
                       onInsert={index => setColumnIndexToInsert(index)}
@@ -365,11 +364,10 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         key={index}
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
-                          ...globalConfigs.tableCellStyle,
                           height: cellHeight,
                           width: getWidth(column.width, 'px', -2),
                           textAlign: column.align,
-                          backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : globalConfigs.tableCellStyle?.backgroundColor,
+                          backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
                         }}
                       >
                         <div

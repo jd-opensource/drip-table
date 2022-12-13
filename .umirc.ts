@@ -91,8 +91,6 @@ const umiConfig: IConfig = {
           '/drip-table/schema/style',
           '/drip-table/schema/inner-class-name',
           '/drip-table/schema/inner-style',
-          '/drip-table/schema/header-style',
-          '/drip-table/schema/header-cell-style',
           '/drip-table/schema/columns/index',
           '/drip-table/schema/columns/key',
           '/drip-table/schema/columns/title',

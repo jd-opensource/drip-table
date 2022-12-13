@@ -97,30 +97,40 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   return (
     <GeneratorContext.Consumer>
-      { ({ columns, globalConfigs, setState }) => (
-        <div
-          key={props.index}
-          className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
-          style={{
-            ...props.style,
-            width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
-          }}
-        >
-          <RichText
-            className={styles['editable-table-column-title']}
-            style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
-            html={typeof props.column.title === 'string' ? props.column.title : props.column.title?.body}
-          />
-          { props.column.description && (
+      { ({ columns, globalConfigs, setState }) => {
+        let columnTitle = '';
+        if (typeof props.column.title === 'string') {
+          columnTitle = props.column.title;
+        } else if (typeof props.column.title.body === 'string') {
+          columnTitle = props.column.title.body;
+        } else {
+          columnTitle = props.column.title.body.content;
+        }
+        return (
+          <div
+            key={props.index}
+            className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
+            style={{
+              ...props.style,
+              width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
+            }}
+          >
+            <RichText
+              className={styles['editable-table-column-title']}
+              style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
+              html={columnTitle}
+            />
+            { props.column.description && (
             <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
               <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
             </Tooltip>
-          ) }
-          <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
-            <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
-          </Dropdown>
-        </div>
-      ) }
+            ) }
+            <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
+              <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
+            </Dropdown>
+          </div>
+        );
+      } }
     </GeneratorContext.Consumer>
   );
 };

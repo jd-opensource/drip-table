@@ -64,7 +64,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
     defaultData?: Record<string, unknown>,
   ) => {
-    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle', 'headerStyle', 'headerCellStyle', 'rowHoverStyle', 'tableCellStyle'];
+    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle'];
     const formData: Record<string, unknown> = {
       ...defaultData,
       ...filterAttributes(globalConfigs, ['header', 'footer', 'rowHeader', ...globalConfigsPrefix]),
@@ -189,10 +189,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       return { ...element };
     };
     const innerStyle = encodeStyles('innerStyle', formData);
-    const headerStyle = encodeStyles('headerStyle', formData);
-    const headerCellStyle = encodeStyles('headerCellStyle', formData);
-    const rowHoverStyle = encodeStyles('rowHoverStyle', formData);
-    const tableCellStyle = encodeStyles('tableCellStyle', formData);
     const rowHeaderStyle = encodeStyles('rowHeaderStyle', formData);
     const ext: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
@@ -201,7 +197,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|header(Cell)?Style|rowHoverStyle|tableCellStyle|rowHeader)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|rowHeader)\.|scroll)/u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -213,10 +209,6 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         y: formData.scrollY as number,
       },
       innerStyle,
-      headerStyle,
-      headerCellStyle,
-      rowHoverStyle,
-      tableCellStyle,
       rowHeader: {
         style: { ...rowHeaderStyle },
         elements: (formData['rowHeader.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),

@@ -28,7 +28,6 @@ import {
 import { parseReactCSS, setElementCSS } from '@/utils/dom';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor } from '@/utils/sandbox';
-import { translateStyleToClass } from '@/utils/styles';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import GenericRender from '@/components/generic-render';
@@ -691,74 +690,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   };
 
   React.useEffect(() => resetVirtualGrid, [rcTableWidth]);
-
-  React.useEffect(() => {
-    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.innerHeaderStyle || {});
-    const originHeaderClass = '.jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-content > table, .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table { border-top: none; }';
-    let borderRadiusClass = '';
-    if (tableProps.schema.innerHeaderStyle?.borderRadius) {
-      const originBorderRadius = tableProps.schema.innerHeaderStyle?.borderRadius || 0;
-      const radius = typeof originBorderRadius === 'string' ? originBorderRadius.split(' ')[0] : originBorderRadius;
-      borderRadiusClass += ` .jfe-drip-table-thead > tr > th:first-of-type{ border-radius: ${radius} 0 0 ${radius}; }`;
-      borderRadiusClass += ` .jfe-drip-table-thead > tr > th:last-of-type{ border-radius: 0 ${radius} ${radius} 0; }`;
-    }
-    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-header-style]');
-    if (styleSheet) {
-      styleSheet.innerHTML = customHeaderClass + originHeaderClass + borderRadiusClass;
-    } else {
-      const styleNode = document.createElement('style');
-      styleNode.setAttribute('key', 'table-header-style');
-      styleNode.setAttribute('type', 'text/css');
-      styleNode.innerHTML = customHeaderClass + originHeaderClass + borderRadiusClass;
-      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
-    }
-  }, [tableProps.schema.innerHeaderStyle]);
-
-  React.useEffect(() => {
-    const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,
-    .jfe-drip-table > .jfe-drip-table-container .jfe-drip-table-thead > tr > th`, tableProps.schema.headerCellStyle || {});
-    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-header-cell-style]');
-    if (styleSheet) {
-      styleSheet.innerHTML = customHeaderItemClass;
-    } else {
-      const styleNode = document.createElement('style');
-      styleNode.setAttribute('key', 'table-header-cell-style');
-      styleNode.setAttribute('type', 'text/css');
-      styleNode.innerHTML = customHeaderItemClass;
-      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
-    }
-  }, [tableProps.schema.headerCellStyle]);
-
-  React.useEffect(() => {
-    const tableCellClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr > td:not(.jfe-drip-table--slot),
-    .jfe-drip-table > .jfe-drip-table-container .jfe-drip-table-tbody > tr > td:not(.jfe-drip-table--slot)`, tableProps.schema.tableCellStyle || {});
-    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-cell-style]');
-    if (styleSheet) {
-      styleSheet.innerHTML = tableCellClass;
-    } else {
-      const styleNode = document.createElement('style');
-      styleNode.setAttribute('key', 'table-cell-style');
-      styleNode.setAttribute('type', 'text/css');
-      styleNode.innerHTML = tableCellClass;
-      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
-    }
-  }, [tableProps.schema.tableCellStyle]);
-
-  React.useEffect(() => {
-    const rowHoverClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-body > table > tbody > tr:hover > td,
-    .jfe-drip-table-virtual-list > div > .jfe-drip-table-virtual-cell.jfe-drip-table--row-hover,
-    .jfe-drip-table > .jfe-drip-table-container tbody > tr:hover > td`, tableProps.schema.rowHoverStyle || {});
-    const styleSheet = tableContainer.current?.parentElement?.querySelector('style[key=table-row-hover-style]');
-    if (styleSheet) {
-      styleSheet.innerHTML = rowHoverClass;
-    } else {
-      const styleNode = document.createElement('style');
-      styleNode.setAttribute('key', 'table-row-hover-style');
-      styleNode.setAttribute('type', 'text/css');
-      styleNode.innerHTML = rowHoverClass;
-      tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
-    }
-  }, [tableProps.schema.rowHoverStyle]);
 
   const paginationPosition = React.useMemo(
     () => {

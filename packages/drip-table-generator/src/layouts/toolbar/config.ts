@@ -12,10 +12,6 @@ export const themeList: { value: string; label: string | React.ReactNode; style:
         borderWidth: '1px',
         borderColor: '#ff0',
       },
-      headerStyle: {},
-      headerCellStyle: {},
-      rowHoverStyle: {},
-      tableCellStyle: {},
       rowHeader: {},
     },
     image: 'https://img13.360buyimg.com/imagetools/jfs/t1/191238/14/31485/7337/63930326Eea63cce5/1256bf0ea55740d2.png',
@@ -27,13 +23,6 @@ export const themeList: { value: string; label: string | React.ReactNode; style:
       bordered: true,
       innerStyle: {
         color: '#ffffff',
-      },
-      headerStyle: {},
-      headerCellStyle: {
-        backgroundColor: '#2c2c2c',
-      },
-      tableCellStyle: {
-        backgroundColor: '#2c2c2c',
       },
       rowHeader: {},
     },

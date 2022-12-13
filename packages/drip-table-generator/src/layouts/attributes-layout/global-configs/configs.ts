@@ -736,16 +736,4 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     default: false,
   },
   ...StyleAttrConfigs('innerStyle', '全局样式'),
-  {
-    name: 'rowHoverStyle.backgroundColor',
-    group: '全局样式',
-    'ui:title': '行悬浮背景色',
-    'ui:type': 'color-picker',
-    'ui:props': {},
-    type: 'string',
-    default: '#f0f0f0',
-  },
-  ...StyleAttrConfigs('headerStyle', '表头样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
-  ...StyleAttrConfigs('headerCellStyle', '列头样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
-  ...StyleAttrConfigs('tableCellStyle', '单元格样式', ['margin', 'padding', 'boxShadow', 'backgroundColor', 'borderRadius', 'borderWidth', 'borderColor']),
 ];

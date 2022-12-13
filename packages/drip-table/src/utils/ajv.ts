@@ -173,13 +173,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         innerStyle: { typeof: 'object' },
         bordered: { type: 'boolean' },
         showHeader: { type: 'boolean' },
-        headerStyle: { typeof: 'object' },
-        headerCellStyle: { typeof: 'object' },
-        rowGap: { typeof: 'number' },
-        rowRadius: { typeof: 'number' },
-        rowStyle: { typeof: 'object' },
-        rowHoverStyle: { typeof: 'object' },
-        tableCellStyle: { typeof: 'object' },
         header: {
           anyOf: [
             { type: 'boolean' },
