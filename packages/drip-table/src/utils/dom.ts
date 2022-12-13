@@ -1,0 +1,67 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+import React from 'react';
+
+/**
+ * Parse React CSS
+ * @param style target style: can be css object, react style object, css string
+ * @returns React CSS Properties Object
+ */
+export const parseReactCSS = (style: string | Record<string, string>): React.CSSProperties => {
+  if (typeof style === 'string') {
+    style = Object.fromEntries(
+      style
+        .split(';')
+        .map(
+          line => line
+            .split(':')
+            .map(s => s.trim()),
+        )
+        .filter(([k, v]) => k && v),
+    );
+  }
+  return Object.fromEntries(
+    Object.entries(style)
+      .map(([k, v]) => [k.replace(/-[a-z]/ug, s => `${s.slice(1).toUpperCase()}`), v]),
+  );
+};
+
+/**
+ * Parse CSSProperties
+ * @param style target style: can be css object, react style object, css string
+ * @returns CSS Properties Object
+ */
+export const parseCSS = (style: string | Record<string, string>): Record<string, string> => {
+  if (typeof style === 'string') {
+    style = Object.fromEntries(
+      style
+        .split(';')
+        .map(
+          line => line
+            .split(':')
+            .map(s => s.trim()),
+        )
+        .filter(([k, v]) => k && v),
+    );
+  }
+  return Object.fromEntries(
+    Object.entries(style)
+      .map(([k, v]) => [k.replace(/[A-Z]/ug, s => `-${s.toLowerCase()}`), v]),
+  );
+};
+
+/**
+ * Set element style
+ * @param el target element
+ * @param style target style: can be css object, react style object, css string
+ */
+export const setElementCSS = (el: HTMLElement, style: string | Record<string, string>): void => {
+  Object.entries(parseCSS(style))
+    .forEach(([k, v]) => { el.style[k] = v; });
+};

@@ -104,11 +104,18 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
   },
 };
 
-const DROP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
+const DRIP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
   properties: {
     style: { typeof: 'object' },
     elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
   },
+};
+
+const DRIP_TABLE_CSS_SCHEMA: SchemaObject = {
+  anyOf: [
+    { type: 'string' },
+    { type: 'object' },
+  ],
 };
 
 let AJV_CACHE: Ajv | undefined;
@@ -176,10 +183,10 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         header: {
           anyOf: [
             { type: 'boolean' },
-            DROP_TABLE_GENERIC_RENDER_SCHEMA,
+            DRIP_TABLE_GENERIC_RENDER_SCHEMA,
           ],
         },
-        footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+        footer: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
         pagination: {
           anyOf: [
             { type: 'boolean' },
@@ -254,8 +261,8 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
         rowKey: { type: 'string' },
         rowSlotKey: { type: 'string' },
-        rowHeader: DROP_TABLE_GENERIC_RENDER_SCHEMA,
-        rowFooter: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+        rowHeader: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+        rowFooter: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
       },
       required: ['columns'],
@@ -489,9 +496,20 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'string' },
           {
             properties: {
-              body: { type: 'string' },
-              header: DROP_TABLE_GENERIC_RENDER_SCHEMA,
-              footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+              style: DRIP_TABLE_CSS_SCHEMA,
+              body: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    properties: {
+                      style: DRIP_TABLE_CSS_SCHEMA,
+                      content: { type: 'string' },
+                    },
+                  },
+                ],
+              },
+              header: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+              footer: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
             },
             required: ['body'],
           },

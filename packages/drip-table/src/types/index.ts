@@ -54,9 +54,22 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   title: string | {
     /**
+     * 表头样式
+     */
+    style?: string | Record<string, string>;
+    /**
      * 表头内容
      */
-    body: string;
+    body: string | {
+      /**
+       * 表头内容样式
+       */
+      style?: string | Record<string, string>;
+      /**
+       * 表头内容富文本
+       */
+      content: string;
+    };
     /**
      * 是否展示头部以及配置
      */
