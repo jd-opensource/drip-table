@@ -1,6 +1,6 @@
-# 单元格样式 columns.style
+# 鼠标划过当前行时单元格样式 columns.hoverStyle
 
-- 描述：单元格样式
+- 描述：鼠标划过当前行时单元格样式
 - 类型：`Record<string, string> | string`
 - 默认值：`undefined`
 
@@ -24,6 +24,9 @@ const schema = {
         style: "border-top: 1px solid black; borderBottom: 1px solid black; borderLeft: 1px solid black",
         body: "商品名称",
       },
+      hoverStyle: {
+        background: "green",
+      },
       dataIndex: "name",
       component: "text",
       options: { mode: "single", maxRow: 1 },
@@ -37,6 +40,9 @@ const schema = {
           borderLeft: "1px solid black",
         },
         body: "商品详情",
+      },
+      hoverStyle: {
+        background: "green",
       },
       align: "center",
       style: "border-left: 1px solid black",

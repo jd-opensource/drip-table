@@ -114,6 +114,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   style?: string | Record<string, string>;
   /**
+   * 鼠标悬浮当前行时样式
+   */
+  hoverStyle?: string | Record<string, string>;
+  /**
    * 表格列宽
    */
   width?: string | number;

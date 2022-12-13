@@ -31,6 +31,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       driver: tableProps.driver,
       components: tableProps.components,
       ext: tableProps.ext,
+      hoverRowKey: void 0,
+      setHoverRowKey: () => void 0,
       onEvent: tableProps.onEvent,
       onDataSourceChange: tableProps.onDataSourceChange,
     };
