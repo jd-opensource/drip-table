@@ -158,8 +158,9 @@ export const columnGenerator = <
           return (
             <BuiltInComponent
               driver={extraProps.driver}
-              value={value}
               data={record}
+              value={value}
+              indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
               onChange={v => onChange(record, recordIndex, v)}
@@ -187,8 +188,9 @@ export const columnGenerator = <
             return (
               <ExtraComponent
                 driver={extraProps.driver}
-                value={value}
                 data={record}
+                value={value}
+                indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
                 disable={Boolean(disableTranslator(false, translatorContext))}
                 editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
                 onChange={v => onChange(row.record, row.index, v)}

@@ -275,8 +275,6 @@
   // ==             Border             ==
   // ====================================
   &&--bordered {
-    border-left: 1px solid #f0f0f0;
-
     & > .@{prefixCls}-container > .@{prefixCls}-body > table > tbody > tr > td,
     & > .@{prefixCls}-container > .@{prefixCls}-body > table > tfoot > tr > td,
     & > .@{prefixCls}-container > .@{prefixCls}-body > table > tfoot > tr > th,
@@ -294,7 +292,13 @@
     & > .@{prefixCls}-container > .@{prefixCls}-summary > table > tfoot > tr > th,
     & > .@{prefixCls}-container > .@{prefixCls}-summary > table > thead > tr > th,
     & > .@{prefixCls}-container > .@{prefixCls}-virtual-list > div > .@{prefixCls}-virtual-cell {
-      border-right: 1px solid #f0f0f0;
+      &:not(.@{prefixCls}--slot) {
+        &:first-child {
+          border-left: 1px solid #f0f0f0;
+        }
+
+        border-right: 1px solid #f0f0f0;
+      }
     }
 
     & > .@{prefixCls}-container > .@{prefixCls}-content > table,

@@ -11,6 +11,7 @@ import { type DripTableColumnSchema,
   type DripTableExtraOptions, type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type SchemaObject } from '@/types';
+import { indexValue } from '@/utils/operator';
 
 import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent } from '..';
 import { DripTableComponentProps } from '../component';
@@ -93,11 +94,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       const BuiltInComponent = DripTableBuiltInComponents[schema.component] as
         React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
       if (BuiltInComponent) {
+        // TODO: missing props translators here
         return (
           <BuiltInComponent
             driver={this.props.driver}
-            value={this.props.value}
             data={this.props.data}
+            value={this.props.value}
+            indexValue={(dataIndex, defaultValue) => indexValue(this.props.data, dataIndex, defaultValue)}
             schema={schema as unknown as DripTableBuiltInColumnSchema}
             ext={this.props.ext}
             fireEvent={event => this.props.fireEvent?.(event)}
@@ -109,11 +112,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     if (libName && componentName) {
       const ExtraComponent = this.props.components?.[libName]?.[componentName];
       if (ExtraComponent) {
+        // TODO: missing props translators here
         return (
           <ExtraComponent
             driver={this.props.driver}
-            value={this.props.value}
             data={this.props.data}
+            value={this.props.value}
+            indexValue={(dataIndex, defaultValue) => indexValue(this.props.data, dataIndex, defaultValue)}
             schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
             ext={this.props.ext}
             fireEvent={event => this.props.fireEvent?.(event as DripTableBuiltInComponentEvent)}

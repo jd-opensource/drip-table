@@ -37,6 +37,7 @@ import "drip-table/dist/index.css";
 
 const schema = {
   rowSelection: true,
+  bordered: true,
   rowHeader: {
     style: {
       background: "#dfe8ff",
@@ -108,6 +109,7 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
+      style={{ margin: '10px' }}
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
