@@ -69,7 +69,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
       }
       return (
         <div className={styles['rich-text-container']}>
-          <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>
+          <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>
           { this.renderToolTip() }
         </div>
       );
