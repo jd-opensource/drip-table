@@ -1,39 +1,8 @@
-# 列头 columns.title
+# 列头 columns.style
 
-- 描述：表头，组件名
-- 类型：
-
-    ```typescript
-    type Title = string | {
-      style?: Record<string, string> | string;
-      body: string | {
-        style?: Record<string, string> | string;
-        content: string;
-      };
-      header?: {
-        /**
-         * 头部自定义样式
-         */
-        style?: React.CSSProperties;
-        /**
-         * 头部展示元素配置
-         */
-        elements?: DripTableGenericRenderElement[];
-      };
-      footer?: {
-        /**
-         * 尾部自定义样式
-         */
-        style?: React.CSSProperties;
-        /**
-         * 尾部展示元素配置
-         */
-        elements?: DripTableGenericRenderElement[];
-      };
-    }
-    ```
-
-- 默认值：必填
+- 描述：单元格样式
+- 类型：`Record<string, string> | string`
+- 默认值：`undefined`
 
 ```jsx
 /**
@@ -51,7 +20,10 @@ const schema = {
   columns: [
     {
       key: "mock_1",
-      title: "商品名称",
+      title: {
+        style: "border-top: 1px solid black; borderBottom: 1px solid black; borderLeft: 1px solid black",
+        body: "商品名称",
+      },
       dataIndex: "name",
       component: "text",
       options: { mode: "single", maxRow: 1 },
@@ -67,6 +39,7 @@ const schema = {
         body: "商品详情",
       },
       align: "center",
+      style: "border-left: 1px solid black",
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
@@ -78,6 +51,7 @@ const schema = {
         body: "Custom Component",
       },
       align: "center",
+      style: { borderLeft: "1px solid black" },
       dataIndex: "description",
       component: "custom::Sample",
       options: {

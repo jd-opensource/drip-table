@@ -110,6 +110,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   defaultValue?: unknown;
   /**
+   * 单元格样式
+   */
+  style?: string | Record<string, string>;
+  /**
    * 表格列宽
    */
   width?: string | number;
@@ -160,10 +164,6 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
-  /**
-   * 自定义cell样式
-   */
-  style?: React.CSSProperties;
 }
 
 export type DripTableID = string | number | undefined;
@@ -192,8 +192,10 @@ export interface DripTableSchema<
    * 内部表格组件样式
    */
   innerStyle?: React.CSSProperties;
-  /** 表格头部样式，注意：这是表格标题栏所在头部 (<thead>) 而不是 drip-table 自定义的头部 */
-  headerStyle?: React.CSSProperties;
+  /**
+   * 内部表格头部样式 (<thead>)
+   */
+  innerHeaderStyle?: React.CSSProperties;
   /** 表头标题样式 (<th>) */
   headerCellStyle?: React.CSSProperties;
   /** 行样式-行间距 */

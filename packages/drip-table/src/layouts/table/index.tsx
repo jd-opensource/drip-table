@@ -99,7 +99,7 @@ export const columnGenerator = <
   const titleStyle = typeof columnSchema.title === 'object' && typeof columnSchema.title.body === 'object' && columnSchema.title.body.style
     ? parseReactCSS(columnSchema.title.body.style)
     : void 0;
-  const column: TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } = {
+  const column: TableColumnType<RcTableRecordType<RecordType>> = {
     width,
     className: classNames({
       [styles['jfe-drip-table-cell--top']]: columnSchema.verticalAlign === 'top',
@@ -128,7 +128,6 @@ export const columnGenerator = <
         : (<RichText onRef={onTitleRef} style={titleStyle} html={columnTitle} />),
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
-    style: columnSchema.style,
     onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps<RecordType, ExtraOptions>['additionalProps']> } as React.TdHTMLAttributes<Element>),
   };
 
@@ -225,6 +224,30 @@ export const columnGenerator = <
     }
     if (!column.render) {
       column.render = () => <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
+    }
+    {
+      const render = column.render;
+      column.render = (...args) => (
+        <React.Fragment>
+          { render(...args) }
+          {
+            columnSchema.style
+              ? (
+                <div
+                  style={{ display: 'none' }}
+                  ref={(el) => {
+                    const parent = el?.parentElement;
+                    const style = columnSchema.style;
+                    if (parent && style) {
+                      setElementCSS(parent, style);
+                    }
+                  }}
+                />
+              )
+              : null
+          }
+        </React.Fragment>
+      );
     }
   }
   return column;
@@ -489,8 +512,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         return returnColumns;
       }
       // 整行自定义插槽
-      const rowSlotKey = tableInfo.schema.rowSlotKey;
-      if (rowSlotKey) {
+      if (tableInfo.schema.rowSlotKey) {
+        const rowSlotKey = tableInfo.schema.rowSlotKey;
         {
           const render = returnColumns[0].render;
           returnColumns[0].render = (o, row, index) => {
@@ -670,11 +693,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   React.useEffect(() => resetVirtualGrid, [rcTableWidth]);
 
   React.useEffect(() => {
-    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.headerStyle || {});
+    const customHeaderClass = translateStyleToClass('.jfe-drip-table-header, .jfe-drip-table-thead', tableProps.schema.innerHeaderStyle || {});
     const originHeaderClass = '.jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-content > table, .jfe-drip-table.jfe-drip-table--bordered > .jfe-drip-table-container > .jfe-drip-table-header > table { border-top: none; }';
     let borderRadiusClass = '';
-    if (tableProps.schema.headerStyle?.borderRadius) {
-      const originBorderRadius = tableProps.schema.headerStyle?.borderRadius || 0;
+    if (tableProps.schema.innerHeaderStyle?.borderRadius) {
+      const originBorderRadius = tableProps.schema.innerHeaderStyle?.borderRadius || 0;
       const radius = typeof originBorderRadius === 'string' ? originBorderRadius.split(' ')[0] : originBorderRadius;
       borderRadiusClass += ` .jfe-drip-table-thead > tr > th:first-of-type{ border-radius: ${radius} 0 0 ${radius}; }`;
       borderRadiusClass += ` .jfe-drip-table-thead > tr > th:last-of-type{ border-radius: 0 ${radius} ${radius} 0; }`;
@@ -689,7 +712,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       styleNode.innerHTML = customHeaderClass + originHeaderClass + borderRadiusClass;
       tableContainer.current?.parentElement?.insertBefore(styleNode, tableContainer.current);
     }
-  }, [tableProps.schema.headerStyle]);
+  }, [tableProps.schema.innerHeaderStyle]);
 
   React.useEffect(() => {
     const customHeaderItemClass = translateStyleToClass(`.jfe-drip-table > .jfe-drip-table-container > .jfe-drip-table-header > table > thead > tr > th,

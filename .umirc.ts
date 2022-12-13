@@ -99,6 +99,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/columns/data-index',
           '/drip-table/schema/columns/data-translation',
           '/drip-table/schema/columns/default-value',
+          '/drip-table/schema/columns/style',
           '/drip-table/schema/columns/width',
           '/drip-table/schema/columns/align',
           '/drip-table/schema/columns/vertical-align',
