@@ -17,14 +17,15 @@ import { CheckSquareOutlined,
   ThunderboltOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, message, Modal, Radio } from 'antd';
 import classNames from 'classnames';
-import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import Clipboard from 'react-clipboard.js';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
+import { getSchemaValue } from '../utils';
 import { DropDownRadio } from './components/dropdown';
 import { SwitchButton } from './components/switch';
 import { themeList } from './config';
@@ -42,26 +43,21 @@ export type ToolBarConfig = {
 };
 
 interface ToolbarProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableGeneratorProps<RecordType, ExtraOptions> {
   style?: React.CSSProperties;
   onExportSchema?: DripTableGeneratorProps<RecordType, ExtraOptions>['onExportSchema'];
 }
 
 const Toolbar = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ToolbarProps<RecordType, ExtraOptions>) => {
   const [modalStatus, setModalStatus] = React.useState('');
   const [code, setCode] = React.useState('');
   const [theme, setTheme] = React.useState(props.defaultTheme);
   const context = React.useContext(GeneratorContext);
-
-  const getSchemaValue = (): DripTableSchema<DripTableColumnSchema> => ({
-    ...context.globalConfigs,
-    columns: context.columns.map(item => ({ ...item, index: void 0, dataIndexMode: void 0 })),
-  });
 
   const themeOptions = React.useMemo(() => [...themeList, ...props.customThemeOptions || []], [props.customThemeOptions]);
 
@@ -75,7 +71,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     }
 
     const defaultValue = modalStatus === 'export'
-      ? JSON.stringify(getSchemaValue(), null, 4)
+      ? JSON.stringify(getSchemaValue(context), null, 4)
       : code || '';
     return (
       <Input.TextArea
@@ -111,8 +107,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const renderToolbarCell = (
     config: ToolBarConfig,
-    globalConfig: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    globalConfig: DripTableGeneratorContext['globalConfigs'],
+    setState: DripTableGeneratorContext['setState'],
   ) => {
     if (config.type === 'switch') {
       return (
@@ -167,7 +163,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   return (
     <GeneratorContext.Consumer>
-      { ({ drawerType, globalConfigs, mode, setState }) => (
+      { ({ columns, drawerType, globalConfigs, mode, setState }) => (
         <div className={styles['toolbar-container']} style={props.style}>
           <div className={styles['toolbar-container-leftbar']}>
             <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className={styles['tool-icon']} />} label="冻结表头" />
@@ -179,8 +175,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
               value={theme}
               onChange={(value) => {
                 setTheme(value || '');
-                const style = themeOptions.find(item => item.value === value)?.style;
-                setState({ globalConfigs: Object.assign({}, globalConfigs, style || {}) });
+                const theTheme = themeOptions.find(item => item.value === value);
+                const columnsWithTheme = columns.map((column, index) => {
+                  const columnStyle = theTheme?.columnStyle?.(column, index);
+                  return {
+                    ...column,
+                    ...columnStyle,
+                  };
+                });
+                setState({ globalConfigs: Object.assign({}, globalConfigs, theTheme?.style), columns: [...columnsWithTheme] });
               }}
             />
             { configs.map(item => renderToolbarCell(item, globalConfigs, setState)) }
@@ -203,9 +206,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                   <Clipboard
                     style={{ marginLeft: '8px' }}
                     component="span"
-                    option-text={() => JSON.stringify(getSchemaValue())}
+                    option-text={() => JSON.stringify(getSchemaValue(context))}
                     onSuccess={() => {
-                      props.onExportSchema?.(getSchemaValue());
+                      props.onExportSchema?.(getSchemaValue(context));
                       message.success('复制成功');
                       setModalStatus('');
                       setCode('');

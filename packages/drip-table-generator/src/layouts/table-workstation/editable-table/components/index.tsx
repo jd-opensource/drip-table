@@ -9,40 +9,40 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Row } from 'antd';
 import classNames from 'classnames';
-import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableProps } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
 import { get, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getWidth, updateColumnItemByPath } from '../../utils';
 
 import styles from './index.module.less';
 
 interface EditableComponentsProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  record: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['previewDataSource'][number];
-  column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
+  record: DripTableGeneratorContext['previewDataSource'][number];
+  column: DripTableGeneratorContext['columns'][number];
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
-  customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 interface EditableGroupComponentProps <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   column: DripTableBuiltInColumnSchema | null;
-  record: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['previewDataSource'][number];
+  record: DripTableGeneratorContext['previewDataSource'][number];
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
-  customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   isCurrentColumn?: boolean;
   parentIndex?: number[];
   isChildren?: boolean;
@@ -52,8 +52,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const EditableGroupComponent = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableGroupComponentProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
 
@@ -253,8 +253,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 };
 
 const EditableComponents = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableComponentsProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const [libName, componentName] = props.column?.component?.includes('::') ? props.column.component.split('::') : ['', props.column?.component || ''];

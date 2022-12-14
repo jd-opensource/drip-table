@@ -6,12 +6,12 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import EditableTableFooter from './editable-footer';
 import EditableTableHeader from './editable-header';
@@ -21,8 +21,8 @@ import PreviewTable from './table-preview';
 import styles from './index.module.less';
 
 const TableWorkStation = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const tableWrapper = React.useRef<HTMLDivElement>(null);

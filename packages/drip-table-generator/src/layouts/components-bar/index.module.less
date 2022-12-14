@@ -26,11 +26,13 @@
 }
 
 .components-container {
-  width: 100%;
+  width: calc(~"100% + 16px");
   background: #ffffff;
   border-right: 1px solid rgb(~"0 0 0 / 15%");
   z-index: 2;
   height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .components-navigator {

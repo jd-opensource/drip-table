@@ -6,27 +6,28 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import DripTable, { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
+import DripTable, { DripTableExtraOptions } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { getSchemaValue } from '@/layouts/utils';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 const PreviewTable = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
-  const { columns, globalConfigs, previewDataSource } = React.useContext(GeneratorContext);
+  const context = React.useContext(GeneratorContext);
   return (
-    <DripTable<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>
+    <DripTable
       style={{ ...props.style, display: props.visible ? void 0 : 'none' }}
       driver={DripTableDriverAntDesign}
-      schema={{ ...globalConfigs, columns: columns.map(item => ({ ...item, index: void 0 })) }}
-      dataSource={previewDataSource}
+      schema={getSchemaValue<ExtraOptions>(context)}
+      dataSource={context.previewDataSource as RecordType[]}
       ajv={{ additionalProperties: true }}
-      components={props.customComponents as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>['components']}
+      components={props.components || props.customComponents}
       {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv', 'style', 'customComponents'])}
     />
   );

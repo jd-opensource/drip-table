@@ -9,13 +9,13 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import { getColumnItemByPath } from '../table-workstation/utils';
 import ComponentConfigForm from './component-configs';
@@ -26,8 +26,8 @@ import GlobalConfigForm from './global-configs';
 import styles from './index.module.less';
 
 const AttributesLayout = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const body = React.useRef<HTMLDivElement>(null);
   const editor = React.useRef<DataSourceHandler>(null);

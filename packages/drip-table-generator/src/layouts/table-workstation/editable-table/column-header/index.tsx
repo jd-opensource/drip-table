@@ -8,7 +8,6 @@
 import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, MoreOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Modal, Tooltip } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import RichText from '@/components/RichText';
@@ -18,25 +17,21 @@ import { getWidth } from '../../utils';
 
 import styles from '../index.module.less';
 
-interface ColumnHeaderProps<
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->{
+interface ColumnHeaderProps{
   style?: React.CSSProperties;
   sticky?: boolean;
   index: number;
-  column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
+  column: DripTableGeneratorContext['columns'][number];
   onInsert: (index: number) => void;
   onCopy: (index: number) => void;
   onDelete: (index: number) => void;
 }
-const ColumnHeader = <
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: ColumnHeaderProps<ExtraOptions>) => {
+const ColumnHeader = (props: ColumnHeaderProps) => {
   const context = React.useContext(GeneratorContext);
   const columnActions = (
     columnIndex: number,
-    columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    columns: DripTableGeneratorContext['columns'],
+    setState: DripTableGeneratorContext['setState'],
   ) => (
     <Menu key={columnIndex}>
       <Menu.Item onClick={(event) => {

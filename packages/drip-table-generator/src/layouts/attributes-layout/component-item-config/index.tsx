@@ -7,7 +7,7 @@
  */
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -15,13 +15,13 @@ import CustomForm from '@/components/CustomForm';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { getColumnItemByPath, updateColumnItemByPath } from '@/layouts/table-workstation/utils';
 import components from '@/table-components';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import styles from './index.module.less';
 
 interface ComponentItemConfigFormProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
@@ -39,8 +39,8 @@ const errorBoundary = (message?: string) => (
 );
 
 const ComponentItemConfigForm = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentItemConfigFormProps<RecordType, ExtraOptions>) => {
   const { previewDataSource } = React.useContext(GeneratorContext);
 
@@ -82,10 +82,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return columnConfig;
   };
 
-  const encodeColumnConfigs = (
-    formData: { [key: string]: unknown },
-    column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'],
-  ): DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'] => {
+  const encodeColumnConfigs = (formData: { [key: string]: unknown }, column: DripTableGeneratorContext['currentColumn']) => {
     const uiProps: Record<string, unknown> = {};
     const dataProps = {};
     Object.keys(formData).forEach((key) => {
@@ -126,7 +123,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       width: formData.width as string,
       component: column?.component ?? '',
       options: uiProps,
-    } as DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'];
+    };
   };
   return (
     <GeneratorContext.Consumer>
@@ -137,7 +134,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         }
         const columnConfig = getColumnConfigs(currentColumnItem?.component);
         return (
-          <CustomForm<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn']>
+          <CustomForm<DripTableGeneratorContext['currentColumn']>
             primaryKey="key"
             configs={columnConfig ? columnConfig.attrSchema || [] : []}
             data={currentColumnItem}

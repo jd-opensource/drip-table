@@ -6,19 +6,19 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { Dropdown, Menu } from 'antd';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import Icon from '@/components/Icon';
 import { defaultComponentIcon } from '@/layouts/components-bar/configs';
 import { getComponents, getGroups } from '@/layouts/utils';
-import { DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
 import styles from './index.module.less';
 
 interface BlankPanelProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   style?: React.CSSProperties;
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
@@ -27,8 +27,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const BlankPanel = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: BlankPanelProps<RecordType, ExtraOptions>) => {
   const menu = (
     <Menu>

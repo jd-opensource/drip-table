@@ -6,10 +6,10 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
-import { DripTableGeneratorProps } from '../typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
 import AttributesLayout from './attributes-layout';
 import ComponentsBar from './components-bar';
 import TableWorkStation from './table-workstation';
@@ -18,8 +18,8 @@ import Toolbar from './toolbar';
 import styles from './index.module.less';
 
 const GeneratorLayout = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (
   <div style={props.style} className={styles.container}>
     { props.showToolLayout === false ? null : <Toolbar {...props} style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }

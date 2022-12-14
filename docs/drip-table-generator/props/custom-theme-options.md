@@ -99,20 +99,6 @@ const Demo = () => {
               borderRadius: "8px",
               borderWidth: "0",
             },
-            headerStyle: {
-              borderRadius: "8px",
-            },
-            headerCellStyle: {
-              border: "1px solid rgba(247,248,250,1)",
-              padding: "9px 12px",
-              backgroundColor: "rgba(247,248,250,1)",
-            },
-            tableCellStyle: {
-              border: "1px solid rgba(247,248,250,1)",
-            },
-            rowHoverStyle: {
-              background: "#fff",
-            },
             rowHeader: {
               style: {
                 padding: "0 18px 0 18px",

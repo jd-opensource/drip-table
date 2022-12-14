@@ -5,20 +5,20 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DripTableExtraOptions, DripTableGenericRenderElement, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions, DripTableGenericRenderElement } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes, filterAttributesByRegExp } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from './configs';
 
 interface GlobalConfigFormProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customGlobalConfigPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customGlobalConfigPanel'];
@@ -28,17 +28,17 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const GlobalConfigForm = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GlobalConfigFormProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const form = React.useRef<CustomForm<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs']>>(null);
+  const form = React.useRef<CustomForm<DripTableGeneratorContext['globalConfigs']>>(null);
 
   React.useEffect(() => {
     form.current?.formForceUpdate();
   }, [context.globalConfigs]);
 
-  const decodeConfigsWithPrefix = (prefix: string, globalConfigs: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'], formData: Record<string, unknown>) => {
+  const decodeConfigsWithPrefix = (prefix: string, globalConfigs: DripTableGeneratorContext['globalConfigs'], formData: Record<string, unknown>) => {
     if (typeof globalConfigs?.[prefix] === 'object') {
       Object.keys(globalConfigs?.[prefix] || {}).forEach((key) => {
         formData[`${prefix}.${key}`] = globalConfigs?.[prefix]?.[key];
@@ -61,7 +61,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
    * @returns {Record<string, unknown>} 表单数据
    */
   const decodeGlobalConfigs = (
-    globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
+    globalConfigs?: DripTableGeneratorContext['globalConfigs'],
     defaultData?: Record<string, unknown>,
   ) => {
     const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle'];
@@ -134,7 +134,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return formData;
   };
 
-  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'] => {
+  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): DripTableGeneratorContext['globalConfigs'] => {
     const formatElement = (element) => {
       if (element.type === 'display-column-selector') {
         return {

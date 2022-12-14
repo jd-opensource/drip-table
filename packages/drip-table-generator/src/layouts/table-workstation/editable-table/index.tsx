@@ -8,13 +8,13 @@
 
 import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getWidth, MIN_WIDTH } from '../utils';
 import BlankPanel from './blank-panel';
@@ -26,8 +26,8 @@ import EditableComponents from './components';
 import styles from './index.module.less';
 
 interface EditableTableProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
@@ -65,8 +65,8 @@ const justifyContent = {
 };
 
 const EditableTable = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableProps<RecordType, ExtraOptions>) => {
   const [columnIndexToDrag, setColumnIndexToDrag] = React.useState<number>(-1);
   const [cellHeight, setCellHeight] = React.useState<number>();
@@ -170,8 +170,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const onMenuClick = (
     component: DripTableComponentAttrConfig,
-    columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    columns: DripTableGeneratorContext['columns'],
+    setState: DripTableGeneratorContext['setState'],
   ) => {
     setCellHeight(void 0);
     const configs = getColumnConfigs(component['ui:type']);
