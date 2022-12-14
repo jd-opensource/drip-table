@@ -14,7 +14,9 @@
 | [column.dataTranslation](/drip-table/schema/columns/data-translation) | 列数据处理 | √ | [🔗 示例](/drip-table/schema/columns/data-translation) |
 | [column.defaultValue](/drip-table/schema/columns/default-value) | 默认数据 | × | [🔗 示例](/drip-table/schema/columns/default-value) |
 | [column.style](/drip-table/schema/columns/style) | 单元格样式 | × | [🔗 示例](/drip-table/schema/columns/style) |
-| [column.hoverStyle](/drip-table/schema/columns/hover-style) | 鼠标划过当前行时单元格样式 | × | [🔗 示例](/drip-table/schema/columns/hover-style) |
+| [column.hoverStyle](/drip-table/schema/columns/hover-style) | 鼠标悬浮单元格样式 | × | [🔗 示例](/drip-table/schema/columns/hover-style) |
+| [column.rowHoverStyle](/drip-table/schema/columns/row-hover-style) | 鼠标悬浮当前行时单元格样式 | × | [🔗 示例](/drip-table/schema/columns/row-hover-style) |
+| [column.columnHoverStyle](/drip-table/schema/columns/column-hover-style) | 鼠标悬浮当前列时单元格样式 | × | [🔗 示例](/drip-table/schema/columns/column-hover-style) |
 | [column.width](/drip-table/schema/columns/width) | 表格列宽 | × | [🔗 示例](/drip-table/schema/columns/width) |
 | [column.align](/drip-table/schema/columns/align) | 表格列对齐 | × | [🔗 示例](/drip-table/schema/columns/align) |
 | [column.verticalAlign](/drip-table/schema/columns/vertical-align) | 表格列垂直对齐 | × | [🔗 示例](/drip-table/schema/columns/vertical-align) |

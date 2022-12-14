@@ -27,7 +27,7 @@ import {
 } from '@/types';
 import { parseCSS, parseReactCSS, setElementCSS } from '@/utils/dom';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
-import { createExecutor } from '@/utils/sandbox';
+import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import GenericRender from '@/components/generic-render';
@@ -77,6 +77,8 @@ export const columnGenerator = <
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
       hoverRowKey: React.Key | undefined;
       setHoverRowKey: (k: React.Key | undefined) => void;
+      hoverColumnKey: React.Key | undefined;
+      setHoverColumnKey: (k: React.Key | undefined) => void;
     },
   ): TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } => {
   let width = String(columnSchema.width).trim();
@@ -233,30 +235,55 @@ export const columnGenerator = <
         <React.Fragment>
           { render(d, row, ...args) }
           {
-            columnSchema.style || columnSchema.hoverStyle
+            columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle
               ? (
                 <div
                   style={{ display: 'none' }}
                   ref={(el) => {
+                    const context = { props: { record: row.record, recordIndex: row.index } };
                     const tdEl = el?.parentElement;
-                    const style = columnSchema.style;
-                    const hoverStyle = columnSchema.hoverStyle;
+                    const style = typeof columnSchema.style === 'string' ? safeExecute(columnSchema.style, context) : columnSchema.style;
+                    const hoverStyle = typeof columnSchema.hoverStyle === 'string' ? safeExecute(columnSchema.hoverStyle, context) : columnSchema.hoverStyle;
+                    const rowHoverStyle = typeof columnSchema.rowHoverStyle === 'string' ? safeExecute(columnSchema.rowHoverStyle, context) : columnSchema.rowHoverStyle;
+                    const columnHoverStyle = typeof columnSchema.columnHoverStyle === 'string' ? safeExecute(columnSchema.columnHoverStyle, context) : columnSchema.columnHoverStyle;
                     if (tdEl) {
+                      // 移除 hover 状态样式
                       if (hoverStyle) {
                         Object.entries(parseCSS(hoverStyle))
                           .forEach(([k]) => { tdEl.style[k] = null; });
                       }
+                      if (rowHoverStyle) {
+                        Object.entries(parseCSS(rowHoverStyle))
+                          .forEach(([k]) => { tdEl.style[k] = null; });
+                      }
+                      if (columnHoverStyle) {
+                        Object.entries(parseCSS(columnHoverStyle))
+                          .forEach(([k]) => { tdEl.style[k] = null; });
+                      }
+                      // 列基础样式
                       if (style) {
                         setElementCSS(tdEl, style);
                       }
-                      if (hoverStyle && extraProps.hoverRowKey === row.key) {
+                      // 列 hover 样式
+                      if (columnHoverStyle && extraProps.hoverColumnKey === columnSchema.key) {
+                        setElementCSS(tdEl, columnHoverStyle);
+                      }
+                      // 行 hover 样式
+                      if (rowHoverStyle && extraProps.hoverRowKey === row.key) {
+                        setElementCSS(tdEl, rowHoverStyle);
+                      }
+                      // 单元格 hover 样式
+                      if (hoverStyle && extraProps.hoverColumnKey === columnSchema.key && extraProps.hoverRowKey === row.key) {
                         setElementCSS(tdEl, hoverStyle);
                       }
+                      // 事件监听，刷新样式
                       const trEl = tdEl.parentElement;
                       if (trEl?.tagName === 'TR') {
                         trEl.addEventListener('mouseenter', () => { extraProps.setHoverRowKey(row.key); });
                         trEl.addEventListener('mouseleave', () => { extraProps.setHoverRowKey(void 0); });
                       }
+                      tdEl.addEventListener('mouseenter', () => { extraProps.setHoverColumnKey(columnSchema.key); });
+                      tdEl.addEventListener('mouseleave', () => { extraProps.setHoverColumnKey(void 0); });
                     }
                   }}
                 />
@@ -278,6 +305,8 @@ interface VirtualCellItemData {
   selectedRowKeys: IDripTableContext['selectedRowKeys'];
   hoverRowKey: React.Key | undefined;
   setHoverRowKey: (hoverRowKey: React.Key | undefined) => void;
+  hoverColumnKey: React.Key | undefined;
+  setHoverColumnKey: (hoverRowKey: React.Key | undefined) => void;
 }
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style }: GridChildComponentProps<VirtualCellItemData>) => {
@@ -320,6 +349,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
   const [hoverRowKey, setHoverRowKey] = React.useState<React.Key | undefined>(void 0);
+  const [hoverColumnKey, setHoverColumnKey] = React.useState<React.Key | undefined>(void 0);
   const [dragInIndex, setDragInIndex] = React.useState(-1);
 
   const initialPagination = tableInfo.schema?.pagination || void 0;
@@ -432,6 +462,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ext: tableProps.ext,
         hoverRowKey,
         setHoverRowKey,
+        hoverColumnKey,
+        setHoverColumnKey,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
       };
@@ -660,6 +692,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       dragInIndex,
       hoverRowKey,
       setHoverRowKey,
+      hoverColumnKey,
+      setHoverColumnKey,
       tableInfo,
       tableProps.schema.columns,
       tableProps.driver,
@@ -848,6 +882,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             selectedRowKeys: tableState.selectedRowKeys,
             hoverRowKey,
             setHoverRowKey,
+            hoverColumnKey,
+            setHoverColumnKey,
           }}
           className={styles['jfe-drip-table-virtual-list']}
           columnCount={rcTableColumns.length}
@@ -871,12 +907,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     tableInfo.schema.virtual,
     columnsWidth,
     rcTableColumns,
+    hoverRowKey,
+    setHoverRowKey,
+    hoverColumnKey,
+    setHoverColumnKey,
     tableInfo.schema.scroll?.y,
     tableInfo.schema.rowHeight,
     tableInfo.schema.columns,
     tableState.selectedRowKeys,
     tableState.filters,
-    hoverRowKey,
   ]);
 
   const rcTableExpandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(

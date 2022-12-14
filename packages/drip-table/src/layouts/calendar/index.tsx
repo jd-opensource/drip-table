@@ -33,6 +33,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ext: tableProps.ext,
       hoverRowKey: void 0,
       setHoverRowKey: () => void 0,
+      hoverColumnKey: void 0,
+      setHoverColumnKey: () => void 0,
       onEvent: tableProps.onEvent,
       onDataSourceChange: tableProps.onDataSourceChange,
     };

@@ -56,7 +56,7 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
     /**
      * 表头样式
      */
-    style?: string | Record<string, string>;
+    style?: Record<string, string>;
     /**
      * 表头内容
      */
@@ -64,7 +64,7 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
       /**
        * 表头内容样式
        */
-      style?: string | Record<string, string>;
+      style?: Record<string, string>;
       /**
        * 表头内容富文本
        */
@@ -110,13 +110,21 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   defaultValue?: unknown;
   /**
-   * 单元格样式
+   * 单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
    */
   style?: string | Record<string, string>;
   /**
-   * 鼠标悬浮当前行时样式
+   * 鼠标悬浮当前单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
    */
   hoverStyle?: string | Record<string, string>;
+  /**
+   * 鼠标悬浮单元格所在行时单元格样式，传入代码字符串时按行执行语句，返回鼠标悬浮单元格所在行时样式
+   */
+  rowHoverStyle?: string | Record<string, string>;
+  /**
+   * 鼠标悬浮单元格所在列时单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
+   */
+  columnHoverStyle?: string | Record<string, string>;
   /**
    * 表格列宽
    */

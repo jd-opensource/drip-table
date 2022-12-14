@@ -1,6 +1,6 @@
-# 鼠标悬浮单元格样式 columns.hoverStyle
+# 鼠标悬浮当前行时单元格样式 columns.rowHoverStyle
 
-- 描述：鼠标悬浮单元格样式
+- 描述：鼠标悬浮当前行时单元格样式
 - 类型：`Record<string, string> | string`
 - 默认值：`undefined`
 
@@ -21,7 +21,7 @@ const schema = {
     {
       key: "mock_1",
       title: "商品名称",
-      hoverStyle: {
+      rowHoverStyle: {
         background: "#2a64ff",
       },
       dataIndex: "name",
@@ -31,7 +31,7 @@ const schema = {
     {
       key: "mock_2",
       title: "商品详情",
-      hoverStyle: {
+      rowHoverStyle: {
         background: "#2a64ff",
       },
       align: "center",
@@ -42,7 +42,7 @@ const schema = {
     {
       key: "mock_3",
       title: "商品价格",
-      hoverStyle: "return props.recordIndex % 2 === 0 ? 'background: #00b1ff' : { background: '#d9b526' };",
+      rowHoverStyle: "return props.recordIndex % 2 === 0 ? 'background: #00b1ff' : { background: '#d9b526' };",
       align: "center",
       dataIndex: "price",
       component: "text",
