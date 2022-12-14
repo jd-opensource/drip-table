@@ -26,10 +26,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     driver: tableProps.driver,
     components: tableProps.components,
     ext: tableProps.ext,
-    hoverRowKey: void 0,
-    setHoverRowKey: () => void 0,
-    hoverColumnKey: void 0,
-    setHoverColumnKey: () => void 0,
     onEvent: tableProps.onEvent,
     onDataSourceChange: tableProps.onDataSourceChange,
   };
@@ -71,7 +67,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
                 .map(column => columnGenerator(tableInfo, column, extraProps))
                 .map(col => (
-                  <div key={col.key} style={Object.assign({}, col.style)}>
+                  <div key={col.key}>
                     { col.title && <div className={styles.title}>{ col.title }</div> }
                     { /* TODO: 这写的什么鬼垃圾，为什么会跨 layout 依赖？扯淡呢？ */ }
                     { col.render?.(indexValue(record, col.dataIndex), { record, index: 0, type: 'body', key: '0' }, 0) }

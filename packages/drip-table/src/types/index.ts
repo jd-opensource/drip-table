@@ -28,23 +28,7 @@ export interface DripTableCellDisplayControl {
   verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
 }
 
-export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> {
-  /**
-   * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
-   */
-  component: T;
-  /**
-   * 对应组件类型的配置项
-   */
-  options: P;
-  /**
-   * @deprecated 已废弃，请使用 component 属性
-   */
-  'ui:type'?: T;
-  /**
-   * @deprecated 已废弃，请使用 options 属性
-   */
-  'ui:props'?: P;
+export interface DripTableBaseColumnSchema {
   /**
    * 唯一标识，不做展示用，React 需要的 key。
    */
@@ -98,18 +82,6 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
     };
   };
   /**
-   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
-   */
-  dataIndex: string | string[];
-  /**
-   * 数据预处理，对单元格数据进行变换
-   */
-  dataTranslation?: string;
-  /**
-   * 默认数据
-   */
-  defaultValue?: unknown;
-  /**
    * 单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
    */
   style?: string | Record<string, string>;
@@ -145,6 +117,21 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 是否固定列
    */
   fixed?: 'left' | 'right' | boolean;
+}
+
+export interface DripTableDataColumnSchema extends DripTableBaseColumnSchema {
+  /**
+   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+   */
+  dataIndex: string | string[];
+  /**
+   * 数据预处理，对单元格数据进行变换
+   */
+  dataTranslation?: string;
+  /**
+   * 默认数据
+   */
+  defaultValue?: unknown;
   /**
    * 是否处于隐藏状态
    */
@@ -176,6 +163,25 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
+}
+
+export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> extends DripTableDataColumnSchema {
+  /**
+   * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
+   */
+  component: T;
+  /**
+   * 对应组件类型的配置项
+   */
+  options: P;
+  /**
+   * @deprecated 已废弃，请使用 component 属性
+   */
+  'ui:type'?: T;
+  /**
+   * @deprecated 已废弃，请使用 options 属性
+   */
+  'ui:props'?: P;
 }
 
 export type DripTableID = string | number | undefined;
