@@ -1,4 +1,4 @@
-# 鼠标悬浮当前行时单元格样式 columns.rowHoverStyle
+# 行悬浮样式 columns.rowHoverStyle
 
 - 描述：鼠标悬浮当前行时单元格样式
 - 类型：`Record<string, string> | string`
