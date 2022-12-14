@@ -7,6 +7,7 @@
  */
 
 import classNames from 'classnames';
+import forEach from 'lodash/forEach';
 import ResizeObserver from 'rc-resize-observer';
 import RcTable from 'rc-table';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
@@ -26,6 +27,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import { parseCSS, parseReactCSS, setElementCSS } from '@/utils/dom';
+import { decodeJSON, encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
@@ -74,12 +76,7 @@ export const columnGenerator = <
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
-      hoverRowKey: React.Key | undefined;
-      setHoverRowKey: (k: React.Key | undefined) => void;
-      hoverColumnKey: React.Key | undefined;
-      setHoverColumnKey: (k: React.Key | undefined) => void;
-    },
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
   ): TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
@@ -231,6 +228,53 @@ export const columnGenerator = <
     }
     {
       const render = column.render;
+      const updateTdElementStyle = (tdEl: HTMLElement, hoverColumnKey: string | undefined, hoverRowKey: string | undefined) => {
+        const columnKey = tdEl.dataset.columnKey || '';
+        const rowKey = tdEl.dataset.rowKey || '';
+        const style = decodeJSON<typeof columnSchema.style>(tdEl.dataset.style || '');
+        const hoverStyle = decodeJSON<typeof columnSchema.hoverStyle>(tdEl.dataset.hoverStyle || '');
+        const rowHoverStyle = decodeJSON<typeof columnSchema.rowHoverStyle>(tdEl.dataset.rowHoverStyle || '');
+        const columnHoverStyle = decodeJSON<typeof columnSchema.columnHoverStyle>(tdEl.dataset.columnHoverStyle || '');
+        // 移除 hover 状态样式
+        if (hoverStyle) {
+          Object.entries(parseCSS(hoverStyle))
+            .forEach(([k]) => { tdEl.style[k] = null; });
+        }
+        if (rowHoverStyle) {
+          Object.entries(parseCSS(rowHoverStyle))
+            .forEach(([k]) => { tdEl.style[k] = null; });
+        }
+        if (columnHoverStyle) {
+          Object.entries(parseCSS(columnHoverStyle))
+            .forEach(([k]) => { tdEl.style[k] = null; });
+        }
+        // 列基础样式
+        if (style) {
+          setElementCSS(tdEl, style);
+        }
+        // 列 hover 样式
+        if (columnKey && columnHoverStyle && hoverColumnKey === columnKey) {
+          setElementCSS(tdEl, columnHoverStyle);
+        }
+        // 行 hover 样式
+        if (rowKey && rowHoverStyle && hoverRowKey === rowKey) {
+          setElementCSS(tdEl, rowHoverStyle);
+        }
+        // 单元格 hover 样式
+        if (columnKey && rowKey && hoverStyle && hoverColumnKey === columnKey && hoverRowKey === rowKey) {
+          setElementCSS(tdEl, hoverStyle);
+        }
+      };
+      const updateAllTdElementStyle = (hoverColumnKey: string | undefined, hoverRowKey: string | undefined) => {
+        forEach(
+          document.querySelectorAll(`td[data-table-uuid=${JSON.stringify(tableInfo.uuid)}]`),
+          (tdEl) => {
+            if (tdEl instanceof HTMLElement) {
+              updateTdElementStyle(tdEl, hoverColumnKey, hoverRowKey);
+            }
+          },
+        );
+      };
       column.render = (d, row, ...args) => (
         <React.Fragment>
           { render(d, row, ...args) }
@@ -247,43 +291,16 @@ export const columnGenerator = <
                     const rowHoverStyle = typeof columnSchema.rowHoverStyle === 'string' ? safeExecute(columnSchema.rowHoverStyle, context) : columnSchema.rowHoverStyle;
                     const columnHoverStyle = typeof columnSchema.columnHoverStyle === 'string' ? safeExecute(columnSchema.columnHoverStyle, context) : columnSchema.columnHoverStyle;
                     if (tdEl) {
-                      // 移除 hover 状态样式
-                      if (hoverStyle) {
-                        Object.entries(parseCSS(hoverStyle))
-                          .forEach(([k]) => { tdEl.style[k] = null; });
-                      }
-                      if (rowHoverStyle) {
-                        Object.entries(parseCSS(rowHoverStyle))
-                          .forEach(([k]) => { tdEl.style[k] = null; });
-                      }
-                      if (columnHoverStyle) {
-                        Object.entries(parseCSS(columnHoverStyle))
-                          .forEach(([k]) => { tdEl.style[k] = null; });
-                      }
-                      // 列基础样式
-                      if (style) {
-                        setElementCSS(tdEl, style);
-                      }
-                      // 列 hover 样式
-                      if (columnHoverStyle && extraProps.hoverColumnKey === columnSchema.key) {
-                        setElementCSS(tdEl, columnHoverStyle);
-                      }
-                      // 行 hover 样式
-                      if (rowHoverStyle && extraProps.hoverRowKey === row.key) {
-                        setElementCSS(tdEl, rowHoverStyle);
-                      }
-                      // 单元格 hover 样式
-                      if (hoverStyle && extraProps.hoverColumnKey === columnSchema.key && extraProps.hoverRowKey === row.key) {
-                        setElementCSS(tdEl, hoverStyle);
-                      }
-                      // 事件监听，刷新样式
-                      const trEl = tdEl.parentElement;
-                      if (trEl?.tagName === 'TR') {
-                        trEl.addEventListener('mouseenter', () => { extraProps.setHoverRowKey(row.key); });
-                        trEl.addEventListener('mouseleave', () => { extraProps.setHoverRowKey(void 0); });
-                      }
-                      tdEl.addEventListener('mouseenter', () => { extraProps.setHoverColumnKey(columnSchema.key); });
-                      tdEl.addEventListener('mouseleave', () => { extraProps.setHoverColumnKey(void 0); });
+                      tdEl.dataset.tableUuid = tableInfo.uuid;
+                      tdEl.dataset.columnKey = columnSchema.key;
+                      tdEl.dataset.rowKey = row.key;
+                      tdEl.dataset.style = encodeJSON(style);
+                      tdEl.dataset.hoverStyle = encodeJSON(hoverStyle);
+                      tdEl.dataset.rowHoverStyle = encodeJSON(rowHoverStyle);
+                      tdEl.dataset.columnHoverStyle = encodeJSON(columnHoverStyle);
+                      tdEl.addEventListener('mouseenter', () => { console.warn('mouseenter', updateAllTdElementStyle(columnSchema.key, row.key)); });
+                      tdEl.addEventListener('mouseleave', () => { console.warn('mouseleave', updateAllTdElementStyle(void 0, void 0)); });
+                      updateTdElementStyle(tdEl, void 0, void 0);
                     }
                   }}
                 />
@@ -460,10 +477,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         driver: tableProps.driver,
         components: tableProps.components,
         ext: tableProps.ext,
-        hoverRowKey,
-        setHoverRowKey,
-        hoverColumnKey,
-        setHoverColumnKey,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
       };
