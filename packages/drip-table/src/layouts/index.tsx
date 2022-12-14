@@ -8,6 +8,7 @@
 
 import classnames from 'classnames';
 import React, { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   type DripTableExtraOptions,
@@ -31,9 +32,11 @@ const DripTableLayout = <
 >(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
   const initialState = useTable();
   const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
+  const [tableUUID] = React.useState(uuidv4());
   const rootRef = React.useRef<HTMLDivElement>(null); // ProTable组件的ref
 
   const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    uuid: tableUUID,
     schema: props.schema,
     dataSource: props.dataSource,
     parent: props.__PARENT_INFO__,
@@ -88,15 +91,6 @@ const DripTableLayout = <
 
   const footer = React.useMemo<{ style?: React.CSSProperties; schemas: DripTableGenericRenderElement[] } | null>(
     () => {
-      if (props.schema.footer === true) {
-        return {
-          schemas: [
-            { type: 'display-column-selector', span: 8 },
-            { type: 'search', span: 8 },
-            { type: 'insert-button', span: 4 },
-          ],
-        };
-      }
       if (!props.schema.footer || !props.schema.footer.elements?.length) {
         return null;
       }
@@ -113,6 +107,7 @@ const DripTableLayout = <
       <GenericRender
         style={header.style}
         schemas={header.schemas}
+        tableUUID={tableUUID}
         tableProps={props}
         tableState={tableState}
         setTableState={setTableState}
@@ -125,6 +120,7 @@ const DripTableLayout = <
       <GenericRender
         style={footer.style}
         schemas={footer.schemas}
+        tableUUID={tableUUID}
         tableProps={props}
         tableState={tableState}
         setTableState={setTableState}
@@ -142,6 +138,7 @@ const DripTableLayout = <
     if (tableState.layout === 'table') {
       return (
         <TableLayout
+          tableUUID={tableUUID}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
@@ -154,6 +151,7 @@ const DripTableLayout = <
     if (tableState.layout === 'card') {
       return (
         <CardLayout
+          tableUUID={tableUUID}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
@@ -165,6 +163,7 @@ const DripTableLayout = <
     if (tableState.layout === 'calendar') {
       return (
         <CalendarLayout
+          tableUUID={tableUUID}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}

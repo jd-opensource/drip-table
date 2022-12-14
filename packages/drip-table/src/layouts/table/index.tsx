@@ -342,7 +342,7 @@ const TableLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
-  const { tableProps, tableInfo, tableState, setTableState } = props;
+  const { tableUUID, tableProps, tableInfo, tableState, setTableState } = props;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
   const tableContainer = React.useRef<HTMLDivElement>(null);
@@ -634,6 +634,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 <GenericRender
                   style={tableProps.schema.rowHeader.style}
                   schemas={tableProps.schema.rowHeader.elements ?? []}
+                  tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}
                   setTableState={setTableState}
@@ -647,6 +648,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 <GenericRender
                   style={tableProps.schema.rowFooter.style}
                   schemas={tableProps.schema.rowFooter.elements ?? []}
+                  tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}
                   setTableState={setTableState}
@@ -857,6 +859,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     tableProps.onFilterChange?.(filters, tableInfo);
                     tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
                   },
+                  tableUUID,
                   tableProps,
                   tableState,
                   setTableState,
@@ -987,7 +990,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       ? subtableData => tableProps.subtableTitle?.(
                         row.record,
                         row.index,
-                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                       )
                       : void 0
                   }
@@ -996,7 +999,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       ? subtableData => tableProps.subtableFooter?.(
                         row.record,
                         row.index,
-                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                       )
                       : void 0
                   }

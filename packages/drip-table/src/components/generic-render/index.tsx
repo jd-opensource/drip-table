@@ -197,6 +197,10 @@ interface GenericRenderProps<
    */
   schemas: DripTableGenericRenderElement[];
   /**
+   * 表格唯一标识符
+   */
+  tableUUID: string;
+  /**
    * 表格属性
    */
   tableProps: DripTableProps<RecordType, ExtraOptions>;
@@ -226,7 +230,7 @@ const GenericRender = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GenericRenderProps<RecordType, ExtraOptions>) => {
-  const { tableProps, tableState, setTableState } = props;
+  const { tableUUID, tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;
   const Col = tableProps.driver.components.Col;
@@ -244,6 +248,7 @@ const GenericRender = <
   const [searchStr, setSearchStr] = React.useState('');
   const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
   const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    uuid: tableUUID,
     schema: tableProps.schema,
     dataSource: tableProps.dataSource,
     parent: tableProps.__PARENT_INFO__,

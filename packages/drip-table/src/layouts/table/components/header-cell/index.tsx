@@ -19,9 +19,10 @@ import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type Dri
 import styles from './index.module.less';
 
 interface HeaderCellAdditionalProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
+  tableUUID: string;
   tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
@@ -64,6 +65,7 @@ const HeaderCell = <
               style={header.style}
               schemas={header.elements || []}
               columnSchema={columnSchema}
+              tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}
@@ -81,6 +83,7 @@ const HeaderCell = <
               style={footer.style}
               schemas={footer.elements || []}
               columnSchema={columnSchema}
+              tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}

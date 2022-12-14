@@ -407,6 +407,10 @@ export interface DripTableTableInformation<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
+   * 表格全局唯一临时标识符
+   */
+  uuid: string;
+  /**
    * 表格 Schema
    */
   schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
