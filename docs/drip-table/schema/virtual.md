@@ -36,18 +36,38 @@ const schema = {
     {
       key: "mock_2",
       title: "商品详情",
+      width: 400,
       align: "center",
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
+    {
+      key: "mock_3",
+      title: "商品价格",
+      width: 100,
+      align: "center",
+      dataIndex: "price",
+      component: "text",
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
+    },
+    ...Array(500).fill(0).map((_, i) => ({
+      key: `mock_${4 + i}`,
+      title: `商品价格 (+${i + 1})`,
+      width: 100,
+      align: "center",
+      dataIndex: "price",
+      component: "text",
+      dataTranslation: `return props.value + ${i + 1}`,
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
+    })),
   ],
 };
 
-const dataSource = Array(100000).fill(0).map((_, i) => ({
+const dataSource = Array(1000).fill(0).map((_, i) => ({
   id: i,
   name: "商品" + i,
-  price: 7999,
+  price: 5999 + Math.floor(Math.random() * 3000),
   status: "onSale",
   description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
 }));
