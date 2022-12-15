@@ -35,6 +35,8 @@
 
 - 默认值：必填
 
+- 说明：详细参见：[`DripTableSlot 通用插槽功能`](/drip-table/slot)。
+
 ```jsx
 /**
  * transform: true

@@ -11,7 +11,7 @@ import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/built-in';
-import type { DripTableGenericRenderElement } from '@/components/generic-render';
+import type { DripTableSlotSchema } from '@/components/slot-render';
 
 import type { DripTableDriver } from './driver';
 
@@ -57,29 +57,11 @@ export interface DripTableBaseColumnSchema {
     /**
      * 是否展示头部以及配置
      */
-    header?: {
-      /**
-       * 尾部自定义样式
-       */
-      style?: React.CSSProperties;
-      /**
-       * 尾部展示元素配置
-       */
-      elements?: DripTableGenericRenderElement[];
-    };
+    header?: DripTableSlotSchema;
     /**
      * 是否展示尾部以及配置
      */
-    footer?: {
-      /**
-       * 尾部自定义样式
-       */
-      style?: React.CSSProperties;
-      /**
-       * 尾部展示元素配置
-       */
-      elements?: DripTableGenericRenderElement[];
-    };
+    footer?: DripTableSlotSchema;
   };
   /**
    * 单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
@@ -221,29 +203,11 @@ export interface DripTableSchema<
   /**
    * 是否展示头部以及配置
    */
-  header?: {
-    /**
-     * 头部自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 头部展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  } | boolean;
+  header?: DripTableSlotSchema | boolean;
   /**
    * 是否展示尾部以及配置
    */
-  footer?: {
-    /**
-     * 尾部自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 尾部展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  footer?: DripTableSlotSchema;
   /**
    * 是否展示分页以及配置
    */
@@ -336,29 +300,11 @@ export interface DripTableSchema<
   /**
    * 行头部插槽
    */
-  rowHeader?: {
-    /**
-     * 行头部插槽自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 行头部插槽展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  rowHeader?: DripTableSlotSchema;
   /**
    * 行尾部插槽
    */
-  rowFooter?: {
-    /**
-     * 行尾部插槽自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 行尾部插槽展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  rowFooter?: DripTableSlotSchema;
   /**
    * 子表设置项
    */

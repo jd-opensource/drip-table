@@ -116,9 +116,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/columns/options',
           '/drip-table/schema/bordered',
           '/drip-table/schema/show-header',
-          '/drip-table/schema/header/index',
-          '/drip-table/schema/header/style',
-          '/drip-table/schema/header/elements',
+          '/drip-table/schema/header',
           '/drip-table/schema/footer',
           '/drip-table/schema/pagination',
           '/drip-table/schema/size',
@@ -136,6 +134,15 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-header',
           '/drip-table/schema/row-footer',
           '/drip-table/schema/subtable',
+        ],
+      },
+      {
+        title: '插槽系统',
+        path: '/drip-table/slot',
+        children: [
+          '/drip-table/slot/index',
+          '/drip-table/slot/style',
+          '/drip-table/slot/elements',
         ],
       },
       {
@@ -201,7 +208,7 @@ const umiConfig: IConfig = {
         path: '/drip-table/types',
         children: [
           '/drip-table/types/table-information',
-          '/drip-table/types/generic-render-element',
+          '/drip-table/types/slot-schema',
           '/drip-table/types/column-schema',
         ],
       },

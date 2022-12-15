@@ -18,7 +18,7 @@ import {
   type DripTableTableInformation,
 } from '@/types';
 import ErrorBoundary from '@/components/error-boundary';
-import GenericRender, { type DripTableGenericRenderElement } from '@/components/generic-render';
+import SlotRender, { type DripTableSlotSchema } from '@/components/slot-render';
 import Spin from '@/components/spin';
 import { useState, useTable } from '@/hooks';
 
@@ -66,11 +66,11 @@ const DripTableLayout = <
     props.componentDidUpdate?.(tableInfo);
   }, [props]);
 
-  const header = React.useMemo<{ style?: React.CSSProperties; schemas: DripTableGenericRenderElement[] } | null>(
+  const header = React.useMemo<DripTableSlotSchema | null>(
     () => {
       if (props.schema.header === true) {
         return {
-          schemas: [
+          elements: [
             { type: 'display-column-selector', selectorButtonType: 'primary' },
             { type: 'spacer', span: 'flex-auto' },
             { type: 'search' },
@@ -83,20 +83,20 @@ const DripTableLayout = <
       }
       return {
         style: props.schema.header.style,
-        schemas: props.schema.header.elements,
+        elements: props.schema.header.elements,
       };
     },
     [props.schema.header],
   );
 
-  const footer = React.useMemo<{ style?: React.CSSProperties; schemas: DripTableGenericRenderElement[] } | null>(
+  const footer = React.useMemo<DripTableSlotSchema | null>(
     () => {
       if (!props.schema.footer || !props.schema.footer.elements?.length) {
         return null;
       }
       return {
         style: props.schema.footer.style,
-        schemas: props.schema.footer.elements,
+        elements: props.schema.footer.elements,
       };
     },
     [props.schema.footer],
@@ -104,9 +104,8 @@ const DripTableLayout = <
 
   const headerNode = header
     ? (
-      <GenericRender
-        style={header.style}
-        schemas={header.schemas}
+      <SlotRender
+        schema={header}
         tableUUID={tableUUID}
         tableProps={props}
         tableState={tableState}
@@ -117,9 +116,8 @@ const DripTableLayout = <
 
   const footerNode = footer
     ? (
-      <GenericRender
-        style={footer.style}
-        schemas={footer.schemas}
+      <SlotRender
+        schema={footer}
         tableUUID={tableUUID}
         tableProps={props}
         tableState={tableState}

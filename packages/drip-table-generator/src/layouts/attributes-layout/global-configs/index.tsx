@@ -5,7 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DripTableExtraOptions, DripTableGenericRenderElement } from 'drip-table';
+import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -211,18 +211,18 @@ const GlobalConfigForm = <
       innerStyle,
       rowHeader: {
         style: { ...rowHeaderStyle },
-        elements: (formData['rowHeader.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+        elements: (formData['rowHeader.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
       },
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['header.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['header.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : false,
       footer: formData.footer
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['footer.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['footer.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : void 0,
       pagination: formData.pagination

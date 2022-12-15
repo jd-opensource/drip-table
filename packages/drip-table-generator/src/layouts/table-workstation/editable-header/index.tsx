@@ -9,7 +9,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Pagination, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableGenericRenderElement, DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSchema, DripTableSlotElementSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -36,7 +36,7 @@ const EditableTableHeader = <
 >(props: EditableTableHeaderProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
-  const [currentCell, setCurrentCell] = React.useState<DripTableGenericRenderElement>();
+  const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
 
   const textAlignMapper = {
     topLeft: 'left',
@@ -45,7 +45,7 @@ const EditableTableHeader = <
   };
 
   const renderColumnContent = (
-    config: DripTableGenericRenderElement,
+    config: DripTableSlotElementSchema,
     globalConfigs: DripTableGeneratorContext['globalConfigs'],
   ) => {
     if (config.type === 'spacer') {
@@ -125,13 +125,13 @@ const EditableTableHeader = <
     return null;
   };
 
-  const startDragCell = (element: DripTableGenericRenderElement, index: number) => {
+  const startDragCell = (element: DripTableSlotElementSchema, index: number) => {
     setCurrentCellIndex(index);
     setCurrentCell(element);
   };
 
   const dropHeaderCell = (
-    element: DripTableGenericRenderElement,
+    element: DripTableSlotElementSchema,
     index: number,
     globalConfigs: DripTableGeneratorContext['globalConfigs'],
     setState: DripTableGeneratorContext['setState'],

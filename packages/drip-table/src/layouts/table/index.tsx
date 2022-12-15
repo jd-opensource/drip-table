@@ -32,9 +32,9 @@ import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
-import GenericRender from '@/components/generic-render';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
+import SlotRender from '@/components/slot-render';
 import Tooltip from '@/components/tooltip';
 import { type IDripTableContext } from '@/context';
 import DripTableWrapper from '@/wrapper';
@@ -713,9 +713,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           returnColumns[0].render = (o, row, index) => {
             if (row.type === 'header' && tableProps.schema.rowHeader) {
               return (
-                <GenericRender
-                  style={tableProps.schema.rowHeader.style}
-                  schemas={tableProps.schema.rowHeader.elements ?? []}
+                <SlotRender
+                  schema={tableProps.schema.rowHeader}
                   tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}
@@ -727,9 +726,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             }
             if (row.type === 'footer' && tableProps.schema.rowFooter) {
               return (
-                <GenericRender
-                  style={tableProps.schema.rowFooter.style}
-                  schemas={tableProps.schema.rowFooter.elements ?? []}
+                <SlotRender
+                  schema={tableProps.schema.rowFooter}
                   tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}

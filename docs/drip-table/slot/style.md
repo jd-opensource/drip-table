@@ -1,6 +1,6 @@
-# 头部样式 header.style
+# 插槽样式 slot.style
 
-- 描述：头部自定义样式
+- 描述：插槽自定义样式
 - 类型：`React.CSSProperties`
 - 默认值：`undefined`
 

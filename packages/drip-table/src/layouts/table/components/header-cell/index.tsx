@@ -12,7 +12,7 @@ import RcTooltip from 'rc-tooltip';
 import React from 'react';
 
 import Checkbox from '@/components/checkbox';
-import GenericRender from '@/components/generic-render';
+import SlotRender from '@/components/slot-render';
 import { type IDripTableContext } from '@/context';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableProps, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
 
@@ -61,9 +61,8 @@ const HeaderCell = <
       {
         header
           ? (
-            <GenericRender
-              style={header.style}
-              schemas={header.elements || []}
+            <SlotRender
+              schema={header}
               columnSchema={columnSchema}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
@@ -79,9 +78,8 @@ const HeaderCell = <
       {
         footer
           ? (
-            <GenericRender
-              style={footer.style}
-              schemas={footer.elements || []}
+            <SlotRender
+              schema={footer}
               columnSchema={columnSchema}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
