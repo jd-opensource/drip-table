@@ -136,9 +136,6 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-header',
           '/drip-table/schema/row-footer',
           '/drip-table/schema/subtable',
-          '/drip-table/schema/data-process',
-          '/drip-table/schema/disable-func',
-          '/drip-table/schema/visible-func',
         ],
       },
       {

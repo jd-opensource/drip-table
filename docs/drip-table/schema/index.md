@@ -33,6 +33,3 @@ title: 总览
 | [rowHeader](/drip-table/schema/row-header) | 行头部插槽 | × | [🔗 示例](/drip-table/schema/row-header) |
 | [rowFooter](/drip-table/schema/row-footer) | 行尾部插槽 | × | [🔗 示例](/drip-table/schema/row-footer) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
-| [dataProcess](/drip-table/schema/data-process) | 数据处理 | × | [🔗 示例](/drip-table/schema/data-process) |
-| [visibleFunc](/drip-table/schema/data-process) | 显隐判断 | × | [🔗 示例](/drip-table/schema/visible-func) |
-| [disableFunc](/drip-table/schema/data-process) | 禁用判断 | × | [🔗 示例](/drip-table/schema/disable-func) |
