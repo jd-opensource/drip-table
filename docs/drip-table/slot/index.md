@@ -13,10 +13,10 @@
 
     ```jsx
     /**
-    * transform: true
-    * defaultShowCode: true
-    * hideActions: ["CSB"]
-    */
+     * transform: true
+     * defaultShowCode: true
+     * hideActions: ["CSB"]
+     */
     import React from "react";
     import DripTable from "drip-table";
     import DripTableDriverAntDesign from "drip-table-driver-antd";
@@ -85,10 +85,10 @@
 
     ```jsx
     /**
-    * transform: true
-    * defaultShowCode: true
-    * hideActions: ["CSB"]
-    */
+     * transform: true
+     * defaultShowCode: true
+     * hideActions: ["CSB"]
+     */
     import React from "react";
     import DripTable from "drip-table";
     import DripTableDriverAntDesign from "drip-table-driver-antd";
