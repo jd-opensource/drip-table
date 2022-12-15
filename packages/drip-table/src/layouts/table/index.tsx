@@ -214,7 +214,7 @@ export const columnGenerator = <
   } else if (typeof columnSchema.title.body === 'string') {
     columnTitle = columnSchema.title.body;
   } else {
-    columnTitle = columnSchema.title.body.content;
+    columnTitle = columnSchema.title?.body?.content;
   }
   const onTitleRef = (el: HTMLDivElement) => {
     const thEl = el?.parentElement;

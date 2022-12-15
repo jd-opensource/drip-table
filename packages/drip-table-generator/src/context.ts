@@ -1,11 +1,11 @@
-import { DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import { createContext } from 'react';
 
 import { DataSourceTypeAbbr } from './typing';
 
-export type DripTableColumn<ExtraColumnSchema extends DripTableColumnSchema = never> = (DripTableBuiltInColumnSchema | DripTableSchema<ExtraColumnSchema>['columns'][number]) & {
+export type DripTableColumn<ExtraColumnSchema extends DripTableColumnSchema = never> = (DripTableSchema<ExtraColumnSchema>['columns'][number]) & {
   /** 列排序用 */
-  index: number;
+  innerIndexForGenerator: number;
 };
 
 export type GlobalSchema<ExtraColumnSchema extends DripTableColumnSchema = never> = Omit<DripTableSchema<ExtraColumnSchema>, 'columns'>;

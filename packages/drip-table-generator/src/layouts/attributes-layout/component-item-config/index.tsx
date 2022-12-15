@@ -55,6 +55,9 @@ const ComponentItemConfigForm = <
 
   const getColumnConfigs = (componentType: string) => {
     const columnConfig = getComponents().find(schema => schema['ui:type'] === componentType);
+    if (columnConfig) {
+      columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
+    }
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {
@@ -82,15 +85,35 @@ const ComponentItemConfigForm = <
     return columnConfig;
   };
 
+  const decodeColumnConfigs = (columnConfigs?: DripTableGeneratorContext['currentColumn'], defaultData?: Record<string, unknown>) => {
+    const formData: Record<string, unknown> = {};
+    if (typeof columnConfigs?.title === 'string') {
+      formData.title = columnConfigs.title;
+    } else if (typeof columnConfigs?.title?.body === 'string') {
+      formData.title = columnConfigs?.title?.body;
+    } else if (typeof columnConfigs?.title?.body === 'object') {
+      formData.title = columnConfigs?.title?.body.content;
+    }
+    if (typeof columnConfigs?.style === 'object') {
+      Object.keys(columnConfigs.style).forEach((key) => {
+        formData[`style.${key}`] = columnConfigs.style?.[key];
+      });
+    }
+    return formData;
+  };
+
   const encodeColumnConfigs = (formData: { [key: string]: unknown }, column: DripTableGeneratorContext['currentColumn']) => {
     const uiProps: Record<string, unknown> = {};
     const dataProps = {};
+    const columnStyle: Record<string, string> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
         uiProps[key.replace('options.', '')] = formData[key];
       } else if (key.startsWith('ui:props.')) {
         uiProps[key.replace('ui:props.', '')] = formData[key];
-      } else {
+      } else if (key.startsWith('style.')) {
+        columnStyle[key.replace('style.', '')] = String(formData[key]);
+      } else if (!key.startsWith('titleStyle.')) {
         dataProps[key] = formData[key];
       }
     });
@@ -117,12 +140,13 @@ const ComponentItemConfigForm = <
         'group',
       ]),
       key: column?.key ?? '',
-      index: column?.index ?? 0,
+      innerIndexForGenerator: column?.innerIndexForGenerator ?? 0,
       dataIndex: formData.dataIndex as string | string[],
-      title: formData.title as string,
+      title: '',
       width: formData.width as string,
       component: column?.component ?? '',
       options: uiProps,
+      style: columnStyle,
     };
   };
   return (
@@ -138,6 +162,7 @@ const ComponentItemConfigForm = <
             primaryKey="key"
             configs={columnConfig ? columnConfig.attrSchema || [] : []}
             data={currentColumnItem}
+            decodeData={decodeColumnConfigs}
             encodeData={formData => encodeColumnConfigs(formData, currentColumnItem)}
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}

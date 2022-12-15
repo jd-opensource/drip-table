@@ -124,6 +124,16 @@ const Demo = () => {
               ],
             },
           },
+          columnStyle: (column, index) => {
+            return {
+              style: {
+                borderRight: "1px solid #f0f1f4",
+              },
+              rowHoverStyle: {
+                background: "#ffffff",
+              },
+            };
+          },
         },
       ]}
       defaultMode="preview"

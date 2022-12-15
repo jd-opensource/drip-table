@@ -45,6 +45,7 @@ const GlobalConfigForm = <
       });
     }
   };
+
   const encodeStyles = (prefix: string, formData: Record<string, unknown>) => {
     const styles: React.CSSProperties = {};
     Object.keys(formData).forEach((key) => {

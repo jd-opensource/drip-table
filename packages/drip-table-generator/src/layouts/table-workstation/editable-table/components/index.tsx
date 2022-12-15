@@ -13,7 +13,7 @@ import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema,
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
-import { get, mockId } from '@/utils';
+import { filterAttributes, get, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
 import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
@@ -51,6 +51,15 @@ interface EditableGroupComponentProps <
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
+const generatorComponentSchema = (column: DripTableBuiltInColumnSchema | DripTableGeneratorContext['columns'][number] | null) => (column
+  ? {
+    ...column,
+    options: {
+      ...filterAttributes(column.options, 'visibleFunc'),
+    },
+  }
+  : null);
+
 const EditableGroupComponent = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
@@ -68,6 +77,9 @@ const EditableGroupComponent = <
 
   const getColumnConfigs = (componentType: string) => {
     const columnConfig = getAllComponentsConfigs.find(schema => schema['ui:type'] === componentType);
+    if (columnConfig) {
+      columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
+    }
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {
@@ -161,10 +173,13 @@ const EditableGroupComponent = <
                             const configs = getColumnConfigs(columnToAdd.component);
                             const options: Record<string, unknown> = {};
                             const additionalProps = {};
+                            const componentStyle = {};
                             configs?.attrSchema.forEach((schema) => {
                               if (schema.name.startsWith('options.')) {
                                 options[schema.name.replace('options.', '')] = schema.default;
-                              } else {
+                              } else if (schema.name.startsWith('style.')) {
+                                componentStyle[schema.name.replace('style.', '')] = schema.default;
+                              } else if (!schema.name.startsWith('titleStyle.')) {
                                 additionalProps[schema.name] = schema.default;
                               }
                             });
@@ -174,12 +189,13 @@ const EditableGroupComponent = <
                             const columnItemSchema: DripTableColumnSchema = {
                               key: `${columnToAdd.component}_${mockId()}`,
                               dataIndex: '',
-                              title: columnToAdd.title,
+                              title: '',
                               width: void 0,
                               description: '',
                               component: columnToAdd.component,
                               options,
                               ...additionalProps,
+                              style: componentStyle,
                             };
                             const theColumn = columns.find(item => item.key === props.column?.key);
                             if (theColumn) {
@@ -229,7 +245,7 @@ const EditableGroupComponent = <
                                     driver={props.driver || DripTableDriverAntDesign}
                                     value={value as unknown}
                                     data={props.record}
-                                    schema={componentOptions.items[currentCheckedIndex]}
+                                    schema={generatorComponentSchema(componentOptions.items[currentCheckedIndex])}
                                     preview={{}}
                                   />
                                 )
@@ -284,7 +300,7 @@ const EditableComponents = <
         driver={props.driver || DripTableDriverAntDesign}
         value={value as unknown}
         data={props.record}
-        schema={props.column}
+        schema={generatorComponentSchema(props.column)}
         preview={{}}
       />
     )

@@ -26,9 +26,34 @@ const PreviewTable = <
       driver={DripTableDriverAntDesign}
       schema={getSchemaValue<ExtraOptions>(context)}
       dataSource={context.previewDataSource as RecordType[]}
-      ajv={{ additionalProperties: true }}
       components={props.components || props.customComponents}
-      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv', 'style', 'customComponents'])}
+      {...filterAttributes(props, [
+        'driver',
+        'dataSource',
+        'schema',
+        'style',
+        'customComponents',
+        'visible',
+        'mockDataSource',
+        'dataFields',
+        'showComponentLayout',
+        'componentLayoutStyle',
+        'rightLayoutMode',
+        'rightLayoutStyle',
+        'showToolLayout',
+        'toolbarStyle',
+        'defaultTheme',
+        'customThemeOptions',
+        'defaultMode',
+        'dataFields',
+        'noDataFeedBack',
+        'customComponentPanel',
+        'customGlobalConfigPanel',
+        'customAttributeComponents',
+        'slotsSchema',
+        'onExportSchema',
+        'onSchemaChange',
+      ])}
     />
   );
 };

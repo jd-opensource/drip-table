@@ -114,6 +114,8 @@ export interface DripTableGeneratorPanel<T> {
   orders?: string[];
 }
 
+export type NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions extends Partial<DripTableExtraOptions> = never> = Partial<Omit<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>, 'columns'>>
+
 export type DataSourceTypeAbbr<SubtableDataSourceKey extends React.Key> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>;
 export interface DripTableGeneratorProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -144,8 +146,8 @@ export interface DripTableGeneratorProps<
     /** 主题选项英文名，也是主题的唯一键值 */
     value: string;
     /** drip-table 的 schema 配置: 全局配置以及全局样式 */
-    style: Partial<Omit<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>, 'columns'>>;
-    /** drip-table 的 schema 配置: 设置某些列的样式 */
+    style: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions> | ((schema: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) => NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>);
+    /** drip-table 的 schema 配置: 设置列的样式 */
     columnStyle?: (column: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number], index: number) => Partial<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number]>;
     /** 主题缩略图 */
     image: string;

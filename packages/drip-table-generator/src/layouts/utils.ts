@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableGroupColumnSchema, DripTableSchema } from 'drip-table';
 
 import { DripTableGeneratorContext } from '@/context';
 import tableComponents from '@/table-components';
@@ -49,9 +49,21 @@ export const getComponents = <
 export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => ({
   ...context.globalConfigs,
   columns: context.columns.map((item) => {
-    const schemaItem = { ...item, index: void 0, dataIndexMode: void 0 };
-    delete schemaItem.index;
+    const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+    delete schemaItem.innerIndexForGenerator;
     delete schemaItem.dataIndexMode;
+    if (item.component === 'group') {
+      const items = [...item.options.items as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['options']['items']];
+      items.forEach((element, index) => {
+        if (element) {
+          const subComponentItem = { ...element, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+          delete subComponentItem.innerIndexForGenerator;
+          delete subComponentItem.dataIndexMode;
+          items[index] = subComponentItem;
+        }
+      });
+      (schemaItem as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>).options.items = items;
+    }
     return schemaItem;
   }),
 }) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;

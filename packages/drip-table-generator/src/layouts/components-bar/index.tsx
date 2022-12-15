@@ -77,9 +77,15 @@ const ComponentsBar = <
     const configs = getColumnConfigs(component['ui:type']);
     const options: Record<string, unknown> = {};
     const additionalProps = {};
+    const componentStyle = {};
+    const titleStyle = {};
     configs?.attrSchema.forEach((schema) => {
       if (schema.name.startsWith('options.')) {
         options[schema.name.replace('options.', '')] = schema.default;
+      } else if (schema.name.startsWith('style.')) {
+        componentStyle[schema.name.replace('style.', '')] = schema.default;
+      } else if (schema.name.startsWith('titleStyle.')) {
+        titleStyle[schema.name.replace('titleStyle.', '')] = schema.default;
       } else {
         additionalProps[schema.name] = schema.default;
       }
@@ -90,13 +96,14 @@ const ComponentsBar = <
     const columnSchema: DripTableColumn = {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',
-      title: component.title,
+      title: { body: component.title, style: titleStyle },
       width: void 0,
       description: '',
       component: component['ui:type'] as 'text',
       options,
-      index: context.columns.length,
+      innerIndexForGenerator: context.columns.length,
       ...additionalProps,
+      style: componentStyle,
     };
     return columnSchema;
   };

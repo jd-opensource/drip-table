@@ -16,7 +16,7 @@ import React from 'react';
 import { filterAttributes } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import GeneratorLayout from '@/layouts';
-import { themeList } from '@/layouts/toolbar/config';
+import { builtInThemes } from '@/layouts/toolbar/config';
 import { getSchemaValue } from '@/layouts/utils';
 
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
@@ -27,26 +27,20 @@ export type GeneratorWrapperHandler = {
   getDataSource: () => DripTableGeneratorContext['previewDataSource'];
 }
 
-const generateStates: <
+const generateStates = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => Omit<DripTableGeneratorContext, 'setState'> = (props) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>): Omit<DripTableGeneratorContext, 'setState'> => {
   const schema = props.schema;
-  const themeOptions = [...themeList, ...props.customThemeOptions || []];
-  const columns = schema?.columns.map((item, index) => ({ index, ...item })) || [];
+  const globalSchema = filterAttributes(schema, 'column');
+  const themeOptions = [...builtInThemes<RecordType, ExtraOptions>() || [], ...props.customThemeOptions || []];
   const defaultTheme = themeOptions.find(item => item.value === props.defaultTheme);
-  const columnsWithTheme = columns.map((column, index) => {
-    const columnStyle = defaultTheme?.columnStyle?.(column, index);
-    return {
-      ...column,
-      ...columnStyle,
-    };
-  });
+  const themeStyle = typeof defaultTheme?.style === 'function' ? defaultTheme.style(globalSchema) : defaultTheme?.style;
   return {
     globalConfigs: schema
-      ? { ...filterAttributes(schema, 'column'), ...Object.assign({}, defaultTheme?.style) }
+      ? { ...globalSchema, ...themeStyle }
       : { pagination: false, header: false },
-    columns: columnsWithTheme,
+    columns: schema?.columns.map((column, index) => ({ ...column, ...defaultTheme?.columnStyle?.(column, index), innerIndexForGenerator: index })) || [],
     previewDataSource: [...props.dataSource || []],
     mode: props.defaultMode || 'edit',
   };

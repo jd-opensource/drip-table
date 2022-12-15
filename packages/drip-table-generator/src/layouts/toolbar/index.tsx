@@ -15,20 +15,19 @@ import { CheckSquareOutlined,
   SettingOutlined,
   SortAscendingOutlined,
   ThunderboltOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Input, message, Modal, Radio } from 'antd';
-import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
+import { Button, Input, message, Modal } from 'antd';
+import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 import Clipboard from 'react-clipboard.js';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, NonColumnsPartialDTSchemaTypeAbbr } from '@/typing';
 
 import { getSchemaValue } from '../utils';
 import { DropDownRadio } from './components/dropdown';
 import { SwitchButton } from './components/switch';
-import { themeList } from './config';
+import { builtInThemes } from './config';
 
 import styles from './index.module.less';
 
@@ -59,7 +58,10 @@ const Toolbar = <
   const [theme, setTheme] = React.useState(props.defaultTheme);
   const context = React.useContext(GeneratorContext);
 
-  const themeOptions = React.useMemo(() => [...themeList, ...props.customThemeOptions || []], [props.customThemeOptions]);
+  const themeOptions = React.useMemo(() => {
+    const themeList = builtInThemes<RecordType, ExtraOptions>() || [];
+    return [...themeList, ...props.customThemeOptions || []];
+  }, [props.customThemeOptions]);
 
   /**
    * 渲染一个Modal用来展示JSON Schema配置
@@ -84,89 +86,11 @@ const Toolbar = <
     );
   };
 
-  const configs: ToolBarConfig[] = [
-    { icon: <CheckSquareOutlined className={styles['tool-icon']} />, label: '行可选择', type: 'switch', name: 'rowSelection' },
-    { icon: <MenuOutlined className={styles['tool-icon']} />, label: '间隔斑马纹', type: 'switch', name: 'stripe' },
-    {
-      icon: <FontSizeOutlined className={styles['tool-icon']} />,
-      label: '尺寸',
-      type: 'dropdown',
-      name: 'size',
-      overlay: 'radio',
-      options: [
-        { label: '大号', value: 'large' },
-        { label: '中等', value: 'middle' },
-        { label: '小号', value: 'small' },
-      ],
-      default: 'middle',
-    },
-    { icon: <DatabaseOutlined className={styles['tool-icon']} />, label: '虚拟列表', type: 'switch', name: 'virtual' },
-    { icon: <FilterOutlined className={styles['tool-icon']} />, label: '过滤', name: 'filter' },
-    { icon: <SortAscendingOutlined className={styles['tool-icon']} />, label: '排序', name: 'sort' },
-  ];
-
-  const renderToolbarCell = (
-    config: ToolBarConfig,
-    globalConfig: DripTableGeneratorContext['globalConfigs'],
-    setState: DripTableGeneratorContext['setState'],
-  ) => {
-    if (config.type === 'switch') {
-      return (
-        <div
-          key={config.name}
-          className={classNames(styles['tool-cell'], { [styles.checked]: !!globalConfig[config.name] })}
-          onClick={() => {
-            const newTableGlobalConfig = Object.assign({}, globalConfig, { [config.name]: !globalConfig[config.name] });
-            setState({ globalConfigs: newTableGlobalConfig });
-          }}
-        >
-          { config.icon }
-          { config.label }
-        </div>
-      );
-    }
-    if (config.type === 'dropdown') {
-      let overlay: React.ReactElement = <div />;
-      overlay = config.overlay === 'radio'
-        ? (
-          <div className={styles['overlay-wrapper']}>
-            <Radio.Group
-              value={globalConfig[config.name] || config.default}
-              onChange={(e) => {
-                const newTableGlobalConfig = Object.assign({}, globalConfig, { [config.name]: e.target.value });
-                setState({ globalConfigs: newTableGlobalConfig });
-              }}
-            >
-              { config.options?.map((option, index) => (
-                <Radio key={index} value={option.value}>{ option.label }</Radio>
-              )) }
-            </Radio.Group>
-          </div>
-        )
-        : config.overlay || <div />;
-      return (
-        <Dropdown overlay={overlay} trigger={['click']} placement="bottomLeft" key={config.name}>
-          <div className={styles['tool-cell']}>
-            { config.icon }
-            { config.label }
-          </div>
-        </Dropdown>
-      );
-    }
-    return (
-      <div key={config.name} className={styles['tool-cell']} onClick={() => message.info('🚧 施工中，敬请期待~')}>
-        { config.icon }
-        { config.label }
-      </div>
-    );
-  };
-
   return (
     <GeneratorContext.Consumer>
       { ({ columns, drawerType, globalConfigs, mode, setState }) => (
         <div className={styles['toolbar-container']} style={props.style}>
           <div className={styles['toolbar-container-leftbar']}>
-            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className={styles['tool-icon']} />} label="冻结表头" />
             <DropDownRadio
               icon={<ThunderboltOutlined className={styles['tool-icon']} />}
               label="主题"
@@ -176,17 +100,31 @@ const Toolbar = <
               onChange={(value) => {
                 setTheme(value || '');
                 const theTheme = themeOptions.find(item => item.value === value);
-                const columnsWithTheme = columns.map((column, index) => {
-                  const columnStyle = theTheme?.columnStyle?.(column, index);
-                  return {
-                    ...column,
-                    ...columnStyle,
-                  };
+                const themeStyle = typeof theTheme?.style === 'function' ? theTheme.style(globalConfigs as NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) : theTheme?.style;
+                setState({
+                  globalConfigs: Object.assign({}, globalConfigs, themeStyle),
+                  columns: [...(columns as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns']).map((column, index) => ({ ...column, ...theTheme?.columnStyle?.(column, index) }))] as DripTableGeneratorContext['columns'],
                 });
-                setState({ globalConfigs: Object.assign({}, globalConfigs, theTheme?.style), columns: [...columnsWithTheme] });
               }}
             />
-            { configs.map(item => renderToolbarCell(item, globalConfigs, setState)) }
+            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className={styles['tool-icon']} />} label="冻结表头" />
+            <SwitchButton name="rowSelection" icon={<CheckSquareOutlined className={styles['tool-icon']} />} label="行可选择" />
+            <SwitchButton name="stripe" icon={<MenuOutlined className={styles['tool-icon']} />} label="间隔斑马纹" />
+            <DropDownRadio
+              name="size"
+              default="middle"
+              icon={<FontSizeOutlined className={styles['tool-icon']} />}
+              label="尺寸"
+              overlayType="radio"
+              options={[
+                { label: '大号', value: 'large' },
+                { label: '中等', value: 'middle' },
+                { label: '小号', value: 'small' },
+              ]}
+            />
+            <SwitchButton name="virtual" icon={<DatabaseOutlined className={styles['tool-icon']} />} label="虚拟列表" />
+            <SwitchButton name="filter" icon={<FilterOutlined className={styles['tool-icon']} />} label="过滤" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
+            <SwitchButton name="sort" icon={<SortAscendingOutlined className={styles['tool-icon']} />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
           </div>
           <div className={styles['toolbar-container-rightbar']}>
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>全局设置</Button>

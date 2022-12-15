@@ -177,9 +177,15 @@ const EditableTable = <
     const configs = getColumnConfigs(component['ui:type']);
     const options: Record<string, unknown> = {};
     const additionalProps = {};
+    const componentStyle = {};
+    const titleStyle = {};
     configs?.attrSchema.forEach((schema) => {
       if (schema.name.startsWith('options.')) {
         options[schema.name.replace('options.', '')] = schema.default;
+      } else if (schema.name.startsWith('style.')) {
+        componentStyle[schema.name.replace('style.', '')] = schema.default;
+      } else if (schema.name.startsWith('titleStyle.')) {
+        titleStyle[schema.name.replace('titleStyle.', '')] = schema.default;
       } else {
         additionalProps[schema.name] = schema.default;
       }
@@ -190,14 +196,25 @@ const EditableTable = <
     setState({ columns: [...columns, {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',
-      title: component.title,
+      title: { body: component.title, style: titleStyle },
       width: void 0,
       description: '',
       component: component['ui:type'] as 'text',
       options,
-      index: columns.length,
+      innerIndexForGenerator: columns.length,
       ...additionalProps,
+      style: componentStyle,
     }] });
+  };
+
+  const columnBackgroundColor = (globalConfigs: DripTableGeneratorContext['globalConfigs'], column: DripTableGeneratorContext['columns'][number], index: number) => {
+    if (typeof column.style === 'object') {
+      return column.style.backgroundColor;
+    }
+    if (globalConfigs.stripe && index % 2 === 1) {
+      return '#fafafa';
+    }
+    return void 0;
   };
 
   return (
@@ -243,7 +260,7 @@ const EditableTable = <
                     }}
                   >
                     <ColumnHeader
-                      style={{ border: '1px solid #f0f0f0' }}
+                      style={{ ...typeof column.title === 'object' ? column.title.style : {}, border: '1px solid #f0f0f0' }}
                       sticky
                       index={columnIndex}
                       column={column}
@@ -343,7 +360,7 @@ const EditableTable = <
                       const tempColumnInfo = Object.assign({}, columns[columnIndexToDrag]);
                       columns.splice(columnIndexToDrag, 1);
                       columns.splice(columnIndex, 0, tempColumnInfo);
-                      columns.forEach((item, i) => { item.index = i; });
+                      columns.forEach((item, i) => { item.innerIndexForGenerator = i; });
                       setState({ columns });
                       setColumnIndexToDrag(-1);
                     }
@@ -351,6 +368,7 @@ const EditableTable = <
                 >
                   { !globalConfigs.sticky && (
                     <ColumnHeader
+                      style={{ ...typeof column.title === 'object' ? column.title.style : {} }}
                       index={columnIndex}
                       column={column}
                       onInsert={index => setColumnIndexToInsert(index)}
@@ -364,15 +382,17 @@ const EditableTable = <
                         key={index}
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
+                          ...typeof column.style === 'object' ? column.style : {},
                           height: cellHeight,
                           width: getWidth(column.width, 'px', -2),
                           textAlign: column.align,
-                          backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
+                          backgroundColor: columnBackgroundColor(globalConfigs, column, index),
                         }}
                       >
                         <div
                           className={styles['component-container']}
                           style={{
+                            ...typeof column.style === 'object' ? column.style : {},
                             alignItems: alignItems[column.verticalAlign || 'top'],
                             justifyContent: justifyContent[column.align || 'left'],
                           }}
