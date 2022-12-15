@@ -422,8 +422,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const { tableUUID, tableProps, tableInfo, tableState, setTableState } = props;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
-  const tableContainer = React.useRef<HTMLDivElement>(null);
-
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
   const [dragInIndex, setDragInIndex] = React.useState(-1);
 
@@ -1143,7 +1141,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
       <ResizeObserver onResize={rcTableOnResize}>
-        <div className={styles['jfe-drip-table-resize-observer']} ref={tableContainer}>
+        <div className={styles['jfe-drip-table-resize-observer']}>
           <RcTable<RcTableRecordType<RecordType>>
             prefixCls="jfe-drip-table"
             className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {
