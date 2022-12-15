@@ -25,7 +25,7 @@ import "drip-table/dist/index.css";
 import "drip-table-generator/dist/index.css";
 
 const schema = {
-  rowSelection: true,
+  rowSelection: false,
   bordered: false,
   columns: [
     {
@@ -93,7 +93,7 @@ const Demo = () => {
           image:
             "https://img10.360buyimg.com/imagetools/jfs/t1/206517/7/13472/646006/61c17984Ea158ac20/7281cce7d847bd30.jpg",
           style: {
-            rowSelection: true,
+            rowSelection: false,
             bordered: false,
             innerStyle: {
               borderRadius: "8px",
@@ -126,6 +126,21 @@ const Demo = () => {
           },
           columnStyle: (column, index) => {
             return {
+              title: {
+                body:
+                  typeof column.title === "string"
+                    ? column.title
+                    : column.title.body,
+                style: {
+                  backgroundColor: "#f0f1f4",
+                  borderRadius:
+                    index === 0
+                      ? "8px 0 0 8px"
+                      : index === schema.columns.length - 1
+                      ? "0 8px 8px 0"
+                      : "",
+                },
+              },
               style: {
                 borderRight: "1px solid #f0f1f4",
               },

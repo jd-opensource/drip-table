@@ -392,7 +392,6 @@ const EditableTable = <
                         <div
                           className={styles['component-container']}
                           style={{
-                            ...typeof column.style === 'object' ? column.style : {},
                             alignItems: alignItems[column.verticalAlign || 'top'],
                             justifyContent: justifyContent[column.align || 'left'],
                           }}

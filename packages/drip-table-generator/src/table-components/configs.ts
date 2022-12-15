@@ -7,7 +7,10 @@
  */
 import { DTGComponentPropertySchema } from '../typing';
 
-export const StyleAttrConfigs = (prefix: string, group: string, filterStyles?: string[]) => [
+export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
+  filterStyles?: string[];
+  backgroundColor?: string;
+}) => [
   {
     name: `${prefix}.width`,
     group,
@@ -93,7 +96,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, filterStyles?: s
     'ui:type': 'color-picker',
     'ui:props': {},
     type: 'string',
-    default: '#ffffff',
+    default: extraOptions?.backgroundColor || '#ffffff',
   },
   {
     name: `${prefix}.borderWidth`,
@@ -115,7 +118,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, filterStyles?: s
     'ui:type': 'color-picker',
     'ui:props': {},
     type: 'string',
-    default: '#ffffff',
+    default: '#f2f2f2',
   },
   {
     name: `${prefix}.borderStyle`,
@@ -202,7 +205,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, filterStyles?: s
     type: 'string',
     default: '',
   },
-].filter(item => (filterStyles ? filterStyles.includes(item.name.replace(`${prefix}.`, '')) : item)) as DTGComponentPropertySchema[];
+].filter(item => (extraOptions?.filterStyles ? extraOptions?.filterStyles.includes(item.name.replace(`${prefix}.`, '')) : item)) as DTGComponentPropertySchema[];
 
 export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPropertySchema[] => [
   {
@@ -230,8 +233,13 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:layout': { labelCol: 6, wrapperCol: 18 },
     type: 'string',
   },
-  ...StyleAttrConfigs('titleStyle', '表头配置', ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow']),
-  ...StyleAttrConfigs('style', '列样式', ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow']),
+  ...StyleAttrConfigs('titleStyle', '表头配置', {
+    backgroundColor: '#fafafa',
+    filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
+  }),
+  ...StyleAttrConfigs('style', '列样式', {
+    filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
+  }),
   {
     name: 'width',
     group: '样式配置',
@@ -295,12 +303,12 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
 ];
 
-export const dataIndexColumnAttrComponents: (
+export const dataIndexColumnAttrComponents = (
   dataIndex?: string,
   modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   directDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   nestedDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
-) => DTGComponentPropertySchema[] = (dataIndex, modeDiffFn, directDiffFn, nestedDiffFn) => [
+): DTGComponentPropertySchema[] => [
   {
     name: 'dataIndexMode',
     group: '组件属性',
@@ -328,7 +336,7 @@ export const dataIndexColumnAttrComponents: (
       style: { width: 120 },
     },
     type: 'string',
-    visible: directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'direct'),
+    visible: directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode !== 'nested'),
   },
   {
     name: 'dataIndex',

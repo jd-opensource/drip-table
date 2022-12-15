@@ -162,6 +162,7 @@ const EditableGroupComponent = <
                           components: props.customComponents,
                           ext: void 0, // TODO: ext
                           unknownComponent: <Alert type="error" message="未知组件" />,
+                          preview: true,
                         },
                       )
                       : () => <div />;
@@ -317,6 +318,7 @@ const EditableComponents = <
         components: props.customComponents,
         ext: void 0, // TODO: ext
         unknownComponent: <Alert type="error" message="未知组件" />,
+        preview: true,
       },
     )
     : () => <div />;
