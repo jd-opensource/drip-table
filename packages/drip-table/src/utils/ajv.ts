@@ -260,6 +260,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         rowFooter: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
         emptyText: { type: 'string' },
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
+        ext: {},
       },
       required: ['columns'],
       additionalProperties,

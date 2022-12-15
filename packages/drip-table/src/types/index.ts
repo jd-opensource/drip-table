@@ -337,8 +337,10 @@ export interface DripTableSchema<
    * 默认布局模式
    */
   defaultTableLayout?: 'table' | 'card';
-  /** 附加透传配置项 */
-  ext?: Record<string, unknown>;
+  /**
+   * 附加透传配置项
+   */
+  ext?: unknown;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
