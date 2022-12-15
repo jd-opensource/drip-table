@@ -202,7 +202,10 @@ export const columnRenderGenerator = <
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & { unknownComponent?: React.ReactNode },
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
+      unknownComponent?: React.ReactNode;
+      preview?: DripTableComponentProps<RecordType, NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['CustomComponentEvent']>, NonNullable<ExtraOptions['CustomComponentExtraData']>>['preview'];
+    },
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
   if ('component' in columnSchema) {
     const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
@@ -252,6 +255,7 @@ export const columnRenderGenerator = <
             data={record}
             value={value}
             indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+            preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
             onChange={v => onChange(record, recordIndex, v)}
@@ -282,6 +286,7 @@ export const columnRenderGenerator = <
               data={record}
               value={value}
               indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+              preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
               onChange={v => onChange(row.record, row.index, v)}
