@@ -269,7 +269,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get rawText(): string[] {
-    const { schema, value, data, indexValue } = this.props;
+    const { schema, value = '', data, indexValue } = this.props;
     const { dataIndex, options } = schema;
     const { mode, format, prefix, suffix, parts: params } = options;
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
