@@ -26,7 +26,7 @@ import {
   type DripTableTableInformation,
   type SchemaObject,
 } from '@/types';
-import { parseCSS, parseReactCSS, setElementCSS } from '@/utils/dom';
+import { parseReactCSS, setElementCSS } from '@/utils/dom';
 import { decodeJSON, encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
@@ -73,18 +73,7 @@ const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefi
   const columnHoverStyle = decodeJSON<DripTableBuiltInColumnSchema['columnHoverStyle']>(el.dataset.columnHoverStyle || '');
   const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
   // 移除 hover 状态样式
-  if (hoverStyle) {
-    Object.entries(parseCSS(hoverStyle))
-      .forEach(([k]) => { el.style[k] = null; });
-  }
-  if (rowHoverStyle) {
-    Object.entries(parseCSS(rowHoverStyle))
-      .forEach(([k]) => { el.style[k] = null; });
-  }
-  if (columnHoverStyle) {
-    Object.entries(parseCSS(columnHoverStyle))
-      .forEach(([k]) => { el.style[k] = null; });
-  }
+  el.removeAttribute('style');
   // 列基础样式
   if (style) {
     setElementCSS(el, style);
@@ -174,7 +163,7 @@ const hookColumRender = <
               ref={(el) => {
                 const context = { props: { record: row.record, recordIndex: row.index } };
                 const tdEl = el?.parentElement;
-                const style = typeof columnSchema.style === 'string' ? safeExecute(columnSchema.style, context) : columnSchema.style;
+                const style = Object.assign({ textAlign: columnSchema.align }, typeof columnSchema.style === 'string' ? safeExecute(columnSchema.style, context) : columnSchema.style);
                 const hoverStyle = typeof columnSchema.hoverStyle === 'string' ? safeExecute(columnSchema.hoverStyle, context) : columnSchema.hoverStyle;
                 const rowHoverStyle = typeof columnSchema.rowHoverStyle === 'string' ? safeExecute(columnSchema.rowHoverStyle, context) : columnSchema.rowHoverStyle;
                 const columnHoverStyle = typeof columnSchema.columnHoverStyle === 'string' ? safeExecute(columnSchema.columnHoverStyle, context) : columnSchema.columnHoverStyle;
@@ -385,7 +374,7 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
   const recKey = row.record[rowKey] as React.Key;
   const selected = selectedRowKeys.includes(recKey);
   const context = { props: { record: row.record, recordIndex: row.index } };
-  const style = typeof columnBaseSchema.style === 'string' ? safeExecute(columnBaseSchema.style, context) : columnBaseSchema.style;
+  const style = Object.assign({ textAlign: columnBaseSchema.align }, vcStyle, typeof columnBaseSchema.style === 'string' ? safeExecute(columnBaseSchema.style, context) : columnBaseSchema.style);
   const hoverStyle = typeof columnBaseSchema.hoverStyle === 'string' ? safeExecute(columnBaseSchema.hoverStyle, context) : columnBaseSchema.hoverStyle;
   const rowHoverStyle = typeof columnBaseSchema.rowHoverStyle === 'string' ? safeExecute(columnBaseSchema.rowHoverStyle, context) : columnBaseSchema.rowHoverStyle;
   const columnHoverStyle = typeof columnBaseSchema.columnHoverStyle === 'string' ? safeExecute(columnBaseSchema.columnHoverStyle, context) : columnBaseSchema.columnHoverStyle;
@@ -398,7 +387,7 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
         [styles['jfe-drip-table-virtual-cell--stretch']]: columnBaseSchema?.verticalAlign === 'stretch',
         [styles['jfe-drip-table--row-selected']]: selected,
       })}
-      style={Object.assign({ textAlign: column.align }, vcStyle)}
+      style={style}
       data-table-uuid={tableUUID}
       data-row-key={row.key}
       data-column-key={columnBaseSchema.key}
