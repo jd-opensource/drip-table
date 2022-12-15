@@ -269,7 +269,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get rawText(): string[] {
-    const { schema, value = '', data, indexValue } = this.props;
+    const { schema, value, data, indexValue } = this.props;
     const { dataIndex, options } = schema;
     const { mode, format, prefix, suffix, parts: params } = options;
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
@@ -286,7 +286,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
         return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
       }
-      return `${prefix ?? ''}${translate(schema.options.i18n, `${value}`)}${suffix ?? ''}`.split('\n');
+      return `${prefix ?? ''}${translate(schema.options.i18n, `${value ?? ''}`)}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
       if (options.dataProcess) {
