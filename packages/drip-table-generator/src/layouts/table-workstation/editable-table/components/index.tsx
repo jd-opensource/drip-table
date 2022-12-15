@@ -9,12 +9,19 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Row } from 'antd';
 import classNames from 'classnames';
-import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableProps } from 'drip-table';
+import {
+  DripTableBuiltInColumnSchema,
+  DripTableColumnSchema,
+  DripTableExtraOptions,
+  DripTableProps,
+  TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator,
+} from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
-import { filterAttributes, get, mockId } from '@/utils';
+import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
+import { getSchemaValue } from '@/layouts/utils';
 import components from '@/table-components';
 import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
@@ -26,8 +33,8 @@ interface EditableComponentsProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  record: DripTableGeneratorContext['previewDataSource'][number];
-  column: DripTableGeneratorContext['columns'][number];
+  column: DripTableBuiltInColumnSchema;
+  record: RecordType;
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
@@ -40,7 +47,7 @@ interface EditableGroupComponentProps <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   column: DripTableBuiltInColumnSchema | null;
-  record: DripTableGeneratorContext['previewDataSource'][number];
+  record: RecordType;
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   isCurrentColumn?: boolean;
@@ -51,14 +58,16 @@ interface EditableGroupComponentProps <
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
-const generatorComponentSchema = (column: DripTableBuiltInColumnSchema | DripTableGeneratorContext['columns'][number] | null) => (column
-  ? {
-    ...column,
-    options: {
-      ...filterAttributes(column.options, 'visibleFunc'),
-    },
-  }
-  : null);
+const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | DripTableGeneratorContext['columns'][number] | null>(column: T): T => (
+  column
+    ? {
+      ...column,
+      options: {
+        ...filterAttributes(column.options, 'visibleFunc'),
+      },
+    }
+    : column
+);
 
 const EditableGroupComponent = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -139,10 +148,23 @@ const EditableGroupComponent = <
                 >
                   { Array.from({ length: layout }, (v, i) => i).map((col, i) => {
                     const currentCheckedIndex = componentOptions.layout.slice(0, index).reduce((sum, j) => sum + j, i);
-                    const subColumn = componentOptions.items[currentCheckedIndex];
-                    const [libName, componentName] = subColumn?.component?.includes('::') ? subColumn.component.split('::') : ['', subColumn?.component || ''];
-                    const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
-                    const value = subColumn?.dataIndex ? get(props.record, subColumn.dataIndex) : props.record;
+                    const columnSchema = generatorComponentSchema(componentOptions.items[currentCheckedIndex]);
+                    const renderTableCell = columnSchema
+                      ? columnRenderGenerator<RecordType, ExtraOptions>(
+                        {
+                          uuid: 'DRIP-TABLE-GENERATOR-INSTANCE',
+                          schema: getSchemaValue(context),
+                          dataSource: [props.record],
+                        },
+                        columnSchema,
+                        {
+                          driver: props.driver || DripTableDriverAntDesign,
+                          components: props.customComponents,
+                          ext: void 0, // TODO: ext
+                          unknownComponent: <Alert type="error" message="未知组件" />,
+                        },
+                      )
+                      : () => <div />;
                     return (
                       <Col
                         className={classNames(styles['linear-stripe'], isChecked(currentCheckedIndex) ? styles['checked-stripe'] : '')}
@@ -239,17 +261,7 @@ const EditableGroupComponent = <
                         { componentOptions.items[currentCheckedIndex] && componentOptions.items[currentCheckedIndex]?.component !== 'group'
                           ? (
                             <React.Fragment>
-                              { DripTableComponent
-                                ? (
-                                  <DripTableComponent
-                                    driver={props.driver || DripTableDriverAntDesign}
-                                    value={value as unknown}
-                                    data={props.record}
-                                    schema={generatorComponentSchema(componentOptions.items[currentCheckedIndex])}
-                                    preview={{}}
-                                  />
-                                )
-                                : <Alert type="error" message="未知组件" /> }
+                              { renderTableCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: 0 }, 0) }
                             </React.Fragment>
                           )
                           : null }
@@ -273,16 +285,13 @@ const EditableComponents = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableComponentsProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const [libName, componentName] = props.column?.component?.includes('::') ? props.column.component.split('::') : ['', props.column?.component || ''];
-  const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
-  const value = props.column?.dataIndex ? get(props.record, props.column.dataIndex) : props.record;
 
   if (props.column?.component === 'group') {
     const isCurrentColumn = context.currentColumn && context.currentColumn.key === props.column.key;
     return (
       <EditableGroupComponent
         isCurrentColumn={isCurrentColumn}
-        column={props.column as DripTableBuiltInColumnSchema}
+        column={props.column}
         isChildren={false}
         driver={props.driver}
         record={props.record}
@@ -294,17 +303,29 @@ const EditableComponents = <
     );
   }
 
-  return DripTableComponent
-    ? (
-      <DripTableComponent
-        driver={props.driver || DripTableDriverAntDesign}
-        value={value as unknown}
-        data={props.record}
-        schema={generatorComponentSchema(props.column)}
-        preview={{}}
-      />
+  const columnSchema = generatorComponentSchema(props.column);
+  const renderTableCell = columnSchema
+    ? columnRenderGenerator<RecordType, ExtraOptions>(
+      {
+        uuid: 'DRIP-TABLE-GENERATOR-INSTANCE',
+        schema: getSchemaValue(context),
+        dataSource: [props.record],
+      },
+      columnSchema,
+      {
+        driver: props.driver || DripTableDriverAntDesign,
+        components: props.customComponents,
+        ext: void 0, // TODO: ext
+        unknownComponent: <Alert type="error" message="未知组件" />,
+      },
     )
-    : <Alert type="error" message="未知组件" />;
+    : () => <div />;
+
+  return (
+    <React.Fragment>
+      { renderTableCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: 0 }, 0) }
+    </React.Fragment>
+  );
 };
 
 export default EditableComponents;

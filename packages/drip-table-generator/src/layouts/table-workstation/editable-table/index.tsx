@@ -8,7 +8,7 @@
 
 import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { mockId } from '@/utils';
@@ -399,8 +399,8 @@ const EditableTable = <
                           onClick={e => e.stopPropagation()}
                         >
                           <EditableComponents
-                            record={record}
-                            column={column}
+                            record={record as RecordType}
+                            column={column as unknown as DripTableBuiltInColumnSchema}
                             driver={props.driver}
                             customComponents={props.customComponents}
                             customComponentPanel={props.customComponentPanel}

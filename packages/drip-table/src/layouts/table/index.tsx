@@ -202,8 +202,8 @@ export const columnRenderGenerator = <
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
-  ): TableColumnType<RcTableRecordType<RecordType>>['render'] => {
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & { unknownComponent?: React.ReactNode },
+  ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
   if ('component' in columnSchema) {
     const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
       React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
@@ -294,7 +294,7 @@ export const columnRenderGenerator = <
       }
     }
   }
-  return () => <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
+  return () => extraProps.unknownComponent ?? <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
 };
 
 /**
