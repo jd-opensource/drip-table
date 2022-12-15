@@ -1,7 +1,7 @@
 # 空表提示 emptyText
 
 - 描述：表格无数据时提示语
-- 类型：`React.CSSProperties`
+- 类型：`(tableInfo: DripTableInformation) => React.ReactNode`
 - 默认值：`undefined`
 
 ```jsx
