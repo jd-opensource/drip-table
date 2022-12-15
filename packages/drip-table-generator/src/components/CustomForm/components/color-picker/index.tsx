@@ -64,8 +64,8 @@ export default class ColorPickerComponent extends React.PureComponent<Props> {
         defaultAlpha={100}
         color={this.props.value}
         defaultColor={uiProps.defaultColor || '#000000'}
-        onChange={(colors) => {
-          this.props.onChange?.(colors.color + this.alphaToHex(colors.alpha));
+        onChange={(event) => {
+          this.props.onChange?.(event.color + this.alphaToHex(event.alpha));
         }}
       >
         <span className={styles.trigger} />

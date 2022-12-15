@@ -3,7 +3,7 @@
 - 描述：用户可控制该列显示隐藏
 - 类型：`boolean`
 - 默认值：`false`
-- 更多内容：用于搭配隐藏列按钮 [`header.elements.GenericRenderDisplayColumnSelectorElement`](/drip-table/schema/header/elements#%E5%B1%95%E7%A4%BA%E5%88%97%E9%80%89%E6%8B%A9%E5%99%A8-genericrenderdisplaycolumnselectorelement)、隐藏列事件 [`props.onDisplayColumnKeysChange`](/drip-table/props/on-display-column-keys-change) 使用。
+- 说明：用于搭配隐藏列按钮 [`header.elements.GenericRenderDisplayColumnSelectorElement`](/drip-table/schema/header/elements#%E5%B1%95%E7%A4%BA%E5%88%97%E9%80%89%E6%8B%A9%E5%99%A8-genericrenderdisplaycolumnselectorelement)、隐藏列事件 [`props.onDisplayColumnKeysChange`](/drip-table/props/on-display-column-keys-change) 使用。
 
 ```jsx
 /**

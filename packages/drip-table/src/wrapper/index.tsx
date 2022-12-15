@@ -102,7 +102,7 @@ const DripTableWrapper: <
             {},
             rtp.schema,
             {
-              columns: rtp.schema?.columns?.map((column) => {
+              columns: rtp.schema?.columns?.map((column): typeof column => {
                 let schema: SchemaObject | undefined;
                 const BuiltInComponent = DripTableBuiltInComponents[column.component];
                 if (BuiltInComponent) {
@@ -120,13 +120,16 @@ const DripTableWrapper: <
                   const errorMessage = validateDripTableColumnSchema(column, schema, ajv);
                   if (errorMessage) {
                     return {
+                      key: column.key,
+                      title: column.title,
+                      dataIndex: column.dataIndex,
                       component: 'text',
                       options: {
                         mode: 'static',
                         static: errorMessage,
                         className: styles['jfe-drip-table-column-ajv-error'],
                       },
-                    } as typeof column;
+                    };
                   }
                 }
                 return column;

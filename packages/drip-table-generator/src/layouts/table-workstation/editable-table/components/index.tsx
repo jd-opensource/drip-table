@@ -9,40 +9,47 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Row } from 'antd';
 import classNames from 'classnames';
-import { builtInComponents, DripTableBuiltInColumnSchema, DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import {
+  DripTableBuiltInColumnSchema,
+  DripTableColumnSchema,
+  DripTableExtraOptions,
+  DripTableProps,
+  TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator,
+} from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
-import { get, mockId } from '@/utils';
+import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
+import { getSchemaValue } from '@/layouts/utils';
 import components from '@/table-components';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getWidth, updateColumnItemByPath } from '../../utils';
 
 import styles from './index.module.less';
 
 interface EditableComponentsProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  record: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['previewDataSource'][number];
-  column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
+  column: DripTableBuiltInColumnSchema;
+  record: RecordType;
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
-  customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
 interface EditableGroupComponentProps <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   column: DripTableBuiltInColumnSchema | null;
-  record: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['previewDataSource'][number];
+  record: RecordType;
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
-  customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   isCurrentColumn?: boolean;
   parentIndex?: number[];
   isChildren?: boolean;
@@ -51,9 +58,20 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
 }
 
+const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | DripTableGeneratorContext['columns'][number] | null>(column: T): T => (
+  column
+    ? {
+      ...column,
+      options: {
+        ...filterAttributes(column.options, 'visibleFunc'),
+      },
+    }
+    : column
+);
+
 const EditableGroupComponent = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableGroupComponentProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
 
@@ -68,6 +86,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const getColumnConfigs = (componentType: string) => {
     const columnConfig = getAllComponentsConfigs.find(schema => schema['ui:type'] === componentType);
+    if (columnConfig) {
+      columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
+    }
     columnConfig?.attrSchema.forEach((schema) => {
       const uiProps = schema['ui:props'];
       if (!uiProps) {
@@ -127,10 +148,24 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 >
                   { Array.from({ length: layout }, (v, i) => i).map((col, i) => {
                     const currentCheckedIndex = componentOptions.layout.slice(0, index).reduce((sum, j) => sum + j, i);
-                    const subColumn = componentOptions.items[currentCheckedIndex];
-                    const [libName, componentName] = subColumn?.component?.includes('::') ? subColumn.component.split('::') : ['', subColumn?.component || ''];
-                    const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
-                    const value = subColumn?.dataIndex ? get(props.record, subColumn.dataIndex) : props.record;
+                    const columnSchema = generatorComponentSchema(componentOptions.items[currentCheckedIndex]);
+                    const renderTableCell = columnSchema
+                      ? columnRenderGenerator<RecordType, ExtraOptions>(
+                        {
+                          uuid: 'DRIP-TABLE-GENERATOR-INSTANCE',
+                          schema: getSchemaValue(context),
+                          dataSource: [props.record],
+                        },
+                        columnSchema,
+                        {
+                          driver: props.driver || DripTableDriverAntDesign,
+                          components: props.customComponents,
+                          ext: void 0, // TODO: ext
+                          unknownComponent: <Alert type="error" message="未知组件" />,
+                          preview: true,
+                        },
+                      )
+                      : () => <div />;
                     return (
                       <Col
                         className={classNames(styles['linear-stripe'], isChecked(currentCheckedIndex) ? styles['checked-stripe'] : '')}
@@ -161,10 +196,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                             const configs = getColumnConfigs(columnToAdd.component);
                             const options: Record<string, unknown> = {};
                             const additionalProps = {};
+                            const componentStyle = {};
                             configs?.attrSchema.forEach((schema) => {
                               if (schema.name.startsWith('options.')) {
                                 options[schema.name.replace('options.', '')] = schema.default;
-                              } else {
+                              } else if (schema.name.startsWith('style.')) {
+                                componentStyle[schema.name.replace('style.', '')] = schema.default;
+                              } else if (!schema.name.startsWith('titleStyle.')) {
                                 additionalProps[schema.name] = schema.default;
                               }
                             });
@@ -174,12 +212,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                             const columnItemSchema: DripTableColumnSchema = {
                               key: `${columnToAdd.component}_${mockId()}`,
                               dataIndex: '',
-                              title: columnToAdd.title,
+                              title: '',
                               width: void 0,
                               description: '',
                               component: columnToAdd.component,
                               options,
                               ...additionalProps,
+                              style: componentStyle,
                             };
                             const theColumn = columns.find(item => item.key === props.column?.key);
                             if (theColumn) {
@@ -223,17 +262,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         { componentOptions.items[currentCheckedIndex] && componentOptions.items[currentCheckedIndex]?.component !== 'group'
                           ? (
                             <React.Fragment>
-                              { DripTableComponent
-                                ? (
-                                  <DripTableComponent
-                                    driver={props.driver || DripTableDriverAntDesign}
-                                    value={value as unknown}
-                                    data={props.record}
-                                    schema={componentOptions.items[currentCheckedIndex]}
-                                    preview={{}}
-                                  />
-                                )
-                                : <Alert type="error" message="未知组件" /> }
+                              { renderTableCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: 0 }, 0) }
                             </React.Fragment>
                           )
                           : null }
@@ -253,20 +282,17 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 };
 
 const EditableComponents = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableComponentsProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const [libName, componentName] = props.column?.component?.includes('::') ? props.column.component.split('::') : ['', props.column?.component || ''];
-  const DripTableComponent = libName ? props.customComponents?.[libName]?.[componentName] : builtInComponents[componentName];
-  const value = props.column?.dataIndex ? get(props.record, props.column.dataIndex) : props.record;
 
   if (props.column?.component === 'group') {
     const isCurrentColumn = context.currentColumn && context.currentColumn.key === props.column.key;
     return (
       <EditableGroupComponent
         isCurrentColumn={isCurrentColumn}
-        column={props.column as DripTableBuiltInColumnSchema}
+        column={props.column}
         isChildren={false}
         driver={props.driver}
         record={props.record}
@@ -278,17 +304,30 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     );
   }
 
-  return DripTableComponent
-    ? (
-      <DripTableComponent
-        driver={props.driver || DripTableDriverAntDesign}
-        value={value as unknown}
-        data={props.record}
-        schema={props.column}
-        preview={{}}
-      />
+  const columnSchema = generatorComponentSchema(props.column);
+  const renderTableCell = columnSchema
+    ? columnRenderGenerator<RecordType, ExtraOptions>(
+      {
+        uuid: 'DRIP-TABLE-GENERATOR-INSTANCE',
+        schema: getSchemaValue(context),
+        dataSource: [props.record],
+      },
+      columnSchema,
+      {
+        driver: props.driver || DripTableDriverAntDesign,
+        components: props.customComponents,
+        ext: void 0, // TODO: ext
+        unknownComponent: <Alert type="error" message="未知组件" />,
+        preview: true,
+      },
     )
-    : <Alert type="error" message="未知组件" />;
+    : () => <div />;
+
+  return (
+    <React.Fragment>
+      { renderTableCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: 0 }, 0) }
+    </React.Fragment>
+  );
 };
 
 export default EditableComponents;

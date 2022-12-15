@@ -22,6 +22,8 @@ import DTCText, { DTCTextColumnSchema } from './text';
 
 export type { DripTableComponentProps } from './component';
 
+export type DripTableGroupColumnSchema<CustomComponentSchema = never> = DTCGroupColumnSchema<CustomComponentSchema>;
+
 export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
   | DTCButtonEvent

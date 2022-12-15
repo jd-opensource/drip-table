@@ -1,16 +1,16 @@
-# 头部配置 header.elements
+# 插槽配置 slot.elements
 
-- 描述：表格头部展示配置
-- 类型：[`DripTableGenericRenderElement[]`](/drip-table/types/generic-render-element)
+- 描述：插槽展示元素配置
+- 类型：[`DripTableSlotElementSchema[]`](/drip-table/types/slot-schema)
 - 默认值：`undefined`
 
 ## 使用方法
 
 - 该属性为通用插槽 Schema 控制渲染系统的配置部分，其数据类型为若干个对象组成的数组，每个子元素即为一个插槽渲染块。
 - 表格通用插槽渲染器将对该配置项从左向右依次渲染，根据分析每个子元素配置项的宽度对齐方式等通用属性，通过栅格系统进行布局。
-- 具体数据类型，参见 [通用插槽渲染器 Schema 配置项文档](/drip-table/types/generic-render-element) 。
+- 具体数据类型，参见 [通用插槽渲染器 Schema 配置项文档](/drip-table/types/slot-schema) 。
 
-### 占位区域 (GenericRenderSpacerElement)
+### 占位区域 (SpacerSlot)
 
 ```jsx
 /**
@@ -76,7 +76,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 文本展示 (GenericRenderTextElement)
+### 文本展示 (TextSlot)
 
 ```jsx
 /**
@@ -145,7 +145,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 富文本展示 (GenericRenderHTMLElement)
+### 富文本展示 (HTMLSlot)
 
 ```jsx
 /**
@@ -214,7 +214,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 基本搜索 (GenericRenderSearchElement)
+### 基本搜索 (SearchSlot)
 
 ```jsx
 /**
@@ -295,7 +295,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 自定义组件插槽 Sample1 (GenericRenderSlotElement)
+### 自定义组件插槽 Sample1 (CustomSlot)
 
 ```jsx
 /**
@@ -384,7 +384,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 自定义组件插槽 Sample2 (GenericRenderSlotElement)
+### 自定义组件插槽 Sample2 (CustomSlot)
 
 ```jsx
 /**
@@ -474,7 +474,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 自定义组件插槽 SampleUnknown (GenericRenderSlotElement)
+### 自定义组件插槽 SampleUnknown (CustomSlot)
 
 ```jsx
 /**
@@ -563,7 +563,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 插入按钮 (GenericRenderInsertButtonElement)
+### 插入按钮 (InsertButtonSlot)
 
 ```jsx
 /**
@@ -637,7 +637,7 @@ const Demo = () => {
 export default Demo;
 ```
 
-### 展示列选择器 (GenericRenderDisplayColumnSelectorElement)
+### 展示列选择器 (DisplayColumnSelectorSlot)
 
 ```jsx
 /**

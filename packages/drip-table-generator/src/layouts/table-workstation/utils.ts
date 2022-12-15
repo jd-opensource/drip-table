@@ -11,13 +11,11 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { DripTableGeneratorContext } from '@/context';
 
-export const updateColumnItemByPath = <
-CustomColumnSchema extends DripTableColumnSchema = DripTableColumnSchema,
->(
-    column: NonNullable<DripTableGeneratorContext<CustomColumnSchema>['currentColumn']>,
-    path: number[],
-    schema: DripTableColumnSchema | DripTableBuiltInColumnSchema | null,
-  ) => {
+export const updateColumnItemByPath = (
+  column: NonNullable<DripTableGeneratorContext['currentColumn']>,
+  path: number[],
+  schema: DripTableColumnSchema | DripTableBuiltInColumnSchema | null,
+) => {
   const newSchema = cloneDeep(schema);
   const [key, ...rest] = path;
   if (column.component === 'group') {
@@ -34,16 +32,14 @@ CustomColumnSchema extends DripTableColumnSchema = DripTableColumnSchema,
   return column;
 };
 
-export const getColumnItemByPath = <
-CustomColumnSchema extends DripTableColumnSchema = DripTableColumnSchema,
->(column: DripTableGeneratorContext<CustomColumnSchema>['currentColumn'], path: number[]) => {
+export const getColumnItemByPath = (column: DripTableGeneratorContext['currentColumn'], path: number[]) => {
   const [key, ...rest] = path;
   if (!column) {
     return null;
   }
   const newColumn = cloneDeep(column);
   if (newColumn.component === 'group') {
-    const items = newColumn.options.items as DripTableGeneratorContext<CustomColumnSchema>['columns'] || [];
+    const items = newColumn.options.items as DripTableGeneratorContext['columns'] || [];
     if (rest.length > 0) {
       return getColumnItemByPath(items[key], rest);
     }

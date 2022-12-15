@@ -3,7 +3,7 @@
 - 描述：根据行数据控制当前单元格组件是否隐藏不可见，用于覆盖全局 [`editable`](/drip-table/schema/editable) 属性
 - 类型：`boolean | string`
 - 默认值：`false`
-- 注：当传入脚本字符串控制时，可通过 `props.record` 获取当前行数据，通过 `props.recordIndex` 获取当前行号，通过 `props.value` 获取当前单元格数据。
+- 说明：当传入脚本字符串控制时，可通过 `props.record` 获取当前行数据，通过 `props.recordIndex` 获取当前行号，通过 `props.value` 获取当前单元格数据。
 
 ```jsx
 /**

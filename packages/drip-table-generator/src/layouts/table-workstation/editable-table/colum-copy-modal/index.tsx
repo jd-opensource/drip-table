@@ -25,7 +25,7 @@ const ColumnCopyModal = (props: ColumnCopyModalProps) => (
         <Clipboard
           style={{ marginLeft: '8px' }}
           component="span"
-          option-text={() => JSON.stringify({ ...props.value, index: void 0 }, null, 4)}
+          option-text={() => JSON.stringify({ ...props.value, innerIndexForGenerator: void 0 }, null, 4)}
           onSuccess={() => {
             message.success('复制成功');
             props.onClose();
@@ -40,7 +40,7 @@ const ColumnCopyModal = (props: ColumnCopyModalProps) => (
     )}
     onCancel={props.onClose}
   >
-    <Input.TextArea value={JSON.stringify({ ...props.value, index: void 0 }, null, 4)} style={{ minHeight: '560px' }} />
+    <Input.TextArea value={JSON.stringify({ ...props.value, innerIndexForGenerator: void 0 }, null, 4)} style={{ minHeight: '560px' }} />
   </Modal>
 );
 

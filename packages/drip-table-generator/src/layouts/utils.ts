@@ -6,15 +6,16 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions, DripTableGroupColumnSchema, DripTableSchema } from 'drip-table';
 
+import { DripTableGeneratorContext } from '@/context';
 import tableComponents from '@/table-components';
 
-import { DripTableGeneratorProps } from '../typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
 
 export const getGroups = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
   let groups = [
     '基础组件',
@@ -34,8 +35,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 };
 
 export const getComponents = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(groupName: string, customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
   let componentsToUse = tableComponents;
   if (customComponentPanel) {
@@ -44,3 +45,25 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   }
   return [...componentsToUse].filter(item => item.group === groupName);
 };
+
+export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => ({
+  ...context.globalConfigs,
+  columns: context.columns.map((item) => {
+    const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+    delete schemaItem.innerIndexForGenerator;
+    delete schemaItem.dataIndexMode;
+    if (item.component === 'group') {
+      const items = [...item.options.items as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['options']['items']];
+      items.forEach((element, index) => {
+        if (element) {
+          const subComponentItem = { ...element, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+          delete subComponentItem.innerIndexForGenerator;
+          delete subComponentItem.dataIndexMode;
+          items[index] = subComponentItem;
+        }
+      });
+      (schemaItem as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>).options.items = items;
+    }
+    return schemaItem;
+  }),
+}) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;

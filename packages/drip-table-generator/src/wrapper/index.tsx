@@ -9,43 +9,49 @@
 import { message } from 'antd';
 import ConfigProvider from 'antd/es/config-provider';
 import zhCN from 'antd/es/locale/zh_CN';
-import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import GeneratorLayout from '@/layouts';
+import { builtInThemes } from '@/layouts/toolbar/config';
+import { getSchemaValue } from '@/layouts/utils';
 
-import { DripTableGeneratorProps } from '../typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
 
 export type GeneratorWrapperHandler = {
-  getState: () => DripTableGeneratorContext<DripTableColumnSchema>;
+  getState: () => DripTableGeneratorContext;
   getSchemaValue: () => DripTableSchema<DripTableColumnSchema>;
-  getDataSource: () => DripTableGeneratorContext<DripTableColumnSchema>['previewDataSource'];
+  getDataSource: () => DripTableGeneratorContext['previewDataSource'];
 }
 
-const generateStates: <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => Omit<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>, 'setState'> = (props) => {
+const generateStates = <
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>): Omit<DripTableGeneratorContext, 'setState'> => {
   const schema = props.schema;
+  const globalSchema = filterAttributes(schema, 'column');
+  const themeOptions = [...builtInThemes<RecordType, ExtraOptions>() || [], ...props.customThemeOptions || []];
+  const defaultTheme = themeOptions.find(item => item.value === props.defaultTheme);
+  const themeStyle = typeof defaultTheme?.style === 'function' ? defaultTheme.style(globalSchema) : defaultTheme?.style;
   return {
     globalConfigs: schema
-      ? { ...filterAttributes(schema, 'column') }
+      ? { ...globalSchema, ...themeStyle }
       : { pagination: false, header: false },
-    columns: schema?.columns.map((item, index) => ({ index, ...item })) || [],
+    columns: schema?.columns.map((column, index) => ({ ...column, ...defaultTheme?.columnStyle?.(column, index), innerIndexForGenerator: index })) || [],
     previewDataSource: [...props.dataSource || []],
-    mode: 'edit',
+    mode: props.defaultMode || 'edit',
   };
 };
 
 const DripTableGenerator = React.forwardRef(<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
   const [generatorStates, setGeneratorStates] = React.useState(generateStates(props));
-  const generatorContext: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']> = {
+  const generatorContext: DripTableGeneratorContext = {
     ...generatorStates,
     setState: (states, callback) => {
       if (!states) { return; }
@@ -60,24 +66,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   React.useImperativeHandle(ref, () => ({
     getState: () => generatorContext,
-    getSchemaValue: () => ({
-      ...generatorContext.globalConfigs,
-      columns: generatorContext.columns.map(item => ({ ...item })),
-    }),
+    getSchemaValue: () => getSchemaValue(generatorContext),
     getDataSource: () => generatorContext.previewDataSource,
   }));
 
   React.useEffect(() => {
-    const schema: DripTableSchema<ExtraOptions['CustomColumnSchema']> = {
-      ...generatorContext.globalConfigs,
-      columns: generatorContext.columns.map((item) => {
-        const schemaItem = { ...item, index: void 0, dataIndexMode: void 0 };
-        delete schemaItem.index;
-        delete schemaItem.dataIndexMode;
-        return schemaItem;
-      }),
-    };
-    props.onSchemaChange?.(JSON.parse(JSON.stringify(schema)));
+    props.onSchemaChange?.(JSON.parse(JSON.stringify(getSchemaValue(generatorContext))));
   }, [generatorContext.columns, generatorContext.globalConfigs]);
 
   message.config({ maxCount: 1 });

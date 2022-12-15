@@ -8,13 +8,13 @@
 
 import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getWidth, MIN_WIDTH } from '../utils';
 import BlankPanel from './blank-panel';
@@ -26,8 +26,8 @@ import EditableComponents from './components';
 import styles from './index.module.less';
 
 interface EditableTableProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
@@ -51,9 +51,22 @@ const headerHeight = {
   large: ' - 59px',
 };
 
+const alignItems = {
+  top: 'flex-start',
+  middle: 'center',
+  bottom: 'flex-end',
+  stretch: 'stretch',
+};
+
+const justifyContent = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
 const EditableTable = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableProps<RecordType, ExtraOptions>) => {
   const [columnIndexToDrag, setColumnIndexToDrag] = React.useState<number>(-1);
   const [cellHeight, setCellHeight] = React.useState<number>();
@@ -111,7 +124,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       let maxHeight = 0;
       columnsDOM.forEach((dom) => {
         const index = context.globalConfigs.sticky ? 0 : 1;
-        const cell = (dom.childNodes[index]?.childNodes[0]?.firstChild as HTMLDivElement) || null;
+        const cell = (dom.childNodes[index]?.childNodes[0]?.firstChild?.firstChild as HTMLDivElement) || null;
         const delta = sizePadding[context.globalConfigs.size || 'default'];
         const cellNodeHeight = ((cell?.offsetHeight || 0) + delta * 2 + 2) || 0;
         if (cellNodeHeight >= maxHeight) {
@@ -157,16 +170,22 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   const onMenuClick = (
     component: DripTableComponentAttrConfig,
-    columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    columns: DripTableGeneratorContext['columns'],
+    setState: DripTableGeneratorContext['setState'],
   ) => {
     setCellHeight(void 0);
     const configs = getColumnConfigs(component['ui:type']);
     const options: Record<string, unknown> = {};
     const additionalProps = {};
+    const componentStyle = {};
+    const titleStyle = {};
     configs?.attrSchema.forEach((schema) => {
       if (schema.name.startsWith('options.')) {
         options[schema.name.replace('options.', '')] = schema.default;
+      } else if (schema.name.startsWith('style.')) {
+        componentStyle[schema.name.replace('style.', '')] = schema.default;
+      } else if (schema.name.startsWith('titleStyle.')) {
+        titleStyle[schema.name.replace('titleStyle.', '')] = schema.default;
       } else {
         additionalProps[schema.name] = schema.default;
       }
@@ -177,14 +196,25 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     setState({ columns: [...columns, {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',
-      title: component.title,
+      title: { body: component.title, style: titleStyle },
       width: void 0,
       description: '',
       component: component['ui:type'] as 'text',
       options,
-      index: columns.length,
+      innerIndexForGenerator: columns.length,
       ...additionalProps,
+      style: componentStyle,
     }] });
+  };
+
+  const columnBackgroundColor = (globalConfigs: DripTableGeneratorContext['globalConfigs'], column: DripTableGeneratorContext['columns'][number], index: number) => {
+    if (typeof column.style === 'object') {
+      return column.style.backgroundColor;
+    }
+    if (globalConfigs.stripe && index % 2 === 1) {
+      return '#fafafa';
+    }
+    return void 0;
   };
 
   return (
@@ -230,7 +260,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                     }}
                   >
                     <ColumnHeader
-                      style={{ border: '1px solid #f0f0f0' }}
+                      style={{ ...typeof column.title === 'object' ? column.title.style : {}, border: '1px solid #f0f0f0' }}
                       sticky
                       index={columnIndex}
                       column={column}
@@ -330,7 +360,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                       const tempColumnInfo = Object.assign({}, columns[columnIndexToDrag]);
                       columns.splice(columnIndexToDrag, 1);
                       columns.splice(columnIndex, 0, tempColumnInfo);
-                      columns.forEach((item, i) => { item.index = i; });
+                      columns.forEach((item, i) => { item.innerIndexForGenerator = i; });
                       setState({ columns });
                       setColumnIndexToDrag(-1);
                     }
@@ -338,6 +368,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                 >
                   { !globalConfigs.sticky && (
                     <ColumnHeader
+                      style={{ ...typeof column.title === 'object' ? column.title.style : {} }}
                       index={columnIndex}
                       column={column}
                       onInsert={index => setColumnIndexToInsert(index)}
@@ -351,16 +382,24 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         key={index}
                         className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
                         style={{
+                          ...typeof column.style === 'object' ? column.style : {},
                           height: cellHeight,
                           width: getWidth(column.width, 'px', -2),
                           textAlign: column.align,
-                          backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0,
+                          backgroundColor: columnBackgroundColor(globalConfigs, column, index),
                         }}
                       >
-                        <div onClick={e => e.stopPropagation()}>
+                        <div
+                          className={styles['component-container']}
+                          style={{
+                            alignItems: alignItems[column.verticalAlign || 'top'],
+                            justifyContent: justifyContent[column.align || 'left'],
+                          }}
+                          onClick={e => e.stopPropagation()}
+                        >
                           <EditableComponents
-                            record={record}
-                            column={column}
+                            record={record as RecordType}
+                            column={column as unknown as DripTableBuiltInColumnSchema}
                             driver={props.driver}
                             customComponents={props.customComponents}
                             customComponentPanel={props.customComponentPanel}

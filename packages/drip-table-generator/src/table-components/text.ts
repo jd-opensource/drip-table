@@ -40,7 +40,7 @@ export default {
     ...dataIndexColumnAttrComponents(
       'id',
       (_1, formData) => formData?.['options.mode'] === 'single',
-      (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'direct',
+      (_1, formData) => formData?.['options.mode'] === 'single' && (!formData?.dataIndexMode || formData?.dataIndexMode === 'direct'),
       (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'nested',
     ),
     {
@@ -176,9 +176,11 @@ export default {
       group: '组件属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:props': {
+        mode: 'narrow',
         items: [
-          ...dataIndexColumnAttrComponents(),
+          ...dataIndexColumnAttrComponents('id'),
           {
             name: 'prefix',
             'ui:title': '前缀文案',
@@ -195,7 +197,7 @@ export default {
           },
         ],
       },
-      default: [] as unknown[],
+      default: [{ dataIndexMode: 'direct', dataIndex: 'id' }] as unknown[],
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {

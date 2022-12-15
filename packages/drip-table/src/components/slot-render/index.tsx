@@ -22,7 +22,7 @@ import { type DripTableBuiltInColumnSchema, type DripTableProps } from '@/index'
 
 import styles from './index.module.less';
 
-interface GenericRenderElementBasic {
+interface SlotElementBaseSchema {
   /**
    * 包裹 <Col> 样式名
    */
@@ -53,14 +53,14 @@ interface GenericRenderElementBasic {
   visible?: boolean;
 }
 
-interface GenericRenderSpacerElement extends GenericRenderElementBasic {
+interface SpacerSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 占位区域
    */
   type: 'spacer';
 }
 
-interface GenericRenderTextElement extends GenericRenderElementBasic {
+interface TextSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 文本展示
    */
@@ -71,7 +71,7 @@ interface GenericRenderTextElement extends GenericRenderElementBasic {
   text: string;
 }
 
-interface GenericRenderHTMLElement extends GenericRenderElementBasic {
+interface HTMLSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 富文本展示
    */
@@ -82,7 +82,7 @@ interface GenericRenderHTMLElement extends GenericRenderElementBasic {
   html: string;
 }
 
-interface GenericRenderSearchElement extends GenericRenderElementBasic {
+interface SearchSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 基本搜索
    */
@@ -121,7 +121,7 @@ interface GenericRenderSearchElement extends GenericRenderElementBasic {
   searchKeyDefaultValue?: number | string;
 }
 
-interface GenericRenderSlotElement extends GenericRenderElementBasic {
+interface CustomSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 用户自定义组件插槽
    */
@@ -136,7 +136,7 @@ interface GenericRenderSlotElement extends GenericRenderElementBasic {
   props?: Record<string, unknown>;
 }
 
-interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
+interface InsertButtonSlotElementSchema extends SlotElementBaseSchema {
   type: 'insert-button';
   insertButtonClassName?: string;
   insertButtonStyle?: React.CSSProperties;
@@ -144,7 +144,7 @@ interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
   showIcon?: boolean;
 }
 
-interface GenericRenderLayoutSelectorElement extends GenericRenderElementBasic {
+interface LayoutSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * table布局方式选择器
    */
@@ -159,7 +159,7 @@ interface GenericRenderLayoutSelectorElement extends GenericRenderElementBasic {
   selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
 }
 
-interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElementBasic {
+interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 展示列选择器
    */
@@ -174,28 +174,39 @@ interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElement
   selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
 }
 
-export type DripTableGenericRenderElement =
-  | GenericRenderSpacerElement
-  | GenericRenderTextElement
-  | GenericRenderHTMLElement
-  | GenericRenderSearchElement
-  | GenericRenderSlotElement
-  | GenericRenderInsertButtonElement
-  | GenericRenderDisplayColumnSelectorElement
-  | GenericRenderLayoutSelectorElement;
+export type DripTableSlotElementSchema =
+  | SpacerSlotElementSchema
+  | TextSlotElementSchema
+  | HTMLSlotElementSchema
+  | SearchSlotElementSchema
+  | CustomSlotElementSchema
+  | InsertButtonSlotElementSchema
+  | DisplayColumnSelectorSlotElementSchema
+  | LayoutSelectorSlotElementSchema;
 
-interface GenericRenderProps<
+export interface DripTableSlotSchema {
+  /**
+   * 插槽自定义样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * 插槽展示元素配置
+   */
+  elements?: DripTableSlotElementSchema[];
+}
+
+interface SlotRenderProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
-   * 自定义样式
+   * 插槽 Schema 配置
    */
-  style?: React.CSSProperties;
+  schema: DripTableSlotSchema;
   /**
-   * 展示元素配置
+   * 表格唯一标识符
    */
-  schemas: DripTableGenericRenderElement[];
+  tableUUID: string;
   /**
    * 表格属性
    */
@@ -222,11 +233,11 @@ interface GenericRenderProps<
   recordIndex?: number;
 }
 
-const GenericRender = <
+const SlotRender = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: GenericRenderProps<RecordType, ExtraOptions>) => {
-  const { tableProps, tableState, setTableState } = props;
+>(props: SlotRenderProps<RecordType, ExtraOptions>) => {
+  const { tableUUID, tableProps, tableState, setTableState } = props;
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;
   const Col = tableProps.driver.components.Col;
@@ -242,33 +253,39 @@ const GenericRender = <
   const [layoutSelectorVisible, setLayoutSelectorVisible] = React.useState(false);
 
   const [searchStr, setSearchStr] = React.useState('');
-  const [searchKey, setSearchKey] = React.useState<GenericRenderSearchElement['searchKeyDefaultValue']>(props.schemas.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : '')).find(s => s));
+  const [searchKey, setSearchKey] = React.useState<SearchSlotElementSchema['searchKeyDefaultValue']>(
+    props.schema.elements
+      ?.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : ''))
+      .find(s => s),
+  );
+
   const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    uuid: tableUUID,
     schema: tableProps.schema,
     dataSource: tableProps.dataSource,
     parent: tableProps.__PARENT_INFO__,
   }), [tableProps.schema, tableProps.dataSource, tableProps.__PARENT_INFO__]);
 
-  const renderColumnContent = (config: DripTableGenericRenderElement) => {
+  const renderColumnContent = (config: DripTableSlotElementSchema) => {
     if (config.type === 'spacer') {
       return null;
     }
 
     if (config.type === 'text') {
-      return <h3 className={styles['generic-render-text-element']}>{ config.text }</h3>;
+      return <h3 className={styles['slot-render-text-element']}>{ config.text }</h3>;
     }
 
     if (config.type === 'html') {
-      return <RichText className={styles['generic-render-html-element']} html={config.html} />;
+      return <RichText className={styles['slot-render-html-element']} html={config.html} />;
     }
 
     if (config.type === 'search') {
       return (
-        <div style={config.wrapperStyle} className={classnames(styles['generic-render-search-element'], config.wrapperClassName)}>
+        <div style={config.wrapperStyle} className={classnames(styles['slot-render-search-element'], config.wrapperClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
-              className={styles['generic-render-search-element__select']}
+              className={styles['slot-render-search-element__select']}
               value={searchKey}
               onChange={value => setSearchKey(value)}
             >
@@ -294,7 +311,7 @@ const GenericRender = <
         return (
           <Slot
             {...config.props}
-            className={classnames(styles['generic-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
+            className={classnames(styles['slot-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
             slotType={config.slot}
             driver={tableProps.driver}
             schema={tableProps.schema}
@@ -306,13 +323,13 @@ const GenericRender = <
           />
         );
       }
-      return <span className={styles['generic-render-slot-element__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className={styles['slot-render-slot-element__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
     }
 
     if (config.type === 'insert-button') {
       return (
         <Button
-          className={classnames(styles['generic-render-insert-button-element'], config.insertButtonClassName)}
+          className={classnames(styles['slot-render-insert-button-element'], config.insertButtonClassName)}
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
@@ -355,7 +372,7 @@ const GenericRender = <
       );
       return (
         <Dropdown
-          className={styles['generic-render-display-column-selector-element']}
+          className={styles['slot-render-display-column-selector-element']}
           trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
@@ -392,7 +409,7 @@ const GenericRender = <
       );
       return (
         <Dropdown
-          className={styles['generic-render-display-column-selector-element']}
+          className={styles['slot-render-display-column-selector-element']}
           trigger={['click']}
           overlay={menu}
           visible={layoutSelectorVisible}
@@ -409,12 +426,13 @@ const GenericRender = <
     return null;
   };
 
-  if (props.schemas.length > 0) {
+  const elements = props.schema.elements;
+  if (elements && elements.length > 0) {
     return (
-      <div className={styles['generic-render']} style={props.style}>
+      <div className={styles['slot-render']} style={props.schema.style}>
         <Row>
           {
-            props.schemas.map((item, index) => (
+            elements.map((item, index) => (
               <Col
                 key={index}
                 className={item.className}
@@ -424,7 +442,7 @@ const GenericRender = <
                   flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
                   justifyContent: item.align || 'center',
                   paddingLeft: index === 0 ? '0' : '3px',
-                  paddingRight: index === props.schemas.length - 1 ? '3px' : '0',
+                  paddingRight: index === elements.length - 1 ? '3px' : '0',
                   ...item.style,
                 }}
                 span={typeof item.span === 'string' ? void 0 : item.span}
@@ -440,4 +458,4 @@ const GenericRender = <
   return null;
 };
 
-export default GenericRender;
+export default SlotRender;

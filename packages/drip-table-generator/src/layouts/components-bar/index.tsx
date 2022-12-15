@@ -6,14 +6,14 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { Button } from 'antd';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { mockId } from '@/utils';
 import Icon from '@/components/Icon';
 import { DripTableColumn, DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getComponents, getGroups } from '../utils';
 import { defaultComponentIcon } from './configs';
@@ -21,8 +21,8 @@ import { defaultComponentIcon } from './configs';
 import styles from './index.module.less';
 
 interface ComponentsBarProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
@@ -30,8 +30,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const ComponentsBar = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentsBarProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
 
@@ -77,9 +77,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     const configs = getColumnConfigs(component['ui:type']);
     const options: Record<string, unknown> = {};
     const additionalProps = {};
+    const componentStyle = {};
+    const titleStyle = {};
     configs?.attrSchema.forEach((schema) => {
       if (schema.name.startsWith('options.')) {
         options[schema.name.replace('options.', '')] = schema.default;
+      } else if (schema.name.startsWith('style.')) {
+        componentStyle[schema.name.replace('style.', '')] = schema.default;
+      } else if (schema.name.startsWith('titleStyle.')) {
+        titleStyle[schema.name.replace('titleStyle.', '')] = schema.default;
       } else {
         additionalProps[schema.name] = schema.default;
       }
@@ -87,21 +93,25 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     if (component['ui:type'] === 'group') {
       options.items = [null, null];
     }
-    const columnSchema: DripTableColumn<ExtraOptions['CustomColumnSchema']> = {
+    const columnSchema: DripTableColumn = {
       key: `${component['ui:type']}_${mockId()}`,
       dataIndex: '',
-      title: component.title,
+      title: { body: component.title, style: titleStyle },
       width: void 0,
       description: '',
       component: component['ui:type'] as 'text',
       options,
-      index: context.columns.length,
+      innerIndexForGenerator: context.columns.length,
       ...additionalProps,
+      style: componentStyle,
     };
     return columnSchema;
   };
 
-  const addComponentToColumn = (component: DripTableComponentAttrConfig, setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState']) => {
+  const addComponentToColumn = (
+    component: DripTableComponentAttrConfig,
+    setState: DripTableGeneratorContext['setState'],
+  ) => {
     const columnSchema = initComponentColumnSchema(component);
     setState({ columnToAdd: columnSchema });
   };
@@ -114,10 +124,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             {
             getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
               <div key={groupIndex}>
-                <div className={styles['component-title']}>{ groupName.replace(/组件$/u, '') }</div>
+                <div className={styles['component-title']}>{ groupName.length > 6 ? groupName.replace(/组件$/u, '') : groupName }</div>
                 {
                   getComponents(groupName, props.customComponentPanel).map((component, index) => (
-                    <div
+                    <Button
+                      type="text"
                       className={styles['component-title-item']}
                       draggable
                       onDragStart={() => addComponentToColumn(component, setState)}
@@ -127,14 +138,9 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
                         setState({ columns: [...columns, columnSchema] });
                       }}
                     >
-                      <Button
-                        type="text"
-                        className={styles['component-button']}
-                      >
-                        <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
-                      </Button>
-                      <span className={styles['component-text']}>{ component.title.replace(/组件$/u, '') }</span>
-                    </div>
+                      <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
+                      <span className={styles['component-text']}>{ component.title.length > 5 ? component.title.replace(/组件$/u, '') : component.title }</span>
+                    </Button>
                   ))
                 }
               </div>

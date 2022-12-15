@@ -6,26 +6,54 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import DripTable, { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
+import DripTable, { DripTableExtraOptions } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { getSchemaValue } from '@/layouts/utils';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 const PreviewTable = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
-  const { columns, globalConfigs, previewDataSource } = React.useContext(GeneratorContext);
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
+  const context = React.useContext(GeneratorContext);
   return (
-    <DripTable<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, React.Key>, DripTableExtraOptions>
+    <DripTable
+      style={{ ...props.style, display: props.visible ? void 0 : 'none' }}
       driver={DripTableDriverAntDesign}
-      schema={{ ...globalConfigs, columns: columns.map(item => ({ ...item, index: void 0 })) }}
-      dataSource={previewDataSource}
-      ajv={{ additionalProperties: true }}
-      {...filterAttributes(props, ['driver', 'dataSource', 'schema', 'ajv'])}
+      schema={getSchemaValue<ExtraOptions>(context)}
+      dataSource={context.previewDataSource as RecordType[]}
+      components={props.components || props.customComponents}
+      {...filterAttributes(props, [
+        'driver',
+        'dataSource',
+        'schema',
+        'style',
+        'customComponents',
+        'visible',
+        'mockDataSource',
+        'dataFields',
+        'showComponentLayout',
+        'componentLayoutStyle',
+        'rightLayoutMode',
+        'rightLayoutStyle',
+        'showToolLayout',
+        'toolbarStyle',
+        'defaultTheme',
+        'customThemeOptions',
+        'defaultMode',
+        'dataFields',
+        'noDataFeedBack',
+        'customComponentPanel',
+        'customGlobalConfigPanel',
+        'customAttributeComponents',
+        'slotsSchema',
+        'onExportSchema',
+        'onSchemaChange',
+      ])}
     />
   );
 };

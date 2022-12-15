@@ -7,6 +7,206 @@
  */
 import { DTGComponentPropertySchema } from '../typing';
 
+export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
+  filterStyles?: string[];
+  backgroundColor?: string;
+}) => [
+  {
+    name: `${prefix}.width`,
+    group,
+    'ui:title': '宽度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格宽度，默认单位为“px”，支持手动指定单位后缀。为了编辑器的样式完整，编辑模式下不会生效。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.minWidth`,
+    group,
+    'ui:title': '最小宽度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格最小宽度，默认单位为“px”，支持手动指定单位后缀。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.maxWidth`,
+    group,
+    'ui:title': '最大宽度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格最大宽度，默认单位为“px”，支持手动指定单位后缀。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.height`,
+    group,
+    'ui:title': '高度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格高度，默认单位为“px”，支持手动指定单位后缀。为了编辑器的样式完整，编辑模式下不会生效。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.minHeight`,
+    group,
+    'ui:title': '最小高度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格最小高度，默认单位为“px”，支持手动指定单位后缀。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.maxHeight`,
+    group,
+    'ui:title': '最大高度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格最大高度，默认单位为“px”，支持手动指定单位后缀。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.backgroundColor`,
+    group,
+    'ui:title': '背景颜色',
+    'ui:type': 'color-picker',
+    'ui:props': {},
+    type: 'string',
+    default: extraOptions?.backgroundColor || '#ffffff',
+  },
+  {
+    name: `${prefix}.borderWidth`,
+    group,
+    'ui:title': '边框宽度',
+    'ui:type': 'input',
+    'ui:description': {
+      title: '控制表格边框宽度，默认单位为“px”，支持手动指定单位后缀。',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    type: 'string',
+    default: '1px',
+  },
+  {
+    name: `${prefix}.borderColor`,
+    group,
+    'ui:title': '边框颜色',
+    'ui:type': 'color-picker',
+    'ui:props': {},
+    type: 'string',
+    default: '#f2f2f2',
+  },
+  {
+    name: `${prefix}.borderStyle`,
+    group,
+    'ui:title': '边框样式',
+    'ui:type': 'select',
+    'ui:props': {
+      options: [
+        { label: '点状', value: 'dotted' },
+        { label: '实线', value: 'solid' },
+        { label: '双线', value: 'double' },
+        { label: '虚线', value: 'dashed' },
+      ],
+    },
+    type: 'string',
+    default: 'solid',
+  },
+  {
+    name: `${prefix}.borderRadius`,
+    group,
+    'ui:title': '圆角半径',
+    'ui:type': 'style-numbers',
+    'ui:description': {
+      title: '设置元素的外边框圆角，该属性可以有1到4个值。e.g.:1px 1px',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    'ui:props': {
+      count: 4,
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.padding`,
+    group,
+    'ui:title': '内边距',
+    'ui:type': 'style-numbers',
+    'ui:description': {
+      title: '控制表格所有内边距属性，该属性可以有1到4个值。e.g.:1px 1px',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    'ui:props': {
+      count: 4,
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.margin`,
+    group,
+    'ui:title': '外边距',
+    'ui:type': 'style-numbers',
+    'ui:description': {
+      title: '控制表格所有外边距属性，该属性可以有1到4个值。e.g.:1px 1px',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    'ui:props': {
+      count: 4,
+      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em'],
+    },
+    type: 'string',
+    default: '',
+  },
+  {
+    name: `${prefix}.boxShadow`,
+    group,
+    'ui:title': '阴影',
+    'ui:type': 'box-shadow',
+    'ui:description': {
+      title: '用于在元素的框架上添加阴影效果，该属性可设置的值包括阴影的 X轴偏移量、Y轴偏移量、模糊半径、扩散半径和颜色',
+      trigger: 'hover',
+      type: 'icon',
+    },
+    'ui:props': {
+      defaultColor: '#ffffff',
+      count: 4,
+      dimensions: ['px', 'cm', 'em'],
+    },
+    type: 'string',
+    default: '',
+  },
+].filter(item => (extraOptions?.filterStyles ? extraOptions?.filterStyles.includes(item.name.replace(`${prefix}.`, '')) : item)) as DTGComponentPropertySchema[];
+
 export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPropertySchema[] => [
   {
     name: 'title',
@@ -33,9 +233,16 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:layout': { labelCol: 6, wrapperCol: 18 },
     type: 'string',
   },
+  ...StyleAttrConfigs('titleStyle', '表头配置', {
+    backgroundColor: '#fafafa',
+    filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
+  }),
+  ...StyleAttrConfigs('style', '列样式', {
+    filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
+  }),
   {
     name: 'width',
-    group: '组件属性',
+    group: '样式配置',
     'ui:title': '表格列宽',
     'ui:type': 'text',
     'ui:description': {
@@ -48,7 +255,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   {
     name: 'align',
     group: '样式配置',
-    'ui:title': '对齐方式',
+    'ui:title': '水平对齐方式',
     'ui:type': 'radio',
     'ui:props': {
       mode: 'button',
@@ -61,7 +268,26 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
       ],
     },
     type: 'string',
-    default: 'center',
+    default: 'left',
+  },
+  {
+    name: 'verticalAlign',
+    group: '样式配置',
+    'ui:title': '垂直对齐方式',
+    'ui:type': 'radio',
+    'ui:props': {
+      mode: 'button',
+      buttonStyle: 'solid',
+      size: 'small',
+      options: [
+        { label: '顶部', value: 'top' },
+        { label: '居中', value: 'middle' },
+        { label: '底部', value: 'bottom' },
+        { label: '拉伸', value: 'stretch' },
+      ],
+    },
+    type: 'string',
+    default: 'top',
   },
   {
     name: 'hidable',
@@ -77,12 +303,12 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
 ];
 
-export const dataIndexColumnAttrComponents: (
+export const dataIndexColumnAttrComponents = (
   dataIndex?: string,
   modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   directDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
   nestedDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean,
-) => DTGComponentPropertySchema[] = (dataIndex, modeDiffFn, directDiffFn, nestedDiffFn) => [
+): DTGComponentPropertySchema[] => [
   {
     name: 'dataIndexMode',
     group: '组件属性',
@@ -110,7 +336,7 @@ export const dataIndexColumnAttrComponents: (
       style: { width: 120 },
     },
     type: 'string',
-    visible: directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'direct'),
+    visible: directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode !== 'nested'),
   },
   {
     name: 'dataIndex',

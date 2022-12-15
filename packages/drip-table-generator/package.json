@@ -1,6 +1,6 @@
 {
   "name": "drip-table-generator",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "description": "A visualization tool for generating schema of drip-table.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -48,7 +48,7 @@
   "peerDependencies": {
     "@ant-design/icons": "^4.3.0",
     "antd": ">=4.9.4",
-    "drip-table": ">=2.0.7",
+    "drip-table": ">=2.6.1",
     "drip-table-driver-antd": ">=1.0.0",
     "react": ">=16.9.0"
   },

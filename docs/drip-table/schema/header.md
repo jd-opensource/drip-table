@@ -1,21 +1,7 @@
 # 头部 header
 
 - 描述：表格头部展示配置
-- 类型：
-
-    ```typescript
-    type Header = {
-      /**
-        * 头部自定义样式
-        */
-      style?: React.CSSProperties;
-      /**
-        * 头部展示元素配置
-        */
-      elements?: DripTableGenericRenderElement[];
-    } | boolean;
-    ```
-
+- 类型：[`DripTableSlotSchema`](/drip-table/types/slot-schema)
 - 默认值：`false`
 
     当传入 `true` 时，显示表头并使用默认表头配置，等价于：
@@ -31,12 +17,7 @@
     }
     ```
 
-- 子属性
-
-    | 参数名 | 描述 | 必填 | 详情 |
-    | ----- | ---- | ---- | ---- |
-    | [header.style](/drip-table/schema/header/style) | 头部自定义样式 | × | [🔗 示例](/drip-table/schema/header/style) |
-    | [header.elements](/drip-table/schema/header/elements) | 头部展示元素配置 | × | [🔗 示例](/drip-table/schema/header/elements) |
+- 说明：详细参见：[`DripTableSlot 通用插槽功能`](/drip-table/slot)。
 
 - 示例
 

@@ -7,6 +7,7 @@
  */
 
 import classNames from 'classnames';
+import forEach from 'lodash/forEach';
 import ResizeObserver from 'rc-resize-observer';
 import RcTable from 'rc-table';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
@@ -15,7 +16,7 @@ import React from 'react';
 import { type GridChildComponentProps, areEqual, VariableSizeGrid } from 'react-window';
 
 import {
-  type DripTableCellDisplayControl,
+  type DripTableBaseColumnSchema,
   type DripTableExtraOptions,
   type DripTableProps,
   type DripTableRecordTypeBase,
@@ -25,13 +26,15 @@ import {
   type DripTableTableInformation,
   type SchemaObject,
 } from '@/types';
+import { parseReactCSS, setElementCSS } from '@/utils/dom';
+import { decodeJSON, encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
-import { createExecutor } from '@/utils/sandbox';
+import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
-import GenericRender from '@/components/generic-render';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
+import SlotRender from '@/components/slot-render';
 import Tooltip from '@/components/tooltip';
 import { type IDripTableContext } from '@/context';
 import DripTableWrapper from '@/wrapper';
@@ -60,6 +63,245 @@ interface RcTableRecordType<
   record: RecordType;
 }
 
+const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefined, hoverRowKey: string | undefined) => {
+  const columnKey = el.dataset.columnKey || '';
+  const rowKey = el.dataset.rowKey || '';
+  const style = decodeJSON<DripTableBuiltInColumnSchema['style']>(el.dataset.style || '');
+  const hoverStyle = decodeJSON<DripTableBuiltInColumnSchema['hoverStyle']>(el.dataset.hoverStyle || '');
+  const rowHoverStyle = decodeJSON<DripTableBuiltInColumnSchema['rowHoverStyle']>(el.dataset.rowHoverStyle || '');
+  const rowHoverClasses = (el.dataset.rowHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
+  const columnHoverStyle = decodeJSON<DripTableBuiltInColumnSchema['columnHoverStyle']>(el.dataset.columnHoverStyle || '');
+  const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
+  // 移除 hover 状态样式
+  el.removeAttribute('style');
+  // 列基础样式
+  if (style) {
+    setElementCSS(el, style);
+  }
+  // 列 hover 样式
+  if (columnKey) {
+    if (hoverColumnKey === columnKey) {
+      if (columnHoverStyle) {
+        setElementCSS(el, columnHoverStyle);
+      }
+      columnHoverClasses.forEach(c => el.classList.add(c));
+    } else {
+      columnHoverClasses.forEach(c => el.classList.remove(c));
+    }
+  }
+  // 行 hover 样式
+  if (rowKey) {
+    if (hoverRowKey === rowKey) {
+      if (rowHoverStyle) {
+        setElementCSS(el, rowHoverStyle);
+      }
+      rowHoverClasses.forEach(c => el.classList.add(c));
+    } else {
+      rowHoverClasses.forEach(c => el.classList.remove(c));
+    }
+  }
+  // 单元格 hover 样式
+  if (columnKey && rowKey && hoverStyle && hoverColumnKey === columnKey && hoverRowKey === rowKey) {
+    setElementCSS(el, hoverStyle);
+  }
+};
+
+const onCellMouseEnter: (e: MouseEvent) => void = (e) => {
+  const currentTarget = e.currentTarget;
+  if (currentTarget instanceof HTMLElement) {
+    const tableUUID = currentTarget.dataset.tableUuid;
+    const hoverColumnKey = currentTarget.dataset.columnKey;
+    const hoverRowKey = currentTarget.dataset.rowKey;
+    if (tableUUID && hoverColumnKey && hoverRowKey) {
+      forEach(
+        document.querySelectorAll(`td[data-table-uuid=${encodeJSON(tableUUID)}],div[data-table-uuid=${encodeJSON(tableUUID)}]`),
+        (el) => {
+          if (el instanceof HTMLElement) {
+            updateCellElementStyle(el, hoverColumnKey, hoverRowKey);
+          }
+        },
+      );
+    }
+  }
+};
+
+const onCellMouseLeave: (e: MouseEvent) => void = (e) => {
+  const currentTarget = e.currentTarget;
+  if (currentTarget instanceof HTMLElement) {
+    const tableUUID = currentTarget.dataset.tableUuid;
+    if (tableUUID) {
+      forEach(
+        document.querySelectorAll(`td[data-table-uuid=${encodeJSON(tableUUID)}],div[data-table-uuid=${encodeJSON(tableUUID)}]`),
+        (el) => {
+          if (el instanceof HTMLElement) {
+            updateCellElementStyle(el, void 0, void 0);
+          }
+        },
+      );
+    }
+  }
+};
+
+const hookColumRender = <
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(
+    column: TableColumnType<RcTableRecordType<RecordType>>,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+    columnSchema: DripTableBaseColumnSchema,
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
+  ): TableColumnType<RcTableRecordType<RecordType>> => {
+  const render = column.render;
+  column.render = (d, row, ...args) => (
+    <React.Fragment>
+      { render?.(d, row, ...args) }
+      {
+        columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle
+          ? (
+            <div
+              style={{ display: 'none' }}
+              ref={(el) => {
+                const context = { props: { record: row.record, recordIndex: row.index } };
+                const tdEl = el?.parentElement;
+                const style = Object.assign({ textAlign: columnSchema.align }, typeof columnSchema.style === 'string' ? safeExecute(columnSchema.style, context) : columnSchema.style);
+                const hoverStyle = typeof columnSchema.hoverStyle === 'string' ? safeExecute(columnSchema.hoverStyle, context) : columnSchema.hoverStyle;
+                const rowHoverStyle = typeof columnSchema.rowHoverStyle === 'string' ? safeExecute(columnSchema.rowHoverStyle, context) : columnSchema.rowHoverStyle;
+                const columnHoverStyle = typeof columnSchema.columnHoverStyle === 'string' ? safeExecute(columnSchema.columnHoverStyle, context) : columnSchema.columnHoverStyle;
+                if (tdEl) {
+                  tdEl.dataset.tableUuid = tableInfo.uuid;
+                  tdEl.dataset.columnKey = columnSchema.key;
+                  tdEl.dataset.rowKey = row.key;
+                  tdEl.dataset.style = encodeJSON(style);
+                  tdEl.dataset.hoverStyle = encodeJSON(hoverStyle);
+                  tdEl.dataset.rowHoverStyle = encodeJSON(rowHoverStyle);
+                  tdEl.dataset.columnHoverStyle = encodeJSON(columnHoverStyle);
+                  tdEl.addEventListener('mouseenter', onCellMouseEnter);
+                  tdEl.addEventListener('mouseleave', onCellMouseLeave);
+                  updateCellElementStyle(tdEl, void 0, void 0);
+                }
+              }}
+            />
+          )
+          : null
+      }
+    </React.Fragment>
+  );
+  return column;
+};
+
+/**
+ * 根据列 Schema，生成表格单元格渲染函数
+ * @param tableInfo 表格信息
+ * @param columnSchema 表格列 Schema
+ * @param extraProps 一些额外的参数
+ * @returns 表格单元格渲染函数
+ */
+export const columnRenderGenerator = <
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+    columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
+      unknownComponent?: React.ReactNode;
+      preview?: DripTableComponentProps<RecordType, NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['CustomComponentEvent']>, NonNullable<ExtraOptions['CustomComponentExtraData']>>['preview'];
+    },
+  ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
+  if ('component' in columnSchema) {
+    const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
+      React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
+    const onChange = (record: RecordType, index: number, value: unknown) => {
+      const ds = [...tableInfo.dataSource];
+      const rec = { ...record };
+      setValue(rec, columnSchema.dataIndex, value);
+      ds[index] = rec;
+      extraProps.onDataSourceChange?.(ds, tableInfo);
+    };
+    type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number }) => unknown;
+    const generatePropsTranslator = (translatorSchema: unknown): PropsTranslator => {
+      if (typeof translatorSchema === 'undefined') {
+        return (v, c) => v;
+      }
+      if (typeof translatorSchema === 'string') {
+        try {
+          const translate = createExecutor(translatorSchema, ['props']);
+          return (v, c) => {
+            try {
+              return translate(c);
+            } catch {}
+            return void 0;
+          };
+        } catch {}
+      }
+      return () => translatorSchema;
+    };
+    const dataTranslator = generatePropsTranslator(columnSchema.dataTranslation);
+    const hiddenTranslator = generatePropsTranslator(columnSchema.hidden);
+    const disableTranslator = generatePropsTranslator(columnSchema.disable);
+    const editableTranslator = generatePropsTranslator(columnSchema.editable);
+    if (BuiltInComponent) {
+      return (_, row) => {
+        const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
+        const record = row.record;
+        const recordIndex = row.index;
+        const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
+        const translatorContext = { value, record, recordIndex };
+        if (hiddenTranslator(false, translatorContext)) {
+          return null;
+        }
+        return (
+          <BuiltInComponent
+            driver={extraProps.driver}
+            data={record}
+            value={value}
+            indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+            preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>['preview']}
+            disable={Boolean(disableTranslator(false, translatorContext))}
+            editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
+            onChange={v => onChange(record, recordIndex, v)}
+            schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
+            ext={extraProps.ext}
+            components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
+            fireEvent={event => extraProps.onEvent?.(event, record, recordIndex, { ...tableInfo, record })}
+          />
+        );
+      };
+    }
+    const [libName, componentName] = columnSchema.component.split('::');
+    if (libName && componentName) {
+      const ExtraComponent = extraProps.components?.[libName]?.[componentName];
+      if (ExtraComponent) {
+        return (_, row) => {
+          const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
+          const record = row.record;
+          const recordIndex = row.index;
+          const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
+          const translatorContext = { value, record, recordIndex };
+          if (hiddenTranslator(false, translatorContext)) {
+            return null;
+          }
+          return (
+            <ExtraComponent
+              driver={extraProps.driver}
+              data={record}
+              value={value}
+              indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+              preview={extraProps.preview}
+              disable={Boolean(disableTranslator(false, translatorContext))}
+              editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
+              onChange={v => onChange(row.record, row.index, v)}
+              schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
+              ext={extraProps.ext}
+              fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
+            />
+          );
+        };
+      }
+    }
+  }
+  return () => extraProps.unknownComponent ?? <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
+};
+
 /**
  * 根据列 Schema，生成表格列配置
  * @param tableInfo 表格信息
@@ -74,12 +316,31 @@ export const columnGenerator = <
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
-  ): TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } => {
+  ): TableColumnType<RcTableRecordType<RecordType>> => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
     width += 'px';
   }
-  const column: TableColumnType<RcTableRecordType<RecordType>> & { style?: React.CSSProperties } = {
+  let columnTitle = '';
+  if (typeof columnSchema.title === 'string') {
+    columnTitle = columnSchema.title;
+  } else if (typeof columnSchema.title.body === 'string') {
+    columnTitle = columnSchema.title.body;
+  } else {
+    columnTitle = columnSchema.title?.body?.content;
+  }
+  const onTitleRef = (el: HTMLDivElement) => {
+    const thEl = el?.parentElement;
+    const style = typeof columnSchema.title === 'object' && columnSchema.title.style;
+    if (thEl && style) {
+      setElementCSS(thEl, style);
+    }
+  };
+  const titleStyle = typeof columnSchema.title === 'object' && typeof columnSchema.title.body === 'object' && columnSchema.title.body.style
+    ? parseReactCSS(columnSchema.title.body.style)
+    : void 0;
+  const column: TableColumnType<RcTableRecordType<RecordType>> = {
+    key: columnSchema.key,
     width,
     className: classNames({
       [styles['jfe-drip-table-cell--top']]: columnSchema.verticalAlign === 'top',
@@ -88,163 +349,76 @@ export const columnGenerator = <
       [styles['jfe-drip-table-cell--stretch']]: columnSchema.verticalAlign === 'stretch',
     }),
     align: columnSchema.align,
-    title: <RichText html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title?.body || ''} />,
+    title:
+      columnSchema.description
+        ? (
+          <div ref={onTitleRef}>
+            <span style={{ marginRight: '6px' }}>
+              <RichText className={styles['jfe-drip-table-column-title']} style={titleStyle} html={columnTitle} />
+            </span>
+            <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
+              <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>
+                <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                  <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
+                  <path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z" />
+                </svg>
+              </span>
+            </Tooltip>
+          </div>
+        )
+        : (<RichText onRef={onTitleRef} style={titleStyle} html={columnTitle} />),
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
-    style: columnSchema.style,
+    render: columnRenderGenerator(tableInfo, columnSchema, extraProps),
     onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps<RecordType, ExtraOptions>['additionalProps']> } as React.TdHTMLAttributes<Element>),
   };
-  if (columnSchema.description) {
-    column.title = (
-      <div>
-        <span style={{ marginRight: '6px' }}>
-          <RichText className={styles['jfe-drip-table-column-title']} html={typeof columnSchema.title === 'string' ? columnSchema.title : columnSchema.title?.body || ''} />
-        </span>
-        <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
-          <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>
-            <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-              <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
-              <path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z" />
-            </svg>
-          </span>
-        </Tooltip>
-      </div>
-    );
-  }
 
-  if (!column.render) {
-    if ('component' in columnSchema) {
-      const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
-        React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
-      const onChange = (record: RecordType, index: number, value: unknown) => {
-        const ds = [...tableInfo.dataSource];
-        const rec = { ...record };
-        setValue(rec, columnSchema.dataIndex, value);
-        ds[index] = rec;
-        extraProps.onDataSourceChange?.(ds, tableInfo);
-      };
-      type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number }) => unknown;
-      const generatePropsTranslator = (translatorSchema: unknown): PropsTranslator => {
-        if (typeof translatorSchema === 'undefined') {
-          return (v, c) => v;
-        }
-        if (typeof translatorSchema === 'string') {
-          try {
-            const translate = createExecutor(translatorSchema, ['props']);
-            return (v, c) => {
-              try {
-                return translate(c);
-              } catch {}
-              return void 0;
-            };
-          } catch {}
-        }
-        return () => translatorSchema;
-      };
-      const dataTranslator = generatePropsTranslator(columnSchema.dataTranslation);
-      const hiddenTranslator = generatePropsTranslator(columnSchema.hidden);
-      const disableTranslator = generatePropsTranslator(columnSchema.disable);
-      const editableTranslator = generatePropsTranslator(columnSchema.editable);
-      if (BuiltInComponent) {
-        column.render = (_, row) => {
-          const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
-          const record = row.record;
-          const recordIndex = row.index;
-          const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
-          const translatorContext = { value, record, recordIndex };
-          if (hiddenTranslator(false, translatorContext)) {
-            return null;
-          }
-          return (
-            <BuiltInComponent
-              driver={extraProps.driver}
-              data={record}
-              value={value}
-              indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
-              disable={Boolean(disableTranslator(false, translatorContext))}
-              editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
-              onChange={v => onChange(record, recordIndex, v)}
-              schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
-              ext={extraProps.ext}
-              components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
-              fireEvent={event => extraProps.onEvent?.(event, record, recordIndex, { ...tableInfo, record })}
-            />
-          );
-        };
-      }
-      const [libName, componentName] = columnSchema.component.split('::');
-      if (libName && componentName) {
-        const ExtraComponent = extraProps.components?.[libName]?.[componentName];
-        if (ExtraComponent) {
-          column.render = (_, row) => {
-            const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
-            const record = row.record;
-            const recordIndex = row.index;
-            const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
-            const translatorContext = { value, record, recordIndex };
-            if (hiddenTranslator(false, translatorContext)) {
-              return null;
-            }
-            return (
-              <ExtraComponent
-                driver={extraProps.driver}
-                data={record}
-                value={value}
-                indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
-                disable={Boolean(disableTranslator(false, translatorContext))}
-                editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
-                onChange={v => onChange(row.record, row.index, v)}
-                schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
-                ext={extraProps.ext}
-                fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
-              />
-            );
-          };
-        }
-      }
-    }
-    if (!column.render) {
-      column.render = () => <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
-    }
-  }
   return column;
 };
 
 interface VirtualCellItemData {
+  tableUUID: string;
   columns: TableColumnType<unknown>[];
-  columnsDisplayControl: DripTableCellDisplayControl[];
-  dataSource: unknown[];
+  columnsBaseSchema: DripTableBaseColumnSchema[];
+  dataSource: RcTableRecordType<DripTableRecordTypeBase>[];
   rowKey: React.Key;
   selectedRowKeys: IDripTableContext['selectedRowKeys'];
-  hoverRowKey: React.Key | undefined;
-  setHoverRowKey: (hoverRowKey: React.Key | undefined) => void;
 }
 
-const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style }: GridChildComponentProps<VirtualCellItemData>) => {
-  const { columns, columnsDisplayControl, dataSource, rowKey, selectedRowKeys, hoverRowKey, setHoverRowKey } = data;
-  const displayControl = columnsDisplayControl[columnIndex];
+const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
+  const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys } = data;
+  const columnBaseSchema = columnsBaseSchema[columnIndex];
   const column = columns[columnIndex];
-  const record = dataSource[rowIndex];
-  const recKey = indexValue(record, rowKey);
+  const row = dataSource[rowIndex];
+  const recKey = row.record[rowKey] as React.Key;
   const selected = selectedRowKeys.includes(recKey);
-  const onMouseEnter = React.useCallback(() => { setHoverRowKey(recKey); }, [recKey]);
-  const onMouseLeave = React.useCallback(() => { setHoverRowKey(void 0); }, [recKey]);
+  const context = { props: { record: row.record, recordIndex: row.index } };
+  const style = Object.assign({ textAlign: columnBaseSchema.align }, vcStyle, typeof columnBaseSchema.style === 'string' ? safeExecute(columnBaseSchema.style, context) : columnBaseSchema.style);
+  const hoverStyle = typeof columnBaseSchema.hoverStyle === 'string' ? safeExecute(columnBaseSchema.hoverStyle, context) : columnBaseSchema.hoverStyle;
+  const rowHoverStyle = typeof columnBaseSchema.rowHoverStyle === 'string' ? safeExecute(columnBaseSchema.rowHoverStyle, context) : columnBaseSchema.rowHoverStyle;
+  const columnHoverStyle = typeof columnBaseSchema.columnHoverStyle === 'string' ? safeExecute(columnBaseSchema.columnHoverStyle, context) : columnBaseSchema.columnHoverStyle;
   return (
     <div
       className={classNames(styles['jfe-drip-table-virtual-cell'], {
-        [styles['jfe-drip-table-virtual-cell--top']]: displayControl?.verticalAlign === 'top',
-        [styles['jfe-drip-table-virtual-cell--middle']]: displayControl?.verticalAlign === 'middle',
-        [styles['jfe-drip-table-virtual-cell--bottom']]: displayControl?.verticalAlign === 'bottom',
-        [styles['jfe-drip-table-virtual-cell--stretch']]: displayControl?.verticalAlign === 'stretch',
-        [styles['jfe-drip-table--row-hover']]: hoverRowKey !== void 0 && hoverRowKey === recKey,
+        [styles['jfe-drip-table-virtual-cell--top']]: columnBaseSchema?.verticalAlign === 'top',
+        [styles['jfe-drip-table-virtual-cell--middle']]: columnBaseSchema?.verticalAlign === 'middle',
+        [styles['jfe-drip-table-virtual-cell--bottom']]: columnBaseSchema?.verticalAlign === 'bottom',
+        [styles['jfe-drip-table-virtual-cell--stretch']]: columnBaseSchema?.verticalAlign === 'stretch',
         [styles['jfe-drip-table--row-selected']]: selected,
-        [styles['jfe-drip-table--row-selected-hover']]: selected && hoverRowKey !== void 0 && hoverRowKey === recKey,
       })}
-      style={Object.assign({ textAlign: column.align }, style)}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      style={style}
+      data-table-uuid={tableUUID}
+      data-row-key={row.key}
+      data-column-key={columnBaseSchema.key}
+      data-style={encodeJSON(style)}
+      data-hover-style={encodeJSON(hoverStyle)}
+      data-row-hover-style={encodeJSON(rowHoverStyle)}
+      data-column-hover-style={encodeJSON(columnHoverStyle)}
+      data-row-hover-class={classNames(styles['jfe-drip-table--row-hover'], { [styles['jfe-drip-table--row-selected-hover']]: selected })}
+      onMouseEnter={React.useCallback(e => onCellMouseEnter(e), [])}
+      onMouseLeave={React.useCallback(e => onCellMouseLeave(e), [])}
     >
-      { column.render?.(indexValue(record, column.dataIndex), record, rowIndex) }
+      { column.render?.(void 0, row, rowIndex) }
     </div>
   );
 }, areEqual);
@@ -253,11 +427,10 @@ const TableLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
-  const { tableProps, tableInfo, tableState, setTableState } = props;
+  const { tableUUID, tableProps, tableInfo, tableState, setTableState } = props;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
-  const [hoverRowKey, setHoverRowKey] = React.useState<React.Key | undefined>(void 0);
   const [dragInIndex, setDragInIndex] = React.useState(-1);
 
   const initialPagination = tableInfo.schema?.pagination || void 0;
@@ -337,29 +510,53 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     [rowExpandColumnVisible],
   );
 
-  const rowSelectionDisplayControl = React.useMemo(
-    (): DripTableCellDisplayControl | undefined => (
-      tableInfo.schema.rowSelection === true
-        ? {
-          align: 'center',
-          verticalAlign: 'middle',
-        }
-        : tableInfo.schema.rowSelection || void 0),
+  const rowSelectionColumnSchema = React.useMemo(
+    (): DripTableBaseColumnSchema | undefined => (
+      tableInfo.schema.rowSelection
+        ? Object.assign(
+          {
+            title: '',
+            align: 'center',
+            verticalAlign: 'middle',
+          },
+          typeof tableInfo.schema.rowSelection === 'object'
+            ? tableInfo.schema.rowSelection
+            : void 0,
+          { key: '$$drip-table-row-selection$$' },
+        )
+        : void 0
+    ),
     [tableInfo.schema.rowSelection],
   );
 
-  const columnsDisplayControl = React.useMemo(
-    (): DripTableCellDisplayControl[] => {
-      const dc: DripTableCellDisplayControl[] = tableInfo.schema.columns.map(c => ({
-        align: c.align,
-        verticalAlign: c.verticalAlign,
-      }));
-      if (rowSelectionDisplayControl) {
-        dc.unshift(rowSelectionDisplayControl);
+  const rowDraggableColumnSchema = React.useMemo(
+    (): DripTableBaseColumnSchema | undefined => (
+      tableInfo.schema.rowDraggable
+        ? Object.assign(
+          {
+            title: '',
+            align: 'center',
+            verticalAlign: 'middle',
+          },
+          typeof tableInfo.schema.rowDraggable === 'object'
+            ? tableInfo.schema.rowDraggable
+            : void 0,
+          { key: '$$drip-table-row-selection$$' },
+        )
+        : void 0
+    ),
+    [tableInfo.schema.rowDraggable],
+  );
+
+  const columnsBaseSchema = React.useMemo(
+    (): DripTableBaseColumnSchema[] => {
+      const dc: DripTableBaseColumnSchema[] = [...tableInfo.schema.columns];
+      if (rowSelectionColumnSchema) {
+        dc.unshift(rowSelectionColumnSchema);
       }
       return dc;
     },
-    [tableInfo.schema.columns, rowSelectionDisplayControl],
+    [tableInfo.schema.columns, rowSelectionColumnSchema],
   );
 
   const filteredColumns = React.useMemo(
@@ -374,9 +571,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       const returnColumns = tableProps.schema.columns
         .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
         .map(column => columnGenerator(tableInfo, column, extraProps));
-      if (rowSelectionDisplayControl) {
+      if (rowSelectionColumnSchema) {
         returnColumns.unshift({
-          align: rowSelectionDisplayControl.align,
+          align: rowSelectionColumnSchema.align,
           width: 50,
           fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
           title: (
@@ -417,7 +614,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           ),
         });
       }
-      if (tableInfo.schema.rowDraggable) {
+      if (rowDraggableColumnSchema) {
         returnColumns.unshift({
           align: 'center',
           width: 50,
@@ -467,8 +664,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         return returnColumns;
       }
       // 整行自定义插槽
-      const rowSlotKey = tableInfo.schema.rowSlotKey;
-      if (rowSlotKey) {
+      if (tableInfo.schema.rowSlotKey) {
+        const rowSlotKey = tableInfo.schema.rowSlotKey;
         {
           const render = returnColumns[0].render;
           returnColumns[0].render = (o, row, index) => {
@@ -535,9 +732,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           returnColumns[0].render = (o, row, index) => {
             if (row.type === 'header' && tableProps.schema.rowHeader) {
               return (
-                <GenericRender
-                  style={tableProps.schema.rowHeader.style}
-                  schemas={tableProps.schema.rowHeader.elements ?? []}
+                <SlotRender
+                  schema={tableProps.schema.rowHeader}
+                  tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}
                   setTableState={setTableState}
@@ -548,9 +745,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             }
             if (row.type === 'footer' && tableProps.schema.rowFooter) {
               return (
-                <GenericRender
-                  style={tableProps.schema.rowFooter.style}
-                  schemas={tableProps.schema.rowFooter.elements ?? []}
+                <SlotRender
+                  schema={tableProps.schema.rowFooter}
+                  tableUUID={tableUUID}
                   tableProps={tableProps}
                   tableState={tableState}
                   setTableState={setTableState}
@@ -590,7 +787,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           };
         }
       }
-      return returnColumns;
+      return returnColumns.map((column, i) => hookColumRender(column, tableInfo, columnsBaseSchema[i], extraProps));
     },
     [
       dragInIndex,
@@ -757,6 +954,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     tableProps.onFilterChange?.(filters, tableInfo);
                     tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
                   },
+                  tableUUID,
                   tableProps,
                   tableState,
                   setTableState,
@@ -775,13 +973,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         <VariableSizeGrid
           ref={refVirtualGrid}
           itemData={{
+            tableUUID,
             columns: rcTableColumns as TableColumnType<unknown>[],
-            columnsDisplayControl,
+            columnsBaseSchema,
             dataSource: rcTableDataSource,
-            rowKey: 'key',
+            rowKey,
             selectedRowKeys: tableState.selectedRowKeys,
-            hoverRowKey,
-            setHoverRowKey,
           }}
           className={styles['jfe-drip-table-virtual-list']}
           columnCount={rcTableColumns.length}
@@ -810,7 +1007,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     tableInfo.schema.columns,
     tableState.selectedRowKeys,
     tableState.filters,
-    hoverRowKey,
   ]);
 
   const rcTableExpandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(
@@ -882,7 +1078,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       ? subtableData => tableProps.subtableTitle?.(
                         row.record,
                         row.index,
-                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                       )
                       : void 0
                   }
@@ -891,7 +1087,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       ? subtableData => tableProps.subtableFooter?.(
                         row.record,
                         row.index,
-                        { schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
                       )
                       : void 0
                   }
@@ -995,6 +1191,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               )
             }
             expandable={rcTableExpandable}
+            emptyText={
+              React.useMemo(
+                () => {
+                  if (tableProps.emptyText) {
+                    return tableProps.emptyText(tableInfo);
+                  }
+                  return <RichText style={{ textAlign: 'center' }} html={tableProps.schema.emptyText ?? 'No Data'} />;
+                },
+                [tableProps.emptyText, tableProps.schema.emptyText],
+              )
+            }
           />
         </div>
       </ResizeObserver>

@@ -12,6 +12,7 @@ import { DTGComponentPropertySchema } from '@/typing';
 
 import ArrayComponent from './array-list';
 import AutoComplete from './auto-complete';
+import BoxShadowComponent from './box-shadow';
 import CascadeComponent from './cascade';
 import Checkbox from './checkbox';
 import CodeEditorComponent from './code-editor';
@@ -40,6 +41,7 @@ export default {
   [ColorPicker.componentName]: ColorPicker,
   [RichTextEditorComponent.componentName]: RichTextEditorComponent,
   [StyleNumbersComponent.componentName]: StyleNumbersComponent,
+  [BoxShadowComponent.componentName]: BoxShadowComponent,
 };
 
 export interface CustomComponentProps {

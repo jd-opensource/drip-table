@@ -34,7 +34,6 @@ const initialSchema: DripTableSchema = {
         mode: 'single',
         maxRow: 2,
       },
-      type: 'string',
       dataIndex: 'name',
     },
     {
@@ -47,7 +46,6 @@ const initialSchema: DripTableSchema = {
       options: {
         render: "if (rec.id % 2 == 1) {\n  return '<span style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 10px; background: #f6ffed\\\">进行中</span>';\n}\nif (rec.id % 2 == 0) {\n  return '<span style=\\\"padding: 2px 4px;color:#000; border: 1px solid #000; border-radius: 10px; background: #f6ffed\\\">已完成</span>';\n}\nreturn '';",
       },
-      type: 'string',
     },
     {
       key: 'mock_3',
@@ -90,7 +88,6 @@ const initialSchema: DripTableSchema = {
       options: {
         mode: 'basic',
         format: 'YYYY-MM-DD',
-
       },
       align: 'center',
     },
@@ -208,7 +205,6 @@ const Demo = () => (
     )}
     rowExpandable={(record, index, parent) => parent.schema.id === 'sample-table' && record.id === 5}
     expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
-    ajv={{ additionalProperties: true }}
   />
 );
 
