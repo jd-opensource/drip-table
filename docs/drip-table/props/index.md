@@ -28,6 +28,7 @@ title: 总览
 | [defaultExpandedRowKeys](/drip-table/props/default-expanded-row-keys) | 子表默认展开项 | × | [🔗 示例](/drip-table/props/default-expanded-row-keys) |
 | [title](/drip-table/props/title) | 顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/title) |
 | [footer](/drip-table/props/footer) | 底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/footer) |
+| [emptyText](/drip-table/props/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/props/empty-text) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
 | [subtableFooter](/drip-table/props/subtable-footer) | 子表底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-footer) |
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
