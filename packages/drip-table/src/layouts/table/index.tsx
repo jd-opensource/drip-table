@@ -1172,6 +1172,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               )
             }
             expandable={rcTableExpandable}
+            emptyText={
+              React.useMemo(
+                () => {
+                  if (tableProps.emptyText) {
+                    return tableProps.emptyText(tableInfo);
+                  }
+                  return <RichText style={{ textAlign: 'center' }} html={tableProps.schema.emptyText ?? 'No Data'} />;
+                },
+                [tableProps.emptyText, tableProps.schema.emptyText],
+              )
+            }
           />
         </div>
       </ResizeObserver>

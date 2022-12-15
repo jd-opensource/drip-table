@@ -306,6 +306,10 @@ export interface DripTableSchema<
    */
   rowFooter?: DripTableSlotSchema;
   /**
+   * 空表展示文案富文本
+   */
+  emptyText?: string;
+  /**
    * 子表设置项
    */
   subtable?: {
@@ -574,6 +578,10 @@ export interface DripTableProps<
    * 底部自定义渲染函数
    */
   footer?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
+   * 底部自定义渲染函数
+   */
+  emptyText?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => React.ReactNode;
   /**
    * 子表顶部自定义渲染函数
    */

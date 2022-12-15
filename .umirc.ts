@@ -133,6 +133,7 @@ const umiConfig: IConfig = {
           '/drip-table/schema/row-slot-key',
           '/drip-table/schema/row-header',
           '/drip-table/schema/row-footer',
+          '/drip-table/schema/empty-text',
           '/drip-table/schema/subtable',
         ],
       },

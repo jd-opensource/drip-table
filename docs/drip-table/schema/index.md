@@ -32,4 +32,5 @@ title: 总览
 | [rowSlotKey](/drip-table/schema/row-slot-key) | 行插槽键名 | × | [🔗 示例](/drip-table/schema/row-slot-key) |
 | [rowHeader](/drip-table/schema/row-header) | 行头部插槽 | × | [🔗 示例](/drip-table/schema/row-header) |
 | [rowFooter](/drip-table/schema/row-footer) | 行尾部插槽 | × | [🔗 示例](/drip-table/schema/row-footer) |
+| [emptyText](/drip-table/schema/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/schema/empty-text) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
