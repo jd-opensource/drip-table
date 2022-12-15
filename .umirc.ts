@@ -319,8 +319,22 @@ const umiConfig: IConfig = {
       '@alifd/next',
     ],
   ],
+  chunks: ['umi', 'styles'],
   chainWebpack(config, { webpack }) {
     config.plugin('monaco-editor').use(MonacoWebpackPlugin);
+
+    // dynamicImport css chunks lost
+    config.optimization.splitChunks({
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.less$/ui,
+          chunks: 'async',
+          minChunks: 1,
+          minSize: 0,
+        },
+      },
+    });
   },
   alias: {
     'drip-table': path.resolve(__dirname, './packages/drip-table'),
