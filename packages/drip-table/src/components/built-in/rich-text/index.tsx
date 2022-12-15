@@ -62,11 +62,6 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
         /\{\{(.+?)\}\}/guis, (s, s1) =>
           finalizeString('script', `return ${s1}`, data),
       );
-      if (typeof html === 'object') {
-        return (
-          <div>{ Object.prototype.toString.call(html) }</div>
-        );
-      }
       return (
         <div className={styles['rich-text-container']}>
           <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>
