@@ -3,7 +3,7 @@
 - 描述：是否固定列
 - 类型：`'left' | 'right' | boolean`
 - 默认值：`undefined`
-- 更多内容：`true` 等同于 `'left'`。
+- 说明：`true` 等同于 `'left'`。
 
 ```jsx
 /**

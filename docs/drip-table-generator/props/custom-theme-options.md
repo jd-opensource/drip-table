@@ -3,7 +3,7 @@
 - 描述：自定义主题样式和配置
 - 类型：`string`
 - 默认值：`undefined`
-- 更多内容：需要配合 `drip-table` 插槽 [`slots`](/drip-table/props/slots) 属性使用。
+- 说明：需要配合 `drip-table` 插槽 [`slots`](/drip-table/props/slots) 属性使用。
 
 ## 使用方法
 

@@ -12,7 +12,7 @@ interface Scroll {
 ```
 
 - 默认值：`undefined`
-- 更多内容：一般用于配合固定列 [`schema.columns.fixed`](/drip-table/schema/columns/fixed) 属性使用。
+- 说明：一般用于配合固定列 [`schema.columns.fixed`](/drip-table/schema/columns/fixed) 属性使用。
 
 ```jsx
 /**

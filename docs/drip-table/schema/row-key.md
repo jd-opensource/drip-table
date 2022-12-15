@@ -3,7 +3,7 @@
 - 描述：表格行主键
 - 类型：`string`
 - 默认值：`"key"`
-- 更多内容：一般用于配合表格勾选项 [`header.rowSelection`](/drip-table/header/row-selection)、[`props.onRowSelectionChange`](/drip-table/props.onRowSelectionChange) 属性使用。
+- 说明：一般用于配合表格勾选项 [`header.rowSelection`](/drip-table/header/row-selection)、[`props.onRowSelectionChange`](/drip-table/props.onRowSelectionChange) 属性使用。
 
 ```jsx
 /**

@@ -12,7 +12,7 @@
   ```
 
 - 默认值：`undefined`
-- 更多内容：该属性仅为冻结表头环境配置，多用于页面存在导航栏或内部滚动等场景，需要配合 [`schema.sticky`](/drip-table/schema/sticky) 设置项开启表格冻结表头开关才能使用。
+- 说明：该属性仅为冻结表头环境配置，多用于页面存在导航栏或内部滚动等场景，需要配合 [`schema.sticky`](/drip-table/schema/sticky) 设置项开启表格冻结表头开关才能使用。
 
 ```jsx
 /**

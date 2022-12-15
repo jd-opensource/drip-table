@@ -36,7 +36,7 @@ type SubtableProps = {
 ```
 
 - 默认值：`undefined`
-- 更多内容：[`defaultExpandAllRows`](/drip-table/props/default-expand-all-rows)、[`defaultExpandedRowKeys`](/drip-table/props/default-expanded-row-keys)
+- 说明：[`defaultExpandAllRows`](/drip-table/props/default-expand-all-rows)、[`defaultExpandedRowKeys`](/drip-table/props/default-expanded-row-keys)
 
 ```jsx
 /**

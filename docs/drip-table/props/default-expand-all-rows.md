@@ -3,7 +3,7 @@
 - 描述：默认展开全部子表
 - 类型：`boolean`
 - 默认值：`undefined`
-- 更多内容：使用 [`subtableProps`](/drip-table/props/subtable-props) 对子表进行控制
+- 说明：使用 [`subtableProps`](/drip-table/props/subtable-props) 对子表进行控制
 
 ```jsx
 /**
