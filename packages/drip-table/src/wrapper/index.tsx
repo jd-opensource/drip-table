@@ -142,6 +142,8 @@ const DripTableWrapper: <
     },
     [props],
   );
+  const context = createTableContext(tableProps);
+  React.useImperativeHandle(ref, () => context);
 
   // 校验参数
   const errorMessage = [
@@ -163,8 +165,6 @@ const DripTableWrapper: <
   }
 
   const ConfigProvider = tableProps.driver.components.ConfigProvider;
-  const context = createTableContext(tableProps);
-  React.useImperativeHandle(ref, () => context);
   return (
     <ConfigProvider locale={tableProps?.driver.locale}>
       <DripTableContext.Provider {...tableProps} value={context}>
