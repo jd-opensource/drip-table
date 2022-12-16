@@ -397,12 +397,21 @@ export const validateDripTableRequiredProps = (props: unknown, options?: AjvOpti
   return null;
 };
 
-export const getDripTableValidatePropsCount = (options?: AjvOptions) => {
-  if (options?.additionalProperties) {
-    return 100;
-  }
+/**
+ * 根据用户传入的表格属性获取需要校验的属性名称列表，输出固定长度的结果提供给 React Hooks 使用
+ * @param props DripTable 用户传入属性 props 对象
+ * @param options ajv 校验选项
+ * @returns 需要校验的属性名称列表
+ */
+export const getDripTableValidatePropsKeys = (props: object, options?: AjvOptions) => {
   const schemas = getDripTablePropsAjvSchema(options);
-  return Object.keys(schemas.props.properties).length;
+  const propertiesKeys = Object.keys(schemas.props.properties);
+  const propertiesCount = propertiesKeys.length;
+  if (options?.additionalProperties) {
+    return [...new Set([...Object.keys(props), ...propertiesKeys])]
+      .filter((_, i) => i < propertiesCount);
+  }
+  return propertiesKeys;
 };
 
 const DRIP_TABLE_AJV_PROPS_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();
