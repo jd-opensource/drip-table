@@ -1,8 +1,41 @@
 # 列头 columns.title
 
 - 描述：表头，组件名
-- 类型：`string`
+- 类型：
+
+    ```typescript
+    type Title = string | {
+      style?: Record<string, string> | string;
+      body: string | {
+        style?: Record<string, string> | string;
+        content: string;
+      };
+      header?: {
+        /**
+         * 头部自定义样式
+         */
+        style?: React.CSSProperties;
+        /**
+         * 头部展示元素配置
+         */
+        elements?: DripTableGenericRenderElement[];
+      };
+      footer?: {
+        /**
+         * 尾部自定义样式
+         */
+        style?: React.CSSProperties;
+        /**
+         * 尾部展示元素配置
+         */
+        elements?: DripTableGenericRenderElement[];
+      };
+    }
+    ```
+
 - 默认值：必填
+
+- 说明：详细参见：[`DripTableSlot 通用插槽功能`](/drip-table/slot)。
 
 ```jsx
 /**
@@ -27,7 +60,14 @@ const schema = {
     },
     {
       key: "mock_2",
-      title: "商品详情",
+      title: {
+        style: {
+          borderTop: "1px solid black",
+          'border-bottom': "1px solid black",
+          borderLeft: "1px solid black",
+        },
+        body: "商品详情",
+      },
       align: "center",
       dataIndex: "description",
       component: "text",
@@ -35,7 +75,10 @@ const schema = {
     },
     {
       key: "mock_3",
-      title: "Custom Component",
+      title: {
+        style: "border: 1px solid black",
+        body: "Custom Component",
+      },
       align: "center",
       dataIndex: "description",
       component: "custom::Sample",

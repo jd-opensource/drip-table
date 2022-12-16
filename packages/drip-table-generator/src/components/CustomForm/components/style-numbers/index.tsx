@@ -35,7 +35,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
   private get value() {
     const valueArray = this.props.value?.split(' ') || [];
     const formattedValue = valueArray.map((item) => {
-      const unit = item.match(/^[0-9]+(px|%|r?em|pt|vw|cm|in|pc)$/ui)?.[1] || '';
+      const unit = item.match(/^(-)?[0-9]+(px|%|r?em|pt|vw|cm|in|pc)$/ui)?.[2] || '';
       const value = Number(item.replace(unit, '')) || void 0;
       return { value, unit };
     });
@@ -43,7 +43,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
   }
 
   private formatValue(originValue: { value: number | undefined; unit: string }[]) {
-    return originValue.map(item => `${item.value || ''}${item.unit}`).join(' ');
+    return originValue.map(item => `${item.value || 0}${item.unit}`).join(' ');
   }
 
   private onChangeValue(value: { value: number | undefined; unit: string }[]) {
@@ -75,19 +75,22 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
                 value[index].value = val;
                 this.onChangeValue(value);
               }}
+              addonAfter={(
+                <Select
+                  className={styles['select-input']}
+                  value={item.unit}
+                  options={this.options}
+                  showArrow={false}
+                  getPopupContainer={triggerNode => triggerNode}
+                  onChange={(val) => {
+                    const value = [...this.value];
+                    value[index].unit = val;
+                    this.onChangeValue(value);
+                  }}
+                />
+              )}
             />
-            <Select
-              className={styles['select-input']}
-              value={item.unit}
-              options={this.options}
-              showArrow={false}
-              getPopupContainer={triggerNode => triggerNode}
-              onChange={(val) => {
-                const value = [...this.value];
-                value[index].unit = val;
-                this.onChangeValue(value);
-              }}
-            />
+
             <MinusCircleTwoTone
               className={styles.minus}
               twoToneColor="#ff4d4f"

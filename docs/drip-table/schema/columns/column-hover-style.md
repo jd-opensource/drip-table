@@ -1,16 +1,15 @@
-# 数据处理 dataProcess
+# 列悬浮样式 columns.columnHoverStyle
 
-- 描述：数据处理逻辑 value对应dataIndex的值，rec对应rowData的值, return语句写法案例: `return value || "暂无数据"`
-- 类型：`string`
-- 默认值：无
+- 描述：鼠标悬浮当前列时单元格样式
+- 类型：`Record<string, string> | string`
+- 默认值：`undefined`
 
 ```jsx
 /**
  * transform: true
- * defaultShowCode: false
+ * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import { message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
@@ -18,30 +17,43 @@ import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
 const schema = {
-  rowKey: "id",
-  rowSelection: true,
   columns: [
     {
       key: "mock_1",
       title: "商品名称",
+      columnHoverStyle: {
+        background: "#2a64ff",
+      },
       dataIndex: "name",
       component: "text",
-      options: { mode: "single", maxRow: 1, dataProcess: "return value || '暂无数据'" },
+      options: { mode: "single", maxRow: 1 },
     },
     {
       key: "mock_2",
       title: "商品详情",
+      columnHoverStyle: {
+        background: "#2a64ff",
+      },
       align: "center",
       dataIndex: "description",
       component: "text",
-      options: { mode: "single", ellipsis: true, maxRow: 1, dataProcess: "return value || rec.name" },
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
+    },
+    {
+      key: "mock_3",
+      title: "商品价格",
+      columnHoverStyle: "return props.recordIndex % 2 === 0 ? 'background: #00b1ff' : { background: '#d9b526' };",
+      align: "center",
+      dataIndex: "price",
+      component: "text",
+      options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
   ],
 };
 
-const dataSource = Array(5).fill(0).map((_, i) => ({
+const dataSource = Array(10).fill(0).map((_, i) => ({
   id: i,
-  name: i === 0 ? '' : "商品" + i,
+  name: "商品" + i,
   price: 7999,
   status: "onSale",
   description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
@@ -53,10 +65,6 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      onSelectionChange={(selectedKeys, selectedRows) => {
-        message.info(selectedRows.length ? `选中商品：KEYS(${selectedKeys.join(', ')})。` : '未选中商品。');
-        console.log({ selectedKeys, selectedRows });
-      }}
     />
   );
 };

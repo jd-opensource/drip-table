@@ -5,20 +5,20 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DripTableExtraOptions, DripTableGenericRenderElement, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes, filterAttributesByRegExp } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from './configs';
 
 interface GlobalConfigFormProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customGlobalConfigPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customGlobalConfigPanel'];
@@ -28,15 +28,33 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const GlobalConfigForm = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GlobalConfigFormProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const form = React.useRef<CustomForm<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs']>>(null);
+  const form = React.useRef<CustomForm<DripTableGeneratorContext['globalConfigs']>>(null);
 
   React.useEffect(() => {
     form.current?.formForceUpdate();
   }, [context.globalConfigs]);
+
+  const decodeConfigsWithPrefix = (prefix: string, globalConfigs: DripTableGeneratorContext['globalConfigs'], formData: Record<string, unknown>) => {
+    if (typeof globalConfigs?.[prefix] === 'object') {
+      Object.keys(globalConfigs?.[prefix] || {}).forEach((key) => {
+        formData[`${prefix}.${key}`] = globalConfigs?.[prefix]?.[key];
+      });
+    }
+  };
+
+  const encodeStyles = (prefix: string, formData: Record<string, unknown>) => {
+    const styles: React.CSSProperties = {};
+    Object.keys(formData).forEach((key) => {
+      if (key.startsWith(`${prefix}.`)) {
+        styles[key.replace(`${prefix}.`, '')] = formData[key];
+      }
+    });
+    return styles;
+  };
   /**
    * 将全局配置转换成FormData
    * @param {GlobalSchema} globalConfigs 全局配置
@@ -44,12 +62,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
    * @returns {Record<string, unknown>} 表单数据
    */
   const decodeGlobalConfigs = (
-    globalConfigs?: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
+    globalConfigs?: DripTableGeneratorContext['globalConfigs'],
     defaultData?: Record<string, unknown>,
   ) => {
+    const globalConfigsPrefix = ['pagination', 'ext', 'innerStyle'];
     const formData: Record<string, unknown> = {
       ...defaultData,
-      ...filterAttributes(globalConfigs, ['header', 'footer', 'pagination', 'ext', 'innerStyle']),
+      ...filterAttributes(globalConfigs, ['header', 'footer', 'rowHeader', ...globalConfigsPrefix]),
     };
 
     if (typeof globalConfigs?.header === 'object') {
@@ -83,20 +102,32 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       formData['footer.items'] = footerElements;
     }
+    if (typeof globalConfigs?.rowHeader === 'object') {
+      Object.keys(globalConfigs?.rowHeader.style || {}).forEach((key) => {
+        formData[`rowHeaderStyle.${key}`] = globalConfigs?.rowHeader?.style?.[key];
+      });
+      const rowHeaderElements = globalConfigs?.rowHeader?.elements || [];
+      for (const headerItem of rowHeaderElements) {
+        if (headerItem.type === 'spacer') {
+          headerItem['style.width'] = headerItem.style?.width;
+        }
+        if (headerItem.type === 'search') {
+          headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
+        }
+        if (headerItem.type === 'slot') {
+          Object.keys(headerItem.props || {}).forEach((key) => {
+            headerItem[key] = headerItem.props?.[key];
+          });
+        }
+      }
+      formData['rowHeader.items'] = rowHeaderElements;
+    }
     if (typeof globalConfigs?.pagination === 'object') {
       formData.pagination = true;
-      Object.keys(globalConfigs?.pagination || {}).forEach((key) => {
-        formData[`pagination.${key}`] = globalConfigs?.pagination?.[key];
-      });
     }
-    if (typeof globalConfigs?.ext === 'object') {
-      Object.keys(globalConfigs?.ext || {}).forEach((key) => {
-        formData[`ext.${key}`] = globalConfigs?.ext?.[key];
-      });
-    }
-    if (typeof globalConfigs?.innerStyle === 'object') {
-      Object.keys(globalConfigs?.innerStyle || {}).forEach((key) => {
-        formData[`innerStyle.${key}`] = globalConfigs?.innerStyle?.[key];
+    if (globalConfigs) {
+      globalConfigsPrefix.forEach((prefix) => {
+        decodeConfigsWithPrefix(prefix, globalConfigs, formData);
       });
     }
     formData.scrollX = globalConfigs?.scroll?.x;
@@ -104,7 +135,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return formData;
   };
 
-  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'] => {
+  const encodeGlobalConfigs = (formData: { [key: string]: unknown }): DripTableGeneratorContext['globalConfigs'] => {
     const formatElement = (element) => {
       if (element.type === 'display-column-selector') {
         return {
@@ -158,12 +189,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
       return { ...element };
     };
-    const innerStyle: React.CSSProperties = {};
-    Object.keys(formData).forEach((key) => {
-      if (key.startsWith('innerStyle.')) {
-        innerStyle[key.replace('innerStyle.', '')] = formData[key];
-      }
-    });
+    const innerStyle = encodeStyles('innerStyle', formData);
+    const rowHeaderStyle = encodeStyles('rowHeaderStyle', formData);
     const ext: Record<string, unknown> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('ext.')) {
@@ -171,7 +198,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|rowHeader)\.|scroll)/u),
       bordered: formData.bordered as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
@@ -183,16 +210,20 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         y: formData.scrollY as number,
       },
       innerStyle,
+      rowHeader: {
+        style: { ...rowHeaderStyle },
+        elements: (formData['rowHeader.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
+      },
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['header.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['header.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : false,
       footer: formData.footer
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['footer.items'] as DripTableGenericRenderElement[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['footer.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : void 0,
       pagination: formData.pagination

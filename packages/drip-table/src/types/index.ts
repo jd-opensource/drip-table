@@ -11,7 +11,7 @@ import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/built-in';
-import type { DripTableGenericRenderElement } from '@/components/generic-render';
+import type { DripTableSlotSchema } from '@/components/slot-render';
 
 import type { DripTableDriver } from './driver';
 
@@ -28,23 +28,7 @@ export interface DripTableCellDisplayControl {
   verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch';
 }
 
-export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> {
-  /**
-   * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
-   */
-  component: T;
-  /**
-   * 对应组件类型的配置项
-   */
-  options: P;
-  /**
-   * @deprecated 已废弃，请使用 component 属性
-   */
-  'ui:type'?: T;
-  /**
-   * @deprecated 已废弃，请使用 options 属性
-   */
-  'ui:props'?: P;
+export interface DripTableBaseColumnSchema {
   /**
    * 唯一标识，不做展示用，React 需要的 key。
    */
@@ -54,48 +38,47 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    */
   title: string | {
     /**
+     * 表头样式
+     */
+    style?: Record<string, string>;
+    /**
      * 表头内容
      */
-    body: string;
+    body: string | {
+      /**
+       * 表头内容样式
+       */
+      style?: Record<string, string>;
+      /**
+       * 表头内容富文本
+       */
+      content: string;
+    };
     /**
      * 是否展示头部以及配置
      */
-    header?: {
-      /**
-       * 尾部自定义样式
-       */
-      style?: React.CSSProperties;
-      /**
-       * 尾部展示元素配置
-       */
-      elements?: DripTableGenericRenderElement[];
-    };
+    header?: DripTableSlotSchema;
     /**
      * 是否展示尾部以及配置
      */
-    footer?: {
-      /**
-       * 尾部自定义样式
-       */
-      style?: React.CSSProperties;
-      /**
-       * 尾部展示元素配置
-       */
-      elements?: DripTableGenericRenderElement[];
-    };
+    footer?: DripTableSlotSchema;
   };
   /**
-   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+   * 单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
    */
-  dataIndex: string | string[];
+  style?: string | Record<string, string>;
   /**
-   * 数据预处理，对单元格数据进行变换
+   * 鼠标悬浮当前单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
    */
-  dataTranslation?: string;
+  hoverStyle?: string | Record<string, string>;
   /**
-   * 默认数据
+   * 鼠标悬浮单元格所在行时单元格样式，传入代码字符串时按行执行语句，返回鼠标悬浮单元格所在行时样式
    */
-  defaultValue?: unknown;
+  rowHoverStyle?: string | Record<string, string>;
+  /**
+   * 鼠标悬浮单元格所在列时单元格样式，传入代码字符串时按行执行语句，返回行单元格样式
+   */
+  columnHoverStyle?: string | Record<string, string>;
   /**
    * 表格列宽
    */
@@ -116,6 +99,21 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 是否固定列
    */
   fixed?: 'left' | 'right' | boolean;
+}
+
+export interface DripTableDataColumnSchema extends DripTableBaseColumnSchema {
+  /**
+   * 列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+   */
+  dataIndex: string | string[];
+  /**
+   * 数据预处理，对单元格数据进行变换
+   */
+  dataTranslation?: string;
+  /**
+   * 默认数据
+   */
+  defaultValue?: unknown;
   /**
    * 是否处于隐藏状态
    */
@@ -147,10 +145,25 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
+}
+
+export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> extends DripTableDataColumnSchema {
   /**
-   * 自定义cell样式
+   * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    */
-  style?: React.CSSProperties;
+  component: T;
+  /**
+   * 对应组件类型的配置项
+   */
+  options: P;
+  /**
+   * @deprecated 已废弃，请使用 component 属性
+   */
+  'ui:type'?: T;
+  /**
+   * @deprecated 已废弃，请使用 options 属性
+   */
+  'ui:props'?: P;
 }
 
 export type DripTableID = string | number | undefined;
@@ -184,35 +197,17 @@ export interface DripTableSchema<
    */
   bordered?: boolean;
   /**
-   * 是否显示表头
+   * 是否显示表头，注意：这是表格标题栏所在头部 (<thead>) 而不是 drip-table 自定义的头部
    */
   showHeader?: boolean;
   /**
    * 是否展示头部以及配置
    */
-  header?: {
-    /**
-     * 头部自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 头部展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  } | boolean;
+  header?: DripTableSlotSchema | boolean;
   /**
    * 是否展示尾部以及配置
    */
-  footer?: {
-    /**
-     * 尾部自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 尾部展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  footer?: DripTableSlotSchema;
   /**
    * 是否展示分页以及配置
    */
@@ -305,29 +300,15 @@ export interface DripTableSchema<
   /**
    * 行头部插槽
    */
-  rowHeader?: {
-    /**
-     * 行头部插槽自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 行头部插槽展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  rowHeader?: DripTableSlotSchema;
   /**
    * 行尾部插槽
    */
-  rowFooter?: {
-    /**
-     * 行尾部插槽自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 行尾部插槽展示元素配置
-     */
-    elements?: DripTableGenericRenderElement[];
-  };
+  rowFooter?: DripTableSlotSchema;
+  /**
+   * 空表展示文案富文本
+   */
+  emptyText?: string;
   /**
    * 子表设置项
    */
@@ -356,8 +337,10 @@ export interface DripTableSchema<
    * 默认布局模式
    */
   defaultTableLayout?: 'table' | 'card';
-  /** 附加透传配置项 */
-  ext?: Record<string, unknown>;
+  /**
+   * 附加透传配置项
+   */
+  ext?: unknown;
 }
 
 export type DripTableRecordTypeBase = Record<string, unknown>;
@@ -381,6 +364,10 @@ export interface DripTableTableInformation<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
+  /**
+   * 表格全局唯一临时标识符
+   */
+  uuid: string;
   /**
    * 表格 Schema
    */
@@ -593,6 +580,10 @@ export interface DripTableProps<
    * 底部自定义渲染函数
    */
   footer?: (data: readonly RecordType[]) => React.ReactNode;
+  /**
+   * 底部自定义渲染函数
+   */
+  emptyText?: (tableInfo: DripTableTableInformation<RecordType, ExtraOptions>) => React.ReactNode;
   /**
    * 子表顶部自定义渲染函数
    */

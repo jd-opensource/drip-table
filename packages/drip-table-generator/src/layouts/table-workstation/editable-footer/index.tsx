@@ -9,20 +9,21 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Pagination, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableGenericRenderElement, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSchema, DripTableSlotElementSchema } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import RichText from '@/components/RichText';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { getSchemaValue } from '@/layouts/utils';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import styles from './index.module.less';
 
 interface EditableTableFooterProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   ext: ExtraOptions['CustomComponentExtraData'];
@@ -30,12 +31,12 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 }
 
 const EditableTableFooter = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableFooterProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
-  const [currentCell, setCurrentCell] = React.useState<DripTableGenericRenderElement>();
+  const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
 
   const textAlignMapper = {
     bottomLeft: 'left',
@@ -44,8 +45,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   };
 
   const renderColumnContent = (
-    config: DripTableGenericRenderElement,
-    globalConfigs: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
+    config: DripTableSlotElementSchema,
+    globalConfigs: DripTableGeneratorContext['globalConfigs'],
   ) => {
     if (config.type === 'spacer') {
       return null;
@@ -90,8 +91,8 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             slotType={config.slot}
             driver={props.driver}
             ext={props.ext}
-            schema={{ ...globalConfigs, columns: context.columns.map(item => ({ ...filterAttributes(item, 'index') })) } as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
-            dataSource={context.previewDataSource as DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[] || []}
+            schema={getSchemaValue(context) as unknown as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
+            dataSource={context.previewDataSource as RecordType[] || []}
             onSearch={() => void 0}
           />
         );
@@ -124,16 +125,16 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return null;
   };
 
-  const startDragCell = (element: DripTableGenericRenderElement, index: number) => {
+  const startDragCell = (element: DripTableSlotElementSchema, index: number) => {
     setCurrentCellIndex(index);
     setCurrentCell(element);
   };
 
   const dropFooterCell = (
-    element: DripTableGenericRenderElement,
+    element: DripTableSlotElementSchema,
     index: number,
-    globalConfigs: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['globalConfigs'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    globalConfigs: DripTableGeneratorContext['globalConfigs'],
+    setState: DripTableGeneratorContext['setState'],
   ) => {
     if (currentCellIndex === -1 || !currentCell) {
       return;

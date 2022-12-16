@@ -1,9 +1,9 @@
-# GenericRenderElement
+# DripTableSlotSchema
 
 > 通用插槽组件渲染配置项
 
 ```typescript
-interface GenericRenderElementBasic {
+interface SlotElementBaseSchema {
   /**
    * 包裹 <Col> 样式名
    */
@@ -34,14 +34,14 @@ interface GenericRenderElementBasic {
   visible?: boolean;
 }
 
-interface GenericRenderSpacerElement extends GenericRenderElementBasic {
+interface SpacerSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 占位区域
    */
   type: 'spacer';
 }
 
-interface GenericRenderTextElement extends GenericRenderElementBasic {
+interface TextSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 文本展示
    */
@@ -52,7 +52,7 @@ interface GenericRenderTextElement extends GenericRenderElementBasic {
   text: string;
 }
 
-interface GenericRenderHTMLElement extends GenericRenderElementBasic {
+interface HTMLSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 富文本展示
    */
@@ -63,7 +63,7 @@ interface GenericRenderHTMLElement extends GenericRenderElementBasic {
   html: string;
 }
 
-interface GenericRenderSearchElement extends GenericRenderElementBasic {
+interface SearchSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 基本搜索
    */
@@ -102,7 +102,7 @@ interface GenericRenderSearchElement extends GenericRenderElementBasic {
   searchKeyDefaultValue?: number | string;
 }
 
-interface GenericRenderSlotElement extends GenericRenderElementBasic {
+interface CustomSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 用户自定义组件插槽
    */
@@ -117,7 +117,7 @@ interface GenericRenderSlotElement extends GenericRenderElementBasic {
   props?: Record<string, unknown>;
 }
 
-interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
+interface InsertButtonSlotElementSchema extends SlotElementBaseSchema {
   type: 'insert-button';
   insertButtonClassName?: string;
   insertButtonStyle?: React.CSSProperties;
@@ -125,7 +125,22 @@ interface GenericRenderInsertButtonElement extends GenericRenderElementBasic {
   showIcon?: boolean;
 }
 
-interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElementBasic {
+interface LayoutSelectorSlotElementSchema extends SlotElementBaseSchema {
+  /**
+   * table布局方式选择器
+   */
+  type: 'layout-selector';
+  /**
+   * 布局方式选择器提示文案
+   */
+  selectorButtonText?: string;
+  /**
+   * 选择器按钮样式
+   */
+  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+}
+
+interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 展示列选择器
    */
@@ -140,12 +155,24 @@ interface GenericRenderDisplayColumnSelectorElement extends GenericRenderElement
   selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
 }
 
-export type DripTableGenericRenderElement =
-  | GenericRenderSpacerElement
-  | GenericRenderTextElement
-  | GenericRenderHTMLElement
-  | GenericRenderSearchElement
-  | GenericRenderSlotElement
-  | GenericRenderInsertButtonElement
-  | GenericRenderDisplayColumnSelectorElement;
+export type DripTableSlotElementSchema =
+  | SpacerSlotElementSchema
+  | TextSlotElementSchema
+  | HTMLSlotElementSchema
+  | SearchSlotElementSchema
+  | CustomSlotElementSchema
+  | InsertButtonSlotElementSchema
+  | DisplayColumnSelectorSlotElementSchema
+  | LayoutSelectorSlotElementSchema;
+
+export interface DripTableSlotSchema {
+  /**
+   * 插槽自定义样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * 插槽展示元素配置
+   */
+  elements?: DripTableSlotElementSchema[];
+}
 ```

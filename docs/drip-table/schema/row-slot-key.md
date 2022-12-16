@@ -3,7 +3,7 @@
 - 描述：行插槽键名
 - 类型：`string`
 - 默认值：`undefined`
-- 更多内容：需要配合表格插槽 [`slots`](/drip-table/props/slots) 属性使用。
+- 说明：需要配合表格插槽 [`slots`](/drip-table/props/slots) 属性使用，详细参见：[`DripTableSlot 通用插槽功能`](/drip-table/slot)。
 
 ```jsx
 /**

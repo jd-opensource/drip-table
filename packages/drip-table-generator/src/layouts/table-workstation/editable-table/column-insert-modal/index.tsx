@@ -29,10 +29,10 @@ const ColumnInsertModal = (props: ColumnInsertModalProps) => (
         onOk={() => {
           try {
             const jsonVal = JSON.parse(props.value);
-            const column = { ...jsonVal, index: props.index };
+            const column = { ...jsonVal, innerIndexForGenerator: props.index };
             column.key = `${column.component}_${mockId()}`;
             columns.splice(props.index, 0, column);
-            for (let i = props.index + 1; i < columns.length; i++) { columns[i].index += 1; }
+            for (let i = props.index + 1; i < columns.length; i++) { columns[i].innerIndexForGenerator += 1; }
             setState({ columns: [...columns] }, () => {
               props.onClose();
             });

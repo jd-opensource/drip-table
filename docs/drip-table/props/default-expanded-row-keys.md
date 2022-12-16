@@ -3,7 +3,7 @@
 - 描述：子表默认展开项
 - 类型：`React.Key[]`
 - 默认值：`undefined`
-- 更多内容：使用 [`subtableProps`](/drip-table/props/subtable-props) 对子表进行控制
+- 说明：使用 [`subtableProps`](/drip-table/props/subtable-props) 对子表进行控制
 
 ```jsx
 /**

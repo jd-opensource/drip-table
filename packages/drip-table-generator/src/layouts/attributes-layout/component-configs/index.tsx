@@ -7,18 +7,18 @@
  */
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import components from '@/table-components';
-import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 interface ComponentConfigFormProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
@@ -35,8 +35,8 @@ const errorBoundary = (message?: string) => (
 );
 
 const ComponentConfigForm = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentConfigFormProps<RecordType, ExtraOptions>) => {
   const { previewDataSource } = React.useContext(GeneratorContext);
 
@@ -78,17 +78,42 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
     return columnConfig;
   };
 
-  const encodeColumnConfigs = (
-    formData: { [key: string]: unknown },
-    currentColumn: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'],
-  ): DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'] => {
+  const decodeColumnConfigs = (columnConfigs?: DripTableGeneratorContext['currentColumn'], defaultData?: Record<string, unknown>) => {
+    const formData: Record<string, unknown> = {};
+    if (typeof columnConfigs?.title === 'string') {
+      formData.title = columnConfigs.title;
+    } else if (typeof columnConfigs?.title?.body === 'string') {
+      formData.title = columnConfigs?.title?.body;
+    } else if (typeof columnConfigs?.title?.body === 'object') {
+      formData.title = columnConfigs?.title?.body.content;
+    }
+    if (typeof columnConfigs?.title === 'object' && columnConfigs.title.style) {
+      Object.keys(columnConfigs.title.style).forEach((key) => {
+        formData[`titleStyle.${key}`] = typeof columnConfigs?.title === 'object' ? columnConfigs.title.style?.[key] : void 0;
+      });
+    }
+    if (typeof columnConfigs?.style === 'object') {
+      Object.keys(columnConfigs.style).forEach((key) => {
+        formData[`style.${key}`] = columnConfigs.style?.[key];
+      });
+    }
+    return formData;
+  };
+
+  const encodeColumnConfigs = (formData: { [key: string]: unknown }, currentColumn: DripTableGeneratorContext['currentColumn']) => {
     const uiProps: Record<string, unknown> = {};
     const dataProps: Record<string, unknown> = {};
+    const titleStyle: Record<string, string> = {};
+    const columnStyle: Record<string, string> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
         uiProps[key.replace('options.', '')] = formData[key];
       } else if (key.startsWith('ui:props.')) {
         uiProps[key.replace('ui:props.', '')] = formData[key];
+      } else if (key.startsWith('titleStyle.')) {
+        titleStyle[key.replace('titleStyle.', '')] = String(formData[key]);
+      } else if (key.startsWith('style.')) {
+        columnStyle[key.replace('style.', '')] = String(formData[key]);
       } else {
         dataProps[key] = formData[key];
       }
@@ -119,14 +144,18 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         'group',
       ]),
       key: currentColumn?.key ?? '',
-      index: currentColumn?.index ?? 0,
+      innerIndexForGenerator: currentColumn?.innerIndexForGenerator ?? 0,
       dataIndex: formData.dataIndex as string | string[],
-      title: formData.title as string,
+      title: {
+        body: formData.title as string,
+        style: titleStyle,
+      },
       width: formData.width as string,
       align: formData.align as 'left' | 'center' | 'right',
       component: currentColumn?.component ?? '',
       options: uiProps,
-    } as DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn'];
+      style: columnStyle,
+    };
   };
   return (
     <GeneratorContext.Consumer>
@@ -136,10 +165,11 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
         }
         const columnConfig = getColumnConfigs(currentColumn?.component);
         return (
-          <CustomForm<DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['currentColumn']>
+          <CustomForm<DripTableGeneratorContext['currentColumn']>
             primaryKey="key"
             configs={columnConfig ? columnConfig.attrSchema || [] : []}
             data={currentColumn}
+            decodeData={decodeColumnConfigs}
             encodeData={formData => encodeColumnConfigs(formData, currentColumn)}
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
@@ -147,13 +177,13 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             theme={props.driver}
             onChange={(data) => {
               const newCurrentColumn = Object.assign({}, currentColumn, data);
-              const index = currentColumn.index;
+              const index = currentColumn.innerIndexForGenerator;
               const keyIndex = columns.findIndex(item => item.key === currentColumn.key);
               if (keyIndex === index) {
                 columns[index] = Object.assign({}, newCurrentColumn);
               } else {
                 columns[keyIndex] = Object.assign({}, newCurrentColumn);
-                newCurrentColumn.index = keyIndex;
+                newCurrentColumn.innerIndexForGenerator = keyIndex;
               }
               setState({
                 currentColumn: newCurrentColumn,

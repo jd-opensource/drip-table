@@ -37,6 +37,10 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     return defaultObject;
   }
 
+  private get value() {
+    return this.props.value || this.props.schema.default as Record<string, unknown>[] | undefined;
+  }
+
   private renderAttributeComponent(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
     const currentValue = (this.props.value || [])[parentIndex] || {};
     const uiProps = schema['ui:props'] || {};
@@ -185,8 +189,8 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     const maxLength = uiProps.max as number;
     return (
       <div className={styles['array-component-container']}>
-        { (this.props.value || []).map((item, index) => this.renderFormItem(item, index)) }
-        { maxLength && (this.props.value || []).length >= maxLength
+        { (this.value || []).map((item, index) => this.renderFormItem(item, index)) }
+        { maxLength && (this.value || []).length >= maxLength
           ? null
           : (
             <Button

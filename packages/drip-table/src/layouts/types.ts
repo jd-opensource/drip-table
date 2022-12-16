@@ -19,6 +19,7 @@ export interface TableLayoutComponentProps<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
+  tableUUID: string;
   tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
   tableState: IDripTableContext;

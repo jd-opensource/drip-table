@@ -12,16 +12,17 @@ import RcTooltip from 'rc-tooltip';
 import React from 'react';
 
 import Checkbox from '@/components/checkbox';
-import GenericRender from '@/components/generic-render';
+import SlotRender from '@/components/slot-render';
 import { type IDripTableContext } from '@/context';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableProps, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
 
 import styles from './index.module.less';
 
 interface HeaderCellAdditionalProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
+  tableUUID: string;
   tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
@@ -60,10 +61,10 @@ const HeaderCell = <
       {
         header
           ? (
-            <GenericRender
-              style={header.style}
-              schemas={header.elements || []}
+            <SlotRender
+              schema={header}
               columnSchema={columnSchema}
+              tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}
@@ -77,10 +78,10 @@ const HeaderCell = <
       {
         footer
           ? (
-            <GenericRender
-              style={footer.style}
-              schemas={footer.elements || []}
+            <SlotRender
+              schema={footer}
               columnSchema={columnSchema}
+              tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}

@@ -6,12 +6,12 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableRecordTypeBase } from 'drip-table';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
-import { DripTableGeneratorProps } from '@/typing';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import EditableTableFooter from './editable-footer';
 import EditableTableHeader from './editable-header';
@@ -21,8 +21,8 @@ import PreviewTable from './table-preview';
 import styles from './index.module.less';
 
 const TableWorkStation = <
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const tableWrapper = React.useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
       className={styles['generator-workstation']}
       style={{
         overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto',
-        width: context.drawerType ? `calc(100% - 140px - ${drawerWidth[context.drawerType]}px)` : void 0,
+        width: context.drawerType ? `calc(100% - 128px - ${drawerWidth[context.drawerType]}px)` : void 0,
       }}
       ref={tableWrapper}
     >
@@ -55,9 +55,7 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
             <EditableTableFooter driver={props.driver} slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
-        : (
-          <PreviewTable {...props} />
-        ) }
+        : <PreviewTable visible={context.mode === 'preview'} {...props} /> }
     </div>
   );
 };

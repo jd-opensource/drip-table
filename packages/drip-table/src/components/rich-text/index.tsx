@@ -23,6 +23,7 @@ type DOMEventType = keyof React.DOMAttributes<unknown> & `on${UppercaseLetter}${
 interface RichTextProps {
   style?: React.CSSProperties;
   className?: string;
+  onRef?: React.RefCallback<HTMLDivElement>;
   html: string;
   singleLine?: boolean;
   maxLength?: number;
@@ -439,6 +440,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
    * @memberOf RichText
    */
   private onRef = (el: HTMLDivElement | null) => {
+    this.props.onRef?.(el);
     if (!el) {
       return;
     }

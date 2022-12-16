@@ -4,7 +4,7 @@
 - 类型：`string`
 - 默认值：`undefined`
 
-- 注：处理逻辑通过`return`返回结果，可通过`props`获取传入数据：
+- 说明：处理逻辑通过`return`返回结果，可通过`props`获取传入数据：
 
     ```typescript
     type Props {

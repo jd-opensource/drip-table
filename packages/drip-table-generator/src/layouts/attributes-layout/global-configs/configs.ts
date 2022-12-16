@@ -5,6 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import { StyleAttrConfigs } from '@/table-components/configs';
 import { DTGComponentPropertySchema } from '@/typing';
 
 const AlignConfigs = {
@@ -397,185 +398,6 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
   },
 ];
 
-const StyleAttrConfigs: (prefix: string, group: string) => DTGComponentPropertySchema[] = (prefix, group) => [
-  {
-    name: `${prefix}.width`,
-    group,
-    'ui:title': '宽度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格宽度，默认单位为“px”，支持手动指定单位后缀。为了编辑器的样式完整，编辑模式下不会生效。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.minWidth`,
-    group,
-    'ui:title': '最小宽度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格最小宽度，默认单位为“px”，支持手动指定单位后缀。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.maxWidth`,
-    group,
-    'ui:title': '最大宽度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格最大宽度，默认单位为“px”，支持手动指定单位后缀。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.height`,
-    group,
-    'ui:title': '高度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格高度，默认单位为“px”，支持手动指定单位后缀。为了编辑器的样式完整，编辑模式下不会生效。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.minHeight`,
-    group,
-    'ui:title': '最小高度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格最小高度，默认单位为“px”，支持手动指定单位后缀。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.maxHeight`,
-    group,
-    'ui:title': '最大高度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格最大高度，默认单位为“px”，支持手动指定单位后缀。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.backgroundColor`,
-    group,
-    'ui:title': '背景颜色',
-    'ui:type': 'color-picker',
-    'ui:props': {},
-    type: 'string',
-    default: '#ffffff',
-  },
-  {
-    name: `${prefix}.borderWidth`,
-    group,
-    'ui:title': '边框宽度',
-    'ui:type': 'input',
-    'ui:description': {
-      title: '控制表格边框宽度，默认单位为“px”，支持手动指定单位后缀。',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    type: 'string',
-    default: '1px',
-  },
-  {
-    name: `${prefix}.borderColor`,
-    group,
-    'ui:title': '边框颜色',
-    'ui:type': 'color-picker',
-    'ui:props': {},
-    type: 'string',
-    default: '#ffffff',
-  },
-  {
-    name: `${prefix}.borderStyle`,
-    group,
-    'ui:title': '边框样式',
-    'ui:type': 'select',
-    'ui:props': {
-      options: [
-        { label: '点状', value: 'dotted' },
-        { label: '实线', value: 'solid' },
-        { label: '双线', value: 'double' },
-        { label: '虚线', value: 'dashed' },
-      ],
-    },
-    type: 'string',
-    default: 'solid',
-  },
-  {
-    name: `${prefix}.borderRadius`,
-    group,
-    'ui:title': '圆角半径',
-    'ui:type': 'style-numbers',
-    'ui:description': {
-      title: '设置元素的外边框圆角，该属性可以有1到4个值。e.g.:1px 1px',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    'ui:props': {
-      count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.padding`,
-    group,
-    'ui:title': '内边距',
-    'ui:type': 'style-numbers',
-    'ui:description': {
-      title: '控制表格所有内边距属性，该属性可以有1到4个值。e.g.:1px 1px',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    'ui:props': {
-      count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
-    },
-    type: 'string',
-    default: '',
-  },
-  {
-    name: `${prefix}.margin`,
-    group,
-    'ui:title': '外边距',
-    'ui:type': 'style-numbers',
-    'ui:description': {
-      title: '控制表格所有外边距属性，该属性可以有1到4个值。e.g.:1px 1px',
-      trigger: 'hover',
-      type: 'icon',
-    },
-    'ui:props': {
-      count: 4,
-      dimensions: ['px', '%', 'pt', 'vw', 'cm', 'in', 'pc', 'em', 'rem'],
-    },
-    type: 'string',
-    default: '',
-  },
-];
-
 export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
   {
     name: 'size',
@@ -663,6 +485,18 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     type: 'boolean',
     default: false,
   },
+  {
+    name: 'rowSlotKey',
+    group: '全局属性',
+    'ui:title': '行插槽名称',
+    'ui:type': 'select',
+    'ui:props': {
+      style: { width: '100%' },
+      placeholder: '请选择行插槽名称',
+      optionsParam: '$$SLOT_NAME_OPTIONS$$',
+    },
+    type: 'string',
+  },
   ...HeaderAttrConfigs,
   ...PaginationAttrConfigs,
   ...FooterAttrConfigs,
@@ -687,6 +521,23 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     },
     'ui:layout': { labelCol: 8, wrapperCol: 14 },
     type: 'number',
+  },
+  ...StyleAttrConfigs('rowHeaderStyle', '行头部配置'),
+  {
+    name: 'rowHeader.items',
+    group: '行头部配置',
+    'ui:title': '行头部插槽',
+    'ui:type': 'array-list',
+    'ui:layout': {
+      labelCol: 24,
+      wrapperCol: 24,
+    },
+    'ui:props': {
+      mode: 'narrow',
+      items: [...SlotItemConfigs],
+    },
+    type: 'boolean',
+    default: false,
   },
   ...StyleAttrConfigs('innerStyle', '全局样式'),
 ];

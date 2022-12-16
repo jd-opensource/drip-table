@@ -8,7 +8,6 @@
 import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, MoreOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Modal, Tooltip } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import RichText from '@/components/RichText';
@@ -18,24 +17,21 @@ import { getWidth } from '../../utils';
 
 import styles from '../index.module.less';
 
-interface ColumnHeaderProps<
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->{
+interface ColumnHeaderProps{
   style?: React.CSSProperties;
   sticky?: boolean;
   index: number;
-  column: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'][number];
+  column: DripTableGeneratorContext['columns'][number];
   onInsert: (index: number) => void;
   onCopy: (index: number) => void;
   onDelete: (index: number) => void;
 }
-const ColumnHeader = <
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
->(props: ColumnHeaderProps<ExtraOptions>) => {
+const ColumnHeader = (props: ColumnHeaderProps) => {
+  const context = React.useContext(GeneratorContext);
   const columnActions = (
     columnIndex: number,
-    columns: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['columns'],
-    setState: DripTableGeneratorContext<ExtraOptions['CustomColumnSchema']>['setState'],
+    columns: DripTableGeneratorContext['columns'],
+    setState: DripTableGeneratorContext['setState'],
   ) => (
     <Menu key={columnIndex}>
       <Menu.Item onClick={(event) => {
@@ -75,9 +71,15 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
           okButtonProps: { type: 'primary', danger: true },
           cancelText: '取消',
           onOk: () => {
+            const isCurrentColumn = context.currentColumn?.key === columns[columnIndex]?.key;
+            const isAttributePanelOpen = context.drawerType === 'column' && isCurrentColumn;
             props.onDelete(columnIndex);
             columns.splice(columnIndex, 1);
-            setState({ columns: [...columns] });
+            setState({
+              columns: [...columns],
+              currentColumn: isCurrentColumn ? void 0 : context.currentColumn,
+              drawerType: isAttributePanelOpen ? void 0 : context.drawerType,
+            });
           },
         });
       }}
@@ -90,30 +92,40 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
 
   return (
     <GeneratorContext.Consumer>
-      { ({ columns, globalConfigs, setState }) => (
-        <div
-          key={props.index}
-          className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
-          style={{
-            ...props.style,
-            width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
-          }}
-        >
-          <RichText
-            className={styles['editable-table-column-title']}
-            style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
-            html={typeof props.column.title === 'string' ? props.column.title : props.column.title?.body}
-          />
-          { props.column.description && (
+      { ({ columns, globalConfigs, setState }) => {
+        let columnTitle = '';
+        if (typeof props.column.title === 'string') {
+          columnTitle = props.column.title;
+        } else if (typeof props.column.title.body === 'string') {
+          columnTitle = props.column.title.body;
+        } else {
+          columnTitle = props.column.title?.body?.content;
+        }
+        return (
+          <div
+            key={props.index}
+            className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
+            style={{
+              ...props.style,
+              width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
+            }}
+          >
+            <RichText
+              className={styles['editable-table-column-title']}
+              style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
+              html={columnTitle}
+            />
+            { props.column.description && (
             <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
               <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
             </Tooltip>
-          ) }
-          <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
-            <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
-          </Dropdown>
-        </div>
-      ) }
+            ) }
+            <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
+              <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
+            </Dropdown>
+          </div>
+        );
+      } }
     </GeneratorContext.Consumer>
   );
 };

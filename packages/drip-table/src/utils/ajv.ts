@@ -21,6 +21,15 @@ export interface AjvOptions {
   additionalProperties?: boolean;
 }
 
+const DRIP_TABLE_CSS_SCHEMA: SchemaObject = { type: 'object' };
+
+const DRIP_TABLE_GENERIC_CSS_SCHEMA: SchemaObject = {
+  anyOf: [
+    { type: 'string' },
+    DRIP_TABLE_CSS_SCHEMA,
+  ],
+};
+
 const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
   type: 'array',
   items: {
@@ -51,7 +60,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         properties: {
           type: { const: 'search' },
           wrapperClassName: { type: 'string' },
-          wrapperStyle: { typeof: 'object' },
+          wrapperStyle: DRIP_TABLE_CSS_SCHEMA,
           placeholder: { type: 'string' },
           allowClear: { type: 'boolean' },
           searchButtonText: { type: 'string' },
@@ -81,7 +90,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         properties: {
           type: { const: 'insert-button' },
           insertButtonClassName: { type: 'string' },
-          insertButtonStyle: { typeof: 'object' },
+          insertButtonStyle: DRIP_TABLE_CSS_SCHEMA,
           insertButtonText: { type: 'string' },
           showIcon: { type: 'boolean' },
         },
@@ -104,9 +113,9 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
   },
 };
 
-const DROP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
+const DRIP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
   properties: {
-    style: { typeof: 'object' },
+    style: DRIP_TABLE_CSS_SCHEMA,
     elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
   },
 };
@@ -161,18 +170,18 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
       properties: {
         id: { typeof: ['number', 'string'] },
         className: { type: 'string' },
-        style: { typeof: 'object' },
+        style: DRIP_TABLE_CSS_SCHEMA,
         innerClassName: { type: 'string' },
-        innerStyle: { typeof: 'object' },
+        innerStyle: DRIP_TABLE_CSS_SCHEMA,
         bordered: { type: 'boolean' },
         showHeader: { type: 'boolean' },
         header: {
           anyOf: [
             { type: 'boolean' },
-            DROP_TABLE_GENERIC_RENDER_SCHEMA,
+            DRIP_TABLE_GENERIC_RENDER_SCHEMA,
           ],
         },
-        footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+        footer: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
         pagination: {
           anyOf: [
             { type: 'boolean' },
@@ -247,9 +256,11 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
         rowKey: { type: 'string' },
         rowSlotKey: { type: 'string' },
-        rowHeader: DROP_TABLE_GENERIC_RENDER_SCHEMA,
-        rowFooter: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+        rowHeader: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+        rowFooter: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+        emptyText: { type: 'string' },
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
+        ext: {},
       },
       required: ['columns'],
       additionalProperties,
@@ -285,7 +296,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           items: {},
         },
         className: { type: 'string' },
-        style: { typeof: 'object' },
+        style: DRIP_TABLE_CSS_SCHEMA,
         selectedRowKeys: {},
         displayColumnKeys: {},
         total: { type: 'number' },
@@ -327,6 +338,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
         title: { instanceof: 'Function' },
         footer: { instanceof: 'Function' },
+        emptyText: { instanceof: 'Function' },
         subtableTitle: { instanceof: 'Function' },
         subtableFooter: { instanceof: 'Function' },
         rowExpandable: { instanceof: 'Function' },
@@ -482,14 +494,29 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           { type: 'string' },
           {
             properties: {
-              body: { type: 'string' },
-              header: DROP_TABLE_GENERIC_RENDER_SCHEMA,
-              footer: DROP_TABLE_GENERIC_RENDER_SCHEMA,
+              style: DRIP_TABLE_CSS_SCHEMA,
+              body: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    properties: {
+                      style: DRIP_TABLE_CSS_SCHEMA,
+                      content: { type: 'string' },
+                    },
+                  },
+                ],
+              },
+              header: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+              footer: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
             },
             required: ['body'],
           },
         ],
       },
+      style: DRIP_TABLE_GENERIC_CSS_SCHEMA,
+      hoverStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
+      rowHoverStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
+      columnHoverStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
       width: { typeof: ['string', 'number'] },
       align: { enum: ['left', 'center', 'right'] },
       verticalAlign: { enum: ['top', 'middle', 'bottom', 'stretch'] },

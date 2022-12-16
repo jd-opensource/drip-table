@@ -1,4 +1,4 @@
-import { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { CustomComponentProps } from './components/CustomForm/components';
@@ -114,15 +114,13 @@ export interface DripTableGeneratorPanel<T> {
   orders?: string[];
 }
 
-type DripTableExtraProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
-> = Omit<DripTableProps<DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>, ExtraOptions>, 'dataSource' | 'schema' | 'driver' | 'components' | 'total'>;
+export type NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions extends Partial<DripTableExtraOptions> = never> = Partial<Omit<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>, 'columns'>>
 
+export type DataSourceTypeAbbr<SubtableDataSourceKey extends React.Key> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>;
 export interface DripTableGeneratorProps<
-RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase,
-ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
-> extends DripTableExtraProps<RecordType, ExtraOptions> {
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> extends DripTableProps<RecordType, ExtraOptions> {
   /** 全局样式 */
   style?: CSSProperties;
   /** 样式主题驱动, 展示组件以及透传给 drip-table 用 */
@@ -139,23 +137,33 @@ ExtraOptions extends DripTableExtraOptions = DripTableExtraOptions,
   showToolLayout?: boolean;
   /** 工具栏样式 */
   toolbarStyle?: CSSProperties;
-  /** generator无需关心DataSource数据类型是什么，唯一做的是直接传递给drip-table */
-  dataSource?: DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>[];
+  /** 默认主题 */
+  defaultTheme?: string;
+  /** 自定义主题选项 */
+  customThemeOptions?: {
+    /** 主题选项中文名 */
+    label: string | React.ReactNode;
+    /** 主题选项英文名，也是主题的唯一键值 */
+    value: string;
+    /** drip-table 的 schema 配置: 全局配置以及全局样式 */
+    style: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions> | ((schema: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) => NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>);
+    /** drip-table 的 schema 配置: 设置列的样式 */
+    columnStyle?: (column: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number], index: number) => Partial<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number]>;
+    /** 主题缩略图 */
+    image: string;
+  }[];
+  /** 默认打开编辑模式还是预览模式 */
+  defaultMode?: 'edit' | 'preview';
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;
-  schema?: DripTableSchema<ExtraOptions['CustomColumnSchema']>;
-  customComponents?: DripTableProps<DripTableRecordTypeWithSubtable<RecordType, ExtraOptions['SubtableDataSourceKey']>, {
-    CustomColumnSchema: ExtraOptions['CustomColumnSchema'];
-    CustomComponentEvent: ExtraOptions['CustomComponentEvent'];
-    CustomComponentExtraData: ExtraOptions['CustomComponentExtraData'];
-  }>['components'];
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel?: DripTableGeneratorPanel<DripTableComponentAttrConfig>;
   customGlobalConfigPanel?: DripTableGeneratorPanel<DTGComponentPropertySchema>;
   customAttributeComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   slotsSchema?: {
     [componentType: string]: DTGComponentPropertySchema[];
   };
-  onExportSchema?: (schema: DripTableSchema<ExtraOptions['CustomColumnSchema']>) => void;
-  onSchemaChange?: (schema: DripTableSchema<ExtraOptions['CustomColumnSchema']>) => void;
+  onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
+  onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
 }
