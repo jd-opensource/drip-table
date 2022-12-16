@@ -51,15 +51,12 @@
   & tfoot > tr > td,
   & tfoot > tr > th,
   & .@{prefixCls}-virtual-cell {
-    position: relative;
-    padding: 16px;
-    overflow-wrap: break-word;
-  }
+    &:not(@{prefixCls}--slot) {
+      padding: 16px;
+    }
 
-  &-tbody > tr > td.@{prefixCls}--slot,
-  & tfoot > tr > td.@{prefixCls}--slot,
-  & .@{prefixCls}-virtual-cell.@{prefixCls}--slot {
-    padding: 0;
+    position: relative;
+    overflow-wrap: break-word;
   }
 
   &-tbody > tr.@{prefixCls}-row:hover > td,
@@ -409,7 +406,9 @@
   &&-small tfoot > tr > td,
   &&-small tfoot > tr > th,
   &&-small .@{prefixCls}-virtual-cell {
-    padding: 8px;
+    &:not(@{prefixCls}--slot) {
+      padding: 8px;
+    }
   }
 
   &&-middle &-footer,
@@ -419,7 +418,9 @@
   &&-middle tfoot > tr > td,
   &&-middle tfoot > tr > th,
   &&-middle .@{prefixCls}-virtual-cell {
-    padding: 12px 8px;
+    &:not(@{prefixCls}--slot) {
+      padding: 12px 8px;
+    }
   }
 
   // ====================================
