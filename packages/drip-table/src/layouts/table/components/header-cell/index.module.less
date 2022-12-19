@@ -6,22 +6,22 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-@prefixCls: jfe-drip-table-th-cell;
+@prefixCls: jfe-drip-table-column-header-cell;
 
 .@{prefixCls} {
+  display: flex;
+  justify-content: space-between;
+
+  &-body {
+    position: relative;
+    z-index: 1;
+    flex: 1 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &-toolbox {
-    display: flex;
-    justify-content: space-between;
-
-    &-title {
-      position: relative;
-      z-index: 1;
-      flex: 1 1;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-    }
-
     &-icon {
       position: relative;
       display: flex;
