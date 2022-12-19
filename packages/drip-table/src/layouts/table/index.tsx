@@ -330,11 +330,18 @@ export const columnGenerator = <
     columnTitle = columnSchema.title?.body?.content;
   }
   const onTitleRef = (el: HTMLDivElement) => {
-    const thEl = el?.parentElement;
     const style = typeof columnSchema.title === 'object' && columnSchema.title.style;
-    if (thEl && style) {
-      setElementCSS(thEl, style);
+    if (!style) {
+      return;
     }
+    let thEl: HTMLElement | null = el;
+    while (thEl && thEl.tagName !== 'TH') {
+      thEl = thEl?.parentElement;
+    }
+    if (!thEl) {
+      return;
+    }
+    setElementCSS(thEl, style);
   };
   const titleStyle = typeof columnSchema.title === 'object' && typeof columnSchema.title.body === 'object' && columnSchema.title.body.style
     ? parseReactCSS(columnSchema.title.body.style)
