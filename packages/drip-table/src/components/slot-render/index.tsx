@@ -18,7 +18,7 @@ import {
 } from '@/types';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
-import { type DripTableBuiltInColumnSchema, type DripTableProps } from '@/index';
+import { type DripTableProps } from '@/index';
 
 import styles from './index.module.less';
 
@@ -220,9 +220,9 @@ interface SlotRenderProps<
    */
   setTableState: IDripTableContext['setTableState'];
   /**
-   * 表格列 Schema
+   * 当前插槽位置列 Schema 唯一标识符
    */
-  columnSchema?: DripTableBuiltInColumnSchema | ExtraOptions['CustomColumnSchema'];
+  columnKey?: string;
   /**
    * 当前插槽位置行数据（仅位于行插槽可用）
    */
@@ -307,6 +307,7 @@ const SlotRender = <
 
     if (config.type === 'slot') {
       const Slot = tableProps.slots?.[config.slot] || tableProps.slots?.default;
+      const columnIndex = typeof props.columnKey === 'string' ? tableProps.schema.columns.findIndex(c => c.key === props.columnKey) : -1;
       if (Slot) {
         return (
           <Slot
@@ -317,6 +318,7 @@ const SlotRender = <
             schema={tableProps.schema}
             ext={tableProps.ext}
             dataSource={tableProps.dataSource}
+            columnIndex={columnIndex !== -1 ? columnIndex : void 0}
             record={props.record}
             recordIndex={props.recordIndex}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}

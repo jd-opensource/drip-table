@@ -558,6 +558,7 @@ export interface DripTableProps<
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
       ext: ExtraOptions['CustomComponentExtraData'];
       dataSource: readonly RecordType[];
+      columnIndex?: number;
       record?: RecordType;
       recordIndex?: number;
       children?: React.ReactNode;
