@@ -46,10 +46,12 @@
 import React from "react";
 import DripTable from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
+import { PlusCircleTwoTone } from '@ant-design/icons';
+import { v4 as uuidv4 } from 'uuid';
 import "antd/dist/antd.css";
 import "drip-table/dist/index.css";
 
-const schema = {
+const initialSchema = {
   columns: [
     {
       key: "mock_1",
@@ -76,8 +78,18 @@ const schema = {
     {
       key: "mock_3",
       title: {
-        style: "border: 1px solid black",
+        style: {
+          border: "1px solid black",
+        },
         body: "Custom Component",
+        footer: {
+          elements: [
+            {
+              type: "slot",
+              slot: "insert-column-after",
+            },
+          ],
+        },
       },
       align: "center",
       dataIndex: "description",
@@ -108,6 +120,9 @@ SampleComponent.schema = { // https://ajv.js.org/json-schema.html
 };
 
 const Demo = () => {
+  const [schema, setSchema] = React.useState(initialSchema);
+  const [newIndex, setNewIndex] = React.useState(1);
+
   return (
     <DripTable
       driver={DripTableDriverAntDesign}
@@ -116,6 +131,47 @@ const Demo = () => {
       components={{
         custom: {
           Sample: SampleComponent,
+        },
+      }}
+      slots={{
+        'insert-column-after': (props) => {
+          return <div
+            style={{ cursor: 'pointer', display: 'flex', justifyContent: "center", alignItems: "center" }}
+            onClick={() => {
+              setSchema((prevSchema) => {
+                return {
+                  ...prevSchema,
+                  columns: [
+                    ...prevSchema.columns.filter((_, i) => i <= props.columnIndex),
+                    {
+                      key: uuidv4(),
+                      title: {
+                        style: {
+                          border: "1px solid black",
+                        },
+                        body: `新建列 (${newIndex})`,
+                        footer: {
+                          elements: [
+                            {
+                              type: "slot",
+                              slot: "insert-column-after",
+                            },
+                          ],
+                        },
+                      },
+                      dataIndex: "name",
+                      component: "custom::Sample",
+                      options: { someCustomConfigure: `sample-${newIndex}` },
+                    },
+                    ...prevSchema.columns.filter((_, i) => i > props.columnIndex),
+                  ],
+                };
+              });
+              setNewIndex((c) => c + 1);
+            }}
+          >
+            <PlusCircleTwoTone />
+          </div>;
         },
       }}
     />
