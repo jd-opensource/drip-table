@@ -11,9 +11,10 @@ import { type DripTableColumnSchema,
   type DripTableExtraOptions, type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type SchemaObject } from '@/types';
-import { indexValue } from '@/utils/operator';
+import { TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
+import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
 
-import DripTableBuiltInComponents, { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent } from '..';
+import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
 
 export type DTCGroupColumnSchema<CustomComponentSchema> = DripTableColumnSchema<'group', {
@@ -37,7 +38,6 @@ interface DTCGroupProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<ExtraOptions['CustomColumnSchema']>> {
-  ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
 }
 
 interface DTCGroupState {}
@@ -89,44 +89,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
    * @param schema Schema
    * @returns 表格
    */
-  public renderGenerator(schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>) {
-    if (schema.component) {
-      const BuiltInComponent = DripTableBuiltInComponents[schema.component] as
-        React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>> & { schema?: SchemaObject };
-      if (BuiltInComponent) {
-        // TODO: missing props translators here
-        return (
-          <BuiltInComponent
-            driver={this.props.driver}
-            data={this.props.data}
-            value={this.props.value}
-            indexValue={(dataIndex, defaultValue) => indexValue(this.props.data, dataIndex, defaultValue)}
-            schema={schema as unknown as DripTableBuiltInColumnSchema}
-            ext={this.props.ext}
-            fireEvent={event => this.props.fireEvent?.(event)}
-          />
-        );
-      }
-    }
-    const [libName, componentName] = schema.component.split('::');
-    if (libName && componentName) {
-      const ExtraComponent = this.props.components?.[libName]?.[componentName];
-      if (ExtraComponent) {
-        // TODO: missing props translators here
-        return (
-          <ExtraComponent
-            driver={this.props.driver}
-            data={this.props.data}
-            value={this.props.value}
-            indexValue={(dataIndex, defaultValue) => indexValue(this.props.data, dataIndex, defaultValue)}
-            schema={schema as NonNullable<ExtraOptions['CustomColumnSchema']>}
-            ext={this.props.ext}
-            fireEvent={event => this.props.fireEvent?.(event as DripTableBuiltInComponentEvent)}
-          />
-        );
-      }
-    }
-    return JSON.stringify(this.props.value);
+  public renderGenerator(schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>): React.ReactNode {
+    const { tableInfo, extraProps } = this.props.ext as DripTableColumnRenderOptions<RecordType, ExtraOptions>;
+    const render = columnRenderGenerator(tableInfo, schema, extraProps);
+    return render(null, { type: 'body', key: schema.key, index: 0, record: this.props.data }, 0);
   }
 
   public renderCell(row: number, col: number) {
