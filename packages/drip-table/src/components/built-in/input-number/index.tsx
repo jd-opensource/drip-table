@@ -8,7 +8,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue } from '@/utils/operator';
 import InputNumber from '@/components/input-number';
 
 import { DripTableComponentProps } from '../component';
@@ -55,12 +54,11 @@ export default class DTCInputNumber<RecordType extends DripTableRecordTypeBase> 
   };
 
   private get value() {
-    const schema = this.props.schema;
-    const dataIndex = schema.dataIndex;
-    if (!this.props.data) {
-      return schema.defaultValue;
+    const value = Number(this.props.value);
+    if (value || value === 0) {
+      return value;
     }
-    return indexValue(this.props.data, dataIndex, '');
+    return void 0;
   }
 
   private get isEdit() {

@@ -9,7 +9,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue } from '@/utils/operator';
 import { execute, safeExecute } from '@/utils/sandbox';
 import Select from '@/components/select';
 
@@ -178,12 +177,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   }
 
   private get value() {
-    const schema = this.props.schema;
-    const dataIndex = schema.dataIndex;
-    if (!this.props.data) {
-      return schema.defaultValue;
-    }
-    return indexValue(this.props.data, dataIndex, '');
+    return this.props.value;
   }
 
   private finalizeOptionDisabled(disabled?: boolean | string, value?: unknown): boolean {

@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue } from '@/utils/operator';
 
 import { DripTableComponentProps } from '../component';
 
@@ -71,9 +70,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
   };
 
   private get value() {
-    const schema = this.props.schema;
-    const dataIndex = schema.dataIndex;
-    return indexValue(this.props.data, dataIndex, '');
+    return this.props.value;
   }
 
   public render() {
@@ -93,7 +90,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
             borderRadius: options.radius,
           }}
         >
-          { options.content || tagOption?.label || value }
+          { options.content || tagOption?.label || String(value ?? '') }
         </Tag>
         { options.suffix || '' }
       </div>
