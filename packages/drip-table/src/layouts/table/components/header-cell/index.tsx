@@ -60,6 +60,7 @@ const HeaderCell = <
         header
           ? (
             <SlotRender
+              style={{ height: '100%' }}
               schema={header}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
@@ -77,6 +78,7 @@ const HeaderCell = <
         footer
           ? (
             <SlotRender
+              style={{ height: '100%' }}
               schema={footer}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
