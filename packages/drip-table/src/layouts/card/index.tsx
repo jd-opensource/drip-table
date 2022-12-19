@@ -9,9 +9,8 @@
 import React, { useMemo } from 'react';
 
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from '@/types';
-import { indexValue } from '@/utils/operator';
+import { TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
-import { columnGenerator } from '../table';
 import { TableLayoutComponentProps } from '../types';
 
 import styles from './index.module.less';
@@ -65,12 +64,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               {
               mergedColumns
                 .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
-                .map(column => columnGenerator(tableInfo, column, extraProps))
+                .map(column => ({ ...column, render: columnRenderGenerator(tableInfo, column, extraProps) }))
                 .map(col => (
                   <div key={col.key}>
                     { col.title && <div className={styles.title}>{ col.title }</div> }
-                    { /* TODO: 这写的什么鬼垃圾，为什么会跨 layout 依赖？扯淡呢？ */ }
-                    { col.render?.(indexValue(record, col.dataIndex), { record, index: 0, type: 'body', key: '0' }, 0) }
+                    { col.render?.(null, { record, index: 0, type: 'body', key: '0' }, 0) }
                   </div>
                 ))
             }

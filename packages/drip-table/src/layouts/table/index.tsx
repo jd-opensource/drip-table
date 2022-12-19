@@ -41,6 +41,7 @@ import DripTableWrapper from '@/wrapper';
 
 import { type TableLayoutComponentProps } from '../types';
 import HeaderCell, { HeaderCellProps } from './components/header-cell';
+import { type DripTableColumnRenderOptions } from './types';
 
 import styles from './index.module.less';
 
@@ -200,12 +201,9 @@ export const columnRenderGenerator = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+    tableInfo: DripTableColumnRenderOptions<RecordType, ExtraOptions>['tableInfo'],
     columnSchema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
-      unknownComponent?: React.ReactNode;
-      preview?: DripTableComponentProps<RecordType, NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['CustomComponentEvent']>, NonNullable<ExtraOptions['CustomComponentExtraData']>>['preview'];
-    },
+    extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
   if ('component' in columnSchema) {
     const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
@@ -246,6 +244,9 @@ export const columnRenderGenerator = <
         const recordIndex = row.index;
         const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
         const translatorContext = { value, record, recordIndex };
+        const ext = columnSchema.component === 'group'
+          ? { tableInfo, extraProps } as unknown as typeof extraProps.ext
+          : extraProps.ext;
         if (hiddenTranslator(false, translatorContext)) {
           return null;
         }
@@ -260,7 +261,7 @@ export const columnRenderGenerator = <
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
             onChange={v => onChange(record, recordIndex, v)}
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
-            ext={extraProps.ext}
+            ext={ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             fireEvent={event => extraProps.onEvent?.(event, record, recordIndex, { ...tableInfo, record })}
           />
