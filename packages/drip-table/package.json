@@ -1,6 +1,6 @@
 {
   "name": "drip-table",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "description": "A tiny and powerful enterprise-class solution for building tables.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
