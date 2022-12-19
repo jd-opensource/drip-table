@@ -200,6 +200,10 @@ interface SlotRenderProps<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties;
+  /**
    * 插槽 Schema 配置
    */
   schema: DripTableSlotSchema;
@@ -432,7 +436,7 @@ const SlotRender = <
   if (elements && elements.length > 0) {
     return (
       <div className={styles['slot-render']} style={props.schema.style}>
-        <Row>
+        <Row style={props.style}>
           {
             elements.map((item, index) => (
               <Col
@@ -444,7 +448,6 @@ const SlotRender = <
                   flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
                   justifyContent: item.align || 'center',
                   paddingLeft: index === 0 ? '0' : '3px',
-                  paddingRight: index === elements.length - 1 ? '3px' : '0',
                   ...item.style,
                 }}
                 span={typeof item.span === 'string' ? void 0 : item.span}
