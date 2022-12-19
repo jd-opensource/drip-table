@@ -61,11 +61,11 @@ const HeaderCell = <
           ? (
             <SlotRender
               schema={header}
-              columnSchema={columnSchema}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}
+              columnKey={columnSchema.key}
             />
           )
           : null
@@ -78,11 +78,11 @@ const HeaderCell = <
           ? (
             <SlotRender
               schema={footer}
-              columnSchema={columnSchema}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
               tableState={additionalProps.tableState}
               setTableState={additionalProps.setTableState}
+              columnKey={columnSchema.key}
             />
           )
           : null
