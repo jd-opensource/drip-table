@@ -166,6 +166,10 @@ export interface DripTableColumnSchema<T = string, P extends Record<string, unkn
   'ui:props'?: P;
 }
 
+export type ExtractDripTableColumnSchema<T, TKey extends string> = T extends DripTableColumnSchema<TKey, infer P>
+  ? DripTableColumnSchema<T, P>
+  : never;
+
 export type DripTableID = string | number | undefined;
 
 export interface DripTableSchema<
@@ -288,7 +292,7 @@ export interface DripTableSchema<
   /**
    * 列定义
    */
-  columns: (CustomColumnSchema | DripTableBuiltInColumnSchema)[];
+  columns: (CustomColumnSchema | DripTableBuiltInColumnSchema<CustomColumnSchema>)[];
   /**
    * 表格行主键
    */

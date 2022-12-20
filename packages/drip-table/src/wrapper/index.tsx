@@ -96,6 +96,38 @@ const DripTableWrapper: <
       // 列 ajv 校验
       const ajv = rtp.ajv;
       if (ajv !== false) {
+        const validateColumnSchema = (column: (typeof rtp.schema.columns)[number], path: string = 'column'): string | null => {
+          let errorMessage: string | null = null;
+          let schema: SchemaObject | undefined;
+          const BuiltInComponent = DripTableBuiltInComponents[column.component];
+          if (BuiltInComponent) {
+            schema = BuiltInComponent.schema;
+            if (!schema) {
+              errorMessage = `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
+            }
+          } else {
+            const [libName, componentName] = column.component.split('::');
+            if (libName && componentName) {
+              schema = rtp.components?.[libName]?.[componentName]?.schema;
+            }
+          }
+          if (schema && !errorMessage) {
+            const columnErrorMessage = validateDripTableColumnSchema(column, schema, ajv);
+            if (columnErrorMessage) {
+              errorMessage = columnErrorMessage.replace(/^column/u, path);
+            } else if (column.component === 'group') {
+              const items = column.options.items as (typeof column)[];
+              for (const [index, item] of items.entries()) {
+                const message = validateColumnSchema(item, `${path ?? ''}/options/items/${index}`);
+                if (message) {
+                  errorMessage = message;
+                  break;
+                }
+              }
+            }
+          }
+          return errorMessage;
+        };
         rtp = {
           ...rtp,
           schema: Object.assign(
@@ -103,36 +135,19 @@ const DripTableWrapper: <
             rtp.schema,
             {
               columns: rtp.schema?.columns?.map((column): typeof column => {
-                let schema: SchemaObject | undefined;
-                const BuiltInComponent = DripTableBuiltInComponents[column.component];
-                if (BuiltInComponent) {
-                  schema = BuiltInComponent.schema;
-                } else {
-                  const [libName, componentName] = column.component.split('::');
-                  if (libName && componentName) {
-                    const ExtraComponent = rtp.components?.[libName]?.[componentName];
-                    if (ExtraComponent) {
-                      schema = ExtraComponent.schema;
-                    }
-                  }
-                }
-                if (BuiltInComponent || schema) {
-                  const errorMessage = schema
-                    ? validateDripTableColumnSchema(column, schema, ajv)
-                    : `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
-                  if (errorMessage) {
-                    return {
-                      key: column.key,
-                      title: column.title,
-                      dataIndex: column.dataIndex,
-                      component: 'text',
-                      options: {
-                        mode: 'static',
-                        static: errorMessage,
-                        className: styles['jfe-drip-table-column-ajv-error'],
-                      },
-                    };
-                  }
+                const errorMessage = validateColumnSchema(column);
+                if (errorMessage) {
+                  return {
+                    key: column.key,
+                    title: column.title,
+                    dataIndex: column.dataIndex,
+                    component: 'text',
+                    options: {
+                      mode: 'static',
+                      static: errorMessage,
+                      className: styles['jfe-drip-table-column-ajv-error'],
+                    },
+                  };
                 }
                 return column;
               }),
