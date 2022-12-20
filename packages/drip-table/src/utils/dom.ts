@@ -26,10 +26,12 @@ export const parseReactCSS = (style: string | Record<string, string>): React.CSS
         .filter(([k, v]) => k && v),
     );
   }
-  return Object.fromEntries(
-    Object.entries(style)
-      .map(([k, v]) => [k.replace(/-[a-z]/ug, s => `${s.slice(1).toUpperCase()}`), v]),
-  );
+  return typeof style === 'object' && style
+    ? Object.fromEntries(
+      Object.entries(style)
+        .map(([k, v]) => [k.replace(/-[a-z]/ug, s => `${s.slice(1).toUpperCase()}`), v]),
+    )
+    : {};
 };
 
 /**
@@ -50,11 +52,24 @@ export const parseCSS = (style: string | Record<string, string>): Record<string,
         .filter(([k, v]) => k && v),
     );
   }
-  return Object.fromEntries(
-    Object.entries(style)
-      .map(([k, v]) => [k.replace(/[A-Z]/ug, s => `-${s.toLowerCase()}`), v]),
-  );
+  return typeof style === 'object' && style
+    ? Object.fromEntries(
+      Object.entries(style)
+        .map(([k, v]) => [k.replace(/[A-Z]/ug, s => `-${s.toLowerCase()}`), v]),
+    )
+    : {};
 };
+
+/**
+ * Stringify CSSProperties
+ * @param style target style: can be css object, react style object, css string
+ * @returns CSS String
+ */
+export const stringifyCSS = (style: string | Record<string, string>): string =>
+  Object.entries(parseCSS(style))
+    .filter(([k, v]) => k && v)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join('; ');
 
 /**
  * Set element style
@@ -63,5 +78,6 @@ export const parseCSS = (style: string | Record<string, string>): Record<string,
  */
 export const setElementCSS = (el: HTMLElement, style: string | Record<string, string>): void => {
   Object.entries(parseCSS(style))
+    .filter(([k, v]) => k && v)
     .forEach(([k, v]) => { el.style[k] = v; });
 };
