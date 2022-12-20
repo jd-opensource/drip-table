@@ -180,15 +180,16 @@ const Demo = () => {
         driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
-        onEvent={(event, record, index) => {
+        onEvent={(event, tableInfo) => {
+          const { record, recordIndex } = event;
           if (event.type === "drip-select-change") {
             const value = event.payload.value;
             message.info(
-              `你选择了第${index + 1}行“${record.name} (ID: ${
+              `你选择了第${recordIndex + 1}行“${record.name} (ID: ${
                 record.id
               })”的“${value}”选项。`
             );
-            console.log(name, record, index);
+            console.log(name, record, recordIndex);
           }
         }}
       />

@@ -563,6 +563,10 @@ export interface DripTableProps<
       recordIndex?: number;
       children?: React.ReactNode;
       onSearch: (searchParams: Record<string, unknown>) => void;
+      /**
+       * 自定义事件触发器
+       */
+      fireEvent: (event: NonNullable<ExtraOptions['CustomComponentEvent']> | DripTableBuiltInComponentEvent) => void;
     }>;
   };
   /**
@@ -698,9 +702,11 @@ export interface DripTableProps<
    * 通用事件机制
    */
   onEvent?: (
-    event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
-    record: RecordType,
-    index: number,
+    event: (DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>) & {
+      record?: RecordType;
+      recordIndex?: number;
+      columnIndex?: number;
+    },
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**

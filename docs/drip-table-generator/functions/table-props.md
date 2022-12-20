@@ -158,11 +158,12 @@ const Demo = () => {
               }
             : void 0
         }
-        onEvent={(event, record, index) => {
+        onEvent={(event, tableInfo) => {
+          const { record, recordIndex } = event;
           if (event.type === "drip-link-click") {
             const name = event.payload;
             const type = schema.ext?.onEvent;
-            const message = `你点击了第${index + 1}行“${record.name} (ID: ${
+            const message = `你点击了第${recordIndex + 1}行“${record.name} (ID: ${
               record.id
             })”的“${name}”事件按钮。`;
             if (type === "modal") {
@@ -170,7 +171,7 @@ const Demo = () => {
             } else if (type === "notification") {
               notification.success({ message: "Title", description: message });
             }
-            console.log(name, record, index);
+            console.log(name, record, recordIndex);
           }
         }}
         ajv={{ additionalProperties: true }}
