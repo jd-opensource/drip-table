@@ -5,9 +5,11 @@
 
 ```typescript
 type OnEvent = (
-  event: DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>,
-  record: RecordType,
-  index: number,
+  event: (DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>) & {
+    record?: RecordType;
+    recordIndex?: number;
+    columnIndex?: number;
+  },
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
 ```
@@ -106,14 +108,15 @@ const Demo = () => {
           ),
         },
       }}
-      onEvent={(event, record, index) => {
+      onEvent={(event, tableInfo) => {
+        const { record, recordIndex } = event;
         if (event.type === 'drip-link-click') {
           const name = event.payload;
-          message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
-          console.log(name, record, index);
+          message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
+          console.log(name, record, recordIndex);
         } else if (event.type === 'custom') {
           message.info(`自定义事件 “${event.name}”(payload:${JSON.stringify(event.payload)}) 触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
-          console.log(event, record, index);
+          console.log(event, record, recordIndex);
         }
       }}
     />

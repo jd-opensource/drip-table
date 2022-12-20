@@ -224,11 +224,12 @@ const Demo = () => {
         driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
-        onEvent={(event, record, index) => {
+        onEvent={(event, tableInfo) => {
+          const { record, recordIndex } = event;
           if (event.type === 'drip-button-click') {
             const name = event.payload;
-            message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
-            console.log(name, record, index);
+            message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
+            console.log(name, record, recordIndex);
           }
         }}
       />

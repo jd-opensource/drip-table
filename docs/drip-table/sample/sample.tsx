@@ -149,18 +149,19 @@ const Demo = () => {
           <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>
         ), [])}
         rowSelectable={React.useMemo(() => record => record.id !== 1, [])}
-        onEvent={React.useMemo(() => (event, record, index) => {
+        onEvent={React.useMemo(() => (event, tableInfo) => {
+          const { record, recordIndex } = event;
           if (event.type === 'drip-link-click') {
             const name = event.payload;
-            message.info(`你点击了第${index + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
-            console.log(name, record, index);
+            message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
+            console.log(name, record, recordIndex);
           } else if (event.type === 'drip-select-change') {
             const value = event.payload.value;
-            dataSource[index].status = value;
+            dataSource[recordIndex].status = value;
             setDataBase([...dataSource]);
           } else if (event.type === 'custom') {
             message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
-            console.log(event, record, index);
+            console.log(event, record, recordIndex);
           }
         }, [])}
         onFilterChange={React.useMemo(() => (...args) => { console.log('onFilterChange', ...args); }, [])}

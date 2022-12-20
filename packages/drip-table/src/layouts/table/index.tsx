@@ -270,7 +270,7 @@ export const columnRenderGenerator = <
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema}
             ext={ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
-            fireEvent={event => extraProps.onEvent?.(event, record, recordIndex, { ...tableInfo, record })}
+            fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
           />
         );
       };
@@ -297,10 +297,10 @@ export const columnRenderGenerator = <
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
-              onChange={v => onChange(row.record, row.index, v)}
+              onChange={v => onChange(record, recordIndex, v)}
               schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
               ext={extraProps.ext}
-              fireEvent={event => extraProps.onEvent?.(event, row.record, row.index, { ...tableInfo, record: row.record })}
+              fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
             />
           );
         };
@@ -696,6 +696,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     record={row.record}
                     recordIndex={row.index}
                     onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
+                    fireEvent={event => extraProps.onEvent?.({ record: row.record, recordIndex: row.index, ...event }, tableInfo)}
                   >
                     { o }
                   </Slot>
