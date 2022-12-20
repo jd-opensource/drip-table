@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import { DripTableDataColumnSchema } from '@/types';
+
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
 import DTCDate, { DTCDateColumnSchema } from './date';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
@@ -22,14 +24,12 @@ import DTCText, { DTCTextColumnSchema } from './text';
 
 export type { DripTableComponentProps } from './component';
 
-export type DripTableGroupColumnSchema<CustomComponentSchema = never> = DTCGroupColumnSchema<CustomComponentSchema>;
-
 export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
   | DTCButtonEvent
   | DTCSelectEvent;
 
-export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
+export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> =
   | DTCImageColumnSchema
   | DTCLinkColumnSchema
   | DTCButtonColumnSchema
@@ -37,13 +37,13 @@ export type DripTableBuiltInColumnSchema<CustomComponentSchema = never> =
   | DTCTagColumnSchema
   | DTCRenderHTMLColumnSchema
   | DTCRenderHTMLRemoteColumnSchema
-  | DTCGroupColumnSchema<CustomComponentSchema>
   | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
   | DTCDateColumnSchema
   | DTCRichTextColumnSchema
   | DTCPopUpPageColumnSchema
-  | DTCInputNumberColumnSchema;
+  | DTCInputNumberColumnSchema
+  | DTCGroupColumnSchema<CustomColumnSchema>;
 
 const DripTableBuiltInComponents = {
   [DTCImage.componentName]: DTCImage,

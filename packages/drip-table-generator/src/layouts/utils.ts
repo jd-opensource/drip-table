@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableExtraOptions, DripTableGroupColumnSchema, DripTableSchema } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, ExtractDripTableColumnSchema } from 'drip-table';
 
 import { DripTableGeneratorContext } from '@/context';
 import tableComponents from '@/table-components';
@@ -49,11 +49,12 @@ export const getComponents = <
 export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => ({
   ...context.globalConfigs,
   columns: context.columns.map((item) => {
+    type BuiltInGroupColumnSchema = ExtractDripTableColumnSchema<DripTableBuiltInColumnSchema<NonNullable<DripTableExtraOptions['CustomColumnSchema']>>, 'group'>;
     const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
     delete schemaItem.innerIndexForGenerator;
     delete schemaItem.dataIndexMode;
-    if (item.component === 'group') {
-      const items = [...item.options.items as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['options']['items']];
+    if (schemaItem.component === 'group') {
+      const items = [...schemaItem.options.items as BuiltInGroupColumnSchema['options']['items']];
       items.forEach((element, index) => {
         if (element) {
           const subComponentItem = { ...element, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
@@ -62,7 +63,7 @@ export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOption
           items[index] = subComponentItem;
         }
       });
-      (schemaItem as DripTableGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>).options.items = items;
+      schemaItem.options.items = items;
     }
     return schemaItem;
   }),

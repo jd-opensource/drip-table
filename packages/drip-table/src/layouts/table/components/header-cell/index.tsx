@@ -27,7 +27,7 @@ interface HeaderCellAdditionalProps<
   tableState: IDripTableContext;
   setTableState: IDripTableContext['setTableState'];
   column?: TableColumnType<unknown>;
-  columnSchema: DripTableBuiltInColumnSchema;
+  columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
   filter?: IDripTableContext['filters'][string];
   onFilterChange?: (filter: IDripTableContext['filters'][string]) => void;
 }

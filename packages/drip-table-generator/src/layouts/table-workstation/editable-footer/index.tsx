@@ -94,6 +94,7 @@ const EditableTableFooter = <
             schema={getSchemaValue(context) as unknown as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
             dataSource={context.previewDataSource as RecordType[] || []}
             onSearch={() => void 0}
+            fireEvent={() => void 0}
           />
         );
       }

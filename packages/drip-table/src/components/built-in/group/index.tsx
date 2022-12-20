@@ -7,17 +7,21 @@
  */
 import React from 'react';
 
-import { type DripTableColumnSchema,
-  type DripTableExtraOptions, type DripTableRecordTypeBase,
+import {
+  type DripTableColumnSchema,
+  type DripTableDataColumnSchema,
+  type DripTableExtraOptions,
+  type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
-  type SchemaObject } from '@/types';
+  type SchemaObject,
+} from '@/types';
 import { TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
 
 import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
 
-export type DTCGroupColumnSchema<CustomComponentSchema> = DripTableColumnSchema<'group', {
+export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> = DripTableColumnSchema<'group', {
   /** 布局配置：水平排列对齐方式 */
   horizontalAlign?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
   /** 布局配置：垂直排列对齐方式 */
@@ -31,13 +35,13 @@ export type DTCGroupColumnSchema<CustomComponentSchema> = DripTableColumnSchema<
   /** 布局配置：列偏移 */
   offset?: number[];
   /** 每个栅格栏的配置 */
-  items: (DripTableBuiltInColumnSchema | NonNullable<CustomComponentSchema> | null)[];
+  items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[];
 }>;
 
 interface DTCGroupProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<ExtraOptions['CustomColumnSchema']>> {
+> extends DripTableComponentProps<RecordType, DTCGroupColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>> {
 }
 
 interface DTCGroupState {}
@@ -58,29 +62,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       offset: { type: 'array', items: { type: 'number' } },
       items: {
         type: 'array',
-        items: {
-          oneOf: [
-            { type: 'null' },
-            {
-              type: 'object',
-              properties: {
-                key: { type: 'string' },
-                component: { type: 'string' },
-                options: {},
-                width: { typeof: ['string', 'number'] },
-                align: { enum: ['left', 'center', 'right'] },
-                verticalAlign: { enum: ['top', 'middle', 'bottom'] },
-                dataIndex: {
-                  anyOf: [
-                    { type: 'array', items: { type: 'string' } },
-                    { type: 'string' },
-                  ],
-                },
-              },
-              required: ['component'],
-            },
-          ],
-        },
+        items: {},
       },
     },
   };
@@ -90,7 +72,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
    * @param schema Schema
    * @returns 表格
    */
-  public renderGenerator(schema: DripTableBuiltInColumnSchema | NonNullable<ExtraOptions['CustomColumnSchema']>): React.ReactNode {
+  public renderGenerator(schema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>> | NonNullable<ExtraOptions['CustomColumnSchema']>): React.ReactNode {
     const { tableInfo, extraProps } = this.props.ext as DripTableColumnRenderOptions<RecordType, ExtraOptions>;
     const render = columnRenderGenerator(tableInfo, schema, extraProps);
     return render(null, { type: 'body', key: schema.key, index: 0, record: this.props.data }, 0);
