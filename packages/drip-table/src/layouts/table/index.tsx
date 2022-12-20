@@ -167,7 +167,7 @@ const hookColumRender = <
     <React.Fragment>
       { render?.(d, row, ...args) }
       {
-        columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle
+        columnSchema && (columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle)
           ? (
             <div
               style={{ display: 'none' }}
