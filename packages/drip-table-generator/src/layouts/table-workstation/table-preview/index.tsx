@@ -22,7 +22,7 @@ const PreviewTable = <
   const context = React.useContext(GeneratorContext);
   return (
     <DripTable
-      style={{ ...props.style, display: props.visible ? void 0 : 'none' }}
+      style={Object.assign({ ...props.style }, props.visible ? void 0 : { display: 'none' })}
       driver={DripTableDriverAntDesign}
       schema={getSchemaValue<ExtraOptions>(context)}
       dataSource={context.previewDataSource as RecordType[]}
