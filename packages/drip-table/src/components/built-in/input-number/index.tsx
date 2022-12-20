@@ -44,7 +44,17 @@ export default class DTCInputNumber<RecordType extends DripTableRecordTypeBase> 
       step: { anyOf: [{ type: 'string' }, { type: 'number' }] },
       min: { type: 'number' },
       max: { type: 'number' },
-      style: { type: 'object' },
+      style: {
+        type: 'object',
+        patternProperties: {
+          '^.*$': {
+            anyOf: [
+              { type: 'string' },
+              { type: 'number' },
+            ],
+          },
+        },
+      },
       bordered: { type: 'boolean' },
       placeholder: { type: 'string' },
       defaultValue: { type: 'string' },

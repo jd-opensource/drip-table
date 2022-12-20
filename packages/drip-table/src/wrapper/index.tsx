@@ -116,8 +116,10 @@ const DripTableWrapper: <
                     }
                   }
                 }
-                if (schema) {
-                  const errorMessage = validateDripTableColumnSchema(column, schema, ajv);
+                if (BuiltInComponent || schema) {
+                  const errorMessage = schema
+                    ? validateDripTableColumnSchema(column, schema, ajv)
+                    : `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
                   if (errorMessage) {
                     return {
                       key: column.key,

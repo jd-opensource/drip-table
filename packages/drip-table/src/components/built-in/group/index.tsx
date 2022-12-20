@@ -66,7 +66,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               properties: {
                 key: { type: 'string' },
                 component: { type: 'string' },
-                options: { type: 'object' },
+                options: {},
                 width: { typeof: ['string', 'number'] },
                 align: { enum: ['left', 'center', 'right'] },
                 verticalAlign: { enum: ['top', 'middle', 'bottom'] },
