@@ -139,6 +139,7 @@ const translate = (i18n: Record<string, string> | undefined, origin: string) => 
 export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
   public static componentName: DTCTextColumnSchema['component'] = 'text';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       fontSize: { type: 'string' },
       mode: { enum: ['single', 'multiple', 'custom'] },
@@ -151,6 +152,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       parts: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             dataIndex: {
               anyOf: [

@@ -39,6 +39,7 @@ interface DTCPopUpPageProps<RecordType extends DripTableRecordTypeBase> extends 
 export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCPopUpPageProps<RecordType>, DTCPopUpPageState> {
   public static componentName: DTCPopUpPageColumnSchema['component'] = 'pop-up-page';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       label: { type: 'string' },
       buttonType: { type: 'string' },

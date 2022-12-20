@@ -33,16 +33,21 @@ const DRIP_TABLE_GENERIC_CSS_SCHEMA: SchemaObject = {
 const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
   type: 'array',
   items: {
-    typeof: 'object',
-    discriminator: { propertyName: 'type' },
+    type: 'object',
+    properties: {
+      type: { type: 'string' },
+    },
     required: ['type'],
+    discriminator: { propertyName: 'type' },
     oneOf: [
       {
+        type: 'object',
         properties: {
           type: { const: 'spacer' },
         },
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'text' },
           text: { type: 'string' },
@@ -50,6 +55,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         required: ['text'],
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'html' },
           html: { type: 'string' },
@@ -57,6 +63,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         required: ['html'],
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'search' },
           wrapperClassName: { type: 'string' },
@@ -68,6 +75,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
           searchKeys: {
             type: 'array',
             items: {
+              type: 'object',
               properties: {
                 label: { type: 'string' },
                 value: { typeof: ['number', 'string'] },
@@ -79,6 +87,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         },
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'slot' },
           slot: { type: 'string' },
@@ -87,6 +96,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         required: ['slot'],
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'insert-button' },
           insertButtonClassName: { type: 'string' },
@@ -96,6 +106,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         },
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'display-column-selector' },
           selectorButtonText: { type: 'string' },
@@ -103,6 +114,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
         },
       },
       {
+        type: 'object',
         properties: {
           type: { const: 'layout-selector' },
           selectorButtonText: { type: 'string' },
@@ -114,6 +126,7 @@ const DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA: SchemaObject = {
 };
 
 const DRIP_TABLE_GENERIC_RENDER_SCHEMA: SchemaObject = {
+  type: 'object',
   properties: {
     style: DRIP_TABLE_CSS_SCHEMA,
     elements: DRIP_TABLE_GENERIC_RENDER_ELEMENT_SCHEMA,
@@ -124,7 +137,7 @@ let AJV_CACHE: Ajv | undefined;
 
 const createAjv = (): Ajv => {
   if (!AJV_CACHE) {
-    AJV_CACHE = AjvKeywords(new Ajv({ discriminator: true, strictTypes: false }));
+    AJV_CACHE = AjvKeywords(new Ajv({ discriminator: true, strict: true }));
   }
   return AJV_CACHE;
 };
@@ -167,6 +180,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
   const key = `CK-${additionalProperties ? 1 : 0}`;
   if (!DRIP_TABLE_PROPS_AJV_SCHEMA_CACHE.has(key)) {
     const dripTableSchema: SchemaObject = {
+      type: 'object',
       properties: {
         id: { typeof: ['number', 'string'] },
         className: { type: 'string' },
@@ -186,6 +200,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           anyOf: [
             { type: 'boolean' },
             {
+              type: 'object',
               properties: {
                 size: { enum: ['small', 'default'] },
                 pageSize: { type: 'number' },
@@ -207,6 +222,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         size: { enum: ['small', 'middle', 'large', 'default'] },
         sticky: { type: 'boolean' },
         scroll: {
+          type: 'object',
           properties: {
             x: { typeof: ['number', 'boolean', 'string'] },
             y: { typeof: ['number', 'string'] },
@@ -217,6 +233,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           anyOf: [
             { type: 'boolean' },
             {
+              type: 'object',
               properties: {
                 align: { enum: ['left', 'center', 'right'] },
                 verticalAlign: { enum: ['top', 'middle', 'bottom', 'stretch'] },
@@ -227,20 +244,27 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         rowDraggable: { type: 'boolean' },
         defaultTableLayout: { enum: ['card', 'table'] },
         layout: {
+          type: 'object',
           properties: {
-            card: { properties: {
-              columns: {
-                type: 'array',
-                items: {},
+            card: {
+              type: 'object',
+              properties: {
+                columns: {
+                  type: 'array',
+                  items: {},
+                },
+                rowSize: { type: 'number' },
               },
-              rowSize: { type: 'number' },
-            } },
-            calendar: { properties: {
-              columns: {
-                type: 'array',
-                items: {},
+            },
+            calendar: {
+              type: 'object',
+              properties: {
+                columns: {
+                  type: 'array',
+                  items: {},
+                },
               },
-            } },
+            },
           },
         },
         editable: { type: 'boolean' },
@@ -277,6 +301,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
       ],
     };
     const subtablePropsSchema: SchemaObject = {
+      type: 'object',
       properties: {
         defaultExpandAllRows: { type: 'boolean' },
         defaultExpandedRowKeys: {
@@ -288,6 +313,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
       additionalProperties,
     };
     const propsSchema: DripTablePropsAjvSchemaCacheItem['props'] = {
+      type: 'object',
       properties: {
         driver: {},
         schema: dripTableSchema,
@@ -308,6 +334,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         ajv: {
           anyOf: [
             {
+              type: 'object',
               properties: {
                 additionalProperties: { type: 'boolean' },
               },
@@ -317,6 +344,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
         ext: {},
         sticky: {
+          type: 'object',
           properties: {
             offsetHeader: { type: 'number' },
             offsetScroll: { type: 'number' },
@@ -326,6 +354,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         subtableProps: {
           type: 'array',
           items: {
+            type: 'object',
             properties: {
               subtableID: { type: ['number', 'string'] },
               recordKeys: { type: 'array', items: {} },
@@ -492,22 +521,28 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
   const ajv = createAjv();
   const additionalProperties = options?.additionalProperties ?? false;
   const dripTableColumnSchema: SchemaObject = {
+    type: 'object',
     properties: {
       component: { type: 'string' },
-      options: schema
-        ? { ...schema, additionalProperties }
-        : {},
+      options: schema && schema.type === 'object'
+        ? {
+          ...schema,
+          additionalProperties,
+        }
+        : schema || {},
       key: { type: 'string' },
       title: {
         anyOf: [
           { type: 'string' },
           {
+            type: 'object',
             properties: {
               style: DRIP_TABLE_CSS_SCHEMA,
               body: {
                 anyOf: [
                   { type: 'string' },
                   {
+                    type: 'object',
                     properties: {
                       style: DRIP_TABLE_CSS_SCHEMA,
                       content: { type: 'string' },
@@ -567,6 +602,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
       filters: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             text: {},
             value: { typeof: ['string', 'number', 'boolean'] },

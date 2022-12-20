@@ -28,6 +28,7 @@ interface DTCImageState { }
 export default class DTCImage<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCImageProps<RecordType>, DTCImageState> {
   public static componentName: DTCImageColumnSchema['component'] = 'image';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       popover: { type: 'boolean' },
       preview: { type: 'boolean' },

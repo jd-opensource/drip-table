@@ -52,6 +52,7 @@ interface DTCButtonState {}
 export default class DTCButton<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCButtonProps<RecordType>, DTCButtonState> {
   public static componentName: DTCButtonColumnSchema['component'] = 'button';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       mode: { enum: ['single', 'multiple'] },
       label: { type: 'string' },
@@ -68,6 +69,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       buttons: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             label: { type: 'string' },
             event: { type: 'string' },

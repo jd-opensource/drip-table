@@ -61,6 +61,7 @@ interface DTCLinkState {}
 export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCLinkProps<RecordType>, DTCLinkState> {
   public static componentName: DTCLinkColumnSchema['component'] = 'link';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       mode: { enum: ['single', 'multiple'] },
       name: { type: 'string' },
@@ -74,6 +75,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       operates: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             name: { type: 'string' },
             label: { type: 'string' },

@@ -54,11 +54,13 @@ interface DTCDateState {}
 export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCDateProps<RecordType>, DTCDateState> {
   public static componentName: DTCDateColumnSchema['component'] = 'date-picker';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       mode: { enum: ['basic', 'range'] },
       parts: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             dataIndex: {
               anyOf: [
