@@ -106,6 +106,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         wrap: false,
         items: [
           {
+            key: 'mock_1_1',
+            title: '',
             component: 'image',
             options: {
               imageWidth: 86,
@@ -114,6 +116,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
             dataIndex: 'demoPic',
           },
           {
+            key: 'mock_1_2',
+            title: '',
             component: 'text',
             options: {
               mode: 'single',
