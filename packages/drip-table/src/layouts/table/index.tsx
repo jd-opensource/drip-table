@@ -262,7 +262,10 @@ export const columnRenderGenerator = <
             driver={extraProps.driver}
             data={record}
             value={value}
-            indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+            indexValue={(dataIndex, defaultValue) => {
+              const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
+              return dataTranslator(v, { value: v, record, recordIndex });
+            }}
             preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
@@ -293,7 +296,10 @@ export const columnRenderGenerator = <
               driver={extraProps.driver}
               data={record}
               value={value}
-              indexValue={(dataIndex, defaultValue) => indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue)}
+              indexValue={(dataIndex, defaultValue) => {
+                const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
+                return dataTranslator(v, { value: v, record, recordIndex });
+              }}
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
