@@ -59,6 +59,7 @@ const SampleComponent = (props) => (
 );
 SampleComponent.componentName = 'Sample';
 SampleComponent.schema = { // https://ajv.js.org/json-schema.html
+  type: 'object',
   properties: {
     someCustomConfigure: { type: 'string' },
   },
