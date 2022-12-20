@@ -155,7 +155,7 @@ type ExtraOptions = Omit<DripTableExtraOptions, 'CustomColumnSchema' | 'Subtable
 const Demo = () => (
   <DripTableGenerator<SampleRecordType, ExtraOptions>
     mockDataSource
-    style={{ height: 756 }}
+    style={{ height: '756px' }}
     driver={DripTableDriverAntDesign}
     schema={initialSchema}
     dataSource={mockData}
