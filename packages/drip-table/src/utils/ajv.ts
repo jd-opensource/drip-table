@@ -21,7 +21,65 @@ export interface AjvOptions {
   additionalProperties?: boolean;
 }
 
-const DRIP_TABLE_CSS_SCHEMA: SchemaObject = { type: 'object' };
+/**
+ * 递归设置 Schema 用户自定属性并返回设置后的 Schema 对象
+ * @param schema Schema 对象
+ * @param options 用户自定属性设置项
+ * @returns 新的 Schema 对象
+ */
+const finalizeSchema = <T extends SchemaObject = SchemaObject>(schema: T, options?: AjvOptions): T => {
+  if (schema.type === 'object') {
+    schema = {
+      ...schema,
+      additionalProperties: options?.additionalProperties ?? false,
+    };
+  }
+  if (schema.properties) {
+    schema = {
+      ...schema,
+      properties: Object.fromEntries(
+        Object.entries<SchemaObject>(schema.properties)
+          .map(([k, p]) => [k, finalizeSchema(p, options)]),
+      ),
+    };
+  }
+  if (schema.patternProperties) {
+    schema = {
+      ...schema,
+      patternProperties: Object.fromEntries(
+        Object.entries<SchemaObject>(schema.patternProperties)
+          .map(([k, p]) => [k, finalizeSchema(p, options)]),
+      ),
+    };
+  }
+  if (schema.oneOf) {
+    schema = {
+      ...schema,
+      oneOf: schema.oneOf
+        .map((s: SchemaObject) => finalizeSchema(s, options)),
+    };
+  }
+  if (schema.anyOf) {
+    schema = {
+      ...schema,
+      anyOf: schema.anyOf
+        .map((s: SchemaObject) => finalizeSchema(s, options)),
+    };
+  }
+  return schema;
+};
+
+const DRIP_TABLE_CSS_SCHEMA: SchemaObject = {
+  type: 'object',
+  patternProperties: {
+    '^.*$': {
+      anyOf: [
+        { type: 'string' },
+        { type: 'number' },
+      ],
+    },
+  },
+};
 
 const DRIP_TABLE_GENERIC_CSS_SCHEMA: SchemaObject = {
   anyOf: [
@@ -205,6 +263,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
                 size: { enum: ['small', 'default'] },
                 pageSize: { type: 'number' },
                 position: { enum: ['topLeft', 'topCenter', 'topRight', 'bottomLeft', 'bottomCenter', 'bottomRight'] },
+                showTotal: { type: 'string' },
                 showLessItems: { type: 'boolean' },
                 showQuickJumper: { type: 'boolean' },
                 showSizeChanger: { type: 'boolean' },
@@ -287,7 +346,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         ext: {},
       },
       required: ['columns'],
-      additionalProperties,
     };
     const dripTableSubtableSchema: DripTablePropsAjvSchemaCacheItem['subtable'] = {
       ...dripTableSchema,
@@ -310,7 +368,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         },
       },
       required: [],
-      additionalProperties,
     };
     const propsSchema: DripTablePropsAjvSchemaCacheItem['props'] = {
       type: 'object',
@@ -362,7 +419,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
               properties: subtablePropsSchema,
             },
             required: ['properties'],
-            additionalProperties,
           },
         },
         title: { instanceof: 'Function' },
@@ -391,7 +447,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         onDataSourceChange: { instanceof: 'Function' },
         onDisplayColumnKeysChange: { instanceof: 'Function' },
         onEvent: { instanceof: 'Function' },
-        __PARENT_INFO__: { type: 'object' },
+        __PARENT_INFO__: {},
       },
       required: [
         'driver',
@@ -399,12 +455,11 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         'dataSource',
         ...subtablePropsSchema.required,
       ],
-      additionalProperties,
     };
 
     DRIP_TABLE_PROPS_AJV_SCHEMA_CACHE.set(key, {
-      props: propsSchema,
-      subtable: dripTableSubtableSchema,
+      props: finalizeSchema(propsSchema, options),
+      subtable: finalizeSchema(dripTableSubtableSchema, options),
     });
   }
   const schemas = DRIP_TABLE_PROPS_AJV_SCHEMA_CACHE.get(key);
@@ -519,17 +574,11 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
   }
   // 缓存未命中
   const ajv = createAjv();
-  const additionalProperties = options?.additionalProperties ?? false;
-  const dripTableColumnSchema: SchemaObject = {
+  const dripTableColumnSchema: SchemaObject = finalizeSchema({
     type: 'object',
     properties: {
       component: { type: 'string' },
-      options: schema && schema.type === 'object'
-        ? {
-          ...schema,
-          additionalProperties,
-        }
-        : schema || {},
+      options: schema || {},
       key: { type: 'string' },
       title: {
         anyOf: [
@@ -619,8 +668,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
       'title',
       'dataIndex',
     ].map(_ => _),
-    additionalProperties,
-  };
+  }, options);
   const res = ajv.validate(dripTableColumnSchema, data)
     ? null
     : getAjvErrorMessage(ajv, { dataVar: 'column', separator: '; ' });

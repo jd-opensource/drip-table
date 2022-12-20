@@ -109,7 +109,17 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       showSearch: { type: 'boolean' },
       bindValue: { type: 'boolean' },
       size: { enum: ['large', 'middle', 'small'] },
-      style: { type: 'object' },
+      style: {
+        type: 'object',
+        patternProperties: {
+          '^.*$': {
+            anyOf: [
+              { type: 'string' },
+              { type: 'number' },
+            ],
+          },
+        },
+      },
       defaultValue: { anyOf: [
         { type: 'string' },
         { type: 'number' },
@@ -123,9 +133,24 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         type: 'object',
         properties: {
           method: { enum: ['GET', 'POST'] },
-          headers: { type: 'object' },
+          headers: {
+            type: 'object',
+            patternProperties: {
+              '^.*$': { type: 'string' },
+            },
+          },
+          body: {
+            anyOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {},
+                },
+              },
+            ],
+          },
           credentials: { enum: ['include', 'same-origin', 'omit'] },
-          body: { anyOf: [{ type: 'string' }, { type: 'object' }] },
         },
       },
       response: {
