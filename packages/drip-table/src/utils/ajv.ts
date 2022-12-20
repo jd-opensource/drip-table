@@ -492,10 +492,9 @@ export const getDripTableValidatePropsKeys = (props: object, options?: AjvOption
   const propertiesKeys = Object.keys(schemas.props.properties);
   const propertiesCount = propertiesKeys.length;
   if (options?.additionalProperties) {
-    return [...new Set([...Object.keys(props), ...propertiesKeys])]
-      .filter((_, i) => i < propertiesCount);
+    return propertiesKeys;
   }
-  return propertiesKeys;
+  return [...new Set([...Object.keys(props), ...propertiesKeys])].filter((_, i) => i < propertiesCount);
 };
 
 const DRIP_TABLE_AJV_PROPS_CACHE = new RecursiveCache<ReturnType<typeof validateDripTableProp>>();

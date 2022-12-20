@@ -84,7 +84,7 @@ export default Demo;
 
 ## 错误告警
 
-### 多余的数据
+### 多余的属性
 
 ```jsx
 /**
@@ -374,11 +374,9 @@ const schema = {
       title: "商品详情",
       align: "center",
       dataIndex: "description",
-      component: "text",
+      component: "render-html",
       options: {
-        mode: "single",
-        ellipsis: true,
-        maxRow: 1,
+        // render: "", // 组合组件内部设置缺少参数
       },
     },
   ],
