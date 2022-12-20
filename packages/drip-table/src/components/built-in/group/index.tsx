@@ -48,6 +48,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends React.PureComponent<DTCGroupProps<RecordType, ExtraOptions>, DTCGroupState> {
   public static componentName: DTCGroupColumnSchema<DripTableExtraOptions['CustomColumnSchema']>['component'] = 'group';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       horizontalAlign: { enum: ['start', 'end', 'center', 'space-around', 'space-between'] },
       verticalAlign: { enum: ['top', 'middle', 'bottom'] },

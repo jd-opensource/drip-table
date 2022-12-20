@@ -29,6 +29,7 @@ interface DTCRichTextState { }
 export default class DTCRichText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCRichTextProps<RecordType>, DTCRichTextState> {
   public static componentName: DTCRichTextColumnSchema['component'] = 'rich-text';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       render: { type: 'string' },
       tooltip: { type: 'string' },

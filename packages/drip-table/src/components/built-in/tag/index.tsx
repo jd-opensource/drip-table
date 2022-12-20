@@ -44,6 +44,7 @@ interface DTCTagState { }
 export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTagProps<RecordType>, DTCTagState> {
   public static componentName: DTCTagColumnSchema['component'] = 'tag';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       color: { type: 'string' },
       borderColor: { type: 'string' },
@@ -56,6 +57,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
       tagOptions: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             label: { type: 'string' },
             value: { typeof: ['string', 'number'] },

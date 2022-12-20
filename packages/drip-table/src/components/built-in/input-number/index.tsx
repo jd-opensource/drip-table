@@ -39,6 +39,7 @@ interface DTCInputNumberProps<RecordType extends DripTableRecordTypeBase> extend
 export default class DTCInputNumber<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCInputNumberProps<RecordType>, DTCInputNumberState> {
   public static componentName: DTCInputNumberColumnSchema['component'] = 'input-number';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       step: { anyOf: [{ type: 'string' }, { type: 'number' }] },
       min: { type: 'number' },

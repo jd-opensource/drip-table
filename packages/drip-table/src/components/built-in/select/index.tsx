@@ -84,6 +84,7 @@ interface DTCSelectState {
 export default class DTCSelect<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCSelectProps<RecordType>, DTCSelectState> {
   public static componentName: DTCSelectColumnSchema['component'] = 'select';
   public static schema: SchemaObject = {
+    type: 'object',
     properties: {
       allowClear: { type: 'boolean' },
       bordered: { type: 'boolean' },
@@ -93,6 +94,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       options: {
         type: 'array',
         items: {
+          type: 'object',
           properties: {
             label: { type: 'string' },
             value: { anyOf: [{ type: 'string' }, { type: 'number' }] },
