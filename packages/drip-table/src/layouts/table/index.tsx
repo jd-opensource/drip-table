@@ -26,8 +26,8 @@ import {
   type DripTableTableInformation,
   type SchemaObject,
 } from '@/types';
-import { parseReactCSS, setElementCSS } from '@/utils/dom';
-import { decodeJSON, encodeJSON } from '@/utils/json';
+import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
+import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
@@ -67,23 +67,23 @@ interface RcTableRecordType<
 const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefined, hoverRowKey: string | undefined) => {
   const columnKey = el.dataset.columnKey || '';
   const rowKey = el.dataset.rowKey || '';
-  const style = decodeJSON<DripTableBuiltInColumnSchema['style']>(el.dataset.style || '');
-  const hoverStyle = decodeJSON<DripTableBuiltInColumnSchema['hoverStyle']>(el.dataset.hoverStyle || '');
-  const rowHoverStyle = decodeJSON<DripTableBuiltInColumnSchema['rowHoverStyle']>(el.dataset.rowHoverStyle || '');
-  const rowHoverClasses = (el.dataset.rowHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
-  const columnHoverStyle = decodeJSON<DripTableBuiltInColumnSchema['columnHoverStyle']>(el.dataset.columnHoverStyle || '');
-  const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
-  // 移除 hover 状态样式
-  el.removeAttribute('style');
+  // 保留非 Schema 生成样式
+  const keepStyle = Object.fromEntries(
+    Object.entries({
+      ...parseCSS(el.getAttribute('style') || ''),
+      ...Object.fromEntries(Object.entries(parseCSS(el.dataset.style ?? '')).map(([k, _]) => [k, ''])),
+    })
+      .filter(([_, v]) => v),
+  );
   // 列基础样式
-  if (style) {
-    setElementCSS(el, style);
-  }
+  const style = parseCSS(el.dataset.basicStyle || '');
   // 列 hover 样式
   if (columnKey) {
+    const columnHoverStyle = parseCSS(el.dataset.columnHoverStyle || '');
+    const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
     if (hoverColumnKey === columnKey) {
       if (columnHoverStyle) {
-        setElementCSS(el, columnHoverStyle);
+        Object.assign(style, columnHoverStyle);
       }
       columnHoverClasses.forEach(c => el.classList.add(c));
     } else {
@@ -92,9 +92,11 @@ const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefi
   }
   // 行 hover 样式
   if (rowKey) {
+    const rowHoverStyle = parseCSS(el.dataset.rowHoverStyle || '');
+    const rowHoverClasses = (el.dataset.rowHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
     if (hoverRowKey === rowKey) {
       if (rowHoverStyle) {
-        setElementCSS(el, rowHoverStyle);
+        Object.assign(style, rowHoverStyle);
       }
       rowHoverClasses.forEach(c => el.classList.add(c));
     } else {
@@ -102,9 +104,17 @@ const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefi
     }
   }
   // 单元格 hover 样式
-  if (columnKey && rowKey && hoverStyle && hoverColumnKey === columnKey && hoverRowKey === rowKey) {
-    setElementCSS(el, hoverStyle);
+  if (columnKey && rowKey) {
+    const hoverStyle = parseCSS(el.dataset.hoverStyle || '');
+    if (hoverStyle && hoverColumnKey === columnKey && hoverRowKey === rowKey) {
+      Object.assign(style, hoverStyle);
+    }
   }
+  // 设置样式、保存复原状态样式
+  el.removeAttribute('style');
+  setElementCSS(el, keepStyle);
+  setElementCSS(el, style);
+  el.dataset.style = stringifyCSS(Object.fromEntries(Object.entries(style).map(([k, _]) => [k, el.style[k]])));
 };
 
 const onCellMouseEnter: (e: MouseEvent) => void = (e) => {
@@ -162,20 +172,17 @@ const hookColumRender = <
             <div
               style={{ display: 'none' }}
               ref={(el) => {
-                const context = { props: { record: row.record, recordIndex: row.index } };
                 const tdEl = el?.parentElement;
-                const style = Object.assign({ textAlign: columnSchema.align }, typeof columnSchema.style === 'string' ? safeExecute(columnSchema.style, context) : columnSchema.style);
-                const hoverStyle = typeof columnSchema.hoverStyle === 'string' ? safeExecute(columnSchema.hoverStyle, context) : columnSchema.hoverStyle;
-                const rowHoverStyle = typeof columnSchema.rowHoverStyle === 'string' ? safeExecute(columnSchema.rowHoverStyle, context) : columnSchema.rowHoverStyle;
-                const columnHoverStyle = typeof columnSchema.columnHoverStyle === 'string' ? safeExecute(columnSchema.columnHoverStyle, context) : columnSchema.columnHoverStyle;
                 if (tdEl) {
+                  const context = { props: { record: row.record, recordIndex: row.index } };
+                  const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
                   tdEl.dataset.tableUuid = tableInfo.uuid;
                   tdEl.dataset.columnKey = columnSchema.key;
                   tdEl.dataset.rowKey = row.key;
-                  tdEl.dataset.style = encodeJSON(style);
-                  tdEl.dataset.hoverStyle = encodeJSON(hoverStyle);
-                  tdEl.dataset.rowHoverStyle = encodeJSON(rowHoverStyle);
-                  tdEl.dataset.columnHoverStyle = encodeJSON(columnHoverStyle);
+                  tdEl.dataset.basicStyle = stringifyCSS(Object.assign({ 'text-align': columnSchema.align }, parseStyleSchema(columnSchema.style)));
+                  tdEl.dataset.hoverStyle = stringifyCSS(parseStyleSchema(columnSchema.hoverStyle));
+                  tdEl.dataset.rowHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.rowHoverStyle));
+                  tdEl.dataset.columnHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.columnHoverStyle));
                   tdEl.addEventListener('mouseenter', onCellMouseEnter);
                   tdEl.addEventListener('mouseleave', onCellMouseLeave);
                   updateCellElementStyle(tdEl, void 0, void 0);
@@ -401,10 +408,8 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
   const recKey = row.record[rowKey] as React.Key;
   const selected = selectedRowKeys.includes(recKey);
   const context = { props: { record: row.record, recordIndex: row.index } };
-  const style = Object.assign({ textAlign: columnBaseSchema.align }, vcStyle, typeof columnBaseSchema.style === 'string' ? safeExecute(columnBaseSchema.style, context) : columnBaseSchema.style);
-  const hoverStyle = typeof columnBaseSchema.hoverStyle === 'string' ? safeExecute(columnBaseSchema.hoverStyle, context) : columnBaseSchema.hoverStyle;
-  const rowHoverStyle = typeof columnBaseSchema.rowHoverStyle === 'string' ? safeExecute(columnBaseSchema.rowHoverStyle, context) : columnBaseSchema.rowHoverStyle;
-  const columnHoverStyle = typeof columnBaseSchema.columnHoverStyle === 'string' ? safeExecute(columnBaseSchema.columnHoverStyle, context) : columnBaseSchema.columnHoverStyle;
+  const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
+  const styleText = stringifyCSS(Object.assign({ 'text-align': columnBaseSchema.align }, vcStyle, parseStyleSchema(columnBaseSchema.style)));
   return (
     <div
       className={classNames(styles['jfe-drip-table-virtual-cell'], {
@@ -414,14 +419,14 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
         [styles['jfe-drip-table-virtual-cell--stretch']]: columnBaseSchema?.verticalAlign === 'stretch',
         [styles['jfe-drip-table--row-selected']]: selected,
       })}
-      style={style}
+      style={parseReactCSS(styleText)}
       data-table-uuid={tableUUID}
       data-row-key={row.key}
       data-column-key={columnBaseSchema.key}
-      data-style={encodeJSON(style)}
-      data-hover-style={encodeJSON(hoverStyle)}
-      data-row-hover-style={encodeJSON(rowHoverStyle)}
-      data-column-hover-style={encodeJSON(columnHoverStyle)}
+      data-basic-style={styleText}
+      data-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.hoverStyle))}
+      data-row-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.rowHoverStyle))}
+      data-column-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.columnHoverStyle))}
       data-row-hover-class={classNames(styles['jfe-drip-table--row-hover'], { [styles['jfe-drip-table--row-selected-hover']]: selected })}
       onMouseEnter={React.useCallback(e => onCellMouseEnter(e), [])}
       onMouseLeave={React.useCallback(e => onCellMouseLeave(e), [])}
