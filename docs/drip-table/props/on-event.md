@@ -34,7 +34,14 @@ const schema = {
   columns: [
     {
       key: "mock_1",
-      title: "商品名称",
+      title: {
+        body: "",
+        footer: {
+          elements: [
+            { type: 'slot', slot: 'EventSample', data: { from: '商品名称表头' } },
+          ],
+        },
+      },
       dataIndex: "name",
       component: "text",
       options: {
@@ -81,6 +88,17 @@ const schema = {
       },
     },
   ],
+  rowHeader: {
+    elements: [
+      {
+        span: 'flex-auto',
+        type: 'slot',
+        slot: 'EventSample',
+        data: { from: '整行' },
+        style: { padding: '10px 20px' },
+      },
+    ],
+  },
 };
 
 const dataSource = [
@@ -103,19 +121,44 @@ const Demo = () => {
         custom: {
           EventSample: (props) => (
             <div>
+              表格插槽
               <Button onClick={() => { props.fireEvent({ type: 'custom', name: 'sample-event', payload: 'some value' }) }}>发起事件</Button>
             </div>
           ),
         },
       }}
+      slots={{
+        EventSample: (props) => (
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ marginRight: '5px' }}>{props.data.from}插槽</span>
+            <Button onClick={() => { props.fireEvent({ type: 'custom', name: 'sample-event', payload: 'some value' }) }}>发起事件</Button>
+          </div>
+        ),
+      }}
       onEvent={(event, tableInfo) => {
-        const { record, recordIndex } = event;
+        const { record, recordIndex, columnIndex } = event;
+        let from = '';
+        if (columnIndex !== void 0) {
+          from += `第${columnIndex + 1}列`;
+        }
+        if (recordIndex !== void 0) {
+          from += `第${recordIndex + 1}行`;
+        }
+        if (record !== void 0) {
+          from += `“${record.name} (ID: ${record.id})”`;
+        }
         if (event.type === 'drip-link-click') {
           const name = event.payload;
-          message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
+          if (from) {
+            from += '的';
+          }
+          message.info(`你点击了${from}"${name}"事件按钮。`);
           console.log(name, record, recordIndex);
         } else if (event.type === 'custom') {
-          message.info(`自定义事件 “${event.name}”(payload:${JSON.stringify(event.payload)}) 触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
+          if (from) {
+            from = '触发与' + from + '的';
+          }
+          message.info(`自定义事件 “${event.name}”(payload:${JSON.stringify(event.payload)}) ${from}自定义组件。`);
           console.log(event, record, recordIndex);
         }
       }}
