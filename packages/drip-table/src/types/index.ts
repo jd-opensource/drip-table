@@ -555,17 +555,57 @@ export interface DripTableProps<
    */
   slots?: {
     [componentType: string]: React.JSXElementConstructor<{
-      style?: React.CSSProperties;
-      className?: string;
+      /**
+       * 插槽唯一标识符
+       */
       slotType: string;
+      /**
+       * 插槽自定义样式类名
+       */
+      className?: string;
+      /**
+       * 插槽自定义样式
+       */
+      style?: React.CSSProperties;
+      /**
+       * 来自 Schema 实例化配置的透传属性
+       */
+      data?: unknown;
+      /**
+       * @deprecated 即将废弃，底层驱动组件库
+       */
       driver: DripTableDriver;
+      /**
+       * 表格 Schema 对象
+       */
       schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      /**
+       * 表格自定义传入数据
+       */
       ext: ExtraOptions['CustomComponentExtraData'];
+      /**
+       * 表格数据源
+       */
       dataSource: readonly RecordType[];
+      /**
+       * 插槽所在列下标
+       */
       columnIndex?: number;
+      /**
+       * 插槽所在行数据
+       */
       record?: RecordType;
+      /**
+       * 插槽所在行下标
+       */
       recordIndex?: number;
+      /**
+       * 插槽子元素
+       */
       children?: React.ReactNode;
+      /**
+       * 表格搜索触发器
+       */
       onSearch: (searchParams: Record<string, unknown>) => void;
       /**
        * 自定义事件触发器

@@ -16,6 +16,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type DripTableTableInformation,
 } from '@/types';
+import { parseReactCSS } from '@/utils/dom';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
@@ -131,7 +132,19 @@ interface CustomSlotElementSchema extends SlotElementBaseSchema {
    */
   slot: string;
   /**
-   * 透传给自定组件的属性值
+   * 插槽样式类名
+   */
+  class?: string;
+  /**
+   * 插槽自定义样式
+   */
+  style?: Record<string, string>;
+  /**
+   * 透传给自定义组件的数据
+   */
+  data?: unknown;
+  /**
+   * @deprecated 请使用 `data`、`class`、`style` 字段
    */
   props?: Record<string, unknown>;
 }
@@ -313,10 +326,17 @@ const SlotRender = <
       const Slot = tableProps.slots?.[config.slot] || tableProps.slots?.default;
       const columnIndex = typeof props.columnKey === 'string' ? tableProps.schema.columns.findIndex(c => c.key === props.columnKey) : -1;
       if (Slot) {
+        const DEPRECATED_PROPS = 'props';
+        const deprecatedProps = config[DEPRECATED_PROPS];
+        if (deprecatedProps) {
+          console.warn('Slot props field is deprecated, please use data/class/style fields instead.');
+        }
         return (
           <Slot
-            {...config.props}
-            className={classnames(styles['slot-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
+            {...deprecatedProps}
+            data={config.data}
+            className={classnames(styles['slot-render-slot-element'], typeof deprecatedProps?.className === 'string' ? deprecatedProps.className : '', config.class)}
+            style={config.style ? parseReactCSS(config.style) : void 0}
             slotType={config.slot}
             driver={tableProps.driver}
             schema={tableProps.schema}

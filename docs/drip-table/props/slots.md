@@ -61,7 +61,7 @@ const schema = {
   header: {
     elements: [
       { type: 'spacer', span: 'flex-auto' },
-      { type: 'slot', slot: 'header-slot-sample' },
+      { type: 'slot', slot: 'header-slot-sample', data: { from: 'Header' } },
     ],
   },
 };
@@ -87,7 +87,7 @@ const Demo = () => {
           const [state, setState] = React.useState({ count: 0 });
           return (
             <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
-              <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>Header Slot Sample</Button>
+              <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>{props.data.from} Slot Sample</Button>
               <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
             </div>
           );
