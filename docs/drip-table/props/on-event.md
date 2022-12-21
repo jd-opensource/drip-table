@@ -35,12 +35,12 @@ const schema = {
     {
       key: "mock_1",
       title: {
-        body: "",
-        footer: {
+        header: {
           elements: [
             { type: 'slot', slot: 'EventSample', data: { from: '商品名称表头' } },
           ],
         },
+        body: "",
       },
       dataIndex: "name",
       component: "text",
@@ -51,7 +51,14 @@ const schema = {
     },
     {
       key: "mock_2",
-      title: "商品详情",
+      title: {
+        header: {
+          elements: [
+            { type: 'slot', slot: 'EventSample', data: { from: '商品详情表头' } },
+          ],
+        },
+        body: "",
+      },
       align: "center",
       dataIndex: "description",
       component: "text",
@@ -121,7 +128,7 @@ const Demo = () => {
         custom: {
           EventSample: (props) => (
             <div>
-              表格插槽
+              <span style={{ marginRight: '5px' }}>单元格插槽</span>
               <Button onClick={() => { props.fireEvent({ type: 'custom', name: 'sample-event', payload: 'some value' }) }}>发起事件</Button>
             </div>
           ),
