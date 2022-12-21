@@ -346,7 +346,7 @@ const SlotRender = <
             record={props.record}
             recordIndex={props.recordIndex}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
-            fireEvent={event => tableProps.onEvent?.({ record: props.record, recordIndex: props.recordIndex, ...event }, tableInfo)}
+            fireEvent={event => tableProps.onEvent?.({ record: props.record, recordIndex: props.recordIndex, columnIndex, ...event }, tableInfo)}
           />
         );
       }
