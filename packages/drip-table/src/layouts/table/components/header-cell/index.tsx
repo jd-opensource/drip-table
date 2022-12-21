@@ -54,8 +54,17 @@ const HeaderCell = <
   const header = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.header;
   const footer = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.footer;
   const { columnSchema, onFilterChange } = additionalProps;
+  const itemsCount = [header, props.children, footer].filter(_ => _).length;
+  let justifyContent: 'center' | 'flex-end' | 'flex-start' | 'space-between' = 'flex-start';
+  if (columnSchema.align === 'center') {
+    justifyContent = itemsCount === 1 ? 'center' : 'space-between';
+  } else if (columnSchema.align === 'right') {
+    justifyContent = 'flex-end';
+  } else {
+    justifyContent = 'flex-start';
+  }
   return (
-    <div className={styles['jfe-drip-table-column-header-cell']} ref={props.onRef}>
+    <div className={styles['jfe-drip-table-column-header-cell']} style={{ justifyContent }} ref={props.onRef}>
       {
         header
           ? (
