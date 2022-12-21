@@ -456,29 +456,27 @@ const SlotRender = <
   const elements = props.schema.elements;
   if (elements && elements.length > 0) {
     return (
-      <div className={styles['slot-render']} style={props.schema.style}>
-        <Row style={props.style}>
-          {
-            elements.map((item, index) => (
-              <Col
-                key={index}
-                className={item.className}
-                style={{
-                  width: typeof item.span === 'string' && item.span !== 'flex-auto' ? item.span : void 0,
-                  display: 'flex',
-                  flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
-                  justifyContent: item.align || 'center',
-                  paddingLeft: index === 0 ? '0' : '3px',
-                  ...item.style,
-                }}
-                span={typeof item.span === 'string' ? void 0 : item.span}
-              >
-                { item.visible !== false ? renderColumnContent(item) : null }
-              </Col>
-            ))
-          }
-        </Row>
-      </div>
+      <Row className={styles['slot-render']} style={Object.assign({}, props.style, props.schema.style)}>
+        {
+          elements.map((item, index) => (
+            <Col
+              key={index}
+              className={item.className}
+              style={{
+                width: typeof item.span === 'string' && item.span !== 'flex-auto' ? item.span : void 0,
+                display: 'flex',
+                flex: item.span === 'flex-auto' ? '1 1 auto' : void 0,
+                justifyContent: item.align || 'center',
+                paddingLeft: index === 0 ? '0' : '3px',
+                ...item.style,
+              }}
+              span={typeof item.span === 'string' ? void 0 : item.span}
+            >
+              { item.visible !== false ? renderColumnContent(item) : null }
+            </Col>
+          ))
+        }
+      </Row>
     );
   }
   return null;

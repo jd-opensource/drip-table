@@ -97,6 +97,7 @@ export interface DripTableDriver {
     }>;
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
+      className?: string;
       gutter?: number | [number, number] | { xs: number; sm: number; md: number };
       justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
       align?: 'top' | 'middle' | 'bottom';

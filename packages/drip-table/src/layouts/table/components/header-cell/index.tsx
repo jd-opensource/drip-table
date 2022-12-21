@@ -60,7 +60,6 @@ const HeaderCell = <
         header
           ? (
             <SlotRender
-              style={{ height: '100%' }}
               schema={header}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
@@ -71,14 +70,19 @@ const HeaderCell = <
           )
           : null
       }
-      <div className={styles['jfe-drip-table-column-header-cell-body']}>
-        { props.children }
-      </div>
+      {
+        props.children
+          ? (
+            <div className={styles['jfe-drip-table-column-header-cell-body']}>
+              { props.children }
+            </div>
+          )
+          : null
+      }
       {
         footer
           ? (
             <SlotRender
-              style={{ height: '100%' }}
               schema={footer}
               tableUUID={additionalProps.tableUUID}
               tableProps={additionalProps.tableProps}
