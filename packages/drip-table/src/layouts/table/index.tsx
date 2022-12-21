@@ -42,6 +42,7 @@ import DripTableWrapper from '@/wrapper';
 import { type TableLayoutComponentProps } from '../types';
 import HeaderCell, { HeaderCellProps } from './components/header-cell';
 import { type DripTableColumnRenderOptions } from './types';
+import { finalizeColumnTitle } from './utils';
 
 import styles from './index.module.less';
 
@@ -335,14 +336,7 @@ export const columnGenerator = <
   if ((/^[0-9]+$/uig).test(width)) {
     width += 'px';
   }
-  let columnTitle = '';
-  if (typeof columnSchema.title === 'string') {
-    columnTitle = columnSchema.title;
-  } else if (typeof columnSchema.title.body === 'string') {
-    columnTitle = columnSchema.title.body;
-  } else {
-    columnTitle = columnSchema.title?.body?.content;
-  }
+  const columnTitle = finalizeColumnTitle(columnSchema);
   const onTitleRef = (el: HTMLDivElement) => {
     const style = typeof columnSchema.title === 'object' && columnSchema.title.style;
     if (!style) {
@@ -573,9 +567,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       if (rowSelectionColumnSchema) {
         dc.unshift(rowSelectionColumnSchema);
       }
+      if (rowDraggableColumnSchema) {
+        dc.unshift(rowDraggableColumnSchema);
+      }
       return dc;
     },
-    [tableInfo.schema.columns, rowSelectionColumnSchema],
+    [tableInfo.schema.columns, rowSelectionColumnSchema, rowDraggableColumnSchema],
   );
 
   const filteredColumns = React.useMemo(
@@ -587,107 +584,113 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
       };
-      const returnColumns = tableProps.schema.columns
-        .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))
-        .map(column => columnGenerator(tableInfo, column, extraProps));
+      const schemaColumns: { schema: DripTableBaseColumnSchema; column: TableColumnType<RcTableRecordType<RecordType>> }[] = tableProps.schema.columns
+        .filter(columnSchema => !columnSchema.hidable || tableState.displayColumnKeys.includes(columnSchema.key))
+        .map(columnSchema => ({ schema: columnSchema, column: columnGenerator(tableInfo, columnSchema, extraProps) }));
       if (rowSelectionColumnSchema) {
-        returnColumns.unshift({
-          align: rowSelectionColumnSchema.align,
-          width: 50,
-          fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
-          title: (
-            <div className={styles['jfe-drip-table-column-title-selection']}>
-              <Checkbox
-                checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
-                onChange={(e) => {
-                  const selectedRowKeys = indexValue(e.target, 'checked')
-                    ? rcTableDataSource.map(d => d.record[rowKey] as React.Key)
-                    : [];
-                  const selectedRows = rcTableDataSource
-                    .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
-                    .map(d => tableInfo.dataSource[d.index]);
-                  setTableState({ selectedRowKeys });
-                  tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
-                }}
-              />
-            </div>
-          ),
-          render: (_, row) => (
-            <div className={styles['jfe-drip-table-column-selection']}>
-              <Checkbox
-                checked={tableState.selectedRowKeys.includes(row.record[rowKey] as React.Key)}
-                onChange={(e) => {
-                  const selectedRowKeys = tableState.selectedRowKeys.filter(k => k !== row.record[rowKey]);
-                  if (indexValue(e.target, 'checked')) {
-                    selectedRowKeys.push(row.record[rowKey] as React.Key);
-                  }
-                  const selectedRows = rcTableDataSource
-                    .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
-                    .map(d => tableInfo.dataSource[d.index]);
-                  setTableState({ selectedRowKeys });
-                  tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
-                }}
-                disabled={!(tableProps?.rowSelectable?.(row.record, row.index, tableInfo) ?? true)}
-              />
-            </div>
-          ),
+        schemaColumns.unshift({
+          schema: rowSelectionColumnSchema,
+          column: {
+            align: rowSelectionColumnSchema.align,
+            width: 50,
+            fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
+            title: (
+              <div className={styles['jfe-drip-table-column-title-selection']}>
+                <Checkbox
+                  checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
+                  onChange={(e) => {
+                    const selectedRowKeys = indexValue(e.target, 'checked')
+                      ? rcTableDataSource.map(d => d.record[rowKey] as React.Key)
+                      : [];
+                    const selectedRows = rcTableDataSource
+                      .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
+                      .map(d => tableInfo.dataSource[d.index]);
+                    setTableState({ selectedRowKeys });
+                    tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
+                  }}
+                />
+              </div>
+            ),
+            render: (_, row) => (
+              <div className={styles['jfe-drip-table-column-selection']}>
+                <Checkbox
+                  checked={tableState.selectedRowKeys.includes(row.record[rowKey] as React.Key)}
+                  onChange={(e) => {
+                    const selectedRowKeys = tableState.selectedRowKeys.filter(k => k !== row.record[rowKey]);
+                    if (indexValue(e.target, 'checked')) {
+                      selectedRowKeys.push(row.record[rowKey] as React.Key);
+                    }
+                    const selectedRows = rcTableDataSource
+                      .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
+                      .map(d => tableInfo.dataSource[d.index]);
+                    setTableState({ selectedRowKeys });
+                    tableProps.onSelectionChange?.(selectedRowKeys, selectedRows, tableInfo);
+                  }}
+                  disabled={!(tableProps?.rowSelectable?.(row.record, row.index, tableInfo) ?? true)}
+                />
+              </div>
+            ),
+          },
         });
       }
       if (rowDraggableColumnSchema) {
-        returnColumns.unshift({
-          align: 'center',
-          width: 50,
-          fixed: returnColumns[0]?.fixed === 'left' || returnColumns[0]?.fixed === true ? 'left' : void 0,
-          render: (_, row) => (
-            <div
-              className={classNames(styles['jfe-drip-table-column-draggable-row'], {
-                [styles['jfe-drip-table-column-draggable-row--drag-in']]: row.index === dragInIndex,
-              })}
-              onDrop={(e) => {
-                if (e.dataTransfer.getData('type') === `drip-table-draggable-row--${tableInfo.schema.id}`) {
-                  const sourceIndex = Number.parseInt(e.dataTransfer.getData('index'), 10);
-                  if (sourceIndex !== row.index) {
-                    const ds = [...tableProps.dataSource];
-                    const absSourceIndex = sourceIndex;
-                    const absTargetIndex = row.index;
-                    ds.splice(absSourceIndex, 1);
-                    ds.splice(absTargetIndex, 0, tableProps.dataSource[absSourceIndex]);
-                    tableProps.onDataSourceChange?.(ds, tableInfo);
-                  }
-                  setDragInIndex(-1);
-                  e.preventDefault();
-                }
-              }}
-              onDragEnter={(e) => { setDragInIndex(row.index); e.preventDefault(); }}
-              onDragLeave={(e) => { e.preventDefault(); }}
-              onDragOver={(e) => { e.preventDefault(); }}
-            >
+        schemaColumns.unshift({
+          schema: rowDraggableColumnSchema,
+          column: {
+            align: 'center',
+            width: 50,
+            fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
+            render: (_, row) => (
               <div
-                className={styles['jfe-drip-table-column-draggable-row__draggable']}
-                draggable
-                onDragStart={(e) => {
-                  e.dataTransfer.effectAllowed = 'move';
-                  e.dataTransfer.setData('type', `drip-table-draggable-row--${tableInfo.schema.id}`);
-                  e.dataTransfer.setData('index', String(row.index));
-                  e.dataTransfer.setDragImage(e.currentTarget.parentElement?.parentElement?.parentElement || e.currentTarget, 0, 0);
+                className={classNames(styles['jfe-drip-table-column-draggable-row'], {
+                  [styles['jfe-drip-table-column-draggable-row--drag-in']]: row.index === dragInIndex,
+                })}
+                onDrop={(e) => {
+                  if (e.dataTransfer.getData('type') === `drip-table-draggable-row--${tableInfo.schema.id}`) {
+                    const sourceIndex = Number.parseInt(e.dataTransfer.getData('index'), 10);
+                    if (sourceIndex !== row.index) {
+                      const ds = [...tableProps.dataSource];
+                      const absSourceIndex = sourceIndex;
+                      const absTargetIndex = row.index;
+                      ds.splice(absSourceIndex, 1);
+                      ds.splice(absTargetIndex, 0, tableProps.dataSource[absSourceIndex]);
+                      tableProps.onDataSourceChange?.(ds, tableInfo);
+                    }
+                    setDragInIndex(-1);
+                    e.preventDefault();
+                  }
                 }}
-                onDragEnd={() => { setDragInIndex(-1); }}
+                onDragEnter={(e) => { setDragInIndex(row.index); e.preventDefault(); }}
+                onDragLeave={(e) => { e.preventDefault(); }}
+                onDragOver={(e) => { e.preventDefault(); }}
               >
-                <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
+                <div
+                  className={styles['jfe-drip-table-column-draggable-row__draggable']}
+                  draggable
+                  onDragStart={(e) => {
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('type', `drip-table-draggable-row--${tableInfo.schema.id}`);
+                    e.dataTransfer.setData('index', String(row.index));
+                    e.dataTransfer.setDragImage(e.currentTarget.parentElement?.parentElement?.parentElement || e.currentTarget, 0, 0);
+                  }}
+                  onDragEnd={() => { setDragInIndex(-1); }}
+                >
+                  <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
+                </div>
               </div>
-            </div>
-          ),
+            ),
+          },
         });
       }
-      if (returnColumns.length === 0) {
-        return returnColumns;
+      if (schemaColumns.length === 0) {
+        return [];
       }
       // 整行自定义插槽
       if (tableInfo.schema.rowSlotKey) {
         const rowSlotKey = tableInfo.schema.rowSlotKey;
         {
-          const render = returnColumns[0].render;
-          returnColumns[0].render = (o, row, index) => {
+          const render = schemaColumns[0].column.render;
+          schemaColumns[0].column.render = (o, row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               const Slot = tableProps.slots?.[slotType] || tableProps.slots?.default;
@@ -713,27 +716,27 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             }
             return render?.(o, row, index);
           };
-          returnColumns[0].onCell = (row, index) => {
+          schemaColumns[0].column.onCell = (row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               return {
-                colSpan: returnColumns.length,
+                colSpan: schemaColumns.length,
                 className: styles['jfe-drip-table--slot'],
               };
             }
             return {};
           };
         }
-        for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
-          const render = returnColumns[columnIndex].render;
-          returnColumns[columnIndex].render = (o, row, index) => {
+        for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
+          const render = schemaColumns[columnIndex].column.render;
+          schemaColumns[columnIndex].column.render = (o, row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               return null;
             }
             return render?.(o, row, index);
           };
-          returnColumns[columnIndex].onCell = (row, index) => {
+          schemaColumns[columnIndex].column.onCell = (row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               return {
@@ -748,8 +751,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       // 行头尾插槽
       if (tableProps.schema.rowHeader || tableProps.schema.rowFooter) {
         {
-          const render = returnColumns[0].render;
-          returnColumns[0].render = (o, row, index) => {
+          const render = schemaColumns[0].column.render;
+          const columnKey = schemaColumns[0].schema.key;
+          schemaColumns[0].column.render = (o, row, index) => {
             if (row.type === 'header' && tableProps.schema.rowHeader) {
               return (
                 <SlotRender
@@ -760,6 +764,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   setTableState={setTableState}
                   record={row.record}
                   recordIndex={row.index}
+                  columnKey={columnKey}
                 />
               );
             }
@@ -778,25 +783,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             }
             return render?.(o, row, index);
           };
-          returnColumns[0].onCell = (row, index) => {
+          schemaColumns[0].column.onCell = (row, index) => {
             if ((row.type === 'header' && tableProps.schema.rowHeader) || (row.type === 'footer' && tableProps.schema.rowFooter)) {
               return {
-                colSpan: returnColumns.length,
+                colSpan: schemaColumns.length,
                 className: styles['jfe-drip-table--slot'],
               };
             }
             return {};
           };
         }
-        for (let columnIndex = 1; columnIndex < returnColumns.length; columnIndex++) {
-          const render = returnColumns[columnIndex].render;
-          returnColumns[columnIndex].render = (o, row, index) => {
+        for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
+          const render = schemaColumns[columnIndex].column.render;
+          schemaColumns[columnIndex].column.render = (o, row, index) => {
             if (row.type === 'header' || row.type === 'footer') {
               return null;
             }
             return render?.(o, row, index);
           };
-          returnColumns[columnIndex].onCell = (row, index) => {
+          schemaColumns[columnIndex].column.onCell = (row, index) => {
             if (row.type === 'header' || row.type === 'footer') {
               return {
                 colSpan: 0,
@@ -807,7 +812,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           };
         }
       }
-      return returnColumns.map((column, i) => hookColumRender(column, tableInfo, columnsBaseSchema[i], extraProps));
+      return schemaColumns.map((sc, i) => hookColumRender(sc.column, tableInfo, sc.schema, extraProps));
     },
     [
       dragInIndex,
@@ -956,7 +961,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
       cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps<RecordType, ExtraOptions>['additionalProps'] }) => {
-        const dataIndex = additionalProps?.columnSchema.dataIndex;
+        const columnSchema = additionalProps?.columnSchema;
+        const dataIndex = columnSchema?.dataIndex;
+        const columnTitle = columnSchema ? finalizeColumnTitle(columnSchema) : '';
         return (
           <th {...wrapperProps}>
             <HeaderCell
@@ -982,7 +989,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 : void 0
               }
             >
-              { wrapperProps.children }
+              { columnTitle ? wrapperProps.children : void 0 }
             </HeaderCell>
           </th>
         );
