@@ -86,9 +86,10 @@ const EditableTableFooter = <
       if (Slot) {
         return (
           <Slot
-            {...config.props}
-            className={classNames(styles['generic-render-slot-element'], typeof config.props?.className === 'string' ? config.props.className : '')}
+            className={classNames(styles['generic-render-slot-element'], config.class)}
+            style={config.style}
             slotType={config.slot}
+            data={config.data}
             driver={props.driver}
             ext={props.ext}
             schema={getSchemaValue(context) as unknown as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}

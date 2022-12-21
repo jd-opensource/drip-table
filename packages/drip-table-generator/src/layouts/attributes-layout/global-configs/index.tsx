@@ -81,11 +81,6 @@ const GlobalConfigForm = <
         if (headerItem.type === 'search') {
           headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
         }
-        if (headerItem.type === 'slot') {
-          Object.keys(headerItem.props || {}).forEach((key) => {
-            headerItem[key] = headerItem.props?.[key];
-          });
-        }
       }
       formData['header.items'] = headerElements;
     }
@@ -113,11 +108,6 @@ const GlobalConfigForm = <
         }
         if (headerItem.type === 'search') {
           headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
-        }
-        if (headerItem.type === 'slot') {
-          Object.keys(headerItem.props || {}).forEach((key) => {
-            headerItem[key] = headerItem.props?.[key];
-          });
         }
       }
       formData['rowHeader.items'] = rowHeaderElements;
