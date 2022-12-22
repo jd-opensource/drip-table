@@ -33,7 +33,7 @@ export default class Highlight extends React.PureComponent<HighlightProps> {
     const contents: ContentPart[] = [];
     let { content, keywords } = this.props;
     keywords = keywords
-      .filter(kw => kw)
+      .filter(Boolean)
       .sort((s1, s2) => s2.length - s1.length);
     if (keywords.length > 0) {
       while (content) {

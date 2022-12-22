@@ -273,7 +273,7 @@ const SlotRender = <
   const [searchKey, setSearchKey] = React.useState<SearchSlotElementSchema['searchKeyDefaultValue']>(
     props.schema.elements
       ?.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : ''))
-      .find(s => s),
+      .find(Boolean),
   );
 
   const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
@@ -342,7 +342,7 @@ const SlotRender = <
             schema={tableProps.schema}
             ext={tableProps.ext}
             dataSource={tableProps.dataSource}
-            columnIndex={columnIndex !== -1 ? columnIndex : void 0}
+            columnIndex={columnIndex === -1 ? void 0 : columnIndex}
             record={props.record}
             recordIndex={props.recordIndex}
             onSearch={(searchParams) => { tableProps.onSearch?.(searchParams, tableInfo); }}
@@ -472,7 +472,7 @@ const SlotRender = <
               }}
               span={typeof item.span === 'string' ? void 0 : item.span}
             >
-              { item.visible !== false ? renderColumnContent(item) : null }
+              { item.visible === false ? null : renderColumnContent(item) }
             </Col>
           ))
         }

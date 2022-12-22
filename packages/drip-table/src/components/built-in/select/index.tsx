@@ -21,45 +21,75 @@ type LabeledOptions = {
   disabled?: boolean | string;
 }
 export type DTCSelectColumnSchema = DripTableColumnSchema<'select', {
-  /** 允许清空值 */
+  /**
+   * 允许清空值
+   */
   allowClear?: boolean;
-  /** 展示边框，默认为 true */
+  /**
+   * 展示边框，默认为 true
+   */
   bordered?: boolean;
   style?: React.CSSProperties;
-  /** 多选和标签模式 */
+  /**
+   * 多选和标签模式
+   */
   mode?: 'multiple' | 'tags';
-  /** 暗纹提示 */
+  /**
+   * 暗纹提示
+   */
   placeholder?: string;
-  /** 弹出框位置 */
+  /**
+   * 弹出框位置
+   */
   placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
-  /** 尺寸大小 */
+  /**
+   * 尺寸大小
+   */
   size?: 'large' | 'middle' | 'small';
   /**
    * 值回显强制与数据绑定，默认为true
    */
   bindValue?: boolean;
-  /** 展示箭头，默认为 true */
+  /**
+   * 展示箭头，默认为 true
+   */
   showArrow?: boolean;
-  /** 允许搜索，默认为 false */
+  /**
+   * 允许搜索，默认为 false
+   */
   showSearch?: boolean;
-  /** 事件名，给用户区分事件用 */
+  /**
+   * 事件名，给用户区分事件用
+   */
   event?: string;
-  /** 是否禁用，给用户区分事件用 */
+  /**
+   * 是否禁用，给用户区分事件用
+   */
   disabled?: string | boolean;
-  /** 默认值 */
+  /**
+   * 默认值
+   */
   defaultValue?: string | number | (string | number)[];
-  /** 自定义options */
+  /**
+   * 自定义options
+   */
   options?: LabeledOptions[];
-  /** 从接口请求拿取 options */
+  /**
+   * 从接口请求拿取 options
+   */
   url?: string;
-  /** 接口请求配置，目前仅支持 JSON 格式 */
+  /**
+   * 接口请求配置，目前仅支持 JSON 格式
+   */
   request?: {
     method: 'GET' | 'POST';
     headers?: HeadersInit;
     credentials?: 'include' | 'same-origin' | 'omit';
     body?: string | Record<string, unknown>;
   };
-  /** 接口返回数据格式配置, dataIndex 和 mapper 二者选其一 */
+  /**
+   * 接口返回数据格式配置, dataIndex 和 mapper 二者选其一
+   */
   response?: {
     dataIndex?: string | number | (string | number)[];
     mapper?: string;

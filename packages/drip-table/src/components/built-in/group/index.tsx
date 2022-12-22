@@ -22,19 +22,33 @@ import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
 
 export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> = DripTableColumnSchema<'group', {
-  /** 布局配置：水平排列对齐方式 */
+  /**
+   * 布局配置：水平排列对齐方式
+   */
   horizontalAlign?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
-  /** 布局配置：垂直排列对齐方式 */
+  /**
+   * 布局配置：垂直排列对齐方式
+   */
   verticalAlign?: 'top' | 'middle' | 'bottom';
-  /** 布局配置：每行列数 */
+  /**
+   * 布局配置：每行列数
+   */
   layout: number[];
-  /** 布局配置：行列间隔 */
+  /**
+   * 布局配置：行列间隔
+   */
   gutter?: [number, number];
-  /** 布局配置：是否自动换行 */
+  /**
+   * 布局配置：是否自动换行
+   */
   wrap?: boolean;
-  /** 布局配置：列偏移 */
+  /**
+   * 布局配置：列偏移
+   */
   offset?: number[];
-  /** 每个栅格栏的配置 */
+  /**
+   * 每个栅格栏的配置
+   */
   items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[];
 }>;
 

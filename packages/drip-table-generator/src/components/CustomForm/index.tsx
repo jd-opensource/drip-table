@@ -70,7 +70,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     let obj: { [key: string]: unknown } = {};
     // 注入 defaultValue
     this.props.configs.forEach((item) => {
-      if (typeof item.default !== 'undefined' && this.visible(item)) { obj[item.name] = item.default; }
+      if (item.default !== void 0 && this.visible(item)) { obj[item.name] = item.default; }
     });
     if (material) {
       Object.keys(material)

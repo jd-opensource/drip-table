@@ -103,7 +103,7 @@ const Toolbar = <
                 const themeStyle = typeof theTheme?.style === 'function' ? theTheme.style(globalConfigs as NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) : theTheme?.style;
                 setState({
                   globalConfigs: Object.assign({}, globalConfigs, themeStyle),
-                  columns: [...(columns as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns']).map((column, index) => ({ ...column, ...theTheme?.columnStyle?.(column, index) }))] as DripTableGeneratorContext['columns'],
+                  columns: (columns as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns']).map((column, index) => ({ ...column, ...theTheme?.columnStyle?.(column, index) })) as DripTableGeneratorContext['columns'],
                 });
               }}
             />

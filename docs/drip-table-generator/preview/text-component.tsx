@@ -10,11 +10,17 @@ import { DripTableColumnSchema, DripTableComponentProps, DripTableRecordTypeBase
 import React from 'react';
 
 export type TextColumnSchema = DripTableColumnSchema<'custom::TextComponent', {
-  /** 字体大小 */
+  /**
+   * 字体大小
+   */
   fontSize?: string;
-  /** 兜底文案 */
+  /**
+   * 兜底文案
+   */
   noDataValue?: string;
-  /** 数据处理 */
+  /**
+   * 数据处理
+   */
   dataProcess?: string;
 }>;
 
@@ -34,8 +40,8 @@ export default class TextComponent<RecordType extends DripTableRecordTypeBase> e
   public render(): JSX.Element {
     const { schema, data } = this.props;
     const { dataIndex,
-      options: { noDataValue, dataProcess } } = schema;
-    const value = indexValue(data, dataIndex, '', dataProcess);
+      options: { noDataValue } } = schema;
+    const value = indexValue(data, dataIndex, '');
     const contentStr = `${value || noDataValue}`;
     return (
       <div style={{ fontSize: this.fontSize, color: '#6d0fff' }}>

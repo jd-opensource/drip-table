@@ -22,7 +22,9 @@ import { preventEvent } from '../utils';
 import styles from './index.module.less';
 
 export type DTCDateColumnSchema = DripTableColumnSchema<'date-picker', {
-  /** 展示模式：单日期选择、日期范围选择 */
+  /**
+   * 展示模式：单日期选择、日期范围选择
+   */
   mode: 'basic' | 'range';
   /**
    * 范围日期配置

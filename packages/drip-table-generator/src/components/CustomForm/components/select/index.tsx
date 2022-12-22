@@ -71,7 +71,7 @@ export default class SelectComponent extends React.PureComponent<Props> {
       && typeof config.items === 'object'
       && (config.items as DataSchema).type === 'number'
     ) {
-      return (value as string[]).map(item => Number(item));
+      return (value as string[]).map(Number);
     }
     return value;
   }

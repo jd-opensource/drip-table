@@ -179,7 +179,7 @@ const EditableGroupComponent = <
                           e.stopPropagation();
                           const path = isChecked(currentCheckedIndex) ? [] : [...props.parentIndex || [], currentCheckedIndex];
                           setState({
-                            currentColumn: !props.isCurrentColumn ? columns.find(item => item.key === props.column?.key) : currentColumn,
+                            currentColumn: props.isCurrentColumn ? currentColumn : columns.find(item => item.key === props.column?.key),
                             currentColumnPath: path,
                             drawerType: isChecked(currentCheckedIndex) ? 'column' : 'column-item',
                           });
