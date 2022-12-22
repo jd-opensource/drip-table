@@ -54,7 +54,7 @@ const HeaderCell = <
   const header = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.header;
   const footer = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.footer;
   const { columnSchema, onFilterChange } = additionalProps;
-  const itemsCount = [header, props.children, footer].filter(_ => _).length;
+  const itemsCount = [header, props.children, footer].filter(Boolean).length;
   let justifyContent: 'center' | 'flex-end' | 'flex-start' | 'space-between' = 'flex-start';
   if (columnSchema.align === 'center') {
     justifyContent = itemsCount === 1 ? 'center' : 'space-between';

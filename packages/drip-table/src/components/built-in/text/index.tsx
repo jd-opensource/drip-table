@@ -103,11 +103,17 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    * 是否展示一键复制按钮
    */
   clipboard?: boolean;
-  /** 数据处理 */
+  /**
+   * 数据处理
+   */
   dataProcess?: string;
-  /** 禁用的数据处理 */
+  /**
+   * 禁用的数据处理
+   */
   disableFunc?: string;
-  /** 显隐的数据处理 */
+  /**
+   * 显隐的数据处理
+   */
   visibleFunc?: string;
 }>;
 
@@ -524,7 +530,12 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         onSuccess={() => { message.success('复制成功'); }}
         onError={() => { message.success('复制失败'); }}
       >
-        { /* DO NOT USE THE FUCKING ANTD!! */ }
+        {
+        /*
+         * TODO:
+         * DO NOT USE THE FUCKING ANTD!!
+         */
+        }
         <CopyOutlined />
       </Clipboard>
     );

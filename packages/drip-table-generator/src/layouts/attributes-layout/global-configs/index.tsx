@@ -238,10 +238,10 @@ const GlobalConfigForm = <
       Object.keys(props.slotsSchema).forEach((key) => {
         const configs = props.slotsSchema?.[key] || [];
         headerConfigItems.push(...configs
-          .map(config => (typeof config.visible === 'undefined' ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
+          .map(config => (config.visible === void 0 ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
           .filter(config => !headerConfigItems.some(item => item.name === config.name)));
         footerConfigItems.push(...configs
-          .map(config => (typeof config.visible === 'undefined' ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
+          .map(config => (config.visible === void 0 ? { ...config, visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.type === 'slot' && formData?.slot === key } : config))
           .filter(config => !headerConfigItems.some(item => item.name === config.name)));
       });
     }

@@ -49,7 +49,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     return columns;
   }, [tableInfo.schema]);
 
-  const CARDSIZE = tableInfo.schema.layout?.card?.rowSize ? tableInfo.schema.layout?.card?.rowSize : 0;
+  const CARDSIZE = tableInfo.schema.layout?.card?.rowSize || 0;
   const MARGIN = 2;
   const width = ((100 + MARGIN) / CARDSIZE) - MARGIN;
   return (

@@ -60,7 +60,9 @@ export type DataSchema =
   | ArrayDataSchema;
 
 export type DTGAttributeComponentProps = Record<string, unknown> & { style?: CSSProperties; className?: string };
-/** 组件属性的表单配置项 */
+/**
+ * 组件属性的表单配置项
+ */
 export type DTGComponentPropertySchema<
 ComponentType = string,
 ComponentProps extends DTGAttributeComponentProps = DTGAttributeComponentProps,
@@ -91,20 +93,32 @@ ComponentProps extends DTGAttributeComponentProps = DTGAttributeComponentProps,
   validate?: (value?: unknown, formData?: Record<string, unknown>) => string | Promise<string> | string;
 }
 
-/** 组件配置项 */
+/**
+ * 组件配置项
+ */
 export interface DripTableComponentAttrConfig {
-  /** 组件类型 */
+  /**
+   * 组件类型
+   */
   'ui:type': string;
   type: 'string' | 'number' | 'boolean' | 'object' | 'integer' | 'null' | 'array';
   fieldKey?: string;
-  /** 模板名称 | 表头名称 */
+  /**
+   * 模板名称 | 表头名称
+   */
   title: string;
-  /** 组件所属分组 */
+  /**
+   * 组件所属分组
+   */
   group: string;
   dataIndex?: (string | number)[];
-  /** 属性表单配置 - 用于生成column的表单 */
+  /**
+   * 属性表单配置 - 用于生成column的表单
+   */
   attrSchema: DTGComponentPropertySchema[];
-  /** 展示用icon */
+  /**
+   * 展示用icon
+   */
   icon?: React.ReactSVG | string;
 }
 
@@ -121,38 +135,70 @@ export interface DripTableGeneratorProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableProps<RecordType, ExtraOptions> {
-  /** 全局样式 */
+  /**
+   * 全局样式
+   */
   style?: CSSProperties;
-  /** 样式主题驱动, 展示组件以及透传给 drip-table 用 */
+  /**
+   * 样式主题驱动, 展示组件以及透传给 drip-table 用
+   */
   driver: DripTableDriver;
-  /** 展示组件栏 */
+  /**
+   * 展示组件栏
+   */
   showComponentLayout?: boolean;
-  /** 组件栏自定义样式 */
+  /**
+   * 组件栏自定义样式
+   */
   componentLayoutStyle?: CSSProperties;
-  /** 右侧属性栏展示形式 */
+  /**
+   * 右侧属性栏展示形式
+   */
   rightLayoutMode?: 'drawer' | 'fixed';
-  /** 右侧属性栏自定义样式 */
+  /**
+   * 右侧属性栏自定义样式
+   */
   rightLayoutStyle?: CSSProperties;
-  /** 展示工具栏 */
+  /**
+   * 展示工具栏
+   */
   showToolLayout?: boolean;
-  /** 工具栏样式 */
+  /**
+   * 工具栏样式
+   */
   toolbarStyle?: CSSProperties;
-  /** 默认主题 */
+  /**
+   * 默认主题
+   */
   defaultTheme?: string;
-  /** 自定义主题选项 */
+  /**
+   * 自定义主题选项
+   */
   customThemeOptions?: {
-    /** 主题选项中文名 */
+    /**
+     * 主题选项中文名
+     */
     label: string | React.ReactNode;
-    /** 主题选项英文名，也是主题的唯一键值 */
+    /**
+     * 主题选项英文名，也是主题的唯一键值
+     */
     value: string;
-    /** drip-table 的 schema 配置: 全局配置以及全局样式 */
+    /**
+     * drip-table 的 schema 配置: 全局配置以及全局样式
+     */
     style: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions> | ((schema: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) => NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>);
-    /** drip-table 的 schema 配置: 设置列的样式 */
+    /**
+     * drip-table 的 schema 配置: 设置列的样式
+     */
     columnStyle?: (column: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number], index: number) => Partial<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number]>;
-    /** 主题缩略图 */
+    /**
+     * 主题缩略图
+     */
     image: string;
   }[];
-  /** 默认打开编辑模式还是预览模式 */
+  /**
+   * 默认打开编辑模式还是预览模式
+   */
   defaultMode?: 'edit' | 'preview';
   dataFields?: string[];
   mockDataSource?: boolean;

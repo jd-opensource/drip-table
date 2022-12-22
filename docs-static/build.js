@@ -36,39 +36,43 @@ const copyRecursiveSync = (src, dest) => {
   }
 };
 
-try {
-  // HTML
-  const html = fs.readFileSync(path.join(srcPath, './index.html'), 'utf8');
-  htmlMinifierTerser.minify(html, {
-    collapseInlineTagWhitespace: true,
-    collapseWhitespace: true,
-    noNewlinesBeforeTagClose: true,
-    preserveLineBreaks: true,
-    removeAttributeQuotes: true,
-    removeComments: true,
-    removeEmptyAttributes: true,
-    removeRedundantAttributes: true,
-    sortAttributes: true,
-    sortClassName: true,
-    minifyJS: true,
-  })
-    .then((res) => {
-      fs.writeFileSync(path.join(distPath, 'index.html'), res.replace(/\n/uig, ''));
-      return res;
+const main = () => {
+  try {
+    // HTML
+    const html = fs.readFileSync(path.join(srcPath, './index.html'), 'utf8');
+    htmlMinifierTerser.minify(html, {
+      collapseInlineTagWhitespace: true,
+      collapseWhitespace: true,
+      noNewlinesBeforeTagClose: true,
+      preserveLineBreaks: true,
+      removeAttributeQuotes: true,
+      removeComments: true,
+      removeEmptyAttributes: true,
+      removeRedundantAttributes: true,
+      sortAttributes: true,
+      sortClassName: true,
+      minifyJS: true,
     })
-    .catch((error) => { throw error; });
-  // CSS
-  const css = fs.readFileSync(path.join(srcPath, './index.less'), 'utf8');
-  less.render(css, {
-    compress: true,
-  })
-    .then((res) => {
-      fs.writeFileSync(path.join(distPath, 'index.css'), res.css);
-      return res;
+      .then((res) => {
+        fs.writeFileSync(path.join(distPath, 'index.html'), res.replace(/\n/uig, ''));
+        return res;
+      })
+      .catch((error) => { throw error; });
+    // CSS
+    const css = fs.readFileSync(path.join(srcPath, './index.less'), 'utf8');
+    less.render(css, {
+      compress: true,
     })
-    .catch((error) => { throw error; });
-  // ASSETS
-  copyRecursiveSync(path.join(__dirname, './assets'), path.join(distPath, './assets'));
-} catch (error) {
-  console.error(error);
-}
+      .then((res) => {
+        fs.writeFileSync(path.join(distPath, 'index.css'), res.css);
+        return res;
+      })
+      .catch((error) => { throw error; });
+    // ASSETS
+    copyRecursiveSync(path.join(__dirname, './assets'), path.join(distPath, './assets'));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+main();

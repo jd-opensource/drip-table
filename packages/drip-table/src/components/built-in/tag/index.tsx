@@ -13,21 +13,37 @@ import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/
 import { DripTableComponentProps } from '../component';
 
 export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
-  /** 字体颜色 */
+  /**
+   * 字体颜色
+   */
   color?: string | 'success' | 'processing' | 'error' | 'default' | 'warning';
-  /** 边框颜色 */
+  /**
+   * 边框颜色
+   */
   borderColor?: string;
-  /** 背景色 */
+  /**
+   * 背景色
+   */
   backgroundColor?: string;
-  /** 圆角半径 */
+  /**
+   * 圆角半径
+   */
   radius?: number;
-  /** 前缀 */
+  /**
+   * 前缀
+   */
   prefix?: string;
-  /** 后缀 */
+  /**
+   * 后缀
+   */
   suffix?: string;
-  /** 静态文案 */
+  /**
+   * 静态文案
+   */
   content?: string;
-  /** 枚举 */
+  /**
+   * 枚举
+   */
   tagOptions?: {
     label: string;
     value: string | number;
@@ -53,7 +69,9 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
       prefix: { type: 'string' },
       suffix: { type: 'string' },
       content: { type: 'string' },
-      /** 枚举 */
+      /**
+       * 枚举
+       */
       tagOptions: {
         type: 'array',
         items: {

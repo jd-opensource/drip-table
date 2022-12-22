@@ -33,19 +33,27 @@ export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
     event?: string;
     target?: string;
     disabled?: boolean | string;
-    /** 显隐的数据处理 */
+    /**
+     * 显隐的数据处理
+     */
     visibleFunc?: string;
   }[];
-  /** 多选模式下最大平铺展示数量，如果配置，其余均通过更多收起 */
+  /**
+   * 多选模式下最大平铺展示数量，如果配置，其余均通过更多收起
+   */
   maxTiledCount?: number;
   dropdownText?: string;
   textColor?: string;
   suffixIcon?: string;
   trigger?: 'hover' | 'click';
   placement?: 'bottom' | 'bottomLeft' | 'bottomRight' | 'top' | 'topLeft' | 'topRight';
-  /** 禁用的数据处理 */
+  /**
+   * 禁用的数据处理
+   */
   disableFunc?: string;
-  /** 显隐的数据处理 */
+  /**
+   * 显隐的数据处理
+   */
   visibleFunc?: string;
 }>;
 

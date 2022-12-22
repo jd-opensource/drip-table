@@ -81,7 +81,7 @@ const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefi
   // 列 hover 样式
   if (columnKey) {
     const columnHoverStyle = parseCSS(el.dataset.columnHoverStyle || '');
-    const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
+    const columnHoverClasses = (el.dataset.columnHoverClass ?? '').split(' ').map(s => s.trim()).filter(Boolean);
     if (hoverColumnKey === columnKey) {
       if (columnHoverStyle) {
         Object.assign(style, columnHoverStyle);
@@ -94,7 +94,7 @@ const updateCellElementStyle = (el: HTMLElement, hoverColumnKey: string | undefi
   // 行 hover 样式
   if (rowKey) {
     const rowHoverStyle = parseCSS(el.dataset.rowHoverStyle || '');
-    const rowHoverClasses = (el.dataset.rowHoverClass ?? '').split(' ').map(s => s.trim()).filter(s => s);
+    const rowHoverClasses = (el.dataset.rowHoverClass ?? '').split(' ').map(s => s.trim()).filter(Boolean);
     if (hoverRowKey === rowKey) {
       if (rowHoverStyle) {
         Object.assign(style, rowHoverStyle);
@@ -225,7 +225,7 @@ export const columnRenderGenerator = <
     };
     type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number }) => unknown;
     const generatePropsTranslator = (translatorSchema: unknown): PropsTranslator => {
-      if (typeof translatorSchema === 'undefined') {
+      if (translatorSchema === void 0) {
         return (v, c) => v;
       }
       if (typeof translatorSchema === 'string') {
@@ -460,7 +460,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const dataSource = React.useMemo(
     () => tableProps.dataSource.map((item, index) => ({
       ...item,
-      [rowKey]: typeof item[rowKey] === 'undefined' ? index : item[rowKey],
+      [rowKey]: item[rowKey] === void 0 ? index : item[rowKey],
     })),
     [tableProps.dataSource, rowKey],
   );

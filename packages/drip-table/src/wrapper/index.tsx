@@ -171,7 +171,7 @@ const DripTableWrapper: <
         [k, props[k], props.ajv],
       )),
   ]
-    .filter(s => s)
+    .filter(Boolean)
     .join('\n');
   if (errorMessage) {
     return (

@@ -13,7 +13,9 @@ import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
 
 export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
-  /** 展示模式：单按钮、多按钮 */
+  /**
+   * 展示模式：单按钮、多按钮
+   */
   mode?: 'single' | 'multiple';
   label?: string;
   buttonType?: 'primary' | 'dashed' | 'text' | 'link';

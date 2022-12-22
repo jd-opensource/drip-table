@@ -22,7 +22,7 @@ export interface CustomComponentSampleProps extends DripTableComponentProps<Samp
 interface CustomComponentSampleState { }
 
 export default class CustomComponentSample extends React.PureComponent<CustomComponentSampleProps, CustomComponentSampleState> {
-  public static componentName: 'CustomComponentSample' = 'CustomComponentSample';
+  public static componentName = 'CustomComponentSample' as const;
   public static schema: SchemaObject = {
     type: 'object',
     properties: {

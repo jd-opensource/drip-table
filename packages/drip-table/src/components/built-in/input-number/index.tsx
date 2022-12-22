@@ -17,9 +17,13 @@ export type DTCInputNumberColumnSchema = DripTableColumnSchema<'input-number', {
   min?: number;
   max?: number;
   style?: React.CSSProperties;
-  /** 展示边框，默认为 true */
+  /**
+   * 展示边框，默认为 true
+   */
   bordered?: boolean;
-  /** 暗纹提示 */
+  /**
+   * 暗纹提示
+   */
   placeholder?: string;
   defaultValue?: number;
   disabled?: boolean;
@@ -27,7 +31,9 @@ export type DTCInputNumberColumnSchema = DripTableColumnSchema<'input-number', {
    * 是否编辑态
    */
   isEdit?: boolean;
-  /** 输入框大小 */
+  /**
+   * 输入框大小
+   */
   size?: 'large' | 'middle' | 'small';
 }>;
 
