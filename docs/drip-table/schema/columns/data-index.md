@@ -3,7 +3,7 @@ order: 3
 title: 列索引
 ---
 
-# 列索引 columns.dataIndex
+## 列索引 columns.dataIndex
 
 - 描述：列数据在数据项中对应的路径，支持通过数组查询嵌套路径
 - 类型：`string | string[]`

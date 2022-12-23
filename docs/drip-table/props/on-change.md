@@ -3,7 +3,7 @@ order: 32
 title: 变动触发
 ---
 
-# 变动触发 onChange
+## 变动触发 onChange
 
 - 描述：过滤器、分页器 等配置变化
 - 类型：

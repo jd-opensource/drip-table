@@ -3,7 +3,7 @@ order: 21
 title: 组件类型
 ---
 
-# 组件类型 columns.component
+## 组件类型 columns.component
 
 - 描述：组件类型标识符，自定义开发的业务组件以 `命名空间::组件名称` 格式填写；通过 [`components`](/drip-table/props/components) 属性传入组件库实现
 - 类型：`string`

@@ -3,7 +3,7 @@ order: 16
 title: 附加透传数据
 ---
 
-# 附加透传数据 ext
+## 附加透传数据 ext
 
 - 描述：自定义单元格组件附加透传数据，一般用于传递通用业务数据、环境变量
 - 类型：`NonNullable<ExtraOptions['CustomComponentExtraData']>`

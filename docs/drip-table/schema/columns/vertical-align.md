@@ -3,7 +3,7 @@ order: 12
 title: 垂直对齐
 ---
 
-# 垂直对齐 columns.verticalAlign
+## 垂直对齐 columns.verticalAlign
 
 - 描述：表格列垂直对齐
 - 类型：`'top' | 'middle' | 'bottom' | 'stretch'`

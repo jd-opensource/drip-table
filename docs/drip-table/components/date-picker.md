@@ -3,7 +3,7 @@ order: 8
 title: 日期组件
 ---
 
-# 日期组件 dataPicker
+## 日期组件 dataPicker
 
 用于选择单个日期或者日期番位。
 
@@ -12,6 +12,7 @@ title: 日期组件
 需要渲染时间戳或者对时间进行操作时，可使用日期组件。
 
 ## 代码演示
+
 ```jsx
 /**
  * transform: true

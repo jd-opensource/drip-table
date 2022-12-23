@@ -3,7 +3,7 @@ order: 1
 title: 插槽样式
 ---
 
-# 插槽样式 slot.style
+## 插槽样式 slot.style
 
 - 描述：插槽自定义样式
 - 类型：`React.CSSProperties`

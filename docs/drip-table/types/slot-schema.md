@@ -3,7 +3,7 @@ order: 2
 title: DripTableSlotSchema
 ---
 
-# DripTableSlotSchema
+## DripTableSlotSchema
 
 > 通用插槽组件渲染配置项
 

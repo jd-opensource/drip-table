@@ -3,7 +3,7 @@ order: 2
 title: 插槽配置
 ---
 
-# 插槽配置 slot.elements
+## 插槽配置 slot.elements
 
 - 描述：插槽展示元素配置
 - 类型：[`DripTableSlotElementSchema[]`](/drip-table/types/slot-schema)

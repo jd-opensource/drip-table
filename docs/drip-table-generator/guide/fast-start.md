@@ -3,7 +3,7 @@ order: 1
 title: 快速开始
 ---
 
-# 快速开始
+## 快速开始
 
 > 本篇主要介绍 `drip-table-generator` 的最基本的能力
 

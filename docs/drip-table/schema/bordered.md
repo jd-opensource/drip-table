@@ -3,7 +3,7 @@ order: 7
 title: 边框
 ---
 
-# 边框 bordered
+## 边框 bordered
 
 - 描述：是否展示表格边框
 - 类型：`boolean`

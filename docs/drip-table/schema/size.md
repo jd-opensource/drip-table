@@ -3,7 +3,7 @@ order: 12
 title: 大小
 ---
 
-# 表格大小 size
+## 表格大小 size
 
 - 描述：表格大小
 - 类型：`'small' | 'middle' | 'large' | 'default'`

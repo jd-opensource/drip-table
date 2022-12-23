@@ -3,7 +3,7 @@ order: 15
 title: 行展开渲染函数
 ---
 
-# 行展开渲染函数 expandedRowRender
+## 行展开渲染函数 expandedRowRender
 
 - 描述：行展开自定义渲染函数，需要配合 [`rowExpandable`](/drip-table/props/row-expandable) 使用
 - 类型：

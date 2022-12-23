@@ -3,7 +3,7 @@ order: 9
 title: 头部
 ---
 
-# 头部 header
+## 头部 header
 
 - 描述：表格头部展示配置
 - 类型：[`DripTableSlotSchema`](/drip-table/types/slot-schema)

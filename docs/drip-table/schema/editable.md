@@ -3,7 +3,7 @@ order: 17
 title: 可编辑
 ---
 
-# 可编辑 editable
+## 可编辑 editable
 
 - 描述：是否支持数据编辑
 - 类型：`boolean`

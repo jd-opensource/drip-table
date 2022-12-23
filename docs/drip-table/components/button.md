@@ -3,7 +3,7 @@ order: 5
 title: 按钮组件
 ---
 
-# 按钮组件 button
+## 按钮组件 button
 
 按钮用于开始一个即时操作。
 

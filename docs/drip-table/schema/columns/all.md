@@ -3,7 +3,7 @@ order: 0
 title: 目录
 ---
 
-# 列配置 columns
+## 列配置 columns
 
 - 描述：列定义
 - 类型：`(CustomColumnSchema | DripTableBuiltInColumnSchema)[]`

@@ -3,7 +3,7 @@ order: 1
 title: 基本用法
 ---
 
-# 基本用法
+## 基本用法
 
 > 本篇主要介绍 `drip-table-generator` 的基本能力以及常规情况下如何使用
 
