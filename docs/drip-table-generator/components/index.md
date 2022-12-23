@@ -1,6 +1,6 @@
 ---
-order: 2
-title: 内置组件
+order: 4
+title: 内置组件库
 ---
 
 ## 内置组件总览

@@ -1,4 +1,9 @@
-# customAttributeComponents
+---
+order: 3
+title: customAttributeComponents
+---
+
+## customAttributeComponents
 
 - 描述：自定义属性面板组件, 允许用户传入自定义代码来丰富属性控制面板的组件形式。
 - 类型：

@@ -15,11 +15,11 @@ title: API
 | showComponentLayout                | 是否展示组件栏                                  | `boolean`                  | `true`       | 否   |
 | showToolLayout                | 是否展示工具栏                                       | `boolean`                  | `true`       | 否   |
 | mockDataSource                | 属性栏是否展示表格数据输入框                           | `boolean`                  | `false`       | 否   |
-| schema                | 初始化载入的schema配置数据                                                           | [DripTableSchema](/drip-table/functions/api#driptableschema-参数)                  | -       | 否   |
+| schema                | 初始化载入的schema配置数据                                                           | [DripTableSchema](/drip-table/props/schema#driptableschema-参数)                  | -       | 否   |
 | dataSource                | 初始化载入的表格示例数据                                                           | `Record<string, unknown>[]`                  | -       | 否   |
 | dataFields                | 后端API默认的字段名                                                           | `string[]`                  | -       | 否   |
 | onExportSchema                | 导出配置回调                                                           | `(schema: DripTableSchema): void`                  | -       | 否   |
-| customComponents                | 自定义组件，透传至render                                                           | [DripTableProps['components']](/drip-table/functions/api)                  | -       | 否   |
+| customComponents                | 自定义组件，透传至render                                                           | [DripTableProps['components']](/drip-table/props/components)                  | -       | 否   |
 | customComponentPanel                | 自定义组件面板    | `{ mode: 'add' \| 'replace', components: DripTableComponentAttrConfig[] }`                  | -       | 否   |
 
 ### `DripTableComponentAttrConfig` 参数

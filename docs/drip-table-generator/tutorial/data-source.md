@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 title: 数据预览配置
 ---
 

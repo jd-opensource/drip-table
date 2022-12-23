@@ -1,4 +1,9 @@
-# onExportSchema
+---
+order: 8
+title: onExportSchema
+---
+
+## onExportSchema
 
 - 描述：导出表格 Schema
 - 类型：`(schema: DripTableSchema) => void`

@@ -1,4 +1,9 @@
-# noDataFeedBack
+---
+order: 7
+title: noDataFeedBack
+---
+
+## noDataFeedBack
 
 - 描述：自定义 Generator 无数据时的提示信息，`drip-table` 暂不支持
 - 类型：`string | ReactNode`

@@ -1,4 +1,9 @@
-# showToolLayout
+---
+order: 10
+title: showToolLayout
+---
+
+## showToolLayout
 
 - 描述：是否展示工具栏
 - 类型：`boolean`

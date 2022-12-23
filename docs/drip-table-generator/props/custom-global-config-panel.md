@@ -1,4 +1,9 @@
-# customGlobalConfigPanel
+---
+order: 2
+title: customGlobalConfigPanel
+---
+
+## customGlobalConfigPanel
 
 - 描述：自定义全局属性面板, 须注意的是当设置的属性为自定义全局属性，需要开启 `drip-table` 的 `ajv.additionalProperties` 选项，同样该属性支持在 `drip-table-generator` 的属性上透传。
 - 类型：
@@ -26,7 +31,7 @@ import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
-import { CustomGlobalConfigPanel } from '../preview/custom-global-settings';
+import { CustomGlobalConfigPanel } from '../demo/custom-global-settings';
 
 const schema = {
   columns: [

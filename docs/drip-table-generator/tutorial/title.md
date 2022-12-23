@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 3
 title: 表头自定义配置
 ---
 

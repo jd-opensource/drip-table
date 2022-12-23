@@ -1,6 +1,6 @@
 ---
-order: 1
-title: 基本用法
+order: 3
+title: 使用教程
 ---
 
 ## 基本用法
