@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 6
 title: 透传 Table 属性
 ---
 

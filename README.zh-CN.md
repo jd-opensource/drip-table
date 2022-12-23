@@ -179,7 +179,7 @@
 
 - 访问 <http://localhost:8000>
 - `drip-table` 示例路由：/drip-table/guide/basic-demo
-- `drip-table-generator` 示例路由：/drip-table-generator/preview
+- `drip-table-generator` 示例路由：/drip-table-generator/demo
 
 更多命令请查看 [DEVELOP](./DEVELOP.zh-CN.md) 。
 官网地址请访问 [drip-table](http://drip-table.jd.com/) 。

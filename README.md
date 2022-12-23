@@ -179,7 +179,7 @@ If you're interested in this project, you're welcome to create ✨[issue](https:
 
 - visit http://localhost:8000
 - `drip-table` demo page: /drip-table/guide/basic-demo
-- `drip-table-generator` demo page: /drip-table-generator/preview
+- `drip-table-generator` demo page: /drip-table-generator/demo
 
 For more commands, see [DEVELOP](./DEVELOP.md) .
 Please visit the official website address [drip-table](http://drip-table.jd.com/) 。

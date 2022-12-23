@@ -1,4 +1,9 @@
-# slotsSchema
+---
+order: 11
+title: slotsSchema
+---
+
+## slotsSchema
 
 - 描述：配置头部插槽组件的属性
 - 类型：`{ [componentType: string]: DTGComponentPropertySchema[]; }`

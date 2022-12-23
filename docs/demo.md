@@ -39,4 +39,4 @@ sidemenu: false
   }
 </style>
 
-<code src='./drip-table-generator/preview/sample.tsx'></code>
+<code src='./drip-table-generator/demo/demo.tsx'></code>

@@ -1,7 +1,7 @@
 ---
-order: 3
+order: 7
 title: 案例展示
 sidemenu: false
 ---
 
-<code src='./sample.tsx'></code>
+<code src='./demo.tsx'></code>

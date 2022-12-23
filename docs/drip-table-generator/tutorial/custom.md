@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 2
 title: 自定义属性面板
 ---
 
@@ -315,7 +315,7 @@ title: 自定义属性面板
 
   传入自定义组件，即业务组件，具体参数数据格式同 `DripTable` 的 `components` 属性。
 
-  详情可见[自定义组件库](/drip-table/functions/custom)。
+  详情可见[自定义组件库](/drip-table/props/components)。
 
 #### customComponentPanel
 

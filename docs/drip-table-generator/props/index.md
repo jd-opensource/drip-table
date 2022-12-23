@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 5
 title: 参数
 ---
 
@@ -36,4 +36,4 @@ title: 参数
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
 | [expandedRowRender](/drip-table/props/expanded-row-render) | 行展开自定义渲染函数 | × | [🔗 示例](/drip-table/props/expanded-row-render) |
 
-> tips: `driver`, `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 `drip-table`。
+> tips: `driver`, `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 [`drip-table`](/drip-table/props)。

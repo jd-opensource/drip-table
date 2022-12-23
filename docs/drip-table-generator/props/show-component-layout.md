@@ -1,4 +1,9 @@
-# showComponentLayout
+---
+order: 9
+title: showComponentLayout
+---
+
+## showComponentLayout
 
 - 描述：是否展示组件栏
 - 类型：`boolean`

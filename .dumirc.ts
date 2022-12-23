@@ -71,7 +71,7 @@ export default defineConfig({
         children: [
           { title: '使用指南', link: '/drip-table' },
           { title: '常见问题', link: '/drip-table/faq' },
-          { title: '案例展示', link: '/drip-table/sample' },
+          { title: '案例展示', link: '/drip-table/demo' },
           { title: '更新日志', link: '/drip-table/changelog' },
         ],
       },
@@ -81,7 +81,7 @@ export default defineConfig({
         children: [
           { title: '使用指南', link: '/drip-table-generator' },
           { title: '常见问题', link: '/drip-table-generator/faq' },
-          { title: '案例展示', link: '/drip-table-generator/preview' },
+          { title: '案例展示', link: '/drip-table-generator/demo' },
           { title: '更新日志', link: '/drip-table-generator/changelog' },
         ],
       },

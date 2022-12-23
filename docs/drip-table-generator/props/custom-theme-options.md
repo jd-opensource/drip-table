@@ -1,3 +1,8 @@
+---
+order: 4
+title: customThemeOptions
+---
+
 # 自定义主题配置
 
 - 描述：自定义主题样式和配置

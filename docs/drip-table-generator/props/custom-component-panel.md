@@ -1,4 +1,9 @@
-# customComponentPanel
+---
+order: 1
+title: customComponentPanel
+---
+
+## customComponentPanel
 
 - 描述：自定义组件属性面板
 - 类型：
@@ -58,7 +63,7 @@ import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator from "drip-table-generator";
 import React, { useState } from "react";
 
-import TextComponent from "../preview/text-component";
+import TextComponent from "../demo/text-component";
 
 const componentsPanelSetting: DripTableGeneratorProps["customComponentPanel"] = {
   mode: "replace",
