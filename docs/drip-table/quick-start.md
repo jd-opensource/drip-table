@@ -37,7 +37,7 @@ title: 快速开始
 
 1. 引入依赖
 
-    ```js
+    ```js | pure
     import React from 'react';
     import DripTable from 'drip-table';
     import 'drip-table/dist/index.css';
@@ -45,14 +45,14 @@ title: 快速开始
 
 2. 选择主题包并引入
 
-    ```js
+    ```js | pure
     import DripTableDriverAntDesign from 'drip-table-driver-antd';
     import 'antd/dist/antd.css';
     ```
 
 3. 创建组件实例
 
-    ```js
+    ```js | pure
     export default Demo = () => {
       return (
         <DripTable

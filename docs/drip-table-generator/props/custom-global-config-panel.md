@@ -16,7 +16,7 @@ type DripTableGeneratorPanel = {
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import 'antd/dist/antd.css';
+
 import 'drip-table/dist/index.css';
 import 'drip-table-generator/dist/index.css';
 
