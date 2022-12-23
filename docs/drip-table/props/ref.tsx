@@ -5,8 +5,6 @@
  * hideActions: ["CSB"]
  */
 
-import 'antd/dist/antd.css';
-
 import { Button, message } from 'antd';
 import DripTable, { DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';

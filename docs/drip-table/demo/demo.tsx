@@ -4,7 +4,6 @@
  * inline: true
  */
 
-import 'antd/dist/antd.css';
 import 'jsoneditor-react/es/editor.min.css';
 import 'drip-table/dist/index.css';
 

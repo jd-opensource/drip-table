@@ -17,7 +17,7 @@ title: 头部配置
  * defaultShowCode: false
  * hideActions: ["CSB"]
  */
-import 'antd/dist/antd.css';
+
 import 'drip-table/dist/index.css';
 import 'drip-table-generator/dist/index.css';
 
@@ -127,7 +127,7 @@ export default Demo;
  * defaultShowCode: false
  * hideActions: ["CSB"]
  */
-import 'antd/dist/antd.css';
+
 import 'drip-table/dist/index.css';
 import 'drip-table-generator/dist/index.css';
 
