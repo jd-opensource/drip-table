@@ -90,16 +90,23 @@ export default Demo;
 import React from "react";
 import { DripTableSchema } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
-import DripTableGenerator, {
-  DripTableGeneratorHandler,
-} from "drip-table-generator";
+import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 import "drip-table-generator/dist/index.css";
-import "./theme.module.css";
 
 const Demo = () => {
   return (
     <div>
+      <style>
+      {
+        `* {
+          --drip-table-primary-color: #05cba6;
+          --drip-table-background-color: #05cba62e;
+          --drip-table-border-color: #6bcab9;
+          --drip-table-button-hover-color: #1ac8a6;
+        }`
+      }
+      </style>
       <DripTableGenerator driver={DripTableDriverAntDesign} dataSource={[]} />
     </div>
   );
