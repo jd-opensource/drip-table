@@ -117,7 +117,7 @@ export default defineConfig({
   logo: '',
   outputPath: 'docs-dist',
   hash: true,
-  mfsu: false,
+  mfsu: {},
   ignoreMomentLocale: false,
   publicPath: '/',
   copy: [
