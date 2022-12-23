@@ -1,3 +1,8 @@
+---
+order: 14
+title: 列固定
+---
+
 # 列固定 columns.fixed
 
 - 描述：是否固定列

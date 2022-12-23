@@ -1,3 +1,8 @@
+---
+order: 33
+title: 展示列触发
+---
+
 # 展示列触发 onDisplayColumnKeysChange
 
 - 描述：用户修改展示的列时，配合 [`schema.columns.hidable`](/drip-table/schema/columns/hidable) 使用。

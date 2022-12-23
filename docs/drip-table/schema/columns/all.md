@@ -1,6 +1,6 @@
 ---
-order: 6
-title: 列配置
+order: 0
+title: 目录
 ---
 
 # 列配置 columns

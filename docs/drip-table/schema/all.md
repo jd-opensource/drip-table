@@ -1,6 +1,6 @@
 ---
-order: 6
-title: 表格配置
+order: 0
+title: 目录
 ---
 
 # 表格配置 Schema

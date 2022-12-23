@@ -1,3 +1,8 @@
+---
+order: 7
+title: 校验配置项
+---
+
 # 数据源 dataSource
 
 - 描述：数据源

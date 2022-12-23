@@ -18,7 +18,7 @@ import React from 'react';
 import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
 import { CustomColumnSchema, CustomComponentEvent, CustomComponents } from './custom-components';
 
-import styles from './sample.module.less';
+import styles from './demo.module.less';
 
 const Demo = () => {
   const [loading, setLoading] = React.useState(false);
@@ -99,7 +99,7 @@ const Demo = () => {
             <Switch style={{ marginRight: '5px' }} checked={schema.rowDraggable} onChange={(v) => { setSchema({ ...schema, rowDraggable: v }); }} />
           </div>
         </div>
-        <Button style={{ display: 'inline-flex', alignItems: 'right' }} type="primary" onClick={() => { setEditVisible(!editVisible); }}>json编辑</Button>
+        <Button style={{ display: 'inline-flex', alignItems: 'right' }} type="primary" onClick={() => { setEditVisible(!editVisible); }}>JSON 编辑</Button>
       </div>
       <DripTable<SampleRecordType, {
         CustomColumnSchema: CustomColumnSchema;

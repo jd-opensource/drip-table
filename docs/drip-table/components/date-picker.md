@@ -1,3 +1,8 @@
+---
+order: 8
+title: 日期组件
+---
+
 # 日期组件 dataPicker
 
 用于选择单个日期或者日期番位。
@@ -89,4 +94,3 @@ export default Demo;
 | ----- | ---- | ---- | ------ | ---- | ---- |
 | mode | 单日期或者日期范围 | `basic` \| `range` | 是 | `basic` | - |
 | format | 日期format | string | 否 | YYYY-MM-DD | - |
-

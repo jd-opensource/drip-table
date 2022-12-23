@@ -1,9 +1,9 @@
 ---
-order: 2
-title: 总览 Index
+order: 5
+title: 组件
 ---
 
-# 组件总览
+# 基础组件
 
 <style type="text/css">
   .components-overview-card {
@@ -12,7 +12,7 @@ title: 总览 Index
     justify-content: flex-start;
     flex-wrap: wrap;
   }
-  
+
   .components-overview-card > a {
     text-decoration: none;
     padding: 0 12px;
@@ -44,7 +44,7 @@ title: 总览 Index
     transition: all .5s;
     box-shadow: 0 6px 16px -8px #00000014, 0 9px 28px #0000000d, 0 12px 48px 16px #00000008;
   }
-  
+
   .components-overview-card .card-container > .card-head {
     min-height: 36px;
     padding: 0 12px;

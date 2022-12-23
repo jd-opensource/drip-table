@@ -1,3 +1,8 @@
+---
+order: 7
+title: 插槽系统
+---
+
 # 通用插槽 slot
 
 - 描述：表格通用插槽渲染配置
@@ -25,7 +30,7 @@
 
     const schema = {
       header: {
-        schemas: [
+        elements: [
           { type: 'display-column-selector', selectorButtonType: 'primary' },
           { type: 'spacer', span: 'flex-auto' },
           { type: 'search' },

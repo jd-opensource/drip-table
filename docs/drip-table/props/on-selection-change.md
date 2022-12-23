@@ -1,3 +1,8 @@
+---
+order: 27
+title: 行变化触发
+---
+
 # 行变化触发 onSelectionChange
 
 - 描述：选择行变化，配合 [`rowSelection`](/drip-table/props/schema/row-selection) 使用

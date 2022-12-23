@@ -6,4 +6,4 @@ gapless: true
 footer: Copyright © 2021 JDFED
 ---
 
-<code src="./index" />
+<code src="./index"></code>

@@ -1,3 +1,8 @@
+---
+order: 9
+title: 列悬浮样式
+---
+
 # 列悬浮样式 columns.columnHoverStyle
 
 - 描述：鼠标悬浮当前列时单元格样式
