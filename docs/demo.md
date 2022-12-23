@@ -25,6 +25,8 @@ sidemenu: false
   }
   .dumi-default-previewer-demo {
     flex: 1 1 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
