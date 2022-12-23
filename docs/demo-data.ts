@@ -1,6 +1,6 @@
 import { DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 
-import { CustomColumnSchema } from './drip-table/sample/custom-components';
+import { CustomColumnSchema } from './drip-table/demo/custom-components';
 
 export type SubtableDataSourceKey = 'subtable' | 'subtableLevel2';
 
