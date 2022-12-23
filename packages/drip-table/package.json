@@ -50,6 +50,7 @@
     "viewerjs": "1.7.1"
   },
   "devDependencies": {
+    "@types/react-dom": "^16.9.0",
     "@types/react-window": "^1.8.5",
     "@types/uuid": "^8.3.4",
     "father-build-universal": "^1.21.3",
