@@ -1,3 +1,8 @@
+---
+order: 29
+title: 添加按钮触发
+---
+
 # 添加按钮触发 onInsertButtonClick
 
 - 描述：点击添加按钮触发

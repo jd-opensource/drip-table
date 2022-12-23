@@ -1,3 +1,8 @@
+---
+order: 20
+title: 组件加载完成
+---
+
 # 组件加载完成 componentDidMount
 
 - 描述：生命周期：组件加载完成

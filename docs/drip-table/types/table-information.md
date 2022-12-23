@@ -1,3 +1,8 @@
+---
+order: 1
+title: DripTableTableInformation
+---
+
 # DripTableTableInformation
 
 > 通用表格信息

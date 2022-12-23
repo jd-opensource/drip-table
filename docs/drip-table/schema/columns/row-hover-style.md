@@ -1,3 +1,8 @@
+---
+order: 8
+title: 行悬浮样式
+---
+
 # 行悬浮样式 columns.rowHoverStyle
 
 - 描述：鼠标悬浮当前行时单元格样式

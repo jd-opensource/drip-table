@@ -11,13 +11,16 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "drip-table": ["./packages/drip-table/src"]
+      "@@/*": [".dumi/tmp/*"],
+      "drip-table": ["packages/drip-table/src"],
+      "drip-table/*": ["packages/drip-table/src/*", "*"]
     }
   },
-  "rules": {
-    "react/prop-types": 0
-  },
   "include": [
+      "*.ts",
+      ".*.ts",
+      "*.tsx",
+      ".*.tsx",
       "**/*.ts",
       "**/.*.ts",
       "**/*.tsx",

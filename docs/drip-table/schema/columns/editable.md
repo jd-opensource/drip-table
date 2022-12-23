@@ -1,3 +1,8 @@
+---
+order: 17
+title: 列可编辑
+---
+
 # 列可编辑 columns.editable
 
 - 描述：根据行数据控制当前单元格组件是否隐藏不可见，用于覆盖全局 [`editable`](/drip-table/schema/editable) 属性

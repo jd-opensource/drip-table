@@ -1,7 +1,13 @@
-# 布局差异性配置属性 layout
+---
+order: 1
+title: 卡片模式
+---
+
+# 卡片模式
 
 - 描述：配置卡片模式等多布局差异性的配置
 - 类型：
+
 ``` typescript
     /**
    * 卡片布局配置 会对table布局进行覆盖
@@ -22,8 +28,8 @@
    * 默认布局模式,不写默认为table
    */
   defaultTableLayout?: 'table' | 'card';
-
 ```
+
 - 默认值：`undefined`
 
 ```jsx

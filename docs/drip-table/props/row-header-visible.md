@@ -1,3 +1,8 @@
+---
+order: 16
+title: 行头插槽是否显示
+---
+
 # 行头插槽是否显示 rowHeaderVisible
 
 - 描述：行头插槽是否显示

@@ -13,6 +13,9 @@
 .umi
 .umi-production
 .umi-test
+.dumi/tmp
+.dumi/tmp-test
+.dumi/tmp-production
 .env.local
 
 # lerna

@@ -1,3 +1,8 @@
+---
+order: 2
+title: 插槽配置
+---
+
 # 插槽配置 slot.elements
 
 - 描述：插槽展示元素配置
