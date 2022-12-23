@@ -3,7 +3,7 @@ order: 31
 title: 页码变化触发
 ---
 
-# 页码变化触发 onPageChange
+## 页码变化触发 onPageChange
 
 - 描述：页码/页大小变化
 - 类型：`(currentPage: number, pageSize: number) => void`

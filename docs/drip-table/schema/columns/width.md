@@ -3,7 +3,7 @@ order: 10
 title: 列宽
 ---
 
-# 列宽 columns.width
+## 列宽 columns.width
 
 - 描述：表格列宽
 - 类型：`string | number`

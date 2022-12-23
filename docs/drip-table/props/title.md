@@ -3,7 +3,7 @@ order: 20
 title: 顶部渲染函数
 ---
 
-# 顶部渲染函数 title
+## 顶部渲染函数 title
 
 - 描述：顶部自定义渲染函数
 - 类型：`(data: readonly RecordType[]) => React.ReactNode`

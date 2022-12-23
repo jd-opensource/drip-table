@@ -3,7 +3,7 @@ order: 25
 title: 行尾插槽
 ---
 
-# 行尾插槽配置 rowFooter
+## 行尾插槽配置 rowFooter
 
 - 描述：行尾插槽配置
 - 类型：

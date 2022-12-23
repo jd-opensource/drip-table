@@ -3,7 +3,7 @@ order: 18
 title: 列可隐藏
 ---
 
-# 列可隐藏 columns.hidable
+## 列可隐藏 columns.hidable
 
 - 描述：用户可控制该列显示隐藏
 - 类型：`boolean`

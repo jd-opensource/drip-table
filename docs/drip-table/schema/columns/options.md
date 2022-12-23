@@ -3,7 +3,7 @@ order: 22
 title: 配置项
 ---
 
-# 配置项 columns.options
+## 配置项 columns.options
 
 - 描述：对应组件类型的配置项
 - 类型：`Record<string, unknown>`

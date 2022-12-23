@@ -3,7 +3,7 @@ order: 21
 title: 行高
 ---
 
-# 行高 rowHeight
+## 行高 rowHeight
 
 - 描述：表格行高（虚拟滚动）
 - 类型：`boolean`

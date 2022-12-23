@@ -3,7 +3,7 @@ order: 12
 title: 加载中
 ---
 
-# 加载中 loading
+## 加载中 loading
 
 - 描述：加载中
 - 类型：`boolean`

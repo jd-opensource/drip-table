@@ -3,7 +3,7 @@ order: 24
 title: 行头插槽
 ---
 
-# 行头插槽配置 rowHeader
+## 行头插槽配置 rowHeader
 
 - 描述：行头插槽配置
 - 类型：

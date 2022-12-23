@@ -3,7 +3,7 @@ order: 5
 title: 组件
 ---
 
-# 基础组件
+## 基础组件
 
 <style type="text/css">
   .components-overview-card {

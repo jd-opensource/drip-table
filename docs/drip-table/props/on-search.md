@@ -3,7 +3,7 @@ order: 28
 title: 搜索触发
 ---
 
-# 搜索触发 onSearch
+## 搜索触发 onSearch
 
 - 描述：搜索触发
 - 类型：

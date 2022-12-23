@@ -3,7 +3,7 @@ order: 1
 title: 样式表类名
 ---
 
-# 样式表类名 className
+## 样式表类名 className
 
 - 描述：样式表类名
 - 类型：`string`

@@ -3,7 +3,7 @@ order: 2
 title: 高级教程
 ---
 
-# 高级教程
+## 高级教程
 
 > 本篇主要介绍 `drip-table-generator` 的高级使用能力介绍
 

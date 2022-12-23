@@ -3,7 +3,7 @@ order: 19
 title: 间隔斑马纹
 ---
 
-#  间隔斑马纹 stripe
+##  间隔斑马纹 stripe
 
 - 描述：是否显示间隔斑马纹
 - 类型：`boolean`

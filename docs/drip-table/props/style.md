@@ -3,7 +3,7 @@ order: 2
 title: 自定义样式表
 ---
 
-# 自定义样式表 style
+## 自定义样式表 style
 
 - 描述：自定义样式表
 - 类型：`React.CSSProperties`

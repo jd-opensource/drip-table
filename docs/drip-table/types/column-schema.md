@@ -3,7 +3,7 @@ order: 3
 title: DripTableColumnSchema
 ---
 
-# DripTableColumnSchema
+## DripTableColumnSchema
 
 > 通用插槽组件渲染配置项
 

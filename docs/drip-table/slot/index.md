@@ -3,7 +3,7 @@ order: 7
 title: 插槽系统
 ---
 
-# 通用插槽 slot
+## 通用插槽 slot
 
 - 描述：表格通用插槽渲染配置
 - 类型：[`DripTableSlotSchema`](/drip-table/types/slot-schema)

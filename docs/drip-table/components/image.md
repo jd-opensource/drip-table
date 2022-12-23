@@ -3,7 +3,7 @@ order: 2
 title: 图片组件
 ---
 
-# 图片组件 image
+## 图片组件 image
 
 图片展示组件
 

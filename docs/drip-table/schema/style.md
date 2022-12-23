@@ -3,7 +3,7 @@ order: 3
 title: 样式
 ---
 
-# 自定义样式 style
+## 自定义样式 style
 
 - 描述：自定义表格样式
 - 类型：`React.CSSProperties`

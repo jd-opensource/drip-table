@@ -3,7 +3,7 @@ order: 2
 title: 列头
 ---
 
-# 列头 columns.title
+## 列头 columns.title
 
 - 描述：表头，组件名
 - 类型：

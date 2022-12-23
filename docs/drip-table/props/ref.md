@@ -3,7 +3,7 @@ order: 3
 title: 引用实例
 ---
 
-# 引用实例 refs
+## 引用实例 refs
 
 > 引用实例，利用refs引用可以在外部主动改变 `drip-table` 的状态。
 

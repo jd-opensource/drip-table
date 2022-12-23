@@ -3,7 +3,7 @@ order: 14
 title: 指定行可展开
 ---
 
-# 指定行可展开 rowExpandable
+## 指定行可展开 rowExpandable
 
 - 描述：获取指定行是否可展开，需要配合 [`expandedRowRender`](/drip-table/props/expanded-row-render) 使用
 - 类型：

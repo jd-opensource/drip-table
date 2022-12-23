@@ -3,7 +3,7 @@ order: 5
 title: 表格 schema
 ---
 
-# 表格 schema
+## 表格 schema
 
 - 描述：表格 Schema
 - 类型：`DripTableSchema`

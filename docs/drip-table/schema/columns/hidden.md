@@ -3,7 +3,7 @@ order: 15
 title: 列隐藏
 ---
 
-# 列隐藏 columns.hidden
+## 列隐藏 columns.hidden
 
 - 描述：根据行数据控制当前单元格组件是否隐藏不可见
 - 类型：`boolean | string`

@@ -3,7 +3,7 @@ order: 1
 title: Refs引用
 ---
 
-# Refs 引用
+## Refs 引用
 
 > 引用实例，利用 `refs` 引用可以在外部主动获取 `drip-table-generator` 的状态以及配置信息。
 

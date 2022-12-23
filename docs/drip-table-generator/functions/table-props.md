@@ -3,7 +3,7 @@ order: 1
 title: 透传 Table 属性
 ---
 
-# 透传 Table 属性
+## 透传 Table 属性
 
 > 如何利用 `drip-table-generator` 传递属性给 `drip-table` 实现属性的配置化。
 

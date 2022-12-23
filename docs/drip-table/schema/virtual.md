@@ -3,7 +3,7 @@ order: 20
 title: 虚拟滚动
 ---
 
-# 虚拟滚动 virtual
+## 虚拟滚动 virtual
 
 - 描述：是否开启虚拟滚动
 - 类型：`boolean`

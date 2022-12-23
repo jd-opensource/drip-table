@@ -3,7 +3,7 @@ order: 23
 title: 子表底部渲染函数
 ---
 
-# 子表底部渲染函数 subtableFooter
+## 子表底部渲染函数 subtableFooter
 
 - 描述：子表顶部自定义渲染函数
 - 类型：

@@ -3,7 +3,7 @@ order: 7
 title: 悬浮样式
 ---
 
-# 鼠标悬浮单元格样式 columns.hoverStyle
+## 鼠标悬浮单元格样式 columns.hoverStyle
 
 - 描述：鼠标悬浮单元格样式
 - 类型：`Record<string, string> | string`

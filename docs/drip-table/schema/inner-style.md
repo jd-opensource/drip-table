@@ -3,7 +3,7 @@ order: 5
 title: 内部样式
 ---
 
-# 内部组件样式 innerStyle
+## 内部组件样式 innerStyle
 
 - 描述：内部表格组件样式
 - 类型：`React.CSSProperties`

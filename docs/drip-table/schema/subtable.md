@@ -3,7 +3,7 @@ order: 27
 title: 子表
 ---
 
-# 子表设置项 subtable
+## 子表设置项 subtable
 
 - 描述：子表设置项
 - 类型：

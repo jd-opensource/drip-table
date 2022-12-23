@@ -3,7 +3,7 @@ order: 7
 title: 数字组件
 ---
 
-# 数字组件 input-number
+## 数字组件 input-number
 
 通过鼠标或键盘，输入范围内的数值。
 

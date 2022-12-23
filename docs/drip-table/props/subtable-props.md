@@ -3,7 +3,7 @@ order: 13
 title: 子表配置项
 ---
 
-# 子表配置项 subtableProps
+## 子表配置项 subtableProps
 
 - 描述：子表参数匹配设置，可用于覆盖父表参数透传，当存在多个匹配项时，其优先顺序为：`recordKeys 匹配` > `subtableID 匹配` > `default 兜底`，同优先级配置项按顺序后者覆盖前者。
 - 类型：

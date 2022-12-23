@@ -3,7 +3,7 @@ order: 26
 title: 空表提示
 ---
 
-# 空表提示 emptyText
+## 空表提示 emptyText
 
 - 描述：表格无数据时提示语
 - 类型：`string`（富文本）
