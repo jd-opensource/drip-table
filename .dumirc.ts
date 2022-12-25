@@ -52,6 +52,8 @@ const customCSS = `
 /** 调整左侧导航 **/
 .dumi-default-header-left {
   width: 240px !important;
+  justify-content: flex-start !important;
+  padding-left: 7px !important;
 }
 .dumi-default-sidebar {
   width: 240px !important;
