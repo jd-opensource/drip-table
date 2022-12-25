@@ -1,6 +1,6 @@
 ---
 order: 11
-title: 分页
+title: 分页 pagination
 ---
 
 ## 分页配置 pagination

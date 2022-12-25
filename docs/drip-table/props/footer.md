@@ -1,6 +1,6 @@
 ---
 order: 21
-title: 底部渲染函数
+title: 底部渲染函数 footer
 ---
 
 ## 底部渲染函数 footer

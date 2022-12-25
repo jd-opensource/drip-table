@@ -1,6 +1,6 @@
 ---
 order: 18
-title: 指定行可选择
+title: 指定行可选择 rowSelectable
 ---
 
 ## 指定行可选择 rowSelectable

@@ -1,6 +1,6 @@
 ---
 order: 1
-title: 样式表类名
+title: 样式表类名 className
 ---
 
 ## 样式表类名 className

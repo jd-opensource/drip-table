@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 列头
+title: 列头 title
 ---
 
 ## 列头 columns.title

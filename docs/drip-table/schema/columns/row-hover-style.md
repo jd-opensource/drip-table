@@ -1,6 +1,6 @@
 ---
 order: 8
-title: 行悬浮样式
+title: 行悬浮样式 rowHoverStyle
 ---
 
 ## 行悬浮样式 columns.rowHoverStyle

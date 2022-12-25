@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 快速开始
+title: 快速开始 Quick Start
 ---
 
 ## 快速开始

@@ -1,6 +1,6 @@
 ---
 order: 16
-title: 行头插槽是否显示
+title: 行头插槽是否显示 rowHeaderVisible
 ---
 
 ## 行头插槽是否显示 rowHeaderVisible

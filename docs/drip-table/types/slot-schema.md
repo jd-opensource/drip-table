@@ -1,9 +1,11 @@
 ---
 order: 2
-title: DripTableSlotSchema
+title: 插槽配置项 SlotSchema
 ---
 
 ## DripTableSlotSchema
+
+[> 返回上层](/drip-table/types)
 
 > 通用插槽组件渲染配置项
 

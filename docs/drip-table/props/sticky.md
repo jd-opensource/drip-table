@@ -1,6 +1,6 @@
 ---
 order: 17
-title: 冻结表头
+title: 冻结表头 sticky
 ---
 
 ## 冻结表头 sticky

@@ -1,15 +1,15 @@
 ---
 order: 3
-title: 引用实例
+title: 引用实例 ref
 ---
 
-## 引用实例 refs
+## 引用实例 ref
 
-> 引用实例，利用refs引用可以在外部主动改变 `drip-table` 的状态。
+> 引用实例，利用 `ref` 引用可以在外部主动改变 `drip-table` 的状态。
 
 ## 获取表格实例
 
-利用 `react` 的 `refs` 属性可以获取表格内部开放的状态和函数从而改变 `drip-table` 实例
+利用 `react` 的 `ref` 属性可以获取表格内部开放的状态和函数从而改变 `drip-table` 实例
 
 > hook写法
 
@@ -22,7 +22,7 @@ const table = useRef(null);
 ```js
 const table = React.createRef();
 
-<DripTable refs={table}>
+<DripTable ref={table}>
 ```
 
 ## 开放属性

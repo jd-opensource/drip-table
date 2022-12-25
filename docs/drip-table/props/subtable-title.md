@@ -1,6 +1,6 @@
 ---
 order: 22
-title: 子表顶部渲染函数
+title: 子表顶部渲染函数 subtableTitle
 ---
 
 ## 子表顶部渲染函数 subtableTitle

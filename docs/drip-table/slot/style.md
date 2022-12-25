@@ -1,6 +1,6 @@
 ---
 order: 1
-title: 插槽样式
+title: 插槽样式 style
 ---
 
 ## 插槽样式 slot.style

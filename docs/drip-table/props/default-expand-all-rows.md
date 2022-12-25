@@ -1,6 +1,6 @@
 ---
 order: 18
-title: 子表默认展开
+title: 子表默认展开 defaultExpandAllRows
 ---
 
 ## 子表是否默认展开 defaultExpandAllRows

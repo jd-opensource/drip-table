@@ -1,6 +1,6 @@
 ---
 order: 16
-title: 列禁用
+title: 列禁用 disable
 ---
 
 ## 列禁用 columns.disable

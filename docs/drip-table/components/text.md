@@ -1,6 +1,6 @@
 ---
 order: 1
-title: 文本组件
+title: 文本组件 Text
 ---
 
 ## 文本组件 text

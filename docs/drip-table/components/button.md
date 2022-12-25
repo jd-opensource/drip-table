@@ -1,6 +1,6 @@
 ---
 order: 5
-title: 按钮组件
+title: 按钮组件 Button
 ---
 
 ## 按钮组件 button

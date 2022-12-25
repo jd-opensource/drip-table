@@ -1,6 +1,6 @@
 ---
 order: 5
-title: 组件
+title: 组件 Components
 ---
 
 ## 基础组件

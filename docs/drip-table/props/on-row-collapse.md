@@ -1,6 +1,6 @@
 ---
 order: 26
-title: 行收起触发
+title: 行收起触发 onRowCollapse
 ---
 
 ## 行收起触发 onRowCollapse

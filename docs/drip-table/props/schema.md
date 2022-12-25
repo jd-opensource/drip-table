@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 5 schema
 title: 表格 schema
 ---
 

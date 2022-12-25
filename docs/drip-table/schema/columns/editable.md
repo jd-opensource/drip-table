@@ -1,6 +1,6 @@
 ---
 order: 17
-title: 列可编辑
+title: 列可编辑 editable
 ---
 
 ## 列可编辑 columns.editable

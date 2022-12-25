@@ -1,6 +1,6 @@
 ---
 order: 14
-title: 滚动设置
+title: 滚动设置 scroll
 ---
 
 ## 滚动设置 scroll

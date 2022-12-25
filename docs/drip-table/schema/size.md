@@ -1,6 +1,6 @@
 ---
 order: 12
-title: 大小
+title: 大小 size
 ---
 
 ## 表格大小 size

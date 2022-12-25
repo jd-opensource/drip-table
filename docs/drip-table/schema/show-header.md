@@ -1,6 +1,6 @@
 ---
 order: 8
-title: 显示表头
+title: 显示表头 showHeader
 ---
 
 ## 显示表头 showHeader

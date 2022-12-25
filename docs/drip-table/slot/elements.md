@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 插槽配置
+title: 插槽配置 elements
 ---
 
 ## 插槽配置 slot.elements

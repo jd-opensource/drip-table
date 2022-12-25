@@ -1,6 +1,6 @@
 ---
 order: 3
-title: 链接组件
+title: 链接组件 Link
 ---
 
 ## 链接组件 link

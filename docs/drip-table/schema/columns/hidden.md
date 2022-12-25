@@ -1,6 +1,6 @@
 ---
 order: 15
-title: 列隐藏
+title: 列隐藏 hidden
 ---
 
 ## 列隐藏 columns.hidden

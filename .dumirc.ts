@@ -49,6 +49,18 @@ const customCSS = `
   height: 100%;
 }
 
+/** 调整左侧导航 **/
+.dumi-default-header-left {
+  width: 240px !important;
+}
+.dumi-default-sidebar {
+  width: 240px !important;
+}
+.dumi-default-sidebar-group > dd > a {
+  font-size: 14px !important;
+  line-height: 16px !important;
+}
+
 /** 隐藏页脚 **/
 .dumi-default-footer {
   display: none;

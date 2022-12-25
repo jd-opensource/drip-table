@@ -1,6 +1,6 @@
 ---
 order: 24
-title: 双击行触发
+title: 双击行触发 onRowDoubleClick
 ---
 
 ## 双击行触发 onRowDoubleClick

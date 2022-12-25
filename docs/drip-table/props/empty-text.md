@@ -1,6 +1,6 @@
 ---
 order: 19
-title: 空表提示
+title: 空表提示 emptyText
 ---
 
 ## 空表提示 emptyText

@@ -1,6 +1,6 @@
 ---
 order: 9
-title: 列悬浮样式
+title: 列悬浮样式 columnHoverStyle
 ---
 
 ## 列悬浮样式 columns.columnHoverStyle

@@ -1,6 +1,6 @@
 ---
 order: 10
-title: 类型
+title: 类型 Types
 ---
 
 ## 类型

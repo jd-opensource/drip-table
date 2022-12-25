@@ -1,6 +1,6 @@
 ---
 order: 23
-title: 子表底部渲染函数
+title: 子表底部渲染函数 subtableFooter
 ---
 
 ## 子表底部渲染函数 subtableFooter

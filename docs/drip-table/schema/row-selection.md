@@ -1,6 +1,6 @@
 ---
 order: 15
-title: 行可选择
+title: 行可选择 rowSelection
 ---
 
 ## 行可选择 rowSelection
