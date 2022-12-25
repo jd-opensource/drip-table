@@ -1,6 +1,6 @@
 ---
 order: 24
-title: 行头插槽
+title: 行头插槽 rowHeader
 ---
 
 ## 行头插槽配置 rowHeader

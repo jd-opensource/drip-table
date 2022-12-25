@@ -1,6 +1,6 @@
 ---
 order: 12
-title: 垂直对齐
+title: 垂直对齐 verticalAlign
 ---
 
 ## 垂直对齐 columns.verticalAlign

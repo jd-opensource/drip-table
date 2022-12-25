@@ -1,6 +1,6 @@
 ---
 order: 17
-title: 行尾插槽是否显示
+title: 行尾插槽是否显示 rowFooterVisible
 ---
 
 ## 行尾插槽是否显示 rowFooterVisible

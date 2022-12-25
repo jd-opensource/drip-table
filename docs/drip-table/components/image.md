@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 图片组件
+title: 图片组件 Image
 ---
 
 ## 图片组件 image

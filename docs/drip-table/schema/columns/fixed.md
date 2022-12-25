@@ -1,6 +1,6 @@
 ---
 order: 14
-title: 列固定
+title: 列固定 filters
 ---
 
 ## 列固定 columns.fixed

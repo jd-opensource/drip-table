@@ -1,6 +1,6 @@
 ---
 order: 29
-title: 添加按钮触发
+title: 添加按钮触发 onInsertButtonClick
 ---
 
 ## 添加按钮触发 onInsertButtonClick

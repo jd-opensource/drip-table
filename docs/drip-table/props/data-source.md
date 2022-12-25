@@ -1,6 +1,6 @@
 ---
 order: 7
-title: 校验配置项
+title: 校验配置项 dataSource
 ---
 
 ## 数据源 dataSource

@@ -1,6 +1,6 @@
 ---
 order: 11
-title: 水平对齐
+title: 水平对齐 align
 ---
 
 ## 水平对齐 columns.align

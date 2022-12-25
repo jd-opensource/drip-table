@@ -1,6 +1,6 @@
 ---
 order: 3
-title: 样式
+title: 样式 style
 ---
 
 ## 自定义样式 style

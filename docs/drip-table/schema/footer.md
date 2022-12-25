@@ -1,6 +1,6 @@
 ---
 order: 10
-title: 尾部
+title: 尾部 footer
 ---
 
 ## 表格尾部配置 footer

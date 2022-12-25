@@ -1,6 +1,6 @@
 ---
 order: 1
-title: 卡片模式
+title: 卡片模式 Card
 ---
 
 ## 卡片模式

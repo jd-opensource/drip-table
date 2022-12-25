@@ -1,6 +1,6 @@
 ---
 order: 21
-title: 组件更新完成
+title: 组件更新完成 componentDidUpdate
 ---
 
 ## 组件更新完成 componentDidUpdate

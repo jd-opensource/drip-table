@@ -1,6 +1,6 @@
 ---
 order: 22
-title: 组件即将卸载
+title: 组件即将卸载 componentWillUnmount
 ---
 
 ## 组件即将卸载 componentWillUnmount

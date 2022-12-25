@@ -1,9 +1,11 @@
 ---
 order: 1
-title: DripTableTableInformation
+title: 表格信息 TableInformation
 ---
 
 ## DripTableTableInformation
+
+[> 返回上层](/drip-table/types)
 
 > 通用表格信息
 

@@ -1,6 +1,6 @@
 ---
 order: 21
-title: 组件类型
+title: 组件类型 component
 ---
 
 ## 组件类型 columns.component

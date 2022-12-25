@@ -1,6 +1,6 @@
 ---
 order: 12
-title: 更新日志
+title: 更新日志 Changelog
 ---
 
 ## 更新日志

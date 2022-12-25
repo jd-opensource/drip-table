@@ -1,6 +1,6 @@
 ---
 order: 22
-title: 配置项
+title: 配置项 options
 ---
 
 ## 配置项 columns.options

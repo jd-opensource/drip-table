@@ -1,6 +1,6 @@
 ---
 order: 20
-title: 过滤器默认值
+title: 过滤器默认值 defaultFilteredValue
 ---
 
 ## 过滤器默认值 columns.defaultFilteredValue

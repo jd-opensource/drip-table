@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 自定义样式表
+title: 自定义样式表 style
 ---
 
 ## 自定义样式表 style

@@ -1,6 +1,6 @@
 ---
 order: 5
-title: 内部样式
+title: 内部样式 innerStyle
 ---
 
 ## 内部组件样式 innerStyle

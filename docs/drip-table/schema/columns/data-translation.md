@@ -1,6 +1,6 @@
 ---
 order: 4
-title: 列数据处理
+title: 列数据处理 dataTranslation
 ---
 
 ## 列数据处理 columns.dataTranslation

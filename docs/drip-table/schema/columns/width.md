@@ -1,6 +1,6 @@
 ---
 order: 10
-title: 列宽
+title: 列宽 width
 ---
 
 ## 列宽 columns.width

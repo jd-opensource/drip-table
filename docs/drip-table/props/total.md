@@ -1,6 +1,6 @@
 ---
 order: 10
-title: 总条数
+title: 总条数 total
 ---
 
 ## 总条数 total

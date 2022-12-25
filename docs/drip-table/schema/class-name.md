@@ -1,6 +1,6 @@
 ---
 order: 2
-title: 类名
+title: 类名 className
 ---
 
 ## 自定义类名 className

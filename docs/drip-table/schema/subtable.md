@@ -1,6 +1,6 @@
 ---
 order: 27
-title: 子表
+title: 子表 subtable
 ---
 
 ## 子表设置项 subtable

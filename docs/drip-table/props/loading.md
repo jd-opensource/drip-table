@@ -1,6 +1,6 @@
 ---
 order: 12
-title: 加载中
+title: 加载中 loading
 ---
 
 ## 加载中 loading

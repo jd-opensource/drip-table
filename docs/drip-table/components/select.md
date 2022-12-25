@@ -1,6 +1,6 @@
 ---
 order: 6
-title: 下拉组件
+title: 下拉组件 Select
 ---
 
 ## 下拉框组件 select

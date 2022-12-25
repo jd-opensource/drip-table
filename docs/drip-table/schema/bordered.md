@@ -1,6 +1,6 @@
 ---
 order: 7
-title: 边框
+title: 边框 bordered
 ---
 
 ## 边框 bordered

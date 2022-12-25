@@ -1,6 +1,6 @@
 ---
 order: 7
-title: 数字组件
+title: 数字组件 Input Number
 ---
 
 ## 数字组件 input-number

@@ -1,6 +1,6 @@
 ---
 order: 15
-title: 组件插槽
+title: 组件插槽 slots
 ---
 
 ## 组件插槽 slots
