@@ -17,6 +17,6 @@ title: 内置组件库
 | 下拉组件                                                  | 下拉框组件                      | 暂无示例                                              |
 | 日期组件                                                  | 日期展示和日期选择器            | 暂无示例                                              |
 | [组合组件](/drip-table-generator/components/group)        | 组合组件                        | [🔗 示例](/drip-table-generator/components/group)     |
-| [自定义组件](/drip-table-generator/components/lowcode)    | 在线 LowCode 组件               | [🔗 示例](/drip-table-generator/components/lowcode)   |
+| [自定义组件](/drip-table-generator/components/lowcode)    | 在线 Lowcode 组件               | [🔗 示例](/drip-table-generator/components/lowcode)   |
 | [CDN 链接组件](/drip-table-generator/components/cdn-link) | 通过自定义代码 CDN 地址渲染组件 | [🔗 示例](/drip-table-generator/components/cdn-link)  |
 | [富文本组件](/drip-table-generator/components/rich-text)  | 在线富文本编辑器生成组件        | [🔗 示例](/drip-table-generator/components/rich-text) |
