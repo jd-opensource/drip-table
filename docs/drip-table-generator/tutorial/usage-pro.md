@@ -7,7 +7,7 @@ title: 高级教程
 
 > 本篇主要介绍 `drip-table-generator` 的高级使用能力介绍
 
-## 一、在线 `LowCode` 组件
+## 一、在线 `Lowcode` 组件
 
 **Generator 提供了可在线编写简单代码的自定义组件，方便用户生成自己所想要的渲染HTML**
 
