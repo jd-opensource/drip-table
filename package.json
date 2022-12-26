@@ -12,7 +12,7 @@
     "build:drip-table": "lerna run build --stream --scope=drip-table",
     "build:drip-table-driver-antd": "lerna run build --stream --scope=drip-table-driver-antd",
     "build:drip-table-generator": "lerna run build --stream --scope=drip-table-generator",
-    "build:docs": "dumi build && yarn run build:docs-static",
+    "build:docs": "dumi build",
     "build:docs-static": "node ./docs-static/build.js",
     "changelog": "lerna-changelog",
     "size": "ANALYZE=1 dumi build",
@@ -111,5 +111,9 @@
   },
   "engines": {
     "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "react-compare-image": "^3.3.0",
+    "typewriter-effect": "^2.19.0"
   }
 }

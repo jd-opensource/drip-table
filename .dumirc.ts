@@ -2,80 +2,38 @@ import { defineConfig } from 'dumi';
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 import path from 'path';
 
-const customCSS = `
-/** 取消页面限宽导致的左右边距 **/
-.dumi-default-header-content,
-.dumi-default-doc-layout > main {
-  max-width: 100% !important;
-}
-
-/** 恢复暗黑模式下表格边框颜色问题 **/
-.markdown th, .markdown td {
-  border-color: #cccccc !important;
-}
-
-/** 缩放 Logo 图标 **/
-.dumi-default-header-left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.dumi-default-logo > img {
-  width: 146px !important;
-  height: auto !important;
-  color: transparent !important;
-}
-
-/** Github 按钮 **/
-.dumi-default-navbar > :nth-child(5) {
-  position: relative;
-  display: inline-block;
-  color: #454d64;
-  height: 64px;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 64px;
-  text-decoration: none;
-  letter-spacing: 0;
-  background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png");
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-}
-.dumi-default-navbar > :nth-child(5) a {
-  display: inline-block;
-  width: 30px;
-  height: 100%;
-}
-
-/** 调整左侧导航 **/
-.dumi-default-header-left {
-  width: 240px !important;
-  justify-content: flex-start !important;
-  padding-left: 7px !important;
-}
-.dumi-default-sidebar {
-  width: 240px !important;
-}
-.dumi-default-sidebar-group > dd > a {
-  font-size: 14px !important;
-  line-height: 16px !important;
-}
-
-/** 隐藏页脚 **/
-.dumi-default-footer {
-  display: none;
-}
-
-/** 代码换行 **/
-pre.prism-code {
-  word-break: break-all !important;
-  white-space: pre-wrap !important;
-}
+const scriptText = `
+(function() {
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = '/assets/global.css';
+  document.body.appendChild(link);
+}());
 `;
 
 export default defineConfig({
+  // 重点配置项
+  // https://d.umijs.org/config#%E9%87%8D%E7%82%B9%E9%85%8D%E7%BD%AE%E9%A1%B9
+  resolve: {
+    atomDirs: [
+      { type: 'component', dir: 'docs' },
+      { type: 'component', dir: 'docs/drip-table' },
+      { type: 'component', dir: 'docs/drip-table/schema' },
+    ],
+  },
+  locales: [{ id: 'zh-CN', name: '中文' }],
+  analytics: {
+    // google analytics 的 key (GA 4)
+    ga_v2: 'G-FSYSGDZ0KE',
+    // 百度统计的 key
+    // baidu: 'baidu_tongji_key',
+  },
+  sitemap: {
+    hostname: 'https://drip-table.jd.com',
+  },
+  // 主题配置项
+  // https://d.umijs.org/config#%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E9%A1%B9
   themeConfig: {
     logo: 'https://img11.360buyimg.com/imagetools/jfs/t1/156025/11/22552/175523/617fb164E678b9642/6b8c55c5079b9819.jpg',
     nav: [
@@ -116,28 +74,21 @@ export default defineConfig({
       },
     ],
   },
-  locales: [{ id: 'zh-CN', name: '中文' }],
-  resolve: {
-    atomDirs: [
-      { type: 'component', dir: 'docs' },
-      { type: 'component', dir: 'docs/drip-table' },
-      { type: 'component', dir: 'docs/drip-table/schema' },
-    ],
+  // 基础配置项
+  // https://d.umijs.org/config#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E9%A1%B9
+  alias: {
+    'drip-table': path.resolve(__dirname, './packages/drip-table'),
+    'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd'),
+    'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
   },
-  sitemap: {
-    hostname: 'https://drip-table.jd.com',
+  chainWebpack(config, { webpack }) {
+    config.devServer.contentBase(path.join(__dirname, 'docs-static'));
+    config.devServer.watchContentBase(true);
+    config.plugin('monaco-editor').use(MonacoWebpackPlugin);
   },
-  favicons: ['https://img13.360buyimg.com/imagetools/jfs/t1/204416/31/13736/8631/617f8334E9ae79a1c/5b96dfdce922e5fb.png'],
-  logo: '',
-  outputPath: 'docs-dist',
-  hash: true,
-  mfsu: {},
-  ignoreMomentLocale: false,
-  publicPath: '/',
   copy: [
-    { from: './docs/assets', to: './assets' },
+    { from: 'docs-static', to: 'docs-dist' },
   ],
-  exportStatic: {},
   extraBabelPlugins: [
     [
       'import',
@@ -157,14 +108,21 @@ export default defineConfig({
       '@alifd/next',
     ],
   ],
-  chainWebpack(config, { webpack }) {
-    config.plugin('monaco-editor').use(MonacoWebpackPlugin);
-  },
-  alias: {
-    'drip-table': path.resolve(__dirname, './packages/drip-table'),
-    'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd'),
-    'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
-  },
+  exportStatic: {},
+  favicons: ['https://img13.360buyimg.com/imagetools/jfs/t1/204416/31/13736/8631/617f8334E9ae79a1c/5b96dfdce922e5fb.png'],
+  hash: true,
+  ignoreMomentLocale: false,
+  metas: [
+    { name: 'keywords', content: 'DripTable,drip,drip-table,lowcode,react,中台,中后台,表格,开箱即用,可视化搭建' },
+    { name: 'description', content: '轻量、强大的企业级列表可视化搭建解决方案，中后台「表格」开箱即用解决方案。' },
+    { name: 'color-scheme', content: 'light' },
+    { name: 'referrer', content: 'origin' },
+    { name: 'viewport" id="view', content: 'width=device-width, initial-scale=1.0 ,user-scalable=no' },
+    { name: 'google-site-verification', content: 'mFmvTiwa8ZRLKOK3MC_g_kOKWJ4avZj_eXWsE7uFkDk' },
+  ],
+  mfsu: {},
+  outputPath: 'docs-dist',
+  publicPath: '/',
   proxy: {
     '/storage.jd.com': {
       target: 'https://storage.jd.com/',
@@ -172,6 +130,5 @@ export default defineConfig({
       pathRewrite: { '^/storage.jd.com': '' },
     },
   },
-  // more config: https://d.umijs.org/config
-  styles: [customCSS],
+  scripts: [scriptText],
 });
