@@ -1,0 +1,80 @@
+/** 取消页面限宽导致的左右边距 **/
+.dumi-default-header-content,
+.dumi-default-doc-layout > main {
+  max-width: 100% !important;
+}
+
+/** 恢复暗黑模式下表格边框颜色问题 **/
+.markdown th,
+.markdown td {
+  border-color: #cccccc !important;
+}
+
+/** 调整左侧导航 **/
+.dumi-default-header-left {
+  display: flex;
+  align-items: center;
+  width: 240px !important;
+  justify-content: flex-start !important;
+  padding-left: 7px !important;
+}
+
+.dumi-default-sidebar {
+  width: 240px !important;
+}
+
+.dumi-default-sidebar-group > dd > a {
+  font-size: 14px !important;
+  line-height: 16px !important;
+}
+
+/** 缩放 Logo 图标 **/
+.dumi-default-logo > img {
+  width: 146px !important;
+  height: auto !important;
+  color: transparent !important;
+}
+
+/** 导航栏文字大小 **/
+.dumi-default-navbar > li {
+  font-size: 14px !important;
+}
+
+.markdown {
+  font-size: 14px;
+}
+
+/** Github 按钮 **/
+.dumi-default-navbar > :nth-child(5) {
+  position: relative;
+  display: inline-block;
+  color: #454d64;
+  height: 64px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 64px;
+  text-decoration: none;
+  letter-spacing: 0;
+  background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.dumi-default-navbar > :nth-child(5) a {
+  display: inline-block;
+  width: 30px;
+  height: 100%;
+}
+
+/** 隐藏页脚 **/
+.dumi-default-footer {
+  display: none;
+}
+
+/** 代码换行 **/
+pre.prism-code {
+  word-break: break-all !important;
+  white-space: pre-wrap !important;
+}

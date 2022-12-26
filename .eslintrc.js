@@ -101,13 +101,13 @@ module.exports = {
     // ----------------------
     {
       files: ['*.js', '.*.js'],
-      excludedFiles: ['docs/**', 'packages/**'],
+      excludedFiles: ['docs/**', 'docs-static/**', 'packages/**'],
       extends: ['lvmcn/javascript/node'],
       rules: buildingToolsJavascriptRules,
     },
     {
       files: ['*.ts', '.*.ts', '*.tsx', '.*.tsx'],
-      excludedFiles: ['docs/**', 'packages/**'],
+      excludedFiles: ['docs/**', 'docs-static/**', 'packages/**'],
       extends: ['lvmcn/typescript/node'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -145,6 +145,16 @@ module.exports = {
         project: './tsconfig.json',
       },
       rules: typescriptRules,
+    },
+    {
+      files: ['docs-static/**/*.js'],
+      rules: {
+        'no-dupe-keys': 'error',
+        'no-global-assign': 'error',
+        'no-native-reassign': 'error',
+        'no-undef': 'error',
+        'no-unsafe-negation': 'error',
+      },
     },
     // d.ts
     {

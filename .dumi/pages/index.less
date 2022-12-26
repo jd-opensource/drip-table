@@ -41,106 +41,6 @@
       sans-serif;
   }
 
-  ////////////
-  // Header //
-  ////////////
-
-  &-header,
-  &-header-fixed {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 10;
-    margin: 0;
-  }
-
-  &-header &-bt-line {
-    border-bottom: #2276f3 1px solid;
-    box-sizing: border-box;
-  }
-
-  &-header &-gap,
-  &-header-fixed &-gap {
-    padding: 1.25rem 1.5rem;
-  }
-
-  &-header-hide,
-  &-header-fixed-hide {
-    visibility: hidden;
-  }
-
-  &-header-fixed {
-    background-color: #ffffff;
-    z-index: 100;
-    box-shadow: 0 10px 40px 0 #0000001a;
-    transform: translateY(-6rem);
-    visibility: hidden;
-    transition: all .3s ease;
-  }
-
-  &-header-fixed-show {
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  &-primary-logo {
-    display: inline-block;
-    width: 146px;
-    height: 40px;
-    background-image: url("https://img11.360buyimg.com/imagetools/jfs/t1/156025/11/22552/175523/617fb164E678b9642/6b8c55c5079b9819.jpg");
-    background-position-x: 0;
-    background-position-y: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  &-github-icon {
-    display: inline-block;
-    color: #454d64;
-    height: 64px;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 64px;
-    text-decoration: none;
-    letter-spacing: 0;
-    background-image: url("https://img14.360buyimg.com/imagetools/jfs/t1/220852/40/8646/5883/61c2dd7aE04a55d46/e930932b7dee46b0.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: center;
-  }
-
-  &-dropdown {
-    position: relative;
-    display: inline-block;
-
-    &:hover .drip-table-dropdown-content {
-      display: block;
-    }
-  }
-
-  &-dropdown-content {
-    display: none;
-    position: absolute;
-    left: -20px;
-    background-color: #ffffff;
-    min-width: 90px;
-    box-shadow: 0 8px 16px 0 #00000033;
-    padding: 12px 16px;
-  }
-
-  &-nav-title {
-    display: flex;
-    align-items: center;
-    color: #454d64;
-    font-size: 14px;
-
-    &:hover {
-      color: #2276f3;
-    }
-  }
-
   /////////////
   // Section //
   /////////////
@@ -155,7 +55,6 @@
   ///////////////
 
   &-section1 {
-    margin-top: 90px;
     color: #2276f3 !important;
   }
 
