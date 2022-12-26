@@ -61,7 +61,7 @@ The introduction of each sub-project are as follows:
 
    ```js
    import DripTableGenerator from "drip-table-generator";
-   import "drip-table-generator/dist/index.css";
+   import "drip-table-generator/dist/index.min.css";
    ```
 
 3. Use components in pages
@@ -106,7 +106,7 @@ The introduction of each sub-project are as follows:
    // import ant-design css
    import "antd/dist/antd.css";
    // import drip-table css
-   import "drip-table/dist/index.css";
+   import "drip-table/dist/index.min.css";
    ```
 
 3. Use components in pages

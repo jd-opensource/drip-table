@@ -61,7 +61,7 @@
 
    ```js
    import DripTableGenerator from "drip-table-generator";
-   import "drip-table-generator/dist/index.css";
+   import "drip-table-generator/dist/index.min.css";
    ```
 
 3. 在页面中引用
@@ -106,7 +106,7 @@
    // 引入 ant-design 样式
    import "antd/dist/antd.css";
    // 引入 drip-table 样式
-   import "drip-table/dist/index.css";
+   import "drip-table/dist/index.min.css";
    ```
 
 3. 引用

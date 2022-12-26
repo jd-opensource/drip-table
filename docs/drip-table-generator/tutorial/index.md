@@ -23,10 +23,11 @@ import React from "react";
 import { DripTableSchema } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator, {
+  default as A,
   DripTableGeneratorHandler,
 } from "drip-table-generator";
 import "antd/dist/antd.css";
-import "drip-table-generator/dist/index.css";
+import "drip-table-generator/dist/index.min.css";
 
 const initialSchema = {
   pagination: false,
@@ -46,6 +47,8 @@ const initialSchema = {
     },
   ],
 };
+
+console.log(DripTableGenerator, A);
 
 const Demo = () => {
   return (
@@ -92,7 +95,7 @@ import { DripTableSchema } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
-import "drip-table-generator/dist/index.css";
+import "drip-table-generator/dist/index.min.css";
 
 const Demo = () => {
   return (

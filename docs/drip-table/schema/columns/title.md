@@ -54,7 +54,7 @@ import DripTableDriverAntDesign from "drip-table-driver-antd";
 import { PlusCircleTwoTone } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import "antd/dist/antd.css";
-import "drip-table/dist/index.css";
+import "drip-table/dist/index.min.css";
 
 const initialSchema = {
   columns: [

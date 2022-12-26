@@ -1,40 +1,38 @@
-import eslint from '@rollup/plugin-eslint';
-import { IBundleOptions } from 'father-build-universal/src/types.d';
+import { defineConfig } from 'father';
+import sha1 from 'sha1';
 
-const options: IBundleOptions = {
-  cjs: { type: 'rollup' },
-  esm: {
-    type: 'rollup',
-    importLibToEs: true,
-  },
-  cssModules: true,
-  extractCSS: true,
-  extraBabelPlugins: [
-    [
-      'import',
-      {
-        libraryName: 'antd',
-        libraryDirectory: 'lib',
-        style: true,
+export default defineConfig({
+  umd: {
+    entry: {
+      'src/index': {
+        output: 'dist',
       },
-      'antd',
-    ],
-  ],
-  hookRollupConfig: (rollupConfigs, environment) => rollupConfigs.map(rollupConfig => ({
-    ...rollupConfig,
-    plugins: [
-      eslint({
-        include: [/\.js$/ui, /\.jsx$/ui, /\.ts$/ui, /\.tsx$/ui, /\.tx$/ui],
-        exclude: [/\/node_modules\//ui, /\/dist\//ui],
-        throwOnError: true,
-        throwOnWarning: true,
-      }),
-      ...rollupConfig.plugins || [],
-    ],
-  })),
-  pkgs: [
-    'drip-table',
-  ],
-};
-
-export default options;
+    },
+    chainWebpack: (config, { webpack }) => {
+      for (const ext of ['css', 'less', 'sass']) {
+        config.module.rule(ext)
+          .oneOf('css')
+          .use('css-loader')
+          .tap(options => ({
+            ...options,
+            modules: {
+              ...options?.modules,
+              getLocalIdent: (loaderContext: { resourcePath: string }, localIdentName: string, localName: string, options: unknown) => {
+                const resourcePath = loaderContext.resourcePath;
+                if (localName === 'jfe-drip-table-driver-antd' || localName.startsWith('jfe-drip-table-driver-antd-')) {
+                  return localName;
+                }
+                return `jfe-drip-table-driver-antd-${sha1(resourcePath).slice(0, 4)}-${localName}`;
+              },
+            },
+          }));
+      }
+      return config;
+    },
+  },
+  cjs: {
+    platform: 'browser',
+    output: 'lib',
+  },
+  esm: { output: 'es' },
+});

@@ -40,7 +40,7 @@ title: 快速开始 Quick Start
     ```js | pure
     import React from 'react';
     import DripTable from 'drip-table';
-    import 'drip-table/dist/index.css';
+    import 'drip-table/dist/index.min.css';
     ```
 
 2. 选择主题包并引入

@@ -1,4 +1,4 @@
-import 'drip-table/dist/index.css';
+import 'drip-table/dist/index.min.css';
 import './styles/index.less';
 import './styles/theme.less';
 

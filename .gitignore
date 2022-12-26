@@ -20,10 +20,6 @@
 
 # lerna
 /.local
-/packages/*/node_modules
-/packages/*/dist
-/packages/*/dist-visualizer
-/packages/*/dist-visualizer-css
 
 # temporary files
 /.tsconfig-lint.json

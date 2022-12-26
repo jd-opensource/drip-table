@@ -120,7 +120,7 @@ const EditableTable = <
 
   React.useEffect(() => {
     setTimeout(() => {
-      const columnsDOM = document.querySelectorAll('.drip-table-generator-editable-table-column');
+      const columnsDOM = document.querySelectorAll(`.${styles['editable-table-column']}`);
       let maxHeight = 0;
       columnsDOM.forEach((dom) => {
         const index = context.globalConfigs.sticky ? 0 : 1;
@@ -137,7 +137,7 @@ const EditableTable = <
 
   React.useEffect(() => {
     setTimeout(() => {
-      const columnsDOM = document.querySelectorAll('.drip-table-generator-editable-table-column');
+      const columnsDOM = document.querySelectorAll(`.${styles['editable-table-column']}`);
       const siblingHeight = columnsDOM[columnsDOM.length - 1]?.scrollHeight;
       const tableHeight = table.current?.scrollHeight;
       setBlankHeight(siblingHeight || tableHeight);
