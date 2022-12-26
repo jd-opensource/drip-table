@@ -39,7 +39,7 @@
 
     ```js
     import DripTableGenerator from 'drip-table-generator';
-    import 'drip-table-generator/dist/index.css';
+    import 'drip-table-generator/dist/index.min.css';
     ```
 
 3. 在页面中引用

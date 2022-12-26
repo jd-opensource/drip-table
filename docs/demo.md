@@ -32,7 +32,7 @@ sidemenu: false
     flex-direction: column !important;
     min-height: 700px !important;
   }
-  .drip-table-generator-container {
+  .jfe-drip-table-generator-container {
     flex: 1 1 auto !important;
     height: 0 !important;
     overflow: hidden !important;

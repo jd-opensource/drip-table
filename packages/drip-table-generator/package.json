@@ -2,12 +2,22 @@
   "name": "drip-table-generator",
   "version": "2.0.9",
   "description": "A visualization tool for generating schema of drip-table.",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "typings": "dist/index.d.ts",
+  "main": "dist/index.min.js",
+  "module": "es/index.js",
+  "unpkg": "dist/index.min.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./dist/index.css": "./dist/index.min.css",
+    "./dist/index.min.css": "./dist/index.min.css"
+  },
   "scripts": {
-    "build": "father-build && tsc-alias -p tsconfig.json",
+    "build": "father build",
     "analyze": "ANALYZE=1 dumi dev",
     "prepare": "yarn build",
     "postpublish": "git push --tags",
@@ -39,8 +49,8 @@
     "babel-plugin-import": "1.13.0",
     "drip-table": "link:../drip-table",
     "drip-table-driver-antd": "link:../drip-table-driver-antd",
-    "father-build-universal": "1.21.3",
-    "tsc-alias": "1.4.2",
+    "father": "^4.1.0",
+    "sha1": "^1.1.1",
     "typescript": "4.5.4"
   },
   "peerDependencies": {
@@ -61,7 +71,9 @@
   ],
   "files": [
     "README.*",
-    "dist"
+    "dist",
+    "es",
+    "lib"
   ],
   "homepage": "https://drip-table.jd.com",
   "license": "MIT",

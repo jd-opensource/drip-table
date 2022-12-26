@@ -29,8 +29,8 @@ return `<a href="http://ace.jd.com/#/launch?config=${rec.price}" target="_blank"
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import 'drip-table/dist/index.css';
-import 'drip-table-generator/dist/index.css';
+import 'drip-table/dist/index.min.css';
+import 'drip-table-generator/dist/index.min.css';
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';

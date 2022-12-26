@@ -26,8 +26,8 @@ import { Button } from "antd";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator from "drip-table-generator";
 import "antd/dist/antd.css";
-import "drip-table/dist/index.css";
-import "drip-table-generator/dist/index.css";
+import "drip-table/dist/index.min.css";
+import "drip-table-generator/dist/index.min.css";
 
 const schema = {
   rowSelection: true,

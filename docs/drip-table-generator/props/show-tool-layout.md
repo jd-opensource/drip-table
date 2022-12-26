@@ -16,8 +16,8 @@ title: showToolLayout
  * hideActions: ["CSB"]
  */
 
-import 'drip-table/dist/index.css';
-import 'drip-table-generator/dist/index.css';
+import 'drip-table/dist/index.min.css';
+import 'drip-table-generator/dist/index.min.css';
 
 import { Button } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';

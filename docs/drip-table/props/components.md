@@ -36,7 +36,7 @@ import React from "react";
 import DripTable, { DripTableComponentProps, DripTableRecordTypeBase } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import "antd/dist/antd.css";
-import "drip-table/dist/index.css";
+import "drip-table/dist/index.min.css";
 
 // 自定义组件表格渲染列 Schema 类型定义。
 type SampleColumnSchema = DripTableColumnSchema<'custom::Sample', {

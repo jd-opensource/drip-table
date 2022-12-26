@@ -39,7 +39,7 @@ English | [简体中文](./README.zh-CN.md)
 
     ```js
     import DripTableGenerator from 'drip-table-generator';
-    import 'drip-table-generator/dist/index.css';
+    import 'drip-table-generator/dist/index.min.css';
     ```
 
 3. Use components in pages
