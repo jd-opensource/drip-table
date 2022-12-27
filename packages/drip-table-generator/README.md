@@ -37,14 +37,14 @@ English | [简体中文](./README.zh-CN.md)
 
 2. Import at the entrance of a file
 
-    ```js
+    ```js | pure
     import DripTableGenerator from 'drip-table-generator';
     import 'drip-table-generator/dist/index.min.css';
     ```
 
 3. Use components in pages
 
-    ```js
+    ```js | pure
     return <DripTableGenerator />
     ```
 

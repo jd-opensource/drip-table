@@ -15,8 +15,6 @@ title: 表头自定义配置
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import "drip-table/dist/index.min.css";
-import "drip-table-generator/dist/index.min.css";
 
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";

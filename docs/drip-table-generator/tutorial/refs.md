@@ -56,7 +56,6 @@ import DripTableGenerator, {
   DripTableGeneratorHandler,
 } from "drip-table-generator";
 import "antd/dist/antd.css";
-import "drip-table-generator/dist/index.min.css";
 
 const { Row, Col, Button, message } = DripTableDriverAntDesign.components;
 

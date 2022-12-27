@@ -7,12 +7,14 @@ title: customGlobalConfigPanel
 
 - 描述：自定义全局属性面板, 须注意的是当设置的属性为自定义全局属性，需要开启 `drip-table` 的 `ajv.additionalProperties` 选项，同样该属性支持在 `drip-table-generator` 的属性上透传。
 - 类型：
+
 ```typescript
 type DripTableGeneratorPanel = {
   mode: 'add' | 'replace';
   configs: DripTableComponentAttrConfig[];
 }
 ```
+
 - 默认值：无
 
 ```jsx
@@ -22,8 +24,6 @@ type DripTableGeneratorPanel = {
  * hideActions: ["CSB"]
  */
 
-import 'drip-table/dist/index.min.css';
-import 'drip-table-generator/dist/index.min.css';
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';

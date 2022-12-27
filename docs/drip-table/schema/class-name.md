@@ -19,7 +19,6 @@ import React from "react";
 import DripTable from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import "antd/dist/antd.css";
-import "drip-table/dist/index.min.css";
 
 const schema = {
   className: "sample-class-name",

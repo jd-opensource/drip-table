@@ -8,14 +8,13 @@ title: CDN 链接组件
 **CDN 链接组件允许用户在本地开发自己的业务代码，上传至 CDN 后可以通过该组件嵌入表格中。**
 
 示例：
+
 ```jsx
 /**
  * transform: true
  * defaultShowCode: true
  * hideActions: ["CSB"]
  */
-import 'drip-table/dist/index.min.css';
-import 'drip-table-generator/dist/index.min.css';
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';

@@ -7,6 +7,7 @@ title: customAttributeComponents
 
 - 描述：自定义属性面板组件, 允许用户传入自定义代码来丰富属性控制面板的组件形式。
 - 类型：
+
 ```ts
 interface CustomComponentProps {
   theme?: DripTableDriver;
@@ -17,6 +18,7 @@ interface CustomComponentProps {
 }
 type customAttributeComponents = Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
 ```
+
 - 默认值：无
 
 ```tsx
@@ -26,8 +28,6 @@ type customAttributeComponents = Record<string, new <P extends CustomComponentPr
  * hideActions: ["CSB"]
  */
 
-import 'drip-table/dist/index.min.css';
-import 'drip-table-generator/dist/index.min.css';
 
 import { Button, Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
