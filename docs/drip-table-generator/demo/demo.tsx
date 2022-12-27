@@ -5,8 +5,6 @@
  * hideActions: ["CSB"]
  */
 
-import 'drip-table/dist/index.min.css';
-import 'drip-table-generator/dist/index.min.css';
 import './demo.module.less';
 
 import { CloudSyncOutlined } from '@ant-design/icons';

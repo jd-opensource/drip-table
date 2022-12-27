@@ -29,7 +29,6 @@ import DripTable from "drip-table";
 import { Spin } from 'antd';
 import DripTableDriverAntDesign from "drip-table-driver-antd";
 import "antd/dist/antd.css";
-import "drip-table/dist/index.min.css";
 
 const schema = {
   id: 'sample-table',

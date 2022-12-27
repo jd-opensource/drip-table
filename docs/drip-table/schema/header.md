@@ -36,7 +36,6 @@ title: 头部 header
     import DripTable from "drip-table";
     import DripTableDriverAntDesign from "drip-table-driver-antd";
     import "antd/dist/antd.css";
-    import "drip-table/dist/index.min.css";
 
     const schema = {
       header: true,

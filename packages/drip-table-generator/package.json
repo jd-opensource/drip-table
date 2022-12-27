@@ -18,6 +18,7 @@
   },
   "scripts": {
     "build": "father build",
+    "dev": "father dev",
     "analyze": "ANALYZE=1 dumi dev",
     "prepare": "yarn build",
     "postpublish": "git push --tags",

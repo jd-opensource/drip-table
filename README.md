@@ -59,14 +59,14 @@ The introduction of each sub-project are as follows:
 
 2. Import at the entrance of a file
 
-   ```js
+   ```js | pure
    import DripTableGenerator from "drip-table-generator";
    import "drip-table-generator/dist/index.min.css";
    ```
 
 3. Use components in pages
 
-   ```js
+   ```js | pure
    return <DripTableGenerator />;
    ```
 

@@ -16,8 +16,6 @@ title: dataFields
  * hideActions: ["CSB"]
  */
 
-import 'drip-table/dist/index.min.css';
-import 'drip-table-generator/dist/index.min.css';
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';

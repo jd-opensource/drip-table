@@ -20,13 +20,14 @@ yarn add drip-table-generator
 ```
 
 > npm
+
 ```sh
 npm install --save drip-table-generator
 ```
 
 ### 依赖引入
 
-```js
+```js | pure
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import 'drip-table-generator/dist/index.min.css';
@@ -34,7 +35,7 @@ import 'drip-table-generator/dist/index.min.css';
 
 ### 页面引入
 
-```js
+```js | pure
 <DripTableGenerator
   driver={DripTableDriverAntDesign}
 />
@@ -51,7 +52,6 @@ import 'drip-table-generator/dist/index.min.css';
 import React from 'react';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
-import 'drip-table-generator/dist/index.min.css';
 
 const Demo = () => {
   return (

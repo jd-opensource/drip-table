@@ -37,14 +37,14 @@
 
 2. 在文件开头引入依赖
 
-    ```js
+    ```js | pure
     import DripTableGenerator from 'drip-table-generator';
     import 'drip-table-generator/dist/index.min.css';
     ```
 
 3. 在页面中引用
 
-    ```js
+    ```js | pure
     return <DripTableGenerator />
     ```
 
