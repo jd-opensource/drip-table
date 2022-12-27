@@ -188,7 +188,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const event = config.event;
             if (event) {
               return (
-                <Menu.Item key={config.name || index} disabled={this.finalizeDisabled(config.disabled)}>
+                <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                   <a
                     onClick={() => {
                       if (this.props.preview) {
@@ -203,7 +203,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <Menu.Item key={config.name || index} disabled={this.finalizeDisabled(config.disabled)}>
+              <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                 <a
                   href={finalizeString('pattern', config.href || '', this.props.data)}
                   onClick={this.props.preview ? e => e.preventDefault() : void 0}
@@ -274,10 +274,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const disabled = this.finalizeDisabled(config.disabled);
             if (event) {
               return (
-                <div style={{ display: 'flex' }}>
+                <div key={index} style={{ display: 'flex' }}>
                   <a
                     style={{ marginRight: '5px', lineHeight: options.lineHeight }}
-                    key={config.name || index}
                     onClick={() => {
                       if (this.props.preview) {
                         return;
@@ -293,11 +292,10 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <div style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
+              <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
                 <a
                   className={disabled ? styles['link-disabled'] : void 0}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
-                  key={config.name || index}
                   href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
                   target={disabled ? void 0 : config.target}
                   onClick={(e) => {

@@ -118,6 +118,7 @@ const HeaderCell = <
                         const checked = filter?.includes(f.value);
                         return (
                           <li
+                            key={i}
                             className={styles['jfe-drip-table-column-header-cell-toolbox-filters-item']}
                             onClick={() => {
                               const value = filter.filter(v => v !== f.value);
