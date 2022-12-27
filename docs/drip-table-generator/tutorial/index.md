@@ -22,10 +22,7 @@ title: 使用教程
 import React from "react";
 import { DripTableSchema } from "drip-table";
 import DripTableDriverAntDesign from "drip-table-driver-antd";
-import DripTableGenerator, {
-  default as A,
-  DripTableGeneratorHandler,
-} from "drip-table-generator";
+import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 
 const initialSchema = {
@@ -46,8 +43,6 @@ const initialSchema = {
     },
   ],
 };
-
-console.log(DripTableGenerator, A);
 
 const Demo = () => {
   return (
