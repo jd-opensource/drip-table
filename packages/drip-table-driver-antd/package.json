@@ -22,7 +22,7 @@
     "eslint:commit": "eslint --format pretty"
   },
   "dependencies": {
-    "react-dom": "^16.9.0"
+    "react-dom": ">=16.9.0"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.3.0",

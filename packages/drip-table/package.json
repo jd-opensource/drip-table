@@ -53,14 +53,14 @@
     "rc-tooltip": "^5.2.2",
     "rc-util": "^5.22.5",
     "react-clipboard.js": "^2.0.16",
-    "react-dom": "^16.9.0",
+    "react-dom": ">=16.9.0",
     "react-event-injector": "^1.1.2",
     "react-window": "^1.8.6",
     "uuid": "^8.3.2",
     "viewerjs": "1.7.1"
   },
   "devDependencies": {
-    "@types/react-dom": "^16.9.0",
+    "@types/react-dom": ">=16.9.0",
     "@types/react-window": "^1.8.5",
     "@types/uuid": "^8.3.4",
     "father": "^4.1.0",
