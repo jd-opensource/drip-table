@@ -20,7 +20,7 @@
     "build": "father build",
     "dev": "father dev",
     "analyze": "ANALYZE=1 dumi dev",
-    "prepare": "yarn build",
+    "prepare": "yarn build && yarn lint",
     "postpublish": "git push --tags",
     "lint": "yarn run eslint && yarn run tslint && yarn run stylelint",
     "lint:fix": "yarn run eslint:fix && yarn run stylelint:fix",
