@@ -4,7 +4,7 @@
   "private": true,
   "description": "A drip-table driver based on Ant Design.",
   "main": "dist/index.min.js",
-  "module": "es/index.js",
+  "module": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "types": "lib/index.d.ts",
   "typings": "lib/index.d.ts",
