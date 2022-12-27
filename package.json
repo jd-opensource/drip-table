@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@babel/core": "^7.20.7",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-decorators": "^7.17.2",
@@ -86,8 +87,8 @@
     "postcss": "^8.4.12",
     "postcss-less": "^6.0.0",
     "rc-util": "^5.22.5",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-window": "^1.8.6",
     "sha1": "^1.1.1",
     "stylelint": "^14.9.1",
