@@ -10,7 +10,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "father build",
-    "prepare": "yarn build",
+    "prepare": "yarn build && yarn lint",
     "postpublish": "git push --tags",
     "lint": "yarn run eslint && yarn run tslint",
     "lint:fix": "yarn run eslint:fix",
