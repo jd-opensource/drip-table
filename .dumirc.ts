@@ -3,16 +3,6 @@ import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 import path from 'path';
 import sha1 from 'sha1';
 
-const scriptText = `
-(function() {
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = '/assets/global.css';
-  document.body.appendChild(link);
-}());
-`;
-
 export default defineConfig({
   // 重点配置项
   // https://d.umijs.org/config#%E9%87%8D%E7%82%B9%E9%85%8D%E7%BD%AE%E9%A1%B9
@@ -157,5 +147,9 @@ export default defineConfig({
       pathRewrite: { '^/storage.jd.com': '' },
     },
   },
-  scripts: [scriptText],
+  links: [
+    { href: '/assets/bulma/index.min.css', rel: 'preload', as: 'style' },
+    { href: '/assets/prismjs/index.min.css', rel: 'preload', as: 'style' },
+  ],
+  styles: ['/assets/global.css'],
 });
