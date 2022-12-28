@@ -64,6 +64,9 @@ export default defineConfig({
         children: [],
       },
     ],
+    sidebar: {
+      '/demo': [],
+    },
   },
   // 基础配置项
   // https://d.umijs.org/config#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E9%A1%B9
