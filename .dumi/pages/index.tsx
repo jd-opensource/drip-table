@@ -42,6 +42,7 @@ export default class IndexPage extends React.PureComponent<IndexPageProps, Index
   public componentDidMount(): void {
     window.addEventListener('scroll', this.updateScroll);
     this.updateScroll();
+    document.title = 'Drip Table';
   }
 
   public componentWillUnmount(): void {
