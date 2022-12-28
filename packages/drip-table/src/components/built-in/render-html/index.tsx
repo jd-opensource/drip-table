@@ -49,7 +49,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
           <div>{ Object.prototype.toString.call(html) }</div>
         );
       }
-      return <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} /></ErrorBoundary>;
+      return <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>;
     } catch (error) {
       console.error(error);
     }
