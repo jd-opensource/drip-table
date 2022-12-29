@@ -1,5 +1,4 @@
 ---
-order: 6
 title: 校验配置项 ajv
 toc: content
 ---

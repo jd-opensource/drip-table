@@ -1,5 +1,4 @@
 ---
-order: 8
 title: onExportSchema
 toc: content
 ---

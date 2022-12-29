@@ -1,5 +1,4 @@
 ---
-order: 4
 title: 富文本组件
 toc: content
 ---

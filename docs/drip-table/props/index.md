@@ -1,5 +1,4 @@
 ---
-order: 9
 title: 属性参数 Props
 toc: content
 ---

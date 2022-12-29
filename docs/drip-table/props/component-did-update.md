@@ -1,5 +1,4 @@
 ---
-order: 21
 title: 组件更新完成 componentDidUpdate
 toc: content
 ---

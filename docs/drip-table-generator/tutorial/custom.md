@@ -1,5 +1,4 @@
 ---
-order: 2
 title: 自定义属性面板
 toc: content
 ---

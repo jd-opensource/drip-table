@@ -1,5 +1,4 @@
 ---
-order: 14
 title: 自定义组件库 components
 toc: content
 ---

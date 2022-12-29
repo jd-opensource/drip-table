@@ -1,5 +1,4 @@
 ---
-order: 15
 title: 行可选择 rowSelection
 toc: content
 ---

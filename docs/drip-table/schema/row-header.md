@@ -1,5 +1,4 @@
 ---
-order: 24
 title: 行头插槽 rowHeader
 toc: content
 ---

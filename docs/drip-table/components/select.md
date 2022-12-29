@@ -1,5 +1,4 @@
 ---
-order: 6
 title: 下拉组件 Select
 toc: content
 ---

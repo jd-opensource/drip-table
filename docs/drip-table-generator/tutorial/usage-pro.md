@@ -1,5 +1,4 @@
 ---
-order: 2
 title: 高级教程
 toc: content
 ---

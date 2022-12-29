@@ -1,5 +1,4 @@
 ---
-order: 21
 title: 组件类型 component
 toc: content
 ---

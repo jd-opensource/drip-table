@@ -1,5 +1,4 @@
 ---
-order: 13
 title: 冻结表头 sticky
 toc: content
 ---

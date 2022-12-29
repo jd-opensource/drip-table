@@ -1,5 +1,4 @@
 ---
-order: 10
 title: 尾部 footer
 toc: content
 ---

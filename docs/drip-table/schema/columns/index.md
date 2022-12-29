@@ -1,5 +1,4 @@
 ---
-order: 6
 title: 列配置 columns
 toc: content
 ---

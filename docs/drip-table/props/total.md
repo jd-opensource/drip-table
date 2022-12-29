@@ -1,5 +1,4 @@
 ---
-order: 10
 title: 总条数 total
 toc: content
 ---

@@ -1,5 +1,4 @@
 ---
-order: 2
 title: customGlobalConfigPanel
 toc: content
 ---

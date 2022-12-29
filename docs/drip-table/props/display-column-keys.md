@@ -1,5 +1,4 @@
 ---
-order: 9
 title: 当前显示列键 displayColumnKeys
 toc: content
 ---

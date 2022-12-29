@@ -1,5 +1,4 @@
 ---
-order: 5
 title: 内部样式 innerStyle
 toc: content
 ---

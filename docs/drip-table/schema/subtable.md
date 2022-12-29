@@ -1,5 +1,4 @@
 ---
-order: 27
 title: 子表 subtable
 toc: content
 ---

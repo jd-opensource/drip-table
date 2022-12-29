@@ -1,5 +1,4 @@
 ---
-order: 3
 title: 列配置项 ColumnSchema
 toc: content
 ---

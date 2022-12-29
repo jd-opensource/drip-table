@@ -1,5 +1,4 @@
 ---
-order: 5
 title: 数据预览配置
 toc: content
 ---

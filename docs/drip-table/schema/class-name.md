@@ -1,5 +1,4 @@
 ---
-order: 2
 title: 类名 className
 toc: content
 ---

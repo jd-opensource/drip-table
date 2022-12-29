@@ -1,5 +1,4 @@
 ---
-order: 1
 title: 组合组件
 toc: content
 ---

@@ -1,5 +1,4 @@
 ---
-order: 14
 title: 指定行可展开 rowExpandable
 toc: content
 ---

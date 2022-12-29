@@ -1,5 +1,4 @@
 ---
-order: 3
 title: CDN 链接组件
 toc: content
 ---

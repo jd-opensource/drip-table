@@ -1,5 +1,4 @@
 ---
-order: 1
 title: 卡片模式 Card
 toc: content
 ---

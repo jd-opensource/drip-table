@@ -1,5 +1,4 @@
 ---
-order: 4
 title: 头部配置
 toc: content
 ---

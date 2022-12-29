@@ -1,5 +1,4 @@
 ---
-order: 26
 title: 空表提示 emptyText
 toc: content
 ---

@@ -1,5 +1,4 @@
 ---
-order: 4
 title: 列数据处理 dataTranslation
 toc: content
 ---

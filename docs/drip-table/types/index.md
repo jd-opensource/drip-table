@@ -1,5 +1,4 @@
 ---
-order: 10
 title: 类型 Types
 toc: false
 ---

@@ -1,5 +1,4 @@
 ---
-order: 11
 title: slotsSchema
 toc: content
 ---

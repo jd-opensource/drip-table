@@ -1,5 +1,4 @@
 ---
-order: 4
 title: 内部类名 innerClassName
 toc: content
 ---

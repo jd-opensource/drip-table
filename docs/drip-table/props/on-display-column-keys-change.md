@@ -1,5 +1,4 @@
 ---
-order: 33
 title: 展示列触发 onDisplayColumnKeysChange
 toc: content
 ---

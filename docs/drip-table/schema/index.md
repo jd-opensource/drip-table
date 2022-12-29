@@ -1,5 +1,4 @@
 ---
-order: 6
 title: 表格配置 Schema
 toc: content
 ---

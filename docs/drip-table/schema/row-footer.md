@@ -1,5 +1,4 @@
 ---
-order: 25
 title: 行尾插槽 rowFooter
 toc: content
 ---

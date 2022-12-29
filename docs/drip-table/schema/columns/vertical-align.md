@@ -1,5 +1,4 @@
 ---
-order: 12
 title: 垂直对齐 verticalAlign
 toc: content
 ---
