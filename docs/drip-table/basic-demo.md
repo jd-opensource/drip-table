@@ -1,7 +1,7 @@
 ---
 order: 3
 title: 基础案例 Basic Demo
-toc: content
+toc: false
 ---
 
 ## 基础示例

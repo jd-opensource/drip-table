@@ -6,8 +6,6 @@ toc: content
 
 ## DripTableSlotSchema
 
-[> 返回上层](/drip-table/types)
-
 > 通用插槽组件渲染配置项
 
 ```typescript

@@ -6,8 +6,6 @@ toc: content
 
 ## DripTableTableInformation
 
-[> 返回上层](/drip-table/types)
-
 > 通用表格信息
 
 ```typescript

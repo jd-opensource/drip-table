@@ -1,7 +1,7 @@
 ---
 order: 10
 title: 类型 Types
-toc: content
+toc: false
 ---
 
 ## 类型

@@ -8,12 +8,15 @@ toc: content
 
 - 描述：表格通用插槽渲染配置
 - 类型：[`DripTableSlotSchema`](/drip-table/types/slot-schema)
-- 子属性：具体详细子项配置请浏览 [**通用插槽 Slot 详细设置项**](/drip-table/slot/all)。
+
+### 子项
 
 | 参数名 | 描述 | 必填 | 详情 |
 | ----- | ---- | ---- | ---- |
 | [slot.style](/drip-table/slot/style) | 插槽自定义样式 | × | [🔗 示例](/drip-table/schema/slot/style) |
 | [slot.elements](/drip-table/slot/elements) | 插槽展示元素配置 | × | [🔗 示例](/drip-table/schema/slot/elements) |
+
+### 示例
 
 ```jsx
 /**

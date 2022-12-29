@@ -8,6 +8,8 @@ toc: content
 
 通过配置该对象，控制表格的展示方式。
 
+### 子项
+
 | 参数名 | 描述 | 必填 | 详情 |
 | ----- | ---- | ---- | ---- |
 | [id](/drip-table/schema/id) | 表格标识符 | × | [🔗 示例](/drip-table/schema/id) |
@@ -37,6 +39,8 @@ toc: content
 | [rowFooter](/drip-table/schema/row-footer) | 行尾部插槽 | × | [🔗 示例](/drip-table/schema/row-footer) |
 | [emptyText](/drip-table/schema/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/schema/empty-text) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
+
+### 示例
 
 ```jsx
 /**

@@ -1,7 +1,7 @@
 ---
 order: 5
 title: 组件 Components
-toc: content
+toc: false
 ---
 
 ## 基础组件

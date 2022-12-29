@@ -48,7 +48,7 @@ const DRIP_TABLE_SIDEBAR = [
         title: '组件 Components',
         link: '/drip-table/components',
         children: [
-          { title: '总览 Index', link: '/drip-table/components' },
+          { title: '目录', link: '/drip-table/components' },
           { title: '文本 Text', link: '/drip-table/components/text' },
           { title: '图片 Image', link: '/drip-table/components/image' },
           { title: '链接 Link', link: '/drip-table/components/link' },
@@ -135,7 +135,7 @@ const DRIP_TABLE_SIDEBAR = [
         title: '布局差异化 Layout',
         link: '/drip-table/layout',
         children: [
-          { title: '布局差异化', link: '/drip-table/layout' },
+          { title: '目录', link: '/drip-table/layout' },
           { title: '卡片模式 Card', link: '/drip-table/layout/card-layout' },
         ],
       },
@@ -193,7 +193,7 @@ const DRIP_TABLE_SIDEBAR = [
         title: '类型 Types',
         link: '/drip-table/types',
         children: [
-          { title: '类型', link: '/drip-table/types' },
+          { title: '目录', link: '/drip-table/types' },
           { title: '表格信息 TableInformation', link: '/drip-table/types/table-information' },
           { title: '插槽配置项 SlotSchema', link: '/drip-table/types/slot-schema' },
           { title: '列配置项 ColumnSchema', link: '/drip-table/types/column-schema' },
@@ -283,6 +283,10 @@ export default defineConfig({
       '/drip-table/components': DRIP_TABLE_SIDEBAR,
       '/drip-table/schema': DRIP_TABLE_SIDEBAR,
       '/drip-table/schema/columns': DRIP_TABLE_SIDEBAR,
+      '/drip-table/slot': DRIP_TABLE_SIDEBAR,
+      '/drip-table/layout': DRIP_TABLE_SIDEBAR,
+      '/drip-table/props': DRIP_TABLE_SIDEBAR,
+      '/drip-table/types': DRIP_TABLE_SIDEBAR,
       '/demo': [],
     },
   },

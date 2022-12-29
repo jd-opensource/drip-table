@@ -8,6 +8,8 @@ toc: content
 
 通过调整传入表格的各项属性，控制表格的展示方式、实现表格的事件响应。
 
+### 子项
+
 | 参数名 | 描述 | 必填 | 详情 |
 | ----- | ---- | ---- | ---- |
 | [className](/drip-table/props/class-name) | 样式表类名 | × | [🔗 示例](/drip-table/props/class-name) |
@@ -54,6 +56,8 @@ toc: content
 | [onChange](/drip-table/props/on-change) | 过滤器、分页器 等配置变化 | × | [🔗 示例](/drip-table/props/on-change) |
 | [onDisplayColumnKeysChange](/drip-table/props/on-display-column-keys-change) | 用户修改展示的列时 | × | [🔗 示例](/drip-table/props/on-display-column-keys-change) |
 | [onEvent](/drip-table/props/on-event) | 通用事件机制 | × | [🔗 示例](/drip-table/props/on-event) |
+
+### 示例
 
 ```jsx
 /**
