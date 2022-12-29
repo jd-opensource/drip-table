@@ -7,6 +7,7 @@
  */
 
 import 'rc-color-picker/assets/index.css';
+import './index.less';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
@@ -18,8 +19,6 @@ import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
 import BuiltInComponents, { CustomComponentProps, DTGComponentBaseProperty } from './components';
-
-import styles from './index.module.less';
 
 interface Props<T> {
   configs: DTGComponentPropertySchema[];
@@ -226,7 +225,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
           validateStatus={helpMsg[key] ? 'error' : 'success'}
           help={config['ui:layout']?.customHelpMsg ? '' : helpMsg[key]}
           required={config.required}
-          className={styles['custom-form-item']}
+          className="jfe-drip-table-generator-custom-form-item"
           style={config['ui:wrapperStyle']}
           {...formItemLayout}
         >

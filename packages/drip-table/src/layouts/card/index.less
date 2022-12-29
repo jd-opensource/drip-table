@@ -5,12 +5,13 @@
  * @modifier : renwenci (ararakikon@163.com)
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
+@prefixCls: jfe-drip-table-layout-card;
 
-.card-container {
+.@{prefixCls}-container {
   justify-content: space-around;
   display: grid;
 
-  .card-item {
+  .@{prefixCls}-item {
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -18,19 +19,19 @@
     box-shadow: 0 0 12px 0 #26262615;
     margin: 10px 0;
 
-    .img {
+    .@{prefixCls}-img {
       width: 100%;
       aspect-ratio: 1;
       margin-bottom: 10px;
     }
 
-    .title {
+    .@{prefixCls}-title {
       color: #8c8c8c;
       font-size: 12px;
       margin-bottom: 4px;
     }
 
-    .content {
+    .@{prefixCls}-content {
       display: flex;
       flex-direction: column;
     }

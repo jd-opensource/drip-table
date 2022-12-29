@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import 'rc-color-picker/assets/index.css';
+import './index.less';
 
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Select } from 'antd';
@@ -13,8 +14,6 @@ import ColorPicker from 'rc-color-picker';
 import React from 'react';
 
 import { DTGComponentBaseProperty } from '..';
-
-import styles from './index.module.less';
 
 type SelectProps = React.ComponentProps<typeof Select>;
 type SelectOptionType = NonNullable<SelectProps['options']>[number];
@@ -76,7 +75,7 @@ export default class BoxShadowComponent extends React.PureComponent<Props> {
 
   public render() {
     return (
-      <div className={styles['box-shadow-container']}>
+      <div className="jfe-drip-table-generator-box-shadow-container">
         <ColorPicker
           placement="bottomLeft"
           defaultAlpha={100}
@@ -86,22 +85,22 @@ export default class BoxShadowComponent extends React.PureComponent<Props> {
             this.onChangeValue({ color: event.color, positions: [...this.value.positions] });
           }}
         >
-          <span className={styles['picker-trigger']} />
+          <span className="jfe-drip-table-generator-box-shadow-picker-trigger" />
         </ColorPicker>
         { this.value.positions.map((item, index) => (
-          <div className={styles['item-container']}>
+          <div className="jfe-drip-table-generator-box-shadow-item-container">
             <InputNumber
               controls={false}
-              className={styles['number-input']}
+              className="jfe-drip-table-generator-box-shadow-number-input"
               value={item.value}
               onChange={(val) => {
                 const positions = [...this.value.positions];
-                positions[index].value = val;
+                positions[index].value = val || void 0;
                 this.onChangeValue({ color: this.value.color, positions });
               }}
               addonAfter={(
                 <Select
-                  className={styles['select-input']}
+                  className="jfe-drip-table-generator-box-shadow-select-input"
                   value={item.unit}
                   options={this.options}
                   showArrow={false}
@@ -115,7 +114,7 @@ export default class BoxShadowComponent extends React.PureComponent<Props> {
               )}
             />
             <MinusCircleTwoTone
-              className={styles.minus}
+              className="jfe-drip-table-generator-box-shadow-minus"
               twoToneColor="#ff4d4f"
               onClick={() => {
                 const positions = [...this.value.positions];

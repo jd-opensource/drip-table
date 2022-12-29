@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import isEqual from 'lodash/isEqual';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import RcTooltip from 'rc-tooltip';
@@ -15,8 +17,6 @@ import Checkbox from '@/components/checkbox';
 import SlotRender from '@/components/slot-render';
 import { type IDripTableContext } from '@/context';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableProps, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
-
-import styles from './index.module.less';
 
 interface HeaderCellAdditionalProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -64,7 +64,7 @@ const HeaderCell = <
     justifyContent = 'flex-start';
   }
   return (
-    <div className={styles['jfe-drip-table-column-header-cell']} style={{ justifyContent }} ref={props.onRef}>
+    <div className="jfe-drip-table-column-header-cell" style={{ justifyContent }} ref={props.onRef}>
       {
         header
           ? (
@@ -82,7 +82,7 @@ const HeaderCell = <
       {
         props.children
           ? (
-            <div className={styles['jfe-drip-table-column-header-cell-body']}>
+            <div className="jfe-drip-table-column-header-cell-body">
               { props.children }
             </div>
           )
@@ -111,15 +111,15 @@ const HeaderCell = <
               placement="bottom"
               trigger="click"
               overlay={(
-                <div className={styles['jfe-drip-table-column-header-cell-toolbox-filters']}>
-                  <ul className={styles['jfe-drip-table-column-header-cell-toolbox-filters-list']}>
+                <div className="jfe-drip-table-column-header-cell-toolbox-filters">
+                  <ul className="jfe-drip-table-column-header-cell-toolbox-filters-list">
                     {
                       columnSchema.filters.map((f, i) => {
                         const checked = filter?.includes(f.value);
                         return (
                           <li
                             key={i}
-                            className={styles['jfe-drip-table-column-header-cell-toolbox-filters-item']}
+                            className="jfe-drip-table-column-header-cell-toolbox-filters-item"
                             onClick={() => {
                               const value = filter.filter(v => v !== f.value);
                               if (!checked) {
@@ -128,20 +128,20 @@ const HeaderCell = <
                               setFilter(value);
                             }}
                           >
-                            <span className={styles['jfe-drip-table-column-header-cell-toolbox-filters-item-content']}>
+                            <span className="jfe-drip-table-column-header-cell-toolbox-filters-item-content">
                               <Checkbox key={i} checked={checked} />
-                              <span className={styles['jfe-drip-table-column-header-cell-toolbox-filters-item-content-text']}>{ f.text }</span>
+                              <span className="jfe-drip-table-column-header-cell-toolbox-filters-item-content-text">{ f.text }</span>
                             </span>
                           </li>
                         );
                       })
                     }
                   </ul>
-                  <div className={styles['jfe-drip-table-column-header-cell-toolbox-filters-btns']}>
+                  <div className="jfe-drip-table-column-header-cell-toolbox-filters-btns">
                     <button
                       type="button"
                       // ?className="ant-btn ant-btn-link ant-btn-sm"
-                      className={styles['jfe-drip-table-column-header-cell-toolbox-filters-btn-reset']}
+                      className="jfe-drip-table-column-header-cell-toolbox-filters-btn-reset"
                       disabled={isEqual(additionalProps.filter || [], filter)}
                       onClick={() => {
                         setFilter(additionalProps.filter || []);
@@ -152,7 +152,7 @@ const HeaderCell = <
                     <button
                       type="button"
                       // ?className="ant-btn ant-btn-primary ant-btn-sm"
-                      className={styles['jfe-drip-table-column-header-cell-toolbox-filters-btn-sure']}
+                      className="jfe-drip-table-column-header-cell-toolbox-filters-btn-sure"
                       onClick={() => { onFilterChange(filter); }}
                     >
                       <span>确 定</span>
@@ -166,8 +166,8 @@ const HeaderCell = <
                 }
               }}
             >
-              <div className={styles['jfe-drip-table-column-header-cell-toolbox-icon']}>
-                <span role="img" aria-label="filter" className={styles['jfe-drip-table-column-header-cell-toolbox-icon-filter']}>
+              <div className="jfe-drip-table-column-header-cell-toolbox-icon">
+                <span role="img" aria-label="filter" className="jfe-drip-table-column-header-cell-toolbox-icon-filter">
                   <svg viewBox="64 64 896 896" focusable="false" data-icon="filter" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                     <path d="M349 838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V642H349v196zm531.1-684H143.9c-24.5 0-39.8 26.7-27.5 48l221.3 376h348.8l221.3-376c12.1-21.3-3.2-48-27.7-48z" />
                   </svg>

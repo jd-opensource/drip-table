@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions } from 'drip-table';
@@ -22,8 +24,6 @@ import ColumnCopyModal from './colum-copy-modal';
 import ColumnHeader from './column-header';
 import ColumnInsertModal from './column-insert-modal';
 import EditableComponents from './components';
-
-import styles from './index.module.less';
 
 interface EditableTableProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -120,7 +120,7 @@ const EditableTable = <
 
   React.useEffect(() => {
     setTimeout(() => {
-      const columnsDOM = document.querySelectorAll(`.${styles['editable-table-column']}`);
+      const columnsDOM = document.querySelectorAll(`.${'jfe-drip-table-generator-workstation-editable-table-column'}`);
       let maxHeight = 0;
       columnsDOM.forEach((dom) => {
         const index = context.globalConfigs.sticky ? 0 : 1;
@@ -137,7 +137,7 @@ const EditableTable = <
 
   React.useEffect(() => {
     setTimeout(() => {
-      const columnsDOM = document.querySelectorAll(`.${styles['editable-table-column']}`);
+      const columnsDOM = document.querySelectorAll(`.${'jfe-drip-table-generator-workstation-editable-table-column'}`);
       const siblingHeight = columnsDOM[columnsDOM.length - 1]?.scrollHeight;
       const tableHeight = table.current?.scrollHeight;
       setBlankHeight(siblingHeight || tableHeight);
@@ -237,8 +237,8 @@ const EditableTable = <
         return (
           <React.Fragment>
             { globalConfigs.sticky && (
-              <div className={styles['editable-table-sticky-headers']}>
-                { globalConfigs.rowSelection && <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
+              <div className="jfe-drip-table-generator-workstation-editable-table-sticky-headers">
+                { globalConfigs.rowSelection && <div className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)} style={{ textAlign: 'center', width: 48 }}><Checkbox /></div> }
                 { columns.map((column, columnIndex) => (
                   <div
                     draggable
@@ -273,9 +273,9 @@ const EditableTable = <
               </div>
             ) }
             <div
-              className={classNames(styles['editable-table'], {
-                [styles.bordered]: globalConfigs.bordered,
-                [styles.sticky]: globalConfigs.sticky || globalConfigs.scroll?.y,
+              className={classNames('jfe-drip-table-generator-workstation-editable-table-editable-table', {
+                'jfe-drip-table-generator-workstation-editable-table-bordered': globalConfigs.bordered,
+                'jfe-drip-table-generator-workstation-editable-table-sticky': globalConfigs.sticky || globalConfigs.scroll?.y,
               })}
               style={{
                 ...globalConfigs.innerStyle,
@@ -288,9 +288,9 @@ const EditableTable = <
             >
               { globalConfigs.rowSelection
                 ? (
-                  <div className={styles['editable-table-column']} style={{ minWidth: 48, width: 48 }}>
+                  <div className="jfe-drip-table-generator-workstation-editable-table-column" style={{ minWidth: 48, width: 48 }}>
                     { !globalConfigs.sticky && (
-                    <div className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])} style={{ textAlign: 'center' }}>
+                    <div className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)} style={{ textAlign: 'center' }}>
                       <Checkbox
                         indeterminate={indeterminate}
                         checked={checkAll}
@@ -303,12 +303,12 @@ const EditableTable = <
                       />
                     </div>
                     ) }
-                    <div className={styles['editable-table-tbody']} style={{ textAlign: 'center' }}>
+                    <div className="jfe-drip-table-generator-workstation-editable-table-tbody" style={{ textAlign: 'center' }}>
                       {
                       dataSource.map((record, index) => (
                         <div
                           key={index}
-                          className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
+                          className={classNames('jfe-drip-table-generator-workstation-editable-table-cell', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
                           style={{ height: cellHeight, textAlign: 'center', backgroundColor: globalConfigs.stripe && index % 2 === 1 ? '#fafafa' : void 0 }}
                         >
                           <Checkbox
@@ -336,7 +336,7 @@ const EditableTable = <
               { columns.map((column, columnIndex) => (
                 <div
                   key={columnIndex}
-                  className={classNames(styles['editable-table-column'], { [styles.checked]: currentColumn?.key === column.key })}
+                  className={classNames('jfe-drip-table-generator-workstation-editable-table-column', { 'jfe-drip-table-generator-workstation-editable-table-checked': currentColumn?.key === column.key })}
                   style={{
                     width: getWidth(column.width, 'px'),
                   }}
@@ -376,11 +376,11 @@ const EditableTable = <
                       onDelete={() => setCellHeight(void 0)}
                     />
                   ) }
-                  <div className={styles['editable-table-tbody']}>
+                  <div className="jfe-drip-table-generator-workstation-editable-table-tbody">
                     { dataSource.map((record, index) => (
                       <div
                         key={index}
-                        className={classNames(styles['editable-table-cell'], styles[globalConfigs.size || 'default'])}
+                        className={classNames('jfe-drip-table-generator-workstation-editable-table-cell', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
                         style={{
                           ...typeof column.style === 'object' ? column.style : {},
                           height: cellHeight,
@@ -390,7 +390,7 @@ const EditableTable = <
                         }}
                       >
                         <div
-                          className={styles['component-container']}
+                          className="jfe-drip-table-generator-workstation-editable-table-component-container"
                           style={{
                             alignItems: alignItems[column.verticalAlign || 'top'],
                             justifyContent: justifyContent[column.align || 'left'],
@@ -427,7 +427,7 @@ const EditableTable = <
                 }}
               />
             </div>
-            { previewDataSource.length <= 0 && <Empty className={styles['empty-body']} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
+            { previewDataSource.length <= 0 && <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
             <ColumnCopyModal
               visible={columnIndexToCopy > -1}
               value={columns[columnIndexToCopy]}

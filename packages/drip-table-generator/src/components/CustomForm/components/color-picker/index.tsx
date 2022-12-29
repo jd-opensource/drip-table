@@ -6,13 +6,12 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import 'rc-color-picker/assets/index.css';
+import './index.less';
 
 import ColorPicker from 'rc-color-picker';
 import React from 'react';
 
 import { DTGComponentBaseProperty } from '..';
-
-import styles from './index.module.css';
 
 interface Props extends DTGComponentBaseProperty<string> {}
 
@@ -68,7 +67,7 @@ export default class ColorPickerComponent extends React.PureComponent<Props> {
           this.props.onChange?.(event.color + this.alphaToHex(event.alpha));
         }}
       >
-        <span className={styles.trigger} />
+        <span className="jfe-drip-table-generator-color-picker-trigger" />
       </ColorPicker>
     );
   }

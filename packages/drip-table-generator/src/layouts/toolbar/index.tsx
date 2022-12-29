@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { CheckSquareOutlined,
   DatabaseOutlined,
   FilterOutlined,
@@ -28,8 +30,6 @@ import { getSchemaValue } from '../utils';
 import { DropDownRadio } from './components/dropdown';
 import { SwitchButton } from './components/switch';
 import { builtInThemes } from './config';
-
-import styles from './index.module.less';
 
 export type ToolBarConfig = {
   icon: React.ReactNode;
@@ -89,10 +89,10 @@ const Toolbar = <
   return (
     <GeneratorContext.Consumer>
       { ({ columns, drawerType, globalConfigs, mode, setState }) => (
-        <div className={styles['toolbar-container']} style={props.style}>
-          <div className={styles['toolbar-container-leftbar']}>
+        <div className="jfe-drip-table-generator-toolbar-toolbar-container" style={props.style}>
+          <div className="jfe-drip-table-generator-toolbar-toolbar-container-leftbar">
             <DropDownRadio
-              icon={<ThunderboltOutlined className={styles['tool-icon']} />}
+              icon={<ThunderboltOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
               label="主题"
               overlayType="image-radio"
               options={themeOptions}
@@ -107,13 +107,13 @@ const Toolbar = <
                 });
               }}
             />
-            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className={styles['tool-icon']} />} label="冻结表头" />
-            <SwitchButton name="rowSelection" icon={<CheckSquareOutlined className={styles['tool-icon']} />} label="行可选择" />
-            <SwitchButton name="stripe" icon={<MenuOutlined className={styles['tool-icon']} />} label="间隔斑马纹" />
+            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="冻结表头" />
+            <SwitchButton name="rowSelection" icon={<CheckSquareOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="行可选择" />
+            <SwitchButton name="stripe" icon={<MenuOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="间隔斑马纹" />
             <DropDownRadio
               name="size"
               default="middle"
-              icon={<FontSizeOutlined className={styles['tool-icon']} />}
+              icon={<FontSizeOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
               label="尺寸"
               overlayType="radio"
               options={[
@@ -122,11 +122,11 @@ const Toolbar = <
                 { label: '小号', value: 'small' },
               ]}
             />
-            <SwitchButton name="virtual" icon={<DatabaseOutlined className={styles['tool-icon']} />} label="虚拟列表" />
-            <SwitchButton name="filter" icon={<FilterOutlined className={styles['tool-icon']} />} label="过滤" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
-            <SwitchButton name="sort" icon={<SortAscendingOutlined className={styles['tool-icon']} />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
+            <SwitchButton name="virtual" icon={<DatabaseOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="虚拟列表" />
+            <SwitchButton name="filter" icon={<FilterOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="过滤" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
+            <SwitchButton name="sort" icon={<SortAscendingOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
           </div>
-          <div className={styles['toolbar-container-rightbar']}>
+          <div className="jfe-drip-table-generator-toolbar-toolbar-container-rightbar">
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>全局设置</Button>
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>数据源</Button>
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}>{ mode === 'edit' ? '预览' : '编辑' }</Button>

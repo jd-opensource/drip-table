@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
@@ -22,8 +24,6 @@ import ComponentConfigForm from './component-configs';
 import ComponentItemConfigForm from './component-item-config';
 import DataSourceEditor, { DataSourceHandler } from './datasource';
 import GlobalConfigForm from './global-configs';
-
-import styles from './index.module.less';
 
 const AttributesLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -58,8 +58,8 @@ const AttributesLayout = <
         const isGroupColumn = currentColumn && currentColumn.component === 'group';
         return (
           <div
-            className={classNames(styles['attributes-drawer'], {
-              [styles['attributes-drawer-fixed']]: props.rightLayoutMode !== 'drawer' && drawerType && drawerType !== 'datasource',
+            className={classNames('jfe-drip-table-generator-attributes-layout-attributes-drawer', {
+              'jfe-drip-table-generator-attributes-layout-attributes-drawer-fixed': props.rightLayoutMode !== 'drawer' && drawerType && drawerType !== 'datasource',
             })}
             style={{
               width: drawerType ? drawerWidth[drawerType] : void 0,
@@ -67,13 +67,13 @@ const AttributesLayout = <
               opacity: drawerType ? 1 : 0,
             }}
           >
-            <div className={styles['attributes-drawer-header']}>
+            <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-header">
               <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0, currentColumn: drawerType === 'column' ? void 0 : currentColumn })} />
-              <span className={styles.title}>{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
-              { drawerType === 'column' ? (<span className={styles['component-title']}>{ getComponentName(currentColumn?.component || '') }</span>) : null }
+              <span className="jfe-drip-table-generator-attributes-layout-title">{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
+              { drawerType === 'column' ? (<span className="jfe-drip-table-generator-attributes-layout-component-title">{ getComponentName(currentColumn?.component || '') }</span>) : null }
               { drawerType === 'column-item'
                 ? (
-                  <span className={styles['component-title']}>
+                  <span className="jfe-drip-table-generator-attributes-layout-component-title">
                     { currentColumnPath ? getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component) : '' }
                   </span>
                 )
@@ -82,7 +82,7 @@ const AttributesLayout = <
                 <Button onClick={() => { editor.current?.formatDataSource(); }}>格式化</Button>
               ) }
             </div>
-            <div className={styles['attributes-drawer-body']} ref={body}>
+            <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-body" ref={body}>
               {
               drawerType === 'datasource' && (
               <DataSourceEditor

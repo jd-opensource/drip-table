@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Pagination, Select } from 'antd';
 import classNames from 'classnames';
@@ -18,8 +20,6 @@ import RichText from '@/components/RichText';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
-
-import styles from './index.module.less';
 
 interface EditableTableFooterProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -53,20 +53,20 @@ const EditableTableFooter = <
     }
 
     if (config.type === 'text') {
-      return <h3 className={styles['generic-render-text-element']}>{ config.text }</h3>;
+      return <h3 className="jfe-drip-table-generator-workstation-editable-footer-generic-render-text-element">{ config.text }</h3>;
     }
 
     if (config.type === 'html') {
-      return <RichText className={styles['generic-render-html-element']} html={config.html} />;
+      return <RichText className="jfe-drip-table-generator-workstation-editable-footer-generic-render-html-element" html={config.html} />;
     }
 
     if (config.type === 'search') {
       return (
-        <div style={config.wrapperStyle} className={classNames(styles['generic-render-search-element'], config.wrapperClassName)}>
+        <div style={config.wrapperStyle} className={classNames('jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element', config.wrapperClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
-              className={styles['generic-render-search-element__select']}
+              className="jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element__select"
             >
               { config.searchKeys.map((item, i) => <Select.Option key={i} value={item.value}>{ item.label }</Select.Option>) }
             </Select>
@@ -86,7 +86,7 @@ const EditableTableFooter = <
       if (Slot) {
         return (
           <Slot
-            className={classNames(styles['generic-render-slot-element'], config.class)}
+            className={classNames('jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element', config.class)}
             style={config.style}
             slotType={config.slot}
             data={config.data}
@@ -99,13 +99,13 @@ const EditableTableFooter = <
           />
         );
       }
-      return <span className={styles['generic-render-slot-element__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className="jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element__error">{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
     }
 
     if (config.type === 'insert-button') {
       return (
         <Button
-          className={classNames(styles['generic-render-insert-button-element'], config.insertButtonClassName)}
+          className={classNames('jfe-drip-table-generator-workstation-editable-footer-generic-render-insert-button-element', config.insertButtonClassName)}
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
@@ -190,7 +190,7 @@ const EditableTableFooter = <
               }}
             />
             ) }
-            <div className={styles['draggable-container']} style={{ padding: '8px 0 0 8px', overflowX: 'auto' }}>
+            <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0 8px', overflowX: 'auto' }}>
               {
                 typeof globalConfigs.footer === 'object'
                 && globalConfigs.footer.elements?.map((element, index) => (
@@ -200,7 +200,7 @@ const EditableTableFooter = <
                     onDrop={(e) => { e.preventDefault(); dropFooterCell(element, index, globalConfigs, setState); }}
                     onDragOver={e => e.preventDefault()}
                     key={index}
-                    className={classNames(styles['draggable-cell'], { [styles['text-cell']]: element.type === 'text' })}
+                    className={classNames('jfe-drip-table-generator-workstation-editable-footer-draggable-cell', { 'jfe-drip-table-generator-workstation-editable-footer-text-cell': element.type === 'text' })}
                     style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >
                     { renderColumnContent(element, globalConfigs) }

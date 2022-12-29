@@ -88,7 +88,6 @@
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0",
     "react-window": "^1.8.8",
-    "sha1": "^1.1.1",
     "stylelint": "^14.16.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-formatter-pretty": "^3.1.1",

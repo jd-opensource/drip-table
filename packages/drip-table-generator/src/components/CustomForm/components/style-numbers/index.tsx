@@ -5,13 +5,13 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Select } from 'antd';
 import React from 'react';
 
 import { DTGComponentBaseProperty } from '..';
-
-import styles from './index.module.less';
 
 type SelectProps = React.ComponentProps<typeof Select>;
 type SelectOptionType = NonNullable<SelectProps['options']>[number];
@@ -63,12 +63,12 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
 
   public render() {
     return (
-      <div className={styles['component-container']}>
+      <div className="jfe-drip-table-generator-style-numbers-component-container">
         { this.value.map((item, index) => (
-          <div className={styles['item-container']}>
+          <div className="jfe-drip-table-generator-style-numbers-item-container">
             <InputNumber
               controls={false}
-              className={styles['number-input']}
+              className="jfe-drip-table-generator-style-numbers-number-input"
               value={item.value}
               onChange={(val) => {
                 const value = [...this.value];
@@ -77,7 +77,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
               }}
               addonAfter={(
                 <Select
-                  className={styles['select-input']}
+                  className="jfe-drip-table-generator-style-numbers-select-input"
                   value={item.unit}
                   options={this.options}
                   showArrow={false}
@@ -92,7 +92,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
             />
 
             <MinusCircleTwoTone
-              className={styles.minus}
+              className="jfe-drip-table-generator-style-numbers-minus"
               twoToneColor="#ff4d4f"
               onClick={() => {
                 const value = [...this.value];

@@ -1,13 +1,16 @@
-.component-container {
+@prefixCls: jfe-drip-table-generator-style-numbers;
+@prefixClsAnt: ant;
+
+.@{prefixCls}-component-container {
   display: flex;
 
-  .item-container {
+  .@{prefixCls}-item-container {
     display: flex;
     position: relative;
     width: 64px;
     margin-right: 8px;
 
-    .number-input {
+    .@{prefixCls}-number-input {
       width: 38px;
       height: 32px;
       line-height: 30px;
@@ -17,20 +20,20 @@
       }
     }
 
-    .select-input {
+    .@{prefixCls}-select-input {
       width: 26px;
       height: 32px;
 
-      :global(.ant-select-selector) {
+      .@{prefixClsAnt}-select-selector {
         padding: 0 2px;
       }
 
-      :global(.ant-select-item) {
+      .@{prefixClsAnt}-select-item {
         padding: 4px 2px;
       }
     }
 
-    .minus {
+    .@{prefixCls}-minus {
       position: absolute;
       top: -6px;
       right: -6px;

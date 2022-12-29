@@ -5,6 +5,8 @@
  * @modifier : Estherjing(qichudegensui@163.com)
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -12,8 +14,6 @@ import Modal from '@/components/modal';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
-
-import styles from './index.module.less';
 
 export type DTCPopUpPageColumnSchema = DripTableColumnSchema<'pop-up-page', {
   label?: string;
@@ -97,9 +97,9 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
         <Modal
           visible={visible}
           title={(
-            <div className={styles['modal-title']}>
+            <div className="jfe-drip-table-dtc-pop-up-page-modal-title">
               <span>{ options.title }</span>
-              <span className={styles['auxiliary-desc']}>{ this.auxiliaryDesc }</span>
+              <span className="jfe-drip-table-dtc-pop-up-page-auxiliary-desc">{ this.auxiliaryDesc }</span>
             </div>
           )}
           onClose={this.onClose}

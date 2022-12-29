@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import React from 'react';
 
 import {
@@ -21,8 +23,6 @@ import { type IDripTableContext, DripTableContext } from '@/context';
 import { useState, useTable } from '@/hooks';
 import { type DripTableBuiltInColumnSchema } from '@/index';
 import DripTableLayout from '@/layouts';
-
-import styles from './index.module.less';
 
 /**
  * 暴露给外部直接操作实例的接口
@@ -147,7 +147,7 @@ const DripTableWrapper: <
                     options: {
                       mode: 'static',
                       static: errorMessage,
-                      className: styles['jfe-drip-table-column-ajv-error'],
+                      className: 'jfe-drip-table-wrapper-column-ajv-error',
                     },
                   };
                 }
@@ -177,7 +177,7 @@ const DripTableWrapper: <
     .join('\n');
   if (errorMessage) {
     return (
-      <pre className={styles['jfe-drip-table-column-ajv-error']}>
+      <pre className="jfe-drip-table-wrapper-column-ajv-error">
         { `Props validate failed: ${errorMessage.includes('\n') ? '\n' : ''}${errorMessage}` }
       </pre>
     );

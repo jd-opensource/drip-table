@@ -5,8 +5,9 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+@prefixCls: jfe-drip-table-generator-components-bar;
 
-.component-icon {
+.@{prefixCls}-component-icon {
   height: 24px;
   width: 24px;
   display: inline-block;
@@ -19,13 +20,13 @@
   }
 }
 
-.component-text {
+.@{prefixCls}-component-text {
   display: inline-block;
   color: #606060;
   white-space: nowrap;
 }
 
-.components-container {
+.@{prefixCls}-components-container {
   width: calc(~"100% + 16px");
   background: #ffffff;
   border-right: 1px solid rgb(~"0 0 0 / 15%");
@@ -35,19 +36,19 @@
   overflow-x: hidden;
 }
 
-.components-navigator {
+.@{prefixCls}-components-navigator {
   z-index: 10;
   position: relative;
   background: #ffffff;
   padding: 8px;
 
-  & .component-button {
+  & .@{prefixCls}-component-button {
     width: 36px;
     padding: 4px;
   }
 }
 
-.components-drawer {
+.@{prefixCls}-components-drawer {
   position: absolute;
   width: 360px;
   height: 100%;
@@ -59,7 +60,7 @@
   z-index: 1;
   padding: 8px;
 
-  & .component-group {
+  & .@{prefixCls}-component-group {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -71,7 +72,7 @@
     }
   }
 
-  .component-icon {
+  .@{prefixCls}-component-icon {
     fill: #ffffff;
     height: 20px;
     width: 24px;
@@ -82,7 +83,7 @@
   }
 }
 
-.component-title {
+.@{prefixCls}-component-title {
   font-size: 14px;
   font-weight: bold;
   margin: 4px 0 4px 10px;
@@ -101,7 +102,7 @@
       fill: var(--drip-table-primary-color);
       color: var(--drip-table-primary-color);
 
-      .component-text {
+      .@{prefixCls}-component-text {
         color: var(--drip-table-primary-color);
       }
     }
