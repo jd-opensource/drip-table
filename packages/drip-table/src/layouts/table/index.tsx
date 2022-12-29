@@ -213,7 +213,7 @@ export const columnRenderGenerator = <
     columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>> | NonNullable<ExtraOptions['CustomColumnSchema']>,
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
-  if ('component' in columnSchema) {
+  if ('component' in (columnSchema as DripTableBuiltInColumnSchema)) {
     const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
       React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>>> & { schema?: SchemaObject };
     const onChange = (record: RecordType, index: number, value: unknown) => {

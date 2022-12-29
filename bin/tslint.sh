@@ -30,16 +30,17 @@ EOF
 # run tsc lint
 TSC_LOG_FILE="${__TMP_DIR__}/.tslint.log"
 ${NPM} run tslint:exec > "${TSC_LOG_FILE}"
-TSC_ERROR=$(tail -n +5 "${TSC_LOG_FILE}")
+ERROR_CODE="$?"
+TSC_ERROR=$(tail "${TSC_LOG_FILE}")
 rm -f "${TSC_LOG_FILE}"
 
 # remove tsc config file
 rm -f "${TSC_TSCONFIG_FILE}"
 
 # emit error if exists
-if [ "${TSC_ERROR}" != "" ]; then
+if [ "${ERROR_CODE}" != "0" ] && [ "${TSC_ERROR}" != "" ]; then
   echoeol
-  echo "${RED}⛔ Typescript complier lint (tsc) checksum failed!${NOCOLOR}"
+  echo "${RED}⛔ Typescript complier lint (tsc) checksum failed! (EXIT_CODE:${ERROR_CODE})${NOCOLOR}"
   echoeol
   echo "${TSC_ERROR}"
   echoeol
