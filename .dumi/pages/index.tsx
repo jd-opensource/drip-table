@@ -26,26 +26,42 @@ interface IndexPageProps {}
 interface IndexPageState {}
 
 export default class IndexPage extends React.PureComponent<IndexPageProps, IndexPageState> {
-  private updateScroll = () => {
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  private get headerEl() {
     var header = document.querySelector('.dumi-default-header');
-    if (header instanceof HTMLElement) {
-      var headerHeight = header.offsetHeight;
-      var float = scrollTop > headerHeight;
-      header.style.transition = 'background-color 300ms ease-in-out, box-shadow 300ms ease-in-out';
-      header.style.borderBottom = float ? '' : '#2276f3 1px solid';
-      header.style.backgroundColor = float ? '' : 'white';
-      header.style.boxShadow = float ? '0 10px 40px 0 #0000001a' : '';
+    return (header instanceof HTMLElement) ? header : void 0;
+  }
+
+  private updateScroll = () => {
+    var header = this.headerEl;
+    if (!header) {
+      return;
+    }
+
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const headerHeight = header.offsetHeight;
+    const fixed = scrollTop > headerHeight;
+    const currentFixed = header.classList.contains(styles['drip-table-header--fixed']);
+    if (currentFixed === fixed) {
+      return;
+    }
+
+    if (fixed) {
+      header.classList.add(styles['drip-table-header--fixed']);
+    } else {
+      header.classList.remove(styles['drip-table-header--fixed']);
     }
   }
 
   public componentDidMount(): void {
+    this.headerEl?.classList.add(styles['drip-table-header']);
     window.addEventListener('scroll', this.updateScroll);
     this.updateScroll();
     document.title = 'Drip Table';
   }
 
   public componentWillUnmount(): void {
+    this.headerEl?.classList.remove(styles['drip-table-header']);
+    this.headerEl?.classList.remove(styles['drip-table-header--fixed']);
     window.removeEventListener('scroll', this.updateScroll);
   }
 
