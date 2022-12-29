@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents('文本'),
     {
       name: 'options.mode',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -32,7 +32,7 @@ export default {
     },
     {
       name: 'options.clipboard',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '一键复制',
       'ui:type': 'switch',
       type: 'boolean',
@@ -45,7 +45,7 @@ export default {
     ),
     {
       name: 'options.dataProcess',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
       'ui:props': {
@@ -61,7 +61,7 @@ export default {
     },
     {
       name: 'options.disableFunc',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '禁用判断',
       'ui:type': 'text',
       'ui:props': {
@@ -79,7 +79,7 @@ export default {
     },
     {
       name: 'options.visibleFunc',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '显隐组件条件',
       'ui:type': 'text',
       'ui:props': {
@@ -97,7 +97,7 @@ export default {
     },
     {
       name: 'options.fontSize',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '字体大小',
       'ui:type': 'input',
       'ui:props': {
@@ -112,7 +112,7 @@ export default {
     },
     {
       name: 'options.maxRow',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '最大行数',
       'ui:type': 'number',
       'ui:description': {
@@ -127,7 +127,7 @@ export default {
     },
     {
       name: 'options.lineHeight',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '行高',
       'ui:type': 'number',
       'ui:description': {
@@ -142,7 +142,7 @@ export default {
     },
     {
       name: 'options.height',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '固定高度',
       'ui:type': 'number',
       'ui:description': {
@@ -157,7 +157,7 @@ export default {
     },
     {
       name: 'options.prefix',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '前缀文案',
       'ui:type': 'input',
       default: '',
@@ -165,7 +165,7 @@ export default {
     },
     {
       name: 'options.suffix',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '后缀文案',
       'ui:type': 'input',
       default: '',
@@ -173,7 +173,7 @@ export default {
     },
     {
       name: 'options.parts',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
@@ -202,7 +202,7 @@ export default {
     },
     {
       name: 'options.defaultValue',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '兜底文案',
       'ui:type': 'input',
       'ui:description': {
@@ -215,7 +215,7 @@ export default {
     },
     {
       name: 'options.format',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '模板',
       'ui:type': 'text',
       'ui:props': {

@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Checkbox, Popover } from 'antd';
+import { Checkbox, CheckboxOptionType, Popover } from 'antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -15,7 +15,7 @@ import { DTGComponentBaseProperty } from '..';
 
 type CheckboxGroupProps = React.ComponentProps<typeof Checkbox.Group>;
 type CheckboxValueType = CheckboxGroupProps['value'];
-type CheckboxOptionType = NonNullable<CheckboxGroupProps['options']>[number] & { description?: string; icon?: string };
+type CheckboxOption = CheckboxOptionType & { description?: string; icon?: string };
 
 interface Props extends DTGComponentBaseProperty<CheckboxValueType> {}
 
@@ -49,7 +49,7 @@ export default class CheckboxComponent extends React.PureComponent<Props> {
           this.props.onChange?.(value);
         }}
       >
-        { (this.options as CheckboxOptionType[])?.map((option, i) => {
+        { (this.options as CheckboxOption[])?.map((option, i) => {
           if (typeof option === 'string' || typeof option === 'number') {
             option = { label: option, value: option };
           }

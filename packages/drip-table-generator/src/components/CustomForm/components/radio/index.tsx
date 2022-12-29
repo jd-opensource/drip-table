@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Popover, Radio } from 'antd';
+import { CheckboxOptionType, Popover, Radio } from 'antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -17,7 +17,7 @@ const RadioGroup = Radio.Group;
 
 type RadioGroupProps = React.ComponentProps<typeof RadioGroup>;
 type RadioValueType = RadioGroupProps['value'];
-type RadioOptionType = NonNullable<RadioGroupProps['options']>[number] & { description?: string };
+type RadioOptionType = CheckboxOptionType & { description?: string };
 
 interface Props extends DTGComponentBaseProperty<RadioValueType> {
 }

@@ -124,7 +124,7 @@ const EditableGroupComponent = <
 
   if (props.column?.component === 'group') {
     const gutter = props.column.options.gutter ?? [0, 0];
-    const columnWidth = Number(getWidth(props.column?.width || '', void 0, -18));
+    const columnWidth = Number(getWidth(props.column?.width || '', void 0, -20));
     const componentOptions = props.column.options;
     return (
       <GeneratorContext.Consumer>

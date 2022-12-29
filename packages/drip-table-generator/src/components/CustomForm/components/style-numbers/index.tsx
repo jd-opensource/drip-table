@@ -81,7 +81,6 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
                   value={item.unit}
                   options={this.options}
                   showArrow={false}
-                  getPopupContainer={triggerNode => triggerNode}
                   onChange={(val) => {
                     const value = [...this.value];
                     value[index].unit = val;
