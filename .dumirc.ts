@@ -217,6 +217,92 @@ const DRIP_TABLE_SIDEBAR = [
   },
 ];
 
+const DRIP_TABLE_GENERATOR_SIDEBAR = [
+  {
+    children: [
+      {
+        title: '介绍 Index',
+        link: '/drip-table-generator',
+        children: [
+          { title: '介绍', link: '/drip-table-generator' },
+        ],
+      },
+      {
+        title: '快速开始 Quick Start',
+        link: '/drip-table-generator/quick-start',
+        children: [
+          { title: '快速开始', link: '/drip-table-generator/quick-start' },
+        ],
+      },
+      {
+        title: '使用教程 Tutorial',
+        link: '/drip-table-generator/tutorial',
+        children: [
+          { title: '使用教程', link: '/drip-table-generator/tutorial' },
+          { title: 'Refs引用', link: '/drip-table-generator/tutorial/refs' },
+          { title: '高级教程', link: '/drip-table-generator/tutorial/usage-pro' },
+          { title: '自定义属性面板', link: '/drip-table-generator/tutorial/custom' },
+          { title: 'API', link: '/drip-table-generator/tutorial/api' },
+          { title: '表头自定义配置', link: '/drip-table-generator/tutorial/title' },
+          { title: '头部配置', link: '/drip-table-generator/tutorial/header' },
+          { title: '数据预览配置', link: '/drip-table-generator/tutorial/data-source' },
+          { title: '透传 Table 属性', link: '/drip-table-generator/tutorial/table-props' },
+          { title: '自定义主题配置', link: '/drip-table-generator/tutorial/custom-theme' },
+        ],
+      },
+      {
+        title: '内置组件库 Components',
+        link: '/drip-table-generator/components',
+        children: [
+          { title: '内置组件库', link: '/drip-table-generator/components' },
+          { title: '组合组件', link: '/drip-table-generator/components/group' },
+          { title: '自定义组件', link: '/drip-table-generator/components/lowcode' },
+          { title: 'CDN 链接组件', link: '/drip-table-generator/components/cdn-link' },
+          { title: '富文本组件', link: '/drip-table-generator/components/rich-text' },
+        ],
+      },
+      {
+        title: '属性参数 Props',
+        link: '/drip-table-generator/props',
+        children: [
+          { title: 'index', link: '/drip-table-generator/props' },
+          { title: 'customComponentPanel', link: '/drip-table-generator/props/custom-component-panel' },
+          { title: 'customGlobalConfigPanel', link: '/drip-table-generator/props/custom-global-config-panel' },
+          { title: 'customAttributeComponents', link: '/drip-table-generator/props/custom-attribute-components' },
+          { title: 'dataFields', link: '/drip-table-generator/props/data-fields' },
+          { title: 'mockDataSource', link: '/drip-table-generator/props/mock-data-source' },
+          { title: 'noDataFeedback', link: '/drip-table-generator/props/no-data-feedback' },
+          { title: 'onExportSchema', link: '/drip-table-generator/props/on-export-schema' },
+          { title: 'showComponentLayout', link: '/drip-table-generator/props/show-component-layout' },
+          { title: 'showToolLayout', link: '/drip-table-generator/props/show-tool-layout' },
+          { title: 'slotsSchema', link: '/drip-table-generator/props/slots-schema' },
+        ],
+      },
+      {
+        title: '常见问题 FAQ',
+        link: '/drip-table-generator/faq',
+        children: [
+          { title: '常见问题', link: '/drip-table-generator/faq' },
+        ],
+      },
+      {
+        title: '案例展示 Demo',
+        link: '/drip-table-generator/demo',
+        children: [
+          { title: '案例展示', link: '/drip-table-generator/demo' },
+        ],
+      },
+      {
+        title: '更新日志 Changelog',
+        link: '/drip-table-generator/changelog',
+        children: [
+          { title: '更新日志', link: '/drip-table-generator/changelog' },
+        ],
+      },
+    ],
+  },
+];
+
 export default defineConfig({
   // 重点配置项
   // https://d.umijs.org/config#%E9%87%8D%E7%82%B9%E9%85%8D%E7%BD%AE%E9%A1%B9
@@ -287,6 +373,10 @@ export default defineConfig({
       '/drip-table/layout': DRIP_TABLE_SIDEBAR,
       '/drip-table/props': DRIP_TABLE_SIDEBAR,
       '/drip-table/types': DRIP_TABLE_SIDEBAR,
+      '/drip-table-generator': DRIP_TABLE_GENERATOR_SIDEBAR,
+      '/drip-table-generator/tutorial': DRIP_TABLE_GENERATOR_SIDEBAR,
+      '/drip-table-generator/components': DRIP_TABLE_GENERATOR_SIDEBAR,
+      '/drip-table-generator/props': DRIP_TABLE_GENERATOR_SIDEBAR,
       '/demo': [],
     },
   },
