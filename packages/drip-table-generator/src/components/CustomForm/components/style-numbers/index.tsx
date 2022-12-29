@@ -72,7 +72,7 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
               value={item.value}
               onChange={(val) => {
                 const value = [...this.value];
-                value[index].value = val;
+                value[index].value = val || void 0;
                 this.onChangeValue(value);
               }}
               addonAfter={(

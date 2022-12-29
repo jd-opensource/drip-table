@@ -49,7 +49,7 @@ export default class RadioComponent extends React.PureComponent<Props> {
         }}
       >
         { (this.options as RadioOptionType[])?.map((option, i) => {
-          if (typeof option === 'string') {
+          if (typeof option === 'string' || typeof option === 'number') {
             option = { label: option, value: option };
           }
           return (

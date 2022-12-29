@@ -50,7 +50,7 @@ export default class CheckboxComponent extends React.PureComponent<Props> {
         }}
       >
         { (this.options as CheckboxOptionType[])?.map((option, i) => {
-          if (typeof option === 'string') {
+          if (typeof option === 'string' || typeof option === 'number') {
             option = { label: option, value: option };
           }
           return (
