@@ -5,8 +5,11 @@ title: 布局差异化 Layout
 
 ## 布局差异化 Layout
 
-通过布局差异化，控制表格的整体模式，如相册模式，具体支持的差异化模式请浏览 [**表格布局差异化 Layout 详细模式**](/drip-table/layout/all)。
+通过布局差异化，控制表格的整体模式，如相册模式。
 
+| 布局名 | 描述 | 必填 | 详情 |
+| ----- | ---- | ---- | ---- |
+| [卡片布局](/drip-table/layout/card-layout) | 表格布局方式配置 | × | [🔗 示例](/drip-table/layout/card-layout) |
 
 ```jsx
 /**
