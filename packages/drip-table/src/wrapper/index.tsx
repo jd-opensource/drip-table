@@ -19,6 +19,7 @@ import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateD
 import DripTableBuiltInComponents from '@/components/built-in';
 import { type IDripTableContext, DripTableContext } from '@/context';
 import { useState, useTable } from '@/hooks';
+import { type DripTableBuiltInColumnSchema } from '@/index';
 import DripTableLayout from '@/layouts';
 
 import styles from './index.module.less';
@@ -72,7 +73,8 @@ const DripTableWrapper: <
             {},
             rtp.schema,
             {
-              columns: rtp.schema?.columns?.map((column) => {
+              columns: rtp.schema?.columns?.map((c) => {
+                const column = c as DripTableBuiltInColumnSchema;
                 if ('ui:type' in column || 'ui:props' in column) {
                   const key = column.key;
                   if ('ui:type' in column) {
@@ -85,7 +87,7 @@ const DripTableWrapper: <
                     ...Object.fromEntries(Object.entries(column).filter(([k]) => k !== 'ui:type' && k !== 'ui:props')),
                     options: column['ui:props'] || column.options || void 0,
                     component: column['ui:type'] || column.component,
-                  } as typeof column;
+                  };
                 }
                 return column;
               }),
