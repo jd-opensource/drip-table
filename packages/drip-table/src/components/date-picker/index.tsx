@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import './index.module.less';
+import './index.less';
 
 import moment, { Moment } from 'moment';
 import RcPicker, { PickerPanel, PickerPanelProps, PickerProps, RangePicker, RangePickerProps } from 'rc-picker';

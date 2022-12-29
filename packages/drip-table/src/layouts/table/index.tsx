@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
 import ResizeObserver from 'rc-resize-observer';
@@ -43,8 +45,6 @@ import { type TableLayoutComponentProps } from '../types';
 import HeaderCell, { HeaderCellProps } from './components/header-cell';
 import { type DripTableColumnRenderOptions } from './types';
 import { finalizeColumnTitle } from './utils';
-
-import styles from './index.module.less';
 
 /**
  * 表格参数默认值，用于覆盖父表参数值防止透传到子表
@@ -314,7 +314,7 @@ export const columnRenderGenerator = <
       }
     }
   }
-  return () => extraProps.unknownComponent ?? <div className={styles['ajv-error']}>{ `Unknown column component: ${columnSchema.component}` }</div>;
+  return () => extraProps.unknownComponent ?? <div className="ajv-error">{ `Unknown column component: ${columnSchema.component}` }</div>;
 };
 
 /**
@@ -358,10 +358,10 @@ export const columnGenerator = <
     key: columnSchema.key,
     width,
     className: classNames({
-      [styles['jfe-drip-table-cell--top']]: columnSchema.verticalAlign === 'top',
-      [styles['jfe-drip-table-cell--middle']]: columnSchema.verticalAlign === 'middle',
-      [styles['jfe-drip-table-cell--bottom']]: columnSchema.verticalAlign === 'bottom',
-      [styles['jfe-drip-table-cell--stretch']]: columnSchema.verticalAlign === 'stretch',
+      'jfe-drip-table-cell--top': columnSchema.verticalAlign === 'top',
+      'jfe-drip-table-cell--middle': columnSchema.verticalAlign === 'middle',
+      'jfe-drip-table-cell--bottom': columnSchema.verticalAlign === 'bottom',
+      'jfe-drip-table-cell--stretch': columnSchema.verticalAlign === 'stretch',
     }),
     align: columnSchema.align,
     title:
@@ -369,10 +369,10 @@ export const columnGenerator = <
         ? (
           <div ref={onTitleRef}>
             <span style={{ marginRight: '6px' }}>
-              <RichText className={styles['jfe-drip-table-column-title']} style={titleStyle} html={columnTitle} />
+              <RichText className="jfe-drip-table-column-title" style={titleStyle} html={columnTitle} />
             </span>
             <Tooltip placement="top" overlay={<RichText html={columnSchema.description} />}>
-              <span role="img" aria-label="question-circle" className={styles['jfe-drip-table-column-title__question-icon']}>
+              <span role="img" aria-label="question-circle" className="jfe-drip-table-column-title__question-icon">
                 <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                   <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
                   <path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z" />
@@ -412,12 +412,12 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
   const styleText = stringifyCSS(Object.assign({ 'text-align': columnBaseSchema.align }, vcStyle, parseStyleSchema(columnBaseSchema.style)));
   return (
     <div
-      className={classNames(styles['jfe-drip-table-virtual-cell'], {
-        [styles['jfe-drip-table-virtual-cell--top']]: columnBaseSchema?.verticalAlign === 'top',
-        [styles['jfe-drip-table-virtual-cell--middle']]: columnBaseSchema?.verticalAlign === 'middle',
-        [styles['jfe-drip-table-virtual-cell--bottom']]: columnBaseSchema?.verticalAlign === 'bottom',
-        [styles['jfe-drip-table-virtual-cell--stretch']]: columnBaseSchema?.verticalAlign === 'stretch',
-        [styles['jfe-drip-table--row-selected']]: selected,
+      className={classNames('jfe-drip-table-virtual-cell', {
+        'jfe-drip-table-virtual-cell--top': columnBaseSchema?.verticalAlign === 'top',
+        'jfe-drip-table-virtual-cell--middle': columnBaseSchema?.verticalAlign === 'middle',
+        'jfe-drip-table-virtual-cell--bottom': columnBaseSchema?.verticalAlign === 'bottom',
+        'jfe-drip-table-virtual-cell--stretch': columnBaseSchema?.verticalAlign === 'stretch',
+        'jfe-drip-table--row-selected': selected,
       })}
       style={parseReactCSS(styleText)}
       data-table-uuid={tableUUID}
@@ -427,7 +427,7 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
       data-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.hoverStyle))}
       data-row-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.rowHoverStyle))}
       data-column-hover-style={stringifyCSS(parseStyleSchema(columnBaseSchema.columnHoverStyle))}
-      data-row-hover-class={classNames(styles['jfe-drip-table--row-hover'], { [styles['jfe-drip-table--row-selected-hover']]: selected })}
+      data-row-hover-class={classNames('jfe-drip-table--row-hover', { 'jfe-drip-table--row-selected-hover': selected })}
       onMouseEnter={React.useCallback(e => onCellMouseEnter(e), [])}
       onMouseLeave={React.useCallback(e => onCellMouseLeave(e), [])}
     >
@@ -595,7 +595,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             width: 50,
             fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
             title: (
-              <div className={styles['jfe-drip-table-column-title-selection']}>
+              <div className="jfe-drip-table-column-title-selection">
                 <Checkbox
                   checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
                   onChange={(e) => {
@@ -612,7 +612,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               </div>
             ),
             render: (_, row) => (
-              <div className={styles['jfe-drip-table-column-selection']}>
+              <div className="jfe-drip-table-column-selection">
                 <Checkbox
                   checked={tableState.selectedRowKeys.includes(row.record[rowKey] as React.Key)}
                   onChange={(e) => {
@@ -642,8 +642,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
             render: (_, row) => (
               <div
-                className={classNames(styles['jfe-drip-table-column-draggable-row'], {
-                  [styles['jfe-drip-table-column-draggable-row--drag-in']]: row.index === dragInIndex,
+                className={classNames('jfe-drip-table-column-draggable-row', {
+                  'jfe-drip-table-column-draggable-row--drag-in': row.index === dragInIndex,
                 })}
                 onDrop={(e) => {
                   if (e.dataTransfer.getData('type') === `drip-table-draggable-row--${tableInfo.schema.id}`) {
@@ -665,7 +665,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onDragOver={(e) => { e.preventDefault(); }}
               >
                 <div
-                  className={styles['jfe-drip-table-column-draggable-row__draggable']}
+                  className="jfe-drip-table-column-draggable-row__draggable"
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = 'move';
@@ -711,7 +711,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   </Slot>
                 )
                 : (
-                  <span className={styles['jfe-drip-table-row-slot__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
+                  <span className="jfe-drip-table-row-slot__error">{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
                 );
             }
             return render?.(o, row, index);
@@ -721,7 +721,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             if (slotType) {
               return {
                 colSpan: schemaColumns.length,
-                className: styles['jfe-drip-table--slot'],
+                className: 'jfe-drip-table--slot',
               };
             }
             return {};
@@ -741,7 +741,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             if (slotType) {
               return {
                 colSpan: 0,
-                className: styles['jfe-drip-table--slot'],
+                className: 'jfe-drip-table--slot',
               };
             }
             return {};
@@ -787,7 +787,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             if ((row.type === 'header' && tableProps.schema.rowHeader) || (row.type === 'footer' && tableProps.schema.rowFooter)) {
               return {
                 colSpan: schemaColumns.length,
-                className: styles['jfe-drip-table--slot'],
+                className: 'jfe-drip-table--slot',
               };
             }
             return {};
@@ -805,7 +805,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             if (row.type === 'header' || row.type === 'footer') {
               return {
                 colSpan: 0,
-                className: styles['jfe-drip-table--slot'],
+                className: 'jfe-drip-table--slot',
               };
             }
             return {};
@@ -953,7 +953,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const rcTableRowClassName: React.ComponentProps<typeof RcTable>['rowClassName'] = React.useMemo(
     () =>
       record => (tableState.selectedRowKeys.includes(record[rowKey] as React.Key)
-        ? styles['jfe-drip-table-row-selected']
+        ? 'jfe-drip-table-row-selected'
         : ''),
     [tableState.selectedRowKeys],
   );
@@ -1007,7 +1007,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             rowKey,
             selectedRowKeys: tableState.selectedRowKeys,
           }}
-          className={styles['jfe-drip-table-virtual-list']}
+          className="jfe-drip-table-virtual-list"
           columnCount={rcTableColumns.length}
           columnWidth={(index) => {
             const width = columnsWidth[index];
@@ -1048,12 +1048,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               return null;
             }
             return (
-              <div className={styles['jfe-drip-table-row-expand-icon-wrapper']}>
+              <div className="jfe-drip-table-row-expand-icon-wrapper">
                 <button
                   type="button"
                   className={classNames(
-                    styles['jfe-drip-table-row-expand-icon'],
-                    expanded ? styles['jfe-drip-table-row-expand-icon-expanded'] : styles['jfe-drip-table-row-expand-icon-collapsed'],
+                    'jfe-drip-table-row-expand-icon',
+                    expanded ? 'jfe-drip-table-row-expand-icon-expanded' : 'jfe-drip-table-row-expand-icon-collapsed',
                   )}
                   aria-label={expanded ? '关闭行' : '展开行'}
                   onClick={(e) => {
@@ -1174,14 +1174,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
       <ResizeObserver onResize={rcTableOnResize}>
-        <div className={styles['jfe-drip-table-resize-observer']}>
+        <div className="jfe-drip-table-resize-observer">
           <RcTable<RcTableRecordType<RecordType>>
             prefixCls="jfe-drip-table"
-            className={classNames(styles['jfe-drip-table'], tableProps.schema.innerClassName, {
-              [styles['jfe-drip-table-small']]: tableProps.schema.size === 'small',
-              [styles['jfe-drip-table-middle']]: tableProps.schema.size === 'middle',
-              [styles['jfe-drip-table--bordered']]: tableProps.schema.bordered,
-              [styles['jfe-drip-table--stripe']]: tableProps.schema.stripe,
+            className={classNames('jfe-drip-table', tableProps.schema.innerClassName, {
+              'jfe-drip-table-small': tableProps.schema.size === 'small',
+              'jfe-drip-table-middle': tableProps.schema.size === 'middle',
+              'jfe-drip-table--bordered': tableProps.schema.bordered,
+              'jfe-drip-table--stripe': tableProps.schema.stripe,
             })}
             style={tableProps.schema.innerStyle}
             rowKey="key"

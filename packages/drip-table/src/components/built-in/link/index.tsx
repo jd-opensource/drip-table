@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -13,8 +15,6 @@ import { safeExecute } from '@/utils/sandbox';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
-
-import styles from './index.module.less';
 
 export type DTCLinkColumnSchema = DripTableColumnSchema<'link', {
   mode?: 'single' | 'multiple';
@@ -235,7 +235,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         return (
           <div>
             <a
-              className={this.finalizeDisabled(options.disabled) ? styles['link-disabled'] : void 0}
+              className={this.finalizeDisabled(options.disabled) ? 'jfe-drip-table-dtc-link-link-disabled' : void 0}
               style={{ lineHeight: options.lineHeight }}
               onClick={() => {
                 if (this.props.preview || this.finalizeDisabled(options.disabled)) {
@@ -294,7 +294,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
                 <a
-                  className={disabled ? styles['link-disabled'] : void 0}
+                  className={disabled ? 'jfe-drip-table-dtc-link-link-disabled' : void 0}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                   href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
                   target={disabled ? void 0 : config.target}

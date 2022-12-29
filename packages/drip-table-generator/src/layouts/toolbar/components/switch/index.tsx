@@ -5,12 +5,12 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import '../../index.less';
+
 import classNames from 'classnames';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
-
-import styles from '../../index.module.less';
 
 interface SwitchButtonProps {
   name: string;
@@ -24,7 +24,7 @@ export const SwitchButton = (props: SwitchButtonProps) => (
     { ({ globalConfigs, setState }) => (
       <div
         key={props.name}
-        className={classNames(styles['tool-cell'], { [styles.checked]: !!globalConfigs[props.name] })}
+        className={classNames('jfe-drip-table-generator-toolbar-tool-cell', { 'jfe-drip-table-generator-toolbar-checked': !!globalConfigs[props.name] })}
         onClick={props.onCheck
           ? () => {
             props.onCheck?.(!globalConfigs[props.name]);

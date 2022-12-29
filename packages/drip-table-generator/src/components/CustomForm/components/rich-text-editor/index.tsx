@@ -6,13 +6,12 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import 'react-quill/dist/quill.snow.css';
+import './index.less';
 
 import React from 'react';
 import ReactQuill from 'react-quill';
 
 import { DTGComponentBaseProperty } from '..';
-
-import styles from './index.module.less';
 
 interface Props extends DTGComponentBaseProperty<string> {}
 
@@ -42,7 +41,7 @@ export default class RichTextEditorComponent extends React.PureComponent<Props> 
       <div style={uiProps.style}>
         <ReactQuill
           theme="snow"
-          className={styles['quill-editor-container']}
+          className="jfe-drip-table-generator-rich-text-editor-quill-editor-container"
           modules={this.modules}
           value={this.props.value}
           onChange={(value) => {

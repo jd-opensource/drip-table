@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import moment, { Moment } from 'moment';
 import React from 'react';
 
@@ -14,8 +16,6 @@ import DatePicker from '@/components/date-picker';
 import { TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
 import { TableLayoutComponentProps } from '../types';
-
-import styles from './index.module.less';
 
 const CalendarLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -36,12 +36,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
     return (
       <div
-        className={styles.container}
+        className="jfe-drip-table-layout-calendar-container"
         style={{ borderTopColor: date.isSame(today, 'date') ? 'blue' : '#CCC' }}
       >
         { date.date() }
         { record && (
-          <div className={styles.record}>
+          <div className="jfe-drip-table-layout-calendar-record">
             {
             tableInfo.schema.columns
               .filter(column => !column.hidable || tableState.displayColumnKeys.includes(column.key))

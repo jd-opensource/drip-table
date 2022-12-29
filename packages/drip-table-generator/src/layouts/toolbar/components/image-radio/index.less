@@ -1,4 +1,6 @@
-.image-radio {
+@prefixCls: jfe-drip-table-generator-toolbar-dropdown;
+
+.@{prefixCls}-image-radio {
   &-container {
     display: flex;
   }
@@ -21,7 +23,7 @@
       border-color: var(--drip-table-border-color);
     }
 
-    .image-cover {
+    .@{prefixCls}-image-cover {
       width: 86px;
       height: 86px;
       background-position: center center;
@@ -29,13 +31,13 @@
       background-repeat: no-repeat;
     }
 
-    .title {
+    .@{prefixCls}-title {
       line-height: 32px;
       font-size: 14px;
       text-align: center;
     }
 
-    .checked-icon {
+    .@{prefixCls}-checked-icon {
       position: absolute;
       color: var(--drip-table-border-color);
     }

@@ -6,7 +6,9 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-.editable-table {
+@prefixCls: jfe-drip-table-generator-workstation-editable-table;
+
+.@{prefixCls} {
   background: #ffffff;
   display: flex;
   width: fit-content;
@@ -25,7 +27,7 @@
   &.sticky {
     overflow-y: auto;
 
-    .editable-table-column {
+    .@{prefixCls}-column {
       height: max-content;
     }
   }
@@ -62,7 +64,7 @@
     transition: all .3s ease;
     padding: 8px;
 
-    & .action-button {
+    & .@{prefixCls}-action-button {
       float: right;
       line-height: 26px;
     }
@@ -74,30 +76,30 @@
     padding: 6px;
     height: max-content;
 
-    .component-container {
+    .@{prefixCls}-component-container {
       display: flex;
       height: 100%;
     }
   }
 }
 
-.large {
+.@{prefixCls}-large {
   padding: 16px;
   height: 55px;
 }
 
-.middle,
-.default {
+.@{prefixCls}-middle,
+.@{prefixCls}-default {
   padding: 12px 8px;
   height: 48px;
 }
 
-.small {
+.@{prefixCls}-small {
   padding: 8px;
   height: 39px;
 }
 
-.empty-body {
+.@{prefixCls}-empty-body {
   margin: 0;
   color: rgb(0 0 0 / 25%);
   background: #ffffff;

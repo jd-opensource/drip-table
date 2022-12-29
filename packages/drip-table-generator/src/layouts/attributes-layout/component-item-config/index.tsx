@@ -5,6 +5,8 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
@@ -16,8 +18,6 @@ import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { getColumnItemByPath, updateColumnItemByPath } from '@/layouts/table-workstation/utils';
 import components from '@/table-components';
 import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
-
-import styles from './index.module.less';
 
 interface ComponentItemConfigFormProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -32,7 +32,7 @@ interface ComponentItemConfigFormProps<
 
 const errorBoundary = (message?: string) => (
   <Result
-    className={styles.result}
+    className="jfe-drip-table-generator-component-item-config-result"
     icon={<ExclamationCircleTwoTone />}
     title={<div style={{ color: '#999' }}>{ message }</div>}
   />

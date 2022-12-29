@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
@@ -18,8 +20,6 @@ import EditableTableHeader from './editable-header';
 import EditableTable from './editable-table';
 import PreviewTable from './table-preview';
 
-import styles from './index.module.less';
-
 const TableWorkStation = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
@@ -28,7 +28,7 @@ const TableWorkStation = <
   const tableWrapper = React.useRef<HTMLDivElement>(null);
   return (
     <div
-      className={styles['generator-workstation']}
+      className="jfe-drip-table-generator-workstation-generator-workstation"
       style={{
         overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto',
         width: context.drawerType ? `calc(100% - 128px - ${drawerWidth[context.drawerType]}px)` : void 0,

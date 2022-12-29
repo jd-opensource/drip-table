@@ -5,24 +5,26 @@
  * @modifier : renwenci (ararakikon@163.com)
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
-.container {
+@prefixCls: jfe-drip-table-layout-calendar;
+
+.@{prefixCls}-container {
   width: calc((100vw - 150px) / 7);
   height: 380px;
   border-top: 3px solid #cccccc;
   display: flex;
   flex-direction: column;
 
-  .record {
+  .@{prefixCls}-record {
     flex: 1;
     overflow: scroll;
     overflow-x: hidden;
   }
 
-  .record::-webkit-scrollbar-track {
+  .@{prefixCls}-record::-webkit-scrollbar-track {
     background: #fafafa;
   }
 
-  .record::-webkit-scrollbar {
+  .@{prefixCls}-record::-webkit-scrollbar {
     width: 0;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
   }

@@ -1,4 +1,7 @@
-.picker-trigger {
+@prefixCls: jfe-drip-table-generator-box-shadow;
+@prefixClsAnt: ant;
+
+.@{prefixCls}-picker-trigger {
   border: 1px solid #999999;
   display: inline-block;
   padding: 2px;
@@ -11,16 +14,16 @@
   margin-right: 6px;
 }
 
-.box-shadow-container {
+.@{prefixCls}-container {
   display: flex;
 
-  .item-container {
+  .@{prefixCls}-item-container {
     display: flex;
     position: relative;
     margin-right: 8px;
     width: 52px;
 
-    .number-input {
+    .@{prefixCls}-number-input {
       width: 26px;
       height: 32px;
       line-height: 30px;
@@ -30,20 +33,20 @@
       }
     }
 
-    .select-input {
+    .@{prefixCls}-select-input {
       width: 26px;
       height: 32px;
 
-      :global(.ant-select-selector) {
+      .@{prefixClsAnt}-select-selector {
         padding: 0 2px;
       }
 
-      :global(.ant-select-item) {
+      .@{prefixClsAnt}-select-item {
         padding: 4px 2px;
       }
     }
 
-    .minus {
+    .@{prefixCls}-minus {
       position: absolute;
       top: -6px;
       right: -6px;

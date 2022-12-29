@@ -5,6 +5,8 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import { Button } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
@@ -17,8 +19,6 @@ import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorPro
 
 import { getComponents, getGroups } from '../utils';
 import { defaultComponentIcon } from './configs';
-
-import styles from './index.module.less';
 
 interface ComponentsBarProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -119,17 +119,17 @@ const ComponentsBar = <
   return (
     <GeneratorContext.Consumer>
       { ({ columns, setState }) => (
-        <div className={styles['components-container']}>
-          <div className={styles['components-navigator']}>
+        <div className="jfe-drip-table-generator-components-bar-components-container">
+          <div className="jfe-drip-table-generator-components-bar-components-navigator">
             {
             getGroups(props.customComponentPanel).map((groupName, groupIndex) => (
               <div key={groupIndex}>
-                <div className={styles['component-title']}>{ groupName.length > 6 ? groupName.replace(/组件$/u, '') : groupName }</div>
+                <div className="jfe-drip-table-generator-components-bar-component-title">{ groupName.length > 6 ? groupName.replace(/组件$/u, '') : groupName }</div>
                 {
                   getComponents(groupName, props.customComponentPanel).map((component, index) => (
                     <Button
                       type="text"
-                      className={styles['component-title-item']}
+                      className="jfe-drip-table-generator-components-bar-component-title-item"
                       draggable
                       onDragStart={() => addComponentToColumn(component, setState)}
                       onDragEnd={() => setState({ columnToAdd: void 0 })}
@@ -138,8 +138,8 @@ const ComponentsBar = <
                         setState({ columns: [...columns, columnSchema] });
                       }}
                     >
-                      <Icon className={styles['component-icon']} svg={component.icon || defaultComponentIcon} />
-                      <span className={styles['component-text']}>{ component.title.length > 5 ? component.title.replace(/组件$/u, '') : component.title }</span>
+                      <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
+                      <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title.length > 5 ? component.title.replace(/组件$/u, '') : component.title }</span>
                     </Button>
                   ))
                 }

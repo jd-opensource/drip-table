@@ -1,4 +1,6 @@
-.trigger {
+@prefixCls: jfe-drip-table-generator-color-picker;
+
+.@{prefixCls}-trigger {
   border: 1px solid #999999;
   display: inline-block;
   padding: 2px;
@@ -10,6 +12,9 @@
   box-shadow: 0 0 0 2px #ffffff inset;
 }
 
-:global(.rc-color-picker-wrap) {
+@prefixClsRC: rc;
+
+// TODO: 侵入性样式，不应该这么写
+.@{prefixClsRC}-color-picker-wrap {
   display: flex !important;
 }

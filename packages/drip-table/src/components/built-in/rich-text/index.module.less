@@ -5,8 +5,9 @@
  * @modifier : qianjing29 (qianjing29@jd.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+@prefixCls: jfe-drip-table;
 
-.error-message {
+.@{prefixCls}-error-message {
   color: #ffffff;
   font-size: 12px;
   line-height: 1.5;
@@ -14,70 +15,72 @@
   border-radius: 10px;
 }
 
-.rich-text-container {
+@prefixClsQL: ql;
+
+.@{prefixCls}-rich-text-container {
   display: flex;
 
-  :global(.ql-align-center) {
+  .@{prefixClsQL}-align-center {
     text-align: center;
   }
 
-  :global(.ql-align-right) {
+  .@{prefixClsQL}-align-right {
     text-align: right;
   }
 
-  :global(.ql-align-justify) {
+  .@{prefixClsQL}-align-justify {
     text-align: justify;
   }
 
-  :global(.ql-font-serif) {
+  .@{prefixClsQL}-font-serif {
     font-family: Georgia, "Times New Roman", serif;
   }
 
-  :global(.ql-font-monospace) {
+  .@{prefixClsQL}-font-monospace {
     font-family: Monaco, "Courier New", monospace;
   }
 
-  :global(.ql-indent-1:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-1:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 3em;
   }
 
-  :global(.ql-indent-2:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-2:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 6em;
   }
 
-  :global(.ql-indent-3:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-3:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 9em;
   }
 
-  :global(.ql-indent-4:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-4:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 12em;
   }
 
-  :global(.ql-indent-5:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-5:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 15em;
   }
 
-  :global(.ql-indent-6:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-6:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 18em;
   }
 
-  :global(.ql-indent-7:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-7:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 21em;
   }
 
-  :global(.ql-indent-8:not(.ql-direction-rtl)) {
+  .@{prefixClsQL}-indent-8:not(.@{prefixClsQL}-direction-rtl) {
     padding-left: 24em;
   }
 
-  :global(.ql-size-small) {
+  .@{prefixClsQL}-size-small {
     font-size: .75em;
   }
 
-  :global(.ql-size-large) {
+  .@{prefixClsQL}-size-large {
     font-size: 1.5em;
   }
 
-  :global(.ql-size-huge) {
+  .@{prefixClsQL}-size-huge {
     font-size: 2.5em;
   }
 }

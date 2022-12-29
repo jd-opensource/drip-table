@@ -5,14 +5,14 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import '../../index.less';
+
 import { Dropdown, Radio } from 'antd';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 
 import { ImageRadio } from '../image-radio';
-
-import styles from '../../index.module.less';
 
 interface DropDownRadioProps<T> {
   name?: string;
@@ -49,7 +49,7 @@ const OverLay = <Type,>(props: Omit<DropDownRadioProps<Type>, 'icon' | 'label'>)
 
       if (props.overlayType === 'radio') {
         return (
-          <div className={styles['overlay-wrapper']}>
+          <div className="jfe-drip-table-generator-toolbar-overlay-wrapper">
             <Radio.Group
               value={getValue()}
               onChange={e => onChange(e.target.value)}
@@ -63,7 +63,7 @@ const OverLay = <Type,>(props: Omit<DropDownRadioProps<Type>, 'icon' | 'label'>)
       }
       if (props.overlayType === 'image-radio') {
         return (
-          <div className={styles['overlay-wrapper']}>
+          <div className="jfe-drip-table-generator-toolbar-overlay-wrapper">
             <ImageRadio value={getValue()} options={props.options} onChange={v => onChange(v)} />
           </div>
         );
@@ -75,7 +75,7 @@ const OverLay = <Type,>(props: Omit<DropDownRadioProps<Type>, 'icon' | 'label'>)
 
 export const DropDownRadio: <Type>(props: DropDownRadioProps<Type>) => React.ReactElement = props => (
   <Dropdown overlay={<OverLay {...props} />} trigger={['click']} placement="bottomLeft" key={props.name}>
-    <div className={styles['tool-cell']}>
+    <div className="jfe-drip-table-generator-toolbar-tool-cell">
       { props.icon }
       { props.label }
     </div>

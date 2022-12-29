@@ -5,6 +5,8 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import { Dropdown, Menu } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
@@ -13,8 +15,6 @@ import Icon from '@/components/Icon';
 import { defaultComponentIcon } from '@/layouts/components-bar/configs';
 import { getComponents, getGroups } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
-
-import styles from './index.module.less';
 
 interface BlankPanelProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -39,7 +39,7 @@ const BlankPanel = <
               key={`${index}_${i}`}
               onClick={() => { props.onMenuClick(component, i); }}
             >
-              <Icon svg={component.icon || defaultComponentIcon} className={styles['component-icon']} />
+              <Icon svg={component.icon || defaultComponentIcon} className="jfe-drip-table-generator-workstation-editable-table-blank-panel-component-icon" />
               <span>{ component.title }</span>
             </Menu.Item>
           )) }
@@ -51,7 +51,7 @@ const BlankPanel = <
   return (
     <Dropdown overlay={menu} trigger={['contextMenu']}>
       <div
-        className={styles['table-column-skeleton']}
+        className="jfe-drip-table-generator-workstation-editable-table-blank-panel-table-column-skeleton"
         style={props.style}
         onDragOver={(event) => {
           event.stopPropagation();

@@ -1,4 +1,6 @@
-.column {
+@prefixCls: jfe-drip-table-generator-workstation-editable-header;
+
+.@{prefixCls}-column {
   width: 120px;
   min-width: 56px;
   border-radius: 2px;
@@ -15,7 +17,7 @@
     border-color: var(--drip-table-border-color);
   }
 
-  .column-title {
+  .@{prefixCls}-column-title {
     padding: 8px;
     word-break: break-all;
     color: #343036;
@@ -31,7 +33,7 @@
     white-space: nowrap;
   }
 
-  .close-icon {
+  .@{prefixCls}-close-icon {
     position: absolute;
     top: -6px;
     right: -6px;
@@ -40,7 +42,7 @@
   }
 }
 
-.table-cell {
+.@{prefixCls}-table-cell {
   height: 120px;
   text-align: center;
   vertical-align: middle;
@@ -48,11 +50,11 @@
   position: relative;
 }
 
-.row-margin {
+.@{prefixCls}-row-margin {
   margin: 0 !important;
 }
 
-.linear-stripe {
+.@{prefixCls}-linear-stripe {
   background:
     linear-gradient(
       45deg,
@@ -70,7 +72,7 @@
   border: 1px dashed var(--drip-table-border-color);
 }
 
-.draggable {
+.@{prefixCls}-draggable {
   &-container {
     display: flex;
     flex-flow: row nowrap;
@@ -87,7 +89,7 @@
   }
 }
 
-.generic-render {
+.@{prefixCls}-generic-render {
   margin: 0;
 
   &-text-element {

@@ -6,8 +6,11 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-.quill-editor-container {
-  :global(.ql-editor) {
+@prefixCls: jfe-drip-table-generator-rich-text-editor;
+@prefixClsQL: ql;
+
+.@{prefixCls}-quill-editor-container {
+  .@{prefixClsQL}-editor {
     min-height: 268px;
   }
 }

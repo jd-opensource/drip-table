@@ -1,3 +1,5 @@
+import './index.less';
+
 import { CloseCircleOutlined, MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Button, Col, Popover, Row } from 'antd';
 import React from 'react';
@@ -7,8 +9,6 @@ import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
 import BuiltInComponents, { DTGComponentBaseProperty } from '..';
-
-import styles from './index.module.less';
 
 interface Props extends DTGComponentBaseProperty<Record<string, unknown>[]> {
   fieldOptions?: { label: string; value: string }[];
@@ -133,9 +133,9 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     const mode = uiProps.mode as 'wide' | 'narrow' || 'wide';
     if (mode === 'narrow') {
       return (
-        <div className={styles['array-component-form-container']} key={index}>
+        <div className="jfe-drip-table-generator-array-component-form-container" key={index}>
           <div
-            className={styles['array-component-close-button']}
+            className="jfe-drip-table-generator-array-component-close-button"
             onClick={() => {
               const currentValue = this.props.value?.slice() || [];
               currentValue.splice(index, 1);
@@ -152,12 +152,12 @@ export default class ArrayComponent extends React.PureComponent<Props> {
       );
     }
     return (
-      <div className={styles['array-component-form-container']} key={index}>
-        <div className={styles['array-component-left-container']} style={{ width: toolWidth ? `calc(100% - ${toolWidth}px)` : void 0 }}>
+      <div className="jfe-drip-table-generator-array-component-form-container" key={index}>
+        <div className="jfe-drip-table-generator-array-component-left-container" style={{ width: toolWidth ? `calc(100% - ${toolWidth}px)` : void 0 }}>
           { (this.props.schema['ui:props']?.items as DTGComponentPropertySchema[])
             .map((schema, i) => this.renderAttributeItem(schema, i, index)) }
         </div>
-        <div className={styles['array-component-right-container']} style={{ width: toolWidth }}>
+        <div className="jfe-drip-table-generator-array-component-right-container" style={{ width: toolWidth }}>
           <Button
             icon={<PlusCircleOutlined />}
             shape="circle"
@@ -188,7 +188,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     const uiProps = this.props.schema['ui:props'] || {};
     const maxLength = uiProps.max as number;
     return (
-      <div className={styles['array-component-container']}>
+      <div className="jfe-drip-table-generator-array-component-container">
         { (this.value || []).map((item, index) => this.renderFormItem(item, index)) }
         { maxLength && (this.value || []).length >= maxLength
           ? null

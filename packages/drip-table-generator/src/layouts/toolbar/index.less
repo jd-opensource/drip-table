@@ -5,7 +5,9 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-.toolbar-container {
+@prefixCls: jfe-drip-table-generator-toolbar;
+
+.@{prefixCls}-toolbar-container {
   width: 100%;
   height: 48px;
   padding: 8px;
@@ -24,7 +26,7 @@
     display: flex;
   }
 
-  & .tool-cell {
+  & .@{prefixCls}-tool-cell {
     margin-right: 8px;
     cursor: pointer;
     padding: 6px 8px;
@@ -42,14 +44,14 @@
       background-color: #e7e7e7;
     }
 
-    & .tool-icon {
+    & .@{prefixCls}-tool-icon {
       line-height: 26px;
       margin-right: 4px;
     }
   }
 }
 
-.overlay-wrapper {
+.@{prefixCls}-overlay-wrapper {
   width: max-content;
   background: #ffffff;
   padding: 12px;

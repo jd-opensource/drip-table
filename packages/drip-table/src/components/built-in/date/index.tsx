@@ -5,6 +5,8 @@
  * @modifier : renwenci (ararakikon@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
+
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
@@ -18,8 +20,6 @@ import Picker from '@/components/date-picker';
 
 import { DripTableComponentProps } from '../component';
 import { preventEvent } from '../utils';
-
-import styles from './index.module.less';
 
 export type DTCDateColumnSchema = DripTableColumnSchema<'date-picker', {
   /**
@@ -147,7 +147,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (!$editPopup) {
       return;
     }
-    const $editTextarea = $editPopup.querySelector(`.${styles['edit-textarea']}`);
+    const $editTextarea = $editPopup.querySelector('.jfe-drip-table-dtc-date-edit-textarea');
     if (!$editTextarea || !($editTextarea instanceof HTMLTextAreaElement)) {
       return;
     }
@@ -194,7 +194,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (options.mode === 'basic') {
       return (
         <div
-          className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
+          className={classNames('jfe-drip-table-dtc-date-edit-editing-outline', 'jfe-drip-table-dtc-date-edit-select')}
           style={{ width: selectFinalWidth, height: 300, justifyContent }}
         >
           <Picker.DatePicker
@@ -216,7 +216,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (options.mode === 'range') {
       return (
         <div
-          className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
+          className={classNames('jfe-drip-table-dtc-date-edit-editing-outline', 'jfe-drip-table-dtc-date-edit-select')}
           style={{ width: 380, height: 300, justifyContent }}
         >
           <Picker.DateRangePicker
@@ -261,10 +261,10 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     }
     return (
       <React.Fragment>
-        <div className={styles['edit-padding-left']} style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
-        <div className={styles['edit-padding-right']} style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
-        <div className={styles['edit-padding-top']} style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
-        <div className={styles['edit-padding-bottom']} style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
+        <div className="jfe-drip-table-dtc-date-edit-padding-left" style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
+        <div className="jfe-drip-table-dtc-date-edit-padding-right" style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
+        <div className="jfe-drip-table-dtc-date-edit-padding-top" style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
+        <div className="jfe-drip-table-dtc-date-edit-padding-bottom" style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
         {
           this.state.editState === 'none'
             ? void 0
@@ -273,8 +273,8 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
                 onWheel={this.onWheel}
                 settings={{ capture: true, passive: false }}
               >
-                <div className={styles['edit-popup']} id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
-                  <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
+                <div className="jfe-drip-table-dtc-date-edit-popup" id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
+                  <div className="jfe-drip-table-dtc-date-edit-popup-body" style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
                     { this.renderEditDate() }
                   </div>
                 </div>
@@ -297,7 +297,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
       <React.Fragment>
         <div
           ref={this.$main}
-          className={classNames(styles.main, { [styles.editable]: this.props.editable })}
+          className={classNames('jfe-drip-table-dtc-date-main', { 'jfe-drip-table-dtc-date-editable': this.props.editable })}
           tabIndex={0}
           onDoubleClick={this.onDoubleClick}
           onKeyDown={this.onKeyDown}
@@ -305,7 +305,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
           { Array.isArray(this.value) ? this.value.map(v => moment(v).format(format)).join(' - ') : moment(this.value).format(format) }
           { this.renderEdit() }
         </div>
-        <div className={styles['focus-border']} />
+        <div className="jfe-drip-table-dtc-date-focus-border" />
       </React.Fragment>
 
     );

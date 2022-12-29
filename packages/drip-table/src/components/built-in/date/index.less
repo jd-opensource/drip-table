@@ -6,23 +6,25 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-.main {
+@prefixCls: jfe-drip-table-dtc-date;
+
+.@{prefixCls}-main {
   position: relative;
   outline: none;
 }
 
-.focus-border {
+.@{prefixCls}-focus-border {
   pointer-events: none;
   display: none;
 }
 
-.edit-select {
+.@{prefixCls}-edit-select {
   padding: 18px;
   z-index: 100000;
   background: #ffffff;
 }
 
-.main.editable:focus + .focus-border {
+.@{prefixCls}-main.@{prefixCls}-editable:focus + .@{prefixCls}-focus-border {
   display: block;
   position: absolute;
   top: 0;
@@ -34,20 +36,20 @@
   border-radius: 4px;
 }
 
-.main.editable:focus {
+.@{prefixCls}-main.@{prefixCls}-editable:focus {
   color: #2a64ff !important;
 }
 
-.word-break {
+.@{prefixCls}-word-break {
   word-break: break-word;
 }
 
-.text-ellipsis {
+.@{prefixCls}-text-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.edit-popup {
+.@{prefixCls}-edit-popup {
   position: fixed;
   z-index: 99999;
   top: 0;
@@ -56,42 +58,42 @@
   left: 0;
 }
 
-.edit-popup-bg {
+.@{prefixCls}-edit-popup-bg {
   position: absolute;
   top: 0;
   left: 0;
   background: white;
 }
 
-.edit-popup-body {
+.@{prefixCls}-edit-popup-body {
   position: absolute;
 }
 
-.edit-padding-left {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-}
-
-.edit-padding-right {
+.@{prefixCls}-edit-padding-left {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-.edit-padding-top {
+.@{prefixCls}-edit-padding-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.@{prefixCls}-edit-padding-top {
   position: absolute;
   right: 0;
   left: 0;
 }
 
-.edit-padding-bottom {
+.@{prefixCls}-edit-padding-bottom {
   position: absolute;
   right: 0;
   left: 0;
 }
 
-.edit-editing-outline {
+.@{prefixCls}-edit-editing-outline {
   border: 2px solid #2a64ff;
   border-radius: 4px;
   box-sizing: border-box;

@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import Textarea from 'rc-textarea';
@@ -21,8 +23,6 @@ import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessIndex, dataProcessValue, finalizeString, preventEvent } from '../utils';
-
-import styles from './index.module.less';
 
 export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
   /**
@@ -244,10 +244,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const maxRow = this.props.schema.options.maxRow;
     const wrapperClassName: string[] = [];
     if (this.props.schema.options.ellipsis) {
-      wrapperClassName.push(styles['text-ellipsis']);
+      wrapperClassName.push('jfe-drip-table-dtc-text-text-ellipsis');
     }
     if (maxRow) {
-      wrapperClassName.push(styles['max-row']);
+      wrapperClassName.push('jfe-drip-table-dtc-text-max-row');
     }
     return classNames(wrapperClassName, this.props.schema.options.className);
   }
@@ -406,7 +406,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!$editPopup) {
       return;
     }
-    const $editTextarea = $editPopup.querySelector(`.${styles['edit-textarea']}`);
+    const $editTextarea = $editPopup.querySelector('.jfe-drip-table-dtc-text-edit-textarea');
     if (!$editTextarea || !($editTextarea instanceof HTMLTextAreaElement)) {
       return;
     }
@@ -440,7 +440,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       }
       return (
         <div
-          className={classNames(styles['edit-editing-outline'], styles['edit-select'])}
+          className={classNames('jfe-drip-table-dtc-text-edit-editing-outline', 'jfe-drip-table-dtc-text-edit-select')}
           style={{ width: selectFinalWidth, height: this.state.cellHeight, justifyContent }}
         >
           <Select
@@ -452,7 +452,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
               this.props.onChange?.(this.state.editValue);
               this.setState({ editState: 'none' });
             }}
-            dropdownClassName={styles['edit-select-dropdown']}
+            dropdownClassName="jfe-drip-table-dtc-text-edit-select-dropdown"
           >
             {
               Object.entries(this.props.schema.options.i18n).map(([k, v]) => (
@@ -468,7 +468,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const editFinalWidth = Math.min(Math.max(this.state.cellWidth, editMinWidth), editMaxWidth);
     return (
       <Textarea
-        className={classNames(styles['edit-editing-outline'], styles['edit-textarea'])}
+        className={classNames('jfe-drip-table-dtc-text-edit-editing-outline', 'jfe-drip-table-dtc-text-edit-textarea')}
         value={this.state.editValue}
         autoFocus
         autoSize={{ maxRows: 6 }}
@@ -491,10 +491,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     }
     return (
       <React.Fragment>
-        <div className={styles['edit-padding-left']} style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
-        <div className={styles['edit-padding-right']} style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
-        <div className={styles['edit-padding-top']} style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
-        <div className={styles['edit-padding-bottom']} style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
+        <div className="jfe-drip-table-dtc-text-edit-padding-left" style={{ width: this.state.cellPaddingLeft, left: -this.state.cellPaddingLeft }} />
+        <div className="jfe-drip-table-dtc-text-edit-padding-right" style={{ width: this.state.cellPaddingRight, right: -this.state.cellPaddingRight }} />
+        <div className="jfe-drip-table-dtc-text-edit-padding-top" style={{ height: this.state.cellPaddingTop, top: -this.state.cellPaddingTop }} />
+        <div className="jfe-drip-table-dtc-text-edit-padding-bottom" style={{ height: this.state.cellPaddingBottom, bottom: -this.state.cellPaddingBottom }} />
         {
           this.state.editState === 'none'
             ? void 0
@@ -503,9 +503,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
                 onWheel={this.onWheel}
                 settings={{ capture: true, passive: false }}
               >
-                <div className={styles['edit-popup']} id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
-                  <div className={styles['edit-popup-body']} style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
-                    <div className={styles['edit-popup-bg']} style={{ width: this.state.editWidth, height: this.state.editHeight }} />
+                <div className="jfe-drip-table-dtc-text-edit-popup" id={`${this.componentUuid}-popup`} onWheelCapture={e => preventEvent(e)}>
+                  <div className="jfe-drip-table-dtc-text-edit-popup-body" style={{ left: this.state.cellLeft, right: 0, top: this.state.cellTop, bottom: 0 }}>
+                    <div className="jfe-drip-table-dtc-text-edit-popup-bg" style={{ width: this.state.editWidth, height: this.state.editHeight }} />
                     { this.renderEditInput() }
                   </div>
                 </div>
@@ -557,7 +557,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     ));
     let wrapperEl = (
       <div
-        className={classNames(wrapperClassName, styles['word-break'])}
+        className={classNames(wrapperClassName, 'jfe-drip-table-dtc-text-word-break')}
         style={wrapperStyles}
       >
         { rawTextEl }
@@ -565,7 +565,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     );
     if (this.props.schema.options.maxRow) {
       wrapperEl = (
-        <Tooltip title={<div className={styles['word-break']} style={this.rawTextStyles}>{ rawTextEl }</div>}>
+        <Tooltip title={<div className="jfe-drip-table-dtc-text-word-break" style={this.rawTextStyles}>{ rawTextEl }</div>}>
           { wrapperEl }
         </Tooltip>
       );
@@ -576,7 +576,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         <ResizeObserver onResize={this.onResize}>
           <div
             ref={this.$main}
-            className={classNames(styles.main, { [styles.editable]: this.props.editable, [styles.disabled]: this.disabled })}
+            className={classNames('jfe-drip-table-dtc-text-main', { 'jfe-drip-table-dtc-text-editable': this.props.editable, 'jfe-drip-table-dtc-text-disabled': this.disabled })}
             tabIndex={0}
             onDoubleClick={this.onDoubleClick}
             onKeyDown={this.onKeyDown}
@@ -586,7 +586,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
             { this.renderClipboard() }
           </div>
         </ResizeObserver>
-        <div className={styles['focus-border']} />
+        <div className="jfe-drip-table-dtc-text-focus-border" />
       </React.Fragment>
     );
   }

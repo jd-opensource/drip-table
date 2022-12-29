@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import classnames from 'classnames';
 import React from 'react';
 
@@ -20,8 +22,6 @@ import { parseReactCSS } from '@/utils/dom';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext } from '@/context';
 import { type DripTableProps } from '@/index';
-
-import styles from './index.module.less';
 
 interface SlotElementBaseSchema {
   /**
@@ -289,20 +289,20 @@ const SlotRender = <
     }
 
     if (config.type === 'text') {
-      return <h3 className={styles['slot-render-text-element']}>{ config.text }</h3>;
+      return <h3 className="jfe-drip-table-slot-render-text-element">{ config.text }</h3>;
     }
 
     if (config.type === 'html') {
-      return <RichText className={styles['slot-render-html-element']} html={config.html} />;
+      return <RichText className="jfe-drip-table-slot-render-html-element" html={config.html} />;
     }
 
     if (config.type === 'search') {
       return (
-        <div style={config.wrapperStyle} className={classnames(styles['slot-render-search-element'], config.wrapperClassName)}>
+        <div style={config.wrapperStyle} className={classnames('jfe-drip-table-slot-render-search-element', config.wrapperClassName)}>
           { config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
-              className={styles['slot-render-search-element__select']}
+              className="jfe-drip-table-slot-render-search-element__select"
               value={searchKey}
               onChange={value => setSearchKey(value)}
             >
@@ -335,7 +335,7 @@ const SlotRender = <
           <Slot
             {...deprecatedProps}
             data={config.data}
-            className={classnames(styles['slot-render-slot-element'], typeof deprecatedProps?.className === 'string' ? deprecatedProps.className : '', config.class)}
+            className={classnames('jfe-drip-table-slot-render-slot-element', typeof deprecatedProps?.className === 'string' ? deprecatedProps.className : '', config.class)}
             style={config.style ? parseReactCSS(config.style) : void 0}
             slotType={config.slot}
             driver={tableProps.driver}
@@ -350,13 +350,13 @@ const SlotRender = <
           />
         );
       }
-      return <span className={styles['slot-render-slot-element__error']}>{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className="jfe-drip-table-slot-render-slot-element__error">{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
     }
 
     if (config.type === 'insert-button') {
       return (
         <Button
-          className={classnames(styles['slot-render-insert-button-element'], config.insertButtonClassName)}
+          className={classnames('jfe-drip-table-slot-render-insert-button-element', config.insertButtonClassName)}
           type="primary"
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
@@ -399,7 +399,7 @@ const SlotRender = <
       );
       return (
         <Dropdown
-          className={styles['slot-render-display-column-selector-element']}
+          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
@@ -436,7 +436,7 @@ const SlotRender = <
       );
       return (
         <Dropdown
-          className={styles['slot-render-display-column-selector-element']}
+          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={layoutSelectorVisible}
@@ -456,7 +456,7 @@ const SlotRender = <
   const elements = props.schema.elements;
   if (elements && elements.length > 0) {
     return (
-      <Row className={styles['slot-render']} style={Object.assign({}, props.style, props.schema.style)}>
+      <Row className="jfe-drip-table-slot-render" style={Object.assign({}, props.style, props.schema.style)}>
         {
           elements.map((item, index) => (
             <Col

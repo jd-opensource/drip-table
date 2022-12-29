@@ -6,13 +6,11 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-.custom-form-item {
-  :global(.ant-form-item-label) {
-    white-space: break-spaces;
-    word-break: break-word;
-  }
+@prefixCls: jfe-drip-table-generator-workstation;
 
-  :global(.ant-form-item-label > label) {
-    height: 100%;
-  }
+.@{prefixCls}-generator-workstation {
+  padding: 24px;
+  width: calc(~"100% - 128px");
+  background-color: var(--drip-table-background-color);
+  overflow: auto;
 }

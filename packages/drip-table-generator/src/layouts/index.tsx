@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
@@ -15,16 +17,14 @@ import ComponentsBar from './components-bar';
 import TableWorkStation from './table-workstation';
 import Toolbar from './toolbar';
 
-import styles from './index.module.less';
-
 const GeneratorLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (
-  <div style={props.style} className={styles.container}>
+  <div style={props.style} className="jfe-drip-table-generator-layouts-container">
     { props.showToolLayout === false ? null : <Toolbar {...props} style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }
-    <div className={styles.wrapper}>
-      <div className={styles.navbar} style={{ height: props.style?.height ? `calc(${props.style?.height} - 48px)` : void 0 }}>
+    <div className="jfe-drip-table-generator-layouts-wrapper">
+      <div className="jfe-drip-table-generator-layouts-navbar" style={{ height: props.style?.height ? `calc(${props.style?.height} - 48px)` : void 0 }}>
         <ComponentsBar
           customComponentPanel={props.customComponentPanel}
           mockDataSource={props.mockDataSource}

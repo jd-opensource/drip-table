@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Row } from 'antd';
 import classNames from 'classnames';
@@ -26,8 +28,6 @@ import components from '@/table-components';
 import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { getWidth, updateColumnItemByPath } from '../../utils';
-
-import styles from './index.module.less';
 
 interface EditableComponentsProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -131,13 +131,13 @@ const EditableGroupComponent = <
         { ({ currentColumn, columns, columnToAdd, drawerType, setState }) => (
           <div style={{ height: props.isChildren ? '100%' : 'max-content', overflow: 'hidden' }}>
             <div
-              className={props.isChildren ? '' : styles['table-cell']}
+              className={props.isChildren ? '' : 'jfe-drip-table-generator-workstation-editable-table-components-table-cell'}
               style={{ width: props.isChildren ? '100%' : columnWidth }}
             >
               { componentOptions.layout?.map((layout, index) => (
                 <Row
                   key={index}
-                  className={styles['row-margin']}
+                  className="jfe-drip-table-generator-workstation-editable-table-components-row-margin"
                   style={{
                     flexFlow: componentOptions.wrap ? 'row wrap' : 'nowrap',
                     justifyContent: componentOptions.horizontalAlign,
@@ -168,7 +168,7 @@ const EditableGroupComponent = <
                       : () => <div />;
                     return (
                       <Col
-                        className={classNames(styles['linear-stripe'], isChecked(currentCheckedIndex) ? styles['checked-stripe'] : '')}
+                        className={classNames('jfe-drip-table-generator-workstation-editable-table-components-linear-stripe', isChecked(currentCheckedIndex) ? 'jfe-drip-table-generator-workstation-editable-table-components-checked-stripe' : '')}
                         key={i}
                         style={{
                           width: columnWidth / layout - gutter[0],
@@ -233,7 +233,7 @@ const EditableGroupComponent = <
                         { componentOptions.items[currentCheckedIndex]
                           && (
                           <CloseCircleOutlined
-                            className={styles['close-column-item']}
+                            className="jfe-drip-table-generator-workstation-editable-table-components-close-column-item"
                             onClick={() => {
                               componentOptions.items[currentCheckedIndex] = null;
                               setState({
@@ -266,7 +266,7 @@ const EditableGroupComponent = <
                             </React.Fragment>
                           )
                           : null }
-                        { !componentOptions.items[currentCheckedIndex] && <span className={styles['column-tips']}>拖拽组件至此</span> }
+                        { !componentOptions.items[currentCheckedIndex] && <span className="jfe-drip-table-generator-workstation-editable-table-components-column-tips">拖拽组件至此</span> }
                       </Col>
                     );
                   }) }

@@ -5,6 +5,8 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import '../index.less';
+
 import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, MoreOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Modal, Tooltip } from 'antd';
 import classNames from 'classnames';
@@ -14,8 +16,6 @@ import RichText from '@/components/RichText';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 
 import { getWidth } from '../../utils';
-
-import styles from '../index.module.less';
 
 interface ColumnHeaderProps{
   style?: React.CSSProperties;
@@ -104,14 +104,14 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
         return (
           <div
             key={props.index}
-            className={classNames(styles['editable-table-thead'], styles[globalConfigs.size || 'default'])}
+            className={classNames('jfe-drip-table-generator-workstation-editable-table-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
             style={{
               ...props.style,
               width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
             }}
           >
             <RichText
-              className={styles['editable-table-column-title']}
+              className="jfe-drip-table-generator-workstation-editable-table-editable-table-column-title"
               style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
               html={columnTitle}
             />
@@ -121,7 +121,7 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
             </Tooltip>
             ) }
             <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
-              <MoreOutlined className={styles['action-button']} onClick={(event) => { event.stopPropagation(); }} />
+              <MoreOutlined className="jfe-drip-table-generator-workstation-editable-table-action-button" onClick={(event) => { event.stopPropagation(); }} />
             </Dropdown>
           </div>
         );

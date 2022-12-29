@@ -1,7 +1,6 @@
 import { defineConfig } from 'dumi';
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 import path from 'path';
-import sha1 from 'sha1';
 
 const scriptText = `
 (function() {
@@ -388,31 +387,6 @@ export default defineConfig({
     'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
   },
   chainWebpack(config, { webpack }) {
-    const packagesPath = `${path.resolve(path.join(__dirname, 'packages'))}${path.sep}`;
-    for (const ext of ['css', 'less', 'sass']) {
-      config.module.rule(ext)
-        .oneOf('css')
-        .use('css-loader')
-        .tap(options => ({
-          ...options,
-          modules: {
-            ...options?.modules,
-            getLocalIdent: (loaderContext: { resourcePath: string }, localIdentName: string, localName: string) => {
-              const resourcePath = loaderContext.resourcePath;
-              const resourcePrefix = resourcePath.startsWith(packagesPath)
-                ? `jfe-${resourcePath.slice(packagesPath.length).replace(/\/.*$/u, '')}`
-                : '';
-              if (resourcePrefix === '' || localName === resourcePrefix || localName.startsWith(`${resourcePrefix}-`)) {
-                return localName;
-              }
-              if (resourcePrefix === 'jfe-drip-table-generator') {
-                return `${resourcePrefix}-${localName}`;
-              }
-              return `${resourcePrefix}-${sha1(resourcePath).slice(0, 4)}-${localName}`;
-            },
-          },
-        }));
-    }
     config.devServer.contentBase(path.join(__dirname, 'docs-static'));
     config.devServer.watchContentBase(true);
     config.plugin('monaco-editor').use(MonacoWebpackPlugin);
