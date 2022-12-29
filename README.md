@@ -35,6 +35,45 @@ The introduction of each sub-project are as follows:
 
 - `drip-table-driver-antd`: a theme package which is composed of `Ant Design` components and icons.
 
+## Features
+
+* [x] Basic table
+* [x] Compound table
+* [x] Toolbar
+* [x] Renderer
+* [x] Text component
+* [x] Number component
+* [x] Image component
+* [x] Link component
+* [x] Tag component
+* [x] Button component
+* [x] Select component
+* [x] DataPicker component
+* [x] PopUpPage component
+* [x] RichText component
+* [x] Group component
+* [x] Custom component
+* [x] Header slot
+* [x] Footer slot
+* [x] Pagination
+* [x] Virtual list
+* [x] Sticky
+* [x] Sub table
+* [x] Row selection
+* [x] Row draggable
+* [x] Fixed column
+* [x] Show/Hide column
+* [x] Edit data
+* [x] Stripe
+* [x] Table with border
+* [x] Column resizing
+* [x] Size
+* [x] Global styles
+* [x] Empty table prompt
+* [x] Loading
+* [x] Card layout
+* [x] Filter
+
 ## ⬆️ Getting Start
 
 `Drip table` is divided into two application scenarios: configuration end and application end. The configuration side is mainly responsible for generating `JSON Schema` standard data through visualization and `low-code`. The function of the application side is to render the `JSON Schema` standard configuration data into a dynamic table.
