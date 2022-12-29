@@ -95,7 +95,7 @@ export default class BoxShadowComponent extends React.PureComponent<Props> {
               value={item.value}
               onChange={(val) => {
                 const positions = [...this.value.positions];
-                positions[index].value = val || void 0;
+                positions[index].value = val ?? void 0;
                 this.onChangeValue({ color: this.value.color, positions });
               }}
               addonAfter={(

@@ -98,6 +98,7 @@ const GlobalConfigForm = <
       formData['footer.items'] = footerElements;
     }
     if (typeof globalConfigs?.rowHeader === 'object') {
+      formData.rowHeader = true;
       Object.keys(globalConfigs?.rowHeader.style || {}).forEach((key) => {
         formData[`rowHeaderStyle.${key}`] = globalConfigs?.rowHeader?.style?.[key];
       });
@@ -200,10 +201,12 @@ const GlobalConfigForm = <
         y: formData.scrollY as number,
       },
       innerStyle,
-      rowHeader: {
-        style: { ...rowHeaderStyle },
-        elements: (formData['rowHeader.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
-      },
+      rowHeader: formData.rowHeader
+        ? {
+          style: { ...rowHeaderStyle },
+          elements: (formData['rowHeader.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
+        }
+        : void 0,
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },

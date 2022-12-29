@@ -173,7 +173,7 @@ const ComponentConfigForm = <
             encodeData={formData => encodeColumnConfigs(formData, currentColumn)}
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
-            groupType="collapse"
+            groupType="tabs"
             theme={props.driver}
             onChange={(data) => {
               const newCurrentColumn = Object.assign({}, currentColumn, data);

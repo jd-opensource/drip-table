@@ -522,7 +522,22 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:layout': { labelCol: 8, wrapperCol: 14 },
     type: 'number',
   },
-  ...StyleAttrConfigs('rowHeaderStyle', '行头部配置'),
+  {
+    name: 'rowHeader',
+    group: '行头部配置',
+    'ui:title': '展示每行头部',
+    'ui:type': 'switch',
+    'ui:layout': {
+      labelCol: 6,
+      wrapperCol: 18,
+    },
+    'ui:props': {},
+    type: 'boolean',
+    default: false,
+  },
+  ...StyleAttrConfigs('rowHeaderStyle', '行头部配置', {
+    visible: (v, formData) => !!formData?.rowHeader,
+  }),
   {
     name: 'rowHeader.items',
     group: '行头部配置',
@@ -538,6 +553,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     },
     type: 'boolean',
     default: false,
+    visible: (v, formData) => !!formData?.rowHeader,
   },
   ...StyleAttrConfigs('innerStyle', '全局样式'),
 ];

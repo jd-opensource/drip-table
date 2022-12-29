@@ -34,35 +34,6 @@ const initialSchema: DripTableSchema = {
       dataIndex: 'name',
     },
     {
-      key: 'mock_1',
-      dataIndex: '',
-      title: '自定义',
-      description: '',
-      component: 'render-html',
-      width: '120px',
-      options: {
-        render: "if (rec.id % 2 == 1) {\n  return '<span style=\\\"padding: 2px 4px;color:#52c41a; border: 1px solid #b7eb8f; border-radius: 10px; background: #f6ffed\\\">进行中</span>';\n}\nif (rec.id % 2 == 0) {\n  return '<span style=\\\"padding: 2px 4px;color:#000; border: 1px solid #000; border-radius: 10px; background: #f6ffed\\\">已完成</span>';\n}\nreturn '';",
-      },
-    },
-    {
-      key: 'mock_3',
-      dataIndex: '',
-      title: '链接',
-      description: '',
-      component: 'link',
-      width: '120px',
-      options: {
-        mode: 'single',
-        label: 'google',
-        href: 'www.google.com',
-        target: '',
-        event: '',
-        operates: [],
-        tooltip: 'toolip示例{{rec.name}}',
-      },
-      align: 'center',
-    },
-    {
       key: 'mock_4',
       dataIndex: 'pictureUrl',
       title: '图片',
@@ -74,73 +45,6 @@ const initialSchema: DripTableSchema = {
         imageHeight: 86,
       },
       align: 'center',
-    },
-    {
-      key: 'mock_5',
-      dataIndex: 'startDate',
-      title: '日期',
-      width: '120px',
-      description: '',
-      component: 'date-picker',
-      options: {
-        mode: 'basic',
-        format: 'YYYY-MM-DD',
-      },
-      align: 'center',
-    },
-    {
-      key: 'mock_6',
-      title: '状态选择',
-      width: '140px',
-      dataIndex: 'status',
-      component: 'select',
-      options: {
-        style: { width: 100 },
-        options: [{ label: '售卖中', value: 'onSale' }, { label: '已售罄', value: 'soldOut' }],
-        event: 'statusToggle',
-      },
-    },
-    {
-      key: 'mock_7',
-      title: '按钮',
-      width: '120px',
-      dataIndex: '',
-      component: 'button',
-      options: {
-        mode: 'single',
-        label: '确认',
-        shape: 'round',
-        buttonType: 'primary',
-      },
-    },
-    {
-      key: 'mock_8',
-      title: '弹出网页',
-      width: '120px',
-      dataIndex: '',
-      component: 'pop-up-page',
-      options: {
-        title: 'drip-table',
-        label: '弹网页',
-        buttonType: 'text',
-        link: 'https://drip-table.jd.com/',
-        width: '50%',
-        height: '700px',
-      },
-    },
-    {
-      key: 'mock_9',
-      title: '数字',
-      width: '120px',
-      dataIndex: 'price',
-      component: 'input-number',
-      options: {
-        style: { width: 100 },
-        step: 1,
-        min: 0,
-        isEdit: true,
-        bordered: true,
-      },
     },
   ],
 };
@@ -156,7 +60,7 @@ const Demo = () => (
     style={{ height: '756px' }}
     driver={DripTableDriverAntDesign}
     schema={initialSchema}
-    dataSource={mockData}
+    dataSource={mockData.slice(0, 1)}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}
     onExportSchema={(schema) => { message.success('已导出'); console.log(schema); }}
     customComponents={{ custom: { TextComponent } }}

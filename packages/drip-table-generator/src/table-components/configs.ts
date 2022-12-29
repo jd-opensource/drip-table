@@ -10,6 +10,7 @@ import { DTGComponentPropertySchema } from '../typing';
 export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
   filterStyles?: string[];
   backgroundColor?: string;
+  visible?: boolean | ((value: unknown, formData?: Record<string, unknown>) => boolean);
 }) => [
   {
     name: `${prefix}.width`,
@@ -23,6 +24,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.minWidth`,
@@ -36,6 +38,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.maxWidth`,
@@ -49,6 +52,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.height`,
@@ -62,6 +66,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.minHeight`,
@@ -75,6 +80,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.maxHeight`,
@@ -88,6 +94,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.backgroundColor`,
@@ -97,6 +104,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     'ui:props': {},
     type: 'string',
     default: extraOptions?.backgroundColor || '#ffffff',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.borderWidth`,
@@ -110,6 +118,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '1px',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.borderColor`,
@@ -119,6 +128,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     'ui:props': {},
     type: 'string',
     default: '#f2f2f2',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.borderStyle`,
@@ -135,6 +145,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: 'solid',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.borderRadius`,
@@ -152,6 +163,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.padding`,
@@ -169,6 +181,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.margin`,
@@ -186,6 +199,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
   {
     name: `${prefix}.boxShadow`,
@@ -204,6 +218,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
     },
     type: 'string',
     default: '',
+    visible: extraOptions?.visible,
   },
 ].filter(item => (extraOptions?.filterStyles ? extraOptions?.filterStyles.includes(item.name.replace(`${prefix}.`, '')) : item)) as DTGComponentPropertySchema[];
 

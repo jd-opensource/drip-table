@@ -70,11 +70,19 @@ const AttributesLayout = <
             <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-header">
               <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0, currentColumn: drawerType === 'column' ? void 0 : currentColumn })} />
               <span className="jfe-drip-table-generator-attributes-layout-title">{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
-              { drawerType === 'column' ? (<span className="jfe-drip-table-generator-attributes-layout-component-title">{ getComponentName(currentColumn?.component || '') }</span>) : null }
+              { drawerType === 'column'
+                ? (
+                  <span className="jfe-drip-table-generator-attributes-layout-component-title">
+                    组件 &gt;
+                    { ' ' }
+                    { getComponentName(currentColumn?.component || '') }
+                  </span>
+                )
+                : null }
               { drawerType === 'column-item'
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
-                    { currentColumnPath ? getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component) : '' }
+                    { currentColumnPath ? `子组件 &gt; ${getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component)}` : '' }
                   </span>
                 )
                 : null }

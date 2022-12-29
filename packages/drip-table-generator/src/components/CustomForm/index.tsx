@@ -11,6 +11,7 @@ import './index.less';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
+import { TabsPosition } from 'antd/lib/tabs';
 import { DripTableDriver } from 'drip-table';
 import React, { Component } from 'react';
 
@@ -24,6 +25,7 @@ interface Props<T> {
   configs: DTGComponentPropertySchema[];
   groupType?: boolean | 'collapse' | 'tabs';
   labelAlign?: 'left' | 'right';
+  tabPosition?: TabsPosition;
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   primaryKey?: string;
@@ -265,13 +267,18 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         );
       }
       return (
-        <Tabs tabPosition="left">
-          { groups.map((groupName, groupIndex) => (
-            <Tabs.TabPane key={groupIndex} tab={groupName}>
-              { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
-            </Tabs.TabPane>
-          )) }
-        </Tabs>
+        <Tabs
+          tabPosition={this.props.tabPosition}
+          items={groups.map((groupName, groupIndex) => ({
+            label: groupName,
+            key: String(groupIndex),
+            children: (
+              <div>
+                { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
+              </div>
+            ),
+          }))}
+        />
       );
     }
     return (
