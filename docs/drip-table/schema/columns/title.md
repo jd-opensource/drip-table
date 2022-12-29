@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 列头 title
+toc: content
 ---
 
 ## 列头 columns.title

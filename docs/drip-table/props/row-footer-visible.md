@@ -1,6 +1,7 @@
 ---
 order: 17
 title: 行尾插槽是否显示 rowFooterVisible
+toc: content
 ---
 
 ## 行尾插槽是否显示 rowFooterVisible

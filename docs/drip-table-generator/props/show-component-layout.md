@@ -1,6 +1,7 @@
 ---
 order: 9
 title: showComponentLayout
+toc: content
 ---
 
 ## showComponentLayout

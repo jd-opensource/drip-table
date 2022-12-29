@@ -1,6 +1,7 @@
 ---
 order: 1
 title: 文本组件 Text
+toc: content
 ---
 
 ## 文本组件 text

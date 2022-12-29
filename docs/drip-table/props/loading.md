@@ -1,6 +1,7 @@
 ---
 order: 12
 title: 加载中 loading
+toc: content
 ---
 
 ## 加载中 loading

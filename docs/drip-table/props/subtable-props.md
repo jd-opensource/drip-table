@@ -1,6 +1,7 @@
 ---
 order: 13
 title: 子表配置项 subtableProps
+toc: content
 ---
 
 ## 子表配置项 subtableProps

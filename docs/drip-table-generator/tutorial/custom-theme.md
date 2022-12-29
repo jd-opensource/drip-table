@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 自定义主题配置
+toc: content
 ---
 
 ## 自定义主题配置

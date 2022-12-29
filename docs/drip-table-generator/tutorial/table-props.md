@@ -1,6 +1,7 @@
 ---
 order: 6
 title: 透传 Table 属性
+toc: content
 ---
 
 ## 透传 Table 属性

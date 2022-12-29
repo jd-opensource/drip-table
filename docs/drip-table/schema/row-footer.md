@@ -1,6 +1,7 @@
 ---
 order: 25
 title: 行尾插槽 rowFooter
+toc: content
 ---
 
 ## 行尾插槽配置 rowFooter

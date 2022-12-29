@@ -1,6 +1,7 @@
 ---
 order: 28
 title: 搜索触发 onSearch
+toc: content
 ---
 
 ## 搜索触发 onSearch

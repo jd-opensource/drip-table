@@ -1,6 +1,7 @@
 ---
 order: 5
 title: 默认数据 defaultValue
+toc: content
 ---
 
 ## 默认数据 columns.defaultValue

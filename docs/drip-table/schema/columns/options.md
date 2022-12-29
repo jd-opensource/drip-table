@@ -1,6 +1,7 @@
 ---
 order: 22
 title: 配置项 options
+toc: content
 ---
 
 ## 配置项 columns.options

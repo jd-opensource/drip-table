@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 图片组件 Image
+toc: content
 ---
 
 ## 图片组件 image

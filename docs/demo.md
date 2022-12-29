@@ -2,6 +2,7 @@
 order: 3
 title: DEMO
 sidemenu: false
+toc: content
 ---
 
 <style>

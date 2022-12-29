@@ -1,6 +1,7 @@
 ---
 order: 20
 title: 顶部渲染函数 title
+toc: content
 ---
 
 ## 顶部渲染函数 title

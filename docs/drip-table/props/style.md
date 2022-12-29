@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 自定义样式表 style
+toc: content
 ---
 
 ## 自定义样式表 style

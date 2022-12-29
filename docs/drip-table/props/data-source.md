@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 校验配置项 dataSource
+toc: content
 ---
 
 ## 数据源 dataSource

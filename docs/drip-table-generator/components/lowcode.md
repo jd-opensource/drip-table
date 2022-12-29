@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 低代码组件
+toc: content
 ---
 
 ## 低代码组件

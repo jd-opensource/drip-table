@@ -1,6 +1,7 @@
 ---
 order: 16
 title: 列禁用 disable
+toc: content
 ---
 
 ## 列禁用 columns.disable

@@ -1,6 +1,7 @@
 ---
 order: 4
 title: 头部配置
+toc: content
 ---
 
 ## 表格头部配置

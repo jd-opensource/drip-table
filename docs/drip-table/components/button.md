@@ -1,6 +1,7 @@
 ---
 order: 5
 title: 按钮组件 Button
+toc: content
 ---
 
 ## 按钮组件 button

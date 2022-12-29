@@ -1,6 +1,7 @@
 ---
 order: 15
 title: 组件插槽 slots
+toc: content
 ---
 
 ## 组件插槽 slots

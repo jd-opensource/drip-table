@@ -1,6 +1,7 @@
 ---
 order: 34
 title: 通用事件机制 onEvent
+toc: content
 ---
 
 ## 通用事件机制 onEvent

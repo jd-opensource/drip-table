@@ -1,6 +1,7 @@
 ---
 order: 19
 title: 间隔斑马纹 stripe
+toc: content
 ---
 
 ## 间隔斑马纹 stripe

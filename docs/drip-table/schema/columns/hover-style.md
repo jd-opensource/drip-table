@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 悬浮样式 hoverStyle
+toc: content
 ---
 
 ## 鼠标悬浮单元格样式 columns.hoverStyle

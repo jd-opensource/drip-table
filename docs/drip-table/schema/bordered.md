@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 边框 bordered
+toc: content
 ---
 
 ## 边框 bordered

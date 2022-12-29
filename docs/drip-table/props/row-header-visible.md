@@ -1,6 +1,7 @@
 ---
 order: 16
 title: 行头插槽是否显示 rowHeaderVisible
+toc: content
 ---
 
 ## 行头插槽是否显示 rowHeaderVisible

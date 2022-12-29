@@ -1,6 +1,7 @@
 ---
 order: 20
 title: 组件加载完成 componentDidMount
+toc: content
 ---
 
 ## 组件加载完成 componentDidMount

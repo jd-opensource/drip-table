@@ -1,6 +1,7 @@
 ---
 order: 2
 title: API
+toc: content
 ---
 
 ## API

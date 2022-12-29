@@ -1,6 +1,7 @@
 ---
 order: 19
 title: 过滤器 filters
+toc: content
 ---
 
 ## 过滤器 columns.filters

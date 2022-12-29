@@ -1,6 +1,7 @@
 ---
 order: 14
 title: 自定义组件库 components
+toc: content
 ---
 
 ## 表格单元格组件库 components

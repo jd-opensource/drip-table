@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 插槽配置项 SlotSchema
+toc: content
 ---
 
 ## DripTableSlotSchema

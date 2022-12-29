@@ -1,6 +1,7 @@
 ---
 order: 3
 title: 表头自定义配置
+toc: content
 ---
 
 ## 表头自定义配置

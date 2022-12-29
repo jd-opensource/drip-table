@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 数字组件 Input Number
+toc: content
 ---
 
 ## 数字组件 input-number

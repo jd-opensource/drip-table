@@ -1,6 +1,7 @@
 ---
 order: 10
 title: 总条数 total
+toc: content
 ---
 
 ## 总条数 total

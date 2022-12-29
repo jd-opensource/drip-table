@@ -1,6 +1,7 @@
 ---
 order: 4
 title: 标签组件 Tag
+toc: content
 ---
 
 ## 标签组件 tag

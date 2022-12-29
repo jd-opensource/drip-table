@@ -1,6 +1,7 @@
 ---
 order: 11
 title: 当前页码 currentPage
+toc: content
 ---
 
 ## 当前页码 currentPage

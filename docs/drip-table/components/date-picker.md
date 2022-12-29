@@ -1,6 +1,7 @@
 ---
 order: 8
 title: 日期组件 Date Picker
+toc: content
 ---
 
 ## 日期组件 dataPicker

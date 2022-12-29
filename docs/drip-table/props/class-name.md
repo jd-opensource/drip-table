@@ -1,6 +1,7 @@
 ---
 order: 1
 title: 样式表类名 className
+toc: content
 ---
 
 ## 样式表类名 className

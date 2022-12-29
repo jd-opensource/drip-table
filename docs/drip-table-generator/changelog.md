@@ -1,6 +1,7 @@
 ---
 order: 8
 title: 更新日志
+toc: content
 ---
 
 ## 更新日志

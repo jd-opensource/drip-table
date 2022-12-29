@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 快速开始 Quick Start
+toc: content
 ---
 
 ## 快速开始

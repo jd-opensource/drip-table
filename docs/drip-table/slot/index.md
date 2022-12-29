@@ -1,6 +1,7 @@
 ---
 order: 7
 title: 插槽系统 Slot
+toc: content
 ---
 
 ## 通用插槽 Slot

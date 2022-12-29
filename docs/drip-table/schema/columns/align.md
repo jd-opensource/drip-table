@@ -1,6 +1,7 @@
 ---
 order: 11
 title: 水平对齐 align
+toc: content
 ---
 
 ## 水平对齐 columns.align

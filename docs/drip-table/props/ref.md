@@ -1,6 +1,7 @@
 ---
 order: 3
 title: 引用实例 ref
+toc: content
 ---
 
 ## 引用实例 ref

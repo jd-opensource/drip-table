@@ -1,6 +1,7 @@
 ---
 order: 1
 title: 插槽样式 style
+toc: content
 ---
 
 ## 插槽样式 slot.style

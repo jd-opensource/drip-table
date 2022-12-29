@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 插槽配置 elements
+toc: content
 ---
 
 ## 插槽配置 slot.elements

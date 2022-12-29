@@ -1,6 +1,7 @@
 ---
 order: 3
 title: customAttributeComponents
+toc: content
 ---
 
 ## customAttributeComponents

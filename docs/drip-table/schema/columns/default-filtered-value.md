@@ -1,6 +1,7 @@
 ---
 order: 20
 title: 过滤器默认值 defaultFilteredValue
+toc: content
 ---
 
 ## 过滤器默认值 columns.defaultFilteredValue

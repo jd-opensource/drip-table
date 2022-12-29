@@ -1,6 +1,7 @@
 ---
 order: 10
 title: showToolLayout
+toc: content
 ---
 
 ## showToolLayout

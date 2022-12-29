@@ -1,6 +1,7 @@
 ---
 order: 3
 title: 列索引 dataIndex
+toc: content
 ---
 
 ## 列索引 columns.dataIndex

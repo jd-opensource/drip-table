@@ -1,6 +1,7 @@
 ---
 order: 11
 title: 分页 pagination
+toc: content
 ---
 
 ## 分页配置 pagination

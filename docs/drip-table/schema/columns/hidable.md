@@ -1,6 +1,7 @@
 ---
 order: 18
 title: 列可隐藏 hidable
+toc: content
 ---
 
 ## 列可隐藏 columns.hidable

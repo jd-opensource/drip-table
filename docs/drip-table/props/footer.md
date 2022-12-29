@@ -1,6 +1,7 @@
 ---
 order: 21
 title: 底部渲染函数 footer
+toc: content
 ---
 
 ## 底部渲染函数 footer

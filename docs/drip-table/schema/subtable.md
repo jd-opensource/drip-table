@@ -1,6 +1,7 @@
 ---
 order: 27
 title: 子表 subtable
+toc: content
 ---
 
 ## 子表设置项 subtable

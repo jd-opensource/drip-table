@@ -1,6 +1,7 @@
 ---
 order: 12
 title: 垂直对齐 verticalAlign
+toc: content
 ---
 
 ## 垂直对齐 columns.verticalAlign

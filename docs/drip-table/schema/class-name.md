@@ -1,6 +1,7 @@
 ---
 order: 2
 title: 类名 className
+toc: content
 ---
 
 ## 自定义类名 className

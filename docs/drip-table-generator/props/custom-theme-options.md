@@ -1,6 +1,7 @@
 ---
 order: 4
 title: customThemeOptions
+toc: content
 ---
 
 # 自定义主题配置

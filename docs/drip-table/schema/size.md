@@ -1,6 +1,7 @@
 ---
 order: 12
 title: 大小 size
+toc: content
 ---
 
 ## 表格大小 size

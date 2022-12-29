@@ -1,6 +1,7 @@
 ---
 order: 15
 title: 列隐藏 hidden
+toc: content
 ---
 
 ## 列隐藏 columns.hidden

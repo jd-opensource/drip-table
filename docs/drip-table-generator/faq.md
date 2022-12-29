@@ -1,6 +1,7 @@
 ---
 order: 6
 title: 常见问题
+toc: content
 ---
 
 ## 常见问题

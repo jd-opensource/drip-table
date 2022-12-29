@@ -1,6 +1,7 @@
 ---
 order: 1
 title: customComponentPanel
+toc: content
 ---
 
 ## customComponentPanel
