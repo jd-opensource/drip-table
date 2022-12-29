@@ -104,14 +104,14 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
         return (
           <div
             key={props.index}
-            className={classNames('jfe-drip-table-generator-workstation-editable-table-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
+            className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
             style={{
               ...props.style,
               width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
             }}
           >
             <RichText
-              className="jfe-drip-table-generator-workstation-editable-table-editable-table-column-title"
+              className="jfe-drip-table-generator-workstation-editable-table-column-title"
               style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
               html={columnTitle}
             />

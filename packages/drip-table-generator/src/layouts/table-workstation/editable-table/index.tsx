@@ -273,7 +273,7 @@ const EditableTable = <
               </div>
             ) }
             <div
-              className={classNames('jfe-drip-table-generator-workstation-editable-table-editable-table', {
+              className={classNames('jfe-drip-table-generator-workstation-editable-table', {
                 'jfe-drip-table-generator-workstation-editable-table-bordered': globalConfigs.bordered,
                 'jfe-drip-table-generator-workstation-editable-table-sticky': globalConfigs.sticky || globalConfigs.scroll?.y,
               })}
