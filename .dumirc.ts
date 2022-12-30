@@ -353,11 +353,6 @@ export default defineConfig({
         children: [],
       },
       {
-        title: '讨论组',
-        link: 'https://github.com/JDFED/drip-table/discussions',
-        children: [],
-      },
-      {
         title: '',
         link: 'https://github.com/JDFED/drip-table',
         children: [],
