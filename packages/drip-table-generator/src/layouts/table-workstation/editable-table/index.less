@@ -20,11 +20,11 @@
     width: fit-content;
   }
 
-  &.bordered {
+  &.@{prefixCls}-bordered {
     border: 1px solid var(--drip-table-primary-color);
   }
 
-  &.sticky {
+  &.@{prefixCls}-sticky {
     overflow-y: auto;
 
     .@{prefixCls}-column {
@@ -50,7 +50,7 @@
       }
     }
 
-    &.checked {
+    &.@{prefixCls}-checked {
       border-color: var(--drip-table-primary-color);
     }
   }
