@@ -13,7 +13,7 @@ export default {
   attrSchema: [
     {
       name: 'options.mode',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:description': {
@@ -32,7 +32,7 @@ export default {
     },
     {
       name: 'options.format',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '日期格式',
       'ui:type': 'input',
       default: 'YYYY-MM-DD',
@@ -46,7 +46,7 @@ export default {
     ),
     {
       name: 'options.dataProcess',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
       'ui:props': {
@@ -62,7 +62,7 @@ export default {
     },
     {
       name: 'options.parts',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '日期范围配置',
       'ui:type': 'array-list',
       'ui:props': {

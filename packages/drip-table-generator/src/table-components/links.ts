@@ -39,7 +39,7 @@ export default {
     ...basicColumnAttrComponents('链接'),
     {
       name: 'options.mode',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -53,7 +53,7 @@ export default {
     },
     {
       name: 'options.tooltip',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '设置提示内容',
       'ui:description': {
         title: '(支持{{rec}}模版写法)',
@@ -66,7 +66,7 @@ export default {
     },
     {
       name: 'options.lineHeight',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '行高',
       'ui:description': {
         title: '默认单位为“px”，支持手动指定单位后缀。',
@@ -79,7 +79,7 @@ export default {
     },
     {
       name: 'options.label',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '链接文案',
       'ui:type': 'text',
       'ui:props': { style: { width: '100%' } },
@@ -88,7 +88,7 @@ export default {
     },
     {
       name: 'options.href',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '链接地址',
       'ui:description': {
         title: '可以直接填写链接地址或者带字符串模板的地址，参数为rec，例如: http://api.jd.com/api_name?param={{rec.id}}',
@@ -102,7 +102,7 @@ export default {
     },
     {
       name: 'options.target',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '链接打开方式',
       'ui:type': 'text',
       'ui:props': { style: { width: '100%' } },
@@ -111,7 +111,7 @@ export default {
     },
     {
       name: 'options.event',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '事件名称',
       'ui:description': {
         title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
@@ -125,7 +125,7 @@ export default {
     },
     {
       name: 'options.dataProcess',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
       'ui:props': {
@@ -141,7 +141,7 @@ export default {
     },
     {
       name: 'options.visibleFunc',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '显隐组件条件',
       'ui:type': 'text',
       'ui:props': {
@@ -159,7 +159,7 @@ export default {
     },
     {
       name: 'options.disabled',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '禁用组件条件',
       'ui:type': 'text',
       'ui:props': { style: { width: '100%' } },
@@ -172,7 +172,7 @@ export default {
     },
     {
       name: 'options.operates',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '多链接配置',
       'ui:type': 'array-list',
       'ui:layout': { labelCol: 12, wrapperCol: 24 },
@@ -219,7 +219,7 @@ export default {
           },
           {
             name: 'disabled',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '禁用条件',
             'ui:type': 'text',
             'ui:description': {
@@ -230,7 +230,7 @@ export default {
           },
           {
             name: 'visibleFunc',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '显隐组件条件',
             'ui:type': 'text',
             'ui:props': {
@@ -250,7 +250,7 @@ export default {
     },
     {
       name: 'options.maxTiledCount',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '最大平铺展示数',
       'ui:type': 'number',
       'ui:props': {
@@ -261,21 +261,21 @@ export default {
     },
     {
       name: 'options.dropdownText',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '下拉展示框文案',
       'ui:type': 'text',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {
       name: 'options.textColor',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '下拉文案颜色',
       'ui:type': 'color-picker',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {
       name: 'options.suffixIcon',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '后缀图标',
       'ui:description': {
         title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
@@ -290,7 +290,7 @@ export default {
     },
     {
       name: 'options.trigger',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '下拉触发机制',
       'ui:type': 'radio',
       'ui:props': {
@@ -300,7 +300,7 @@ export default {
     },
     {
       name: 'options.placement',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '菜单弹出位置',
       'ui:type': 'select',
       'ui:props': {

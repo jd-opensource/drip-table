@@ -15,7 +15,7 @@ export default {
     ...dataIndexColumnAttrComponents('status'),
     {
       name: 'options.dataProcess',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
       'ui:props': {
@@ -31,7 +31,7 @@ export default {
     },
     {
       name: 'options.prefix',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '前缀文案',
       'ui:type': 'input',
       type: 'string',
@@ -39,7 +39,7 @@ export default {
     },
     {
       name: 'options.suffix',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '后缀文案',
       'ui:type': 'input',
       type: 'string',
@@ -47,7 +47,7 @@ export default {
     },
     {
       name: 'options.color',
-      group: '样式配置',
+      group: '样式',
       required: false,
       'ui:title': '字体颜色',
       'ui:type': 'color-picker',
@@ -56,7 +56,7 @@ export default {
     },
     {
       name: 'options.borderColor',
-      group: '样式配置',
+      group: '样式',
       required: false,
       'ui:title': '边框颜色',
       'ui:type': 'color-picker',
@@ -65,7 +65,7 @@ export default {
     },
     {
       name: 'options.backgroundColor',
-      group: '样式配置',
+      group: '样式',
       required: false,
       'ui:title': '背景颜色',
       'ui:type': 'color-picker',
@@ -74,7 +74,7 @@ export default {
     },
     {
       name: 'options.radius',
-      group: '样式配置',
+      group: '样式',
       required: false,
       'ui:title': '圆角半径',
       'ui:type': 'number',
@@ -86,7 +86,7 @@ export default {
     },
     {
       name: 'options.tagOptions',
-      group: '组件属性',
+      group: '属性',
       required: false,
       'ui:title': '枚举值',
       'ui:type': 'array-list',

@@ -269,6 +269,8 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       return (
         <Tabs
           tabPosition={this.props.tabPosition}
+          type="card"
+          centered
           items={groups.map((groupName, groupIndex) => ({
             label: groupName,
             key: String(groupIndex),

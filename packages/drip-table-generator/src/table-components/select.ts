@@ -15,7 +15,7 @@ export default {
     ...dataIndexColumnAttrComponents('status'),
     {
       name: 'options.allowClear',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许清空值',
       'ui:type': 'switch',
       'ui:props': {},
@@ -23,7 +23,7 @@ export default {
     },
     {
       name: 'options.bordered',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},
@@ -32,7 +32,7 @@ export default {
     },
     {
       name: 'options.showSearch',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许搜索',
       'ui:type': 'switch',
       'ui:props': {},
@@ -40,7 +40,7 @@ export default {
     },
     {
       name: 'options.showArrow',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '展示下拉箭头',
       'ui:type': 'switch',
       'ui:props': {},
@@ -48,7 +48,7 @@ export default {
     },
     {
       name: 'options.bindValue',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '值回显强制与数据绑定',
       'ui:layout': { labelCol: 12, wrapperCol: 8 },
       'ui:type': 'switch',
@@ -58,7 +58,7 @@ export default {
     },
     {
       name: 'options.mode',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '选中模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -72,7 +72,7 @@ export default {
     },
     {
       name: 'options.placement',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '弹出位置',
       'ui:type': 'radio',
       'ui:props': {
@@ -91,14 +91,14 @@ export default {
     },
     {
       name: 'options.placeholder',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '暗纹提示文案',
       'ui:type': 'text',
       default: '',
     },
     {
       name: 'options.disabled',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '禁用组件条件',
       'ui:type': 'text',
       'ui:description': {
@@ -109,7 +109,7 @@ export default {
     },
     {
       name: 'options.event',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '事件名称',
       'ui:description': {
         title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
@@ -121,7 +121,7 @@ export default {
     },
     {
       name: 'options.options',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '自定义下拉菜单',
       'ui:layout': { labelCol: 12, wrapperCol: 24 },
       'ui:type': 'array-list',
@@ -144,7 +144,7 @@ export default {
           },
           {
             name: 'disabled',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '禁用条件',
             'ui:type': 'text',
             'ui:description': {

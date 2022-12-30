@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents('弹出网页'),
     {
       name: 'options.link',
-      group: '组件属性',
+      group: '属性',
       'ui:title': 'iframe链接',
       'ui:type': 'input',
       'ui:props': {
@@ -27,7 +27,7 @@ export default {
     },
     {
       name: 'options.title',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '弹窗标题',
       'ui:type': 'input',
       'ui:props': {
@@ -37,7 +37,7 @@ export default {
     },
     {
       name: 'options.auxiliaryDesc',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '辅助文字',
       'ui:type': 'input',
       'ui:props': {
@@ -47,7 +47,7 @@ export default {
     },
     {
       name: 'options.embeddedSafetyPadding',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '嵌入安全边距',
       'ui:type': 'input',
       'ui:props': {
@@ -57,7 +57,7 @@ export default {
     },
     {
       name: 'options.width',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '弹窗宽度',
       'ui:type': 'input',
       'ui:props': {
@@ -67,7 +67,7 @@ export default {
     },
     {
       name: 'options.maxWidth',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '弹窗最大宽度',
       'ui:type': 'input',
       'ui:props': {
@@ -82,7 +82,7 @@ export default {
     },
     {
       name: 'options.height',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '弹窗高度',
       'ui:type': 'input',
       'ui:props': {
@@ -92,7 +92,7 @@ export default {
     },
     {
       name: 'options.maxHeight',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '弹窗最大高度',
       'ui:type': 'input',
       'ui:props': {
@@ -107,7 +107,7 @@ export default {
     },
     {
       name: 'options.label',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '按钮文案',
       'ui:type': 'input',
       'ui:props': {
@@ -117,7 +117,7 @@ export default {
     },
     {
       name: 'options.buttonType',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '按钮类型',
       'ui:type': 'select',
       'ui:props': {
@@ -134,7 +134,7 @@ export default {
     },
     {
       name: 'options.size',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '按钮尺寸',
       'ui:type': 'select',
       'ui:props': {
@@ -149,7 +149,7 @@ export default {
     },
     {
       name: 'options.shape',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '按钮形状',
       'ui:type': 'select',
       'ui:props': {
