@@ -59,7 +59,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      sticky={{ offsetHeader: 64 }}
+      sticky={{ offsetHeader: 76 }}
     />
   );
 };

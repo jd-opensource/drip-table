@@ -66,7 +66,7 @@ const Demo = () => {
       schema={schema}
       dataSource={dataSource}
       sticky={{
-        offsetHeader: 64,
+        offsetHeader: 76,
         offsetScroll: 0,
         getContainer: () => document.documentElement,
       }}
