@@ -45,7 +45,7 @@
 }
 
 /** Github 按钮 **/
-.dumi-default-navbar > :nth-child(5) {
+.dumi-default-navbar > :nth-child(4) {
   position: relative;
   display: inline-block;
   color: #454d64;
