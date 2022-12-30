@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents('自定义'),
     {
       name: 'options.url',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '代码地址',
       'ui:type': 'input',
       'ui:props': {

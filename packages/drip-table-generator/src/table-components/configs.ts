@@ -225,7 +225,7 @@ export const StyleAttrConfigs = (prefix: string, group: string, extraOptions?: {
 export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPropertySchema[] => [
   {
     name: 'title',
-    group: '表头配置',
+    group: '属性',
     'ui:title': '表头名称',
     'ui:type': 'text',
     'ui:props': {
@@ -238,7 +238,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
   {
     name: 'description',
-    group: '表头配置',
+    group: '属性',
     'ui:title': '表头提示',
     'ui:type': 'text',
     'ui:props': {
@@ -248,16 +248,16 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
     'ui:layout': { labelCol: 6, wrapperCol: 18 },
     type: 'string',
   },
-  ...StyleAttrConfigs('titleStyle', '表头配置', {
+  ...StyleAttrConfigs('titleStyle', '属性', {
     backgroundColor: '#fafafa',
     filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
   }),
-  ...StyleAttrConfigs('style', '列样式', {
+  ...StyleAttrConfigs('style', '样式', {
     filterStyles: ['backgroundColor', 'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'margin', 'padding', 'boxShadow'],
   }),
   {
     name: 'width',
-    group: '样式配置',
+    group: '样式',
     'ui:title': '表格列宽',
     'ui:type': 'text',
     'ui:description': {
@@ -269,7 +269,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
   {
     name: 'align',
-    group: '样式配置',
+    group: '样式',
     'ui:title': '水平对齐方式',
     'ui:type': 'radio',
     'ui:props': {
@@ -287,7 +287,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
   {
     name: 'verticalAlign',
-    group: '样式配置',
+    group: '样式',
     'ui:title': '垂直对齐方式',
     'ui:type': 'radio',
     'ui:props': {
@@ -306,7 +306,7 @@ export const basicColumnAttrComponents = (defaultValue: string): DTGComponentPro
   },
   {
     name: 'hidable',
-    group: '组件属性',
+    group: '属性',
     'ui:title': '该列是否支持隐藏',
     'ui:type': 'switch',
     'ui:props': {
@@ -326,7 +326,7 @@ export const dataIndexColumnAttrComponents = (
 ): DTGComponentPropertySchema[] => [
   {
     name: 'dataIndexMode',
-    group: '组件属性',
+    group: '属性',
     required: true,
     'ui:title': '字段读取模式',
     'ui:type': 'radio',
@@ -342,7 +342,7 @@ export const dataIndexColumnAttrComponents = (
   },
   {
     name: 'dataIndex',
-    group: '组件属性',
+    group: '属性',
     required: true,
     'ui:title': '字段选择',
     'ui:type': 'auto-complete',
@@ -355,7 +355,7 @@ export const dataIndexColumnAttrComponents = (
   },
   {
     name: 'dataIndex',
-    group: '组件属性',
+    group: '属性',
     required: true,
     'ui:title': '字段选择',
     'ui:type': 'select',

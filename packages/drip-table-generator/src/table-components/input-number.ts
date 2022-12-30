@@ -20,7 +20,7 @@ export default {
     ),
     {
       name: 'options.isEdit',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '编辑数字',
       'ui:type': 'switch',
       'ui:props': {},
@@ -29,7 +29,7 @@ export default {
     },
     {
       name: 'options.bordered',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},
@@ -38,7 +38,7 @@ export default {
     },
     {
       name: 'options.disabled',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '是否禁用',
       'ui:type': 'switch',
       'ui:props': {},
@@ -46,27 +46,27 @@ export default {
     },
     {
       name: 'options.step',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '步数',
       'ui:type': 'number',
       default: 1,
     },
     {
       name: 'options.min',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '最小值',
       'ui:type': 'number',
       default: 0,
     },
     {
       name: 'options.max',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '最大值',
       'ui:type': 'number',
     },
     {
       name: 'options.size',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '输入框大小',
       'ui:type': 'radio',
       'ui:props': {

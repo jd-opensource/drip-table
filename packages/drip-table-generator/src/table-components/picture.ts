@@ -15,7 +15,7 @@ export default {
     ...dataIndexColumnAttrComponents('pictureUrl'),
     {
       name: 'options.dataProcess',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '数据处理',
       'ui:type': 'text',
       'ui:props': {
@@ -31,7 +31,7 @@ export default {
     },
     {
       name: 'options.imageWidth',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '图片宽度',
       'ui:type': 'number',
       'ui:minium': 0.01,
@@ -40,7 +40,7 @@ export default {
     },
     {
       name: 'options.imageHeight',
-      group: '样式配置',
+      group: '样式',
       'ui:title': '图片高度',
       'ui:type': 'number',
       'ui:minium': 0.01,
@@ -49,7 +49,7 @@ export default {
     },
     {
       name: 'options.preview',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许预览图片',
       'ui:type': 'switch',
       type: 'boolean',
@@ -57,7 +57,7 @@ export default {
     },
     {
       name: 'options.popover',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '允许展示大图',
       'ui:type': 'switch',
       type: 'boolean',
@@ -65,7 +65,7 @@ export default {
     },
     {
       name: 'options.trigger',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '气泡预览触发方式',
       'ui:type': 'select',
       'ui:props': {

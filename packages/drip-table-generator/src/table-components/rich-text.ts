@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents('富文本'),
     {
       name: 'options.tooltip',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '设置提示内容',
       'ui:description': {
         title: '(支持{{rec}}模版写法)',

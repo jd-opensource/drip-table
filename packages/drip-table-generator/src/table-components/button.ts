@@ -25,7 +25,7 @@ export default {
     ...basicColumnAttrComponents('按钮'),
     {
       name: 'options.mode',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -39,7 +39,7 @@ export default {
     },
     {
       name: 'options.label',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮文案',
       'ui:type': 'text',
       default: '按钮',
@@ -47,7 +47,7 @@ export default {
     },
     {
       name: 'options.icon',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮图标',
       'ui:description': {
         title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
@@ -63,7 +63,7 @@ export default {
     },
     {
       name: 'options.buttonType',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮类型',
       'ui:type': 'radio',
       'ui:props': {
@@ -80,7 +80,7 @@ export default {
     },
     {
       name: 'options.size',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮尺寸',
       'ui:type': 'radio',
       'ui:props': {
@@ -95,7 +95,7 @@ export default {
     },
     {
       name: 'options.shape',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮形状',
       'ui:type': 'radio',
       'ui:props': {
@@ -110,7 +110,7 @@ export default {
     },
     {
       name: 'options.ghost',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '背景透明',
       'ui:type': 'switch',
       'ui:props': {
@@ -122,7 +122,7 @@ export default {
     },
     {
       name: 'options.danger',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '危险按钮',
       'ui:type': 'switch',
       'ui:props': {
@@ -134,7 +134,7 @@ export default {
     },
     {
       name: 'options.disableFunc',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '禁用判断',
       'ui:type': 'text',
       'ui:props': {
@@ -152,7 +152,7 @@ export default {
     },
     {
       name: 'options.visibleFunc',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '显隐组件条件',
       'ui:type': 'text',
       'ui:props': {
@@ -170,7 +170,7 @@ export default {
     },
     {
       name: 'options.event',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '事件名称',
       'ui:description': {
         title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
@@ -183,14 +183,14 @@ export default {
     },
     {
       name: 'options.margin',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '按钮间隔',
       'ui:type': 'number',
       visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
     },
     {
       name: 'options.buttons',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '多按钮配置',
       'ui:type': 'array-list',
       'ui:layout': { labelCol: 8, wrapperCol: 24 },
@@ -249,7 +249,7 @@ export default {
           },
           {
             name: 'shape',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '按钮形状',
             'ui:type': 'radio',
             'ui:props': {
@@ -263,7 +263,7 @@ export default {
           },
           {
             name: 'ghost',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '背景透明',
             'ui:type': 'switch',
             'ui:props': {
@@ -274,7 +274,7 @@ export default {
           },
           {
             name: 'danger',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '危险按钮',
             'ui:type': 'switch',
             'ui:props': {
@@ -285,7 +285,7 @@ export default {
           },
           {
             name: 'disableFunc',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '禁用判断',
             'ui:type': 'text',
             'ui:props': {
@@ -302,7 +302,7 @@ export default {
           },
           {
             name: 'visibleFunc',
-            group: '组件属性',
+            group: '属性',
             'ui:title': '显隐组件条件',
             'ui:type': 'text',
             'ui:props': {

@@ -14,7 +14,7 @@ export default {
     ...basicColumnAttrComponents('组合组件'),
     {
       name: 'options.layout',
-      group: '组件属性',
+      group: '属性',
       required: true,
       'ui:title': '每行列数',
       'ui:type': 'select',
@@ -49,7 +49,7 @@ export default {
     },
     {
       name: 'options.gutter',
-      group: '组件属性',
+      group: '属性',
       required: true,
       'ui:title': '栅格间隔',
       'ui:type': 'select',
@@ -80,7 +80,7 @@ export default {
     },
     {
       name: 'options.horizontalAlign',
-      group: '组件属性',
+      group: '属性',
       'ui:title': '水平排列方式',
       'ui:type': 'select',
       'ui:props': {
@@ -97,7 +97,7 @@ export default {
     },
     {
       name: 'options.wrap',
-      group: '组件属性',
+      group: '属性',
       required: true,
       'ui:title': '允许自动换行',
       'ui:type': 'switch',

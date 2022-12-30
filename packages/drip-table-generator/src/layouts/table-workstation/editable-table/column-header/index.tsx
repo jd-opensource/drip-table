@@ -107,7 +107,7 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
             className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
             style={{
               ...props.style,
-              width: getWidth(props.column.width, 'px', props.sticky ? 0 : -4),
+              width: getWidth(props.column.width, 'px', props.sticky ? 0 : -2),
             }}
           >
             <RichText
