@@ -102,7 +102,6 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      componentDidMount={(tableInfo) => { message.info(`表 ${tableInfo.schema.id} 初始化完成！`) }}
     />
   );
 };
