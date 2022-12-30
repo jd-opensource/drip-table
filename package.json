@@ -26,7 +26,8 @@
     "lint:drip-table": "lerna run lint --stream --scope=drip-table || exit 1",
     "lint:drip-table-driver-antd": "lerna run lint --stream --scope=drip-table-driver-antd || exit 1",
     "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1",
-    "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty || exit 1"
+    "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty || exit 1",
+    "commit": "cz"
   },
   "devDependencies": {
     "@ant-design/icons": ">=4.3.0",
@@ -54,6 +55,7 @@
     "babel-plugin-import": "^1.13.5",
     "classnames": "^2.3.2",
     "concurrently": "^7.6.0",
+    "cz-conventional-changelog": "^3.3.0",
     "drip-table": "link:packages/drip-table",
     "drip-table-driver-antd": "link:packages/drip-table-driver-antd",
     "drip-table-generator": "link:packages/drip-table-generator",
