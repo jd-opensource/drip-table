@@ -64,7 +64,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      componentDidMount={() => { message.info('Lifecycle: componentDidUpdate'); }}
+      componentDidUpdate={() => { message.info('Lifecycle: componentDidUpdate'); }}
     />
   );
 };
