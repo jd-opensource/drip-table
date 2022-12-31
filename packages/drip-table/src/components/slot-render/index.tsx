@@ -16,12 +16,10 @@ import {
   type DripTableExtraOptions,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
-  type DripTableTableInformation,
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
 import RichText from '@/components/rich-text';
-import { type IDripTableContext } from '@/hooks';
-import { type DripTableProps } from '@/index';
+import { type IDripTableContext, useTableContext } from '@/hooks';
 
 interface SlotElementBaseSchema {
   /**
@@ -221,22 +219,6 @@ interface SlotRenderProps<
    */
   schema: DripTableSlotSchema;
   /**
-   * 表格唯一标识符
-   */
-  tableUUID: string;
-  /**
-   * 表格属性
-   */
-  tableProps: DripTableProps<RecordType, ExtraOptions>;
-  /**
-   * 表格状态
-   */
-  tableState: IDripTableContext['state'];
-  /**
-   * 设置表格状态
-   */
-  setTableState: IDripTableContext['setState'];
-  /**
    * 当前插槽位置列 Schema 唯一标识符
    */
   columnKey?: string;
@@ -254,7 +236,7 @@ const SlotRender = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: SlotRenderProps<RecordType, ExtraOptions>) => {
-  const { tableUUID, tableProps, tableState, setTableState } = props;
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;
   const Col = tableProps.driver.components.Col;
@@ -275,13 +257,6 @@ const SlotRender = <
       ?.map(s => (s.type === 'search' ? s.searchKeyDefaultValue : ''))
       .find(Boolean),
   );
-
-  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
-    uuid: tableUUID,
-    schema: tableProps.schema,
-    dataSource: tableProps.dataSource,
-    parent: tableProps.__PARENT_INFO__,
-  }), [tableProps.schema, tableProps.dataSource, tableProps.__PARENT_INFO__]);
 
   const renderColumnContent = (config: DripTableSlotElementSchema) => {
     if (config.type === 'spacer') {

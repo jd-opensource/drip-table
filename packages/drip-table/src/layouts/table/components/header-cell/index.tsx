@@ -15,37 +15,32 @@ import React from 'react';
 
 import Checkbox from '@/components/checkbox';
 import SlotRender from '@/components/slot-render';
-import { type IDripTableContext } from '@/hooks';
-import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableProps, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
+import { type IDripTableContext, useTableContext } from '@/hooks';
+import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
 
 interface HeaderCellAdditionalProps<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  tableUUID: string;
-  tableProps: DripTableProps<RecordType, ExtraOptions>;
-  tableState: IDripTableContext['state'];
-  setTableState: IDripTableContext['setState'];
   column?: TableColumnType<unknown>;
   columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
-  filter?: IDripTableContext['state']['filters'][string];
-  onFilterChange?: (filter: IDripTableContext['state']['filters'][string]) => void;
 }
 
 export interface HeaderCellProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   onRef?: (el: HTMLDivElement | null) => void;
   children: React.ReactNode;
-  additionalProps?: HeaderCellAdditionalProps<RecordType, ExtraOptions>;
+  additionalProps?: HeaderCellAdditionalProps<ExtraOptions>;
 }
 
 const HeaderCell = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: HeaderCellProps<RecordType, ExtraOptions>) => {
-  const [filter, setFilter] = React.useState<NonNullable<IDripTableContext['state']['filters'][string]>>([]);
+>(props: HeaderCellProps<ExtraOptions>) => {
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
+  const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
+  const [filterDisplay, setFilterDisplay] = React.useState<NonNullable<IDripTableContext['state']['filters'][string]>>((typeof dataIndex === 'string' && tableState.filters[dataIndex]) || []);
   const children = <React.Fragment>{ props.children }</React.Fragment>;
   const additionalProps = props.additionalProps;
   if (!additionalProps) {
@@ -53,7 +48,7 @@ const HeaderCell = <
   }
   const header = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.header;
   const footer = typeof additionalProps.columnSchema.title === 'string' ? void 0 : additionalProps.columnSchema.title?.footer;
-  const { columnSchema, onFilterChange } = additionalProps;
+  const { columnSchema } = additionalProps;
   const itemsCount = [header, props.children, footer].filter(Boolean).length;
   let justifyContent: 'center' | 'flex-end' | 'flex-start' | 'space-between' = 'flex-start';
   if (columnSchema.align === 'center') {
@@ -70,10 +65,6 @@ const HeaderCell = <
           ? (
             <SlotRender
               schema={header}
-              tableUUID={additionalProps.tableUUID}
-              tableProps={additionalProps.tableProps}
-              tableState={additionalProps.tableState}
-              setTableState={additionalProps.setTableState}
               columnKey={columnSchema.key}
             />
           )
@@ -93,17 +84,13 @@ const HeaderCell = <
           ? (
             <SlotRender
               schema={footer}
-              tableUUID={additionalProps.tableUUID}
-              tableProps={additionalProps.tableProps}
-              tableState={additionalProps.tableState}
-              setTableState={additionalProps.setTableState}
               columnKey={columnSchema.key}
             />
           )
           : null
       }
       {
-        onFilterChange && columnSchema.filters?.length
+        columnSchema.filters?.length
           ? (
             <RcTooltip
               prefixCls="jfe-drip-table-tooltip"
@@ -115,17 +102,17 @@ const HeaderCell = <
                   <ul className="jfe-drip-table-column-header-cell-toolbox-filters-list">
                     {
                       columnSchema.filters.map((f, i) => {
-                        const checked = filter?.includes(f.value);
+                        const checked = filterDisplay?.includes(f.value);
                         return (
                           <li
                             key={i}
                             className="jfe-drip-table-column-header-cell-toolbox-filters-item"
                             onClick={() => {
-                              const value = filter.filter(v => v !== f.value);
+                              const value = filterDisplay.filter(v => v !== f.value);
                               if (!checked) {
                                 value.push(f.value);
                               }
-                              setFilter(value);
+                              setFilterDisplay(value);
                             }}
                           >
                             <span className="jfe-drip-table-column-header-cell-toolbox-filters-item-content">
@@ -142,9 +129,9 @@ const HeaderCell = <
                       type="button"
                       // ?className="ant-btn ant-btn-link ant-btn-sm"
                       className="jfe-drip-table-column-header-cell-toolbox-filters-btn-reset"
-                      disabled={isEqual(additionalProps.filter || [], filter)}
+                      disabled={isEqual(filter || [], filterDisplay)}
                       onClick={() => {
-                        setFilter(additionalProps.filter || []);
+                        setFilterDisplay(filter || []);
                       }}
                     >
                       <span>重置</span>
@@ -153,7 +140,15 @@ const HeaderCell = <
                       type="button"
                       // ?className="ant-btn ant-btn-primary ant-btn-sm"
                       className="jfe-drip-table-column-header-cell-toolbox-filters-btn-sure"
-                      onClick={() => { onFilterChange(filter); }}
+                      onClick={() => {
+                        const filters = Object.fromEntries(Object.entries(tableState.filters).filter(([k]) => k !== dataIndex));
+                        if (typeof dataIndex === 'string' && filterDisplay?.length) {
+                          filters[dataIndex] = filterDisplay;
+                        }
+                        setTableState({ filters });
+                        tableProps.onFilterChange?.(filters, tableInfo);
+                        tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
+                      }}
                     >
                       <span>确 定</span>
                     </button>
@@ -162,7 +157,7 @@ const HeaderCell = <
             )}
               onVisibleChange={(visible) => {
                 if (visible) {
-                  setFilter(additionalProps.filter || []);
+                  setFilterDisplay(filter || []);
                 }
               }}
             >

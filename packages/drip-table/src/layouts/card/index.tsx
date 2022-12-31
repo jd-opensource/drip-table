@@ -11,6 +11,7 @@ import './index.less';
 import React, { useMemo } from 'react';
 
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from '@/types';
+import { useTableContext } from '@/hooks';
 import { TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
 import { TableLayoutComponentProps } from '../types';
@@ -18,8 +19,8 @@ import { TableLayoutComponentProps } from '../types';
 const CardLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
-  const { tableProps, tableInfo, tableState } = props;
+>(props: TableLayoutComponentProps): JSX.Element => {
+  const { props: tableProps, info: tableInfo, state: tableState } = useTableContext<RecordType, ExtraOptions>();
 
   const extraProps = {
     driver: tableProps.driver,
