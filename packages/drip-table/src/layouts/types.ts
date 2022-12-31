@@ -13,7 +13,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type DripTableTableInformation,
 } from '@/types';
-import { type IDripTableContext } from '@/context';
+import { type IDripTableContext } from '@/hooks';
 
 export interface TableLayoutComponentProps<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -22,8 +22,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   tableUUID: string;
   tableProps: DripTableProps<RecordType, ExtraOptions>;
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
-  tableState: IDripTableContext;
-  setTableState: IDripTableContext['setTableState'];
+  tableState: IDripTableContext['state'];
+  setTableState: IDripTableContext['setState'];
   header?: (() => React.ReactNode) | React.ReactNode;
   footer?: (() => React.ReactNode) | React.ReactNode;
 }

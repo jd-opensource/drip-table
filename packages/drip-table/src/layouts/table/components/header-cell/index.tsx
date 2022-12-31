@@ -15,7 +15,7 @@ import React from 'react';
 
 import Checkbox from '@/components/checkbox';
 import SlotRender from '@/components/slot-render';
-import { type IDripTableContext } from '@/context';
+import { type IDripTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableProps, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
 
 interface HeaderCellAdditionalProps<
@@ -24,12 +24,12 @@ interface HeaderCellAdditionalProps<
 > {
   tableUUID: string;
   tableProps: DripTableProps<RecordType, ExtraOptions>;
-  tableState: IDripTableContext;
-  setTableState: IDripTableContext['setTableState'];
+  tableState: IDripTableContext['state'];
+  setTableState: IDripTableContext['setState'];
   column?: TableColumnType<unknown>;
   columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
-  filter?: IDripTableContext['filters'][string];
-  onFilterChange?: (filter: IDripTableContext['filters'][string]) => void;
+  filter?: IDripTableContext['state']['filters'][string];
+  onFilterChange?: (filter: IDripTableContext['state']['filters'][string]) => void;
 }
 
 export interface HeaderCellProps<
@@ -45,7 +45,7 @@ const HeaderCell = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<RecordType, ExtraOptions>) => {
-  const [filter, setFilter] = React.useState<NonNullable<IDripTableContext['filters'][string]>>([]);
+  const [filter, setFilter] = React.useState<NonNullable<IDripTableContext['state']['filters'][string]>>([]);
   const children = <React.Fragment>{ props.children }</React.Fragment>;
   const additionalProps = props.additionalProps;
   if (!additionalProps) {
