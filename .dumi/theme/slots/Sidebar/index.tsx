@@ -20,8 +20,8 @@ const renderSidebarChildren = (children: SidebarItem[], pathname: string, level 
       children.map((c, i) => {
         const isActive = isSidebarActive(c, pathname);
         return (
-          <React.Fragment>
-            <li key={`${level}-${i}-body`}>
+          <React.Fragment key={i}>
+            <li>
               <NavLink style={{ paddingInlineStart: `${8 * level + 2}px`, color: isActive ? '#2a64ff' : '' }} to={c.link} title={c.title} end>
                 {c.title}
               </NavLink>
