@@ -415,7 +415,16 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
   const selected = selectedRowKeys.includes(recKey);
   const context = { props: { record: row.record, recordIndex: row.index } };
   const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
-  const styleText = stringifyCSS(Object.assign({ 'text-align': columnBaseSchema.align }, vcStyle, parseStyleSchema(columnBaseSchema.style)));
+  const styleText = stringifyCSS(Object.assign(
+    { 'text-align': columnBaseSchema.align },
+    Object.fromEntries(Object.entries(vcStyle).map(([k, v]) => {
+      if (typeof v === 'number' && (k === 'top' || k === 'right' || k === 'bottom' || k === 'left' || k === 'width' || k === 'height')) {
+        return [k, `${v}px`];
+      }
+      return [k, v];
+    })),
+    parseStyleSchema(columnBaseSchema.style),
+  ));
   return (
     <div
       className={classNames('jfe-drip-table-virtual-cell', {
