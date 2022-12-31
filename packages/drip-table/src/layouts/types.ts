@@ -6,24 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import {
-  type DripTableExtraOptions,
-  type DripTableProps,
-  type DripTableRecordTypeBase,
-  type DripTableRecordTypeWithSubtable,
-  type DripTableTableInformation,
-} from '@/types';
-import { type IDripTableContext } from '@/hooks';
-
-export interface TableLayoutComponentProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> {
-  tableUUID: string;
-  tableProps: DripTableProps<RecordType, ExtraOptions>;
-  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
-  tableState: IDripTableContext['state'];
-  setTableState: IDripTableContext['setState'];
+export interface TableLayoutComponentProps {
   header?: (() => React.ReactNode) | React.ReactNode;
   footer?: (() => React.ReactNode) | React.ReactNode;
 }

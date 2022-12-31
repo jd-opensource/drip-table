@@ -32,8 +32,17 @@ export interface IDripTableContext<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
+  /**
+   * 表格属性
+   */
   props: DripTableProps<RecordType, ExtraOptions>;
+  /**
+   * 表格基本信息
+   */
   info: DripTableTableInformation<RecordType, ExtraOptions>;
+  /**
+   * 表格状态
+   */
   state: {
     loading: boolean;
     api: CallableFunction | CallableFunction[] | null;
@@ -51,6 +60,9 @@ export interface IDripTableContext<
     selectedRowKeys: React.Key[];
     displayColumnKeys: React.Key[];
   };
+  /**
+   * 设置表格状态
+   */
   setState: (state: SetStateAction<IDripTableContext['state']>) => void;
 }
 

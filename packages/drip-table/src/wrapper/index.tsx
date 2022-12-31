@@ -163,11 +163,11 @@ const DripTableWrapper = React.forwardRef(<
     (): IDripTableContext<RecordType, ExtraOptions> => ({
       _CTX_SOURCE: 'CONTEXT',
       props,
-      state,
       info: tableInfo,
+      state,
       setState,
     }),
-    [state, setState],
+    [props, tableInfo, state, setState],
   );
 
   // 组件提供给外部的公共接口
@@ -178,7 +178,7 @@ const DripTableWrapper = React.forwardRef(<
         setState({ selectedRowKeys });
       },
     }),
-    [context, setState],
+    [setState],
   );
 
   // 校验参数
@@ -204,7 +204,7 @@ const DripTableWrapper = React.forwardRef(<
   return (
     <ConfigProvider locale={tableProps?.driver.locale}>
       <DripTableContext.Provider value={context as unknown as IDripTableContext}>
-        <DripTableLayout {...tableProps} />
+        <DripTableLayout />
       </DripTableContext.Provider>
     </ConfigProvider>
   );

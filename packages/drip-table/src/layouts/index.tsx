@@ -11,7 +11,6 @@ import React, { useEffect } from 'react';
 
 import {
   type DripTableExtraOptions,
-  type DripTableProps,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
 } from '@/types';
@@ -27,36 +26,36 @@ import TableLayout from './table';
 const DripTableLayout = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
-  const { info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+>(): JSX.Element => {
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   React.useEffect(() => {
-    if (props.selectedRowKeys) {
-      setTableState({ selectedRowKeys: props.selectedRowKeys });
+    if (tableProps.selectedRowKeys) {
+      setTableState({ selectedRowKeys: tableProps.selectedRowKeys });
     }
-  }, [props.selectedRowKeys]);
+  }, [tableProps.selectedRowKeys]);
 
   React.useEffect(() => {
     setTableState(state => ({
-      filters: Object.fromEntries(props.schema.columns.map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
-      displayColumnKeys: props.displayColumnKeys || props.schema.columns.filter(c => c.hidable).map(c => c.key),
+      filters: Object.fromEntries(tableProps.schema.columns.map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
+      displayColumnKeys: tableProps.displayColumnKeys || tableProps.schema.columns.filter(c => c.hidable).map(c => c.key),
     }));
-  }, [props.displayColumnKeys]);
+  }, [tableProps.displayColumnKeys]);
 
   React.useEffect(() => {
-    props.componentDidMount?.(tableInfo);
+    tableProps.componentDidMount?.(tableInfo);
     return () => {
-      props.componentWillUnmount?.(tableInfo);
+      tableProps.componentWillUnmount?.(tableInfo);
     };
   }, []);
 
   React.useEffect(() => {
-    props.componentDidUpdate?.(tableInfo);
-  }, [props]);
+    tableProps.componentDidUpdate?.(tableInfo);
+  }, [tableProps]);
 
   const header = React.useMemo<DripTableSlotSchema | null>(
     () => {
-      if (props.schema.header === true) {
+      if (tableProps.schema.header === true) {
         return {
           elements: [
             { type: 'display-column-selector', selectorButtonType: 'primary' },
@@ -66,38 +65,34 @@ const DripTableLayout = <
           ],
         };
       }
-      if (!props.schema.header || !props.schema.header.elements?.length) {
+      if (!tableProps.schema.header || !tableProps.schema.header.elements?.length) {
         return null;
       }
       return {
-        style: props.schema.header.style,
-        elements: props.schema.header.elements,
+        style: tableProps.schema.header.style,
+        elements: tableProps.schema.header.elements,
       };
     },
-    [props.schema.header],
+    [tableProps.schema.header],
   );
 
   const footer = React.useMemo<DripTableSlotSchema | null>(
     () => {
-      if (!props.schema.footer || !props.schema.footer.elements?.length) {
+      if (!tableProps.schema.footer || !tableProps.schema.footer.elements?.length) {
         return null;
       }
       return {
-        style: props.schema.footer.style,
-        elements: props.schema.footer.elements,
+        style: tableProps.schema.footer.style,
+        elements: tableProps.schema.footer.elements,
       };
     },
-    [props.schema.footer],
+    [tableProps.schema.footer],
   );
 
   const headerNode = header
     ? (
       <SlotRender
         schema={header}
-        tableUUID={tableInfo.uuid}
-        tableProps={props}
-        tableState={tableState}
-        setTableState={setTableState}
       />
     )
     : null;
@@ -106,10 +101,6 @@ const DripTableLayout = <
     ? (
       <SlotRender
         schema={footer}
-        tableUUID={tableInfo.uuid}
-        tableProps={props}
-        tableState={tableState}
-        setTableState={setTableState}
       />
     )
     : null;
@@ -124,11 +115,6 @@ const DripTableLayout = <
     if (tableState.layout === 'table') {
       return (
         <TableLayout
-          tableUUID={tableInfo.uuid}
-          tableProps={props}
-          tableInfo={tableInfo}
-          tableState={tableState}
-          setTableState={setTableState}
           header={headerNode}
           footer={footerNode}
         />
@@ -137,11 +123,6 @@ const DripTableLayout = <
     if (tableState.layout === 'card') {
       return (
         <CardLayout
-          tableUUID={tableInfo.uuid}
-          tableProps={props}
-          tableInfo={tableInfo}
-          tableState={tableState}
-          setTableState={setTableState}
           header={headerNode}
         />
       );
@@ -149,24 +130,19 @@ const DripTableLayout = <
     if (tableState.layout === 'calendar') {
       return (
         <CalendarLayout
-          tableUUID={tableInfo.uuid}
-          tableProps={props}
-          tableInfo={tableInfo}
-          tableState={tableState}
-          setTableState={setTableState}
           header={headerNode}
         />
       );
     }
     return null;
-  }, [props, tableInfo, tableState, setTableState, headerNode, footerNode]);
+  }, [tableProps, tableInfo, tableState, setTableState, headerNode, footerNode]);
 
   return (
-    <ErrorBoundary driver={props.driver}>
-      <Spin spinning={props.loading}>
+    <ErrorBoundary driver={tableProps.driver}>
+      <Spin spinning={tableProps.loading}>
         <div
-          className={classnames(props.className, props.schema.className)}
-          style={Object.assign({}, props.style, props.schema.style)}
+          className={classnames(tableProps.className, tableProps.schema.className)}
+          style={Object.assign({}, tableProps.style, tableProps.schema.style)}
         >
           { layoutNode }
         </div>

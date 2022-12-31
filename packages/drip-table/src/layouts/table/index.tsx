@@ -42,7 +42,7 @@ import { type IDripTableContext, useTableContext } from '@/hooks';
 import DripTableWrapper from '@/wrapper';
 
 import { type TableLayoutComponentProps } from '../types';
-import HeaderCell, { HeaderCellProps } from './components/header-cell';
+import HeaderCell from './components/header-cell';
 import { type DripTableColumnRenderOptions } from './types';
 import { finalizeColumnTitle } from './utils';
 
@@ -317,6 +317,12 @@ export const columnRenderGenerator = <
   return () => extraProps.unknownComponent ?? <div className="ajv-error">{ `Unknown column component: ${columnSchema.component}` }</div>;
 };
 
+interface HeaderCellAdditionalProps<
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
+  columnSchema: NonNullable<ExtraOptions['CustomColumnSchema']> | DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
+}
+
 /**
  * 根据列 Schema，生成表格列配置
  * @param tableInfo 表格信息
@@ -385,7 +391,7 @@ export const columnGenerator = <
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
     render: columnRenderGenerator(tableInfo, columnSchema, extraProps),
-    onHeaderCell: () => ({ additionalProps: { columnSchema } as NonNullable<HeaderCellProps<RecordType, ExtraOptions>['additionalProps']> } as React.TdHTMLAttributes<Element>),
+    onHeaderCell: () => ({ additionalProps: { columnSchema } as HeaderCellAdditionalProps<ExtraOptions> } as React.TdHTMLAttributes<Element>),
   };
 
   return column;
@@ -437,9 +443,9 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
 }, areEqual);
 
 const TableLayout = <
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: TableLayoutComponentProps): JSX.Element => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const tableUUID = tableInfo.uuid;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
@@ -759,10 +765,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               return (
                 <SlotRender
                   schema={tableProps.schema.rowHeader}
-                  tableUUID={tableUUID}
-                  tableProps={tableProps}
-                  tableState={tableState}
-                  setTableState={setTableState}
                   record={row.record}
                   recordIndex={row.index}
                   columnKey={columnKey}
@@ -773,10 +775,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               return (
                 <SlotRender
                   schema={tableProps.schema.rowFooter}
-                  tableUUID={tableUUID}
-                  tableProps={tableProps}
-                  tableState={tableState}
-                  setTableState={setTableState}
                   record={row.record}
                   recordIndex={row.index}
                 />
@@ -939,7 +937,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
         onChange={(page, pageSize) => {
           const pagination = { ...tableState.pagination, current: page, pageSize };
-          props.setTableState({ pagination });
+          setTableState({ pagination });
           tableProps.onPageChange?.(page, pageSize, tableInfo);
           tableProps.onChange?.({ pagination, filters: tableState.filters }, tableInfo);
         }}
@@ -961,35 +959,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
-      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellProps<RecordType, ExtraOptions>['additionalProps'] }) => {
+      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => {
         const columnSchema = additionalProps?.columnSchema;
-        const dataIndex = columnSchema?.dataIndex;
         const columnTitle = columnSchema ? finalizeColumnTitle(columnSchema) : '';
         return (
           <th {...wrapperProps}>
-            <HeaderCell
-              additionalProps={
-              additionalProps
-                ? {
-                  ...additionalProps,
-                  filter: typeof dataIndex === 'string' ? tableState.filters[dataIndex] : void 0,
-                  onFilterChange: (filter) => {
-                    const filters = Object.fromEntries(Object.entries(tableState.filters).filter(([k]) => k !== dataIndex));
-                    if (typeof dataIndex === 'string' && filter?.length) {
-                      filters[dataIndex] = filter;
-                    }
-                    setTableState({ filters });
-                    tableProps.onFilterChange?.(filters, tableInfo);
-                    tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
-                  },
-                  tableUUID,
-                  tableProps,
-                  tableState,
-                  setTableState,
-                }
-                : void 0
-              }
-            >
+            <HeaderCell additionalProps={additionalProps}>
               { columnTitle ? wrapperProps.children : void 0 }
             </HeaderCell>
           </th>
