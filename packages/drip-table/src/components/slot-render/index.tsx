@@ -20,7 +20,7 @@ import {
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
 import RichText from '@/components/rich-text';
-import { type IDripTableContext } from '@/context';
+import { type IDripTableContext } from '@/hooks';
 import { type DripTableProps } from '@/index';
 
 interface SlotElementBaseSchema {
@@ -231,11 +231,11 @@ interface SlotRenderProps<
   /**
    * 表格状态
    */
-  tableState: IDripTableContext;
+  tableState: IDripTableContext['state'];
   /**
    * 设置表格状态
    */
-  setTableState: IDripTableContext['setTableState'];
+  setTableState: IDripTableContext['setState'];
   /**
    * 当前插槽位置列 Schema 唯一标识符
    */
@@ -417,7 +417,7 @@ const SlotRender = <
       const menu = (
         <Menu
           onClick={(e) => {
-            setTableState(() => ({ layout: e.key as IDripTableContext['layout'] }));
+            setTableState(() => ({ layout: e.key as IDripTableContext['state']['layout'] }));
           }}
         >
           <Menu.Item

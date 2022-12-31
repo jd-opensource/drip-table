@@ -38,7 +38,7 @@ import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
 import SlotRender from '@/components/slot-render';
 import Tooltip from '@/components/tooltip';
-import { type IDripTableContext } from '@/context';
+import { type IDripTableContext, useTableContext } from '@/hooks';
 import DripTableWrapper from '@/wrapper';
 
 import { type TableLayoutComponentProps } from '../types';
@@ -397,7 +397,7 @@ interface VirtualCellItemData {
   columnsBaseSchema: DripTableBaseColumnSchema[];
   dataSource: RcTableRecordType<DripTableRecordTypeBase>[];
   rowKey: React.Key;
-  selectedRowKeys: IDripTableContext['selectedRowKeys'];
+  selectedRowKeys: IDripTableContext['state']['selectedRowKeys'];
 }
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
@@ -440,7 +440,8 @@ const TableLayout = <
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps<RecordType, ExtraOptions>): JSX.Element => {
-  const { tableUUID, tableProps, tableInfo, tableState, setTableState } = props;
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const tableUUID = tableInfo.uuid;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
   const [rcTableWidth, setRcTableWidth] = React.useState(0);

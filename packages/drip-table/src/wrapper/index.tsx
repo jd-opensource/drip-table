@@ -9,6 +9,7 @@
 import './index.less';
 
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   type DripTableExtraOptions,
@@ -19,49 +20,33 @@ import {
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import DripTableBuiltInComponents from '@/components/built-in';
-import { type IDripTableContext, DripTableContext } from '@/context';
-import { useState, useTable } from '@/hooks';
-import { type DripTableBuiltInColumnSchema } from '@/index';
+import { type IDripTableContext, createTableState, DripTableContext, useState } from '@/hooks';
+import { type DripTableBuiltInColumnSchema, DripTableTableInformation } from '@/index';
 import DripTableLayout from '@/layouts';
 
 /**
  * 暴露给外部直接操作实例的接口
  */
-export interface DripTableWrapperContext extends IDripTableContext {
+export interface DripTableWrapperContext<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   /**
    * 通过接口选择行
    *
    * @param selectedRowKeys 选中的行标识符数组
    */
-  select: (selectedRowKeys: IDripTableContext['selectedRowKeys']) => void;
+  select: (selectedRowKeys: IDripTableContext<RecordType, ExtraOptions>['state']['selectedRowKeys']) => void;
 }
 
-// 组件提供给外部的公共接口
-const createTableContext = <
+const DripTableWrapper = React.forwardRef(<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableProps<RecordType, ExtraOptions>): DripTableWrapperContext => {
-  const initialState = useTable();
-  const [state, setState] = useState(initialState);
-
-  const select = (selectedRowKeys: IDripTableContext['selectedRowKeys']) => {
-    setState({ selectedRowKeys });
-  };
-
-  const handler: DripTableWrapperContext = {
-    ...state,
-    setTableState: setState,
-    select,
-    _CTX_SOURCE: 'PROVIDER', // context 来源于 drip-table-provider
-  };
-  return handler;
-};
-
-const DripTableWrapper: <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-  ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> (props: React.PropsWithoutRef<DripTableProps<RecordType, ExtraOptions>> & React.RefAttributes<DripTableWrapperContext>) =>
-(React.ReactElement | null) = React.forwardRef((props, ref) => {
+>(
+    props: React.PropsWithChildren<DripTableProps<RecordType, ExtraOptions> & React.RefAttributes<DripTableWrapperContext<RecordType, ExtraOptions>>>,
+    ref: React.ForwardedRef<DripTableWrapperContext<RecordType, ExtraOptions>>,
+  ) => {
+  // 标准化参数
   const tableProps = React.useMemo(
     () => {
       let rtp = props;
@@ -161,8 +146,40 @@ const DripTableWrapper: <
     },
     [props],
   );
-  const context = createTableContext(tableProps);
-  React.useImperativeHandle(ref, () => context);
+
+  // 创建上下文
+  const [state, setState] = useState(createTableState());
+
+  const [tableUUID] = React.useState(uuidv4());
+
+  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
+    uuid: tableUUID,
+    schema: props.schema,
+    dataSource: props.dataSource,
+    parent: props.__PARENT_INFO__,
+  }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
+
+  const context = React.useMemo(
+    (): IDripTableContext<RecordType, ExtraOptions> => ({
+      _CTX_SOURCE: 'CONTEXT',
+      props,
+      state,
+      info: tableInfo,
+      setState,
+    }),
+    [state, setState],
+  );
+
+  // 组件提供给外部的公共接口
+  React.useImperativeHandle(
+    ref,
+    (): DripTableWrapperContext<RecordType, ExtraOptions> => ({
+      select: (selectedRowKeys) => {
+        setState({ selectedRowKeys });
+      },
+    }),
+    [context, setState],
+  );
 
   // 校验参数
   const errorMessage = [
@@ -186,11 +203,15 @@ const DripTableWrapper: <
   const ConfigProvider = tableProps.driver.components.ConfigProvider;
   return (
     <ConfigProvider locale={tableProps?.driver.locale}>
-      <DripTableContext.Provider {...tableProps} value={context}>
+      <DripTableContext.Provider value={context as unknown as IDripTableContext}>
         <DripTableLayout {...tableProps} />
       </DripTableContext.Provider>
     </ConfigProvider>
   );
-});
+}) as <
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> (props: React.PropsWithoutRef<DripTableProps<RecordType, ExtraOptions>> & React.RefAttributes<DripTableWrapperContext<RecordType, ExtraOptions>>) =>
+(React.ReactElement | null);
 
 export default DripTableWrapper;

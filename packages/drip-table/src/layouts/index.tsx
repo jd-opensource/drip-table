@@ -8,19 +8,17 @@
 
 import classnames from 'classnames';
 import React, { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   type DripTableExtraOptions,
   type DripTableProps,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
-  type DripTableTableInformation,
 } from '@/types';
 import ErrorBoundary from '@/components/error-boundary';
 import SlotRender, { type DripTableSlotSchema } from '@/components/slot-render';
 import Spin from '@/components/spin';
-import { useState, useTable } from '@/hooks';
+import { useTableContext } from '@/hooks';
 
 import CalendarLayout from './calendar';
 import CardLayout from './card';
@@ -30,17 +28,7 @@ const DripTableLayout = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableProps<RecordType, ExtraOptions>): JSX.Element => {
-  const initialState = useTable();
-  const [tableState, setTableState] = initialState._CTX_SOURCE === 'CONTEXT' ? useState(initialState) : [initialState, initialState.setTableState];
-  const [tableUUID] = React.useState(uuidv4());
-  const rootRef = React.useRef<HTMLDivElement>(null); // ProTable组件的ref
-
-  const tableInfo = React.useMemo((): DripTableTableInformation<RecordType, ExtraOptions> => ({
-    uuid: tableUUID,
-    schema: props.schema,
-    dataSource: props.dataSource,
-    parent: props.__PARENT_INFO__,
-  }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
+  const { info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   React.useEffect(() => {
     if (props.selectedRowKeys) {
@@ -60,7 +48,7 @@ const DripTableLayout = <
     return () => {
       props.componentWillUnmount?.(tableInfo);
     };
-  });
+  }, []);
 
   React.useEffect(() => {
     props.componentDidUpdate?.(tableInfo);
@@ -106,7 +94,7 @@ const DripTableLayout = <
     ? (
       <SlotRender
         schema={header}
-        tableUUID={tableUUID}
+        tableUUID={tableInfo.uuid}
         tableProps={props}
         tableState={tableState}
         setTableState={setTableState}
@@ -118,7 +106,7 @@ const DripTableLayout = <
     ? (
       <SlotRender
         schema={footer}
-        tableUUID={tableUUID}
+        tableUUID={tableInfo.uuid}
         tableProps={props}
         tableState={tableState}
         setTableState={setTableState}
@@ -136,7 +124,7 @@ const DripTableLayout = <
     if (tableState.layout === 'table') {
       return (
         <TableLayout
-          tableUUID={tableUUID}
+          tableUUID={tableInfo.uuid}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
@@ -149,7 +137,7 @@ const DripTableLayout = <
     if (tableState.layout === 'card') {
       return (
         <CardLayout
-          tableUUID={tableUUID}
+          tableUUID={tableInfo.uuid}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
@@ -161,7 +149,7 @@ const DripTableLayout = <
     if (tableState.layout === 'calendar') {
       return (
         <CalendarLayout
-          tableUUID={tableUUID}
+          tableUUID={tableInfo.uuid}
           tableProps={props}
           tableInfo={tableInfo}
           tableState={tableState}
@@ -179,7 +167,6 @@ const DripTableLayout = <
         <div
           className={classnames(props.className, props.schema.className)}
           style={Object.assign({}, props.style, props.schema.style)}
-          ref={rootRef}
         >
           { layoutNode }
         </div>

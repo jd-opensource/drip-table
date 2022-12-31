@@ -8,13 +8,7 @@
 
 import React from 'react';
 
-import { DripTableContext, DripTableStoreContext } from './context';
-
-// 使用最顶层组件的 setState
-export const useTable = () => React.useContext(DripTableContext);
-
-// 组件最顶层传入的所有props
-export const useStore = () => React.useContext(DripTableStoreContext);
+import type { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation } from './types';
 
 export type SetStateAction<S> = Partial<S> | ((prevState: S) => Partial<S>);
 
@@ -32,3 +26,69 @@ export const useState = <T>(initState: T): [T, (action: SetStateAction<T>) => vo
   },
   initState,
 );
+
+export interface IDripTableContext<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
+  readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
+  props: DripTableProps<RecordType, ExtraOptions>;
+  info: DripTableTableInformation<RecordType, ExtraOptions>;
+  state: {
+    loading: boolean;
+    api: CallableFunction | CallableFunction[] | null;
+    tab: number; // 如果api是数组，需要在最顶层感知tab，来知道到底点击搜索调用的是啥api
+    extraData: null; // 需要用到的 dataSource 以外的扩展返回值
+    pagination: {
+      current: number;
+      total: number;
+      pageSize: number;
+    };
+    filters: Record<string, (boolean | React.Key)[] | null>;
+    tableSize: 'default';
+    layout: 'table' | 'card' | 'calendar';
+    checkPassed: boolean;
+    selectedRowKeys: React.Key[];
+    displayColumnKeys: React.Key[];
+  };
+  setState: (state: SetStateAction<IDripTableContext['state']>) => void;
+}
+
+export const createTableState = (): IDripTableContext['state'] => ({
+  loading: false,
+  api: null,
+  tab: 0,
+  extraData: null,
+  pagination: {
+    current: 1,
+    total: 0,
+    pageSize: 10,
+  },
+  filters: {},
+  tableSize: 'default',
+  checkPassed: true,
+  selectedRowKeys: [],
+  displayColumnKeys: [],
+  layout: 'table',
+});
+
+export const DripTableContext = React.createContext<IDripTableContext>({
+  _CTX_SOURCE: 'CONTEXT',
+  props: {
+    schema: { columns: [] },
+    dataSource: [],
+    driver: {} as unknown as DripTableDriver,
+  },
+  info: {
+    uuid: '',
+    schema: { columns: [] },
+    dataSource: [],
+  },
+  state: createTableState(),
+  setState: () => void 0,
+});
+
+export const useTableContext = <
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>() => React.useContext(DripTableContext) as unknown as IDripTableContext<RecordType, ExtraOptions>;
