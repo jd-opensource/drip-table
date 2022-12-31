@@ -55,7 +55,7 @@ const schema = {
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
-    ...Array(500).fill(0).map((_, i) => ({
+    ...Array(50).fill(0).map((_, i) => ({
       key: `mock_${4 + i}`,
       title: `商品价格 (+${i + 1})`,
       width: 100,
@@ -68,7 +68,7 @@ const schema = {
   ],
 };
 
-const dataSource = Array(1000).fill(0).map((_, i) => ({
+const dataSource = Array(100).fill(0).map((_, i) => ({
   id: i,
   name: "商品" + i,
   price: 5999 + Math.floor(Math.random() * 3000),
