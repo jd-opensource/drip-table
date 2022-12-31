@@ -42,17 +42,6 @@ const DripTableLayout = <
     }));
   }, [tableProps.displayColumnKeys]);
 
-  React.useEffect(() => {
-    tableProps.componentDidMount?.(tableInfo);
-    return () => {
-      tableProps.componentWillUnmount?.(tableInfo);
-    };
-  }, []);
-
-  React.useEffect(() => {
-    tableProps.componentDidUpdate?.(tableInfo);
-  }, [tableProps]);
-
   const header = React.useMemo<DripTableSlotSchema | null>(
     () => {
       if (tableProps.schema.header === true) {

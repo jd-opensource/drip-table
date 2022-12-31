@@ -64,7 +64,7 @@ const Demo = () => {
       driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
-      componentDidMount={() => { message.info('Lifecycle: componentWillUnmount'); }}
+      componentWillUnmount={() => { message.info('Lifecycle: componentWillUnmount'); }}
     />
   );
 };

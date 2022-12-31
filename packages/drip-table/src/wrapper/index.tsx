@@ -200,6 +200,17 @@ const DripTableWrapper = React.forwardRef(<
     );
   }
 
+  React.useEffect(() => {
+    tableProps.componentDidMount?.(tableInfo);
+    return () => {
+      tableProps.componentWillUnmount?.(tableInfo);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    tableProps.componentDidUpdate?.(tableInfo);
+  });
+
   const ConfigProvider = tableProps.driver.components.ConfigProvider;
   return (
     <ConfigProvider locale={tableProps?.driver.locale}>
