@@ -16,8 +16,8 @@ toc: content
       DripTableComponentProps<
       RecordType,
       DripTableColumnSchema,
-      NonNullable<ExtraOptions['CustomComponentEvent']>,
-      NonNullable<ExtraOptions['CustomComponentExtraData']>
+      ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>,
+      ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentExtraData'>
       >
       >;
     };

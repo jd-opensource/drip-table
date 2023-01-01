@@ -15,7 +15,7 @@ toc: content
       className?: string;
       slotType: string;
       driver: DripTableDriver;
-      schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
       dataSource: readonly RecordType[];
       onSearch: (searchParams: Record<string, unknown>) => void;
     }>;

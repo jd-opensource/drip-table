@@ -361,11 +361,14 @@ export interface DripTableExtraOptions {
   SubtableDataSourceKey: React.Key;
 }
 
+export type ExtractDripTableExtraOption<ExtraOptions extends Partial<DripTableExtraOptions> | undefined, K extends keyof DripTableExtraOptions>
+  = ExtraOptions extends Partial<DripTableExtraOptions> ? (ExtraOptions[K] extends never ? never : NonNullable<ExtraOptions[K]>) : never;
+
 /**
  * 表格信息
  */
 export interface DripTableTableInformation<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
@@ -375,7 +378,7 @@ export interface DripTableTableInformation<
   /**
    * 表格 Schema
    */
-  schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+  schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
   /**
    * 表格数据
    */
@@ -394,7 +397,7 @@ export interface DripTableTableInformation<
  * 单行事件
  */
 export type DripTableRowEvent<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > = (
   record: RecordType,
@@ -406,7 +409,7 @@ export type DripTableRowEvent<
  * 单行功能函数
  */
 export type DripTableRowCallback<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
   RetType = void,
 > = (
@@ -437,7 +440,7 @@ export type { DripTableDriver, DripTableReactComponent, DripTableReactComponentP
  * 指定子表格的参数
  */
 export interface DripTableSubtableProps<
-RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
@@ -466,7 +469,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
  * 表格组件属性
  */
 export interface DripTableProps<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableSubtableProps<RecordType, ExtraOptions> {
   /**
@@ -484,7 +487,7 @@ export interface DripTableProps<
   /**
    * 表单 Schema
    */
-  schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+  schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
   /**
    * 数据源
    */
@@ -543,9 +546,9 @@ export interface DripTableProps<
       React.JSXElementConstructor<
       DripTableComponentProps<
       RecordType,
-      NonNullable<ExtraOptions['CustomColumnSchema']>,
-      NonNullable<ExtraOptions['CustomComponentEvent']>,
-      NonNullable<ExtraOptions['CustomComponentExtraData']>
+      ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
+      ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>,
+      ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentExtraData'>
       >
       > & { schema?: SchemaObject };
     };
@@ -578,7 +581,7 @@ export interface DripTableProps<
       /**
        * 表格 Schema 对象
        */
-      schema: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+      schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
       /**
        * 表格自定义传入数据
        */
@@ -610,7 +613,7 @@ export interface DripTableProps<
       /**
        * 自定义事件触发器
        */
-      fireEvent: (event: NonNullable<ExtraOptions['CustomComponentEvent']> | DripTableBuiltInComponentEvent) => void;
+      fireEvent: (event: ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'> | DripTableBuiltInComponentEvent) => void;
     }>;
   };
   /**
@@ -620,7 +623,7 @@ export interface DripTableProps<
   /**
    * 自定义组件附加透传数据
    */
-  ext?: NonNullable<ExtraOptions['CustomComponentExtraData']>;
+  ext?: ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentExtraData'>;
   /**
    * 顶部自定义渲染函数
    */
@@ -746,7 +749,7 @@ export interface DripTableProps<
    * 通用事件机制
    */
   onEvent?: (
-    event: (DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>) & {
+    event: (DripTableBuiltInComponentEvent | ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>) & {
       record?: RecordType;
       recordIndex?: number;
       columnIndex?: number;

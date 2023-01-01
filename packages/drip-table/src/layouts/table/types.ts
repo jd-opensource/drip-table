@@ -7,15 +7,15 @@
  */
 
 import type { DripTableComponentProps } from '@/components/built-in';
-import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation } from '@/types';
+import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from '@/types';
 
 export interface DripTableColumnRenderOptions<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
   extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
     unknownComponent?: React.ReactNode;
-    preview?: DripTableComponentProps<RecordType, NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['CustomComponentEvent']>, NonNullable<ExtraOptions['CustomComponentExtraData']>>['preview'];
+    preview?: DripTableComponentProps<RecordType, ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>, ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentExtraData'>>['preview'];
   };
 }
