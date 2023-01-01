@@ -195,7 +195,7 @@ let AJV_CACHE: Ajv | undefined;
 
 const createAjv = (): Ajv => {
   if (!AJV_CACHE) {
-    AJV_CACHE = AjvKeywords(new Ajv({ discriminator: true, strict: true }));
+    AJV_CACHE = AjvKeywords(new Ajv({ strict: true, discriminator: true, allowUnionTypes: true }));
   }
   return AJV_CACHE;
 };
