@@ -13,6 +13,7 @@ import {
   type DripTableExtraOptions,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
+  type ExtractDripTableExtraOption,
 } from '@/types';
 import ErrorBoundary from '@/components/error-boundary';
 import SlotRender, { type DripTableSlotSchema } from '@/components/slot-render';
@@ -24,7 +25,7 @@ import CardLayout from './card';
 import TableLayout from './table';
 
 const DripTableLayout = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(): JSX.Element => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();

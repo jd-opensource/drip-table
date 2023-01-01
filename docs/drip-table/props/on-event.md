@@ -10,7 +10,7 @@ toc: content
 
 ```typescript
 type OnEvent = (
-  event: (DripTableBuiltInComponentEvent | NonNullable<ExtraOptions['CustomComponentEvent']>) & {
+  event: (DripTableBuiltInComponentEvent | ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>) & {
     record?: RecordType;
     recordIndex?: number;
     columnIndex?: number;

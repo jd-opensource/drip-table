@@ -189,9 +189,9 @@ const Demo = () => {
           console.log(name, record, recordIndex);
         } else if (event.type === 'custom') {
           if (from) {
-            from = '触发与' + from + '的';
+            from = `触发与${from}的`;
           }
-          message.info(`自定义事件 “${event.name}”(payload:${JSON.stringify(event.payload)}) ${from}自定义组件。`);
+          message.info(`自定义事件 “${event.type}”(payload:${JSON.stringify(event.payload)}) ${from}自定义组件。`);
           console.log(event, record, recordIndex);
         }
       }}

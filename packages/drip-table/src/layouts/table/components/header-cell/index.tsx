@@ -16,13 +16,13 @@ import React from 'react';
 import Checkbox from '@/components/checkbox';
 import SlotRender from '@/components/slot-render';
 import { type IDripTableContext, useTableContext } from '@/hooks';
-import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable } from '@/index';
+import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption } from '@/index';
 
 interface HeaderCellAdditionalProps<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   column?: TableColumnType<unknown>;
-  columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
+  columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>;
 }
 
 export interface HeaderCellProps<
@@ -34,7 +34,7 @@ export interface HeaderCellProps<
 }
 
 const HeaderCell = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<ExtraOptions>) => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();

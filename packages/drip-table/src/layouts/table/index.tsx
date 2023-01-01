@@ -26,6 +26,7 @@ import {
   type DripTableSchema,
   type DripTableSubtableProps,
   type DripTableTableInformation,
+  type ExtractDripTableExtraOption,
   type SchemaObject,
 } from '@/types';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
@@ -56,7 +57,7 @@ const DEFAULT_SUBTABLE_PROPS: DripTableSubtableProps<never, never> = {
 };
 
 interface RcTableRecordType<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   type: 'header' | 'body' | 'footer';
@@ -155,7 +156,7 @@ const onCellMouseLeave: (e: MouseEvent) => void = (e) => {
 };
 
 const hookColumRender = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     column: TableColumnType<RcTableRecordType<RecordType>>,
@@ -206,16 +207,16 @@ const hookColumRender = <
  * @returns 表格单元格渲染函数
  */
 export const columnRenderGenerator = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     tableInfo: DripTableColumnRenderOptions<RecordType, ExtraOptions>['tableInfo'],
-    columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>> | NonNullable<ExtraOptions['CustomColumnSchema']>,
+    columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
   if ('component' in (columnSchema as DripTableBuiltInColumnSchema)) {
     const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
-      React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>>> & { schema?: SchemaObject };
+      React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>> & { schema?: SchemaObject };
     const onChange = (record: RecordType, index: number, value: unknown) => {
       const ds = [...tableInfo.dataSource];
       const rec = { ...record };
@@ -267,11 +268,11 @@ export const columnRenderGenerator = <
               const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
               return dataTranslator(v, { value: v, record, recordIndex });
             }}
-            preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>>['preview']}
+            preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
             onChange={v => onChange(record, recordIndex, v)}
-            schema={columnSchema as unknown as DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>}
+            schema={columnSchema as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>}
             ext={ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
@@ -305,7 +306,7 @@ export const columnRenderGenerator = <
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
               onChange={v => onChange(record, recordIndex, v)}
-              schema={columnSchema as NonNullable<ExtraOptions['CustomColumnSchema']>}
+              schema={columnSchema as ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>}
               ext={extraProps.ext}
               fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
             />
@@ -320,7 +321,7 @@ export const columnRenderGenerator = <
 interface HeaderCellAdditionalProps<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  columnSchema: NonNullable<ExtraOptions['CustomColumnSchema']> | DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>;
+  columnSchema: ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'> | DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>;
 }
 
 /**
@@ -331,11 +332,11 @@ interface HeaderCellAdditionalProps<
  * @returns 表格列配置
  */
 export const columnGenerator = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
-    columnSchema: DripTableBuiltInColumnSchema<NonNullable<ExtraOptions['CustomColumnSchema']>> | NonNullable<ExtraOptions['CustomColumnSchema']>,
+    columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   let width = String(columnSchema.width).trim();
@@ -452,7 +453,7 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
 }, areEqual);
 
 const TableLayout = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps): JSX.Element => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
@@ -1078,7 +1079,7 @@ const TableLayout = <
               const subtableSchema = Object.fromEntries(
                 Object.entries(subtable)
                   .filter(([key]) => key !== 'dataSourceKey'),
-              ) as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>;
+              ) as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
               subtableEl = (
                 <DripTableWrapper<RecordType, ExtraOptions>
                   {...tableProps}

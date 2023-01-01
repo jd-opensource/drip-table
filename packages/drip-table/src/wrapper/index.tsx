@@ -21,14 +21,14 @@ import {
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import DripTableBuiltInComponents from '@/components/built-in';
 import { type IDripTableContext, createTableState, DripTableContext, useState } from '@/hooks';
-import { type DripTableBuiltInColumnSchema, DripTableTableInformation } from '@/index';
+import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption } from '@/index';
 import DripTableLayout from '@/layouts';
 
 /**
  * 暴露给外部直接操作实例的接口
  */
 export interface DripTableWrapperContext<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
@@ -40,7 +40,7 @@ export interface DripTableWrapperContext<
 }
 
 const DripTableWrapper = React.forwardRef(<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     props: React.PropsWithChildren<DripTableProps<RecordType, ExtraOptions> & React.RefAttributes<DripTableWrapperContext<RecordType, ExtraOptions>>>,
@@ -220,7 +220,7 @@ const DripTableWrapper = React.forwardRef(<
     </ConfigProvider>
   );
 }) as <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > (props: React.PropsWithoutRef<DripTableProps<RecordType, ExtraOptions>> & React.RefAttributes<DripTableWrapperContext<RecordType, ExtraOptions>>) =>
 (React.ReactElement | null);

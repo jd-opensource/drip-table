@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import type { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation } from './types';
+import type { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from './types';
 
 export type SetStateAction<S> = Partial<S> | ((prevState: S) => Partial<S>);
 
@@ -28,7 +28,7 @@ export const useState = <T>(initState: T): [T, (action: SetStateAction<T>) => vo
 );
 
 export interface IDripTableContext<
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
@@ -101,6 +101,6 @@ export const DripTableContext = React.createContext<IDripTableContext>({
 });
 
 export const useTableContext = <
-  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<ExtraOptions['SubtableDataSourceKey']>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >() => React.useContext(DripTableContext) as unknown as IDripTableContext<RecordType, ExtraOptions>;
