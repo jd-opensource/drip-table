@@ -32,6 +32,10 @@ export interface DripTableWrapperContext<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
+   * 当前选中行数据
+   */
+  selectedRowKeys: IDripTableContext<RecordType, ExtraOptions>['state']['selectedRowKeys'];
+  /**
    * 通过接口选择行
    *
    * @param selectedRowKeys 选中的行标识符数组
@@ -177,8 +181,9 @@ const DripTableWrapper = React.forwardRef(<
       select: (selectedRowKeys) => {
         setState({ selectedRowKeys });
       },
+      selectedRowKeys: context.state.selectedRowKeys,
     }),
-    [setState],
+    [setState, context.state.selectedRowKeys],
   );
 
   // 校验参数
