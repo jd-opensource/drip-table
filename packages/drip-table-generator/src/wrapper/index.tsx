@@ -83,6 +83,10 @@ const DripTableGenerator = React.forwardRef(<
       </GeneratorContext.Provider>
     </ConfigProvider>
   );
-});
+}) as <
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> (props: React.PropsWithoutRef<DripTableGeneratorProps<RecordType, ExtraOptions>> & React.RefAttributes<GeneratorWrapperHandler>) =>
+(React.ReactElement | null);
 
 export default DripTableGenerator;
