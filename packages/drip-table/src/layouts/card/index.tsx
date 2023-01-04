@@ -14,6 +14,7 @@ import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWith
 import { useTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
+import { finalizeColumnTitle } from '../table/utils';
 import { TableLayoutComponentProps } from '../types';
 
 const CardLayout = <
@@ -68,7 +69,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 .map(column => ({ ...column, render: columnRenderGenerator(tableInfo, column, extraProps) }))
                 .map(col => (
                   <div key={col.key}>
-                    { col.title && <div className="jfe-drip-table-layout-card-title">{ col.title }</div> }
+                    { col.title && <div className="jfe-drip-table-layout-card-title">{ finalizeColumnTitle(col) }</div> }
                     { col.render?.(null, { record, index: 0, type: 'body', key: '0' }, 0) }
                   </div>
                 ))

@@ -1,6 +1,6 @@
-import { DripTableGeneratorProps } from 'drip-table-generator';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from 'drip-table-generator';
 
-const CustomGeneratorComponentPanel: DripTableGeneratorProps['customComponentPanel'] = {
+const CustomGeneratorComponentPanel: DripTableGeneratorProps<DataSourceTypeAbbr<never>>['customComponentPanel'] = {
   mode: 'add',
   configs: [
     {

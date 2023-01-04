@@ -7,7 +7,8 @@
 
 import { Button, Row } from 'antd';
 import { DripTableSchema } from 'drip-table';
-import DripTableGenerator from 'drip-table-generator';
+import DripTableDriverAntDesign from 'drip-table-driver-antd';
+import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import React from 'react';
 
 import { mockData } from '../../demo-data';
@@ -19,7 +20,7 @@ const initialSchema: DripTableSchema = {
 };
 
 const Demo = () => {
-  const generator = React.useRef(null);
+  const generator: React.MutableRefObject<DripTableGeneratorHandler | null> = React.useRef(null);
 
   return (
     <React.Fragment>
@@ -28,6 +29,8 @@ const Demo = () => {
       </Row>
       <DripTableGenerator
         ref={generator}
+        driver={DripTableDriverAntDesign}
+        customComponents={{}}
         style={{ height: 720 }}
         schema={initialSchema}
         dataSource={mockData}

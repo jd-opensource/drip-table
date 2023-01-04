@@ -16,6 +16,7 @@ import DatePicker from '@/components/date-picker';
 import { useTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
+import { finalizeColumnTitle } from '../table/utils';
 import { TableLayoutComponentProps } from '../types';
 
 const CalendarLayout = <
@@ -49,7 +50,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               .map(column => ({ ...column, render: columnRenderGenerator(tableInfo, column, extraProps) }))
               .map(col => (
                 <div key={col.key}>
-                  <h4>{ col.title }</h4>
+                  <h4>{ finalizeColumnTitle(col) }</h4>
                   { col.render?.(null, { record, index: 0, type: 'body', key: '0' }, 0) }
                 </div>
               ))
