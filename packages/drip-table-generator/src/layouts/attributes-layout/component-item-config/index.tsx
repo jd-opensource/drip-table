@@ -95,6 +95,7 @@ const ComponentItemConfigForm = <
       formData.title = columnConfigs?.title?.body.content;
     }
     if (typeof columnConfigs?.style === 'object') {
+      formData.style = true;
       Object.keys(columnConfigs.style).forEach((key) => {
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
@@ -113,8 +114,6 @@ const ComponentItemConfigForm = <
         uiProps[key.replace('ui:props.', '')] = formData[key];
       } else if (key.startsWith('style.')) {
         columnStyle[key.replace('style.', '')] = String(formData[key]);
-      } else if (!key.startsWith('titleStyle.')) {
-        dataProps[key] = formData[key];
       }
     });
     if (column?.component === 'group') {
@@ -138,6 +137,7 @@ const ComponentItemConfigForm = <
         'title',
         'width',
         'group',
+        'style',
       ]),
       key: column?.key ?? '',
       innerIndexForGenerator: column?.innerIndexForGenerator ?? 0,
@@ -166,7 +166,7 @@ const ComponentItemConfigForm = <
             encodeData={formData => encodeColumnConfigs(formData, currentColumnItem)}
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
-            groupType="collapse"
+            groupType="tabs"
             theme={props.driver}
             onChange={(data) => {
               const columnSchema = Object.assign({}, currentColumnItem, data);

@@ -69,6 +69,7 @@ ComponentProps extends DTGAttributeComponentProps = DTGAttributeComponentProps,
 > = DataSchema & {
   name: string;
   group: string;
+  subGroup?: string;
   required?: boolean;
   'ui:layout'?: {
     labelCol: number;

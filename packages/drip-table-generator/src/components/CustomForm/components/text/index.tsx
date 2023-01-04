@@ -42,7 +42,7 @@ export default class TextComponent extends React.PureComponent<Props> {
 
     return (
       <TextArea
-        value={this.props.value as string}
+        value={this.props.value as string ?? config.default}
         placeholder={uiProps.placeholder as string}
         disabled={uiProps.disabled as boolean}
         style={{ width: '100%', ...uiProps.style }}

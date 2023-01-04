@@ -176,6 +176,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       lineHeight: { type: 'number' },
       height: { type: 'number' },
       ellipsis: { type: 'boolean' },
+      clipboard: { type: 'boolean' },
       dataProcess: { type: 'string' },
       disableFunc: { type: 'string' },
       visibleFunc: { type: 'string' },
@@ -315,7 +316,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return [];
   }
 
-  private get visiable(): boolean {
+  private get visible(): boolean {
     const { schema, data } = this.props;
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
@@ -546,7 +547,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const Alert = this.props.driver.components.Alert;
     const wrapperClassName = this.wrapperClassName;
     const wrapperStyles = this.wrapperStyles;
-    if (!this.visiable) {
+    if (!this.visible) {
       return <div />;
     }
     if (!this.configured) {

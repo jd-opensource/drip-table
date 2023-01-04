@@ -1,5 +1,5 @@
 import { DripTableComponentAttrConfig } from '../typing';
-import { basicColumnAttrComponents, dataIndexColumnAttrComponents } from './configs';
+import { dataIndexColumnAttrComponents, generateColumnAttrComponentsByNames, styleAttributesSchema, titleConfig } from './configs';
 
 export default {
   $id: '$display_inputnumber',
@@ -10,17 +10,19 @@ export default {
   title: '数字组件',
   paramName: '',
   default: '',
-  attrSchema: [
-    ...basicColumnAttrComponents('数字'),
-    ...dataIndexColumnAttrComponents(
-      'price',
-      (_1, formData) => true,
-      (_1, formData) => true && formData?.dataIndexMode === 'direct',
-      (_1, formData) => true && formData?.dataIndexMode === 'nested',
-    ),
+  attrSchema: generateColumnAttrComponentsByNames([
+    titleConfig('数字'),
+    ...dataIndexColumnAttrComponents('price',
+      {
+        modeDiffFn: (_1, formData) => true,
+        directDiffFn: (_1, formData) => true && formData?.dataIndexMode === 'direct',
+        nestedDiffFn: (_1, formData) => true && formData?.dataIndexMode === 'nested',
+        layout: { labelCol: 6, wrapperCol: 18 },
+      }),
     {
       name: 'options.isEdit',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '编辑数字',
       'ui:type': 'switch',
       'ui:props': {},
@@ -30,6 +32,7 @@ export default {
     {
       name: 'options.bordered',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},
@@ -39,6 +42,7 @@ export default {
     {
       name: 'options.disabled',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '是否禁用',
       'ui:type': 'switch',
       'ui:props': {},
@@ -47,26 +51,33 @@ export default {
     {
       name: 'options.step',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '步数',
       'ui:type': 'number',
       default: 1,
+      type: 'number',
     },
     {
       name: 'options.min',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '最小值',
       'ui:type': 'number',
       default: 0,
+      type: 'number',
     },
     {
       name: 'options.max',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '最大值',
       'ui:type': 'number',
+      type: 'number',
     },
     {
       name: 'options.size',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '输入框大小',
       'ui:type': 'radio',
       'ui:props': {
@@ -79,6 +90,13 @@ export default {
       type: 'string',
       default: 'middle',
     },
-  ],
+    'hidable',
+    'description',
+    // styles
+    'width',
+    'align',
+    'verticalAlign',
+    ...styleAttributesSchema,
+  ]),
   icon: '<svg viewBox="64 64 896 896" focusable="false" data-icon="number" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M872 394c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8H708V152c0-4.4-3.6-8-8-8h-64c-4.4 0-8 3.6-8 8v166H400V152c0-4.4-3.6-8-8-8h-64c-4.4 0-8 3.6-8 8v166H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h168v236H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h168v166c0 4.4 3.6 8 8 8h64c4.4 0 8-3.6 8-8V706h228v166c0 4.4 3.6 8 8 8h64c4.4 0 8-3.6 8-8V706h164c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8H708V394h164zM628 630H400V394h228v236z"></path></svg>',
 } as DripTableComponentAttrConfig;

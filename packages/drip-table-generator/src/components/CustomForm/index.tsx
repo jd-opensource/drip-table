@@ -104,17 +104,21 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
   public async submitData() {
     const { formValues, helpMsg } = this.state;
     let count = 0;
+    const formData = Object.assign({}, formValues);
     const configs = this.props.configs.filter(config => this.visible(config));
     await configs.forEach(async (cfg) => {
-      const msg = cfg.validate ? await cfg.validate(formValues[cfg.name] as string) : '';
+      const value = formData[cfg.name] || cfg.default;
+      const msg = cfg.validate ? await cfg.validate(value) : '';
       if (msg) {
         helpMsg[cfg.name] = msg;
         count += 1;
+      } else if (!formData[cfg.name] && cfg.default) {
+        formData[cfg.name] = cfg.default;
       }
     });
     this.setState({ helpMsg });
     if (count <= 0) {
-      return this.props.encodeData(formValues);
+      return this.props.encodeData(formData);
     }
     return void 0;
   }
@@ -258,11 +262,23 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       if (this.props.groupType === 'collapse') {
         return (
           <Collapse>
-            { groups.map((groupName, groupIndex) => (
-              <Collapse.Panel key={groupIndex} header={groupName}>
-                { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
-              </Collapse.Panel>
-            )) }
+            { groups.map((groupName, groupIndex) => {
+              const subGroups = [...new Set(configs.filter(item => groupName === (item.group || '其他')).map(item => item.subGroup || ''))].filter(group => !!group);
+              return (
+                <Collapse.Panel key={groupIndex} header={groupName}>
+                  { configs.filter(item => groupName === (item.group || '其他') && !item.subGroup).map((item, index) => this.renderFormItem(item, index)) }
+                  { subGroups.length > 0 && (
+                  <Collapse>
+                    { subGroups.map((subGroupName, subGroupIndex) => (
+                      <Collapse.Panel key={subGroupIndex} header={subGroupName}>
+                        { configs.filter(item => groupName === (item.group || '其他') && item.subGroup === subGroupName).map((item, index) => this.renderFormItem(item, index)) }
+                      </Collapse.Panel>
+                    )) }
+                  </Collapse>
+                  ) }
+                </Collapse.Panel>
+              );
+            }) }
           </Collapse>
         );
       }
@@ -271,15 +287,27 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
           tabPosition={this.props.tabPosition}
           type="card"
           centered
-          items={groups.map((groupName, groupIndex) => ({
-            label: groupName,
-            key: String(groupIndex),
-            children: (
-              <div>
-                { configs.filter(item => groupName === (item.group || '其他')).map((item, index) => this.renderFormItem(item, index)) }
-              </div>
-            ),
-          }))}
+          items={groups.map((groupName, groupIndex) => {
+            const subGroups = [...new Set(configs.filter(item => groupName === (item.group || '其他')).map(item => item.subGroup || ''))].filter(group => !!group);
+            return {
+              label: groupName,
+              key: String(groupIndex),
+              children: (
+                <div>
+                  { configs.filter(item => groupName === (item.group || '其他') && !item.subGroup).map((item, index) => this.renderFormItem(item, index)) }
+                  { subGroups.length > 0 && (
+                  <Collapse>
+                    { subGroups.map((subGroupName, subGroupIndex) => (
+                      <Collapse.Panel key={subGroupIndex} header={subGroupName}>
+                        { configs.filter(item => groupName === (item.group || '其他') && item.subGroup === subGroupName).map((item, index) => this.renderFormItem(item, index)) }
+                      </Collapse.Panel>
+                    )) }
+                  </Collapse>
+                  ) }
+                </div>
+              ),
+            };
+          })}
         />
       );
     }
