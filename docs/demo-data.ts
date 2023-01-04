@@ -135,7 +135,6 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       hidable: true,
       dataIndex: 'description',
       component: 'text',
-      clipboard: true,
       options: {
         mode: 'single',
         ellipsis: true,
@@ -409,54 +408,9 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
           component: 'image',
           title: '',
           options: {
-            imageWidth: '100%',
+            imageWidth: 100,
           },
           dataIndex: 'demoPic',
-        },
-        {
-          key: 'mock_2',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'mock_3',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'date-picker_182e8eea517-1239',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'date-picker_182e8eea517-1240',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'link_1828c3251ad-1391',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'rich-text_1828c32cb02-1392',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'mock_4',
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'mock_5',
-          hideInLayout: true,
-          style: { padding: '0 10px' },
-        },
-        {
-          key: 'mock_6',
-          hideInLayout: true,
-        },
-        {
-          key: 'mock_7',
-          hideInLayout: true,
-        },
-        {
-          key: 'mock_8',
-          hideInLayout: true,
         },
       ],
       rowSize: 4,

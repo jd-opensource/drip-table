@@ -10,7 +10,8 @@ import DripTable, { DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React, { useRef, useState } from 'react';
 
-import { initSchema, mockData, SampleRecordType } from '../../demo-data';
+import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
+import { CustomColumnSchema } from '../demo/custom-components';
 
 const schema = {
   ...initSchema,
@@ -46,7 +47,12 @@ const Demo = () => {
           全选
         </Button>
       </div>
-      <DripTable<SampleRecordType>
+      <DripTable<SampleRecordType, {
+        CustomColumnSchema: CustomColumnSchema;
+        CustomComponentEvent: never;
+        CustomComponentExtraData: never;
+        SubtableDataSourceKey: SubtableDataSourceKey;
+      }>
         ref={dripTable}
         driver={DripTableDriverAntDesign}
         schema={schema}
@@ -56,13 +62,29 @@ const Demo = () => {
         total={simpleData.length}
         dataSource={simpleData}
         onEvent={(event, tableInfo) => {
-          const { record, recordIndex } = event;
+          const { record, recordIndex, columnIndex } = event;
+          let from = '';
+          if (columnIndex !== void 0) {
+            from += `第${columnIndex + 1}列`;
+          }
+          if (recordIndex !== void 0) {
+            from += `第${recordIndex + 1}行`;
+          }
+          if (record !== void 0) {
+            from += `“${record.name} (ID: ${record.id})”`;
+          }
           if (event.type === 'drip-link-click') {
             const name = event.payload;
-            message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的"${name}"事件按钮。`);
+            if (from) {
+              from += '的';
+            }
+            message.info(`你点击了${from}"${name}"事件按钮。`);
             console.log(name, record, recordIndex);
           } else if (event.type) {
-            message.info(`自定义事件“${event.type}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
+            if (from) {
+              from = `触发与${from}的`;
+            }
+            message.info(`自定义事件 “${event.type}”(payload:${JSON.stringify(event.payload)}) ${from}自定义组件。`);
             console.log(event, record, recordIndex);
           }
         }}

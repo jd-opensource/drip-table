@@ -11,7 +11,7 @@ import './index.less';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Pagination, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSchema, DripTableSlotElementSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSchema, DripTableSlotElementSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -92,7 +92,7 @@ const EditableTableHeader = <
             data={config.data}
             driver={props.driver}
             ext={props.ext}
-            schema={getSchemaValue(context) as unknown as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>, NonNullable<ExtraOptions['SubtableDataSourceKey']>>}
+            schema={getSchemaValue(context) as unknown as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>}
             dataSource={context.previewDataSource as RecordType[] || []}
             onSearch={() => void 0}
             fireEvent={() => void 0}

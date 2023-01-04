@@ -9,7 +9,7 @@ import './demo.module.less';
 
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableSchema } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React from 'react';
@@ -145,12 +145,13 @@ const initialSchema: DripTableSchema = {
   ],
 };
 
-type ExtraOptions = Omit<DripTableExtraOptions, 'CustomColumnSchema' | 'SubtableDataSourceKey'> & {
-  CustomColumnSchema: TextColumnSchema;
-  SubtableDataSourceKey: SubtableDataSourceKey;
-}
 const Demo = () => (
-  <DripTableGenerator<SampleRecordType, ExtraOptions>
+  <DripTableGenerator<SampleRecordType, {
+    CustomColumnSchema: TextColumnSchema;
+    CustomComponentEvent: never;
+    CustomComponentExtraData: never;
+    SubtableDataSourceKey: SubtableDataSourceKey;
+  }>
     mockDataSource
     style={{ height: '756px' }}
     driver={DripTableDriverAntDesign}
@@ -166,7 +167,7 @@ const Demo = () => (
         const [state, setState] = React.useState({ count: 0 });
         return (
           <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
-            <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>{ props.title }</Button>
+            <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>{ (props as unknown as { title: string }).title }</Button>
             <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
           </div>
         );

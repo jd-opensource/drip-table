@@ -411,6 +411,13 @@ export default defineConfig({
   ],
   exportStatic: {},
   favicons: ['https://img13.360buyimg.com/imagetools/jfs/t1/204416/31/13736/8631/617f8334E9ae79a1c/5b96dfdce922e5fb.png'],
+  forkTSChecker: {
+    typescript: {
+      configOverwrite: {
+        exclude: ['node_modules', 'dist', 'packages'],
+      },
+    },
+  },
   hash: true,
   ignoreMomentLocale: false,
   metas: [

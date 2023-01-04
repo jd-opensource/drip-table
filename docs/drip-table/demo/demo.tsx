@@ -8,7 +8,7 @@ import 'jsoneditor-react/es/editor.min.css';
 
 import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message, Switch, Tabs } from 'antd';
-import DripTable, { DripTableInstance } from 'drip-table';
+import DripTable, { DripTableFilters, DripTableInstance } from 'drip-table';
 import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
 import React from 'react';
@@ -47,14 +47,18 @@ const Demo = () => {
     [dataBase, filters, pageSize, pageNum],
   );
 
-  const fetchPageData = (nextFilters: Record<string, string[]>, nextPageSize: number, nextPageNum: number) => {
+  const fetchPageData = (nextFilters: DripTableFilters, nextPageSize: number, nextPageNum: number) => {
     if (loading) {
       return;
     }
     setTimeout(
       () => {
         setLoading(false);
-        setFilters(Object.entries(nextFilters).map(([key, values]) => ({ key, values })));
+        setFilters(
+          Object.entries(nextFilters)
+            .map(([key, values]) => ({ key, values: values || [] }))
+            .filter(p => p.values.length > 0),
+        );
         setPageSize(nextPageSize);
         setPageNum(nextPageNum);
       },
@@ -66,7 +70,7 @@ const Demo = () => {
   function selectAllRecord() {
     const tableInstance = dripTable.current;
     if (tableInstance) {
-      const allRowKeys = dataSource.map(rec => rec[schema.rowKey]);
+      const allRowKeys = dataSource.map(rec => rec[schema.rowKey] as React.Key);
       const selectedKeys = tableInstance.selectedRowKeys;
       if (selectedKeys.length < allRowKeys.length) {
         tableInstance.select(allRowKeys);
@@ -102,6 +106,7 @@ const Demo = () => {
       <DripTable<SampleRecordType, {
         CustomColumnSchema: CustomColumnSchema;
         CustomComponentEvent: CustomComponentEvent;
+        CustomComponentExtraData: never;
         SubtableDataSourceKey: SubtableDataSourceKey;
       }>
         ref={dripTable}
@@ -124,7 +129,7 @@ const Demo = () => {
           default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
         }), [])}
         subtableTitle={React.useMemo(() => (record, index, tableInfo) => (
-          <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${tableInfo.parent?.record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>
+          <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${tableInfo.parent?.record?.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>
         ), [])}
         subtableFooter={React.useMemo(() => (record, index, tableInfo) => (
           tableInfo.schema.id === 'sample-table-sub-level-1'
@@ -148,17 +153,29 @@ const Demo = () => {
         ), [])}
         rowSelectable={React.useMemo(() => record => record.id !== 1, [])}
         onEvent={React.useMemo(() => (event, tableInfo) => {
-          const { record, recordIndex } = event;
+          const { record, recordIndex, columnIndex } = event;
+          let from = '';
+          if (columnIndex !== void 0) {
+            from += `第${columnIndex + 1}列`;
+          }
+          if (recordIndex !== void 0) {
+            from += `第${recordIndex + 1}行`;
+          }
+          if (record !== void 0) {
+            from += `“${record.name} (ID: ${record.id})”`;
+          }
           if (event.type === 'drip-link-click') {
             const name = event.payload;
-            message.info(`你点击了第${recordIndex + 1}行“${record.name} (ID: ${record.id})”的“${name}”事件按钮。`);
+            if (from) {
+              from += '的';
+            }
+            message.info(`你点击了${from}"${name}"事件按钮。`);
             console.log(name, record, recordIndex);
-          } else if (event.type === 'drip-select-change') {
-            const value = event.payload.value;
-            dataSource[recordIndex].status = value;
-            setDataBase([...dataSource]);
-          } else if (event.type === 'custom') {
-            message.info(`自定义事件“${event.name}”触发于行“${record.name} (ID: ${record.id})”的自定义组件。`);
+          } else if (event.type) {
+            if (from) {
+              from = `触发与${from}的`;
+            }
+            message.info(`自定义事件 “${event.type}”(payload:${JSON.stringify('payload' in event ? event.payload : void 0)}) ${from}自定义组件。`);
             console.log(event, record, recordIndex);
           }
         }, [])}
@@ -167,7 +184,7 @@ const Demo = () => {
         onChange={React.useMemo(() => ({ pagination: nextPagination, filters: nextFilters }) => {
           console.log('onChange', nextPagination, nextFilters);
           fetchPageData(nextFilters, nextPagination.pageSize ?? pageSize, nextPagination.current ?? pageNum);
-        }, [])}
+        }, [fetchPageData])}
         onDataSourceChange={React.useMemo(() => (ds) => {
           setDataSource(ds);
         }, [])}
@@ -187,7 +204,7 @@ const Demo = () => {
             <Tabs.TabPane key="SCHEMA" tab="SCHEMA" className={styles['json-edit-tab']}>
               <JsonEditor
                 value={schema}
-                onChange={(d: typeof schema) => {
+                onChange={(d) => {
                   setSchema(d);
                   setPageSize(d.pagination ? d.pagination.pageSize || 0 : 10);
                 }}
@@ -196,7 +213,7 @@ const Demo = () => {
             <Tabs.TabPane key="DATA" tab="DATA" className={styles['json-edit-tab']}>
               <JsonEditor
                 value={dataBase}
-                onChange={(d: typeof dataBase) => { setDataBase(d); }}
+                onChange={(d) => { setDataBase(d); }}
               />
             </Tabs.TabPane>
           </Tabs>
