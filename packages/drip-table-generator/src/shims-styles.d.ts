@@ -6,28 +6,4 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-declare module '*.css' {
-  interface IClassNames {
-    [className: string]: string;
-  }
-  const classNames: IClassNames;
-  export = classNames;
-}
-
-declare module '*.less' {
-  interface IClassNames {
-    [className: string]: string;
-  }
-  const classNames: IClassNames;
-  export = classNames;
-}
-
-declare module '*.svg' {
-  const content: string;
-  export = content;
-}
-
-declare module '*.png' {
-  const content: string;
-  export = content;
-}
+declare module '*.less';
