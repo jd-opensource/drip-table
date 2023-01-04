@@ -82,7 +82,7 @@ const AttributesLayout = <
               { drawerType === 'column-item'
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
-                    { currentColumnPath ? `子组件 &gt; ${getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component)}` : '' }
+                    { currentColumnPath ? `子组件 > ${getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component)}` : '' }
                   </span>
                 )
                 : null }

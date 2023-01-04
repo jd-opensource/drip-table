@@ -88,11 +88,13 @@ const ComponentConfigForm = <
       formData.title = columnConfigs?.title?.body.content;
     }
     if (typeof columnConfigs?.title === 'object' && columnConfigs.title.style) {
+      formData.titleStyle = true;
       Object.keys(columnConfigs.title.style).forEach((key) => {
         formData[`titleStyle.${key}`] = typeof columnConfigs?.title === 'object' ? columnConfigs.title.style?.[key] : void 0;
       });
     }
     if (typeof columnConfigs?.style === 'object') {
+      formData.style = true;
       Object.keys(columnConfigs.style).forEach((key) => {
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
@@ -140,22 +142,26 @@ const ComponentConfigForm = <
         'name',
         'dataIndex',
         'title',
+        'titleStyle',
         'width',
         'group',
+        'style',
       ]),
       key: currentColumn?.key ?? '',
       innerIndexForGenerator: currentColumn?.innerIndexForGenerator ?? 0,
       dataIndex: formData.dataIndex as string | string[],
-      title: {
-        body: formData.title as string,
-        style: titleStyle,
-      },
+      title: formData.titleStyle
+        ? {
+          body: formData.title,
+          style: titleStyle,
+        }
+        : formData.title,
       width: formData.width as string,
       align: formData.align as 'left' | 'center' | 'right',
       component: currentColumn?.component ?? '',
       options: uiProps,
-      style: columnStyle,
-    };
+      style: formData.style ? columnStyle : void 0,
+    } as DripTableGeneratorContext['currentColumn'];
   };
   return (
     <GeneratorContext.Consumer>

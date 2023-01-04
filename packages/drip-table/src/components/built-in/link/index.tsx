@@ -156,7 +156,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     return !!disabled;
   }
 
-  private get visiable(): boolean {
+  private get visible(): boolean {
     const { schema, data } = this.props;
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
@@ -223,7 +223,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     const options = this.props.schema.options;
     const Alert = this.props.driver.components.Alert;
     const DropDown = this.props.driver.components.Dropdown;
-    if (!this.visiable && options.mode === 'single') {
+    if (!this.visible && options.mode === 'single') {
       return <div />;
     }
     if (!this.configured) {
@@ -267,7 +267,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       );
     }
     return (
-      <div>
+      <React.Fragment>
         {
           options.operates?.slice(0, options.maxTiledCount).map((config, index) => {
             const event = config.event;
@@ -329,7 +329,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             </DropDown>
           )
           : null }
-      </div>
+      </React.Fragment>
     );
   }
 }

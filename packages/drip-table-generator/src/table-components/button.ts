@@ -1,5 +1,5 @@
 import { DripTableComponentAttrConfig } from '../typing';
-import { basicColumnAttrComponents } from './configs';
+import { generateColumnAttrComponentsByNames, styleAttributesSchema, titleConfig } from './configs';
 
 const iconOptions = [
   'StepBackwardOutlined',
@@ -21,11 +21,12 @@ export default {
   title: '按钮组件',
   paramName: '',
   default: '',
-  attrSchema: [
-    ...basicColumnAttrComponents('按钮'),
+  attrSchema: generateColumnAttrComponentsByNames([
+    titleConfig('按钮'),
     {
       name: 'options.mode',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '模式',
       'ui:type': 'radio',
       'ui:props': {
@@ -40,14 +41,17 @@ export default {
     {
       name: 'options.label',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '按钮文案',
       'ui:type': 'text',
       default: '按钮',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.icon',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '按钮图标',
       'ui:description': {
         title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
@@ -59,14 +63,19 @@ export default {
         options: iconOptions,
       },
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.buttonType',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '按钮类型',
       'ui:type': 'radio',
       'ui:props': {
+        mode: 'button',
+        buttonStyle: 'solid',
+        size: 'small',
         options: [
           { label: '默认', value: void 0 },
           { label: '主按钮', value: 'primary' },
@@ -76,11 +85,13 @@ export default {
         ],
       },
       default: void 0,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.size',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '按钮尺寸',
       'ui:type': 'radio',
       'ui:props': {
@@ -91,11 +102,13 @@ export default {
         ],
       },
       default: 'middle',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.shape',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '按钮形状',
       'ui:type': 'radio',
       'ui:props': {
@@ -106,11 +119,13 @@ export default {
         ],
       },
       default: void 0,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.ghost',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '背景透明',
       'ui:type': 'switch',
       'ui:props': {
@@ -118,11 +133,13 @@ export default {
         checkedChildren: '是',
       },
       default: false,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
+      type: 'boolean',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.danger',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '危险按钮',
       'ui:type': 'switch',
       'ui:props': {
@@ -130,47 +147,13 @@ export default {
         checkedChildren: '是',
       },
       default: false,
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
-    },
-    {
-      name: 'options.disableFunc',
-      group: '属性',
-      'ui:title': '禁用判断',
-      'ui:type': 'text',
-      'ui:props': {
-        style: { width: '100%' },
-        placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
-
-      },
-      'ui:description': {
-        title: '根据逻辑语句返回的布尔值决定该组件是否被禁用,true为禁用,false为正常',
-        trigger: 'hover',
-        type: 'icon',
-      },
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      type: 'string',
-    },
-    {
-      name: 'options.visibleFunc',
-      group: '属性',
-      'ui:title': '显隐组件条件',
-      'ui:type': 'text',
-      'ui:props': {
-        style: { width: '100%' },
-        placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
-
-      },
-      'ui:description': {
-        title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
-        trigger: 'hover',
-        type: 'icon',
-      },
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      type: 'string',
+      type: 'boolean',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.event',
       group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '事件名称',
       'ui:description': {
         title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
@@ -179,24 +162,20 @@ export default {
       },
       'ui:type': 'text',
       default: '',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'single',
-    },
-    {
-      name: 'options.margin',
-      group: '属性',
-      'ui:title': '按钮间隔',
-      'ui:type': 'number',
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
       name: 'options.buttons',
       group: '属性',
       'ui:title': '多按钮配置',
       'ui:type': 'array-list',
-      'ui:layout': { labelCol: 8, wrapperCol: 24 },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       default: [],
-      visible: (_1: unknown[], formData: Record<string, unknown>) => formData['options.mode'] === 'multiple',
+      type: 'array',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
       'ui:props': {
+        mode: 'narrow',
         items: [
           {
             name: 'label',
@@ -253,6 +232,9 @@ export default {
             'ui:title': '按钮形状',
             'ui:type': 'radio',
             'ui:props': {
+              mode: 'button',
+              buttonStyle: 'solid',
+              size: 'small',
               options: [
                 { label: '圆形', value: 'circle' },
                 { label: '圆角', value: 'round' },
@@ -303,7 +285,7 @@ export default {
           {
             name: 'visibleFunc',
             group: '属性',
-            'ui:title': '显隐组件条件',
+            'ui:title': '显隐条件',
             'ui:type': 'text',
             'ui:props': {
               style: { width: '100%' },
@@ -332,6 +314,25 @@ export default {
         ],
       },
     },
-  ],
+    {
+      name: 'options.margin',
+      group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:title': '按钮间隔',
+      'ui:type': 'number',
+      type: 'number',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
+    },
+    'dataTranslation',
+    'options.disableFunc',
+    'options.visibleFunc',
+    'hidable',
+    'description',
+    // styles
+    'width',
+    'align',
+    'verticalAlign',
+    ...styleAttributesSchema,
+  ]),
   icon: '<svg t="1641556690789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3528" width="14" height="14"><path d="M789.333333 1024h-554.666666A234.922667 234.922667 0 0 1 0 789.333333v-554.666666C0 105.301333 105.258667 0 234.666667 0h554.666666C918.741333 0 1024 105.301333 1024 234.666667v554.666666c0 129.365333-105.258667 234.666667-234.666667 234.666667zM234.666667 42.666667A192.213333 192.213333 0 0 0 42.666667 234.666667v554.666666C42.666667 895.189333 128.810667 981.333333 234.666667 981.333333h554.666666c105.856 0 192-86.144 192-192v-554.666666C981.333333 128.810667 895.189333 42.666667 789.333333 42.666667h-554.666666z" p-id="3529"></path><path d="M704 725.333333h-384a21.333333 21.333333 0 0 1-21.333333-21.333333v-384a21.333333 21.333333 0 0 1 21.333333-21.333333h384a21.333333 21.333333 0 0 1 21.333333 21.333333v384a21.333333 21.333333 0 0 1-21.333333 21.333333zM341.333333 682.666667h341.333334V341.333333H341.333333v341.333334z" p-id="3530"></path></svg>',
 } as DripTableComponentAttrConfig;

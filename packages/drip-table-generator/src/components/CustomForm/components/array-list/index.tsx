@@ -19,7 +19,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   public static componentName = 'array-list';
 
   private changeColumnItem(key: string, value: unknown, index: number) {
-    const currentValue = this.props.value?.slice() || [];
+    const currentValue = this.value?.slice() || [];
     if (!currentValue[index]) {
       currentValue[index] = {};
     }
@@ -38,11 +38,11 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   }
 
   private get value() {
-    return this.props.value || this.props.schema.default as Record<string, unknown>[] | undefined;
+    return this.props.value ?? this.props.schema.default as Record<string, unknown>[] | undefined;
   }
 
   private renderAttributeComponent(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
-    const currentValue = (this.props.value || [])[parentIndex] || {};
+    const currentValue = (this.value || [])[parentIndex] || {};
     const uiProps = schema['ui:props'] || {};
     if (schema['ui:type']?.startsWith('custom::')) {
       const ComponentName = schema['ui:type']?.replace('custom::', '');
@@ -88,7 +88,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
   }
 
   private visible(schema: DTGComponentPropertySchema, index: number, parentIndex: number) {
-    const currentValue = (this.props.value || [])[parentIndex] || {};
+    const currentValue = (this.value || [])[parentIndex] || {};
     if (typeof schema.visible === 'function') {
       return schema.visible(currentValue[schema.name], currentValue, index, parentIndex);
     } if (typeof schema.visible === 'string') {
@@ -137,7 +137,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
           <div
             className="jfe-drip-table-generator-array-component-close-button"
             onClick={() => {
-              const currentValue = this.props.value?.slice() || [];
+              const currentValue = this.value?.slice() || [];
               currentValue.splice(index, 1);
               this.props.onChange?.(currentValue);
             }}
@@ -162,9 +162,9 @@ export default class ArrayComponent extends React.PureComponent<Props> {
             icon={<PlusCircleOutlined />}
             shape="circle"
             size="small"
-            disabled={!!(maxLength && (this.props.value || []).length >= maxLength)}
+            disabled={!!(maxLength && (this.value || []).length >= maxLength)}
             onClick={() => {
-              const currentValue = this.props.value?.slice() || [];
+              const currentValue = this.value?.slice() || [];
               currentValue.splice(index + 1, 0, { paramName: '', prefix: '', suffix: '' });
               this.props.onChange?.(currentValue);
             }}
@@ -174,7 +174,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
             shape="circle"
             size="small"
             onClick={() => {
-              const currentValue = this.props.value?.slice() || [];
+              const currentValue = this.value?.slice() || [];
               currentValue.splice(index, 1);
               this.props.onChange?.(currentValue);
             }}
@@ -197,7 +197,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
               icon={<PlusOutlined />}
               onClick={() => {
                 const value: Record<string, unknown>[] = [
-                  ...this.props.value || [],
+                  ...this.value || [],
                   { ...this.defaultValue },
                 ];
                 this.props.onChange?.(value);
