@@ -64,9 +64,11 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
       <Menu.Item onClick={(event) => {
         event.domEvent.preventDefault();
         event.domEvent.stopPropagation();
+        const title = columns[columnIndex]?.title;
+        const titleLabel = typeof title === 'object' ? `${typeof title.body === 'object' ? title.body.content : title.body}` : title;
         Modal.confirm({
           title: '删除列提醒',
-          content: `确认删除该列（${columns[columnIndex]?.title}）吗？`,
+          content: `确认删除该列（${titleLabel}）吗？`,
           okText: '删除',
           okButtonProps: { type: 'primary', danger: true },
           cancelText: '取消',

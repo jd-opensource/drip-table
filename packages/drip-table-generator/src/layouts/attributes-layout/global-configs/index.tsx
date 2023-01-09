@@ -116,6 +116,9 @@ const GlobalConfigForm = <
     if (typeof globalConfigs?.pagination === 'object') {
       formData.pagination = true;
     }
+    if (typeof globalConfigs?.innerStyle === 'object') {
+      formData.innerStyle = true;
+    }
     if (globalConfigs) {
       globalConfigsPrefix.forEach((prefix) => {
         decodeConfigsWithPrefix(prefix, globalConfigs, formData);
@@ -200,7 +203,7 @@ const GlobalConfigForm = <
         x: formData.scrollX as number,
         y: formData.scrollY as number,
       },
-      innerStyle,
+      innerStyle: formData.innerStyle ? innerStyle : void 0,
       rowHeader: formData.rowHeader
         ? {
           style: { ...rowHeaderStyle },

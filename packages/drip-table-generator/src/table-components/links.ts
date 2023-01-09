@@ -84,8 +84,16 @@ export default {
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '链接打开方式',
-      'ui:type': 'text',
-      'ui:props': { style: { width: '100%' } },
+      'ui:type': 'auto-complete',
+      'ui:props': {
+        style: { width: '100%' },
+        options: [
+          { label: '新页面打开', value: '_blank' },
+          { label: '当前页打开', value: '_self' },
+          { label: '父集框架中打开', value: '_parent' },
+          { label: '整个窗口中打开', value: '_top' },
+        ],
+      },
       type: 'string',
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
@@ -135,7 +143,15 @@ export default {
           {
             name: 'target',
             'ui:title': '链接打开方式',
-            'ui:type': 'input',
+            'ui:type': 'auto-complete',
+            'ui:props': {
+              options: [
+                { label: '新页面打开', value: '_blank' },
+                { label: '当前页打开', value: '_self' },
+                { label: '父集框架中打开', value: '_parent' },
+                { label: '整个窗口中打开', value: '_top' },
+              ],
+            },
             type: 'string',
             default: '',
           },

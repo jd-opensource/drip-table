@@ -26,8 +26,8 @@ export default {
       },
       'ui:props': {
         style: {
-          height: 420,
-          marginTop: '-16px',
+          minHeight: 320,
+          marginTop: '-54px',
         },
       },
       'ui:wrapperStyle': {},
