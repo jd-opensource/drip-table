@@ -268,7 +268,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
                 <Collapse.Panel key={groupIndex} header={groupName}>
                   { configs.filter(item => groupName === (item.group || '其他') && !item.subGroup).map((item, index) => this.renderFormItem(item, index)) }
                   { subGroups.length > 0 && (
-                  <Collapse>
+                  <Collapse style={{ width: 'calc(100% + 24px)', marginLeft: '-12px' }}>
                     { subGroups.map((subGroupName, subGroupIndex) => (
                       <Collapse.Panel key={subGroupIndex} header={subGroupName}>
                         { configs.filter(item => groupName === (item.group || '其他') && item.subGroup === subGroupName).map((item, index) => this.renderFormItem(item, index)) }
@@ -296,7 +296,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
                 <div>
                   { configs.filter(item => groupName === (item.group || '其他') && !item.subGroup).map((item, index) => this.renderFormItem(item, index)) }
                   { subGroups.length > 0 && (
-                  <Collapse>
+                  <Collapse style={{ width: 'calc(100% + 24px)', marginLeft: '-12px' }}>
                     { subGroups.map((subGroupName, subGroupIndex) => (
                       <Collapse.Panel key={subGroupIndex} header={subGroupName}>
                         { configs.filter(item => groupName === (item.group || '其他') && item.subGroup === subGroupName).map((item, index) => this.renderFormItem(item, index)) }
