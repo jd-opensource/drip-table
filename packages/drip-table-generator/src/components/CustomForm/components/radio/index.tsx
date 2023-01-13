@@ -13,9 +13,7 @@ import { filterAttributes } from '@/utils';
 
 import { DTGComponentBaseProperty } from '..';
 
-const RadioGroup = Radio.Group;
-
-type RadioGroupProps = React.ComponentProps<typeof RadioGroup>;
+type RadioGroupProps = React.ComponentProps<typeof Radio.Group>;
 type RadioValueType = RadioGroupProps['value'];
 type RadioOptionType = CheckboxOptionType & { description?: string };
 
@@ -38,7 +36,7 @@ export default class RadioComponent extends React.PureComponent<Props> {
     const uiProps = this.props.schema['ui:props'] || {};
     const RadioItem = uiProps.mode === 'button' ? Radio.Button : Radio;
     return (
-      <RadioGroup
+      <Radio.Group
         {...filterAttributes(uiProps, 'options')}
         defaultValue={config.default as RadioGroupProps['defaultValue']}
         buttonStyle={uiProps.mode === 'button' ? uiProps.buttonStyle as 'outline' | 'solid' : void 0}
@@ -63,7 +61,7 @@ export default class RadioComponent extends React.PureComponent<Props> {
             </RadioItem>
           );
         }) }
-      </RadioGroup>
+      </Radio.Group>
     );
   }
 }
