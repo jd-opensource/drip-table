@@ -97,6 +97,7 @@ const AttributesLayout = <
                 ref={editor}
                 width={(drawerWidth[drawerType] || 0)}
                 height={(body.current?.offsetHeight || 0)}
+                onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
               />
               )
             }
