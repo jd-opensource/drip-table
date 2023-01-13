@@ -65,9 +65,10 @@ const Toolbar = <
 
   /**
    * 渲染一个Modal用来展示JSON Schema配置
+   * @param setState {DripTableGeneratorContext['setState']} 设置 Context 状态
    * @returns {JSX.Element} 返回React组件
    */
-  const renderSchemaModal = () => {
+  const renderSchemaModal = (setState: DripTableGeneratorContext['setState']) => {
     if (modalStatus !== 'export' && modalStatus !== 'import') {
       return null;
     }
@@ -78,9 +79,9 @@ const Toolbar = <
     return (
       <Input.TextArea
         style={{ minHeight: '560px' }}
-        value={defaultValue}
+        value={modalStatus === 'export' && !code ? defaultValue : code}
         onChange={(e) => {
-          if (modalStatus === 'import') { setCode(e.target.value); }
+          setCode(e.target.value);
         }}
       />
     );
@@ -128,7 +129,7 @@ const Toolbar = <
           </div>
           <div className="jfe-drip-table-generator-toolbar-toolbar-container-rightbar">
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>全局设置</Button>
-            <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>数据源</Button>
+            <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>表格数据</Button>
             <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}>{ mode === 'edit' ? '预览' : '编辑' }</Button>
             <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('import')}>导入配置</Button>
             <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('export')}>导出配置</Button>
@@ -141,6 +142,28 @@ const Toolbar = <
               modalStatus === 'export'
                 ? [ // 导出复制
                   <Button onClick={() => setModalStatus('')}>确认</Button>,
+                  <Button onClick={() => {
+                    let hasError = false;
+                    try {
+                      const json = JSON.parse(code);
+                      const globalConfigsToImport = filterAttributes(json, ['columns']);
+                      const columnsToImport = json.columns?.map((item, index) => ({ key: `${item.component}_${mockId()}`, index, ...item })) as DripTableGeneratorContext['columns'];
+                      setState({
+                        globalConfigs: globalConfigsToImport,
+                        columns: columnsToImport,
+                      });
+                    } catch {
+                      hasError = true;
+                      message.error('解析出错, 请编辑正确的格式');
+                    } finally {
+                      if (!hasError) {
+                        message.success('配置编辑成功');
+                      }
+                    }
+                  }}
+                  >
+                    确认编辑
+                  </Button>,
                   <Clipboard
                     style={{ marginLeft: '8px' }}
                     component="span"
@@ -193,7 +216,7 @@ const Toolbar = <
             }
             onCancel={() => setModalStatus('')}
           >
-            { renderSchemaModal() }
+            { renderSchemaModal(setState) }
           </Modal>
         </div>
       ) }
