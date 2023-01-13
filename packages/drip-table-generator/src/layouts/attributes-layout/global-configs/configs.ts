@@ -555,5 +555,16 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     default: false,
     visible: (v, formData) => !!formData?.rowHeader,
   },
-  ...StyleAttrConfigs('innerStyle', '全局样式'),
+  {
+    name: 'innerStyle',
+    group: '全局样式',
+    'ui:title': '自定义全局样式',
+    'ui:type': 'switch',
+    'ui:props': {},
+    type: 'boolean',
+    default: false,
+  },
+  ...StyleAttrConfigs('innerStyle', '全局样式', {
+    visible: (v, formData) => !!formData?.innerStyle,
+  }),
 ];
