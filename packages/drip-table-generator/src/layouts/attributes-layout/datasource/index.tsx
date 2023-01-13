@@ -6,21 +6,30 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { Alert } from 'antd';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
 import { GeneratorContext } from '@/context';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 export type DataSourceHandler = {
   formatDataSource: () => void;
 }
 
-interface DataSourceEditorProps {
+interface DataSourceEditorProps <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>{
   width?: number;
   height?: number;
+  onDataSourceChange: DripTableGeneratorProps<RecordType, ExtraOptions>['onDataSourceChange'];
 }
 
-const DataSourceEditor = (props: DataSourceEditorProps, ref: React.ForwardedRef<DataSourceHandler>) => {
+const DataSourceEditor = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: DataSourceEditorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DataSourceHandler>) => {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
   const [code, setCode] = React.useState(JSON.stringify(previewDataSource, null, 4));
@@ -48,7 +57,9 @@ const DataSourceEditor = (props: DataSourceEditorProps, ref: React.ForwardedRef<
               try {
                 const customDataSource = JSON.parse(value || '');
                 if (Array.isArray(customDataSource)) {
-                  setState({ previewDataSource: customDataSource });
+                  setState({ previewDataSource: customDataSource }, () => {
+                    props.onDataSourceChange?.(customDataSource);
+                  });
                 }
               } catch (error) {
                 setCodeErrorMessage((error as Error).message);

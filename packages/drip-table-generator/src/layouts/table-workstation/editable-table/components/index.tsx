@@ -23,9 +23,8 @@ import React from 'react';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import { getSchemaValue } from '@/layouts/utils';
-import components from '@/table-components';
-import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { getColumnItemConfigs, getComponentsConfigs, getSchemaValue } from '@/layouts/utils';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import { getWidth, updateColumnItemByPath } from '../../utils';
 
@@ -75,46 +74,15 @@ const EditableGroupComponent = <
 >(props: EditableGroupComponentProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
 
-  const getAllComponentsConfigs = React.useMemo(() => {
-    let componentsToUse = components;
-    if (props.customComponentPanel) {
-      const customComponents = props.customComponentPanel.configs;
-      componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
-    }
-    return [...componentsToUse];
-  }, [props.customComponentPanel]);
+  const getAllComponentsConfigs = React.useMemo(() => getComponentsConfigs('', props.customComponentPanel), [props.customComponentPanel]);
 
-  const getColumnConfigs = (componentType: string) => {
-    const columnConfig = getAllComponentsConfigs.find(schema => schema['ui:type'] === componentType);
-    if (columnConfig) {
-      columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
-    }
-    columnConfig?.attrSchema.forEach((schema) => {
-      const uiProps = schema['ui:props'];
-      if (!uiProps) {
-        return;
-      }
-      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
-        uiProps.options = props.mockDataSource
-          ? Object.keys(context.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
-          : props.dataFields?.map(key => ({ label: key, value: key })) || [];
-      }
-      if (uiProps.items) {
-        (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
-          const itemUiProps = item['ui:props'];
-          if (!itemUiProps) {
-            return;
-          }
-          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
-            itemUiProps.options = props.mockDataSource
-              ? Object.keys(context.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
-              : props.dataFields?.map(key => ({ label: key, value: key })) || [];
-          }
-        });
-      }
-    });
-    return columnConfig;
-  };
+  const getColumnConfigs = (componentType: string) => getColumnItemConfigs(componentType, {
+    componentsConfigs: getAllComponentsConfigs,
+    previewDataSource: context.previewDataSource,
+    mockDataSource: props.mockDataSource,
+    dataFields: props.dataFields,
+    filterSchema: true,
+  });
 
   const isChecked = (currentCheckedIndex: number) => {
     const currentColumnPath = [...props?.parentIndex || [], currentCheckedIndex];
@@ -196,13 +164,10 @@ const EditableGroupComponent = <
                             const configs = getColumnConfigs(columnToAdd.component);
                             const options: Record<string, unknown> = {};
                             const additionalProps = {};
-                            const componentStyle = {};
                             configs?.attrSchema.forEach((schema) => {
                               if (schema.name.startsWith('options.')) {
                                 options[schema.name.replace('options.', '')] = schema.default;
-                              } else if (schema.name.startsWith('style.')) {
-                                componentStyle[schema.name.replace('style.', '')] = schema.default;
-                              } else if (!schema.name.startsWith('titleStyle.')) {
+                              } else if (!schema.name.startsWith('style') && !schema.name.startsWith('titleStyle')) {
                                 additionalProps[schema.name] = schema.default;
                               }
                             });
@@ -218,7 +183,6 @@ const EditableGroupComponent = <
                               component: columnToAdd.component,
                               options,
                               ...additionalProps,
-                              style: componentStyle,
                             };
                             const theColumn = columns.find(item => item.key === props.column?.key);
                             if (theColumn) {

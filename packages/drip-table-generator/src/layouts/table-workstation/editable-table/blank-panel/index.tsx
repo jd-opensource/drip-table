@@ -13,7 +13,7 @@ import React from 'react';
 
 import Icon from '@/components/Icon';
 import { defaultComponentIcon } from '@/layouts/components-bar/configs';
-import { getComponents, getGroups } from '@/layouts/utils';
+import { getComponentsConfigs, getGroups } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
 interface BlankPanelProps<
@@ -34,7 +34,7 @@ const BlankPanel = <
     <Menu>
       { getGroups(props.customComponentPanel).map((group, index) => (
         <Menu.ItemGroup key={index} title={group}>
-          { getComponents(group, props.customComponentPanel).map((component, i) => (
+          { getComponentsConfigs(group, props.customComponentPanel).map((component, i) => (
             <Menu.Item
               key={`${index}_${i}`}
               onClick={() => { props.onMenuClick(component, i); }}

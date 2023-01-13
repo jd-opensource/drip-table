@@ -7,11 +7,12 @@
  */
 
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, ExtractDripTableColumnSchema, ExtractDripTableExtraOption } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { DripTableGeneratorContext } from '@/context';
 import tableComponents from '@/table-components';
 
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
+import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '../typing';
 
 export const getGroups = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -34,16 +35,58 @@ export const getGroups = <
   return groups;
 };
 
-export const getComponents = <
+export const getComponentsConfigs = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(groupName: string, customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
-  let componentsToUse = tableComponents;
+>(groupName?: string, customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
+  let componentsToUse = cloneDeep(tableComponents);
   if (customComponentPanel) {
     const customComponents = customComponentPanel.configs;
     componentsToUse = customComponentPanel.mode === 'add' ? [...tableComponents, ...customComponents] : [...customComponents];
   }
-  return [...componentsToUse].filter(item => item.group === groupName);
+  return groupName ? [...componentsToUse].filter(item => item.group === groupName) : [...componentsToUse];
+};
+
+export const getColumnItemConfigs = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(componentType: string, options: {
+    componentsConfigs: DripTableComponentAttrConfig[];
+    previewDataSource: DripTableGeneratorContext['previewDataSource'];
+    dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
+    mockDataSource?: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+    filterSchema?: boolean;
+  }) => {
+  const theComponent = options.componentsConfigs.find(schema => schema['ui:type'] === componentType);
+  const columnConfig = theComponent ? Object.assign({}, { ...theComponent, attrSchema: [...theComponent.attrSchema] }) : void 0;
+  if (columnConfig && options.filterSchema) {
+    columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
+  }
+  columnConfig?.attrSchema.forEach((schema) => {
+    const uiProps = schema['ui:props'];
+    if (!uiProps) {
+      return;
+    }
+    if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+      uiProps.options = options.mockDataSource
+        ? Object.keys(options.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+        : options.dataFields?.map(key => ({ label: key, value: key })) || [];
+    }
+    if (uiProps.items) {
+      (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
+        const itemUiProps = item['ui:props'];
+        if (!itemUiProps) {
+          return;
+        }
+        if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
+          itemUiProps.options = options.mockDataSource
+            ? Object.keys(options.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
+            : options.dataFields?.map(key => ({ label: key, value: key })) || [];
+        }
+      });
+    }
+  });
+  return columnConfig;
 };
 
 export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => ({
