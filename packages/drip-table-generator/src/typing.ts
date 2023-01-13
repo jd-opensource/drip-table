@@ -213,4 +213,5 @@ export interface DripTableGeneratorProps<
   };
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
+  onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
 }
