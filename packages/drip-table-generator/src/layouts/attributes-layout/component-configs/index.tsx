@@ -13,8 +13,8 @@ import React from 'react';
 import { filterAttributes } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
-import components from '@/table-components';
-import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { getColumnItemConfigs, getComponentsConfigs } from '@/layouts/utils';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 interface ComponentConfigFormProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -40,43 +40,14 @@ const ComponentConfigForm = <
 >(props: ComponentConfigFormProps<RecordType, ExtraOptions>) => {
   const { previewDataSource } = React.useContext(GeneratorContext);
 
-  const getComponents = () => {
-    let componentsToUse = components;
-    if (props.customComponentPanel) {
-      const customComponents = props.customComponentPanel.configs;
-      componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
-    }
-    return [...componentsToUse];
-  };
+  const getAllComponentsConfigs = React.useMemo(() => getComponentsConfigs('', props.customComponentPanel), [props.customComponentPanel]);
 
-  const getColumnConfigs = (componentType: string) => {
-    const columnConfig = getComponents().find(schema => schema['ui:type'] === componentType);
-    columnConfig?.attrSchema.forEach((schema) => {
-      const uiProps = schema['ui:props'];
-      if (!uiProps) {
-        return;
-      }
-      if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
-        uiProps.options = props.mockDataSource
-          ? Object.keys(previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
-          : props.dataFields?.map(key => ({ label: key, value: key })) || [];
-      }
-      if (uiProps.items) {
-        (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
-          const itemUiProps = item['ui:props'];
-          if (!itemUiProps) {
-            return;
-          }
-          if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
-            itemUiProps.options = props.mockDataSource
-              ? Object.keys(previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
-              : props.dataFields?.map(key => ({ label: key, value: key })) || [];
-          }
-        });
-      }
-    });
-    return columnConfig;
-  };
+  const getColumnConfigs = (componentType: string) => getColumnItemConfigs(componentType, {
+    componentsConfigs: getAllComponentsConfigs,
+    previewDataSource,
+    mockDataSource: props.mockDataSource,
+    dataFields: props.dataFields,
+  });
 
   const decodeColumnConfigs = (columnConfigs?: DripTableGeneratorContext['currentColumn'], defaultData?: Record<string, unknown>) => {
     const formData: Record<string, unknown> = {};

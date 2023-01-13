@@ -9,6 +9,7 @@ import './index.less';
 
 import { Button } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { mockId } from '@/utils';
@@ -17,7 +18,7 @@ import { DripTableColumn, DripTableGeneratorContext, GeneratorContext } from '@/
 import components from '@/table-components';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
-import { getComponents, getGroups } from '../utils';
+import { getComponentsConfigs, getGroups } from '../utils';
 import { defaultComponentIcon } from './configs';
 
 interface ComponentsBarProps<
@@ -36,7 +37,7 @@ const ComponentsBar = <
   const context = React.useContext(GeneratorContext);
 
   const getAllComponentsConfigs = () => {
-    let componentsToUse = components;
+    let componentsToUse = cloneDeep(components);
     if (props.customComponentPanel) {
       const customComponents = props.customComponentPanel.configs;
       componentsToUse = props.customComponentPanel.mode === 'add' ? [...components, ...customComponents] : [...customComponents];
@@ -119,7 +120,7 @@ const ComponentsBar = <
               <div key={groupIndex}>
                 <div className="jfe-drip-table-generator-components-bar-component-title">{ groupName.length > 6 ? groupName.replace(/组件$/u, '') : groupName }</div>
                 {
-                  getComponents(groupName, props.customComponentPanel).map((component, index) => (
+                  getComponentsConfigs(groupName, props.customComponentPanel).map((component, index) => (
                     <Button
                       type="text"
                       className="jfe-drip-table-generator-components-bar-component-title-item"
