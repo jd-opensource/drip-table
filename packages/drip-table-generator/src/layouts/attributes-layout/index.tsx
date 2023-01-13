@@ -32,7 +32,7 @@ const AttributesLayout = <
   const body = React.useRef<HTMLDivElement>(null);
   const editor = React.useRef<DataSourceHandler>(null);
   const drawerTitleMapper = {
-    datasource: '数据源配置',
+    datasource: '表格数据配置',
     global: '全局配置',
     column: '组件配置',
     'column-item': '子组件配置',
