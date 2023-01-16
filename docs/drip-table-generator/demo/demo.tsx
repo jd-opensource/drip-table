@@ -57,7 +57,7 @@ const Demo = () => (
     SubtableDataSourceKey: SubtableDataSourceKey;
   }>
     mockDataSource
-    style={{ height: '756px' }}
+    style={{ height: '738px' }}
     driver={DripTableDriverAntDesign}
     schema={initialSchema}
     dataSource={mockData.slice(0, 1)}

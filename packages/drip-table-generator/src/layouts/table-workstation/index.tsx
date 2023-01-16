@@ -30,7 +30,7 @@ const TableWorkStation = <
     <div
       className="jfe-drip-table-generator-workstation-generator-workstation"
       style={{
-        overflow: context.globalConfigs.scroll?.y ? void 0 : 'auto',
+        overflow: context.mode === 'edit' ? void 0 : 'hidden',
         width: context.drawerType ? `calc(100% - 128px - ${drawerWidth[context.drawerType]}px)` : void 0,
       }}
       ref={tableWrapper}
