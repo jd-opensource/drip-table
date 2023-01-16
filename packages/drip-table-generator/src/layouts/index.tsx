@@ -24,7 +24,7 @@ const GeneratorLayout = <
   <div style={props.style} className="jfe-drip-table-generator-layouts-container">
     { props.showToolLayout === false ? null : <Toolbar {...props} style={props.toolbarStyle} onExportSchema={props.onExportSchema} /> }
     <div className="jfe-drip-table-generator-layouts-wrapper">
-      <div className="jfe-drip-table-generator-layouts-navbar" style={{ height: props.style?.height ? `calc(${props.style?.height} - 48px)` : void 0 }}>
+      <div className="jfe-drip-table-generator-layouts-navbar">
         <ComponentsBar
           customComponentPanel={props.customComponentPanel}
           mockDataSource={props.mockDataSource}
