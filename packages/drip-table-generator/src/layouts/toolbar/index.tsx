@@ -17,10 +17,11 @@ import { CheckSquareOutlined,
   SettingOutlined,
   SortAscendingOutlined,
   ThunderboltOutlined } from '@ant-design/icons';
-import { Button, Input, message, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 import Clipboard from 'react-clipboard.js';
+import MonacoEditor from 'react-monaco-editor';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
@@ -65,10 +66,9 @@ const Toolbar = <
 
   /**
    * 渲染一个Modal用来展示JSON Schema配置
-   * @param setState {DripTableGeneratorContext['setState']} 设置 Context 状态
    * @returns {JSX.Element} 返回React组件
    */
-  const renderSchemaModal = (setState: DripTableGeneratorContext['setState']) => {
+  const renderSchemaModal = () => {
     if (modalStatus !== 'export' && modalStatus !== 'import') {
       return null;
     }
@@ -77,11 +77,14 @@ const Toolbar = <
       ? JSON.stringify(getSchemaValue(context), null, 4)
       : code || '';
     return (
-      <Input.TextArea
-        style={{ minHeight: '560px' }}
+      <MonacoEditor
+        width="100%"
+        height="500px"
+        language="json"
+        theme="vs-dark"
         value={modalStatus === 'export' && !code ? defaultValue : code}
-        onChange={(e) => {
-          setCode(e.target.value);
+        onChange={(value) => {
+          setCode(value);
         }}
       />
     );
@@ -183,6 +186,18 @@ const Toolbar = <
                 ]
                 : [ // 导入解析
                   <Button onClick={() => setModalStatus('')}>取消</Button>,
+                  <Button onClick={() => {
+                    try {
+                      const inputCode = JSON.parse(code);
+                      const formattedCode = JSON.stringify(inputCode, null, 4);
+                      setCode(formattedCode);
+                    } catch {
+                      message.error('解析出错, 请输入正确的JSON数据');
+                    }
+                  }}
+                  >
+                    格式化
+                  </Button>,
                   <Button
                     type="primary"
                     onClick={() => {
@@ -205,18 +220,18 @@ const Toolbar = <
                         if (!hasError) {
                           message.success('数据导入成功');
                         }
+                        setModalStatus('');
+                        setCode('');
                       }
-                      setModalStatus('');
-                      setCode('');
                     }}
                   >
                     确认导入
                   </Button>,
                 ]
             }
-            onCancel={() => setModalStatus('')}
+            onCancel={() => { setModalStatus(''); setCode(''); }}
           >
-            { renderSchemaModal(setState) }
+            { renderSchemaModal() }
           </Modal>
         </div>
       ) }
