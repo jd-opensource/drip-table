@@ -133,7 +133,7 @@ const EditableTable = <
       });
       setCellHeight(maxHeight);
     }, 50);
-  }, [context.columns.length, context.currentColumn, context.globalConfigs.size, context.previewDataSource]);
+  }, [context.columns?.length, context.currentColumn, context.globalConfigs?.size, context.previewDataSource]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -143,12 +143,12 @@ const EditableTable = <
       setBlankHeight(siblingHeight || tableHeight);
     }, 50);
   }, [
-    context.columns.length,
+    context.columns?.length,
     context.currentColumn,
-    context.globalConfigs.size,
-    context.globalConfigs.sticky,
-    context.globalConfigs.scroll?.y,
-    context.globalConfigs.pagination,
+    context.globalConfigs?.size,
+    context.globalConfigs?.sticky,
+    context.globalConfigs?.scroll?.y,
+    context.globalConfigs?.pagination,
     context.previewDataSource,
   ]);
 
@@ -161,12 +161,12 @@ const EditableTable = <
       width += ' - 48px';
     }
     return width;
-  }, [context.columns, context.currentColumn, context.globalConfigs.rowSelection]);
+  }, [context.columns, context.currentColumn, context.globalConfigs?.rowSelection]);
 
   const dataSource = React.useMemo(() => {
     const { previewDataSource, globalConfigs: { pagination } } = context;
     return previewDataSource.slice(0, pagination ? pagination.pageSize : void 0);
-  }, [context.globalConfigs.pagination, context.previewDataSource]);
+  }, [context.globalConfigs?.pagination, context.previewDataSource]);
 
   const onMenuClick = (
     component: DripTableComponentAttrConfig,
