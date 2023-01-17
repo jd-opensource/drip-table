@@ -108,8 +108,6 @@ const SlotItemConfigs = [
     ...AlignConfigs,
     'ui:layout': { labelCol: 8, wrapperCol: 16 },
     type: 'string',
-    visible: (value: string, formData?: Record<string, unknown>) =>
-      formData?.type === 'text' || formData?.type === 'search' || formData?.type === 'insert-button',
   },
   {
     name: 'span',
@@ -120,7 +118,16 @@ const SlotItemConfigs = [
       placeholder: '请输入"1-24", 或者"flex-auto"',
     },
     type: 'string',
-    visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'text',
+  },
+  {
+    name: 'visible',
+    'ui:title': '是否可见',
+    'ui:type': 'switch',
+    'ui:props': {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+    },
+    type: 'boolean',
   },
   {
     name: 'wrapperStyle.width',
@@ -175,19 +182,21 @@ const SlotItemConfigs = [
       items: [
         {
           name: 'label',
+          'ui:layout': { labelCol: 6, wrapperCol: 18 },
           'ui:title': '文案',
           'ui:type': 'input',
           default: '',
         },
         {
           name: 'value',
+          'ui:layout': { labelCol: 6, wrapperCol: 18 },
           'ui:title': '值',
           'ui:type': 'input',
           default: '',
         },
       ],
     },
-    'ui:layout': { labelCol: 16, wrapperCol: 24 },
+    'ui:layout': { labelCol: 8, wrapperCol: 16 },
     type: 'array',
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'search',
   },
