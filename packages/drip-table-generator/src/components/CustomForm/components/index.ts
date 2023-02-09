@@ -17,6 +17,7 @@ import CascadeComponent from './cascade';
 import Checkbox from './checkbox';
 import CodeEditorComponent from './code-editor';
 import ColorPicker from './color-picker';
+import DataTranslationComponent from './data-translation';
 import InputComponent from './input';
 import InputNumberComponent from './number';
 import RadioComponent from './radio';
@@ -42,6 +43,7 @@ export default {
   [RichTextEditorComponent.componentName]: RichTextEditorComponent,
   [StyleNumbersComponent.componentName]: StyleNumbersComponent,
   [BoxShadowComponent.componentName]: BoxShadowComponent,
+  [DataTranslationComponent.componentName]: DataTranslationComponent,
 };
 
 export interface CustomComponentProps {
