@@ -343,12 +343,12 @@ const dataTranslation: DTGComponentPropertySchema = {
   name: 'dataTranslation',
   group: '属性',
   'ui:title': '数据处理',
-  'ui:type': 'text',
+  'ui:type': 'data-translation',
   'ui:props': {
     style: { width: '100%' },
   },
   'ui:description': {
-    title: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value || "暂无数据"`',
+    title: 'props.value对应dataIndex的值，props.record对应rowData的值,return语句写法案例: `return props.value || "暂无数据"`',
     trigger: 'hover',
     type: 'icon',
   },
@@ -363,7 +363,7 @@ const disableFunc: DTGComponentPropertySchema = {
   'ui:type': 'text',
   'ui:props': {
     style: { width: '100%' },
-    placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+    placeholder: 'props.value对应dataIndex的值，props.record对应rowData的值,return语句写法案例: `return props.value === 1',
 
   },
   'ui:description': {
@@ -382,7 +382,7 @@ const visibleFunc: DTGComponentPropertySchema = {
   'ui:type': 'text',
   'ui:props': {
     style: { width: '100%' },
-    placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
+    placeholder: 'props.value对应dataIndex的值，props.record对应rowData的值,return语句写法案例: `return props.value === 1',
 
   },
   'ui:description': {

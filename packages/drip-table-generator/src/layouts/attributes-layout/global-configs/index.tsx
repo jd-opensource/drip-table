@@ -136,6 +136,9 @@ const GlobalConfigForm = <
           type: 'display-column-selector',
           selectorButtonType: element.selectorButtonType,
           selectorButtonText: element.selectorButtonText,
+          span: Number(element.span) || element.span,
+          align: element.align,
+          visible: element.visible,
         };
       }
       if (element.type === 'spacer') {
@@ -143,6 +146,9 @@ const GlobalConfigForm = <
         return {
           type: 'spacer',
           style: { width },
+          span: Number(element.span) || element.span,
+          align: element.align,
+          visible: element.visible,
         };
       }
       if (element.type === 'text') {
@@ -151,6 +157,7 @@ const GlobalConfigForm = <
           span: Number(element.span) || element.span,
           align: element.align,
           text: element.text,
+          visible: element.visible,
         };
       }
       if (element.type === 'search') {
@@ -159,6 +166,8 @@ const GlobalConfigForm = <
           type: 'search',
           wrapperStyle: { width },
           align: element.align,
+          span: Number(element.span) || element.span,
+          visible: element.visible,
           placeholder: element.placeholder,
           allowClear: element.allowClear,
           searchButtonText: element.searchButtonText,
@@ -170,6 +179,8 @@ const GlobalConfigForm = <
         return {
           type: 'insert-button',
           align: element.align,
+          span: Number(element.span) || element.span,
+          visible: element.visible,
           insertButtonText: element.insertButtonText,
           showIcon: element.showIcon,
         };
@@ -178,7 +189,10 @@ const GlobalConfigForm = <
         return {
           type: 'slot',
           slot: element.slot,
-          props: { ...filterAttributes(element, ['type', 'slot', 'props']) },
+          props: { ...filterAttributes(element, ['type', 'slot', 'props', 'span', 'align', 'visible']) },
+          span: Number(element.span) || element.span,
+          align: element.align,
+          visible: element.visible,
         };
       }
       return { ...element };
