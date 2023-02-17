@@ -29,6 +29,12 @@ const ColumnInsertModal = (props: ColumnInsertModalProps) => (
         onOk={() => {
           try {
             const jsonVal = JSON.parse(props.value);
+            if (typeof jsonVal !== 'object'
+            || !Object.keys(jsonVal).includes('component')
+            || !Object.keys(jsonVal).includes('title')) {
+              message.error('参数输入不合法');
+              return;
+            }
             const column = { ...jsonVal, innerIndexForGenerator: props.index };
             column.key = `${column.component}_${mockId()}`;
             columns.splice(props.index, 0, column);
