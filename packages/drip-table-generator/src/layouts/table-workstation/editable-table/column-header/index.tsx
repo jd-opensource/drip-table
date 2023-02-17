@@ -98,8 +98,8 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
         let columnTitle = '';
         if (typeof props.column.title === 'string') {
           columnTitle = props.column.title;
-        } else if (typeof props.column.title.body === 'string') {
-          columnTitle = props.column.title.body;
+        } else if (typeof props.column.title?.body === 'string') {
+          columnTitle = props.column.title?.body;
         } else {
           columnTitle = props.column.title?.body?.content;
         }
