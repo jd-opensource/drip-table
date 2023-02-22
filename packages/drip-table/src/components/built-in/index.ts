@@ -9,7 +9,7 @@
 import { DripTableDataColumnSchema } from '@/types';
 
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
-import DTCDate, { DTCDateColumnSchema } from './date';
+import DTCDatePicker, { DTCDateColumnSchema as DTCDatePickerColumnSchema } from './date-picker';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCInputNumber, { DTCInputNumberColumnSchema } from './input-number';
@@ -40,7 +40,7 @@ export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDat
   | DTCRenderHTMLRemoteColumnSchema
   | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
-  | DTCDateColumnSchema
+  | DTCDatePickerColumnSchema
   | DTCRichTextColumnSchema
   | DTCPopUpPageColumnSchema
   | DTCInputNumberColumnSchema
@@ -57,7 +57,7 @@ const DripTableBuiltInComponents = {
   [DTCGroup.componentName]: DTCGroup,
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
-  [DTCDate.componentName]: DTCDate,
+  [DTCDatePicker.componentName]: DTCDatePicker,
   [DTCPopUpPage.componentName]: DTCPopUpPage,
   [DTCInputNumber.componentName]: DTCInputNumber,
 };
