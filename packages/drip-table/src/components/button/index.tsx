@@ -12,16 +12,16 @@ import classNames from 'classnames';
 import React from 'react';
 
 export interface ButtonProps {
-  className?: string;
   style?: React.CSSProperties;
-  children?: React.ReactNode;
-  type?: 'primary' | 'dashed' | 'text' | 'link';
+  className?: string;
+  type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
   shape?: 'circle' | 'round';
   size?: 'large' | 'middle' | 'small';
   danger?: boolean;
   ghost?: boolean;
-  disabled?: boolean;
   icon?: React.ReactNode;
+  disabled?: boolean;
+  children?: React.ReactNode;
   onClick?: React.DOMAttributes<HTMLButtonElement>['onClick'];
 }
 const prefixCls = 'jfe-drip-table-button';
@@ -31,15 +31,17 @@ const Button = React.memo((props: ButtonProps) => (
     style={props.style}
     className={classNames(`${prefixCls}`, props.className, {
       [`${prefixCls}-primary`]: props.type === 'primary',
+      [`${prefixCls}-ghost`]: props.type === 'ghost',
       [`${prefixCls}-dashed`]: props.type === 'dashed',
       [`${prefixCls}-text`]: props.type === 'text',
       [`${prefixCls}-link`]: props.type === 'link',
+      [`${prefixCls}-default`]: props.type === 'default',
       [`${prefixCls}-circle`]: props.shape === 'circle',
       [`${prefixCls}-round`]: props.shape === 'round',
       [`${prefixCls}-sm`]: props.size === 'small',
       [`${prefixCls}-lg`]: props.size === 'large',
       [`${prefixCls}-danger`]: props.danger,
-      [`${prefixCls}-ghost`]: props.ghost,
+      [`${prefixCls}-background-ghost`]: props.ghost,
       [`${prefixCls}-icon-only`]: !props.children && props.icon,
     })}
     disabled={props.disabled}
