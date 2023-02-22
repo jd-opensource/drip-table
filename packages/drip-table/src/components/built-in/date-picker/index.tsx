@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { indexValue } from '@/utils/operator';
+import Alert from '@/components/alert';
 import Picker from '@/components/date-picker';
 
 import { DripTableComponentProps } from '../component';
@@ -287,7 +288,6 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
   }
 
   public render() {
-    const Alert = this.props.driver.components.Alert;
     const { format } = this.props.schema.options;
 
     if (!this.configured) {

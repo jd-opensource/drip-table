@@ -12,6 +12,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { safeExecute } from '@/utils/sandbox';
+import Alert from '@/components/alert';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -229,7 +230,6 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   public render(): JSX.Element {
     const options = this.props.schema.options;
-    const Alert = this.props.driver.components.Alert;
     const DropDown = this.props.driver.components.Dropdown;
     if (!this.visible && options.mode === 'single') {
       return <div />;

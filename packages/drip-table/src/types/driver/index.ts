@@ -17,18 +17,6 @@ export interface DripTableDriver {
    * 组件库
    */
   components: {
-    Alert: DripTableReactComponent<{
-      action?: React.ReactNode;
-      afterClose?: () => void;
-      banner?: boolean;
-      closable?: boolean;
-      description?: string | React.ReactNode;
-      icon?: React.ReactNode;
-      message?: string | React.ReactNode;
-      showIcon?: boolean;
-      type?: 'success' | 'info' | 'warning' | 'error';
-      onClose?: (e: MouseEvent) => void;
-    }>;
     Col: DripTableReactComponent<{
       className?: string;
       style?: React.CSSProperties;

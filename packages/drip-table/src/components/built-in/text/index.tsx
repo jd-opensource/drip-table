@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { stringify } from '@/utils/operator';
+import Alert from '@/components/alert';
 import Select from '@/components/select';
 
 import { DripTableComponentProps } from '../component';
@@ -546,7 +547,6 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   public render(): JSX.Element {
     const Tooltip = this.props.driver.components.Tooltip;
-    const Alert = this.props.driver.components.Alert;
     const wrapperClassName = this.wrapperClassName;
     const wrapperStyles = this.wrapperStyles;
     if (!this.visible) {

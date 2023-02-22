@@ -96,17 +96,6 @@ const Demo = () => {
         component: "link",
         options: {
           mode: "multiple",
-          operates: [
-            {
-              name: "order",
-              label: "订购",
-              href: "./#order",
-              target: "_blank",
-            },
-            { name: "view", label: "查看", href: "./#view" },
-            { name: "edit", label: "编辑", event: "edit" },
-            { name: "remove", label: "删除", event: "remove" },
-          ],
         },
       },
       {
