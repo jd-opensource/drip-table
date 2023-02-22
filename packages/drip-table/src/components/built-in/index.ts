@@ -20,12 +20,13 @@ import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-h
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
 import DTCSelect, { DTCSelectColumnSchema, DTCSelectEvent } from './select';
 import DTCTag, { DTCTagColumnSchema } from './tag';
-import DTCText, { DTCTextColumnSchema } from './text';
+import DTCText, { DTCTextColumnSchema, DTCTextEvent } from './text';
 
 export type { DripTableComponentProps } from './component';
 
 export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
+  | DTCTextEvent
   | DTCButtonEvent
   | DTCSelectEvent;
 

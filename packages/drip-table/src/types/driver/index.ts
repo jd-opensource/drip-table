@@ -116,8 +116,5 @@ export interface DripTableDriver {
         };
       }>;
     };
-    message: {
-      success: (message: string) => void;
-    };
   };
 }

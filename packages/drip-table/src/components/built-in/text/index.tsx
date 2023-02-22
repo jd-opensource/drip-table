@@ -117,6 +117,13 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
   visibleFunc?: string;
 }>;
 
+export interface DTCTextEvent {
+  type: 'drip-text-copy';
+  payload: {
+    success: boolean;
+  };
+}
+
 interface DTCTextProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTextColumnSchema> { }
 
 interface DTCTextState {
@@ -519,15 +526,14 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private renderClipboard() {
-    const message = this.props.driver.components.message;
     const showClipboard = this.props.schema.options.clipboard;
     if (!showClipboard) { return null; }
     return (
       <Clipboard
         component="div"
         option-text={() => this.rawText.join(' ')}
-        onSuccess={() => { message.success('复制成功'); }}
-        onError={() => { message.success('复制失败'); }}
+        onSuccess={() => { this.props.fireEvent({ type: 'drip-text-copy', payload: { success: true } }); }}
+        onError={() => { this.props.fireEvent({ type: 'drip-text-copy', payload: { success: false } }); }}
       >
         <span role="img" aria-label="copy">
           <svg viewBox="64 64 896 896" focusable="false" data-icon="copy" width="1em" height="1em" fill="currentColor" aria-hidden="true">
