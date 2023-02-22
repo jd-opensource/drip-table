@@ -107,7 +107,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
   }
 
   private getIcon(iconName: string) {
-    const Icons = this.props.driver.icons;
+    const Icons = this.props.icons;
     const Icon = Icons?.[iconName];
     if (Icon) {
       return (

@@ -12,7 +12,7 @@ import './index.less';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
 import { TabsPosition } from 'antd/lib/tabs';
-import { DripTableDriver } from 'drip-table';
+import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import React, { Component } from 'react';
 
 import { safeExecute } from '@/utils/sandbox';
@@ -30,7 +30,7 @@ interface Props<T> {
   data?: T;
   primaryKey?: string;
   extendKeys?: string[];
-  theme?: DripTableDriver;
+  icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   decodeData?: (data?: T, defaultData?: Record<string, unknown>) => Record<string, unknown>;
   encodeData: (formData: Record<string, unknown>) => T;
   onChange?: (data?: T) => void;
@@ -144,7 +144,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       if (!CustomComponent) { return <Alert message="未知表单组件" type="error" showIcon />; }
       return (
         <CustomComponent
-          theme={this.props.theme}
+          icons={this.props.icons}
           schema={config}
           value={formValues[config.name]}
           onChange={(value) => {
@@ -165,7 +165,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (BuiltInComponent) {
       return (
         <BuiltInComponent
-          theme={this.props.theme}
+          icons={this.props.icons}
           schema={config}
           value={formValues[config.name]}
           extraComponents={this.props.extraComponents}

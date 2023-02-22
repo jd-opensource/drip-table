@@ -106,7 +106,7 @@ const AttributesLayout = <
                 <GlobalConfigForm
                   customAttributeComponents={props.customAttributeComponents}
                   customGlobalConfigPanel={props.customGlobalConfigPanel}
-                  driver={props.driver}
+                  icons={props.icons}
                   slots={props.slots}
                   slotsSchema={props.slotsSchema}
                 />
@@ -117,7 +117,7 @@ const AttributesLayout = <
                 <ComponentConfigForm
                   customAttributeComponents={props.customAttributeComponents}
                   customComponentPanel={props.customComponentPanel}
-                  driver={props.driver}
+                  icons={props.icons}
                   dataFields={props.dataFields}
                   mockDataSource={props.mockDataSource}
                 />
@@ -128,7 +128,7 @@ const AttributesLayout = <
                 <ComponentItemConfigForm
                   customAttributeComponents={props.customAttributeComponents}
                   customComponentPanel={props.customComponentPanel}
-                  driver={props.driver}
+                  icons={props.icons}
                   dataFields={props.dataFields}
                   mockDataSource={props.mockDataSource}
                 />

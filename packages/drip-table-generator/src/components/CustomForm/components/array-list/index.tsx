@@ -50,7 +50,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
       if (!CustomComponent) { return <Alert message="未知表单组件" type="error" showIcon />; }
       return (
         <CustomComponent
-          theme={this.props.theme}
+          icons={this.props.icons}
           schema={schema}
           value={currentValue[schema.name]}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
@@ -62,7 +62,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     if (schema['ui:type'] === 'array-list') {
       return (
         <ArrayComponent
-          theme={this.props.theme}
+          icons={this.props.icons}
           schema={schema}
           value={currentValue[schema.name] as Record<string, unknown>[] | undefined}
           onChange={value => this.changeColumnItem(schema.name, value, parentIndex)}
@@ -74,7 +74,7 @@ export default class ArrayComponent extends React.PureComponent<Props> {
     if (BuiltInComponent) {
       return (
         <BuiltInComponent
-          theme={this.props.theme}
+          icons={this.props.icons}
           schema={schema}
           value={currentValue[schema.name]}
           extraComponents={this.props.extraComponents}

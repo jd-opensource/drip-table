@@ -234,18 +234,42 @@ interface SlotRenderProps<
   recordIndex?: number;
 }
 
+const renderCheckOutlined = () => (
+  <span role="img" aria-label="check">
+    <svg viewBox="64 64 896 896" focusable="false" data-icon="check" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+      <path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z" />
+    </svg>
+  </span>
+);
+
+const renderDropDownIcon = () => (
+  <span role="img" aria-label="down" style={{ fontSize: '10px', verticalAlign: 'baseline' }}>
+    <svg viewBox="64 64 896 896" focusable="false" data-icon="down" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+      <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+    </svg>
+  </span>
+);
+
+const renderPlusOutlined = () => (
+  <span role="img" aria-label="plus">
+    <svg viewBox="64 64 896 896" focusable="false" data-icon="plus" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+      <defs><style /></defs>
+      <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z" />
+      <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z" />
+    </svg>
+  </span>
+);
+
 const SlotRender = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: SlotRenderProps<RecordType, ExtraOptions>) => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
-  const CheckOutlined = tableProps.driver.icons.CheckOutlined;
+
   const Col = tableProps.driver.components.Col;
-  const DownOutlined = tableProps.driver.icons.DownOutlined;
   const Dropdown = tableProps.driver.components.Dropdown;
   const Input = tableProps.driver.components.Input;
   const Menu = tableProps.driver.components.Menu;
-  const PlusOutlined = tableProps.driver.icons.PlusOutlined;
   const Row = tableProps.driver.components.Row;
   const Select = tableProps.driver.components.Select;
 
@@ -334,7 +358,7 @@ const SlotRender = <
         <Button
           className={classnames('jfe-drip-table-slot-render-insert-button-element', config.insertButtonClassName)}
           type="primary"
-          icon={config.showIcon && <PlusOutlined />}
+          icon={config.showIcon && renderPlusOutlined()}
           style={config.insertButtonStyle}
           onClick={e => tableProps.onInsertButtonClick?.(e, tableInfo)}
         >
@@ -365,7 +389,7 @@ const SlotRender = <
             hidableColumns.map(column => (
               <Menu.Item
                 key={column.key}
-                icon={<span style={{ opacity: tableState.displayColumnKeys.includes(column.key) ? 1 : 0 }}><CheckOutlined /></span>}
+                icon={<span style={{ opacity: tableState.displayColumnKeys.includes(column.key) ? 1 : 0 }}>{ renderCheckOutlined() }</span>}
               >
                 { column.title }
               </Menu.Item>
@@ -381,7 +405,7 @@ const SlotRender = <
           visible={displayColumnVisible}
           onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
         >
-          <Button type={config.selectorButtonType} icon={<DownOutlined />}>
+          <Button type={config.selectorButtonType} icon={renderDropDownIcon()}>
             { config.selectorButtonText || '展示列' }
           </Button>
         </Dropdown>
@@ -397,13 +421,13 @@ const SlotRender = <
         >
           <Menu.Item
             key="table"
-            icon={<span style={{ opacity: tableState.layout === 'table' ? 1 : 0 }}><CheckOutlined /></span>}
+            icon={<span style={{ opacity: tableState.layout === 'table' ? 1 : 0 }}>{ renderCheckOutlined() }</span>}
           >
             列表模式
           </Menu.Item>
           <Menu.Item
             key="card"
-            icon={<span style={{ opacity: tableState.layout === 'card' ? 1 : 0 }}><CheckOutlined /></span>}
+            icon={<span style={{ opacity: tableState.layout === 'card' ? 1 : 0 }}>{ renderCheckOutlined() }</span>}
           >
             卡片模式
           </Menu.Item>
@@ -419,7 +443,7 @@ const SlotRender = <
         >
           <Button type={config.selectorButtonType}>
             { { table: '列表模式', card: '卡片模式', calendar: '日历模式' }[tableState.layout] || '布局模式' }
-            <DownOutlined />
+            { renderDropDownIcon() }
           </Button>
         </Dropdown>
       );

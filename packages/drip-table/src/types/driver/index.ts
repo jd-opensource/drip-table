@@ -159,17 +159,6 @@ export interface DripTableDriver {
     };
   };
   /**
-   * 图标库
-   */
-  icons: {
-    CheckOutlined: DripTableReactComponent<unknown>;
-    DownOutlined: DripTableReactComponent<unknown>;
-    PlusOutlined: DripTableReactComponent<unknown>;
-    QuestionCircleOutlined: DripTableReactComponent<unknown>;
-    InfoCircleOutlined: DripTableReactComponent<unknown>;
-    CopyOutlined: DripTableReactComponent<unknown>;
-  };
-  /**
    * 组件本地化翻译
    */
   locale: unknown;

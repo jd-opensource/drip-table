@@ -13,7 +13,7 @@ import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/built-in';
 import type { DripTableSlotSchema } from '@/components/slot-render';
 
-import type { DripTableDriver } from './driver';
+import type { DripTableDriver, DripTableReactComponent } from './driver';
 
 export { SchemaObject } from 'ajv';
 
@@ -615,6 +615,12 @@ export interface DripTableProps<
        */
       fireEvent: (event: ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'> | DripTableBuiltInComponentEvent) => void;
     }>;
+  };
+  /**
+   * 图标库
+   */
+  icons?: {
+    [iconName: string]: DripTableReactComponent<unknown>;
   };
   /**
    * Schema 校验配置项

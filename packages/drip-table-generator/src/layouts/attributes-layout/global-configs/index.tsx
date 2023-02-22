@@ -22,7 +22,7 @@ interface GlobalConfigFormProps<
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customGlobalConfigPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customGlobalConfigPanel'];
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
+  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   slotsSchema: DripTableGeneratorProps<RecordType, ExtraOptions>['slotsSchema'];
 }
@@ -318,7 +318,7 @@ const GlobalConfigForm = <
           decodeData={decodeGlobalConfigs}
           encodeData={encodeGlobalConfigs}
           groupType="collapse"
-          theme={props.driver}
+          icons={props.icons}
           extraComponents={props.customAttributeComponents}
           onChange={(data) => {
             if (data) {

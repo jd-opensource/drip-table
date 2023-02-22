@@ -59,6 +59,10 @@ export interface DripTableComponentProps<
    */
   components?: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components'];
   /**
+   * 透传 DripTable 属性里的 icons 字段 (用于提供给组合组件渲染使用)
+   */
+  icons?: DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['icons'];
+  /**
    * 是否处于预览模式（不响应事件）
    */
   preview?: boolean | {

@@ -25,7 +25,7 @@ interface ComponentItemConfigFormProps<
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
+  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
 }
@@ -136,7 +136,7 @@ const ComponentItemConfigForm = <
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
             groupType="tabs"
-            theme={props.driver}
+            icons={props.icons}
             onChange={(data) => {
               const columnSchema = Object.assign({}, currentColumnItem, data);
               updateColumnItemByPath(currentColumn, currentColumnPath || [], columnSchema);

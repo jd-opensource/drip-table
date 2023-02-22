@@ -22,7 +22,7 @@ interface ComponentConfigFormProps<
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
+  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
 }
@@ -151,7 +151,7 @@ const ComponentConfigForm = <
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
             groupType="tabs"
-            theme={props.driver}
+            icons={props.icons}
             onChange={(data) => {
               const newCurrentColumn = Object.assign({}, currentColumn, data);
               const index = currentColumn.innerIndexForGenerator;

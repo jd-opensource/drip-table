@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableDriver } from 'drip-table';
+import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 
 import { DTGComponentPropertySchema } from '@/typing';
 
@@ -47,7 +47,7 @@ export default {
 };
 
 export interface CustomComponentProps {
-  theme?: DripTableDriver;
+  icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   schema: DTGComponentPropertySchema;
   value?: unknown;
   onChange?: (value: unknown) => void;
@@ -56,7 +56,7 @@ export interface CustomComponentProps {
 export interface DTGComponentBaseProperty<T> {
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   schema: DTGComponentPropertySchema;
-  theme?: DripTableDriver;
+  icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   value?: T;
   onChange?: (value: T) => void;
   onValidate?: (errorMessage: string) => void;

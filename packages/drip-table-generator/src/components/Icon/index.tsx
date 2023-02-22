@@ -8,14 +8,14 @@
 
 import cheerio, * as Cheerio from 'cheerio';
 import * as DOMHandler from 'domhandler';
-import { DripTableDriver } from 'drip-table';
+import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import React from 'react';
 
 interface IconProps {
   className?: string;
   style?: React.CSSProperties;
   name?: string;
-  driver?: DripTableDriver;
+  icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   svg?: React.ReactSVG | string;
 }
 
@@ -155,8 +155,8 @@ export default class Icon extends React.PureComponent<IconProps> {
   };
 
   public renderByName() {
-    if (this.props.name && this.props.driver) {
-      const DriverIcon = this.props.driver.icons[this.props.name] as React.ComponentClass;
+    if (this.props.name && this.props.icons) {
+      const DriverIcon = this.props.icons[this.props.name] as React.ComponentClass;
       if (DriverIcon) {
         return <DriverIcon />;
       }

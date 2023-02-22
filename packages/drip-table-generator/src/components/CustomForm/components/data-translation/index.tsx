@@ -157,7 +157,7 @@ return enumMap[String(props.value)] ?? '${defaultValue ?? this.state.defaultValu
           : (
             <div>
               <ArrayComponent
-                theme={this.props.theme}
+                icons={this.props.icons}
                 schema={schema}
                 value={this.state.valueList ?? this.valueMap.valueList}
                 onChange={(value) => {

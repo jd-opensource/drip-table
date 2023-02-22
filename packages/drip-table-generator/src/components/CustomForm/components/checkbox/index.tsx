@@ -31,7 +31,7 @@ export default class CheckboxComponent extends React.PureComponent<Props> {
   }
 
   private iconRender(iconName: string) {
-    const icons = this.props.theme?.icons || {};
+    const icons = this.props.icons?.icons || {};
     const Icon = icons[iconName];
     return Icon ? <Icon /> : null;
   }
