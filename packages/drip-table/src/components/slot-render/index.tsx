@@ -12,15 +12,15 @@ import classnames from 'classnames';
 import React from 'react';
 
 import {
-  type DripTableDriver,
   type DripTableExtraOptions,
   type DripTableRecordTypeBase,
   type DripTableRecordTypeWithSubtable,
   type ExtractDripTableExtraOption,
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
-import Button from '@/components/button';
+import Button, { type ButtonProps } from '@/components/button';
 import RichText from '@/components/rich-text';
+import Select from '@/components/select';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 
 interface SlotElementBaseSchema {
@@ -169,7 +169,7 @@ interface LayoutSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 选择器按钮样式
    */
-  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+  selectorButtonType?: ButtonProps['type'];
 }
 
 interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
@@ -184,7 +184,7 @@ interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 选择器按钮样式
    */
-  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+  selectorButtonType?: ButtonProps['type'];
 }
 
 export type DripTableSlotElementSchema =
@@ -271,7 +271,6 @@ const SlotRender = <
   const Input = tableProps.driver.components.Input;
   const Menu = tableProps.driver.components.Menu;
   const Row = tableProps.driver.components.Row;
-  const Select = tableProps.driver.components.Select;
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
   const [layoutSelectorVisible, setLayoutSelectorVisible] = React.useState(false);

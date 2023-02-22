@@ -30,18 +30,6 @@ export interface DripTableDriver {
       type?: 'success' | 'info' | 'warning' | 'error';
       onClose?: (e: MouseEvent) => void;
     }>;
-    Button: DripTableReactComponent<{
-      style?: React.CSSProperties;
-      className?: string;
-      type?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
-      shape?: 'circle' | 'round';
-      size?: 'large' | 'middle' | 'small';
-      danger?: boolean;
-      ghost?: boolean;
-      icon?: React.ReactNode;
-      disabled?: boolean;
-      onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    }>;
     Col: DripTableReactComponent<{
       className?: string;
       style?: React.CSSProperties;
@@ -102,31 +90,6 @@ export interface DripTableDriver {
       align?: 'top' | 'middle' | 'bottom';
       wrap?: boolean;
     }>;
-    Select: (
-      <VT extends string | number | (string | number)[]>(props: React.PropsWithChildren<{
-        className?: string;
-        style?: React.CSSProperties;
-        defaultValue?: string | number | (string | number)[];
-        mode?: 'multiple' | 'tags';
-        bordered?: boolean;
-        placeholder?: string;
-        placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
-        size?: 'large' | 'middle' | 'small';
-        showSearch?: boolean;
-        showArrow?: boolean;
-        suffixIcon?: React.ReactNode;
-        disabled?: boolean;
-        loading?: boolean;
-        allowClear?: boolean;
-        value?: VT;
-        open?: boolean;
-        onChange?: (value: VT) => void;
-        getPopupContainer?: (triggerNode: React.ReactNode) => React.ReactNode;
-      }>) => React.ReactElement | null
-    )
-    & {
-      Option: DripTableReactComponent<Record<string, unknown> & { value: string | number; children: React.ReactNode }>;
-    };
     Spin: DripTableReactComponent<{
       delay?: number;
       size?: 'small' | 'default' | 'large';
