@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { DripTableReactComponent } from './component';
-import { DripTableDriverTable } from './table';
 
 export { DripTableReactComponent, DripTableReactComponentProps } from './component';
 
@@ -97,7 +96,6 @@ export interface DripTableDriver {
       spinning?: boolean;
       wrapperClassName?: string;
     }>;
-    Table: DripTableDriverTable;
     Tooltip: DripTableReactComponent<{
       title: React.ReactNode | (() => React.ReactNode);
       placement?: 'top';

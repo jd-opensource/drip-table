@@ -80,7 +80,3 @@ export interface DripTableDriverTableProps<RecordType extends DripTableRecordTyp
   footer?: (data: readonly RecordType[]) => React.ReactNode;
   onChange?: (pagination: DripTablePagination, filters: DripTableFilters) => void;
 }
-
-declare function DripTableDriverTable<RecordType extends DripTableRecordTypeBase = DripTableRecordTypeBase>(props: DripTableDriverTableProps<RecordType>): JSX.Element;
-
-export type DripTableDriverTable = typeof DripTableDriverTable;
