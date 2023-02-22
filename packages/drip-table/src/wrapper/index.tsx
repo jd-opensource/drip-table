@@ -216,13 +216,10 @@ const DripTableWrapper = React.forwardRef(<
     tableProps.componentDidUpdate?.(tableInfo);
   });
 
-  const ConfigProvider = tableProps.driver.components.ConfigProvider;
   return (
-    <ConfigProvider locale={tableProps?.driver.locale}>
-      <DripTableContext.Provider value={context as unknown as IDripTableContext}>
-        <DripTableLayout />
-      </DripTableContext.Provider>
-    </ConfigProvider>
+    <DripTableContext.Provider value={context as unknown as IDripTableContext}>
+      <DripTableLayout />
+    </DripTableContext.Provider>
   );
 }) as <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,

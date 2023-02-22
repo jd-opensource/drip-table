@@ -47,7 +47,6 @@ export interface DripTableDriver {
       style?: React.CSSProperties;
       span?: number;
     }>;
-    ConfigProvider: DripTableReactComponent<Record<string, unknown>>;
     Dropdown: DripTableReactComponent<{
       className?: string;
       trigger?: ('click' | 'hover' | 'contextMenu')[];
@@ -158,8 +157,4 @@ export interface DripTableDriver {
       success: (message: string) => void;
     };
   };
-  /**
-   * 组件本地化翻译
-   */
-  locale: unknown;
 }
