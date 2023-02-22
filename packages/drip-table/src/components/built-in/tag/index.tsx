@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import Tag from '@/components/tag';
 
 import { DripTableComponentProps } from '../component';
 
@@ -94,7 +95,6 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
   }
 
   public render() {
-    const Tag = this.props.driver.components.Tag;
     const options = this.props.schema.options;
     const value = this.value;
     const tagOption = options.tagOptions?.find(item => item.value === value);

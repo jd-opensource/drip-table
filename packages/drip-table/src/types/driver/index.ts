@@ -98,23 +98,9 @@ export interface DripTableDriver {
       wrapperClassName?: string;
     }>;
     Table: DripTableDriverTable;
-    Tag: DripTableReactComponent<{
-      style?: React.CSSProperties;
-      color?: string;
-    }>;
     Tooltip: DripTableReactComponent<{
       title: React.ReactNode | (() => React.ReactNode);
       placement?: 'top';
     }>;
-    Typography: {
-      Text: DripTableReactComponent<{
-        style?: React.CSSProperties;
-        ellipsis?: boolean;
-        copyable?: boolean | {
-          text?: string;
-          onCopy?: () => void;
-        };
-      }>;
-    };
   };
 }
