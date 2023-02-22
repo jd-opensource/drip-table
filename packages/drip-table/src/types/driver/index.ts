@@ -89,13 +89,6 @@ export interface DripTableDriver {
       align?: 'top' | 'middle' | 'bottom';
       wrap?: boolean;
     }>;
-    Spin: DripTableReactComponent<{
-      delay?: number;
-      size?: 'small' | 'default' | 'large';
-      tip?: React.ReactNode;
-      spinning?: boolean;
-      wrapperClassName?: string;
-    }>;
     Tooltip: DripTableReactComponent<{
       title: React.ReactNode | (() => React.ReactNode);
       placement?: 'top';

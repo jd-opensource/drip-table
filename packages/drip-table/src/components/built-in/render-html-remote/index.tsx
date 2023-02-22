@@ -11,6 +11,7 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { execute } from '@/utils/sandbox';
 import RichText from '@/components/rich-text';
+import Spin from '@/components/spin';
 
 import { DripTableComponentProps } from '../component';
 
@@ -76,7 +77,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
   }
 
   public render(): JSX.Element {
-    const { Alert, Spin } = this.props.driver.components;
+    const { Alert } = this.props.driver.components;
     if (!this.state.render) {
       return <Spin tip="Loading" />;
     }

@@ -12,8 +12,9 @@ import classNames from 'classnames';
 import React from 'react';
 
 export interface SpinProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   spinning?: boolean;
+  tip?: string;
 }
 
 const Indicator = () => (
@@ -33,6 +34,7 @@ const Spin = React.memo(({ ...props }: SpinProps) => (
   <div className="jfe-drip-table-spin-nested-loading">
     { props.spinning && <Indicator /> }
     <div className={classNames('jfe-drip-table-spin-container', { 'jfe-drip-table-spin-blur': props.spinning })}>
+      { props.tip }
       { props.children }
     </div>
   </div>
