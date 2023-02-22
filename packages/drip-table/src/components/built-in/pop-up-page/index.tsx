@@ -10,6 +10,7 @@ import './index.less';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import Button from '@/components/button';
 import Modal from '@/components/modal';
 
 import { DripTableComponentProps } from '../component';
@@ -88,7 +89,6 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
 
   public render() {
     const { visible } = this.state;
-    const Button = this.props.driver.components.Button;
     const options = this.props.schema.options;
 
     return (

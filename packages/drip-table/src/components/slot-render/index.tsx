@@ -19,6 +19,7 @@ import {
   type ExtractDripTableExtraOption,
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
+import Button from '@/components/button';
 import RichText from '@/components/rich-text';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 
@@ -238,7 +239,6 @@ const SlotRender = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: SlotRenderProps<RecordType, ExtraOptions>) => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
-  const Button = tableProps.driver.components.Button;
   const CheckOutlined = tableProps.driver.icons.CheckOutlined;
   const Col = tableProps.driver.components.Col;
   const DownOutlined = tableProps.driver.icons.DownOutlined;
@@ -381,9 +381,8 @@ const SlotRender = <
           visible={displayColumnVisible}
           onVisibleChange={(v) => { setDisplayColumnVisible(v); }}
         >
-          <Button type={config.selectorButtonType}>
+          <Button type={config.selectorButtonType} icon={<DownOutlined />}>
             { config.selectorButtonText || '展示列' }
-            <DownOutlined />
           </Button>
         </Dropdown>
       );

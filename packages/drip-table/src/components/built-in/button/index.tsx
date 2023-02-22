@@ -8,6 +8,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import Button from '@/components/button';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -135,7 +136,6 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
   }
 
   public render() {
-    const Button = this.props.driver.components.Button;
     const options = this.props.schema.options;
     if (!this.configured) {
       return <div style={{ color: 'red' }}>属性配置错误</div>;
