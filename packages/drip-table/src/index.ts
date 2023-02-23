@@ -10,8 +10,8 @@ import './styles/index.less';
 
 export * from './types';
 export { indexValue } from './utils/operator';
-export { default as builtInComponents } from './components/built-in';
-export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './components/built-in';
+export { default as builtInComponents } from './builtin-components';
+export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './builtin-components';
 export type { DripTableSlotElementSchema, DripTableSlotSchema } from './components/slot-render';
 export type { DripTableWrapperContext as DripTableInstance } from './wrapper';
 export { default } from './wrapper';

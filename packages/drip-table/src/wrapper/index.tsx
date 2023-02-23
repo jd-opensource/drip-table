@@ -19,7 +19,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
-import DripTableBuiltInComponents from '@/components/built-in';
+import DripTableBuiltInComponents from '@/builtin-components';
 import { type IDripTableContext, createTableState, DripTableContext, useState } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption } from '@/index';
 import DripTableLayout from '@/layouts';

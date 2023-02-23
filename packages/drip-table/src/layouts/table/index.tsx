@@ -33,12 +33,12 @@ import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/do
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
-import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/built-in';
 import Checkbox from '@/components/checkbox';
 import Pagination from '@/components/pagination';
 import RichText from '@/components/rich-text';
 import SlotRender from '@/components/slot-render';
 import Tooltip from '@/components/tooltip';
+import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/builtin-components';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 import DripTableWrapper from '@/wrapper';
 

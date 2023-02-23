@@ -10,8 +10,8 @@ import type { SchemaObject } from 'ajv';
 import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
-import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/built-in';
 import type { DripTableSlotSchema } from '@/components/slot-render';
+import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/builtin-components';
 
 import type { DripTableDriver, DripTableReactComponent } from './driver';
 
