@@ -19,6 +19,7 @@ import {
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
 import Button, { type ButtonProps } from '@/components/button';
+import Dropdown from '@/components/dropdown';
 import Menu from '@/components/menu';
 import RichText from '@/components/rich-text';
 import Select from '@/components/select';
@@ -268,7 +269,6 @@ const SlotRender = <
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   const Col = tableProps.driver.components.Col;
-  const Dropdown = tableProps.driver.components.Dropdown;
   const Input = tableProps.driver.components.Input;
   const Row = tableProps.driver.components.Row;
 

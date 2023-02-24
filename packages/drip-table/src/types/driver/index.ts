@@ -22,14 +22,6 @@ export interface DripTableDriver {
       style?: React.CSSProperties;
       span?: number;
     }>;
-    Dropdown: DripTableReactComponent<{
-      className?: string;
-      trigger?: ('click' | 'hover' | 'contextMenu')[];
-      overlay: React.ReactElement | (() => React.ReactElement);
-      visible?: boolean;
-      placement?: 'bottom' | 'bottomLeft' | 'bottomRight' | 'top' | 'topLeft' | 'topRight';
-      onVisibleChange?: (visible: boolean) => void;
-    }>;
     Image: DripTableReactComponent<{
       width?: number;
       height?: number;
@@ -47,15 +39,6 @@ export interface DripTableDriver {
         value?: string;
         onChange?: React.ChangeEventHandler<HTMLInputElement>;
         onSearch?: (value: string) => void;
-      }>;
-    };
-    Menu: DripTableReactComponent<{
-      onClick?: (data: { key: React.Key; keyPath: React.Key[]; domEvent: MouseEvent }) => void;
-    }> & {
-      Item: DripTableReactComponent<{
-        key: React.Key;
-        icon?: JSX.Element;
-        disabled?: boolean;
       }>;
     };
     Popover: DripTableReactComponent<{

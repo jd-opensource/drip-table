@@ -13,6 +13,7 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { safeExecute } from '@/utils/sandbox';
 import Alert from '@/components/alert';
+import Dropdown from '@/components/dropdown';
 import Menu from '@/components/menu';
 
 import { DripTableComponentProps } from '../component';
@@ -230,7 +231,6 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   public render(): JSX.Element {
     const options = this.props.schema.options;
-    const DropDown = this.props.driver.components.Dropdown;
     if (!this.visible && options.mode === 'single') {
       return <div />;
     }
@@ -324,7 +324,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         }
         { typeof options.maxTiledCount === 'number' && options.maxTiledCount < (options.operates?.length || 0)
           ? (
-            <DropDown
+            <Dropdown
               overlay={this.renderMenu()}
               trigger={options.trigger ? [options.trigger] : void 0}
               placement={options.placement}
@@ -334,7 +334,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                 { options.suffixIcon ? ' ' : '' }
                 { options.suffixIcon ? this.getIcon(options.suffixIcon) : null }
               </a>
-            </DropDown>
+            </Dropdown>
           )
           : null }
       </React.Fragment>
