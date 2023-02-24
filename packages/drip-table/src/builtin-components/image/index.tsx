@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import Tooltip from '@/components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 
@@ -51,7 +52,6 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
 
   public render() {
     const options = this.props.schema.options;
-    const Popover = this.props.driver.components.Popover;
     const Image = this.props.driver.components.Image;
     const imgFragment = (
       <Image
@@ -64,9 +64,9 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     );
     return options.popover && !this.props.preview
       ? (
-        <Popover trigger={options.trigger} content={(<img src={this.value} />)}>
+        <Tooltip trigger={options.trigger} overlay={(<img src={this.value} />)} placement="top">
           { imgFragment }
-        </Popover>
+        </Tooltip>
       )
       : imgFragment;
   }

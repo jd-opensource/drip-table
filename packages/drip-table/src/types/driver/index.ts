@@ -41,12 +41,6 @@ export interface DripTableDriver {
         onSearch?: (value: string) => void;
       }>;
     };
-    Popover: DripTableReactComponent<{
-      placement?: 'top';
-      trigger?: 'click' | 'hover' | 'focus';
-      title?: string;
-      content?: React.ReactNode;
-    }>;
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
       className?: string;
