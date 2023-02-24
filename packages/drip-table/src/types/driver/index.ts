@@ -60,9 +60,5 @@ export interface DripTableDriver {
       align?: 'top' | 'middle' | 'bottom';
       wrap?: boolean;
     }>;
-    Tooltip: DripTableReactComponent<{
-      title: React.ReactNode | (() => React.ReactNode);
-      placement?: 'top';
-    }>;
   };
 }

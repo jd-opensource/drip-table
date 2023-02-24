@@ -12,14 +12,17 @@ import RcTooltip from 'rc-tooltip';
 import { type TooltipProps as RcTooltipProps } from 'rc-tooltip/lib/Tooltip';
 import React from 'react';
 
-export interface TooltipProps extends RcTooltipProps {}
+export interface TooltipProps extends Omit<RcTooltipProps, 'overlay'> {
+  title?: React.ReactNode;
+  overlay?: RcTooltipProps['overlay'];
+}
 
-const Tooltip = React.memo(({ ...props }: TooltipProps) => (
+const Tooltip = React.memo(({ title, ...props }: TooltipProps) => (
   <RcTooltip
     {...props}
     prefixCls="jfe-drip-table-tooltip"
     transitionName="jfe-drip-table-motion-zoom-big"
-    overlay={<div className="jfe-drip-table-tooltip-inner-content">{ props.overlay }</div>}
+    overlay={<div className="jfe-drip-table-tooltip-inner-content">{ title || props.overlay }</div>}
     arrowContent={<span className="jfe-drip-table-tooltip-arrow-content" />}
   />
 ));

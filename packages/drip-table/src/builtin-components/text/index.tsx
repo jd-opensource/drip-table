@@ -21,6 +21,7 @@ import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/
 import { stringify } from '@/utils/operator';
 import Alert from '@/components/alert';
 import Select from '@/components/select';
+import Tooltip from '@/components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessIndex, dataProcessValue, finalizeString, preventEvent } from '../utils';
@@ -546,7 +547,6 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   public render(): JSX.Element {
-    const Tooltip = this.props.driver.components.Tooltip;
     const wrapperClassName = this.wrapperClassName;
     const wrapperStyles = this.wrapperStyles;
     if (!this.visible) {

@@ -15,6 +15,7 @@ import { safeExecute } from '@/utils/sandbox';
 import Alert from '@/components/alert';
 import Dropdown from '@/components/dropdown';
 import Menu from '@/components/menu';
+import Tooltip from '@/components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -121,7 +122,6 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
   );
 
   private renderToolTip = (template?: string) => {
-    const Tooltip = this.props.driver.components.Tooltip;
     const { tooltip } = this.props.schema.options;
     if (tooltip) {
       return (

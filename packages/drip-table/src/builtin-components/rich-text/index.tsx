@@ -12,6 +12,7 @@ import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/
 import Alert from '@/components/alert';
 import ErrorBoundary from '@/components/error-boundary';
 import RichText from '@/components/rich-text';
+import Tooltip from '@/components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 import { finalizeString } from '../utils';
@@ -48,8 +49,6 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
   );
 
   private renderToolTip = () => {
-    const Tooltip = this.props.driver.components.Tooltip;
-
     const { tooltip } = this.props.schema.options;
     if (tooltip) {
       return (
