@@ -47,11 +47,6 @@ export interface DripTableDriver {
       title?: string;
       content?: React.ReactNode;
     }>;
-    Result: DripTableReactComponent<{
-      status?: 'error';
-      title?: string;
-      extra?: string;
-    }>;
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
       className?: string;

@@ -9,6 +9,7 @@
 import React, { ErrorInfo } from 'react';
 
 import { DripTableDriver } from '@/types';
+import Result from '@/components/result';
 
 class ErrorBoundary extends React.Component<
 { driver: DripTableDriver },
@@ -26,7 +27,6 @@ class ErrorBoundary extends React.Component<
 
   public render() {
     if (this.state.hasError) {
-      const Result = this.props.driver.components.Result;
       // You can render any custom fallback UI
       return (
         <Result
