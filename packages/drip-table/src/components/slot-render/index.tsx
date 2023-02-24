@@ -19,6 +19,7 @@ import {
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
 import Button, { type ButtonProps } from '@/components/button';
+import Menu from '@/components/menu';
 import RichText from '@/components/rich-text';
 import Select from '@/components/select';
 import { type IDripTableContext, useTableContext } from '@/hooks';
@@ -269,7 +270,6 @@ const SlotRender = <
   const Col = tableProps.driver.components.Col;
   const Dropdown = tableProps.driver.components.Dropdown;
   const Input = tableProps.driver.components.Input;
-  const Menu = tableProps.driver.components.Menu;
   const Row = tableProps.driver.components.Row;
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
@@ -398,7 +398,6 @@ const SlotRender = <
       );
       return (
         <Dropdown
-          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
@@ -434,7 +433,6 @@ const SlotRender = <
       );
       return (
         <Dropdown
-          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={layoutSelectorVisible}

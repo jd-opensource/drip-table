@@ -13,6 +13,7 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { safeExecute } from '@/utils/sandbox';
 import Alert from '@/components/alert';
+import Menu from '@/components/menu';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -188,7 +189,6 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   public renderMenu(): JSX.Element {
     const options = this.props.schema.options;
-    const Menu = this.props.driver.components.Menu;
     const menuList = options.operates?.slice(options.maxTiledCount);
     return (
       <Menu>

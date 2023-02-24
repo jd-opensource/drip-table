@@ -1,0 +1,1083 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-menu;
+
+.@{prefixCls}-item-danger.@{prefixCls}-item,
+.@{prefixCls}-item-danger.@{prefixCls}-item:hover,
+.@{prefixCls}-item-danger.@{prefixCls}-item-active {
+  color: #ff4d4f;
+}
+
+.@{prefixCls}-item-danger.@{prefixCls}-item:active {
+  background: #fff1f0;
+}
+
+.@{prefixCls}-item-danger.@{prefixCls}-item-selected {
+  color: #ff4d4f;
+}
+
+.@{prefixCls}-item-danger.@{prefixCls}-item-selected>a,
+.@{prefixCls}-item-danger.@{prefixCls}-item-selected>a:hover {
+  color: #ff4d4f;
+}
+
+.@{prefixCls}:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-danger.@{prefixCls}-item-selected {
+  background-color: #fff1f0;
+}
+
+.@{prefixCls}-inline .@{prefixCls}-item-danger.@{prefixCls}-item:after {
+  border-right-color: #ff4d4f;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-danger.@{prefixCls}-item,
+.@{prefixCls}-dark .@{prefixCls}-item-danger.@{prefixCls}-item:hover,
+.@{prefixCls}-dark .@{prefixCls}-item-danger.@{prefixCls}-item>a {
+  color: #ff4d4f;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-dark:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-danger.@{prefixCls}-item-selected {
+  color: #ffffff;
+  background-color: #ff4d4f;
+}
+
+.@{prefixCls} {
+  box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  font-feature-settings: "tnum", "tnum";
+  padding: 0;
+  color: #000000d9;
+  font-size: 14px;
+  line-height: 0;
+  text-align: left;
+  list-style: none;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+  transition: background .3s, width .3s cubic-bezier(.2, 0, 0, 1) 0s;
+}
+
+.@{prefixCls}:before {
+  display: table;
+  content: "";
+}
+
+.@{prefixCls}:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.@{prefixCls} ul,
+.@{prefixCls} ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.@{prefixCls}-overflow {
+  display: flex;
+}
+
+.@{prefixCls}-overflow-item {
+  flex: none;
+}
+
+.@{prefixCls}-hidden,
+.@{prefixCls}-submenu-hidden {
+  display: none;
+}
+
+.@{prefixCls}-item-group-title {
+  height: 1.5715;
+  padding: 8px 16px;
+  color: #00000073;
+  font-size: 14px;
+  line-height: 1.5715;
+  transition: all .3s;
+}
+
+.@{prefixCls}-horizontal .@{prefixCls}-submenu {
+  transition: border-color .3s cubic-bezier(.645, .045, .355, 1), background .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-submenu,
+.@{prefixCls}-submenu-inline {
+  transition: border-color .3s cubic-bezier(.645, .045, .355, 1), background .3s cubic-bezier(.645, .045, .355, 1), padding .15s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-submenu-selected {
+  color: #1890ff;
+}
+
+.@{prefixCls}-item:active,
+.@{prefixCls}-submenu-title:active {
+  background: #e6f7ff;
+}
+
+.@{prefixCls}-submenu .@{prefixCls}-sub {
+  cursor: initial;
+  transition: background .3s cubic-bezier(.645, .045, .355, 1), padding .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-title-content {
+  transition: color .3s;
+}
+
+.@{prefixCls}-item a {
+  color: #000000d9;
+}
+
+.@{prefixCls}-item a:hover {
+  color: #1890ff;
+}
+
+.@{prefixCls}-item a:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  content: "";
+}
+
+.@{prefixCls}-item>.ant-badge a {
+  color: #000000d9;
+}
+
+.@{prefixCls}-item>.ant-badge a:hover {
+  color: #1890ff;
+}
+
+.@{prefixCls}-item-divider {
+  overflow: hidden;
+  line-height: 0;
+  border-color: #f0f0f0;
+  border-style: solid;
+  border-width: 1px 0 0;
+}
+
+.@{prefixCls}-item-divider-dashed {
+  border-style: dashed;
+}
+
+.@{prefixCls}-horizontal .@{prefixCls}-item,
+.@{prefixCls}-horizontal .@{prefixCls}-submenu {
+  margin-top: -1px;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item:hover,
+.@{prefixCls}-horizontal>.@{prefixCls}-item-active,
+.@{prefixCls}-horizontal>.@{prefixCls}-submenu .@{prefixCls}-submenu-title:hover {
+  background-color: transparent;
+}
+
+.@{prefixCls}-item-selected,
+.@{prefixCls}-item-selected a,
+.@{prefixCls}-item-selected a:hover {
+  color: #1890ff;
+}
+
+.@{prefixCls}:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-selected {
+  background-color: #e6f7ff;
+}
+
+.@{prefixCls}-inline,
+.@{prefixCls}-vertical,
+.@{prefixCls}-vertical-left {
+  border-right: 1px solid #f0f0f0;
+}
+
+.@{prefixCls}-vertical-right {
+  border-left: 1px solid #f0f0f0;
+}
+
+.@{prefixCls}-vertical.@{prefixCls}-sub,
+.@{prefixCls}-vertical-left.@{prefixCls}-sub,
+.@{prefixCls}-vertical-right.@{prefixCls}-sub {
+  min-width: 160px;
+  max-height: calc(100vh - 100px);
+  padding: 0;
+  overflow: hidden;
+  border-right: 0;
+}
+
+.@{prefixCls}-vertical.@{prefixCls}-sub:not([class*="-active"]),
+.@{prefixCls}-vertical-left.@{prefixCls}-sub:not([class*="-active"]),
+.@{prefixCls}-vertical-right.@{prefixCls}-sub:not([class*="-active"]) {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.@{prefixCls}-vertical.@{prefixCls}-sub .@{prefixCls}-item,
+.@{prefixCls}-vertical-left.@{prefixCls}-sub .@{prefixCls}-item,
+.@{prefixCls}-vertical-right.@{prefixCls}-sub .@{prefixCls}-item {
+  left: 0;
+  margin-left: 0;
+  border-right: 0;
+}
+
+.@{prefixCls}-vertical.@{prefixCls}-sub .@{prefixCls}-item:after,
+.@{prefixCls}-vertical-left.@{prefixCls}-sub .@{prefixCls}-item:after,
+.@{prefixCls}-vertical-right.@{prefixCls}-sub .@{prefixCls}-item:after {
+  border-right: 0;
+}
+
+.@{prefixCls}-vertical.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-vertical-left.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-vertical-right.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-vertical.@{prefixCls}-sub>.@{prefixCls}-submenu,
+.@{prefixCls}-vertical-left.@{prefixCls}-sub>.@{prefixCls}-submenu,
+.@{prefixCls}-vertical-right.@{prefixCls}-sub>.@{prefixCls}-submenu {
+  transform-origin: 0 0;
+}
+
+.@{prefixCls}-horizontal.@{prefixCls}-sub {
+  min-width: 114px;
+}
+
+.@{prefixCls}-horizontal .@{prefixCls}-item,
+.@{prefixCls}-horizontal .@{prefixCls}-submenu-title {
+  transition: border-color .3s, background .3s;
+}
+
+.@{prefixCls}-item,
+.@{prefixCls}-submenu-title {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color .3s, background .3s, padding .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-item .@{prefixCls}-item-icon,
+.@{prefixCls}-submenu-title .@{prefixCls}-item-icon,
+.@{prefixCls}-item .anticon,
+.@{prefixCls}-submenu-title .anticon {
+  min-width: 14px;
+  font-size: 14px;
+  transition: font-size .15s cubic-bezier(.215, .61, .355, 1), margin .3s cubic-bezier(.645, .045, .355, 1), color .3s;
+}
+
+.@{prefixCls}-item .@{prefixCls}-item-icon+span,
+.@{prefixCls}-submenu-title .@{prefixCls}-item-icon+span,
+.@{prefixCls}-item .anticon+span,
+.@{prefixCls}-submenu-title .anticon+span {
+  margin-left: 10px;
+  opacity: 1;
+  transition: opacity .3s cubic-bezier(.645, .045, .355, 1), margin .3s, color .3s;
+}
+
+.@{prefixCls}-item .@{prefixCls}-item-icon.svg,
+.@{prefixCls}-submenu-title .@{prefixCls}-item-icon.svg {
+  vertical-align: -.125em;
+}
+
+.@{prefixCls}-item.@{prefixCls}-item-only-child>.anticon,
+.@{prefixCls}-submenu-title.@{prefixCls}-item-only-child>.anticon,
+.@{prefixCls}-item.@{prefixCls}-item-only-child>.@{prefixCls}-item-icon,
+.@{prefixCls}-submenu-title.@{prefixCls}-item-only-child>.@{prefixCls}-item-icon {
+  margin-right: 0;
+}
+
+.@{prefixCls}-item:not(.@{prefixCls}-item-disabled):focus-visible,
+.@{prefixCls}-submenu-title:not(.@{prefixCls}-item-disabled):focus-visible {
+  box-shadow: 0 0 0 2px #bae7ff;
+}
+
+.@{prefixCls}>.@{prefixCls}-item-divider {
+  margin: 1px 0;
+  padding: 0;
+}
+
+.@{prefixCls}-submenu-popup {
+  position: absolute;
+  z-index: 1050;
+  background: transparent;
+  border-radius: 2px;
+  box-shadow: none;
+  transform-origin: 0 0;
+}
+
+.@{prefixCls}-submenu-popup:before {
+  position: absolute;
+  top: -7px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: .0001;
+  content: " ";
+}
+
+.@{prefixCls}-submenu-placement-rightTop:before {
+  top: 0;
+  left: -7px;
+}
+
+.@{prefixCls}-submenu>.@{prefixCls} {
+  background-color: #ffffff;
+  border-radius: 2px;
+}
+
+.@{prefixCls}-submenu>.@{prefixCls}-submenu-title:after {
+  transition: transform .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-submenu-popup>.@{prefixCls} {
+  background-color: #ffffff;
+}
+
+.@{prefixCls}-submenu-expand-icon,
+.@{prefixCls}-submenu-arrow {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 10px;
+  color: #000000d9;
+  transform: translateY(-50%);
+  transition: transform .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-submenu-arrow:after {
+  position: absolute;
+  width: 6px;
+  height: 1.5px;
+  background-color: currentcolor;
+  border-radius: 2px;
+  transition:
+    background .3s cubic-bezier(.645, .045, .355, 1),
+    transform .3s cubic-bezier(.645, .045, .355, 1),
+    top .3s cubic-bezier(.645, .045, .355, 1),
+    color .3s cubic-bezier(.645, .045, .355, 1);
+  content: "";
+}
+
+.@{prefixCls}-submenu-arrow:before {
+  transform: rotate(45deg) translateY(-2.5px);
+}
+
+.@{prefixCls}-submenu-arrow:after {
+  transform: rotate(-45deg) translateY(2.5px);
+}
+
+.@{prefixCls}-submenu:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-expand-icon,
+.@{prefixCls}-submenu:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow {
+  color: #1890ff;
+}
+
+.@{prefixCls}-inline-collapsed .@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-submenu-inline .@{prefixCls}-submenu-arrow:before {
+  transform: rotate(-45deg) translate(2.5px);
+}
+
+.@{prefixCls}-inline-collapsed .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-submenu-inline .@{prefixCls}-submenu-arrow:after {
+  transform: rotate(45deg) translate(-2.5px);
+}
+
+.@{prefixCls}-submenu-horizontal .@{prefixCls}-submenu-arrow {
+  display: none;
+}
+
+.@{prefixCls}-submenu-open.@{prefixCls}-submenu-inline>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow {
+  transform: translateY(-2px);
+}
+
+.@{prefixCls}-submenu-open.@{prefixCls}-submenu-inline>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after {
+  transform: rotate(-45deg) translate(-2.5px);
+}
+
+.@{prefixCls}-submenu-open.@{prefixCls}-submenu-inline>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before {
+  transform: rotate(45deg) translate(2.5px);
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-submenu-selected,
+.@{prefixCls}-vertical-left .@{prefixCls}-submenu-selected,
+.@{prefixCls}-vertical-right .@{prefixCls}-submenu-selected {
+  color: #1890ff;
+}
+
+.@{prefixCls}-horizontal {
+  line-height: 46px;
+  border: 0;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: none;
+}
+
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu {
+  margin-top: -1px;
+  margin-bottom: 0;
+  padding: 0 20px;
+}
+
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item:hover,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu:hover,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-active,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-active,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-open,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-open,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-selected,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-selected {
+  color: #1890ff;
+}
+
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item:hover:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu:hover:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-active:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-active:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-open:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-open:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-selected:after,
+.@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-selected:after {
+  border-bottom: 2px solid #1890ff;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item,
+.@{prefixCls}-horizontal>.@{prefixCls}-submenu {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item:after,
+.@{prefixCls}-horizontal>.@{prefixCls}-submenu:after {
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  left: 20px;
+  border-bottom: 2px solid transparent;
+  transition: border-color .3s cubic-bezier(.645, .045, .355, 1);
+  content: "";
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title {
+  padding: 0;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item a {
+  color: #000000d9;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item a:hover {
+  color: #1890ff;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item a:before {
+  bottom: -2px;
+}
+
+.@{prefixCls}-horizontal>.@{prefixCls}-item-selected a {
+  color: #1890ff;
+}
+
+.@{prefixCls}-horizontal:after {
+  display: block;
+  clear: both;
+  height: 0;
+  content: " ";
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-item,
+.@{prefixCls}-vertical-left .@{prefixCls}-item,
+.@{prefixCls}-vertical-right .@{prefixCls}-item,
+.@{prefixCls}-inline .@{prefixCls}-item {
+  position: relative;
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-item:after,
+.@{prefixCls}-vertical-left .@{prefixCls}-item:after,
+.@{prefixCls}-vertical-right .@{prefixCls}-item:after,
+.@{prefixCls}-inline .@{prefixCls}-item:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-right: 3px solid #1890ff;
+  transform: scaleY(.0001);
+  opacity: 0;
+  transition: transform .15s cubic-bezier(.215, .61, .355, 1), opacity .15s cubic-bezier(.215, .61, .355, 1);
+  content: "";
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-item,
+.@{prefixCls}-vertical-left .@{prefixCls}-item,
+.@{prefixCls}-vertical-right .@{prefixCls}-item,
+.@{prefixCls}-inline .@{prefixCls}-item,
+.@{prefixCls}-vertical .@{prefixCls}-submenu-title,
+.@{prefixCls}-vertical-left .@{prefixCls}-submenu-title,
+.@{prefixCls}-vertical-right .@{prefixCls}-submenu-title,
+.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  height: 40px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 0 16px;
+  overflow: hidden;
+  line-height: 40px;
+  text-overflow: ellipsis;
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-submenu,
+.@{prefixCls}-vertical-left .@{prefixCls}-submenu,
+.@{prefixCls}-vertical-right .@{prefixCls}-submenu,
+.@{prefixCls}-inline .@{prefixCls}-submenu {
+  padding-bottom: .02px;
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-item:not(:last-child),
+.@{prefixCls}-vertical-left .@{prefixCls}-item:not(:last-child),
+.@{prefixCls}-vertical-right .@{prefixCls}-item:not(:last-child),
+.@{prefixCls}-inline .@{prefixCls}-item:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.@{prefixCls}-vertical>.@{prefixCls}-item,
+.@{prefixCls}-vertical-left>.@{prefixCls}-item,
+.@{prefixCls}-vertical-right>.@{prefixCls}-item,
+.@{prefixCls}-inline>.@{prefixCls}-item,
+.@{prefixCls}-vertical>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title,
+.@{prefixCls}-vertical-left>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title,
+.@{prefixCls}-vertical-right>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title,
+.@{prefixCls}-inline>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title {
+  height: 40px;
+  line-height: 40px;
+}
+
+.@{prefixCls}-vertical .@{prefixCls}-item-group-list .@{prefixCls}-submenu-title,
+.@{prefixCls}-vertical .@{prefixCls}-submenu-title {
+  padding-right: 34px;
+}
+
+.@{prefixCls}-inline {
+  width: 100%;
+}
+
+.@{prefixCls}-inline .@{prefixCls}-selected:after,
+.@{prefixCls}-inline .@{prefixCls}-item-selected:after {
+  transform: scaleY(1);
+  opacity: 1;
+  transition: transform .15s cubic-bezier(.645, .045, .355, 1), opacity .15s cubic-bezier(.645, .045, .355, 1);
+}
+
+.@{prefixCls}-inline .@{prefixCls}-item,
+.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  width: calc(100% + 1px);
+}
+
+.@{prefixCls}-inline .@{prefixCls}-item-group-list .@{prefixCls}-submenu-title,
+.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  padding-right: 34px;
+}
+
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-item,
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-submenu-title {
+  display: flex;
+  align-items: center;
+  transition: border-color .3s, background .3s, padding .1s cubic-bezier(.215, .61, .355, 1);
+}
+
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-item>.@{prefixCls}-title-content,
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-submenu-title>.@{prefixCls}-title-content {
+  flex: auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-item>*,
+.@{prefixCls}-inline.@{prefixCls}-root .@{prefixCls}-submenu-title>* {
+  flex: none;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed {
+  width: 80px;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title {
+  left: 0;
+  padding: 0 calc(50% - 8px);
+  text-overflow: clip;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item .@{prefixCls}-submenu-arrow,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item .@{prefixCls}-submenu-arrow,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow {
+  opacity: 0;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item .anticon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item .anticon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .anticon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .anticon {
+  margin: 0;
+  font-size: 16px;
+  line-height: 40px;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item .@{prefixCls}-item-icon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item .@{prefixCls}-item-icon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-item-icon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .@{prefixCls}-item-icon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item .anticon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-item .anticon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-item-group>.@{prefixCls}-item-group-list>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .anticon+span,
+.@{prefixCls}.@{prefixCls}-inline-collapsed>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title .anticon+span {
+  display: inline-block;
+  opacity: 0;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed .anticon {
+  display: inline-block;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed-tooltip {
+  pointer-events: none;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed-tooltip .@{prefixCls}-item-icon,
+.@{prefixCls}.@{prefixCls}-inline-collapsed-tooltip .anticon {
+  display: none;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed-tooltip a {
+  color: #ffffffd9;
+}
+
+.@{prefixCls}.@{prefixCls}-inline-collapsed .@{prefixCls}-item-group-title {
+  padding-right: 4px;
+  padding-left: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.@{prefixCls}-item-group-list {
+  margin: 0;
+  padding: 0;
+}
+
+.@{prefixCls}-item-group-list .@{prefixCls}-item,
+.@{prefixCls}-item-group-list .@{prefixCls}-submenu-title {
+  padding: 0 16px 0 28px;
+}
+
+.@{prefixCls}-root.@{prefixCls}-vertical,
+.@{prefixCls}-root.@{prefixCls}-vertical-left,
+.@{prefixCls}-root.@{prefixCls}-vertical-right,
+.@{prefixCls}-root.@{prefixCls}-inline {
+  box-shadow: none;
+}
+
+.@{prefixCls}-root.@{prefixCls}-inline-collapsed .@{prefixCls}-item>.@{prefixCls}-inline-collapsed-noicon,
+.@{prefixCls}-root.@{prefixCls}-inline-collapsed .@{prefixCls}-submenu .@{prefixCls}-submenu-title>.@{prefixCls}-inline-collapsed-noicon {
+  font-size: 16px;
+  text-align: center;
+}
+
+.@{prefixCls}-sub.@{prefixCls}-inline {
+  padding: 0;
+  background: #fafafa;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.@{prefixCls}-sub.@{prefixCls}-inline>.@{prefixCls}-item,
+.@{prefixCls}-sub.@{prefixCls}-inline>.@{prefixCls}-submenu>.@{prefixCls}-submenu-title {
+  height: 40px;
+  line-height: 40px;
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
+.@{prefixCls}-sub.@{prefixCls}-inline .@{prefixCls}-item-group-title {
+  padding-left: 32px;
+}
+
+.@{prefixCls}-item-disabled,
+.@{prefixCls}-submenu-disabled {
+  color: #00000040 !important;
+  background: none;
+  cursor: not-allowed;
+}
+
+.@{prefixCls}-item-disabled:after,
+.@{prefixCls}-submenu-disabled:after {
+  border-color: transparent !important;
+}
+
+.@{prefixCls}-item-disabled a,
+.@{prefixCls}-submenu-disabled a {
+  color: #00000040 !important;
+  pointer-events: none;
+}
+
+.@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title,
+.@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title {
+  color: #00000040 !important;
+  cursor: not-allowed;
+}
+
+.@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after {
+  background: #00000040 !important;
+}
+
+.ant-layout-header .@{prefixCls} {
+  line-height: inherit;
+}
+
+.@{prefixCls}-inline-collapsed-tooltip a,
+.@{prefixCls}-inline-collapsed-tooltip a:hover {
+  color: #ffffff;
+}
+
+.@{prefixCls}-light .@{prefixCls}-item:hover,
+.@{prefixCls}-light .@{prefixCls}-item-active,
+.@{prefixCls}-light .@{prefixCls}:not(.@{prefixCls}-inline) .@{prefixCls}-submenu-open,
+.@{prefixCls}-light .@{prefixCls}-submenu-active,
+.@{prefixCls}-light .@{prefixCls}-submenu-title:hover {
+  color: #1890ff;
+}
+
+.@{prefixCls}.@{prefixCls}-root:focus-visible {
+  box-shadow: 0 0 0 2px #096dd9;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:focus-visible,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:focus-visible {
+  box-shadow: 0 0 0 2px #096dd9;
+}
+
+.@{prefixCls}.@{prefixCls}-dark,
+.@{prefixCls}-dark .@{prefixCls}-sub,
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-sub {
+  color: #ffffffa6;
+  background: #001529;
+}
+
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow {
+  opacity: .45;
+  transition: all .3s;
+}
+
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-sub .@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before {
+  background: #ffffff;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-submenu-popup {
+  background: transparent;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-inline.@{prefixCls}-sub {
+  background: #000c17;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-horizontal {
+  border-bottom: 0;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-item,
+.@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-submenu {
+  top: 0;
+  margin-top: 0;
+  padding: 0 20px;
+  border-color: #001529;
+  border-bottom: 0;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-item:hover {
+  background-color: #1890ff;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-item>a:before {
+  bottom: 0;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item,
+.@{prefixCls}-dark .@{prefixCls}-item-group-title,
+.@{prefixCls}-dark .@{prefixCls}-item>a,
+.@{prefixCls}-dark .@{prefixCls}-item>span>a {
+  color: #ffffffa6;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-inline,
+.@{prefixCls}-dark.@{prefixCls}-vertical,
+.@{prefixCls}-dark.@{prefixCls}-vertical-left,
+.@{prefixCls}-dark.@{prefixCls}-vertical-right {
+  border-right: 0;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-inline .@{prefixCls}-item,
+.@{prefixCls}-dark.@{prefixCls}-vertical .@{prefixCls}-item,
+.@{prefixCls}-dark.@{prefixCls}-vertical-left .@{prefixCls}-item,
+.@{prefixCls}-dark.@{prefixCls}-vertical-right .@{prefixCls}-item {
+  left: 0;
+  margin-left: 0;
+  border-right: 0;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-inline .@{prefixCls}-item:after,
+.@{prefixCls}-dark.@{prefixCls}-vertical .@{prefixCls}-item:after,
+.@{prefixCls}-dark.@{prefixCls}-vertical-left .@{prefixCls}-item:after,
+.@{prefixCls}-dark.@{prefixCls}-vertical-right .@{prefixCls}-item:after {
+  border-right: 0;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-inline .@{prefixCls}-item,
+.@{prefixCls}-dark.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  width: 100%;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:hover,
+.@{prefixCls}-dark .@{prefixCls}-item-active,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:hover>a,
+.@{prefixCls}-dark .@{prefixCls}-item-active>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover>a,
+.@{prefixCls}-dark .@{prefixCls}-item:hover>span>a,
+.@{prefixCls}-dark .@{prefixCls}-item-active>span>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active>span>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open>span>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected>span>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover>span>a {
+  color: #ffffff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-item-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow {
+  opacity: 1;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-item-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-item:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-item-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-submenu-active>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-submenu-open>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-submenu-selected>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-submenu-title:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before {
+  background: #ffffff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item:hover {
+  background-color: transparent;
+}
+
+.@{prefixCls}-dark.@{prefixCls}-dark:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-selected {
+  background-color: #1890ff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-selected {
+  color: #ffffff;
+  border-right: 0;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-selected:after {
+  border-right: 0;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-selected>a,
+.@{prefixCls}-dark .@{prefixCls}-item-selected>span>a,
+.@{prefixCls}-dark .@{prefixCls}-item-selected>a:hover,
+.@{prefixCls}-dark .@{prefixCls}-item-selected>span>a:hover {
+  color: #ffffff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-selected .@{prefixCls}-item-icon,
+.@{prefixCls}-dark .@{prefixCls}-item-selected .anticon {
+  color: #ffffff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-selected .@{prefixCls}-item-icon+span,
+.@{prefixCls}-dark .@{prefixCls}-item-selected .anticon+span {
+  color: #ffffff;
+}
+
+.@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-item-selected,
+.@{prefixCls}-submenu-popup.@{prefixCls}-dark .@{prefixCls}-item-selected {
+  background-color: #1890ff;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-disabled,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled,
+.@{prefixCls}-dark .@{prefixCls}-item-disabled>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled>a,
+.@{prefixCls}-dark .@{prefixCls}-item-disabled>span>a,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled>span>a {
+  color: #ffffff59 !important;
+  opacity: .8;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title {
+  color: #ffffff59 !important;
+}
+
+.@{prefixCls}-dark .@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-dark .@{prefixCls}-item-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-dark .@{prefixCls}-submenu-disabled>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow:after {
+  background: #ffffff59 !important;
+}
+
+.@{prefixCls}.@{prefixCls}-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-item-group-title {
+  text-align: right;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-inline,
+.@{prefixCls}-rtl.@{prefixCls}-vertical {
+  border-right: none;
+  border-left: 1px solid #f0f0f0;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-dark.@{prefixCls}-inline,
+.@{prefixCls}-rtl.@{prefixCls}-dark.@{prefixCls}-vertical {
+  border-left: none;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-vertical.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-left.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-right.@{prefixCls}-sub>.@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical.@{prefixCls}-sub>.@{prefixCls}-submenu,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-left.@{prefixCls}-sub>.@{prefixCls}-submenu,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-right.@{prefixCls}-sub>.@{prefixCls}-submenu {
+  transform-origin: top right;
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-item .@{prefixCls}-item-icon,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-title .@{prefixCls}-item-icon,
+.@{prefixCls}-rtl .@{prefixCls}-item .anticon,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-title .anticon {
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-item.@{prefixCls}-item-only-child>.@{prefixCls}-item-icon,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-title.@{prefixCls}-item-only-child>.@{prefixCls}-item-icon,
+.@{prefixCls}-rtl .@{prefixCls}-item.@{prefixCls}-item-only-child>.anticon,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-title.@{prefixCls}-item-only-child>.anticon {
+  margin-left: 0;
+}
+
+.@{prefixCls}-submenu-rtl.@{prefixCls}-submenu-popup {
+  transform-origin: 100% 0;
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-left>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-right>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-inline>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow {
+  right: auto;
+  left: 16px;
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-left>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-right>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:before {
+  transform: rotate(-45deg) translateY(-2px);
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-left>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after,
+.@{prefixCls}-rtl .@{prefixCls}-submenu-vertical-right>.@{prefixCls}-submenu-title .@{prefixCls}-submenu-arrow:after {
+  transform: rotate(45deg) translateY(2px);
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-vertical .@{prefixCls}-item:after,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-left .@{prefixCls}-item:after,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-right .@{prefixCls}-item:after,
+.@{prefixCls}-rtl.@{prefixCls}-inline .@{prefixCls}-item:after {
+  right: auto;
+  left: 0;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-vertical .@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-left .@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-right .@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-inline .@{prefixCls}-item,
+.@{prefixCls}-rtl.@{prefixCls}-vertical .@{prefixCls}-submenu-title,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-left .@{prefixCls}-submenu-title,
+.@{prefixCls}-rtl.@{prefixCls}-vertical-right .@{prefixCls}-submenu-title,
+.@{prefixCls}-rtl.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  text-align: right;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-inline .@{prefixCls}-submenu-title {
+  padding-right: 0;
+  padding-left: 34px;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-vertical .@{prefixCls}-submenu-title {
+  padding-right: 16px;
+  padding-left: 34px;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-inline-collapsed.@{prefixCls}-vertical .@{prefixCls}-submenu-title {
+  padding: 0 calc(50% - 8px);
+}
+
+.@{prefixCls}-rtl .@{prefixCls}-item-group-list .@{prefixCls}-item,
+.@{prefixCls}-rtl .@{prefixCls}-item-group-list .@{prefixCls}-submenu-title {
+  padding: 0 28px 0 16px;
+}
+
+.@{prefixCls}-rtl.@{prefixCls}-sub.@{prefixCls}-inline .@{prefixCls}-item-group-title {
+  padding-right: 32px;
+  padding-left: 0;
+}
