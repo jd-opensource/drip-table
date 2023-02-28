@@ -21,7 +21,7 @@ module.exports = {
     'comment-empty-line-before': ['always', {
       ignore: ['after-comment', 'stylelint-commands'],
     }],
-    'max-line-length': 180,
+    'max-line-length': 220,
     'max-nesting-depth': null,
     'no-empty-source': null,
     'no-descending-specificity': null,
