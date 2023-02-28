@@ -20,6 +20,7 @@ import {
 import { parseReactCSS } from '@/utils/dom';
 import Button, { type ButtonProps } from '@/components/button';
 import Dropdown from '@/components/dropdown';
+import Input from '@/components/input';
 import Menu from '@/components/menu';
 import RichText from '@/components/rich-text';
 import Select from '@/components/select';
@@ -254,7 +255,7 @@ const renderDropDownIcon = () => (
 
 const renderPlusOutlined = () => (
   <span role="img" aria-label="plus">
-    <svg viewBox="64 64 896 896" focusable="false" data-icon="plus" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+    <svg style={{ shapeRendering: 'optimizeSpeed' }} viewBox="64 64 896 896" focusable="false" data-icon="plus" width="1em" height="1em" fill="currentColor" aria-hidden="true">
       <defs><style /></defs>
       <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z" />
       <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z" />
@@ -269,7 +270,6 @@ const SlotRender = <
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   const Col = tableProps.driver.components.Col;
-  const Input = tableProps.driver.components.Input;
   const Row = tableProps.driver.components.Row;
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
@@ -398,6 +398,7 @@ const SlotRender = <
       );
       return (
         <Dropdown
+          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={displayColumnVisible}
@@ -433,6 +434,7 @@ const SlotRender = <
       );
       return (
         <Dropdown
+          className="jfe-drip-table-slot-render-display-column-selector-element"
           trigger={['click']}
           overlay={menu}
           visible={layoutSelectorVisible}

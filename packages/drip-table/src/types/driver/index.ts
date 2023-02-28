@@ -29,18 +29,6 @@ export interface DripTableDriver {
       preview?: boolean;
       fallback?: string;
     }>;
-    Input: {
-      Search: DripTableReactComponent<{
-        style?: React.CSSProperties;
-        allowClear?: boolean;
-        placeholder?: string;
-        enterButton?: string | true;
-        size?: 'large' | 'middle' | 'small';
-        value?: string;
-        onChange?: React.ChangeEventHandler<HTMLInputElement>;
-        onSearch?: (value: string) => void;
-      }>;
-    };
     Row: DripTableReactComponent<{
       style?: React.CSSProperties;
       className?: string;

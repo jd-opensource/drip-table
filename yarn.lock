@@ -13716,6 +13716,15 @@ rc-input-number@~7.3.9:
     classnames "^2.2.5"
     rc-util "^5.23.0"
 
+rc-input@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/rc-input/-/rc-input-0.2.2.tgz#de1c3c0e090d15777a6b1a3fd4a9566e25b3fbee"
+  integrity sha512-xgkVcFgtRO0Hl9hmvslZhObNyxbSpTmy3nR1Tk4XrjjZ9lFJ7GcJBy6ss30Pdb0oX36cHzLN8I7VCjBGeRNB9A==
+  dependencies:
+    "@babel/runtime" "^7.11.1"
+    classnames "^2.2.1"
+    rc-util "^5.18.1"
+
 rc-input@~0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/rc-input/-/rc-input-0.1.4.tgz#45cb4ba209ae6cc835a2acb8629d4f8f0cb347e0"
