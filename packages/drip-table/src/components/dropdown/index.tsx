@@ -14,6 +14,7 @@ import React from 'react';
 import { OverrideProvider } from '../menu/override';
 
 export interface DropdownProps extends React.ComponentProps<typeof RcDropdown> {
+  className?: string;
   trigger?: ('click' | 'hover' | 'contextMenu')[];
   overlay: React.ReactElement | (() => React.ReactElement);
   visible?: boolean;
@@ -40,6 +41,8 @@ const Dropdown = Object.assign(
       selectable={false}
     >
       <RcDropdown
+        {...{ className: props.className }}
+        openClassName={`${prefixCls}-open`}
         prefixCls={prefixCls}
         trigger={props.trigger}
         transitionName="jfe-drip-table-motion-slide-up"
