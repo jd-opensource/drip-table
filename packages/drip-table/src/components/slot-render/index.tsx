@@ -19,10 +19,12 @@ import {
 } from '@/types';
 import { parseReactCSS } from '@/utils/dom';
 import Button, { type ButtonProps } from '@/components/button';
+import Col from '@/components/col';
 import Dropdown from '@/components/dropdown';
 import Input from '@/components/input';
 import Menu from '@/components/menu';
 import RichText from '@/components/rich-text';
+import Row from '@/components/row';
 import Select from '@/components/select';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 
@@ -268,9 +270,6 @@ const SlotRender = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: SlotRenderProps<RecordType, ExtraOptions>) => {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
-
-  const Col = tableProps.driver.components.Col;
-  const Row = tableProps.driver.components.Row;
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
   const [layoutSelectorVisible, setLayoutSelectorVisible] = React.useState(false);

@@ -15,6 +15,8 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
+import Col from '@/components/col';
+import Row from '@/components/row';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
 
@@ -105,7 +107,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }
 
   public render() {
-    const { Row, Col } = this.props.driver.components;
     const schema = this.props.schema;
     const rowLength = schema.options.layout?.length;
     const rows = [...Array.from({ length: rowLength }).keys()];
