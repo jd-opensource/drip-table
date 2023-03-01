@@ -38,11 +38,10 @@ const TableWorkStation = <
       { context.mode === 'edit'
         ? (
           <React.Fragment>
-            <EditableTableHeader driver={props.driver} slots={props.slots} ext={props.ext} />
+            <EditableTableHeader slots={props.slots} ext={props.ext} />
             <EditableTable
               customComponentPanel={props.customComponentPanel}
               customComponents={props.customComponents}
-              driver={props.driver}
               mockDataSource={props.mockDataSource}
               dataFields={props.dataFields}
               onDropComponent={() => {
@@ -52,7 +51,7 @@ const TableWorkStation = <
                 }, 100);
               }}
             />
-            <EditableTableFooter driver={props.driver} slots={props.slots} ext={props.ext} />
+            <EditableTableFooter slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
         : <PreviewTable visible={context.mode === 'preview'} {...props} /> }

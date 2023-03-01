@@ -27,8 +27,6 @@ toc: content
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -149,7 +147,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       subtableTitle={(record, index, tableInfo) => <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${tableInfo.parent?.record.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>}

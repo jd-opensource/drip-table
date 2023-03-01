@@ -27,8 +27,6 @@ type onRowExpand = (
 import React from "react";
 import DripTable from "drip-table";
 import { Spin } from 'antd';
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   id: 'sample-table',
@@ -211,7 +209,6 @@ const Demo = () => {
 
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       rowExpandable={(record, index, parent) => ['sample-table', 'sample-table-sub-level-1'].includes(parent.schema.id) && record.id !== '3'}

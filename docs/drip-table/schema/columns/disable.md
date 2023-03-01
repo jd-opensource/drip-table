@@ -19,8 +19,6 @@ toc: content
 import { message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -68,7 +66,6 @@ const dataSource = Array(10).fill(0).map((_, i) => ({
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />

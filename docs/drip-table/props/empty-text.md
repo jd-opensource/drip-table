@@ -18,8 +18,6 @@ toc: content
 import React from "react";
 import DripTable from "drip-table";
 import { Empty } from 'antd';
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   emptyText: "暂无数据",
@@ -54,7 +52,6 @@ const dataSource = [];
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       emptyText={(tableInfo) => <Empty description={tableInfo.schema.emptyText} />}

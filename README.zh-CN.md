@@ -25,15 +25,13 @@
 
 `DripTable` 是京东零售推出的一款用于企业级中后台的动态列表解决方案，项目基于 `React` 和 `JSON Schema`，旨在通过`简单配置`快速生成页面动态列表来降低列表开发难度、提高工作效率。
 
-`DripTable` 目前包含以下子项目：`drip-table`、`drip-table-generator`、`drip-table-driver-antd`。
+`DripTable` 目前包含以下子项目：`drip-table`、`drip-table-generator`。
 
 各个子项目具体介绍如下：
 
 - `drip-table`：动态列表解决方案的核心库，其主要能力是支持符合 `JSON Schema` 标准的数据自动渲染列表内容。
 
 - `drip-table-generator`：一个可视化的用于 `DripTable` 配置 `JSON Schema` 标准的配置数据的生成工具。
-
-- `drip-table-driver-antd`： 一个 `Ant Design` UI 组件库主题包。
 
 ## 功能点
 
@@ -82,7 +80,7 @@
 
 1. 安装依赖
 
-   配置端依赖应用端，安装前先确保已安装 `drip-table` 和 `drip-table-driver-{drivername}`。
+   配置端依赖应用端，安装前先确保已安装 `drip-table`。
 
    > yarn
 
@@ -117,33 +115,25 @@
 
 1. 安装依赖
 
-   同时安装 `drip-table` 和 `drip-table` 主题包：
+   安装 `drip-table`：
 
    > yarn
 
    ```sh
-   yarn add drip-table drip-table-driver-{drivername}
+   yarn add drip-table
    ```
 
    > npm
 
    ```sh
-   npm install --save drip-table drip-table-driver-{drivername}
+   npm install --save drip-table
    ```
-
-   目前可选列表如下：
-
-   - drip-table-driver-antd
 
 2. 在文件开头引入依赖
 
    ```js
    // 引入 drip-table
    import DripTable from "drip-table";
-   // 引入主题包，以 antd 为例
-   import DripTableDriverAntDesign from "drip-table-driver-antd";
-   // 引入 ant-design 样式
-   import "antd/dist/antd.css";
    // 引入 drip-table 样式
    import "drip-table/dist/index.min.css";
    ```
@@ -167,7 +157,6 @@
    };
    return (
      <DripTable
-       driver={DripTableDriverAntDesign}
        schema={schema}
        dataSource={[]}
      />

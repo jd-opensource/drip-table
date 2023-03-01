@@ -19,7 +19,6 @@ toc: content
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -71,7 +70,6 @@ const Demo = () => {
         style={{ margin: '8px 0' }}
       />
       <DripTableGenerator
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
         dataFields={dataFields}

@@ -164,7 +164,7 @@ const hookColumRender = <
     column: TableColumnType<RcTableRecordType<RecordType>>,
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBaseColumnSchema,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   const render = column.render;
   column.render = (d, row, ...args) => (
@@ -263,7 +263,6 @@ export const columnRenderGenerator = <
         }
         return (
           <BuiltInComponent
-            driver={extraProps.driver}
             data={record}
             value={value}
             indexValue={(dataIndex, defaultValue) => {
@@ -297,7 +296,6 @@ export const columnRenderGenerator = <
           }
           return (
             <ExtraComponent
-              driver={extraProps.driver}
               data={record}
               value={value}
               indexValue={(dataIndex, defaultValue) => {
@@ -339,7 +337,7 @@ export const columnGenerator = <
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'driver' | 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
@@ -597,7 +595,6 @@ const TableLayout = <
   const filteredColumns = React.useMemo(
     (): TableColumnType<RcTableRecordType<RecordType>>[] => {
       const extraProps = {
-        driver: tableProps.driver,
         components: tableProps.components,
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,
@@ -717,7 +714,6 @@ const TableLayout = <
                 ? (
                   <Slot
                     slotType={slotType}
-                    driver={tableProps.driver}
                     schema={tableProps.schema}
                     ext={tableProps.ext}
                     dataSource={tableProps.dataSource}
@@ -829,7 +825,6 @@ const TableLayout = <
       dragInIndex,
       tableInfo,
       tableProps.schema.columns,
-      tableProps.driver,
       tableProps.components,
       tableProps.ext,
       tableProps.onEvent,

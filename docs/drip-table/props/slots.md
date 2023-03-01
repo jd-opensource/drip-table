@@ -14,7 +14,6 @@ toc: content
       style?: React.CSSProperties;
       className?: string;
       slotType: string;
-      driver: DripTableDriver;
       schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
       dataSource: readonly RecordType[];
       onSearch: (searchParams: Record<string, unknown>) => void;
@@ -34,8 +33,6 @@ toc: content
 import React from "react";
 import { Button } from "antd";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -83,7 +80,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       slots={{

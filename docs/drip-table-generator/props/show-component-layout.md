@@ -19,7 +19,6 @@ toc: content
 
 import { Button } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -71,7 +70,6 @@ const Demo = () => {
     >点击切换组件栏</Button>
     <DripTableGenerator
       showComponentLayout={showComponentLayout}
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />

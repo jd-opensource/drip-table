@@ -21,7 +21,6 @@ toc: content
  */
 import React from "react";
 import { DripTableSchema } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 
@@ -47,7 +46,6 @@ const initialSchema = {
 const Demo = () => {
   return (
     <DripTableGenerator
-      driver={DripTableDriverAntDesign}
       dataSource={[]}
       schema={initialSchema}
     />
@@ -86,7 +84,6 @@ export default Demo;
  */
 import React from "react";
 import { DripTableSchema } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 
@@ -103,7 +100,7 @@ const Demo = () => {
         }`
       }
       </style>
-      <DripTableGenerator driver={DripTableDriverAntDesign} dataSource={[]} />
+      <DripTableGenerator dataSource={[]} />
     </div>
   );
 };

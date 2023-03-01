@@ -18,8 +18,6 @@ toc: content
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -75,7 +73,6 @@ SampleComponent.schema = { // https://ajv.js.org/json-schema.html
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       components={{

@@ -29,8 +29,6 @@ type AjvOptions = {
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -74,7 +72,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       ajv={{ additionalProperties: true }}
@@ -98,8 +95,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -141,7 +136,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       xxx={1} // 多余的数据
@@ -162,8 +156,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -207,7 +199,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -227,8 +218,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -270,7 +259,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       // schema={schema} // 缺少参数
       dataSource={dataSource}
     />
@@ -290,8 +278,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -333,7 +319,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -353,8 +338,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -394,7 +377,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -414,8 +396,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -463,7 +443,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -483,8 +462,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -533,7 +510,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -553,8 +529,6 @@ export default Demo;
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -616,7 +590,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />

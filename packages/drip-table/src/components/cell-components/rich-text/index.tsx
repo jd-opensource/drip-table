@@ -74,7 +74,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
       );
       return (
         <div className={`${prefixCls}-container`}>
-          <ErrorBoundary driver={this.props.driver}><RichText html={html || ''} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>
+          <ErrorBoundary><RichText html={html || ''} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>
           { this.renderToolTip() }
         </div>
       );

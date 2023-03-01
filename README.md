@@ -23,17 +23,15 @@ English | [简体中文](./README.zh-CN.md) | [Documentation](http://drip-table.
 
 ## 📖 Introduction
 
-`Drip table`is a dynamic table solution for enterprise level middle and background launched by JD retail. The project is based on `React` and `JSON Schema` . It aims to reduce the difficulty of developing table and improve work efficiency by `simple configuration` to quickly generate page dynamic table.
+`Drip Table`is a dynamic table solution for enterprise level middle and background launched by JD retail. The project is based on `React` and `JSON Schema` . It aims to reduce the difficulty of developing table and improve work efficiency by `simple configuration` to quickly generate page dynamic table.
 
-`Drip table` contains serval sub projects: `drip-table`, `drip-table-generator`, `drip-table-driver-antd`.
+`Drip Table` contains serval sub projects: `drip-table`, `drip-table-generator`.
 
 The introduction of each sub-project are as follows:
 
 - `drip-table`: the core library of the solution for building dynamic tables. It's main ability is to render a dynamic table automatically when received data which conforms to the `JSON Schema` standard.
 
 - `drip-table-generator`: a visual tool for producing configuration data that meets the `JSON Schema` standard in order to sent to `DripTable` for rendering a table and columns.
-
-- `drip-table-driver-antd`: a theme package which is composed of `Ant Design` components and icons.
 
 ## Features
 
@@ -82,7 +80,7 @@ The introduction of each sub-project are as follows:
 
 1. Install dependencies
 
-   The configuration side depend on the application side, please make sure that `drip-table` and `drip-table-driver-{drivername}` are installed before installing dependencies.
+   The configuration side depend on the application side, please make sure that `drip-table` has been installed before installing dependencies.
 
    > yarn
 
@@ -117,33 +115,25 @@ The introduction of each sub-project are as follows:
 
 1. Install dependencies
 
-   Install the `drip-table` and a `drip-table` theme package at the same time:
+   Install the `drip-table`:
 
    > yarn
 
    ```sh
-   yarn add drip-table drip-table-driver-{drivername}
+   yarn add drip-table
    ```
 
    > npm
 
    ```sh
-   npm install --save drip-table drip-table-driver-{drivername}
+   npm install --save drip-table
    ```
-
-   Theme packages below are available:
-
-   - drip-table-driver-antd
 
 2. Import at the entrance of a file
 
    ```js
    // import drip-table
    import DripTable from "drip-table";
-   // import a theme package, take antd as an example
-   import DripTableDriverAntDesign from "drip-table-driver-antd";
-   // import ant-design css
-   import "antd/dist/antd.css";
    // import drip-table css
    import "drip-table/dist/index.min.css";
    ```
@@ -167,7 +157,6 @@ The introduction of each sub-project are as follows:
    };
    return (
      <DripTable
-       driver={DripTableDriverAntDesign}
        schema={schema}
        dataSource={[]}
      />

@@ -13,8 +13,6 @@ import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/cell-components';
 import type { DripTableSlotSchema } from '@/components/react-components/slot-render';
 
-import type { DripTableDriver, DripTableReactComponent } from './driver';
-
 export { SchemaObject } from 'ajv';
 
 export interface DripTableCellDisplayControl {
@@ -434,8 +432,6 @@ export interface DripTablePagination {
 
 export type DripTableFilters = Record<string, (React.Key | boolean)[] | null>;
 
-export type { DripTableDriver, DripTableReactComponent, DripTableReactComponentProps } from './driver';
-
 /**
  * 指定子表格的参数
  */
@@ -472,10 +468,6 @@ export interface DripTableProps<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableSubtableProps<RecordType, ExtraOptions> {
-  /**
-   * 底层组件驱动
-   */
-  driver: DripTableDriver;
   /**
    * 样式表类名
    */
@@ -575,10 +567,6 @@ export interface DripTableProps<
        */
       data?: unknown;
       /**
-       * @deprecated 即将废弃，底层驱动组件库
-       */
-      driver: DripTableDriver;
-      /**
        * 表格 Schema 对象
        */
       schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
@@ -620,7 +608,7 @@ export interface DripTableProps<
    * 图标库
    */
   icons?: {
-    [iconName: string]: DripTableReactComponent<unknown>;
+    [iconName: string]: React.JSXElementConstructor<React.PropsWithChildren<unknown>>;
   };
   /**
    * Schema 校验配置项

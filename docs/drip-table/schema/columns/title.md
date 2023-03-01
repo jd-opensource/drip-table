@@ -50,10 +50,8 @@ toc: content
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
 import { PlusCircleTwoTone } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
-import "antd/dist/antd.css";
 
 const initialSchema = {
   columns: [
@@ -130,7 +128,6 @@ const Demo = () => {
 
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       components={{

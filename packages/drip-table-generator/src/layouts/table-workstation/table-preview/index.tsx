@@ -8,7 +8,6 @@
 import './index.less';
 
 import DripTable, { DripTableExtraOptions } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -25,12 +24,10 @@ const PreviewTable = <
     <div className="jfe-drip-table-generator-workstation-table-preview-wrapper">
       <DripTable
         style={Object.assign({ ...props.style }, props.visible ? void 0 : { display: 'none' })}
-        driver={DripTableDriverAntDesign}
         schema={getSchemaValue<ExtraOptions>(context)}
         dataSource={context.previewDataSource as RecordType[]}
         components={props.components || props.customComponents}
         {...filterAttributes(props, [
-          'driver',
           'dataSource',
           'schema',
           'style',

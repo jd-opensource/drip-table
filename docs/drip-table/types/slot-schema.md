@@ -142,7 +142,7 @@ interface LayoutSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 选择器按钮样式
    */
-  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+  selectorButtonType?: ButtonProps['type'];
 }
 
 interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
@@ -157,7 +157,7 @@ interface DisplayColumnSelectorSlotElementSchema extends SlotElementBaseSchema {
   /**
    * 选择器按钮样式
    */
-  selectorButtonType?: React.ComponentProps<DripTableDriver['components']['Button']>['type'];
+  selectorButtonType?: ButtonProps['type'];
 }
 
 export type DripTableSlotElementSchema =

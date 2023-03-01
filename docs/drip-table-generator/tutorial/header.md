@@ -21,7 +21,6 @@ toc: content
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -105,7 +104,6 @@ const Demo = () => {
   return (
     <DripTableGenerator
       mockDataSource
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />
@@ -129,7 +127,6 @@ export default Demo;
 
 import { Button, Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -191,7 +188,6 @@ const Demo = () => {
   return (
     <DripTableGenerator
       mockDataSource
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       slots={{

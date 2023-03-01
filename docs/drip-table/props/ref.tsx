@@ -7,7 +7,6 @@
 
 import { Button, message } from 'antd';
 import DripTable, { DripTableInstance } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React, { useRef, useState } from 'react';
 
 import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
@@ -54,7 +53,6 @@ const Demo = () => {
         SubtableDataSourceKey: SubtableDataSourceKey;
       }>
         ref={dripTable}
-        driver={DripTableDriverAntDesign}
         schema={schema}
         slots={{
           default: props => <div data-slot-type={props.slotType} />,

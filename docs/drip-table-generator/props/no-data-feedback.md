@@ -19,7 +19,6 @@ toc: content
 
 import { Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -57,7 +56,6 @@ const Demo = () => {
     <>
       <DripTableGenerator
         mockDataSource
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
         noDataFeedBack={(<div style={{ color: 'red'}}> 表格暂无数据 </div>)}

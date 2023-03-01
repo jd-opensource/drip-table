@@ -29,7 +29,6 @@ interface EditableTableProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponents'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
@@ -393,7 +392,6 @@ const EditableTable = <
                           <EditableComponents
                             record={record as RecordType}
                             column={column as unknown as DripTableBuiltInColumnSchema}
-                            driver={props.driver}
                             customComponents={props.customComponents}
                             customComponentPanel={props.customComponentPanel}
                             mockDataSource={props.mockDataSource}

@@ -21,7 +21,7 @@ English | [简体中文](./README.zh-CN.md)
 
 1. Install dependencies
 
-    The configuration side depend on the application side, please make sure that `drip-table` and `drip-table-driver-{drivername}` are installed before installing dependencies.
+    The configuration side depend on the application side, please make sure that `drip-table` has been installed before installing dependencies.
 
     > yarn
 

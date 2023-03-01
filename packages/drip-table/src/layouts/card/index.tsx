@@ -24,7 +24,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const { props: tableProps, info: tableInfo, state: tableState } = useTableContext<RecordType, ExtraOptions>();
 
   const extraProps = {
-    driver: tableProps.driver,
     components: tableProps.components,
     ext: tableProps.ext,
     onEvent: tableProps.onEvent,

@@ -13,7 +13,6 @@ toc: content
 | ----- | ---- | ---- | ---- |
 | [className](/drip-table/props/class-name) | 样式表类名 | × | [🔗 示例](/drip-table/props/class-name) |
 | [style](/drip-table/props/style) | 自定义样式表 | × | [🔗 示例](/drip-table/props/style) |
-| [driver](/drip-table/props/driver) | 底层组件驱动 | √ | [🔗 示例](/drip-table/props/driver) |
 | [schema](/drip-table/props/schema) | 表单 Schema | √ | [🔗 示例](/drip-table/props/schema) |
 | [ref](/drip-table/props/ref) | 引用 | × | [🔗 示例](/drip-table/props/ref) |
 | [ajv](/drip-table/props/ajv) | Schema 校验配置项 | × | [🔗 示例](/drip-table/props/ajv) |
@@ -67,8 +66,6 @@ toc: content
 import { Button, message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -147,7 +144,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       components={{

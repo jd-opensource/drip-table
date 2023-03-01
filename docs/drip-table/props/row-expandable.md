@@ -26,8 +26,6 @@ toc: content
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   id: 'sample-table',
@@ -77,7 +75,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       rowExpandable={(record, index, parent) => parent.schema.id === 'sample-table' && record.id === 1}

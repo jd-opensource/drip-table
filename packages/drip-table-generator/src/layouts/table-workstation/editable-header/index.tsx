@@ -25,7 +25,6 @@ interface EditableTableHeaderProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   ext: ExtraOptions['CustomComponentExtraData'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
 }
@@ -90,7 +89,6 @@ const EditableTableHeader = <
             style={config.style}
             slotType={config.slot}
             data={config.data}
-            driver={props.driver}
             ext={props.ext}
             schema={getSchemaValue(context) as unknown as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>}
             dataSource={context.previewDataSource as RecordType[] || []}

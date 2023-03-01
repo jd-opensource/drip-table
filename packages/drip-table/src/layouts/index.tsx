@@ -128,7 +128,7 @@ const DripTableLayout = <
   }, [tableProps, tableInfo, tableState, setTableState, headerNode, footerNode]);
 
   return (
-    <ErrorBoundary driver={tableProps.driver}>
+    <ErrorBoundary>
       <Spin spinning={tableProps.loading}>
         <div
           className={classnames(tableProps.className, tableProps.schema.className)}

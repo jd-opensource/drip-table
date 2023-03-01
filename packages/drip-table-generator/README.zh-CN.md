@@ -21,7 +21,7 @@
 
 1. 安装依赖
 
-    配置端依赖应用端，安装前先确保已安装 `drip-table` 和 `drip-table-driver-{drivername}`。
+    配置端依赖应用端，安装前先确保已安装 `drip-table`。
 
     > yarn
 

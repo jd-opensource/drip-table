@@ -37,8 +37,6 @@ toc: content
 import React from "react";
 import DripTable from "drip-table";
 import { Button } from "antd";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   rowSelection: true,
@@ -115,7 +113,6 @@ const Demo = () => {
   return (
     <DripTable
       style={{ margin: '10px' }}
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       slots={{

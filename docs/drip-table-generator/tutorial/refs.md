@@ -50,14 +50,12 @@ const generator = React.createRef();
  * hideActions: ["CSB"]
  */
 import React from "react";
+import antd from "antd";
 import { DripTableSchema } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import DripTableGenerator, {
-  DripTableGeneratorHandler,
-} from "drip-table-generator";
+import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 
-const { Row, Col, Button, message } = DripTableDriverAntDesign.components;
+const { Row, Col, Button, message } = antd;
 
 const Demo = () => {
   const generator: React.MutableRefObject<DripTableGeneratorHandler | null> = React.useRef(
@@ -103,7 +101,6 @@ const Demo = () => {
       <DripTableGenerator
         ref={generator}
         mockDataSource
-        driver={DripTableDriverAntDesign}
         dataSource={[]}
       />
     </React.Fragment>

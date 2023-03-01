@@ -146,7 +146,6 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '样式表类名 className', link: '/drip-table/props/class-name' },
           { title: '自定义样式表 style', link: '/drip-table/props/style' },
           { title: '引用实例 ref', link: '/drip-table/props/ref' },
-          { title: '底层组件驱动 driver', link: '/drip-table/props/driver' },
           { title: '校验配置项 ajv', link: '/drip-table/props/ajv' },
           { title: '表格配置 schema', link: '/drip-table/props/schema' },
           { title: '校验配置项 dataSource', link: '/drip-table/props/data-source' },
@@ -380,7 +379,6 @@ export default defineConfig({
   // https://d.umijs.org/config#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E9%A1%B9
   alias: {
     'drip-table': path.resolve(__dirname, './packages/drip-table'),
-    'drip-table-driver-antd': path.resolve(__dirname, './packages/drip-table-driver-antd'),
     'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
   },
   chainWebpack(config, { webpack }) {

@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
 
 import { DripTableBuiltInComponentEvent } from '.';
 
@@ -18,10 +18,6 @@ export interface DripTableComponentProps<
   ComponentEvent extends EventLike = never,
   ComponentExtraData = unknown,
 > {
-  /**
-   * 底层渲染驱动
-   */
-  driver: DripTableDriver;
   /**
    * 当前渲染列参数
    */

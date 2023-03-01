@@ -18,8 +18,6 @@ toc: content
 import { message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   columns: [
@@ -75,7 +73,6 @@ const Demo = () => {
   const [ds, setDS] = React.useState(dataSource);
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={ds}
       onChange={({ pagination, filters }) => {

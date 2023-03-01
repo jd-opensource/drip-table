@@ -18,7 +18,6 @@ import {
   DripTableProps,
   TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator,
 } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import React from 'react';
 
 import { filterAttributes, mockId } from '@/utils';
@@ -34,7 +33,6 @@ interface EditableComponentsProps<
 > {
   column: DripTableBuiltInColumnSchema;
   record: RecordType;
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
@@ -47,7 +45,6 @@ interface EditableGroupComponentProps <
 >{
   column: DripTableBuiltInColumnSchema | null;
   record: RecordType;
-  driver: DripTableGeneratorProps<RecordType, ExtraOptions>['driver'];
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   isCurrentColumn?: boolean;
   parentIndex?: number[];
@@ -126,7 +123,6 @@ const EditableGroupComponent = <
                         },
                         columnSchema,
                         {
-                          driver: props.driver || DripTableDriverAntDesign,
                           components: props.customComponents,
                           ext: void 0, // TODO: ext
                           unknownComponent: <Alert type="error" message="未知组件" />,
@@ -214,7 +210,6 @@ const EditableGroupComponent = <
                               isCurrentColumn={props.isCurrentColumn}
                               parentIndex={[...props?.parentIndex || [], currentCheckedIndex]}
                               isChildren
-                              driver={props.driver}
                               record={props.record}
                               customComponents={props.customComponents}
                               customComponentPanel={props.customComponentPanel}
@@ -258,7 +253,6 @@ const EditableComponents = <
         isCurrentColumn={isCurrentColumn}
         column={props.column}
         isChildren={false}
-        driver={props.driver}
         record={props.record}
         customComponents={props.customComponents}
         customComponentPanel={props.customComponentPanel}
@@ -278,7 +272,6 @@ const EditableComponents = <
       },
       columnSchema,
       {
-        driver: props.driver || DripTableDriverAntDesign,
         components: props.customComponents,
         ext: void 0, // TODO: ext
         unknownComponent: <Alert type="error" message="未知组件" />,

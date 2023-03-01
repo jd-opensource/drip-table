@@ -338,7 +338,6 @@ const SlotRender = <
             className={classnames(`${prefixCls}-slot-element`, typeof deprecatedProps?.className === 'string' ? deprecatedProps.className : '', config.class)}
             style={config.style ? parseReactCSS(config.style) : void 0}
             slotType={config.slot}
-            driver={tableProps.driver}
             schema={tableProps.schema}
             ext={tableProps.ext}
             dataSource={tableProps.dataSource}

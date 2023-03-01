@@ -7,7 +7,6 @@
 
 import { Button, Row } from 'antd';
 import { DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import React from 'react';
 
@@ -29,7 +28,6 @@ const Demo = () => {
       </Row>
       <DripTableGenerator
         ref={generator}
-        driver={DripTableDriverAntDesign}
         customComponents={{}}
         style={{ height: 720 }}
         schema={initialSchema}

@@ -17,8 +17,6 @@ toc: content
  */
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   innerClassName: "sample-class-name",
@@ -62,7 +60,6 @@ const Demo = () => {
   return (
     <React.Fragment>
       <DripTable
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
       />

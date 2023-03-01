@@ -17,7 +17,6 @@ toc: content
  */
 
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator from "drip-table-generator";
 import React from "react";
 
@@ -64,7 +63,6 @@ const Demo = () => {
   return (
     <DripTableGenerator
       mockDataSource
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
     />

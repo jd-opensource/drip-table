@@ -29,7 +29,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const dateRender = (date: Moment, today: Moment, dataSources: RecordType[]) => {
     const record = dataSources.find(o => moment(o.startDate as string).isSame(date, 'date'));
     const extraProps = {
-      driver: tableProps.driver,
       components: tableProps.components,
       ext: tableProps.ext,
       onEvent: tableProps.onEvent,

@@ -19,7 +19,6 @@ toc: content
 
 import { Button } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGeneratorProvider from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -71,7 +70,6 @@ const Demo = () => {
       >点击切换 Mock 数据输入框</Button>
       <DripTableGeneratorProvider
         mockDataSource={mockDataSource}
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
       />

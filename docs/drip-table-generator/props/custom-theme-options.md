@@ -23,7 +23,6 @@ toc: content
 import React from "react";
 import DripTable from "drip-table";
 import { Button } from "antd";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
 import DripTableGenerator from "drip-table-generator";
 import "antd/dist/antd.css";
 
@@ -86,7 +85,6 @@ const Demo = () => {
     <DripTableGenerator
       mockDataSource
       schema={schema}
-      driver={DripTableDriverAntDesign}
       dataSource={dataSource}
       defaultTheme="custom"
       customThemeOptions={[

@@ -23,8 +23,6 @@ toc: content
 import { message } from 'antd';
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const dataSource = [
   {
@@ -96,7 +94,6 @@ const Demo = () => {
   return (
     <React.Fragment>
       <DripTable
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
       />

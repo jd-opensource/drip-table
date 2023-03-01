@@ -21,7 +21,6 @@ toc: content
 | [customGlobalConfigPanel](/drip-table-generator/props/custom-global-config-panel)    | 自定义全局属性面板                         | ×    | [🔗 示例](/drip-table-generator/props/custom-global-config-panel)  |
 | [customAttributeComponents](/drip-table-generator/props/custom-attribute-components) | 自定义属性面板组件                         | ×    | [🔗 示例](/drip-table-generator/props/custom-attribute-components) |
 | [onExportSchema](/drip-table-generator/props/on-export-schema)                       | 导出表格 Schema                            | ×    | [🔗 示例](/drip-table-generator/props/on-export-schema)            |
-| [driver](/drip-table/props/driver)                                                   | 底层组件驱动                               | √    | [🔗 示例](/drip-table/props/driver)                                |
 | [schema](/drip-table/props/schema)                                                   | 初始化载入的表单 Schema                    | √    | [🔗 示例](/drip-table/props/schema)                                |
 | [dataSource](/drip-table/props/data-source)                                          | 数据源                                     | √    | [🔗 示例](/drip-table/props/data-source)                           |
 | [customComponents](/drip-table/props/components)                                     | 自定义表格单元格组件库                     | ×    | [🔗 示例](/drip-table/props/components)                            |
@@ -37,4 +36,4 @@ toc: content
 | [expandedRowRender](/drip-table/props/expanded-row-render)                           | 行展开自定义渲染函数                       | ×    | [🔗 示例](/drip-table/props/expanded-row-render)                   |
 | [onDataSourceChange](/drip-table/props/on-datasource-change)                         | 导出表格数据                               | ×    | [🔗 示例](/drip-table/props/on-datasource-change)                  |
 
-> tips: `driver`, `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 [`drip-table`](/drip-table/props)。
+> tips: `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 [`drip-table`](/drip-table/props)。

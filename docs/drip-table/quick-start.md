@@ -25,14 +25,6 @@ toc: content
     npm install --save drip-table
     ```
 
-2. 安装主题包
-
-    ```shell
-    npm install --save drip-table-driver-antd
-    ```
-
-    或使用项目中的界面库构建符合 `drip-table` 所约定的自定义的主题包。
-
 ### 快速上手
 
 1. 引入依赖
@@ -43,20 +35,12 @@ toc: content
     import 'drip-table/dist/index.min.css';
     ```
 
-2. 选择主题包并引入
-
-    ```js | pure
-    import DripTableDriverAntDesign from 'drip-table-driver-antd';
-    import 'antd/dist/antd.css';
-    ```
-
-3. 创建组件实例
+2. 创建组件实例
 
     ```js | pure
     export default Demo = () => {
       return (
         <DripTable
-          driver={DripTableDriverAntDesign}
           schema={schema}
           dataSource={dataSource}
         />

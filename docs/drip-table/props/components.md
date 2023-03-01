@@ -34,8 +34,6 @@ toc: content
  */
 import React from "react";
 import DripTable, { DripTableComponentProps, DripTableRecordTypeBase } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 // 自定义组件表格渲染列 Schema 类型定义。
 type SampleColumnSchema = DripTableColumnSchema<'custom::Sample', {
@@ -114,7 +112,6 @@ const Demo = () => {
     <DripTable<{
       CustomColumnSchema: CustomColumnSchema;
     }>
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       components={{ custom: customComponents }}

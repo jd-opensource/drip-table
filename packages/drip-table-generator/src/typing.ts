@@ -1,4 +1,4 @@
-import { DripTableColumnSchema, DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { CustomComponentProps } from './components/CustomForm/components';
@@ -140,10 +140,6 @@ export interface DripTableGeneratorProps<
    * 全局样式
    */
   style?: CSSProperties;
-  /**
-   * 样式主题驱动, 展示组件以及透传给 drip-table 用
-   */
-  driver: DripTableDriver;
   /**
    * 展示组件栏
    */

@@ -96,7 +96,6 @@
 │ └── loading.js                   // 文档官网 Loading 组件
 └── packages                       // 源代码入口
   ├── drip-table                   // drip-table 代码
-  ├── drip-table-driver-antd       // drip-table antd 主题包
   └── drip-table-generator         // drip-table 可视化生成器
 ```
 

@@ -19,7 +19,6 @@ toc: content
 
 import { message, Button } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -63,7 +62,6 @@ const dataSource = [
 const Demo = () => {
   return (
     <DripTableGenerator
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       onExportSchema={(schema) => { message.info('导出 Schema:' + JSON.stringify(schema), 3); }}

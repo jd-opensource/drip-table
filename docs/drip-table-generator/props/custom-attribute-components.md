@@ -10,7 +10,6 @@ toc: content
 
 ```ts
 interface CustomComponentProps {
-  theme?: DripTableDriver;
   schema: DTGComponentPropertySchema;
   value?: string;
   onChange?: (value: string) => void;
@@ -31,7 +30,6 @@ type customAttributeComponents = Record<string, new <P extends CustomComponentPr
 
 import { Button, Input } from 'antd';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator, { DripTableGeneratorPanel, DTGComponentPropertySchema } from 'drip-table-generator';
 import React, { useState } from 'react';
 
@@ -102,7 +100,6 @@ const Demo = () => {
   return (
     <DripTableGenerator
       mockDataSource
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       customGlobalConfigPanel={CustomGlobalConfigPanel}

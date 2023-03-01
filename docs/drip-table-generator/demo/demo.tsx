@@ -10,7 +10,6 @@ import './demo.module.less';
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import { DripTableSchema } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import DripTableGenerator from 'drip-table-generator';
 import React from 'react';
 
@@ -154,7 +153,6 @@ const Demo = () => (
   }>
     mockDataSource
     style={{ height: '738px' }}
-    driver={DripTableDriverAntDesign}
     schema={initialSchema}
     dataSource={mockData}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}

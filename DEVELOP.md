@@ -94,7 +94,6 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 │ └── loading.js                   // official website loading component
 └── packages                       // codes menu
   ├── drip-table                   // drip-table codes
-  ├── drip-table-driver-antd       // drip-table antd theme package
   └── drip-table-generator         // drip-table visual tool
 ```
 

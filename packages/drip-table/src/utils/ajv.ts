@@ -372,7 +372,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
     const propsSchema: DripTablePropsAjvSchemaCacheItem['props'] = {
       type: 'object',
       properties: {
-        driver: {},
         schema: dripTableSchema,
         dataSource: {
           type: 'array',
@@ -450,7 +449,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         __PARENT_INFO__: {},
       },
       required: [
-        'driver',
         'schema',
         'dataSource',
         ...subtablePropsSchema.required,

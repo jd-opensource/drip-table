@@ -8,13 +8,15 @@
 
 import React, { ErrorInfo } from 'react';
 
-import { DripTableDriver } from '@/types';
 import Result from '@/components/react-components/result';
 
-class ErrorBoundary extends React.Component<
-{ driver: DripTableDriver },
-{ hasError: boolean; errorInfo: string }
-> {
+interface ErrorBoundaryProps {}
+interface ErrorBoundaryState {
+  hasError: boolean;
+  errorInfo: string;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   public state = { hasError: false, errorInfo: '' };
 
   public static getDerivedStateFromError(error: Error) {

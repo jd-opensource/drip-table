@@ -9,7 +9,6 @@ import 'jsoneditor-react/es/editor.min.css';
 import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message, Switch, Tabs } from 'antd';
 import DripTable, { DripTableFilters, DripTableInstance } from 'drip-table';
-import DripTableDriverAntDesign from 'drip-table-driver-antd';
 import { JsonEditor } from 'jsoneditor-react';
 import React from 'react';
 
@@ -110,7 +109,6 @@ const Demo = () => {
         SubtableDataSourceKey: SubtableDataSourceKey;
       }>
         ref={dripTable}
-        driver={DripTableDriverAntDesign}
         schema={schema}
         loading={loading}
         total={totalNum}

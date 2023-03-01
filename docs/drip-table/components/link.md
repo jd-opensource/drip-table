@@ -23,8 +23,6 @@ toc: content
 import { message, Row, Col, Radio } from "antd";
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const dataSource = [
   {
@@ -157,7 +155,6 @@ const Demo = () => {
         </Col>
       </Row>
       <DripTable
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
         onEvent={(event, tableInfo) => {

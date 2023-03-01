@@ -19,8 +19,6 @@ toc: content
 import { message } from "antd";
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const schema = {
   rowKey: "id",
@@ -55,7 +53,6 @@ const dataSource = Array(50).fill(0).map((_, i) => ({
 const Demo = () => {
   return (
     <DripTable
-      driver={DripTableDriverAntDesign}
       schema={schema}
       dataSource={dataSource}
       onSelectionChange={(selectedKeys, selectedRows) => {

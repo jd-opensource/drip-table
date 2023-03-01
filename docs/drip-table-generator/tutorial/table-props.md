@@ -16,14 +16,12 @@ toc: content
  * hideActions: ["CSB"]
  */
 import React from "react";
+import antd from "antd";
 import DripTable, { DripTableSchema } from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import DripTableGenerator, {
-  DripTableGeneratorHandler,
-} from "drip-table-generator";
+import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
 
-const { Modal, notification } = DripTableDriverAntDesign.components;
+const { Modal, notification } = antd;
 
 const CustomGlobalConfigPanel = {
   mode: "replace",
@@ -134,14 +132,12 @@ const Demo = () => {
       <DripTableGenerator
         mockDataSource
         schema={initialSchema}
-        driver={DripTableDriverAntDesign}
         dataSource={dataSource}
         customGlobalConfigPanel={CustomGlobalConfigPanel}
         onSchemaChange={(data) => setSchema(data)}
       />
       <div> 渲染器 </div>
       <DripTable
-        driver={DripTableDriverAntDesign}
         dataSource={dataSource}
         schema={schema}
         loading={schema.ext?.loading}

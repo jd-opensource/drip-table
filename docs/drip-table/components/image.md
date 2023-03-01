@@ -22,8 +22,6 @@ toc: content
 import { Row, Col, InputNumber } from 'antd';
 import React from "react";
 import DripTable from "drip-table";
-import DripTableDriverAntDesign from "drip-table-driver-antd";
-import "antd/dist/antd.css";
 
 const dataSource = [
   {
@@ -87,7 +85,6 @@ const Demo = () => {
         <Col><InputNumber value={imageHeight} min={10} max={500} onChange={(v) => setImageHeight(v)} /></Col>
       </Row>
       <DripTable
-        driver={DripTableDriverAntDesign}
         schema={schema}
         dataSource={dataSource}
       />

@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import type { DripTableDriver, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from './types';
+import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from './types';
 
 export type SetStateAction<S> = Partial<S> | ((prevState: S) => Partial<S>);
 
@@ -89,7 +89,6 @@ export const DripTableContext = React.createContext<IDripTableContext>({
   props: {
     schema: { columns: [] },
     dataSource: [],
-    driver: {} as unknown as DripTableDriver,
   },
   info: {
     uuid: '',
