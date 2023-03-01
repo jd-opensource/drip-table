@@ -24,7 +24,16 @@ const Tooltip = React.memo(({ title, ...props }: TooltipProps) => (
     {...props}
     prefixCls={prefixCls}
     transitionName="jfe-drip-table-motion-zoom-big"
-    overlay={<div className={`${prefixCls}-inner-content`}>{ title || props.overlay }</div>}
+    overlay={
+      title
+        ? (
+          <div className={`${prefixCls}-inner-content`}>
+            <div className={`${prefixCls}-inner-content__title`}>{ title }</div>
+            <div className={`${prefixCls}-inner-content__body`}>{ props.overlay }</div>
+          </div>
+        )
+        : props.overlay ?? ''
+    }
     arrowContent={<span className={`${prefixCls}-arrow-content`} />}
   />
 ));
