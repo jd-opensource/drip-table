@@ -1,0 +1,263 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-rc-image;
+
+.@{prefixCls} {
+  position: relative;
+  display: inline-block;
+}
+
+.@{prefixCls}-img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.@{prefixCls}-img-placeholder {
+  background-color: #f5f5f5;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTQuNSAyLjVoLTEzQS41LjUgMCAwIDAgMSAzdjEwYS41LjUgMCAwIDAgLjUuNWgxM2EuNS41IDAgMCAwIC41LS41VjNhLjUuNSAwIDAgMC0uNS0uNXpNNS4yODEgNC43NWExIDEgMCAwIDEgMCAyIDEgMSAwIDAgMSAwLTJ6bTguMDMgNi44M2EuMTI3LjEyNyAwIDAgMS0uMDgxLjAzSDIuNzY5YS4xMjUuMTI1IDAgMCAxLS4wOTYtLjIwN2wyLjY2MS0zLjE1NmEuMTI2LjEyNiAwIDAgMSAuMTc3LS4wMTZsLjAxNi4wMTZMNy4wOCAxMC4wOWwyLjQ3LTIuOTNhLjEyNi4xMjYgMCAwIDEgLjE3Ny0uMDE2bC4wMTUuMDE2IDMuNTg4IDQuMjQ0YS4xMjcuMTI3IDAgMCAxLS4wMi4xNzV6IiBmaWxsPSIjOEM4QzhDIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L3N2Zz4=");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 30%;
+}
+
+.@{prefixCls}-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: rgb(0 0 0 / 50%);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.@{prefixCls}-mask-info {
+  padding: 0 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.@{prefixCls}-mask-info__icon {
+  display: inline-block;
+  vertical-align: -.125em;
+  margin-inline-end: 4px;
+}
+
+.@{prefixCls}-mask:hover {
+  opacity: 1;
+}
+
+.@{prefixCls}-placeholder {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.@{prefixCls}-preview {
+  pointer-events: none;
+  height: 100%;
+  text-align: center;
+}
+
+.@{prefixCls}-preview.ant-zoom-enter,
+.@{prefixCls}-preview.ant-zoom-appear {
+  transform: none;
+  opacity: 0;
+  animation-duration: .3s;
+  user-select: none;
+}
+
+.@{prefixCls}-preview-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: #00000073;
+}
+
+.@{prefixCls}-preview-mask-hidden {
+  display: none;
+}
+
+.@{prefixCls}-preview-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  z-index: 1080;
+}
+
+.@{prefixCls}-preview-body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.@{prefixCls}-preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+  transform: scaleZ(1);
+  cursor: grab;
+  transition: transform .3s cubic-bezier(.215, .61, .355, 1) 0s;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.@{prefixCls}-preview-img-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: transform .3s cubic-bezier(.215, .61, .355, 1) 0s;
+}
+
+.@{prefixCls}-preview-img-wrapper:before {
+  display: inline-block;
+  width: 1px;
+  height: 50%;
+  margin-right: -1px;
+  content: "";
+}
+
+.@{prefixCls}-preview-moving .@{prefixCls}-preview-img {
+  cursor: grabbing;
+}
+
+.@{prefixCls}-preview-moving .@{prefixCls}-preview-img-wrapper {
+  transition-duration: 0s;
+}
+
+.@{prefixCls}-preview-operations-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1081;
+  width: 100%;
+}
+
+.@{prefixCls}-preview-operations {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  font-feature-settings: "tnum", "tnum";
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  color: #ffffffd9;
+  list-style: none;
+  background: rgb(0 0 0 / 10%);
+  pointer-events: auto;
+}
+
+.@{prefixCls}-preview-operations-operation {
+  margin-left: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.@{prefixCls}-preview-operations-operation:hover {
+  background: rgb(0 0 0 / 20%);
+}
+
+.@{prefixCls}-preview-operations-operation-disabled {
+  color: #ffffff40;
+  pointer-events: none;
+}
+
+.@{prefixCls}-preview-operations-operation:last-of-type {
+  margin-left: 0;
+}
+
+.@{prefixCls}-preview-operations-progress {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.@{prefixCls}-preview-operations-icon {
+  font-size: 18px;
+}
+
+.@{prefixCls}-preview-switch-left,
+.@{prefixCls}-preview-switch-right {
+  position: fixed;
+  top: 50%;
+  right: 8px;
+  z-index: 1081;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: #ffffffd9;
+  background: rgb(0 0 0 / 10%);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: all .3s;
+  pointer-events: auto;
+}
+
+.@{prefixCls}-preview-switch-left:hover,
+.@{prefixCls}-preview-switch-right:hover {
+  background: rgb(0 0 0 / 20%);
+}
+
+.@{prefixCls}-preview-switch-left-disabled,
+.@{prefixCls}-preview-switch-right-disabled,
+.@{prefixCls}-preview-switch-left-disabled:hover,
+.@{prefixCls}-preview-switch-right-disabled:hover {
+  color: #ffffff40;
+  background: rgb(0 0 0 / 10%);
+  cursor: not-allowed;
+}
+
+.@{prefixCls}-preview-switch-left-disabled>.anticon,
+.@{prefixCls}-preview-switch-right-disabled>.anticon,
+.@{prefixCls}-preview-switch-left-disabled:hover>.anticon,
+.@{prefixCls}-preview-switch-right-disabled:hover>.anticon {
+  cursor: not-allowed;
+}
+
+.@{prefixCls}-preview-switch-left>.anticon,
+.@{prefixCls}-preview-switch-right>.anticon {
+  font-size: 18px;
+}
+
+.@{prefixCls}-preview-switch-left {
+  left: 8px;
+}
+
+.@{prefixCls}-preview-switch-right {
+  right: 8px;
+}

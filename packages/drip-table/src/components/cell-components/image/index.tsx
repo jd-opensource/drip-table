@@ -9,6 +9,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import Image from '@/components/react-components/image';
 import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
@@ -50,10 +51,20 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     return '';
   }
 
-  public render() {
+  private renderImage() {
     const options = this.props.schema.options;
-    const Image = this.props.driver.components.Image;
-    const imgFragment = (
+    if (this.props.preview) {
+      return (
+        <img
+          style={{
+            width: options.imageWidth ? `${options.imageWidth}px` : '',
+            height: options.imageHeight ? `${options.imageHeight}px` : '',
+          }}
+          src={this.value || options.imagePlaceholder || this.DEFAULT_IMAGE}
+        />
+      );
+    }
+    return (
       <Image
         width={options.imageWidth}
         height={options.imageHeight}
@@ -62,12 +73,16 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
         fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
       />
     );
+  }
+
+  public render() {
+    const options = this.props.schema.options;
     return options.popover && !this.props.preview
       ? (
         <Tooltip trigger={options.trigger} overlay={(<img src={this.value} />)} placement="top">
-          { imgFragment }
+          { this.renderImage() }
         </Tooltip>
       )
-      : imgFragment;
+      : this.renderImage();
   }
 }

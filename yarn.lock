@@ -13685,6 +13685,18 @@ rc-field-form@~1.27.0:
     async-validator "^4.1.0"
     rc-util "^5.8.0"
 
+rc-image@^5.15.2:
+  version "5.15.2"
+  resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-5.15.2.tgz#5af0270aca7474476866fae6b047fb3a0461ed28"
+  integrity sha512-QaeWP20v51eGyrkl24PyusTmbMk42A3vGPl7hEa15jcQjECOX36tLtvLk5sjl3vaLQpMskB8BbwiqPsN7I7aow==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@rc-component/portal" "^1.0.2"
+    classnames "^2.2.6"
+    rc-dialog "~9.0.0"
+    rc-motion "^2.6.2"
+    rc-util "^5.0.6"
+
 rc-image@~5.13.0:
   version "5.13.0"
   resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-5.13.0.tgz#1ed9b852a40b5eff34786ba7d2f0e9d26eeab874"
