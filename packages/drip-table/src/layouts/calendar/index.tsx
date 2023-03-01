@@ -12,7 +12,7 @@ import moment, { Moment } from 'moment';
 import React from 'react';
 
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from '@/types';
-import DatePicker from '@/components/date-picker';
+import DatePicker from '@/components/react-components/date-picker';
 import { useTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 

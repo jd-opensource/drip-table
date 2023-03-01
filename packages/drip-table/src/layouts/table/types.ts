@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import type { DripTableComponentProps } from '@/builtin-components';
+import type { DripTableComponentProps } from '@/components/cell-components';
 import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from '@/types';
 
 export interface DripTableColumnRenderOptions<

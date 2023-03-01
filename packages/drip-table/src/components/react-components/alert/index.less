@@ -1,0 +1,166 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : Emil Zhai (root@derzh.com)
+ * @modifier : Emil Zhai (root@derzh.com)
+ * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-rc-alert;
+
+.@{prefixCls} {
+  box-sizing: border-box;
+  margin: 0;
+  color: #000000d9;
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  font-feature-settings: "tnum", "tnum";
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  word-wrap: break-word;
+  border-radius: 2px;
+}
+.@{prefixCls}-content {
+  flex: 1 1;
+  min-width: 0;
+}
+.@{prefixCls}-icon {
+  margin-right: 8px;
+}
+.@{prefixCls}-description {
+  display: none;
+  font-size: 14px;
+  line-height: 22px;
+}
+.@{prefixCls}-success {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+.@{prefixCls}-success .@{prefixCls}-icon {
+  color: #52c41a;
+}
+.@{prefixCls}-info {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+}
+.@{prefixCls}-info .@{prefixCls}-icon {
+  color: #1890ff;
+}
+.@{prefixCls}-warning {
+  background-color: #fffbe6;
+  border: 1px solid #ffe58f;
+}
+.@{prefixCls}-warning .@{prefixCls}-icon {
+  color: #faad14;
+}
+.@{prefixCls}-error {
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+}
+.@{prefixCls}-error .@{prefixCls}-icon {
+  color: #ff4d4f;
+}
+.@{prefixCls}-error .@{prefixCls}-description > pre {
+  margin: 0;
+  padding: 0;
+}
+.@{prefixCls}-action {
+  margin-left: 8px;
+}
+.@{prefixCls}-close-icon {
+  margin-left: 8px;
+  padding: 0;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.@{prefixCls}-close-icon .anticon-close {
+  color: #00000073;
+  transition: color .3s;
+}
+.@{prefixCls}-close-icon .anticon-close:hover {
+  color: #000000bf;
+}
+.@{prefixCls}-close-text {
+  color: #00000073;
+  transition: color .3s;
+}
+.@{prefixCls}-close-text:hover {
+  color: #000000bf;
+}
+.@{prefixCls}-with-description {
+  align-items: flex-start;
+  padding: 15px 15px 15px 24px;
+}
+.@{prefixCls}-with-description.@{prefixCls}-no-icon {
+  padding: 15px;
+}
+.@{prefixCls}-with-description .@{prefixCls}-icon {
+  margin-right: 15px;
+  font-size: 24px;
+}
+.@{prefixCls}-with-description .@{prefixCls}-message {
+  display: block;
+  margin-bottom: 4px;
+  color: #000000d9;
+  font-size: 16px;
+}
+.@{prefixCls}-message {
+  color: #000000d9;
+}
+.@{prefixCls}-with-description .@{prefixCls}-description {
+  display: block;
+}
+.@{prefixCls}.@{prefixCls}-motion-leave {
+  overflow: hidden;
+  opacity: 1;
+  transition:
+    max-height .3s cubic-bezier(.78, .14, .15, .86),
+    opacity .3s cubic-bezier(.78, .14, .15, .86),
+    padding-top .3s cubic-bezier(.78, .14, .15, .86),
+    padding-bottom .3s cubic-bezier(.78, .14, .15, .86),
+    margin-bottom .3s cubic-bezier(.78, .14, .15, .86);
+}
+.@{prefixCls}.@{prefixCls}-motion-leave-active {
+  max-height: 0;
+  margin-bottom: 0 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+}
+.@{prefixCls}-banner {
+  margin-bottom: 0;
+  border: 0;
+  border-radius: 0;
+}
+.@{prefixCls}.@{prefixCls}-rtl {
+  direction: rtl;
+}
+.@{prefixCls}-rtl .@{prefixCls}-icon {
+  margin-right: auto;
+  margin-left: 8px;
+}
+.@{prefixCls}-rtl .@{prefixCls}-action {
+  margin-right: 8px;
+  margin-left: auto;
+}
+.@{prefixCls}-rtl .@{prefixCls}-close-icon {
+  margin-right: 8px;
+  margin-left: auto;
+}
+.@{prefixCls}-rtl.@{prefixCls}-with-description {
+  padding-right: 24px;
+  padding-left: 15px;
+}
+.@{prefixCls}-rtl.@{prefixCls}-with-description .@{prefixCls}-icon {
+  margin-right: auto;
+  margin-left: 15px;
+}

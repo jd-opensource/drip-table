@@ -13,8 +13,8 @@ import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import RcTooltip from 'rc-tooltip';
 import React from 'react';
 
-import Checkbox from '@/components/checkbox';
-import SlotRender from '@/components/slot-render';
+import Checkbox from '@/components/react-components/checkbox';
+import SlotRender from '@/components/react-components/slot-render';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption } from '@/index';
 

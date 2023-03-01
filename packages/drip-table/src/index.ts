@@ -10,9 +10,9 @@ import './styles/index.less';
 
 export * from './types';
 export { indexValue } from './utils/operator';
-export { default as builtInComponents } from './builtin-components';
-export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './builtin-components';
-export type { DripTableSlotElementSchema, DripTableSlotSchema } from './components/slot-render';
+export { default as builtInComponents } from './components/cell-components';
+export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './components/cell-components';
+export type { DripTableSlotElementSchema, DripTableSlotSchema } from './components/react-components/slot-render';
 export type { DripTableWrapperContext as DripTableInstance } from './wrapper';
 export { default } from './wrapper';
 export { columnRenderGenerator as TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION } from './layouts/table';

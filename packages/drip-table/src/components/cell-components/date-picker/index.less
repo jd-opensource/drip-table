@@ -1,0 +1,101 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : renwenci (ararakikon@163.com)
+ * @modifier : renwenci (ararakikon@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-cc-date-picker;
+
+.@{prefixCls}-main {
+  position: relative;
+  outline: none;
+}
+
+.@{prefixCls}-focus-border {
+  pointer-events: none;
+  display: none;
+}
+
+.@{prefixCls}-edit-select {
+  padding: 18px;
+  z-index: 100000;
+  background: #ffffff;
+}
+
+.@{prefixCls}-main.@{prefixCls}-editable:focus + .@{prefixCls}-focus-border {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  border: 2px solid #2a64ff;
+  border-radius: 4px;
+}
+
+.@{prefixCls}-main.@{prefixCls}-editable:focus {
+  color: #2a64ff !important;
+}
+
+.@{prefixCls}-word-break {
+  word-break: break-word;
+}
+
+.@{prefixCls}-text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.@{prefixCls}-edit-popup {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.@{prefixCls}-edit-popup-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+}
+
+.@{prefixCls}-edit-popup-body {
+  position: absolute;
+}
+
+.@{prefixCls}-edit-padding-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.@{prefixCls}-edit-padding-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.@{prefixCls}-edit-padding-top {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.@{prefixCls}-edit-padding-bottom {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.@{prefixCls}-edit-editing-outline {
+  border: 2px solid #2a64ff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 3px 4px 10px -1px #00000066;
+}

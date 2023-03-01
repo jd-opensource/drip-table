@@ -15,9 +15,9 @@ import {
   type DripTableRecordTypeWithSubtable,
   type ExtractDripTableExtraOption,
 } from '@/types';
-import ErrorBoundary from '@/components/error-boundary';
-import SlotRender, { type DripTableSlotSchema } from '@/components/slot-render';
-import Spin from '@/components/spin';
+import ErrorBoundary from '@/components/react-components/error-boundary';
+import SlotRender, { type DripTableSlotSchema } from '@/components/react-components/slot-render';
+import Spin from '@/components/react-components/spin';
 import { useTableContext } from '@/hooks';
 
 import CalendarLayout from './calendar';

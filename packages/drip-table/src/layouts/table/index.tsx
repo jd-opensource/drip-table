@@ -33,12 +33,12 @@ import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/do
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
-import Checkbox from '@/components/checkbox';
-import Pagination from '@/components/pagination';
-import RichText from '@/components/rich-text';
-import SlotRender from '@/components/slot-render';
-import Tooltip from '@/components/tooltip';
-import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/builtin-components';
+import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
+import Checkbox from '@/components/react-components/checkbox';
+import Pagination from '@/components/react-components/pagination';
+import RichText from '@/components/react-components/rich-text';
+import SlotRender from '@/components/react-components/slot-render';
+import Tooltip from '@/components/react-components/tooltip';
 import { type IDripTableContext, useTableContext } from '@/hooks';
 import DripTableWrapper from '@/wrapper';
 
