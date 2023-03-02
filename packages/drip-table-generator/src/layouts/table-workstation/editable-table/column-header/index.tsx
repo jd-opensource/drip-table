@@ -18,8 +18,10 @@ import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { getWidth } from '../../utils';
 
 interface ColumnHeaderProps{
+  className?: string;
   style?: React.CSSProperties;
   sticky?: boolean;
+  tableId: string;
   index: number;
   column: DripTableGeneratorContext['columns'][number];
   onInsert: (index: number) => void;
@@ -28,73 +30,78 @@ interface ColumnHeaderProps{
 }
 const ColumnHeader = (props: ColumnHeaderProps) => {
   const context = React.useContext(GeneratorContext);
-  const columnActions = (
-    columnIndex: number,
-    columns: DripTableGeneratorContext['columns'],
-    setState: DripTableGeneratorContext['setState'],
-  ) => (
-    <Menu key={columnIndex}>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        props.onInsert(columnIndex);
-      }}
-      >
-        <ArrowLeftOutlined style={{ marginRight: 5 }} />
-        <span>向左插入列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        props.onInsert(columnIndex + 1);
-      }}
-      >
-        <ArrowRightOutlined style={{ marginRight: 5 }} />
-        <span>向右插入列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        props.onCopy(columnIndex);
-      }}
-      >
-        <CopyOutlined style={{ marginRight: 5 }} />
-        <span>复制列</span>
-      </Menu.Item>
-      <Menu.Item onClick={(event) => {
-        event.domEvent.preventDefault();
-        event.domEvent.stopPropagation();
-        const title = columns[columnIndex]?.title;
-        const titleLabel = typeof title === 'object' ? `${typeof title.body === 'object' ? title.body.content : title.body}` : title;
-        Modal.confirm({
-          title: '删除列提醒',
-          content: `确认删除该列（${titleLabel}）吗？`,
-          okText: '删除',
-          okButtonProps: { type: 'primary', danger: true },
-          cancelText: '取消',
-          onOk: () => {
-            const isCurrentColumn = context.currentColumn?.key === columns[columnIndex]?.key;
-            const isAttributePanelOpen = context.drawerType === 'column' && isCurrentColumn;
-            props.onDelete(columnIndex);
-            columns.splice(columnIndex, 1);
-            setState({
-              columns: [...columns],
-              currentColumn: isCurrentColumn ? void 0 : context.currentColumn,
-              drawerType: isAttributePanelOpen ? void 0 : context.drawerType,
-            });
-          },
-        });
-      }}
-      >
-        <DeleteOutlined style={{ marginRight: 5 }} />
-        <span>删除列</span>
-      </Menu.Item>
-    </Menu>
-  );
+  const columnActions = (columnIndex: number, setState: DripTableGeneratorContext['setState']) => {
+    const currentTableIndex = context.tableConfigs.findIndex(item => item.tableId === props.tableId);
+    const columns = currentTableIndex > -1 ? context.tableConfigs[currentTableIndex].columns : void 0;
+    return (
+      <Menu key={columnIndex}>
+        <Menu.Item onClick={(event) => {
+          event.domEvent.preventDefault();
+          event.domEvent.stopPropagation();
+          props.onInsert(columnIndex);
+        }}
+        >
+          <ArrowLeftOutlined style={{ marginRight: 5 }} />
+          <span>向左插入列</span>
+        </Menu.Item>
+        <Menu.Item onClick={(event) => {
+          event.domEvent.preventDefault();
+          event.domEvent.stopPropagation();
+          props.onInsert(columnIndex + 1);
+        }}
+        >
+          <ArrowRightOutlined style={{ marginRight: 5 }} />
+          <span>向右插入列</span>
+        </Menu.Item>
+        <Menu.Item onClick={(event) => {
+          event.domEvent.preventDefault();
+          event.domEvent.stopPropagation();
+          props.onCopy(columnIndex);
+        }}
+        >
+          <CopyOutlined style={{ marginRight: 5 }} />
+          <span>复制列</span>
+        </Menu.Item>
+        <Menu.Item onClick={(event) => {
+          event.domEvent.preventDefault();
+          event.domEvent.stopPropagation();
+          const title = columns?.[columnIndex]?.title;
+          const titleLabel = typeof title === 'object' ? `${typeof title.body === 'object' ? title.body.content : title.body}` : title;
+          Modal.confirm({
+            title: '删除列提醒',
+            content: `确认删除该列（${titleLabel}）吗？`,
+            okText: '删除',
+            okButtonProps: { type: 'primary', danger: true },
+            cancelText: '取消',
+            onOk: () => {
+              const isCurrentColumn = context.currentColumn?.key === columns?.[columnIndex]?.key;
+              const isAttributePanelOpen = context.drawerType === 'column' && isCurrentColumn;
+              props.onDelete(columnIndex);
+              columns?.splice(columnIndex, 1);
+              const newTableConfigs = [...context.tableConfigs];
+              newTableConfigs[currentTableIndex] = {
+                ...newTableConfigs[currentTableIndex],
+                columns: [...columns || []],
+              };
+              setState({
+                tableConfigs: newTableConfigs,
+                currentColumn: isCurrentColumn ? void 0 : context.currentColumn,
+                drawerType: isAttributePanelOpen ? void 0 : context.drawerType,
+              });
+            },
+          });
+        }}
+        >
+          <DeleteOutlined style={{ marginRight: 5 }} />
+          <span>删除列</span>
+        </Menu.Item>
+      </Menu>
+    );
+  };
 
   return (
     <GeneratorContext.Consumer>
-      { ({ columns, globalConfigs, setState }) => {
+      { ({ globalConfigs, setState }) => {
         let columnTitle = '';
         if (typeof props.column.title === 'string') {
           columnTitle = props.column.title;
@@ -106,7 +113,7 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
         return (
           <div
             key={props.index}
-            className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`)}
+            className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`, props.className)}
             style={{
               ...props.style,
               width: getWidth(props.column.width, 'px', props.sticky ? 0 : -2),
@@ -122,7 +129,7 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
               <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
             </Tooltip>
             ) }
-            <Dropdown overlay={columnActions(props.index, columns, setState)} trigger={['click']}>
+            <Dropdown overlay={columnActions(props.index, setState)} trigger={['click']}>
               <MoreOutlined className="jfe-drip-table-generator-workstation-editable-table-action-button" onClick={(event) => { event.stopPropagation(); }} />
             </Dropdown>
           </div>

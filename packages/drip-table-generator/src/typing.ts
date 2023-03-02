@@ -129,6 +129,37 @@ export interface DripTableGeneratorPanel<T> {
   orders?: string[];
 }
 
+export interface DTGCustomThemeOptions<
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
+  /**
+   * 主题选项中文名
+   */
+  label: string | React.ReactNode;
+  /**
+   * 主题选项英文名，也是主题的唯一键值
+   */
+  value: string;
+  /**
+   * 主题缩略图
+   */
+  image: string;
+  /**
+   * drip-table 的 schema 配置: 全局配置以及全局样式
+   */
+  style: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions> | ((schema: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) => NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>);
+  /**
+   * drip-table 的 schema 配置: 设置列的样式
+   */
+  columnStyle?: (column: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number], index: number) => Partial<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number]>;
+  /**
+   * 子表格自定义主题配置
+   * id 对应的是子表格ID
+   */
+  subtable?: Omit<DTGCustomThemeOptions<RecordType, ExtraOptions>, 'label' | 'value' | 'image'> & { id: string };
+}
+
 export type NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions extends Partial<DripTableExtraOptions> = never> = Partial<Omit<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>, 'columns'>>
 
 export type DataSourceTypeAbbr<SubtableDataSourceKey extends React.Key> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>;
@@ -171,28 +202,7 @@ export interface DripTableGeneratorProps<
   /**
    * 自定义主题选项
    */
-  customThemeOptions?: {
-    /**
-     * 主题选项中文名
-     */
-    label: string | React.ReactNode;
-    /**
-     * 主题选项英文名，也是主题的唯一键值
-     */
-    value: string;
-    /**
-     * drip-table 的 schema 配置: 全局配置以及全局样式
-     */
-    style: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions> | ((schema: NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) => NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>);
-    /**
-     * drip-table 的 schema 配置: 设置列的样式
-     */
-    columnStyle?: (column: DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number], index: number) => Partial<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns'][number]>;
-    /**
-     * 主题缩略图
-     */
-    image: string;
-  }[];
+  customThemeOptions?: DTGCustomThemeOptions<RecordType, ExtraOptions>[];
   /**
    * 默认打开编辑模式还是预览模式
    */

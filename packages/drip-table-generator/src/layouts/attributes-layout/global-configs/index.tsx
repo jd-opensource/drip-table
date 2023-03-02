@@ -36,7 +36,7 @@ const GlobalConfigForm = <
 
   React.useEffect(() => {
     form.current?.formForceUpdate();
-  }, [context.globalConfigs]);
+  }, [context.tableConfigs, context.currentTableID]);
 
   const decodeConfigsWithPrefix = (prefix: string, globalConfigs: DripTableGeneratorContext['globalConfigs'], formData: Record<string, unknown>) => {
     if (typeof globalConfigs?.[prefix] === 'object') {
@@ -252,6 +252,7 @@ const GlobalConfigForm = <
 
   const getGlobalFormConfigs = () => {
     let globalFormConfigs = GlobalAttrFormConfigs;
+    const currentTableIndex = context.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
     if (props.slotsSchema) {
       const headerConfigItems = globalFormConfigs.find(item => item.name === 'header.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
       const footerConfigItems = globalFormConfigs.find(item => item.name === 'footer.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
@@ -305,6 +306,9 @@ const GlobalConfigForm = <
       }
       return config;
     });
+    if (currentTableIndex > 0) {
+      globalFormConfigs = globalFormConfigs.filter(item => !(/^(footer|header|innerStyle)/u).test(item.name));
+    }
     return globalFormConfigs;
   };
 

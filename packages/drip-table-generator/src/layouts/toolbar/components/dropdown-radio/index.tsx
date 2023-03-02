@@ -27,10 +27,12 @@ interface DropDownRadioProps<T> {
 
 const OverLay = <Type,>(props: Omit<DropDownRadioProps<Type>, 'icon' | 'label'>) => (
   <GeneratorContext.Consumer>
-    { ({ globalConfigs, setState }) => {
+    { ({ currentTableID, tableConfigs, setState }) => {
+      const currentTableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
+      const tableConfig = currentTableIndex > -1 ? tableConfigs[currentTableIndex].configs : void 0;
       const getValue = () => {
         if (props.name) {
-          return globalConfigs[props.name] || props.default;
+          return tableConfig?.[props.name] || props.default;
         }
         if (props.value) {
           return props.value || props.default;
@@ -42,8 +44,10 @@ const OverLay = <Type,>(props: Omit<DropDownRadioProps<Type>, 'icon' | 'label'>)
         if (props.onChange) {
           props.onChange(value);
         } else if (props.name) {
-          const newTableGlobalConfig = Object.assign({}, globalConfigs, { [props.name]: value });
-          setState({ globalConfigs: newTableGlobalConfig });
+          const newTableConfig = Object.assign({}, tableConfig, { [props.name]: value });
+          const newTableConfigs = [...tableConfigs];
+          newTableConfigs[currentTableIndex] = { ...tableConfigs[currentTableIndex], configs: newTableConfig };
+          setState({ tableConfigs: newTableConfigs });
         }
       };
 
