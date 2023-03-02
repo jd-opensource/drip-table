@@ -16,7 +16,7 @@ toc: content
  * hideActions: ["CSB"]
  */
 import React from "react";
-import antd from "antd";
+import * as antd from "antd";
 import DripTable, { DripTableSchema } from "drip-table";
 import DripTableGenerator, { DripTableGeneratorHandler } from "drip-table-generator";
 import "antd/dist/antd.css";
