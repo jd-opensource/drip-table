@@ -9,6 +9,7 @@
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, ExtractDripTableColumnSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 
+import { filterAttributes } from '@/utils';
 import { DripTableGeneratorContext } from '@/context';
 import tableComponents from '@/table-components';
 
@@ -89,9 +90,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   return columnConfig;
 };
 
-export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => ({
-  ...context.globalConfigs,
-  columns: context.columns.map((item) => {
+export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => {
+  const getColumns = columns => columns.map((item) => {
     type BuiltInGroupColumnSchema = ExtractDripTableColumnSchema<DripTableBuiltInColumnSchema<NonNullable<DripTableExtraOptions['CustomColumnSchema']>>, 'group'>;
     const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
     delete schemaItem.innerIndexForGenerator;
@@ -109,5 +109,25 @@ export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOption
       schemaItem.options.items = items;
     }
     return schemaItem;
-  }),
-}) as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
+  });
+  const globalConfigs = { ...filterAttributes(context.tableConfigs[0].configs, 'dataSourceKey') };
+  const globalColumns = getColumns(context.tableConfigs[0].columns);
+  let subtable;
+  if (context.tableConfigs.length > 0) {
+    for (let i = context.tableConfigs.length - 1; i > 0; i--) {
+      subtable = {
+        ...context.tableConfigs[i].configs,
+        columns: getColumns(context.tableConfigs[i].columns),
+        subtable,
+        id: context.tableConfigs[i].tableId,
+        dataSourceKey: context.tableConfigs[i].dataSourceKey,
+      };
+    }
+  }
+  return {
+    id: context.tableConfigs[0].tableId,
+    ...globalConfigs,
+    columns: globalColumns,
+    subtable,
+  } as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
+};

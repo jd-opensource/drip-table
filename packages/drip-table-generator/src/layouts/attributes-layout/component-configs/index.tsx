@@ -136,7 +136,7 @@ const ComponentConfigForm = <
   };
   return (
     <GeneratorContext.Consumer>
-      { ({ columns, currentColumn, setState }) => {
+      { ({ tableConfigs, currentTableID, currentColumn, setState }) => {
         if (!currentColumn) {
           return errorBoundary('请点击选择要编辑的列/组件');
         }
@@ -153,6 +153,8 @@ const ComponentConfigForm = <
             groupType="tabs"
             icons={props.icons}
             onChange={(data) => {
+              const currentTableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
+              const columns = currentTableIndex > -1 ? tableConfigs[currentTableIndex].columns : [];
               const newCurrentColumn = Object.assign({}, currentColumn, data);
               const index = currentColumn.innerIndexForGenerator;
               const keyIndex = columns.findIndex(item => item.key === currentColumn.key);
@@ -162,9 +164,14 @@ const ComponentConfigForm = <
                 columns[keyIndex] = Object.assign({}, newCurrentColumn);
                 newCurrentColumn.innerIndexForGenerator = keyIndex;
               }
+              const newTableConfigs = [...tableConfigs];
+              newTableConfigs[currentTableIndex] = {
+                ...newTableConfigs[currentTableIndex],
+                columns: [...columns || []],
+              };
               setState({
                 currentColumn: newCurrentColumn,
-                columns: [...columns],
+                tableConfigs: newTableConfigs,
               });
             }}
           />

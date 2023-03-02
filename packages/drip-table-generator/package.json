@@ -44,9 +44,12 @@
     "react-clipboard.js": "^2.0.16",
     "react-monaco-editor": "^0.51.0",
     "react-quill": "^2.0.0",
+    "react-sortablejs": "^6.1.4",
+    "sortablejs": "^1.15.0",
     "viewerjs": "^1.11.1"
   },
   "devDependencies": {
+    "@types/sortablejs": "^1.15.0",
     "babel-plugin-import": "^1.13.5",
     "drip-table": "link:../drip-table",
     "father": "^4.1.2",

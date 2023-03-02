@@ -10,6 +10,7 @@ import './index.less';
 
 import { CheckSquareOutlined,
   DatabaseOutlined,
+  ExpandOutlined,
   FilterOutlined,
   FontSizeOutlined,
   InsertRowAboveOutlined,
@@ -28,7 +29,8 @@ import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { DataSourceTypeAbbr, DripTableGeneratorProps, NonColumnsPartialDTSchemaTypeAbbr } from '@/typing';
 
 import { getSchemaValue } from '../utils';
-import { DropDownRadio } from './components/dropdown';
+import { DropDownInput } from './components/dropdown-input';
+import { DropDownRadio } from './components/dropdown-radio';
 import { SwitchButton } from './components/switch';
 import { builtInThemes } from './config';
 
@@ -92,56 +94,87 @@ const Toolbar = <
 
   return (
     <GeneratorContext.Consumer>
-      { ({ columns, drawerType, globalConfigs, mode, setState }) => (
-        <div className="jfe-drip-table-generator-toolbar-toolbar-container" style={props.style}>
-          <div className="jfe-drip-table-generator-toolbar-toolbar-container-leftbar">
-            <DropDownRadio
-              icon={<ThunderboltOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
-              label="主题"
-              overlayType="image-radio"
-              options={themeOptions}
-              value={theme}
-              onChange={(value) => {
-                setTheme(value || '');
-                const theTheme = themeOptions.find(item => item.value === value);
-                const themeStyle = typeof theTheme?.style === 'function' ? theTheme.style(globalConfigs as NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) : theTheme?.style;
-                setState({
-                  globalConfigs: Object.assign({}, globalConfigs, themeStyle),
-                  columns: (columns as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns']).map((column, index) => ({ ...column, ...theTheme?.columnStyle?.(column, index) })) as DripTableGeneratorContext['columns'],
-                });
-              }}
-            />
-            <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="冻结表头" />
-            <SwitchButton name="rowSelection" icon={<CheckSquareOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="行可选择" />
-            <SwitchButton name="stripe" icon={<MenuOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="间隔斑马纹" />
-            <DropDownRadio
-              name="size"
-              default="middle"
-              icon={<FontSizeOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
-              label="尺寸"
-              overlayType="radio"
-              options={[
-                { label: '大号', value: 'large' },
-                { label: '中等', value: 'middle' },
-                { label: '小号', value: 'small' },
-              ]}
-            />
-            <SwitchButton name="virtual" icon={<DatabaseOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="虚拟列表" />
-            <SwitchButton name="filter" icon={<FilterOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="过滤" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
-            <SwitchButton name="sort" icon={<SortAscendingOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
-          </div>
-          <div className="jfe-drip-table-generator-toolbar-toolbar-container-rightbar">
-            <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>全局设置</Button>
-            <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>表格数据</Button>
-            <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}>{ mode === 'edit' ? '预览' : '编辑' }</Button>
-            <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('import')}>导入配置</Button>
-            <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('export')}>导出配置</Button>
-          </div>
-          <Modal
-            width={720}
-            title={modalStatus === 'export' ? '导出数据' : '导入数据'}
-            visible={modalStatus === 'export' || modalStatus === 'import'}
-            footer={
+      { ({ currentTableID, tableConfigs, columns, drawerType, globalConfigs, mode, setState }) => {
+        const currentTableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
+        const tableConfig = currentTableIndex > -1 ? tableConfigs[currentTableIndex].configs : void 0;
+        return (
+          <div className="jfe-drip-table-generator-toolbar-toolbar-container" style={props.style}>
+            <div className="jfe-drip-table-generator-toolbar-toolbar-container-leftbar">
+              <DropDownRadio
+                icon={<ThunderboltOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
+                label="主题"
+                overlayType="image-radio"
+                options={themeOptions.map(item => ({ label: item.label, image: item.image, value: item.value }))}
+                value={theme}
+                onChange={(value) => {
+                  setTheme(value || '');
+                  const theTheme = themeOptions.find(item => item.value === value);
+                  const themeStyle = typeof theTheme?.style === 'function' ? theTheme.style(globalConfigs as NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions>) : theTheme?.style;
+                  setState({
+                    globalConfigs: Object.assign({}, globalConfigs, themeStyle),
+                    columns: (columns as DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>['columns']).map((column, index) => ({ ...column, ...theTheme?.columnStyle?.(column, index) })) as DripTableGeneratorContext['columns'],
+                  });
+                }}
+              />
+              <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="冻结表头" />
+              <DropDownInput
+                name="dataSourceKey"
+                value={tableConfigs[currentTableIndex + 1]?.dataSourceKey}
+                checked={() => tableConfigs[currentTableIndex].subtable}
+                icon={<ExpandOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
+                label="行可扩展"
+                overlayLabel="子表格数据字段"
+                message="确保列表第一条数据有子列表，否则无法提现很好的展示效果甚至无法配置"
+                onChange={(value) => {
+                  if (!tableConfig || !currentTableID) { return; }
+                  const newTableConfigs = [...tableConfigs];
+                  newTableConfigs[currentTableIndex] = Object.assign({}, tableConfigs[currentTableIndex], { subtable: !!value });
+                  if (value) {
+                    const newConfig: DripTableGeneratorContext['tableConfigs'][number] = {
+                      tableId: mockId(),
+                      columns: [],
+                      configs: { pagination: false },
+                      subtable: false,
+                      dataSourceKey: value,
+                    };
+                    newTableConfigs[currentTableIndex + 1] = newConfig;
+                    setState({ tableConfigs: newTableConfigs });
+                  } else if (currentTableIndex < tableConfigs.length - 1) {
+                    newTableConfigs.splice(currentTableIndex + 1, 1);
+                    setState({ tableConfigs: newTableConfigs, currentTableID: newTableConfigs[0].tableId });
+                  }
+                }}
+              />
+              <SwitchButton name="rowSelection" icon={<CheckSquareOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="行可选择" />
+              <SwitchButton name="stripe" icon={<MenuOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="间隔斑马纹" />
+              <DropDownRadio
+                name="size"
+                default="middle"
+                icon={<FontSizeOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
+                label="尺寸"
+                overlayType="radio"
+                options={[
+                  { label: '大号', value: 'large' },
+                  { label: '中等', value: 'middle' },
+                  { label: '小号', value: 'small' },
+                ]}
+              />
+              <SwitchButton name="virtual" icon={<DatabaseOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="虚拟列表" />
+              <SwitchButton name="filter" icon={<FilterOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="过滤" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
+              <SwitchButton name="sort" icon={<SortAscendingOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
+            </div>
+            <div className="jfe-drip-table-generator-toolbar-toolbar-container-rightbar">
+              <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>表格设置</Button>
+              <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>表格数据</Button>
+              <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}>{ mode === 'edit' ? '预览' : '编辑' }</Button>
+              <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('import')}>导入配置</Button>
+              <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('export')}>导出配置</Button>
+            </div>
+            <Modal
+              width={720}
+              title={modalStatus === 'export' ? '导出数据' : '导入数据'}
+              visible={modalStatus === 'export' || modalStatus === 'import'}
+              footer={
               modalStatus === 'export'
                 ? [ // 导出复制
                   <Button onClick={() => setModalStatus('')}>确认</Button>,
@@ -229,12 +262,13 @@ const Toolbar = <
                   </Button>,
                 ]
             }
-            onCancel={() => { setModalStatus(''); setCode(''); }}
-          >
-            { renderSchemaModal() }
-          </Modal>
-        </div>
-      ) }
+              onCancel={() => { setModalStatus(''); setCode(''); }}
+            >
+              { renderSchemaModal() }
+            </Modal>
+          </div>
+        );
+      } }
     </GeneratorContext.Consumer>
   );
 };

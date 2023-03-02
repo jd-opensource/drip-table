@@ -255,6 +255,7 @@ const EditableTable = <
                       style={{ ...typeof column.title === 'object' ? column.title.style : {}, border: '1px solid #f0f0f0' }}
                       sticky
                       index={columnIndex}
+                      tableId=""
                       column={column}
                       onInsert={index => setColumnIndexToInsert(index)}
                       onCopy={index => setColumnIndexToCopy(index)}
@@ -362,6 +363,7 @@ const EditableTable = <
                     <ColumnHeader
                       style={{ ...typeof column.title === 'object' ? column.title.style : {} }}
                       index={columnIndex}
+                      tableId=""
                       column={column}
                       onInsert={index => setColumnIndexToInsert(index)}
                       onCopy={index => setColumnIndexToCopy(index)}
@@ -428,6 +430,7 @@ const EditableTable = <
               visible={columnIndexToInsert >= 0 && columnIndexToInsert <= columns.length}
               value={columnToInsert}
               index={columnIndexToInsert}
+              tableId=""
               onChange={value => setColumnToInsert(value)}
               onClose={() => { setColumnIndexToInsert(-1); setColumnToInsert(''); }}
             />

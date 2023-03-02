@@ -21,22 +21,36 @@ interface SwitchButtonProps {
 
 export const SwitchButton = (props: SwitchButtonProps) => (
   <GeneratorContext.Consumer>
-    { ({ globalConfigs, setState }) => (
-      <div
-        key={props.name}
-        className={classNames('jfe-drip-table-generator-toolbar-tool-cell', { 'jfe-drip-table-generator-toolbar-checked': !!globalConfigs[props.name] })}
-        onClick={props.onCheck
-          ? () => {
-            props.onCheck?.(!globalConfigs[props.name]);
-          }
-          : () => {
-            const newTableGlobalConfig = Object.assign({}, globalConfigs, { [props.name]: !globalConfigs[props.name] });
-            setState({ globalConfigs: newTableGlobalConfig });
-          }}
-      >
-        { props.icon }
-        { props.label }
-      </div>
-    ) }
+    { ({ tableConfigs, currentTableID, setState }) => {
+      const currentTableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
+      const tableConfig = currentTableIndex > -1 ? tableConfigs[currentTableIndex].configs : void 0;
+      return (
+        <div
+          key={props.name}
+          className={classNames(
+            'jfe-drip-table-generator-toolbar-tool-cell',
+            {
+              checked: !!tableConfig?.[props.name],
+              disabled: !tableConfig || !currentTableID,
+            },
+          )}
+          onClick={props.onCheck
+            ? () => {
+              if (!tableConfig || !currentTableID) { return; }
+              props.onCheck?.(!tableConfig[props.name]);
+            }
+            : () => {
+              if (!tableConfig || !currentTableID) { return; }
+              const newTableConfig = Object.assign({}, tableConfig, { [props.name]: !tableConfig[props.name] });
+              const newTableConfigs = [...tableConfigs];
+              newTableConfigs[currentTableIndex] = Object.assign({}, tableConfigs[currentTableIndex], { configs: newTableConfig });
+              setState({ tableConfigs: newTableConfigs });
+            }}
+        >
+          { props.icon }
+          { props.label }
+        </div>
+      );
+    } }
   </GeneratorContext.Consumer>
 );

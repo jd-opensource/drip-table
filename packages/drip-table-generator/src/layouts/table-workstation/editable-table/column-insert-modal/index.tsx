@@ -9,24 +9,27 @@ import { Input, message, Modal } from 'antd';
 import React from 'react';
 
 import { mockId } from '@/utils';
-import { GeneratorContext } from '@/context';
+import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 
 interface ColumnInsertModalProps {
   visible: boolean;
   value: string;
   index: number;
+  tableId: string;
   onChange: (value: string) => void;
-  onClose: () => void;
+  onClose: (columns?: DripTableGeneratorContext['tableConfigs'][number]['columns']) => void;
 }
 
 const ColumnInsertModal = (props: ColumnInsertModalProps) => (
   <GeneratorContext.Consumer>
-    { ({ columns, setState }) => (
+    { ({ tableConfigs, setState }) => (
       <Modal
         title="插入列"
         visible={props.visible}
-        onCancel={props.onClose}
+        onCancel={() => props.onClose()}
         onOk={() => {
+          const currentTableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
+          const columns = currentTableIndex > -1 ? tableConfigs[currentTableIndex].columns : void 0;
           try {
             const jsonVal = JSON.parse(props.value);
             if (typeof jsonVal !== 'object'
@@ -35,19 +38,23 @@ const ColumnInsertModal = (props: ColumnInsertModalProps) => (
               message.error('参数输入不合法');
               return;
             }
-            const column = { ...jsonVal, innerIndexForGenerator: props.index };
+            const column = { ...jsonVal };
             column.key = `${column.component}_${mockId()}`;
-            columns.splice(props.index, 0, column);
-            for (let i = props.index + 1; i < columns.length; i++) { columns[i].innerIndexForGenerator += 1; }
-            setState({ columns: [...columns] }, () => {
-              props.onClose();
+            columns?.splice(props.index, 0, column);
+            const newTableConfigs = [...tableConfigs];
+            newTableConfigs[currentTableIndex] = {
+              ...newTableConfigs[currentTableIndex],
+              columns: [...columns || []],
+            };
+            setState({ tableConfigs: newTableConfigs }, () => {
+              props.onClose(columns);
             });
           } catch {
             message.error('参数输入不合法');
           }
         }}
       >
-        <Input.TextArea style={{ minHeight: '560px' }} onChange={e => props.onChange(e.target.value)} />
+        <Input.TextArea value={props.value} style={{ minHeight: '560px' }} onChange={e => props.onChange(e.target.value)} />
       </Modal>
     ) }
   </GeneratorContext.Consumer>

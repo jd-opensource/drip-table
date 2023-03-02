@@ -10,9 +10,27 @@ export type DripTableColumn<ExtraColumnSchema extends DripTableColumnSchema = ne
   innerIndexForGenerator: number;
 };
 
-export type GlobalSchema<ExtraColumnSchema extends DripTableColumnSchema = never> = Omit<DripTableSchema<ExtraColumnSchema>, 'columns'>;
+export type GlobalSchema<ExtraColumnSchema extends DripTableColumnSchema = never> = Omit<DripTableSchema<ExtraColumnSchema>, 'columns' | 'subtable'>;
 
 export interface DripTableGeneratorContext {
+  /**
+   * 当前选中的表格ID
+   */
+  currentTableID?: string;
+  /**
+   * 所有表格配置
+   */
+  tableConfigs: {
+    tableId: string;
+    columns: DripTableSchema<DripTableColumnSchema>['columns'];
+    configs: Omit<DripTableSchema<DripTableColumnSchema>, 'columns' | 'subtable'>;
+    subtable: boolean;
+    dataSourceKey: string;
+  }[];
+  /**
+   * 子表格配置
+   */
+  subtable?: DripTableSchema<DripTableColumnSchema>['subtable'];
   /**
    * 生成的列配置
    */
@@ -52,6 +70,7 @@ export interface DripTableGeneratorContext {
 }
 
 export const GeneratorContext = createContext<DripTableGeneratorContext>({
+  tableConfigs: [],
   columns: [],
   currentColumn: void 0,
   currentColumnPath: [],

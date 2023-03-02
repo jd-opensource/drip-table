@@ -33,7 +33,7 @@ const AttributesLayout = <
   const editor = React.useRef<DataSourceHandler>(null);
   const drawerTitleMapper = {
     datasource: '表格数据配置',
-    global: '全局配置',
+    global: '表格配置',
     column: '组件配置',
     'column-item': '子组件配置',
   };
@@ -54,7 +54,7 @@ const AttributesLayout = <
 
   return (
     <GeneratorContext.Consumer>
-      { ({ drawerType, currentColumn, currentColumnPath, setState }) => {
+      { ({ currentTableID, drawerType, currentColumn, currentColumnPath, setState }) => {
         const isGroupColumn = currentColumn && currentColumn.component === 'group';
         return (
           <div
@@ -83,6 +83,14 @@ const AttributesLayout = <
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
                     { currentColumnPath ? `子组件 > ${getComponentName(getColumnItemByPath(currentColumn, currentColumnPath)?.component)}` : '' }
+                  </span>
+                )
+                : null }
+              { drawerType === 'global'
+                ? (
+                  <span className="jfe-drip-table-generator-attributes-layout-component-title">
+                    表格ID：
+                    { currentTableID }
                   </span>
                 )
                 : null }

@@ -15,9 +15,9 @@ import { drawerWidth } from '@/utils/enum';
 import { GeneratorContext } from '@/context';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
+import ComplicatedTable from './complicated-table';
 import EditableTableFooter from './editable-footer';
 import EditableTableHeader from './editable-header';
-import EditableTable from './editable-table';
 import PreviewTable from './table-preview';
 
 const TableWorkStation = <
@@ -39,18 +39,29 @@ const TableWorkStation = <
         ? (
           <React.Fragment>
             <EditableTableHeader slots={props.slots} ext={props.ext} />
-            <EditableTable
-              customComponentPanel={props.customComponentPanel}
-              customComponents={props.customComponents}
-              mockDataSource={props.mockDataSource}
-              dataFields={props.dataFields}
-              onDropComponent={() => {
-                setTimeout(() => {
-                  const scrollWidth = tableWrapper.current?.scrollWidth || 0;
-                  tableWrapper.current?.scroll({ left: scrollWidth });
-                }, 100);
-              }}
+            { context.tableConfigs.length >= 0 && (
+            <ComplicatedTable
+              {...props}
+              index={0}
+              configs={context.tableConfigs[0]}
+              dataSource={context.previewDataSource as RecordType[]}
             />
+            ) }
+            { /*
+              * <EditableTable
+              * customComponentPanel={props.customComponentPanel}
+              * customComponents={props.customComponents}
+              * driver={props.driver}
+              * mockDataSource={props.mockDataSource}
+              * dataFields={props.dataFields}
+              * onDropComponent={() => {
+              * setTimeout(() => {
+              * const scrollWidth = tableWrapper.current?.scrollWidth || 0;
+              * tableWrapper.current?.scroll({ left: scrollWidth });
+              * }, 100);
+              * }}
+              * />
+              */ }
             <EditableTableFooter slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
