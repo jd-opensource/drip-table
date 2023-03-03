@@ -30,6 +30,9 @@ import React from "react";
 import DripTable from "drip-table";
 
 const schema = {
+  pagination: {
+    pageSize: 10,
+  },
   columns: [
     {
       key: "mock_1",
