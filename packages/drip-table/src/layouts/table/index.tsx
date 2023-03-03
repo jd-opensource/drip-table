@@ -471,7 +471,7 @@ const TableLayout = <
         pageSize: initialPagination?.pageSize || 10,
       },
     }));
-  }, [initialPagination?.pageSize]);
+  }, [initialPagination, initialPagination?.pageSize]);
 
   // 原始数据源
   const dataSource = React.useMemo(
@@ -927,9 +927,8 @@ const TableLayout = <
     return void 0;
   }, [tableInfo.schema.pagination ? tableInfo.schema.pagination.showTotal : tableInfo.schema.pagination]);
 
-  const renderPagination = tableInfo.schema.pagination === false
-    ? null
-    : (
+  const renderPagination = tableInfo.schema.pagination
+    ? (
       <Pagination
         size={tableInfo.schema.pagination?.size === void 0 ? 'small' : tableInfo.schema.pagination.size}
         pageSize={tableState.pagination.pageSize}
@@ -949,7 +948,8 @@ const TableLayout = <
           tableProps.onChange?.({ pagination, filters: tableState.filters }, tableInfo);
         }}
       />
-    );
+    )
+    : null;
 
   const rcTableOnResize: React.ComponentProps<typeof ResizeObserver>['onResize'] = React.useMemo(
     () => ({ width }) => { setRcTableWidth(width); },
