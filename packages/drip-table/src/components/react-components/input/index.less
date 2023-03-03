@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-@prefix: jfe-drip-table;
+@prefixRc: jfe-drip-table-rc;
 @prefixCls: jfe-drip-table-rc-input;
 
 .@{prefixCls}-number-affix-wrapper {
@@ -408,27 +408,27 @@ textarea.@{prefixCls}-number {
   transition: all .3s;
 }
 
-.@{prefixCls}-number-group-addon .@{prefix}-select {
+.@{prefixCls}-number-group-addon .@{prefixRc}-select {
   margin: -5px -11px;
 }
 
-.@{prefixCls}-number-group-addon .@{prefix}-select.@{prefix}-select-single:not(.@{prefix}-select-customize-input) .@{prefix}-select-selector {
+.@{prefixCls}-number-group-addon .@{prefixRc}-select.@{prefixRc}-select-single:not(.@{prefixRc}-select-customize-input) .@{prefixRc}-select-selector {
   background-color: inherit;
   border: 1px solid transparent;
   box-shadow: none;
 }
 
-.@{prefixCls}-number-group-addon .@{prefix}-select-open .@{prefix}-select-selector,
-.@{prefixCls}-number-group-addon .@{prefix}-select-focused .@{prefix}-select-selector {
+.@{prefixCls}-number-group-addon .@{prefixRc}-select-open .@{prefixRc}-select-selector,
+.@{prefixCls}-number-group-addon .@{prefixRc}-select-focused .@{prefixRc}-select-selector {
   color: #1890ff;
 }
 
-.@{prefixCls}-number-group-addon .@{prefix}-cascader-picker {
+.@{prefixCls}-number-group-addon .@{prefixRc}-cascader-picker {
   margin: -9px -12px;
   background-color: transparent;
 }
 
-.@{prefixCls}-number-group-addon .@{prefix}-cascader-picker .@{prefix}-cascader-input {
+.@{prefixCls}-number-group-addon .@{prefixRc}-cascader-picker .@{prefixRc}-cascader-input {
   text-align: left;
   border: 0;
   box-shadow: none;
@@ -440,8 +440,8 @@ textarea.@{prefixCls}-number {
   border-bottom-right-radius: 0;
 }
 
-.@{prefixCls}-number-group>.@{prefixCls}-number:first-child .@{prefix}-select .@{prefix}-select-selector,
-.@{prefixCls}-number-group-addon:first-child .@{prefix}-select .@{prefix}-select-selector {
+.@{prefixCls}-number-group>.@{prefixCls}-number:first-child .@{prefixRc}-select .@{prefixRc}-select-selector,
+.@{prefixCls}-number-group-addon:first-child .@{prefixRc}-select .@{prefixRc}-select-selector {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -470,8 +470,8 @@ textarea.@{prefixCls}-number {
   border-bottom-left-radius: 0;
 }
 
-.@{prefixCls}-number-group>.@{prefixCls}-number:last-child .@{prefix}-select .@{prefix}-select-selector,
-.@{prefixCls}-number-group-addon:last-child .@{prefix}-select .@{prefix}-select-selector {
+.@{prefixCls}-number-group>.@{prefixCls}-number:last-child .@{prefixRc}-select .@{prefixRc}-select-selector,
+.@{prefixCls}-number-group-addon:last-child .@{prefixRc}-select .@{prefixRc}-select-selector {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -487,11 +487,11 @@ textarea.@{prefixCls}-number {
   padding: 0 7px;
 }
 
-.@{prefixCls}-number-group-lg .@{prefix}-select-single .@{prefix}-select-selector {
+.@{prefixCls}-number-group-lg .@{prefixRc}-select-single .@{prefixRc}-select-selector {
   height: 40px;
 }
 
-.@{prefixCls}-number-group-sm .@{prefix}-select-single .@{prefix}-select-selector {
+.@{prefixCls}-number-group-sm .@{prefixRc}-select-single .@{prefixRc}-select-selector {
   height: 24px;
 }
 
@@ -555,7 +555,7 @@ textarea.@{prefixCls}-number {
   display: inline-flex;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-picker-range {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-picker-range {
   display: inline-flex;
 }
 
@@ -568,54 +568,54 @@ textarea.@{prefixCls}-number {
   float: none;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select>.@{prefix}-select-selector,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-auto-complete .@{prefixCls},
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker .@{prefixCls},
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls},
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls},
 .@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls} {
   border-right-width: 1px;
   border-radius: 0;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select>.@{prefix}-select-selector:hover,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-auto-complete .@{prefixCls}:hover,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker .@{prefixCls}:hover,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector:hover,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls}:hover,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls}:hover,
 .@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls}:hover {
   z-index: 1;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select>.@{prefix}-select-selector:focus,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-auto-complete .@{prefixCls}:focus,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker .@{prefixCls}:focus,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector:focus,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls}:focus,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls}:focus,
 .@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls}:focus {
   z-index: 1;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-focused {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-focused {
   z-index: 1;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select>.@{prefix}-select-arrow {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-arrow {
   z-index: 1;
 }
 
 .@{prefixCls}-number-group.@{prefixCls}-number-group-compact>*:first-child,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select:first-child>.@{prefix}-select-selector,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-auto-complete:first-child .@{prefixCls},
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker:first-child .@{prefixCls} {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select:first-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-auto-complete:first-child .@{prefixCls},
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker:first-child .@{prefixCls} {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
 .@{prefixCls}-number-group.@{prefixCls}-number-group-compact>*:last-child,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select:last-child>.@{prefix}-select-selector,
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker:last-child .@{prefixCls},
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-cascader-picker-focused:last-child .@{prefixCls} {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select:last-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker:last-child .@{prefixCls},
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-cascader-picker-focused:last-child .@{prefixCls} {
   border-right-width: 1px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefix}-select-auto-complete .@{prefixCls} {
+.@{prefixCls}-number-group.@{prefixCls}-number-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls} {
   vertical-align: top;
 }
 
@@ -731,7 +731,7 @@ textarea.@{prefixCls}-number {
   border-right-width: 1px;
 }
 
-.@{prefixCls}-number:hover+.@{prefix}-form-item-children-icon {
+.@{prefixCls}-number:hover+.@{prefixRc}-form-item-children-icon {
   opacity: 0;
   transition: opacity .24s linear .24s;
 }
@@ -1492,27 +1492,27 @@ textarea.@{prefixCls} {
   transition: all .3s;
 }
 
-.@{prefixCls}-group-addon .@{prefix}-select {
+.@{prefixCls}-group-addon .@{prefixRc}-select {
   margin: -5px -11px;
 }
 
-.@{prefixCls}-group-addon .@{prefix}-select.@{prefix}-select-single:not(.@{prefix}-select-customize-input) .@{prefix}-select-selector {
+.@{prefixCls}-group-addon .@{prefixRc}-select.@{prefixRc}-select-single:not(.@{prefixRc}-select-customize-input) .@{prefixRc}-select-selector {
   background-color: inherit;
   border: 1px solid transparent;
   box-shadow: none;
 }
 
-.@{prefixCls}-group-addon .@{prefix}-select-open .@{prefix}-select-selector,
-.@{prefixCls}-group-addon .@{prefix}-select-focused .@{prefix}-select-selector {
+.@{prefixCls}-group-addon .@{prefixRc}-select-open .@{prefixRc}-select-selector,
+.@{prefixCls}-group-addon .@{prefixRc}-select-focused .@{prefixRc}-select-selector {
   color: #1890ff;
 }
 
-.@{prefixCls}-group-addon .@{prefix}-cascader-picker {
+.@{prefixCls}-group-addon .@{prefixRc}-cascader-picker {
   margin: -9px -12px;
   background-color: transparent;
 }
 
-.@{prefixCls}-group-addon .@{prefix}-cascader-picker .@{prefix}-cascader-input {
+.@{prefixCls}-group-addon .@{prefixRc}-cascader-picker .@{prefixRc}-cascader-input {
   text-align: left;
   border: 0;
   box-shadow: none;
@@ -1524,8 +1524,8 @@ textarea.@{prefixCls} {
   border-bottom-right-radius: 0;
 }
 
-.@{prefixCls}-group>.@{prefixCls}:first-child .@{prefix}-select .@{prefix}-select-selector,
-.@{prefixCls}-group-addon:first-child .@{prefix}-select .@{prefix}-select-selector {
+.@{prefixCls}-group>.@{prefixCls}:first-child .@{prefixRc}-select .@{prefixRc}-select-selector,
+.@{prefixCls}-group-addon:first-child .@{prefixRc}-select .@{prefixRc}-select-selector {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -1554,8 +1554,8 @@ textarea.@{prefixCls} {
   border-bottom-left-radius: 0;
 }
 
-.@{prefixCls}-group>.@{prefixCls}:last-child .@{prefix}-select .@{prefix}-select-selector,
-.@{prefixCls}-group-addon:last-child .@{prefix}-select .@{prefix}-select-selector {
+.@{prefixCls}-group>.@{prefixCls}:last-child .@{prefixRc}-select .@{prefixRc}-select-selector,
+.@{prefixCls}-group-addon:last-child .@{prefixRc}-select .@{prefixRc}-select-selector {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -1571,11 +1571,11 @@ textarea.@{prefixCls} {
   padding: 0 7px;
 }
 
-.@{prefixCls}-group-lg .@{prefix}-select-single .@{prefix}-select-selector {
+.@{prefixCls}-group-lg .@{prefixRc}-select-single .@{prefixRc}-select-selector {
   height: 40px;
 }
 
-.@{prefixCls}-group-sm .@{prefix}-select-single .@{prefix}-select-selector {
+.@{prefixCls}-group-sm .@{prefixRc}-select-single .@{prefixRc}-select-selector {
   height: 24px;
 }
 
@@ -1639,7 +1639,7 @@ textarea.@{prefixCls} {
   display: inline-flex;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-picker-range {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-picker-range {
   display: inline-flex;
 }
 
@@ -1652,54 +1652,54 @@ textarea.@{prefixCls} {
   float: none;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select>.@{prefix}-select-selector,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete .@{prefixCls},
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker .@{prefixCls},
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls},
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls},
 .@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls} {
   border-right-width: 1px;
   border-radius: 0;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select>.@{prefix}-select-selector:hover,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete .@{prefixCls}:hover,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker .@{prefixCls}:hover,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector:hover,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls}:hover,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls}:hover,
 .@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls}:hover {
   z-index: 1;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select>.@{prefix}-select-selector:focus,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete .@{prefixCls}:focus,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker .@{prefixCls}:focus,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-selector:focus,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls}:focus,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker .@{prefixCls}:focus,
 .@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixCls}-group-wrapper .@{prefixCls}:focus {
   z-index: 1;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-focused {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-focused {
   z-index: 1;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select>.@{prefix}-select-arrow {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select>.@{prefixRc}-select-arrow {
   z-index: 1;
 }
 
 .@{prefixCls}-group.@{prefixCls}-group-compact>*:first-child,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select:first-child>.@{prefix}-select-selector,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete:first-child .@{prefixCls},
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker:first-child .@{prefixCls} {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select:first-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete:first-child .@{prefixCls},
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker:first-child .@{prefixCls} {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
 .@{prefixCls}-group.@{prefixCls}-group-compact>*:last-child,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select:last-child>.@{prefix}-select-selector,
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker:last-child .@{prefixCls},
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker-focused:last-child .@{prefixCls} {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select:last-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker:last-child .@{prefixCls},
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker-focused:last-child .@{prefixCls} {
   border-right-width: 1px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete .@{prefixCls} {
+.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete .@{prefixCls} {
   vertical-align: top;
 }
 
@@ -1755,17 +1755,17 @@ textarea.@{prefixCls} {
 }
 
 .@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>*:first-child,
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select:first-child>.@{prefix}-select-selector,
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete:first-child .@{prefixCls},
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker:first-child .@{prefixCls} {
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select:first-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete:first-child .@{prefixCls},
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker:first-child .@{prefixCls} {
   border-radius: 0 2px 2px 0;
 }
 
 .@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>*:last-child,
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select:last-child>.@{prefix}-select-selector,
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-select-auto-complete:last-child .@{prefixCls},
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker:last-child .@{prefixCls},
-.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefix}-cascader-picker-focused:last-child .@{prefixCls} {
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select:last-child>.@{prefixRc}-select-selector,
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-select-auto-complete:last-child .@{prefixCls},
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker:last-child .@{prefixCls},
+.@{prefixCls}-group-rtl.@{prefixCls}-group.@{prefixCls}-group-compact>.@{prefixRc}-cascader-picker-focused:last-child .@{prefixCls} {
   border-left-width: 1px;
   border-radius: 2px 0 0 2px;
 }
@@ -1874,8 +1874,8 @@ textarea.@{prefixCls} {
   border-color: #40a9ff;
 }
 
-.@{prefixCls}-search .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary),
-.@{prefixCls}-search .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary) {
+.@{prefixCls}-search .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary),
+.@{prefixCls}-search .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary) {
   border-left-color: #40a9ff;
 }
 
@@ -1899,11 +1899,11 @@ textarea.@{prefixCls} {
   border-radius: 0 2px 2px 0;
 }
 
-.@{prefixCls}-search>.@{prefixCls}-group>.@{prefixCls}-group-addon:last-child .@{prefixCls}-search-button:not(.@{prefix}-button-primary) {
+.@{prefixCls}-search>.@{prefixCls}-group>.@{prefixCls}-group-addon:last-child .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary) {
   color: #00000073;
 }
 
-.@{prefixCls}-search>.@{prefixCls}-group>.@{prefixCls}-group-addon:last-child .@{prefixCls}-search-button:not(.@{prefix}-button-primary).@{prefix}-button-loading:before {
+.@{prefixCls}-search>.@{prefixCls}-group>.@{prefixCls}-group-addon:last-child .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary).@{prefixRc}-button-loading:before {
   top: 0;
   right: 0;
   bottom: 0;
@@ -1998,13 +1998,13 @@ textarea.@{prefixCls} {
   direction: rtl;
 }
 
-.@{prefixCls}-search-rtl .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary),
-.@{prefixCls}-search-rtl .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary) {
+.@{prefixCls}-search-rtl .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary),
+.@{prefixCls}-search-rtl .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary) {
   border-left-color: #d9d9d9;
 }
 
-.@{prefixCls}-search-rtl .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary):hover,
-.@{prefixCls}-search-rtl .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefix}-button-primary):hover {
+.@{prefixCls}-search-rtl .@{prefixCls}:hover+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary):hover,
+.@{prefixCls}-search-rtl .@{prefixCls}:focus+.@{prefixCls}-group-addon .@{prefixCls}-search-button:not(.@{prefixRc}-button-primary):hover {
   border-left-color: #40a9ff;
 }
 
