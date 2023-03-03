@@ -212,6 +212,14 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '更新日志', link: '/drip-table/changelog' },
         ],
       },
+      {
+        title: '版本升级 Migration',
+        link: '/drip-table/migration',
+        children: [
+          { title: '目录', link: '/drip-table/migration' },
+          { title: 'V2-V3', link: '/drip-table/migration/v2-v3' },
+        ],
+      },
     ],
   },
 ];
@@ -368,6 +376,7 @@ export default defineConfig({
       '/drip-table/layout': DRIP_TABLE_SIDEBAR,
       '/drip-table/props': DRIP_TABLE_SIDEBAR,
       '/drip-table/types': DRIP_TABLE_SIDEBAR,
+      '/drip-table/migration': DRIP_TABLE_SIDEBAR,
       '/drip-table-generator': DRIP_TABLE_GENERATOR_SIDEBAR,
       '/drip-table-generator/tutorial': DRIP_TABLE_GENERATOR_SIDEBAR,
       '/drip-table-generator/components': DRIP_TABLE_GENERATOR_SIDEBAR,
