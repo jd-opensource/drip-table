@@ -40,7 +40,7 @@ const InputSearch = React.memo((props: InputSearchProps) => {
 
   const addonAfter = React.useMemo(() => (props.enterButton
     ? (
-      <Button className={`${PREFIX_CLS}-search-button`} size={props.size} type="primary">
+      <Button className={`${PREFIX_CLS}-search-button`} size={props.size} type="primary" onClick={onSearch}>
         {
         typeof props.enterButton === 'string'
           ? props.enterButton
@@ -54,7 +54,7 @@ const InputSearch = React.memo((props: InputSearchProps) => {
       }
       </Button>
     )
-    : null), [props.enterButton]);
+    : null), [props.enterButton, onSearch]);
 
   React.useEffect(() => {
     setValue(props.value || '');
