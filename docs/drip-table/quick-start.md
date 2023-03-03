@@ -13,7 +13,6 @@ toc: content
 
 - `Node` >= 10.14.0
 - `React` >= 16.9.0
-- `Ant Design` >= 4.x
 
 ### 安装
 
