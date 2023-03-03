@@ -166,7 +166,7 @@ const DripTableWrapper = React.forwardRef(<
   const context = React.useMemo(
     (): IDripTableContext<RecordType, ExtraOptions> => ({
       _CTX_SOURCE: 'CONTEXT',
-      props,
+      props: tableProps,
       info: tableInfo,
       state,
       setState,
