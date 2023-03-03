@@ -87,7 +87,7 @@ const DRIP_TABLE_SIDEBAR = [
               { title: '水平对齐 align', link: '/drip-table/schema/columns/align' },
               { title: '垂直对齐 verticalAlign', link: '/drip-table/schema/columns/vertical-align' },
               { title: '表头描述 description', link: '/drip-table/schema/columns/description' },
-              { title: '列固定 filters', link: '/drip-table/schema/columns/fixed' },
+              { title: '列固定 fixed', link: '/drip-table/schema/columns/fixed' },
               { title: '列隐藏 hidden', link: '/drip-table/schema/columns/hidden' },
               { title: '列禁用 disable', link: '/drip-table/schema/columns/disable' },
               { title: '列可编辑 editable', link: '/drip-table/schema/columns/editable' },
