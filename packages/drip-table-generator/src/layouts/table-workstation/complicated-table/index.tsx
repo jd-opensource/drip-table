@@ -8,7 +8,7 @@
 import './index.less';
 
 import { PlusSquareOutlined } from '@ant-design/icons';
-import { Checkbox } from 'antd';
+import { Checkbox, Empty } from 'antd';
 import classNames from 'classnames';
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
@@ -25,13 +25,14 @@ import ColumnHeader from '../editable-table/column-header';
 import ColumnInsertModal from '../editable-table/column-insert-modal';
 import EditableComponents from '../editable-table/components';
 import { MIN_WIDTH } from '../utils';
+import TableContainer from './table-container';
 
 export interface ComplicatedTableProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableGeneratorProps<RecordType, ExtraOptions> {
   index: number;
-  configs: DripTableGeneratorContext['tableConfigs'][number];
+  tableConfig: DripTableGeneratorContext['tableConfigs'][number];
   dataSource: RecordType[];
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
@@ -41,16 +42,27 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComplicatedTableProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const [columnList, setColumnList] = React.useState(props.configs.columns.map((col, idx) => ({ id: idx + 1, column: col })));
-  const [dataSource] = React.useState(props.dataSource.map((record, idx) => ({
-    id: idx,
-    record,
-  })));
+  const [columnList, setColumnList] = React.useState((props.tableConfig?.columns || []).map((col, idx) => ({ id: idx + 1, column: col })));
+  const [dataSource, setDataSource] = React.useState(props.dataSource.map((record, idx) => ({ id: idx, record })));
+  const [currentPage] = React.useState(1);
   const [columnIndexToCopy, setColumnIndexToCopy] = React.useState<number>(-1);
   const [columnIndexToInsert, setColumnIndexToInsert] = React.useState<number>(-1);
   const [columnToInsert, setColumnToInsert] = React.useState<string>('');
 
   const getAllComponentsConfigs = React.useMemo(() => getComponentsConfigs('', props.customComponentPanel), [props.customComponentPanel]);
+
+  React.useEffect(() => {
+    setColumnList(props.tableConfig?.columns.map((col, idx) => ({ id: idx + 1, column: col })) || []);
+  }, [context.tableConfigs, props.tableConfig?.columns]);
+
+  React.useEffect(() => {
+    let previewDataSource = [...props.dataSource];
+    if (props.tableConfig.configs.pagination) {
+      const pageSize = props.tableConfig.configs.pagination.pageSize;
+      previewDataSource = previewDataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    }
+    setDataSource(previewDataSource.map((record, idx) => ({ id: idx, record })));
+  }, [context.previewDataSource]);
 
   const getColumnConfigs = (componentType: string) => {
     const columnConfig = getAllComponentsConfigs.find(schema => schema['ui:type'] === componentType);
@@ -97,8 +109,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     const newTableConfigs = [...context.tableConfigs];
     newTableConfigs[props.index] = {
-      ...props.configs,
-      columns: [...props.configs.columns, {
+      ...props.tableConfig,
+      columns: [...props.tableConfig.columns, {
         key: `${component['ui:type']}_${mockId()}`,
         dataIndex: '',
         title: component.title,
@@ -116,56 +128,53 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     if (context.columnToAdd) {
       const newTableConfigs = [...context.tableConfigs];
       newTableConfigs[props.index] = {
-        ...props.configs,
-        columns: [...props.configs.columns, context.columnToAdd],
+        ...props.tableConfig,
+        columns: [...props.tableConfig.columns, context.columnToAdd],
       };
       context.setState({ tableConfigs: newTableConfigs });
     }
   };
 
-  React.useEffect(() => {
-    console.debug(context.tableConfigs, props.configs.columns);
-    setColumnList(props.configs.columns.map((col, idx) => ({ id: idx + 1, column: col })));
-  }, [context.tableConfigs, props.configs.columns]);
+  const resetDataSource = (start: number, size: number) => {
+    const data = dataSource.map(item => item.record);
+    const newDataSource = data.slice(start, size);
+    setDataSource(newDataSource.map((rec, idx) => ({ id: idx, record: rec })));
+  };
 
   return (
     <GeneratorContext.Consumer>
-      { ({ currentColumn, currentTableID, tableConfigs, setState }) => {
-        if (props.configs.columns.length <= 0) {
+      { ({ currentColumn, tableConfigs, setState }) => {
+        if (props.tableConfig.columns.length <= 0) {
           return (
-            <div
-              id={props.configs.tableId}
-              className={classNames('jfe-drip-table-generator-workstation-complicated-table', { checked: props.configs.tableId === currentTableID })}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setState({ currentTableID: props.configs.tableId });
-              }}
+            <TableContainer
+              id={props.tableConfig.tableId}
+              dataSource={dataSource}
+              onClick={() => setState({ currentTableID: props.tableConfig.tableId })}
+              onChangePageSize={(start, size) => resetDataSource(start, size)}
+              onOpenSetting={() => setState({ drawerType: 'global' })}
             >
               <BlankPanel
                 customComponentPanel={props.customComponentPanel}
                 onMenuClick={component => addColumnFromMenu(component, setState)}
                 onDropComponent={addColumnFromComponentBar}
               />
-            </div>
+            </TableContainer>
           );
         }
         return (
-          <div
-            id={props.configs.tableId}
-            className={classNames('jfe-drip-table-generator-workstation-complicated-table', { checked: props.configs.tableId === currentTableID })}
+          <TableContainer
+            id={props.tableConfig.tableId}
+            dataSource={dataSource}
             style={{ width: 'max-content', minWidth: 'calc(100% - 8px)' }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setState({ currentTableID: props.configs.tableId });
-            }}
+            onClick={() => setState({ currentTableID: props.tableConfig.tableId })}
+            onChangePageSize={(start, size) => resetDataSource(start, size)}
+            onOpenSetting={() => setState({ drawerType: 'global' })}
           >
             { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, props.parent) || '') }
             <div style={{ display: 'flex' }}>
               <div className="left">
                 <div style={{ display: 'flex', marginLeft: '1px' }}>
-                  { props.configs.subtable && (
+                  { props.tableConfig.subtable && (
                   <div className={classNames(
                     'jfe-drip-table-generator-workstation-editable-table-thead',
                     `jfe-drip-table-generator-workstation-editable-table-${context.globalConfigs.size || 'default'}`,
@@ -174,7 +183,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     扩展
                   </div>
                   ) }
-                  { props.configs.configs.rowSelection && <div className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${context.globalConfigs.size || 'default'}`)}>选择</div> }
+                  { props.tableConfig.configs.rowSelection && <div className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${context.globalConfigs.size || 'default'}`)}>选择</div> }
                   <ReactSortable animation={250} list={columnList} setList={setColumnList} style={{ display: 'flex' }}>
                     {
                       columnList.map(column => (
@@ -185,7 +194,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                             const newColumn = { ...column.column } as DripTableGeneratorContext['currentColumn'];
                             setState({
                               currentColumn: currentColumn?.key === column.column?.key ? void 0 : newColumn,
-                              currentTableID: props.configs.tableId,
+                              currentTableID: props.tableConfig.tableId,
                               drawerType: currentColumn?.key === column.column?.key ? void 0 : 'column',
                             });
                           }}
@@ -197,7 +206,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                             }}
                             sticky
                             index={column.id - 1}
-                            tableId={props.configs.tableId}
+                            tableId={props.tableConfig.tableId}
                             column={{ ...column.column, innerIndexForGenerator: column.id }}
                             onInsert={index => setColumnIndexToInsert(index)}
                             onCopy={index => setColumnIndexToCopy(index)}
@@ -226,14 +235,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       <React.Fragment>
                         <div className="jfe-drip-table-generator-workstation-complicated-table-line" key={index}>
                           <div style={{ display: 'flex' }}>
-                            { props.configs.subtable && (
+                            { props.tableConfig.subtable && (
                             <div className="jfe-drip-table-generator-workstation-complicated-table-filter">
                               <div className="jfe-drip-table-generator-workstation-complicated-table-cell">
                                 { hasSubTable && <PlusSquareOutlined /> }
                               </div>
                             </div>
                             ) }
-                            { props.configs.configs.rowSelection && (
+                            { props.tableConfig.configs.rowSelection && (
                             <div className="jfe-drip-table-generator-workstation-complicated-table-filter">
                               <div className="jfe-drip-table-generator-workstation-complicated-table-cell"><Checkbox /></div>
                             </div>
@@ -272,14 +281,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                             }
                           </div>
                         </div>
-                        { (props.configs.subtable && hasSubTable)
+                        { (props.tableConfig.subtable && hasSubTable)
                         && (
                         <div className="subtable">
                           <ComplicatedTable
                             {...props}
                             index={props.index + 1}
-                            configs={context.tableConfigs[props.index + 1]}
-                            dataSource={record.record.subtable as RecordType[] || []}
+                            tableConfig={context.tableConfigs[props.index + 1]}
+                            dataSource={record.record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
                             parent={tableInfo}
                           />
                         </div>
@@ -288,6 +297,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     );
                   })
                 }
+                { dataSource.length <= 0 && <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
               </div>
               <div className="right">
                 <BlankPanel
@@ -308,10 +318,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onClose={() => setColumnIndexToCopy(-1)}
             />
             <ColumnInsertModal
-              visible={columnIndexToInsert >= 0 && columnIndexToInsert <= props.configs.columns.length}
+              visible={columnIndexToInsert >= 0 && columnIndexToInsert <= props.tableConfig.columns.length}
               value={columnToInsert}
               index={columnIndexToInsert}
-              tableId={props.configs.tableId}
+              tableId={props.tableConfig.tableId}
               onChange={value => setColumnToInsert(value)}
               onClose={(columns) => {
                 setColumnIndexToInsert(-1);
@@ -319,7 +329,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 if (columns) { setColumnList(columns.map((col, idx) => ({ id: idx + 1, column: col }))); }
               }}
             />
-          </div>
+          </TableContainer>
         );
       } }
     </GeneratorContext.Consumer>

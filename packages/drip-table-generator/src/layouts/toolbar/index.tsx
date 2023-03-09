@@ -15,7 +15,6 @@ import { CheckSquareOutlined,
   FontSizeOutlined,
   InsertRowAboveOutlined,
   MenuOutlined,
-  SettingOutlined,
   SortAscendingOutlined,
   ThunderboltOutlined } from '@ant-design/icons';
 import { Button, message, Modal } from 'antd';
@@ -92,6 +91,27 @@ const Toolbar = <
     );
   };
 
+  const dataFields = React.useMemo(() => {
+    if (context.previewDataSource.length <= 0) {
+      return [];
+    }
+    let fields = Object.keys(context.previewDataSource[0]).filter(key => Array.isArray(context.previewDataSource[0][key]));
+    const currentTableIndex = context.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
+    if (currentTableIndex > 0) {
+      try {
+        let dataSource = context.previewDataSource[0];
+        for (let i = 1; i <= currentTableIndex; i++) {
+          const subKey = context.tableConfigs[i].dataSourceKey;
+          dataSource = dataSource?.[subKey]?.[0] as DripTableGeneratorContext['previewDataSource'][number];
+        }
+        if (dataSource) {
+          fields = Object.keys(dataSource).filter(key => Array.isArray(dataSource[key]));
+        }
+      } catch {}
+    }
+    return fields;
+  }, [context.previewDataSource, context.currentTableID, context.tableConfigs]);
+
   return (
     <GeneratorContext.Consumer>
       { ({ currentTableID, tableConfigs, columns, drawerType, globalConfigs, mode, setState }) => {
@@ -119,12 +139,14 @@ const Toolbar = <
               <SwitchButton name="sticky" icon={<InsertRowAboveOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="冻结表头" />
               <DropDownInput
                 name="dataSourceKey"
+                type="auto-complete"
                 value={tableConfigs[currentTableIndex + 1]?.dataSourceKey}
                 checked={() => tableConfigs[currentTableIndex].subtable}
+                options={dataFields.map(item => ({ label: item, value: item }))}
                 icon={<ExpandOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />}
                 label="行可扩展"
                 overlayLabel="子表格数据字段"
-                message="确保列表第一条数据有子列表，否则无法提现很好的展示效果甚至无法配置"
+                message="确保第一行数据有子列表，否则无法展示很好的用户体验甚至无法配置"
                 onChange={(value) => {
                   if (!tableConfig || !currentTableID) { return; }
                   const newTableConfigs = [...tableConfigs];
@@ -164,7 +186,6 @@ const Toolbar = <
               <SwitchButton name="sort" icon={<SortAscendingOutlined className="jfe-drip-table-generator-toolbar-tool-icon" />} label="排序" onCheck={() => message.info('🚧 施工中，敬请期待~')} />
             </div>
             <div className="jfe-drip-table-generator-toolbar-toolbar-container-rightbar">
-              <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'global' ? void 0 : 'global' })} icon={<SettingOutlined />}>表格设置</Button>
               <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ drawerType: drawerType === 'datasource' ? void 0 : 'datasource' })} icon={<DatabaseOutlined />}>表格数据</Button>
               <Button style={{ marginRight: '4px' }} size="small" type="primary" onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}>{ mode === 'edit' ? '预览' : '编辑' }</Button>
               <Button style={{ marginRight: '4px' }} size="small" onClick={() => setModalStatus('import')}>导入配置</Button>

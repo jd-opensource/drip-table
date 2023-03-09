@@ -13,6 +13,7 @@
   margin: 12px 4px;
   padding: 8px 4px;
   border: 1px dashed transparent;
+  position: relative;
 
   &:hover {
     border: 1px dashed var(--drip-table-primary-color);
@@ -20,6 +21,12 @@
 
   &.checked {
     border: 1px solid var(--drip-table-primary-color);
+  }
+
+  &-tools {
+    position: absolute;
+    top: -28px;
+    left: 0;
   }
 
   &-line {

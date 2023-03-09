@@ -169,7 +169,8 @@ const EditableTableHeader = <
   };
   return (
     <GeneratorContext.Consumer>
-      { ({ globalConfigs, previewDataSource, setState }) => {
+      { ({ tableConfigs, previewDataSource, setState }) => {
+        const globalConfigs = tableConfigs[0].configs;
         const paginationInHeader = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('top');
         return (
           <div style={{ marginBottom: '12px' }}>
