@@ -314,23 +314,32 @@ const GlobalConfigForm = <
 
   return (
     <GeneratorContext.Consumer>
-      { ({ globalConfigs, setState }) => (
-        <CustomForm
-          ref={form}
-          configs={getGlobalFormConfigs()}
-          data={cloneDeep(globalConfigs)}
-          decodeData={decodeGlobalConfigs}
-          encodeData={encodeGlobalConfigs}
-          groupType="collapse"
-          icons={props.icons}
-          extraComponents={props.customAttributeComponents}
-          onChange={(data) => {
-            if (data) {
-              setState({ globalConfigs: cloneDeep(data) });
-            }
-          }}
-        />
-      ) }
+      { ({ currentTableID, tableConfigs, setState }) => {
+        const currentTableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
+        return (
+          <CustomForm
+            ref={form}
+            configs={getGlobalFormConfigs()}
+            data={cloneDeep(tableConfigs[currentTableIndex]?.configs)}
+            decodeData={decodeGlobalConfigs}
+            encodeData={encodeGlobalConfigs}
+            groupType="collapse"
+            extraComponents={props.customAttributeComponents}
+            onChange={(data) => {
+              if (data) {
+                const newTableConfigs = [...tableConfigs];
+                newTableConfigs[currentTableIndex] = {
+                  ...newTableConfigs[currentTableIndex],
+                  configs: cloneDeep(data),
+                };
+                setState({
+                  tableConfigs: newTableConfigs,
+                });
+              }
+            }}
+          />
+        );
+      } }
     </GeneratorContext.Consumer>
   );
 };

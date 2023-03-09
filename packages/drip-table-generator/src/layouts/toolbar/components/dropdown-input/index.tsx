@@ -7,7 +7,7 @@
  */
 import '../../index.less';
 
-import { Alert, Dropdown, Input } from 'antd';
+import { Alert, AutoComplete, Dropdown, Input } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -17,6 +17,8 @@ interface DropDownInputProps {
   name: string;
   value: string;
   default?: string;
+  type: 'input' | 'auto-complete';
+  options?: { label: string; value: string }[];
   icon: React.ReactNode;
   label: string | React.ReactNode;
   overlayLabel: string;
@@ -46,12 +48,24 @@ const OverLay = (props: Omit<DropDownInputProps, 'icon' | 'label'>) => (
           <div style={{ display: 'flex' }}>
             <div style={{ lineHeight: '32px', marginRight: 6 }}>{ props.overlayLabel }</div>
             <div>
-              <Input
-                allowClear
-                disabled={!tableConfig || !currentTableID}
-                value={props.value}
-                onChange={e => onChange(e.target.value)}
-              />
+              { props.type === 'input' && (
+                <Input
+                  allowClear
+                  disabled={!tableConfig || !currentTableID}
+                  value={props.value}
+                  onChange={e => onChange(e.target.value)}
+                />
+              ) }
+              { props.type === 'auto-complete' && (
+                <AutoComplete
+                  allowClear
+                  style={{ width: 200 }}
+                  disabled={!tableConfig || !currentTableID}
+                  value={props.value}
+                  options={props.options}
+                  onChange={value => onChange(value)}
+                />
+              ) }
             </div>
           </div>
           <div style={{ marginTop: 8 }}><Alert showIcon type="warning" message={props.message} /></div>

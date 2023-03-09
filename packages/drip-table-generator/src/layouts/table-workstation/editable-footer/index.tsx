@@ -169,7 +169,8 @@ const EditableTableFooter = <
   };
   return (
     <GeneratorContext.Consumer>
-      { ({ globalConfigs, previewDataSource, setState }) => {
+      { ({ tableConfigs, previewDataSource, setState }) => {
+        const globalConfigs = tableConfigs[0].configs;
         const paginationInFooter = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('bottom');
         return (
           <div style={{ marginTop: '12px' }}>

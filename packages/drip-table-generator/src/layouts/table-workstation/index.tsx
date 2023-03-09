@@ -43,25 +43,10 @@ const TableWorkStation = <
             <ComplicatedTable
               {...props}
               index={0}
-              configs={context.tableConfigs[0]}
+              tableConfig={context.tableConfigs[0]}
               dataSource={context.previewDataSource as RecordType[]}
             />
             ) }
-            { /*
-              * <EditableTable
-              * customComponentPanel={props.customComponentPanel}
-              * customComponents={props.customComponents}
-              * driver={props.driver}
-              * mockDataSource={props.mockDataSource}
-              * dataFields={props.dataFields}
-              * onDropComponent={() => {
-              * setTimeout(() => {
-              * const scrollWidth = tableWrapper.current?.scrollWidth || 0;
-              * tableWrapper.current?.scroll({ left: scrollWidth });
-              * }, 100);
-              * }}
-              * />
-              */ }
             <EditableTableFooter slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
