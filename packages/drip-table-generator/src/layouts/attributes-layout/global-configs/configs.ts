@@ -435,6 +435,20 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     default: false,
   },
   {
+    name: 'showHeader',
+    group: '全局属性',
+    'ui:title': '展示列头',
+    'ui:description': {
+      type: 'icon',
+      trigger: 'hover',
+      title: '注意：生成器不会隐藏表格列头',
+    },
+    'ui:type': 'switch',
+    'ui:props': {},
+    type: 'boolean',
+    default: true,
+  },
+  {
     name: 'sticky',
     group: '全局属性',
     'ui:title': '冻结表头',

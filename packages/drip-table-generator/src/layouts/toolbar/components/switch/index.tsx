@@ -43,7 +43,10 @@ export const SwitchButton = (props: SwitchButtonProps) => (
               if (!tableConfig || !currentTableID) { return; }
               const newTableConfig = Object.assign({}, tableConfig, { [props.name]: !tableConfig[props.name] });
               const newTableConfigs = [...tableConfigs];
-              newTableConfigs[currentTableIndex] = Object.assign({}, tableConfigs[currentTableIndex], { configs: newTableConfig });
+              newTableConfigs[currentTableIndex] = {
+                ...tableConfigs[currentTableIndex],
+                configs: newTableConfig,
+              };
               setState({ tableConfigs: newTableConfigs });
             }}
         >

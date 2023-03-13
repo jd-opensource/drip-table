@@ -112,7 +112,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       if (msg) {
         helpMsg[cfg.name] = msg;
         count += 1;
-      } else if (!formData[cfg.name] && cfg.default) {
+      } else if (formData[cfg.name] === void 0 && cfg.default) {
         formData[cfg.name] = cfg.default;
       }
     });

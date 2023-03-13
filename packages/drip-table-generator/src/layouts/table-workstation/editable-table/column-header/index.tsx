@@ -21,6 +21,7 @@ interface ColumnHeaderProps{
   className?: string;
   style?: React.CSSProperties;
   sticky?: boolean;
+  size?: 'large' | 'middle' | 'small' | 'default';
   tableId: string;
   index: number;
   column: DripTableGeneratorContext['columns'][number];
@@ -113,7 +114,11 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
         return (
           <div
             key={props.index}
-            className={classNames('jfe-drip-table-generator-workstation-editable-table-thead', `jfe-drip-table-generator-workstation-editable-table-${globalConfigs.size || 'default'}`, props.className)}
+            className={classNames(
+              'jfe-drip-table-generator-workstation-editable-table-thead',
+              `jfe-drip-table-generator-workstation-editable-table-${props.size || 'default'}`,
+              props.className,
+            )}
             style={{
               ...props.style,
               width: getWidth(props.column.width, 'px', props.sticky ? 0 : -2),

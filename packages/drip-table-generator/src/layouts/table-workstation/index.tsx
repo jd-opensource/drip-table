@@ -26,12 +26,15 @@ const TableWorkStation = <
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
   const tableWrapper = React.useRef<HTMLDivElement>(null);
+  const tableConfig = context.tableConfigs[0]?.configs;
+  console.debug(tableConfig);
   return (
     <div
       className="jfe-drip-table-generator-workstation-generator-workstation"
       style={{
         overflow: context.mode === 'edit' ? void 0 : 'hidden',
         width: context.drawerType ? `calc(100% - 128px - ${drawerWidth[context.drawerType]}px)` : void 0,
+        overflowY: tableConfig?.scroll?.y || tableConfig.sticky ? 'hidden' : void 0,
       }}
       ref={tableWrapper}
     >
@@ -45,6 +48,10 @@ const TableWorkStation = <
               index={0}
               tableConfig={context.tableConfigs[0]}
               dataSource={context.previewDataSource as RecordType[]}
+              innerStyle={{
+                height: props.style?.height,
+                overflowY: tableConfig?.scroll?.y || tableConfig.sticky ? 'auto' : void 0,
+              }}
             />
             ) }
             <EditableTableFooter slots={props.slots} ext={props.ext} />

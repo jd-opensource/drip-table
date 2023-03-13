@@ -185,7 +185,9 @@ const EditableTableFooter = <
                 if (typeof configs.pagination === 'object') {
                   configs.pagination.pageSize = size;
                 }
-                setState({ globalConfigs: configs });
+                const newTableConfigs = [...tableConfigs];
+                newTableConfigs[0].configs = { ...configs };
+                setState({ tableConfigs: newTableConfigs });
               }}
             />
             ) }

@@ -208,6 +208,7 @@ const GlobalConfigForm = <
     return {
       ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|rowHeader|rowHeaderStyle)\.|scroll)/u),
       bordered: formData.bordered as boolean,
+      showHeader: formData.showHeader as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
       sticky: formData.sticky as boolean,

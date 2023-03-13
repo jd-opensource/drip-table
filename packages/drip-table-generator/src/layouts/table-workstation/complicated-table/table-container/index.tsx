@@ -20,7 +20,7 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   id: string;
-  dataSource: { id: number; record: RecordType }[];
+  dataSource: RecordType[];
   style?: React.CSSProperties;
   children: React.ReactNode;
   onClick: () => void;
