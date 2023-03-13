@@ -610,7 +610,7 @@ export const basicColumnAttrComponents = (
       ],
     },
     type: 'string',
-    default: 'left',
+    default: 'center',
   },
   {
     name: 'verticalAlign',
@@ -629,7 +629,7 @@ export const basicColumnAttrComponents = (
       ],
     },
     type: 'string',
-    default: 'top',
+    default: 'middle',
   },
   {
     name: 'hidable',
