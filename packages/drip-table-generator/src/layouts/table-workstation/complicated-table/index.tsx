@@ -313,6 +313,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                           <div className="subtable">
                             <ComplicatedTable
                               {...props}
+                              innerStyle={void 0}
                               index={props.index + 1}
                               tableConfig={context.tableConfigs[props.index + 1]}
                               dataSource={record.record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
