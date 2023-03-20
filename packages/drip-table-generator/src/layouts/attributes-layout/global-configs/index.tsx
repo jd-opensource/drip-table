@@ -22,7 +22,6 @@ interface GlobalConfigFormProps<
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
   customGlobalConfigPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customGlobalConfigPanel'];
-  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   slotsSchema: DripTableGeneratorProps<RecordType, ExtraOptions>['slotsSchema'];
 }

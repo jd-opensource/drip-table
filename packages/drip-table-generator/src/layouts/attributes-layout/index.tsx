@@ -114,7 +114,6 @@ const AttributesLayout = <
                 <GlobalConfigForm
                   customAttributeComponents={props.customAttributeComponents}
                   customGlobalConfigPanel={props.customGlobalConfigPanel}
-                  icons={props.icons}
                   slots={props.slots}
                   slotsSchema={props.slotsSchema}
                 />
@@ -125,7 +124,6 @@ const AttributesLayout = <
                 <ComponentConfigForm
                   customAttributeComponents={props.customAttributeComponents}
                   customComponentPanel={props.customComponentPanel}
-                  icons={props.icons}
                   dataFields={props.dataFields}
                   mockDataSource={props.mockDataSource}
                 />
