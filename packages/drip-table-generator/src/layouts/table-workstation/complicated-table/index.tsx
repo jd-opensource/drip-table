@@ -296,7 +296,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                       <EditableComponents
                                         record={record.record}
                                         column={column.column as unknown as DripTableBuiltInColumnSchema}
-                                        driver={props.driver}
                                         customComponents={props.customComponents}
                                         customComponentPanel={props.customComponentPanel}
                                         mockDataSource={props.mockDataSource}
