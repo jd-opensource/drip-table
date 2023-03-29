@@ -31,6 +31,7 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>): Omit<DripTableGeneratorContext, 'setState'> => ({
     previewDataSource: [...props.dataSource || []],
+    mode: 'edit',
   });
 
 const DripTableGenerator = React.forwardRef(<
