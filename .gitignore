@@ -24,3 +24,4 @@
 # temporary files
 /.tsconfig-lint.json
 /packages/*/.tsconfig-lint.json
+/packages/*/layouts-deprecated

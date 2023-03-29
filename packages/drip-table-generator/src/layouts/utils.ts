@@ -9,8 +9,9 @@
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, ExtractDripTableColumnSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 
-import { filterAttributes } from '@/utils';
+import { filterAttributes, mockId } from '@/utils';
 import { DripTableGeneratorContext } from '@/context';
+import { DTGTableConfig } from '@/context/table-configs';
 import tableComponents from '@/table-components';
 
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '../typing';
@@ -90,44 +91,85 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   return columnConfig;
 };
 
-export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(context: DripTableGeneratorContext) => {
-  const getColumns = columns => columns.map((item) => {
-    type BuiltInGroupColumnSchema = ExtractDripTableColumnSchema<DripTableBuiltInColumnSchema<NonNullable<DripTableExtraOptions['CustomColumnSchema']>>, 'group'>;
-    const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
-    delete schemaItem.innerIndexForGenerator;
-    delete schemaItem.dataIndexMode;
-    if (schemaItem.component === 'group') {
-      const items = [...schemaItem.options.items as BuiltInGroupColumnSchema['options']['items']];
-      items.forEach((element, index) => {
-        if (element) {
-          const subComponentItem = { ...element, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
-          delete subComponentItem.innerIndexForGenerator;
-          delete subComponentItem.dataIndexMode;
-          items[index] = subComponentItem;
-        }
-      });
-      schemaItem.options.items = items;
-    }
-    return schemaItem;
-  });
-  const globalConfigs = { ...filterAttributes(context.tableConfigs[0].configs, 'dataSourceKey') };
-  const globalColumns = getColumns(context.tableConfigs[0].columns);
+const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) => {
+  type BuiltInGroupColumnSchema = ExtractDripTableColumnSchema<DripTableBuiltInColumnSchema<NonNullable<DripTableExtraOptions['CustomColumnSchema']>>, 'group'>;
+  const schemaItem = { ...item, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+  delete schemaItem.innerIndexForGenerator;
+  delete schemaItem.dataIndexMode;
+  if (schemaItem.component === 'group') {
+    const items = [...schemaItem.options.items as BuiltInGroupColumnSchema['options']['items']];
+    items.forEach((element, index) => {
+      if (element) {
+        const subComponentItem = { ...element, innerIndexForGenerator: void 0, dataIndexMode: void 0 };
+        delete subComponentItem.innerIndexForGenerator;
+        delete subComponentItem.dataIndexMode;
+        items[index] = subComponentItem;
+      }
+    });
+    schemaItem.options.items = items;
+  }
+  return schemaItem;
+});
+
+export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(tableConfigs: DTGTableConfig[]) => {
+  const globalConfigs = { ...filterAttributes(tableConfigs[0].configs, 'dataSourceKey') };
+  const globalColumns = getColumns(tableConfigs[0].columns);
   let subtable;
-  if (context.tableConfigs.length > 0) {
-    for (let i = context.tableConfigs.length - 1; i > 0; i--) {
+  if (tableConfigs.length > 0) {
+    for (let i = tableConfigs.length - 1; i > 0; i--) {
       subtable = {
-        ...context.tableConfigs[i].configs,
-        columns: getColumns(context.tableConfigs[i].columns),
+        ...tableConfigs[i].configs,
+        columns: getColumns(tableConfigs[i].columns),
         subtable,
-        id: context.tableConfigs[i].tableId,
-        dataSourceKey: context.tableConfigs[i].dataSourceKey,
+        id: tableConfigs[i].tableId,
+        dataSourceKey: tableConfigs[i].dataSourceKey,
       };
     }
   }
   return {
-    id: context.tableConfigs[0].tableId,
+    id: tableConfigs[0].tableId,
     ...globalConfigs,
     columns: globalColumns,
     subtable,
   } as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
+};
+
+export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTableExtraOptions> = never>
+  (schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ): DTGTableConfig[] => {
+  const rootTableId = `${schema.id ?? mockId()}`;
+  if (!schema) {
+    return [{
+      tableId: rootTableId,
+      columns: [],
+      configs: { pagination: false, header: false },
+      hasSubTable: false,
+      dataSourceKey: '',
+    }];
+  }
+  const configs: DTGTableConfig[] = [];
+  let currentSchema = schema ? Object.assign({ dataSourceKey: void 0 }, schema) : void 0;
+  do {
+    if (currentSchema) {
+      configs.push({
+        tableId: `${currentSchema?.id || mockId()}`,
+        columns: currentSchema?.columns.map((column, index) => ({ ...column })) || [],
+        configs: schema ? { ...currentSchema } : { pagination: false },
+        hasSubTable: !!currentSchema?.subtable,
+        dataSourceKey: currentSchema?.dataSourceKey || '',
+      });
+    }
+    currentSchema = currentSchema?.subtable ? Object.assign({ dataSourceKey: void 0 }, currentSchema.subtable) : void 0;
+  } while (currentSchema?.subtable);
+  if (configs.length < 0) {
+    return [{
+      tableId: rootTableId,
+      columns: [],
+      configs: { pagination: false, header: false },
+      hasSubTable: false,
+      dataSourceKey: '',
+    }];
+  }
+  configs[0].tableId = rootTableId;
+  return configs;
 };

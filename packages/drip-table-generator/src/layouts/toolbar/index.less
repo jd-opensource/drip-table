@@ -5,63 +5,71 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-@prefixCls: jfe-drip-table-generator-toolbar;
+@prefixCls: jfe-drip-table-generator-templates;
 
-.@{prefixCls}-toolbar-container {
-  width: 100%;
-  height: 48px;
-  padding: 8px;
-  border-bottom: 1px solid rgb(~"0 0 0 / 15%");
-  box-shadow: 0 0 4px -1px rgb(~"0 0 0 / 25%");
+.@{prefixCls}-toolbar {
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
+  width: 100%;
 
-  &-leftbar {
-    display: flex;
+  &.left {
+    width: calc(100% - 32px);
   }
 
-  &-rightbar {
-    display: flex;
+  &.right {
+    width: 32px;
+  }
+}
+
+.@{prefixCls}-container {
+  display: flex;
+}
+
+.@{prefixCls}-wrapper {
+  width: 142px;
+  height: 156px;
+  border: 1px solid rgb(0 0 0 / 35%);
+  border-radius: 6px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  transition: box-shadow ease-in-out .25s;
+  margin: 10px 12px;
+  position: relative;
+
+  &:hover {
+    box-shadow: 0 0 8px -3px rgb(0 0 0 / 65%);
   }
 
-  & .@{prefixCls}-tool-cell {
-    margin-right: 8px;
-    cursor: pointer;
-    padding: 6px 8px;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    height: 32px;
-    transition: all ease-in-out .3s;
+  &.checked {
+    border: 1px solid var(--drip-table-border-color);
 
     &:hover {
-      border-color: #c6c6c6;
-      box-shadow: 0 1px 1px rgb(~"0 0 0 / 10%");
-    }
-
-    &.checked {
-      background-color: #e7e7e7;
-    }
-
-    &.disabled {
-      color: #e7e7e7;
-      background-color: #c6c6c6;
-    }
-
-    & .@{prefixCls}-tool-icon {
-      line-height: 26px;
-      margin-right: 4px;
+      box-shadow: 0 0 8px 0 var(--drip-table-shadow-color);
     }
   }
 }
 
-.@{prefixCls}-overlay-wrapper {
-  width: max-content;
-  background: #ffffff;
-  padding: 12px;
-  margin-top: 3px;
-  border: 1px solid rgb(~"0 0 0 / 15%");
-  box-shadow: 0 2px 4px -1px rgb(~"0 0 0 / 25%");
-  border-radius: 2px;
+.@{prefixCls}-wrapper-corner {
+  width: 32px;
+  height: 32px;
+  background-image: linear-gradient(225deg, var(--drip-table-border-color) 50%, rgb(255 255 255 / 0%) 50%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+}
+
+.@{prefixCls}-close {
+  color: #00000073;
+
+  &:hover,
+  &:focus {
+    color: rgb(0 0 0 / 85%);
+    background: rgb(0 0 0 / 1.8%);
+    border-color: transparent;
+  }
 }
