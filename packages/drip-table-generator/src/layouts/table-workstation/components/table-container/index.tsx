@@ -10,12 +10,15 @@ import './index.less';
 
 import React from 'react';
 
-export interface TableContainerProps {
+import { DTGTableConfig } from '@/context/table-configs';
 
+export interface TableContainerProps {
+  tableConfig: DTGTableConfig;
   children: React.ReactNode;
 }
-const TableContainer = props => (
-  <div>
+const TableContainer = (props: TableContainerProps) => (
+  <div style={{ border: '1px dashed #1970ff' }}>
+    { props.tableConfig.tableId }
     { props.children }
   </div>
 );

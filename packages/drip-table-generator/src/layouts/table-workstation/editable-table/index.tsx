@@ -7,15 +7,16 @@
  */
 import './index.less';
 
-import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
+import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
 
+import { filterArray } from '@/utils';
 import { DTGTableConfig, GeneratorTableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import TableContainer from '../components/table-container';
-import TableCell from './components/cell';
-import ColumnHeaderList from './components/column-list';
+import ColumnHeaderList from './components/header-list';
+import TableRowList from './components/row';
 
 export interface EditableTableProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -37,30 +38,39 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     return '100%';
   }, []);
+
+  const dataSourceToUse = React.useMemo(() => {
+    if (props.tableConfig.configs.pagination) {
+      const dataSource = props.dataSource.map((rec, idx) => ({ idx, rec }));
+      const pageSize = props.tableConfig.configs.pagination.pageSize;
+      return filterArray(dataSource, item => item.idx < pageSize).map(item => item.rec);
+    }
+    return props.dataSource;
+  }, [props.dataSource, props.tableConfig.configs.pagination]);
   return (
     <GeneratorTableConfigsContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => (
-        <TableContainer>
+        <TableContainer tableConfig={props.tableConfig}>
           <div
             className="jfe-drip-table-generator-workstation-table-wrapper"
             style={{ height: tableHeight, overflow: props.tableConfig.configs.sticky ? 'hidden' : 'auto' }}
           >
             { props.tableConfig.configs.sticky
               ? (
-                <div>
-                  <ColumnHeaderList
-                    tableConfig={props.tableConfig}
-                    onResort={newColumns => setTableColumns([...newColumns], props.index)}
-                  />
-                </div>
+                <ColumnHeaderList
+                  tableConfig={props.tableConfig}
+                  onResort={newColumns => setTableColumns([...newColumns], props.index)}
+                />
               )
               : null }
             <div style={props.tableConfig.configs.sticky ? { height: tableHeight, overflow: 'auto' } : void 0}>
-              <ColumnHeaderList
-                tableConfig={props.tableConfig}
-                onResort={newColumns => setTableColumns([...newColumns], props.index)}
-              />
-              { props.dataSource.map((record, rowIndex) => {
+              { !props.tableConfig.configs.sticky && (
+                <ColumnHeaderList
+                  tableConfig={props.tableConfig}
+                  onResort={newColumns => setTableColumns([...newColumns], props.index)}
+                />
+              ) }
+              { dataSourceToUse.map((record, rowIndex) => {
                 const hasSubTable = tableConfigs[props.index + 1] && Object.keys(record).includes(tableConfigs[props.index + 1].dataSourceKey);
                 const tableInfo: DripTableTableInformation<RecordType, ExtraOptions> = {
                   uuid: tableConfigs[props.index]?.tableId,
@@ -75,28 +85,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 };
                 return (
                   <div>
-                    { props.tableConfig.columns.map((column, colIndex) => (
-                      <TableCell
-                        record={record}
-                        column={column as DripTableBuiltInColumnSchema}
-                        customComponents={props.customComponents}
-                        customComponentPanel={props.customComponentPanel}
-                        mockDataSource={props.mockDataSource}
-                        dataFields={props.dataFields}
-                      />
-                    )) }
-                    { (props.tableConfig.hasSubTable && hasSubTable)
-                  && (
-                  <div className="subtable">
-                    <EditableTable
-                      {...props}
-                      index={props.index + 1}
-                      tableConfig={tableConfigs[props.index + 1]}
-                      dataSource={record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
-                      parent={tableInfo}
+                    <TableRowList
+                      tableConfig={props.tableConfig}
+                      record={record}
+                      customComponents={props.customComponents}
+                      customComponentPanel={props.customComponentPanel}
+                      mockDataSource={props.mockDataSource}
+                      dataFields={props.dataFields}
                     />
-                  </div>
-                  ) }
+                    { (props.tableConfig.hasSubTable && hasSubTable)
+                    && (
+                    <div className="subtable">
+                      <EditableTable
+                        {...props}
+                        index={props.index + 1}
+                        tableConfig={tableConfigs[props.index + 1]}
+                        dataSource={record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
+                        parent={tableInfo}
+                      />
+                    </div>
+                    ) }
                   </div>
                 );
               }) }

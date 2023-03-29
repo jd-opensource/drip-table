@@ -5,15 +5,18 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
+import classNames from 'classnames';
 import React from 'react';
 
 import RichText from '@/components/RichText';
 import { DTGTableConfig } from '@/context/table-configs';
 
 export interface ColumnHeaderProps {
+  tableConfig: DTGTableConfig;
   column: DTGTableConfig['columns'][number];
   key?: string | number;
 }
@@ -27,7 +30,12 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
     columnTitle = props.column.title?.body?.content;
   }
   return (
-    <div key={props.key}>
+    <div
+      key={props.key}
+      className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+        [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+      })}
+    >
       <RichText
         className="jfe-drip-table-generator-workstation-editable-table-column-title"
         style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
