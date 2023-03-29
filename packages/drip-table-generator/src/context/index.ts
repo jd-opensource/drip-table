@@ -20,6 +20,10 @@ export interface DripTableGeneratorContext {
    */
   drawerType?: 'datasource' | 'global' | 'column' | 'column-item';
   /**
+   * 表格工作区展示模式
+   */
+  mode: 'edit' | 'preview';
+  /**
    * 更新 Context 方法
    */
   setState: (
@@ -30,5 +34,6 @@ export interface DripTableGeneratorContext {
 
 export const GeneratorContext = createContext<DripTableGeneratorContext>({
   previewDataSource: [],
+  mode: 'edit',
   setState: () => false,
 });

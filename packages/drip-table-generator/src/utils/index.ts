@@ -58,3 +58,14 @@ export const filterAttributesByRegExp = <T extends Record<string, unknown>>(reco
   });
   return finalObject;
 };
+
+export const filterArray = <T,>(originArray: T[], filterCallback: (item: T) => boolean) => {
+  const result: T[] = [];
+  originArray.forEach((item) => {
+    const isMatch = filterCallback(item);
+    if (isMatch) {
+      result.push(item);
+    }
+  });
+  return result;
+};
