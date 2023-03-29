@@ -5,7 +5,11 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
 
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import classNames from 'classnames';
 import React from 'react';
 import { ReactSortable } from 'react-sortablejs';
 
@@ -23,11 +27,15 @@ const ColumnHeaderList = (props: ColumnHeaderListProps) => {
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
   return (
-    <div>
+    <div className={classNames('jfe-drip-table-generator-workstation-table-header-wrapper', {
+      invisible: props.tableConfig.configs.showHeader === false,
+      [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+    })}
+    >
       { sortableColumns[0] && sortableColumns[0].id > 1
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index < sortableColumns[0].id)
-          .map((column, index) => <ColumnHeader column={column} key={index} />)
+          .map((column, index) => <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />)
         : null }
       <ReactSortable
         animation={250}
@@ -43,14 +51,21 @@ const ColumnHeaderList = (props: ColumnHeaderListProps) => {
         }}
       >
         { props.tableConfig.columns.map((column, index) => (
-          <ColumnHeader column={column} key={index} />
+          <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />
         )) }
       </ReactSortable>
       { sortableColumns[sortableColumns.length - 1] && sortableColumns[sortableColumns.length - 1].id < columnList.length
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index > sortableColumns[sortableColumns.length - 1].id)
-          .map((column, index) => <ColumnHeader column={column} key={index} />)
+          .map((column, index) => <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />)
         : null }
+      <div
+        className={classNames('jfe-drip-table-generator-workstation-table-header-add-item', {
+          [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+        })}
+      >
+        <Button icon={<PlusOutlined />} />
+      </div>
     </div>
   );
 };

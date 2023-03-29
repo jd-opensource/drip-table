@@ -15,6 +15,7 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
   schema: {
     pagination: {
       pageSize: 20,
+      position: 'bottomRight',
     },
     columns: [
       {
@@ -31,12 +32,12 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
             },
           ],
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'text_18722ec0683-132a',
-        dataIndex: 'id',
+        dataIndex: 'name',
         title: '名称',
         component: 'text',
         options: {
@@ -48,8 +49,8 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
             },
           ],
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'tag_18722ec1c73-1336',
@@ -61,8 +62,8 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
           prefix: '',
           suffix: '',
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'link_18722ec2412-133d',
@@ -77,8 +78,8 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
           operates: [],
           trigger: 'hover',
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
     ],
   },

@@ -16,6 +16,7 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
     editable: true,
     pagination: {
       pageSize: 20,
+      position: 'bottomRight',
     },
     columns: [
       {

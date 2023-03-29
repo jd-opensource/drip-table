@@ -15,6 +15,7 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
   schema: {
     pagination: {
       pageSize: 20,
+      position: 'bottomRight',
     },
     columns: [
       {
