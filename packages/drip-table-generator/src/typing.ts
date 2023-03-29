@@ -172,41 +172,54 @@ export interface DripTableGeneratorProps<
    */
   style?: CSSProperties;
   /**
+   * @deprecated 已废弃
    * 展示组件栏
    */
   showComponentLayout?: boolean;
   /**
+   * @deprecated 已废弃
    * 组件栏自定义样式
    */
   componentLayoutStyle?: CSSProperties;
   /**
+   * @deprecated 已废弃
    * 右侧属性栏展示形式
    */
   rightLayoutMode?: 'drawer' | 'fixed';
   /**
+   * @deprecated 已废弃
    * 右侧属性栏自定义样式
    */
   rightLayoutStyle?: CSSProperties;
   /**
+   * @deprecated 已废弃
    * 展示工具栏
    */
   showToolLayout?: boolean;
   /**
+   * @deprecated 已废弃
    * 工具栏样式
    */
   toolbarStyle?: CSSProperties;
   /**
+   * @deprecated 已废弃
    * 默认主题
    */
   defaultTheme?: string;
   /**
+   * @deprecated 已废弃
    * 自定义主题选项
    */
   customThemeOptions?: DTGCustomThemeOptions<RecordType, ExtraOptions>[];
   /**
+   * @deprecated 已废弃
    * 默认打开编辑模式还是预览模式
    */
   defaultMode?: 'edit' | 'preview';
+  /**
+   * 模式：model-弹出框；page-页面模式
+   */
+  mode?: 'model' | 'page';
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;
