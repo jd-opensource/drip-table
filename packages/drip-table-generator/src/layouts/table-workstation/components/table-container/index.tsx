@@ -11,7 +11,8 @@ import './index.less';
 import classNames from 'classnames';
 import React from 'react';
 
-import { DTGTableConfig, GeneratorContext } from '@/context';
+import { GeneratorContext } from '@/context';
+import { DTGTableConfig } from '@/context/table-configs';
 
 export interface TableContainerProps {
   tableConfig: DTGTableConfig;

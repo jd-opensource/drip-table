@@ -12,7 +12,7 @@ import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
 
 import { filterArray } from '@/utils';
-import { DTGTableConfig, GeneratorContext } from '@/context';
+import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import TableContainer from '../components/table-container';
@@ -33,6 +33,8 @@ const EditableTable = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableProps<RecordType, ExtraOptions>) => {
+  const [scrollLeft, setScrollLeft] = React.useState(0);
+  const [scrollTarget, setScrollTarget] = React.useState('');
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
       return props.tableConfig.configs.scroll?.y;
@@ -48,8 +50,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     return props.dataSource;
   }, [props.dataSource, props.tableConfig.configs.pagination]);
+
   return (
-    <GeneratorContext.Consumer>
+    <TableConfigsContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => (
         <TableContainer tableConfig={props.tableConfig}>
           <div
@@ -61,20 +64,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             { props.tableConfig.configs.sticky
               ? (
                 <ColumnHeaderList
+                  scrollTarget={scrollTarget}
+                  scrollLeft={scrollLeft}
                   customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
+                  onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
                 />
               )
               : null }
             <div
-              style={props.tableConfig.configs.sticky ? { height: 420, overflow: 'auto' } : void 0}
+              style={props.tableConfig.configs.sticky ? { height: 420, overflow: 'auto', boxShadow: 'inset 0 0 8px -4px #00000063' } : void 0}
             >
               { !props.tableConfig.configs.sticky && (
                 <ColumnHeaderList
+                  scrollTarget={scrollTarget}
+                  scrollLeft={scrollLeft}
                   customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
+                  onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
                 />
               ) }
               { dataSourceToUse.map((record, rowIndex) => {
@@ -91,14 +100,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   record,
                 };
                 return (
-                  <div key={rowIndex} style={{ borderBottom: '1px solid #efefef' }}>
+                  <div key={rowIndex} className="jfe-drip-table-generator-workstation-table-row">
                     <TableRowList
+                      rowIndex={rowIndex}
+                      scrollTarget={scrollTarget}
+                      scrollLeft={scrollLeft}
                       tableConfig={props.tableConfig}
                       record={record}
                       customComponents={props.customComponents}
                       customComponentPanel={props.customComponentPanel}
                       mockDataSource={props.mockDataSource}
                       dataFields={props.dataFields}
+                      onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
                     />
                     { (props.tableConfig.hasSubTable && hasSubTable)
                     && (
@@ -119,7 +132,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           </div>
         </TableContainer>
       ) }
-    </GeneratorContext.Consumer>
+    </TableConfigsContext.Consumer>
   );
 };
 

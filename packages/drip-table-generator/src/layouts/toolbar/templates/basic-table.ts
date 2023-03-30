@@ -18,7 +18,7 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
       position: 'bottomRight',
     },
     bordered: true,
-    scroll: { x: 400, y: 400 },
+    scroll: { y: 400 },
     sticky: true,
     columns: [
       {

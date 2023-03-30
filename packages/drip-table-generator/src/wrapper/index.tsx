@@ -14,8 +14,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { DripTableGeneratorContext, DripTableGeneratorStates, GeneratorContext } from '@/context';
+import { DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import GeneratorLayout from '@/layouts';
-import { generateTableConfigsBySchema } from '@/layouts/utils';
+import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
 
@@ -32,7 +33,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     currentTableID: void 0,
     previewDataSource: [...props.dataSource || []],
     mode: 'edit',
-    tableConfigs: generateTableConfigsBySchema(props.schema),
   });
 
 const DripTableGenerator = React.forwardRef(<
@@ -40,42 +40,43 @@ const DripTableGenerator = React.forwardRef(<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
   const [generatorStates, setGeneratorStates] = React.useState(generateStates(props));
+  const [tableConfigs, setDripTableConfigs] = React.useState(generateTableConfigsBySchema(props.schema));
 
-  const dripTableGeneratorContext: DripTableGeneratorContext = {
-    ...generatorStates,
+  const tableConfigsContext: DTGTableConfigsContext = {
+    tableConfigs,
     updateTableConfig(config, index, callback) {
-      const newTableConfigs = [...generatorStates.tableConfigs];
+      const newTableConfigs = [...tableConfigs];
       newTableConfigs[index] = cloneDeep(config);
-      const newStates = { ...generatorStates, tableConfigs: newTableConfigs };
-      setGeneratorStates(newStates);
+      setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },
     updateTableConfigs(configs, callback) {
       const newTableConfigs = cloneDeep([...configs]);
-      const newStates = { ...generatorStates, tableConfigs: newTableConfigs };
-      setGeneratorStates(newStates);
+      setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },
     setTableConfigs(config, index, callback) {
-      const newTableConfigs = [...generatorStates.tableConfigs];
+      const newTableConfigs = [...tableConfigs];
       newTableConfigs[index] = {
         ...newTableConfigs[index],
         configs: config,
       };
-      const newStates = { ...generatorStates, tableConfigs: newTableConfigs };
-      setGeneratorStates(newStates);
+      setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },
     setTableColumns(columns, index, callback) {
-      const newTableConfigs = [...generatorStates.tableConfigs];
+      const newTableConfigs = [...tableConfigs];
       newTableConfigs[index] = {
         ...newTableConfigs[index],
         columns,
       };
-      const newStates = { ...generatorStates, tableConfigs: newTableConfigs };
-      setGeneratorStates(newStates);
+      setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },
+  };
+
+  const dripTableGeneratorContext: DripTableGeneratorContext = {
+    ...generatorStates,
     setState(states, callback) {
       if (!states) { return; }
       const newStates = { ...generatorStates };
@@ -89,20 +90,22 @@ const DripTableGenerator = React.forwardRef(<
 
   React.useImperativeHandle(ref, () => ({
     getState: () => false,
-    getSchemaValue: () => false,
-    getDataSource: () => [],
+    getSchemaValue: () => getSchemaValue(tableConfigs),
+    getDataSource: () => generatorStates.previewDataSource,
   }));
 
   React.useEffect(() => {
-    props.onSchemaChange?.({ pagination: false, columns: [] });
-  }, [generatorStates.tableConfigs]);
+    props.onSchemaChange?.(getSchemaValue(tableConfigs));
+  }, [tableConfigs]);
 
   message.config({ maxCount: 1 });
 
   return (
     <ConfigProvider locale={zhCN}>
       <GeneratorContext.Provider value={dripTableGeneratorContext}>
-        <GeneratorLayout {...props} />
+        <TableConfigsContext.Provider value={tableConfigsContext}>
+          <GeneratorLayout {...props} />
+        </TableConfigsContext.Provider>
       </GeneratorContext.Provider>
     </ConfigProvider>
   );
