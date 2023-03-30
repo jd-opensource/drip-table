@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import RichText from '@/components/RichText';
+import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 
 export interface ColumnHeaderProps {
@@ -30,23 +31,39 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
     columnTitle = props.column.title?.body?.content;
   }
   return (
-    <div
-      key={props.key}
-      className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
-        [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
-      })}
-    >
-      <RichText
-        className="jfe-drip-table-generator-workstation-editable-table-column-title"
-        style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
-        html={columnTitle}
-      />
-      { props.column.description && (
-      <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
-        <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
-      </Tooltip>
+    <GeneratorContext.Consumer>
+      { ({ currentColumnID, currentTableID, setState }) => (
+        <div
+          key={props.key}
+          className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+            [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+            checked: props.tableConfig.tableId === currentTableID && props.column.key === currentColumnID,
+            bordered: !!props.tableConfig.configs.bordered,
+          })}
+          style={{ width: props.column.width }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setState({
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: props.column.key,
+            });
+          }}
+          onMouseEnter={() => setState({ currentHoverColumnID: props.column.key })}
+          onMouseLeave={() => setState({ currentHoverColumnID: void 0 })}
+        >
+          <RichText
+            className="jfe-drip-table-generator-workstation-editable-table-column-title"
+            style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
+            html={columnTitle}
+          />
+          { props.column.description && (
+          <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
+            <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
+          </Tooltip>
+          ) }
+        </div>
       ) }
-    </div>
+    </GeneratorContext.Consumer>
   );
 };
 

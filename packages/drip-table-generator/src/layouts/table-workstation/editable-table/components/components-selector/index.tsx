@@ -32,7 +32,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   onClose: () => void;
 }
 
-const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig) => {
+const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, title: string) => {
   const options: Record<string, unknown> = {};
   const additionalProps = {};
   component?.attrSchema.forEach((schema) => {
@@ -48,7 +48,7 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig) => 
   const columnSchema: DTGTableConfig['columns'][number] = {
     key: `${component['ui:type']}_${mockId()}`,
     dataIndex: '',
-    title: component.title,
+    title: title ?? component.title,
     width: void 0,
     description: '',
     component: component['ui:type'] as 'text',
@@ -172,7 +172,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onClick={() => {
                 const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
                 if (componentConfig && tableIndex > -1) {
-                  const column = getColumnSchemaByComponent(componentConfig);
+                  const column = getColumnSchemaByComponent(componentConfig, title);
                   const columns = [...tableConfigs[tableIndex].columns, column];
                   setTableColumns(columns, tableIndex);
                   initStates();

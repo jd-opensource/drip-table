@@ -12,6 +12,7 @@ import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableProps } f
 import React from 'react';
 
 import { filterArray } from '@/utils';
+import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -44,6 +45,7 @@ const TableRowList = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableRowListProps<RecordType, ExtraOptions>) => {
+  const { currentTableID, currentColumnID, currentHoverColumnID } = React.useContext(GeneratorContext);
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
@@ -54,16 +56,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
   }, [props.scrollLeft, props.scrollTarget]);
 
-  const renderTableCell = React.useCallback((column: DripTableBuiltInColumnSchema, index: number) => (
+  const renderTableCell = (column: DripTableBuiltInColumnSchema, index: number) => (
     <div
       key={index}
       className={classNames('jfe-drip-table-generator-workstation-table-tr-td', {
         [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
         bordered: props.tableConfig.configs.bordered,
+        checked: column.key === currentColumnID && props.tableConfig.tableId === currentTableID,
+        hovered: column.key === currentHoverColumnID,
       })}
       style={{
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
+        width: column.width,
       }}
     >
       <TableCell
@@ -75,7 +80,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         dataFields={props.dataFields}
       />
     </div>
-  ), []);
+  );
 
   return (
     <div className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}>

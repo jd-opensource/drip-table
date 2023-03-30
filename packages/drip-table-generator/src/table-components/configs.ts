@@ -303,7 +303,7 @@ const align: DTGComponentPropertySchema = {
     ],
   },
   type: 'string',
-  default: 'left',
+  default: 'center',
 };
 
 const verticalAlign: DTGComponentPropertySchema = {
@@ -323,7 +323,7 @@ const verticalAlign: DTGComponentPropertySchema = {
     ],
   },
   type: 'string',
-  default: 'top',
+  default: 'middle',
 };
 
 const hidable: DTGComponentPropertySchema = {
