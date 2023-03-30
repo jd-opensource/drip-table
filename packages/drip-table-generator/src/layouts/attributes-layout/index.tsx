@@ -9,7 +9,7 @@
 import React from 'react';
 
 const AttributesLayout = () => (
-  <div> This is the Side Drawer</div>
+  <div style={{ position: 'absolute', right: 0 }}> This is the Side Drawer</div>
 );
 
 export default AttributesLayout;

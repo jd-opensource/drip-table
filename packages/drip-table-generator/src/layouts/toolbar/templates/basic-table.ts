@@ -17,6 +17,9 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
       pageSize: 20,
       position: 'bottomRight',
     },
+    bordered: true,
+    scroll: { x: 400, y: 400 },
+    sticky: true,
     columns: [
       {
         key: 'text_18722ec0161-1323',
