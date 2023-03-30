@@ -10,17 +10,17 @@ import { Button, message } from 'antd';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
-import { GeneratorContext } from '@/context';
+import { TableConfigsContext } from '@/context/table-configs';
 import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 
 export interface ExportSchemaProps {
   height?: number | string;
 }
 const ExportSchema = (props: ExportSchemaProps) => {
-  const context = React.useContext(GeneratorContext);
+  const context = React.useContext(TableConfigsContext);
   const [code, setCode] = React.useState(JSON.stringify(getSchemaValue(context.tableConfigs), null, 4));
   return (
-    <GeneratorContext.Consumer>
+    <TableConfigsContext.Consumer>
       { ({ updateTableConfigs }) => (
         <div>
           <MonacoEditor
@@ -72,7 +72,7 @@ const ExportSchema = (props: ExportSchemaProps) => {
           </div>
         </div>
       ) }
-    </GeneratorContext.Consumer>
+    </TableConfigsContext.Consumer>
   );
 };
 

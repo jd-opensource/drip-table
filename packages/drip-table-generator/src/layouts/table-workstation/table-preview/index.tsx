@@ -12,6 +12,7 @@ import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { GeneratorContext } from '@/context';
+import { TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -20,7 +21,7 @@ const PreviewTable = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
   const context = React.useContext(GeneratorContext);
-  const { tableConfigs } = React.useContext(GeneratorContext);
+  const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
     <div className="jfe-drip-table-generator-workstation-table-preview-wrapper">
       <DripTable

@@ -29,4 +29,20 @@
   &.large {
     padding: 16px 12px;
   }
+
+  &.bordered {
+    border-right: 1px solid #efefef;
+  }
+}
+
+.@{prefixCls}-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: 0;
+  display: flex;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
 }

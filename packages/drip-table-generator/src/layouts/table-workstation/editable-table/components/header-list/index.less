@@ -44,6 +44,10 @@
   min-width: 120px;
   text-align: center;
 
+  &.bordered {
+    border-right: 1px solid #e0e0e0;
+  }
+
   &.small {
     height: 32px;
     padding: 0 12px;
@@ -57,5 +61,17 @@
   &.large {
     height: 56px;
     padding: 12px;
+  }
+}
+
+.@{prefixCls}-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: 0;
+  display: flex;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    display: none;
   }
 }

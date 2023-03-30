@@ -14,7 +14,7 @@ import React from 'react';
 
 import { mockId } from '@/utils';
 import Icon from '@/components/Icon';
-import { DTGTableConfig, GeneratorContext } from '@/context';
+import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getComponentsConfigs, getGroups } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
@@ -81,7 +81,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [props.open]);
 
   return (
-    <GeneratorContext.Consumer>
+    <TableConfigsContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => (
         <div className="jfe-drip-table-generator-components-bar-wrapper">
           { props.showTitle && (
@@ -185,7 +185,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           </div>
         </div>
       ) }
-    </GeneratorContext.Consumer>
+    </TableConfigsContext.Consumer>
 
   );
 };

@@ -10,7 +10,8 @@ import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, E
 import cloneDeep from 'lodash/cloneDeep';
 
 import { filterAttributes, mockId } from '@/utils';
-import { DripTableGeneratorContext, DTGTableConfig } from '@/context';
+import { DripTableGeneratorContext } from '@/context';
+import { DTGTableConfig } from '@/context/table-configs';
 import tableComponents from '@/table-components';
 
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '../typing';

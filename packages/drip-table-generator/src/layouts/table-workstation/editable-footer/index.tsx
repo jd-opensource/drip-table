@@ -16,7 +16,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import RichText from '@/components/RichText';
-import { DripTableGeneratorContext, DTGTableConfig, GeneratorContext } from '@/context';
+import { GeneratorContext } from '@/context';
+import { DTGTableConfig, DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -35,6 +36,7 @@ const EditableTableFooter = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableFooterProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
+  const tableConfigsContext = React.useContext(TableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
   const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
 
@@ -88,7 +90,7 @@ const EditableTableFooter = <
             slotType={config.slot}
             data={config.data}
             ext={props.ext}
-            schema={getSchemaValue(context.tableConfigs)}
+            schema={getSchemaValue(tableConfigsContext.tableConfigs)}
             dataSource={context.previewDataSource as RecordType[] || []}
             onSearch={() => void 0}
             fireEvent={() => void 0}
@@ -132,7 +134,7 @@ const EditableTableFooter = <
     element: DripTableSlotElementSchema,
     index: number,
     globalConfigs: DTGTableConfig['configs'],
-    setTableConfigs: DripTableGeneratorContext['setTableConfigs'],
+    setTableConfigs: DTGTableConfigsContext['setTableConfigs'],
   ) => {
     if (currentCellIndex === -1 || !currentCell) {
       return;
@@ -155,7 +157,7 @@ const EditableTableFooter = <
   };
 
   return (
-    <GeneratorContext.Consumer>
+    <TableConfigsContext.Consumer>
       { ({ tableConfigs, setTableConfigs }) => {
         const globalConfigs = tableConfigs[0].configs;
         const paginationInFooter = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('bottom');
@@ -196,7 +198,7 @@ const EditableTableFooter = <
           </div>
         );
       } }
-    </GeneratorContext.Consumer>
+    </TableConfigsContext.Consumer>
   );
 };
 

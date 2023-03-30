@@ -10,6 +10,7 @@ import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
+import { TableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import EditableTableFooter from './editable-footer';
@@ -21,7 +22,8 @@ const TableWorkStation = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
-  const { tableConfigs, mode, previewDataSource } = React.useContext(GeneratorContext);
+  const { mode, previewDataSource } = React.useContext(GeneratorContext);
+  const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
     <div>
       { mode === 'edit'
