@@ -8,19 +8,33 @@
 
 import './index.less';
 
+import classNames from 'classnames';
 import React from 'react';
 
-import { DTGTableConfig } from '@/context/table-configs';
+import { DTGTableConfig, GeneratorContext } from '@/context';
 
 export interface TableContainerProps {
   tableConfig: DTGTableConfig;
   children: React.ReactNode;
 }
 const TableContainer = (props: TableContainerProps) => (
-  <div style={{ border: '1px dashed #1970ff' }}>
-    { props.tableConfig.tableId }
-    { props.children }
-  </div>
+  <GeneratorContext.Consumer>
+    { ({ currentTableID, setState }) => (
+      <div
+        className={classNames('jfe-drip-table-generator-table-container-wrapper', {
+          checked: currentTableID === props.tableConfig.tableId,
+        })}
+        onClick={() => {
+          setState({ currentTableID: props.tableConfig.tableId });
+        }}
+      >
+        <div className="jfe-drip-table-generator-table-container-tools">
+          <span>{ props.tableConfig.tableId }</span>
+        </div>
+        { props.children }
+      </div>
+    ) }
+  </GeneratorContext.Consumer>
 );
 
 export default TableContainer;

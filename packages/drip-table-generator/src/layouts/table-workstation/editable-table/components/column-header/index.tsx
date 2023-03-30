@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import RichText from '@/components/RichText';
-import { DTGTableConfig } from '@/context/table-configs';
+import { DTGTableConfig } from '@/context';
 
 export interface ColumnHeaderProps {
   tableConfig: DTGTableConfig;

@@ -6,10 +6,21 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-@prefixCls: jfe-drip-table-generator-workstation-table;
+@prefixCls: jfe-drip-table-generator-table-container;
 
 .@{prefixCls}-wrapper {
-  overflow: auto;
-  width: 100%;
-  height: 100%;
+  border: 1px dashed var(--drip-table-border-color);
+  padding: 12px;
+  min-width: 966px;
+  position: relative;
+
+  &.checked {
+    border-style: solid;
+  }
+}
+
+.@{prefixCls}-tools {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

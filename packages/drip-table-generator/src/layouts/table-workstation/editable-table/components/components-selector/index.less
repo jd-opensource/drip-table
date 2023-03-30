@@ -1,0 +1,92 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+@prefixCls: jfe-drip-table-generator-components-bar;
+
+.@{prefixCls}-wrapper {
+  width: 320px;
+  background: #ffffff;
+  height: 480px;
+  box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+  padding: 10px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.@{prefixCls}-navigation {
+  padding: 0;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 32%) 0 0 1px, rgb(0 0 0 / 8%) 0 0 2px, rgb(0 0 0 / 8%) 0 1px 3px;
+
+  & .@{prefixCls}-no-border {
+    border: none;
+    border-radius: 6px;
+    width: 100%;
+  }
+}
+
+.@{prefixCls}-components-list {
+  margin-top: 2px;
+  height: 352px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.@{prefixCls}-component-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 4px 0 4px 10px;
+  white-space: nowrap;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 2px 2px 2px 18px;
+    width: calc(100% - 4px);
+    margin: 2px;
+
+    &:hover {
+      border-color: var(--drip-table-border-color);
+      fill: var(--drip-table-primary-color);
+      color: var(--drip-table-primary-color);
+
+      .@{prefixCls}-component-text {
+        color: var(--drip-table-primary-color);
+      }
+    }
+  }
+}
+
+.@{prefixCls}-component-icon {
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: top;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin: 3px 0;
+  }
+}
+
+.@{prefixCls}-component-text {
+  display: inline-block;
+  color: #606060;
+  white-space: nowrap;
+}
+
+.@{prefixCls}-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  position: absolute;
+  width: calc(100% - 20px);
+  bottom: 6px;
+}

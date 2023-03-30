@@ -11,7 +11,7 @@ import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
 
 import { filterArray } from '@/utils';
-import { DTGTableConfig, GeneratorTableConfigsContext } from '@/context/table-configs';
+import { DTGTableConfig, GeneratorContext } from '@/context';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import TableContainer from '../components/table-container';
@@ -48,7 +48,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     return props.dataSource;
   }, [props.dataSource, props.tableConfig.configs.pagination]);
   return (
-    <GeneratorTableConfigsContext.Consumer>
+    <GeneratorContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => (
         <TableContainer tableConfig={props.tableConfig}>
           <div
@@ -58,6 +58,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             { props.tableConfig.configs.sticky
               ? (
                 <ColumnHeaderList
+                  customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                 />
@@ -66,6 +67,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             <div style={props.tableConfig.configs.sticky ? { height: tableHeight, overflow: 'auto' } : void 0}>
               { !props.tableConfig.configs.sticky && (
                 <ColumnHeaderList
+                  customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                 />
@@ -84,7 +86,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   record,
                 };
                 return (
-                  <div>
+                  <div key={rowIndex} style={{ borderBottom: '1px solid #efefef' }}>
                     <TableRowList
                       tableConfig={props.tableConfig}
                       record={record}
@@ -110,10 +112,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               }) }
             </div>
           </div>
-
         </TableContainer>
       ) }
-    </GeneratorTableConfigsContext.Consumer>
+    </GeneratorContext.Consumer>
   );
 };
 

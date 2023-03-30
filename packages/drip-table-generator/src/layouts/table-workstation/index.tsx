@@ -10,7 +10,6 @@ import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
-import { GeneratorTableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import EditableTableFooter from './editable-footer';
@@ -22,11 +21,10 @@ const TableWorkStation = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
-  const context = React.useContext(GeneratorContext);
-  const { tableConfigs } = React.useContext(GeneratorTableConfigsContext);
+  const { tableConfigs, mode, previewDataSource } = React.useContext(GeneratorContext);
   return (
     <div>
-      { context.mode === 'edit'
+      { mode === 'edit'
         ? (
           <React.Fragment>
             <EditableTableHeader slots={props.slots} ext={props.ext} />
@@ -35,13 +33,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               {...props}
               index={0}
               tableConfig={tableConfigs[0]}
-              dataSource={context.previewDataSource as RecordType[]}
+              dataSource={previewDataSource as RecordType[]}
             />
             ) }
             <EditableTableFooter slots={props.slots} ext={props.ext} />
           </React.Fragment>
         )
-        : <PreviewTable visible={context.mode === 'preview'} {...props} /> }
+        : <PreviewTable visible={mode === 'preview'} {...props} /> }
     </div>
   );
 };

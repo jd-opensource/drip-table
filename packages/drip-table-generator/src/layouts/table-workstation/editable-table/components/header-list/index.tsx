@@ -8,22 +8,33 @@
 import './index.less';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Dropdown } from 'antd';
 import classNames from 'classnames';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import { ReactSortable } from 'react-sortablejs';
 
 import { filterArray } from '@/utils';
-import { DTGTableConfig } from '@/context/table-configs';
+import { DTGTableConfig } from '@/context';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import ColumnHeader from '../column-header';
+import ComponentsSelector from '../components-selector';
 
-interface ColumnHeaderListProps {
+interface ColumnHeaderListProps<
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   tableConfig: DTGTableConfig;
+  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   onResort: (column: DTGTableConfig['columns']) => void;
 }
 
-const ColumnHeaderList = (props: ColumnHeaderListProps) => {
+const ColumnHeaderList = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: ColumnHeaderListProps<RecordType, ExtraOptions>) => {
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
   return (
@@ -64,7 +75,24 @@ const ColumnHeaderList = (props: ColumnHeaderListProps) => {
           [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
         })}
       >
-        <Button icon={<PlusOutlined />} />
+        <Dropdown
+          placement="bottomRight"
+          trigger={['click']}
+          open={dropdownOpen}
+          onOpenChange={(open) => { if (!open) { setDropdownOpen(false); } }}
+          dropdownRender={() => (
+            <ComponentsSelector
+              open={dropdownOpen}
+              tableId={props.tableConfig.tableId}
+              showTitle
+              showFilter
+              customComponentPanel={props.customComponentPanel}
+              onClose={() => setDropdownOpen(false)}
+            />
+          )}
+        >
+          <Button icon={<PlusOutlined />} onClick={() => setDropdownOpen(!dropdownOpen)} />
+        </Dropdown>
       </div>
     </div>
   );

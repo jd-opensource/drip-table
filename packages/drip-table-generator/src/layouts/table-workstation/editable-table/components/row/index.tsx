@@ -12,7 +12,7 @@ import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableProps } f
 import React from 'react';
 
 import { filterArray } from '@/utils';
-import { DTGTableConfig } from '@/context/table-configs';
+import { DTGTableConfig } from '@/context';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import TableCell from '../cell';

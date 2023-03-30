@@ -16,8 +16,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import RichText from '@/components/RichText';
-import { GeneratorContext } from '@/context';
-import { DTGTableConfig, DTGTableConfigsContext, GeneratorTableConfigsContext } from '@/context/table-configs';
+import { DripTableGeneratorContext, DTGTableConfig, GeneratorContext } from '@/context';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -36,7 +35,6 @@ const EditableTableHeader = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableHeaderProps<RecordType, ExtraOptions>) => {
   const context = React.useContext(GeneratorContext);
-  const tableConfigsContext = React.useContext(GeneratorTableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
   const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
 
@@ -90,7 +88,7 @@ const EditableTableHeader = <
             slotType={config.slot}
             data={config.data}
             ext={props.ext}
-            schema={getSchemaValue(tableConfigsContext.tableConfigs)}
+            schema={getSchemaValue(context.tableConfigs)}
             dataSource={context.previewDataSource as RecordType[] || []}
             onSearch={() => void 0}
             fireEvent={() => void 0}
@@ -134,7 +132,7 @@ const EditableTableHeader = <
     element: DripTableSlotElementSchema,
     index: number,
     globalConfigs: DTGTableConfig['configs'],
-    setTableConfigs: DTGTableConfigsContext['setTableConfigs'],
+    setTableConfigs: DripTableGeneratorContext['setTableConfigs'],
   ) => {
     if (currentCellIndex === -1 || !currentCell) {
       return;
@@ -157,7 +155,7 @@ const EditableTableHeader = <
   };
 
   return (
-    <GeneratorTableConfigsContext.Consumer>
+    <GeneratorContext.Consumer>
       { ({ tableConfigs, setTableConfigs }) => {
         const globalConfigs = tableConfigs[0].configs;
         const paginationInHeader = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('top');
@@ -198,7 +196,7 @@ const EditableTableHeader = <
           </div>
         );
       } }
-    </GeneratorTableConfigsContext.Consumer>
+    </GeneratorContext.Consumer>
   );
 };
 
