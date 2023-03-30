@@ -5,3 +5,10 @@
 *.min.js
 
 /docs-dist
+
+.eslintrc.js
+.stylelintrc.js
+commitlint.config.js
+lerna.json
+package.json
+tsconfig.json
