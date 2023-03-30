@@ -8,7 +8,10 @@
 @prefixCls: jfe-drip-table-generator-workstation-table;
 
 .@{prefixCls}-wrapper {
-  overflow: auto;
-  width: 100%;
-  height: 100%;
+  border-radius: 2px;
+  width: max-content;
+
+  &.bordered {
+    border: 1px solid #efefef;
+  }
 }

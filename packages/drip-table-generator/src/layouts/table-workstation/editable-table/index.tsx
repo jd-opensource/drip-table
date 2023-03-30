@@ -7,6 +7,7 @@
  */
 import './index.less';
 
+import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
 
@@ -52,7 +53,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { ({ tableConfigs, setTableColumns }) => (
         <TableContainer tableConfig={props.tableConfig}>
           <div
-            className="jfe-drip-table-generator-workstation-table-wrapper"
+            className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
+              bordered: props.tableConfig.configs.bordered,
+            })}
             style={{ height: tableHeight, overflow: props.tableConfig.configs.sticky ? 'hidden' : 'auto' }}
           >
             { props.tableConfig.configs.sticky
@@ -64,7 +67,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 />
               )
               : null }
-            <div style={props.tableConfig.configs.sticky ? { height: tableHeight, overflow: 'auto' } : void 0}>
+            <div
+              style={props.tableConfig.configs.sticky ? { height: 420, overflow: 'auto' } : void 0}
+            >
               { !props.tableConfig.configs.sticky && (
                 <ColumnHeaderList
                   customComponentPanel={props.customComponentPanel}

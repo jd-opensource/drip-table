@@ -55,11 +55,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           const newColumns = newList.map(item => item.column);
           props.onResort(newColumns);
         }}
-        style={{
-          display: 'flex',
-          width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
-          overflowX: 'auto',
-        }}
+        style={{ display: 'flex' }}
       >
         { props.tableConfig.columns.map((column, index) => (
           <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />

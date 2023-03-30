@@ -75,7 +75,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         style={{
           display: 'flex',
           width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
-          overflowX: 'auto',
         }}
       >
         { props.tableConfig.columns.map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema)) }
