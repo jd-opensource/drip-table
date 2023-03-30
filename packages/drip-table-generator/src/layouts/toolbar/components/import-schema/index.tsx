@@ -11,16 +11,17 @@ import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
 import { filterAttributes, mockId } from '@/utils';
-import { GeneratorTableConfigsContext } from '@/context/table-configs';
+import { GeneratorContext } from '@/context';
 
 export interface ImportSchemaProps {
   height?: number | string;
 }
 const ImportSchema = (props: ImportSchemaProps) => {
+  const { currentTableID } = React.useContext(GeneratorContext);
   const [code, setCode] = React.useState('');
   return (
-    <GeneratorTableConfigsContext.Consumer>
-      { ({ currentTableID, tableConfigs, updateTableConfig }) => (
+    <GeneratorContext.Consumer>
+      { ({ tableConfigs, updateTableConfig }) => (
         <div>
           <MonacoEditor
             width="100%"
@@ -79,7 +80,7 @@ const ImportSchema = (props: ImportSchemaProps) => {
           </div>
         </div>
       ) }
-    </GeneratorTableConfigsContext.Consumer>
+    </GeneratorContext.Consumer>
   );
 };
 

@@ -15,7 +15,7 @@ import {
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
-import { GeneratorTableConfigsContext } from '@/context/table-configs';
+import { GeneratorContext } from '@/context';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -48,13 +48,13 @@ const TableCell = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableCellProps<RecordType, ExtraOptions>) => {
-  const { tableConfigs } = React.useContext(GeneratorTableConfigsContext);
+  const { tableConfigs } = React.useContext(GeneratorContext);
 
   // 组合组件支持可视化编辑
   if (props.column?.component === 'group') {
     const options = props.column.options;
     return (
-      <GeneratorTableConfigsContext.Consumer>
+      <GeneratorContext.Consumer>
         { ({ updateTableConfig }) => (
           <div>
             { options.layout.map((colLength, rowIndex) => (
@@ -82,7 +82,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             )) }
           </div>
         ) }
-      </GeneratorTableConfigsContext.Consumer>
+      </GeneratorContext.Consumer>
     );
   }
   const columnSchema = generatorComponentSchema(props.column);

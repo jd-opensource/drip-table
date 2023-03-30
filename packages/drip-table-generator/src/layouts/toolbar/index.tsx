@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 
-import { GeneratorTableConfigsContext } from '@/context/table-configs';
+import { GeneratorContext } from '@/context';
 import { generateTableConfigsBySchema } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -42,8 +42,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     setOperateMenu(isOpen ? key : void 0);
   };
   return (
-    <GeneratorTableConfigsContext.Consumer>
-      { ({ currentTableID, tableConfigs, updateTableConfigs }) => (
+    <GeneratorContext.Consumer>
+      { ({ updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar" style={{ padding: 10 }}>
           <div className="jfe-drip-table-generator-templates-toolbar left">
             <DropDownButton {...generateDropdownProps('template', '模版')} open={operateMenu === 'template'} onOpen={onOpen} left={-10}>
@@ -109,7 +109,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           </div>
         </div>
       ) }
-    </GeneratorTableConfigsContext.Consumer>
+    </GeneratorContext.Consumer>
   );
 };
 
