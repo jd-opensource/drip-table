@@ -89,7 +89,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       <div
         className={classNames('jfe-drip-table-generator-workstation-table-header-add-item', {
           [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
-          bordered: props.tableConfig.configs.bordered,
         })}
       >
         <Dropdown

@@ -20,6 +20,7 @@
   color: #000000d9;
   font-weight: 500;
   background: #f5f5f5;
+  border: 1px solid transparent;
   border-bottom: 1px solid #e0e0e0;
   transition: all .3s ease;
   height: 48px;
@@ -40,5 +41,19 @@
   &.large {
     height: 56px;
     padding: 16px 12px;
+  }
+
+  &.bordered {
+    border-right: 1px solid #e0e0e0;
+  }
+
+  &:hover {
+    border: 1px dashed var(--drip-table-border-color);
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &.checked {
+    border: 1px solid var(--drip-table-border-color);
+    border-bottom: 1px solid #e0e0e0;
   }
 }

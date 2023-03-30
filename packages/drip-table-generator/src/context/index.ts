@@ -18,6 +18,7 @@ export interface DripTableGeneratorContext {
    */
   currentTableID?: string;
   currentColumnID?: string;
+  currentHoverColumnID?: string;
   currentComponentID?: string;
   /**
    * 表格数据，generator 不解析具体数据结构，仅仅透传给 drip-table
