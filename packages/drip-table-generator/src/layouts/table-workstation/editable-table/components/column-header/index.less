@@ -23,24 +23,27 @@
   border: 1px solid transparent;
   border-bottom: 1px solid #e0e0e0;
   transition: all .3s ease;
-  height: 48px;
   padding: 12px 8px;
   min-width: 120px;
   text-align: center;
 
-  &.small {
-    height: 32px;
-    padding: 8px;
-  }
-
-  &.middle {
-    height: 48px;
-    padding: 12px 8px;
-  }
-
   &.large {
+    padding: 0 16px;
     height: 56px;
-    padding: 16px 12px;
+    line-height: 56px;
+  }
+
+  &.middle,
+  &.default {
+    padding: 0 12px;
+    height: 48px;
+    line-height: 48px;
+  }
+
+  &.small {
+    padding: 0 8px;
+    height: 35px;
+    line-height: 35px;
   }
 
   &.bordered {
@@ -55,5 +58,23 @@
   &.checked {
     border: 1px solid var(--drip-table-border-color);
     border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+.@{prefixCls}-column {
+  &-title {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: calc(~"100% - 14px");
+
+    * {
+      display: inline;
+    }
+  }
+
+  &.@{prefixCls}-checked {
+    border-color: var(--drip-table-primary-color);
   }
 }
