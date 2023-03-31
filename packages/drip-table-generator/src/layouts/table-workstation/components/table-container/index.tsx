@@ -8,6 +8,8 @@
 
 import './index.less';
 
+import { SettingOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -29,9 +31,26 @@ const TableContainer = (props: TableContainerProps) => (
           setState({ currentTableID: props.tableConfig.tableId });
         }}
       >
+        { currentTableID === props.tableConfig.tableId && (
         <div className="jfe-drip-table-generator-table-container-tools">
-          <span>{ props.tableConfig.tableId }</span>
+          <span className="jfe-drip-table-generator-table-container-tool">{ props.tableConfig.tableId }</span>
+          <div className="jfe-drip-table-generator-table-container-tool" style={{ marginLeft: '2px', padding: '0 4px' }}>
+            <Button
+              title="打开配置面板"
+              size="small"
+              type="primary"
+              icon={<SettingOutlined />}
+              onClick={(e) => {
+                e.stopPropagation();
+                setState({
+                  currentTableID: props.tableConfig.tableId,
+                  drawerType: 'table',
+                });
+              }}
+            />
+          </div>
         </div>
+        ) }
         { props.children }
       </div>
     ) }

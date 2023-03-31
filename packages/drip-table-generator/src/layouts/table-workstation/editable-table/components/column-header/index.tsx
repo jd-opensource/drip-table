@@ -52,7 +52,7 @@ const ColumnHeader = (props: ColumnHeaderProps) => {
           onMouseLeave={() => setState({ currentHoverColumnID: void 0 })}
         >
           <RichText
-            className="jfe-drip-table-generator-workstation-editable-table-column-title"
+            className="jfe-drip-table-generator-workstation-table-header-column-title"
             style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
             html={columnTitle}
           />

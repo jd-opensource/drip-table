@@ -1,0 +1,67 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+@prefixCls: jfe-drip-table-generator-attributes-layout;
+
+.@{prefixCls}-attributes-drawer {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  background: #ffffff;
+  box-shadow: -1px 1px 4px -1px rgb(~"0 0 0 / 25%");
+  transition: all ease-in-out .3s;
+
+  &-fixed {
+    position: relative;
+  }
+
+  &-header {
+    display: flex;
+    flex: 0;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 16px;
+    line-height: 22px;
+    border-bottom: 1px solid rgb(~"0 0 0 / 6%");
+
+    button {
+      margin-right: 12px;
+      color: #00000073;
+    }
+
+    button:hover {
+      color: #000000bf;
+      text-decoration: none;
+    }
+
+    .@{prefixCls}-title {
+      flex: 1;
+      margin: 0;
+      color: #000000d9;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    .@{prefixCls}-component-title {
+      color: #87888a;
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+
+  &-body {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    padding: 16px 12px;
+    overflow: auto;
+  }
+}

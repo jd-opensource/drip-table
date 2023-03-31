@@ -10,8 +10,8 @@
 
 .@{prefixCls}-wrapper {
   border: 1px dashed var(--drip-table-border-color);
-  padding: 12px;
-  min-width: 965px;
+  padding: 24px 12px 8px;
+  width: max-content;
   position: relative;
 
   &.checked {
@@ -22,5 +22,13 @@
 .@{prefixCls}-tools {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -1px;
+  display: flex;
+}
+
+.@{prefixCls}-tool {
+  padding: 2px 4px;
+  background-color: var(--drip-table-primary-color);
+  color: #ffffff;
+  box-shadow: 1px 1px 4px -1px rgb(0 0 0 / 85%);
 }

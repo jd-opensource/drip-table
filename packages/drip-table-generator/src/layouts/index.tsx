@@ -24,8 +24,10 @@ const GeneratorLayout = <
       <div className="jfe-drip-table-generator-layouts-container">
         <Toolbar {...props} />
         <div className="jfe-drip-table-generator-layouts-wrapper">
-          <TableWorkStation {...props} />
-          <AttributesLayout />
+          <div className="jfe-drip-table-generator-layouts-table-workstation">
+            <TableWorkStation {...props} />
+          </div>
+          <AttributesLayout {...props} />
         </div>
       </div>
     )
@@ -37,8 +39,10 @@ const GeneratorLayout = <
           <div className="jfe-drip-table-generator-layouts-model-container">
             <Toolbar {...props} />
             <div className="jfe-drip-table-generator-layouts-wrapper">
-              <TableWorkStation {...props} />
-              <AttributesLayout />
+              <div className="jfe-drip-table-generator-layouts-table-workstation">
+                <TableWorkStation {...props} />
+              </div>
+              <AttributesLayout {...props} />
             </div>
           </div>
         )}

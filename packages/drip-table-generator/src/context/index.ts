@@ -19,6 +19,10 @@ export interface DripTableGeneratorContext {
   currentTableID?: string;
   currentColumnID?: string;
   currentHoverColumnID?: string;
+  /**
+   * 获取当前选中的子组件的路径
+   */
+  currentComponentPath?: number[];
   currentComponentID?: string;
   /**
    * 表格数据，generator 不解析具体数据结构，仅仅透传给 drip-table
@@ -27,7 +31,7 @@ export interface DripTableGeneratorContext {
   /**
    * 属性栏类型，根据类型展示不同的抽屉
    */
-  drawerType?: 'datasource' | 'global' | 'column' | 'column-item';
+  drawerType?: 'table' | 'column' | 'column-item';
   /**
    * 表格工作区展示模式
    */
