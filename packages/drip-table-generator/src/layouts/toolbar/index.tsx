@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 
+import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
 import { generateTableConfigsBySchema } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
@@ -31,6 +32,20 @@ function generateDropdownProps(name: string, label: string): Omit<DropDownButton
     height: 598,
   };
 }
+
+const ModeSwitch = () => (
+  <GeneratorContext.Consumer>
+    { ({ mode, setState }) => (
+      <Button
+        style={{ marginLeft: 24, borderRadius: '6px' }}
+        onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}
+      >
+        { mode === 'edit' ? '预览' : '编辑' }
+
+      </Button>
+    ) }
+  </GeneratorContext.Consumer>
+);
 
 const Toolbar = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -103,6 +118,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             >
               <ExportSchema height={598 - 8 - 40} />
             </DropDownButton>
+            <ModeSwitch />
           </div>
           <div className="jfe-drip-table-generator-templates-toolbar right">
             <Button className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} />
