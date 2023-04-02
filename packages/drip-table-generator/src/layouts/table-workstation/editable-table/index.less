@@ -17,9 +17,27 @@
 }
 
 .@{prefixCls}-row {
+  border: 1px solid transparent;
   border-bottom: 1px solid #efefef;
+  position: relative;
 
   &:hover {
     background-color: #efefef;
+    border: 1px dashed var(--drip-table-border-color);
   }
+
+  &.checked {
+    border: 1px solid var(--drip-table-border-color);
+  }
+}
+
+.@{prefixCls}-row-tools {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  display: flex;
+  padding: 2px 4px;
+  background-color: var(--drip-table-primary-color);
+  color: #ffffff;
+  box-shadow: 1px 1px 4px -1px rgb(0 0 0 / 85%);
 }

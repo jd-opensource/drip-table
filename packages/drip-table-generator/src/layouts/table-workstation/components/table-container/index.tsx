@@ -8,18 +8,93 @@
 
 import './index.less';
 
-import { SettingOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { PicLeftOutlined, SettingOutlined } from '@ant-design/icons';
+import { AutoComplete, Button, Dropdown } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 
-import { GeneratorContext } from '@/context';
-import { DTGTableConfig } from '@/context/table-configs';
+import { mockId } from '@/utils';
+import { DripTableGeneratorContext, GeneratorContext } from '@/context';
+import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 
 export interface TableContainerProps {
   tableConfig: DTGTableConfig;
   children: React.ReactNode;
 }
+
+interface SubTableSettingProps {
+  tableConfig: DTGTableConfig;
+  label: string;
+}
+
+const SubTableSetting = (props: SubTableSettingProps) => {
+  const context = React.useContext(GeneratorContext);
+  const tableContext = React.useContext(TableConfigsContext);
+  const dataFields = React.useMemo(() => {
+    if (context.previewDataSource.length <= 0) {
+      return [];
+    }
+    let fields = Object.keys(context.previewDataSource[0]).filter(key => Array.isArray(context.previewDataSource[0][key]));
+    const currentTableIndex = tableContext.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
+    if (currentTableIndex > 0) {
+      try {
+        let dataSource = context.previewDataSource[0];
+        for (let i = 1; i <= currentTableIndex; i++) {
+          const subKey = tableContext.tableConfigs[i].dataSourceKey;
+          dataSource = dataSource?.[subKey]?.[0] as DripTableGeneratorContext['previewDataSource'][number];
+        }
+        if (dataSource) {
+          fields = Object.keys(dataSource).filter(key => Array.isArray(dataSource[key]));
+        }
+      } catch {}
+    }
+    return fields;
+  }, [context.previewDataSource, context.currentTableID, tableContext.tableConfigs]);
+
+  return (
+    <TableConfigsContext.Consumer>
+      { ({ tableConfigs, updateTableConfig, updateTableConfigs }) => {
+        const currentTableIndex = tableConfigs.findIndex(item => item.tableId === context.currentTableID);
+        return (
+          <div className="jfe-drip-table-generator-table-container-setting">
+            <div style={{ display: 'flex' }}>
+              <div style={{ lineHeight: '32px', width: 72, marginRight: 6 }}>{ props.label }</div>
+              <div>
+                <AutoComplete
+                  allowClear
+                  style={{ width: 200 }}
+                  disabled={!props.tableConfig || !context.currentTableID}
+                  value={tableConfigs[currentTableIndex + 1]?.dataSourceKey}
+                  options={dataFields.map(item => ({ label: item, value: item }))}
+                  onChange={(value) => {
+                    if (!props.tableConfig || !context.currentTableID) { return; }
+                    const newTableConfigs = [...tableConfigs];
+                    newTableConfigs[currentTableIndex] = Object.assign({}, tableConfigs[currentTableIndex], { hasSubTable: !!value });
+                    if (value) {
+                      const newConfig: DTGTableConfig = {
+                        tableId: mockId(),
+                        columns: [],
+                        configs: { pagination: false },
+                        hasSubTable: false,
+                        dataSourceKey: value,
+                      };
+                      updateTableConfig(newConfig, currentTableIndex + 1);
+                    } else if (currentTableIndex < tableConfigs.length - 1) {
+                      newTableConfigs.splice(currentTableIndex + 1, 1);
+                      updateTableConfigs(newTableConfigs);
+                    }
+                  }}
+                />
+
+              </div>
+            </div>
+          </div>
+        );
+      } }
+    </TableConfigsContext.Consumer>
+  );
+};
+
 const TableContainer = (props: TableContainerProps) => (
   <GeneratorContext.Consumer>
     { ({ currentTableID, setState }) => (
@@ -27,7 +102,8 @@ const TableContainer = (props: TableContainerProps) => (
         className={classNames('jfe-drip-table-generator-table-container-wrapper', {
           checked: currentTableID === props.tableConfig.tableId,
         })}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setState({ currentTableID: props.tableConfig.tableId });
         }}
       >
@@ -48,6 +124,19 @@ const TableContainer = (props: TableContainerProps) => (
                 });
               }}
             />
+            <Dropdown
+              placement="bottomRight"
+              trigger={['click']}
+              dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
+            >
+              <Button
+                title="添加子表格"
+                size="small"
+                type="primary"
+                icon={<PicLeftOutlined />}
+                onClick={e => e.stopPropagation()}
+              />
+            </Dropdown>
           </div>
         </div>
         ) }

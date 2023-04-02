@@ -137,7 +137,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           onMouseEnter={() => setState({ currentHoverColumnID: props.column.key })}
           onMouseLeave={() => setState({ currentHoverColumnID: void 0 })}
         >
-          { props.column.key === currentColumnID && (
+          { props.tableConfig.tableId === currentTableID && props.column.key === currentColumnID && (
             <TableConfigsContext.Consumer>
               { ({ tableConfigs, setTableColumns }) => (
                 <div className="jfe-drip-table-generator-workstation-table-header-tools">

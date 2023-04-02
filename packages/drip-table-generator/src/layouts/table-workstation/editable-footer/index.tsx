@@ -115,7 +115,7 @@ const EditableTableFooter = <
 
     if (config.type === 'display-column-selector') {
       return (
-        <Button style={{ margin: '12px 0' }} type={config.selectorButtonType}>
+        <Button style={{ margin: '6px 0' }} type={config.selectorButtonType}>
           { config.selectorButtonText || '展示列' }
           <DownOutlined />
         </Button>
@@ -177,7 +177,7 @@ const EditableTableFooter = <
                 }}
               />
             ) }
-            <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0 8px', overflowX: 'auto' }}>
+            <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0', overflowX: 'auto' }}>
               {
                 typeof globalConfigs.footer === 'object'
                 && globalConfigs.footer.elements?.map((element, index) => (

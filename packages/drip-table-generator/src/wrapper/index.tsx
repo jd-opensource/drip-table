@@ -46,7 +46,11 @@ const DripTableGenerator = React.forwardRef(<
     tableConfigs,
     updateTableConfig(config, index, callback) {
       const newTableConfigs = [...tableConfigs];
-      newTableConfigs[index] = cloneDeep(config);
+      if (index >= tableConfigs.length) {
+        newTableConfigs.push(cloneDeep(config));
+      } else {
+        newTableConfigs[index] = cloneDeep(config);
+      }
       setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },

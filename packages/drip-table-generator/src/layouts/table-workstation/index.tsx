@@ -25,7 +25,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const { mode, previewDataSource } = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
-    <div>
+    <div className="jfe-drip-table-generator-workstation-wrapper">
       { mode === 'edit'
         ? (
           <React.Fragment>
