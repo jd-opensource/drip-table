@@ -23,9 +23,12 @@
   border: 1px solid transparent;
   border-bottom: 1px solid #e0e0e0;
   transition: all .3s ease;
-  padding: 12px 8px;
+  height: 48px;
+  padding: 0 12px;
+  line-height: 48px;
   min-width: 120px;
   text-align: center;
+  position: relative;
 
   &.large {
     padding: 0 16px;
@@ -59,6 +62,16 @@
     border: 1px solid var(--drip-table-border-color);
     border-bottom: 1px solid #e0e0e0;
   }
+
+  &.right-shadow {
+    box-shadow: 0 4px 4px -1px #ffffff, 1px -2px 5px 0 rgb(0 0 0 / 85%);
+    margin-right: 4px;
+  }
+
+  &.left-shadow {
+    box-shadow: 0 0 4px -1px #ffffff, -2px -2px 4px -1px rgb(0 0 0 / 85%);
+    margin-left: 4px;
+  }
 }
 
 .@{prefixCls}-column {
@@ -76,5 +89,25 @@
 
   &.@{prefixCls}-checked {
     border-color: var(--drip-table-primary-color);
+  }
+}
+
+.@{prefixCls}-tools {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  display: flex;
+  padding: 2px 4px;
+  background-color: var(--drip-table-primary-color);
+  color: #ffffff;
+  box-shadow: 1px 1px 4px -1px rgb(0 0 0 / 85%);
+}
+
+.@{prefixCls}-tool {
+  &.danger {
+    &:hover {
+      color: #ff4d4f;
+      background-color: #ffc6c7;
+    }
   }
 }

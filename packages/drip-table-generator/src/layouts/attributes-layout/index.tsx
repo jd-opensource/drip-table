@@ -59,7 +59,7 @@ const AttributesLayout = <
             }}
           >
             <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-header">
-              <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0, currentColumnID: drawerType === 'column' ? void 0 : currentColumn?.key })} />
+              <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0 })} />
               <span className="jfe-drip-table-generator-attributes-layout-title">{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
               { drawerType === 'column'
                 ? (

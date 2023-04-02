@@ -30,6 +30,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   open?: boolean;
   onClose: () => void;
+  onConfirm?: (columns: DTGTableConfig['columns'], newColumn: DTGTableConfig['columns'][number]) => DTGTableConfig['columns'];
 }
 
 const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, title: string) => {
@@ -83,14 +84,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   return (
     <TableConfigsContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => (
-        <div className="jfe-drip-table-generator-components-bar-wrapper">
+        <div className="jfe-drip-table-generator-components-bar-wrapper" onClick={e => e.stopPropagation()}>
           { props.showTitle && (
             <div className="jfe-drip-table-generator-components-bar-navigation">
               <Input
                 className="jfe-drip-table-generator-components-bar-no-border"
                 placeholder="输入列名"
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => { setTitle(e.target.value); }}
               />
             </div>
           ) }
@@ -101,7 +102,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   className="jfe-drip-table-generator-components-bar-no-border"
                   value={componentConfig['ui:type']}
                   options={[{ label: componentConfig.title, value: componentConfig['ui:type'] }]}
-                  onFocus={() => setComponentConfig(void 0)}
+                  onFocus={() => { setComponentConfig(void 0); }}
                 />
               </div>
             )
@@ -142,7 +143,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                           key={index}
                           type="text"
                           className="jfe-drip-table-generator-components-bar-component-title-item"
-                          onClick={() => setComponentConfig(component)}
+                          onClick={(e) => { setComponentConfig(component); }}
                         >
                           <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
                           <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title }</span>
@@ -173,7 +174,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
                 if (componentConfig && tableIndex > -1) {
                   const column = getColumnSchemaByComponent(componentConfig, title);
-                  const columns = [...tableConfigs[tableIndex].columns, column];
+                  const columns = props.onConfirm ? props.onConfirm(tableConfigs[tableIndex].columns, column) : [...tableConfigs[tableIndex].columns, column];
                   setTableColumns(columns, tableIndex);
                   initStates();
                   props.onClose();
