@@ -8,7 +8,7 @@
 import './index.less';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Dropdown } from 'antd';
+import { Button, Checkbox, Dropdown } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
@@ -54,6 +54,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
     })}
     >
+      { props.tableConfig.hasSubTable && (
+        <div
+          className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+            [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+            bordered: !!props.tableConfig.configs.bordered,
+          })}
+          style={{ width: 48, minWidth: 48 }}
+        />
+      ) }
+      { props.tableConfig.configs.rowSelection && (
+        <div
+          className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+            [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+            bordered: !!props.tableConfig.configs.bordered,
+          })}
+          style={{ width: 48, minWidth: 48 }}
+        >
+          <Checkbox />
+        </div>
+      ) }
       { sortableColumns[0] && sortableColumns[0].id > 1
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index < sortableColumns[0].id)
@@ -81,7 +101,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             const newColumns = newList.map(item => item.column);
             props.onResort(newColumns);
           }}
-          style={{ display: 'flex' }}
+          style={{ display: 'flex', border: '1px solid transparent' }}
         >
           { props.tableConfig.columns.filter(item => !item.fixed).map((column, index) => (
             <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />

@@ -47,14 +47,13 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
     options.items = [null, null];
   }
   const columnSchema: DTGTableConfig['columns'][number] = {
+    ...additionalProps,
     key: `${component['ui:type']}_${mockId()}`,
     dataIndex: '',
     title: title ?? component.title,
     width: void 0,
-    description: '',
     component: component['ui:type'] as 'text',
     options,
-    ...additionalProps,
   };
   return columnSchema;
 };

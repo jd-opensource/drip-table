@@ -160,7 +160,8 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
       });
     }
     currentSchema = currentSchema?.subtable ? Object.assign({ dataSourceKey: void 0 }, currentSchema.subtable) : void 0;
-  } while (currentSchema?.subtable);
+  } while (currentSchema);
+
   if (configs.length < 0) {
     return [{
       tableId: rootTableId,

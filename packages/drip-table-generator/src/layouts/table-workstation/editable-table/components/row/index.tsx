@@ -7,6 +7,8 @@
  */
 import './index.less';
 
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { Checkbox } from 'antd';
 import classNames from 'classnames';
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableProps } from 'drip-table';
 import React from 'react';
@@ -23,10 +25,12 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   rowIndex: number;
+  isLastRow?: boolean;
   scrollTarget: string;
   scrollLeft: number;
   tableConfig: DTGTableConfig;
   record: RecordType;
+  hasSubTable?: boolean;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
@@ -59,6 +63,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const renderTableCell = (column: DripTableBuiltInColumnSchema, index: number, extraOptions?: {
     showRightShadow?: boolean;
     showLeftShadow?: boolean;
+    isLastRow?: boolean;
   }) => (
     <div
       key={index}
@@ -69,11 +74,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         hovered: column.key === currentHoverColumnID,
         'right-shadow': extraOptions?.showRightShadow,
         'left-shadow': extraOptions?.showLeftShadow,
+        'last-row': extraOptions?.isLastRow,
       })}
       style={{
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: column.width,
+        width: column.width ?? 120,
       }}
     >
       <TableCell
@@ -89,11 +95,32 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <div className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}>
+      { props.tableConfig.hasSubTable && (
+        <div
+          className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {
+            [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+            bordered: !!props.tableConfig.configs.bordered,
+          })}
+        >
+          { props.hasSubTable && <PlusSquareOutlined /> }
+        </div>
+      ) }
+      { props.tableConfig.configs.rowSelection && (
+        <div
+          className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {
+            [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
+            bordered: !!props.tableConfig.configs.bordered,
+          })}
+        >
+          <Checkbox />
+        </div>
+      ) }
       { sortableColumns[0] && sortableColumns[0].id > 1
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index < sortableColumns[0].id)
           .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
             showRightShadow: column.fixed && !props.tableConfig.columns[index + 1]?.fixed,
+            isLastRow: props.isLastRow,
           }))
         : null }
       <div
@@ -104,13 +131,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         }}
         onScroll={(e) => { if (props.scrollTarget === `__row_${props.rowIndex}`) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >
-        { props.tableConfig.columns.filter(item => !item.fixed).map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index)) }
+        { props.tableConfig.columns.filter(item => !item.fixed)
+          .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
+            isLastRow: props.isLastRow,
+          })) }
       </div>
       { sortableColumns[sortableColumns.length - 1] && sortableColumns[sortableColumns.length - 1].id < columnList.length
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index >= sortableColumns[sortableColumns.length - 1].id)
           .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
             showLeftShadow: !index,
+            isLastRow: props.isLastRow,
           }))
         : null }
     </div>
