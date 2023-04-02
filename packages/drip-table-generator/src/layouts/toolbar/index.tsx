@@ -44,7 +44,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   return (
     <TableConfigsContext.Consumer>
       { ({ updateTableConfigs }) => (
-        <div className="jfe-drip-table-generator-templates-toolbar" style={{ padding: 10 }}>
+        <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div className="jfe-drip-table-generator-templates-toolbar left">
             <DropDownButton {...generateDropdownProps('template', '模版')} open={operateMenu === 'template'} onOpen={onOpen} left={-10}>
               <div className="jfe-drip-table-generator-templates-container">

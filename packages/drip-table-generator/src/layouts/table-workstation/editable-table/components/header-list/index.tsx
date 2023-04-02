@@ -30,7 +30,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   tableConfig: DTGTableConfig;
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   onResort: (column: DTGTableConfig['columns']) => void;
-  onScroll: (scrollLeft: number, target: string) => void;
+  onScroll: (scrollLeft: number) => void;
 }
 
 const ColumnHeaderList = <
@@ -43,7 +43,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
 
   React.useEffect(() => {
-    if (scrollableRow.current && props.scrollTarget !== '__header') {
+    if (scrollableRow.current && props.scrollTarget !== '') {
       scrollableRow.current.scrollLeft = props.scrollLeft;
     }
   }, [props.scrollLeft, props.scrollTarget]);
@@ -57,7 +57,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { sortableColumns[0] && sortableColumns[0].id > 1
         ? props.tableConfig.columns
           .filter((item, index) => item.fixed && index < sortableColumns[0].id)
-          .map((column, index) => <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />)
+          .map((column, index) => (
+            <ColumnHeader
+              showRightShadow={column.fixed && !props.tableConfig.columns[index + 1]?.fixed}
+              tableConfig={props.tableConfig}
+              column={column}
+              key={index}
+            />
+          ))
         : null }
       <div
         ref={scrollableRow}
@@ -65,7 +72,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         style={{
           width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
         }}
-        onScroll={e => props.onScroll((e.target as HTMLDivElement).scrollLeft, '__header')}
+        onScroll={(e) => { if (!props.scrollTarget) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >
         <ReactSortable
           animation={250}
@@ -76,15 +83,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           }}
           style={{ display: 'flex' }}
         >
-          { props.tableConfig.columns.map((column, index) => (
+          { props.tableConfig.columns.filter(item => !item.fixed).map((column, index) => (
             <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />
           )) }
         </ReactSortable>
       </div>
       { sortableColumns[sortableColumns.length - 1] && sortableColumns[sortableColumns.length - 1].id < columnList.length
         ? props.tableConfig.columns
-          .filter((item, index) => item.fixed && index > sortableColumns[sortableColumns.length - 1].id)
-          .map((column, index) => <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />)
+          .filter((item, index) => item.fixed && index >= sortableColumns[sortableColumns.length - 1].id)
+          .map((column, index) => <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={column} key={index} />)
         : null }
       <div
         className={classNames('jfe-drip-table-generator-workstation-table-header-add-item', {

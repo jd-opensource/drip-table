@@ -69,7 +69,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
-                  onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
+                  onScroll={(left) => { setScrollLeft(left); }}
                 />
               )
               : null }
@@ -83,7 +83,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   customComponentPanel={props.customComponentPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
-                  onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
+                  onScroll={(left) => { setScrollLeft(left); }}
                 />
               ) }
               { dataSourceToUse.map((record, rowIndex) => {
@@ -100,7 +100,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   record,
                 };
                 return (
-                  <div key={rowIndex} className="jfe-drip-table-generator-workstation-table-row">
+                  <div
+                    key={rowIndex}
+                    className="jfe-drip-table-generator-workstation-table-row"
+                    onMouseEnter={(e) => { e.stopPropagation(); setScrollTarget(`__row_${rowIndex}`); }}
+                    onMouseLeave={(e) => { e.stopPropagation(); setScrollTarget(''); }}
+                  >
                     <TableRowList
                       rowIndex={rowIndex}
                       scrollTarget={scrollTarget}
@@ -111,7 +116,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       customComponentPanel={props.customComponentPanel}
                       mockDataSource={props.mockDataSource}
                       dataFields={props.dataFields}
-                      onScroll={(left, target) => { setScrollLeft(left); setScrollTarget(target); }}
+                      onScroll={(left) => { setScrollLeft(left); }}
                     />
                     { (props.tableConfig.hasSubTable && hasSubTable)
                     && (

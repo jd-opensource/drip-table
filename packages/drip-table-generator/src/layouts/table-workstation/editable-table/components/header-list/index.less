@@ -40,7 +40,8 @@
   border-bottom: 1px solid #e0e0e0;
   transition: all .3s ease;
   height: 48px;
-  padding: 8px 12px;
+  padding: 0 12px;
+  line-height: 48px;
   min-width: 120px;
   text-align: center;
 
@@ -49,7 +50,8 @@
     padding: 0 8px;
   }
 
-  &.middle {
+  &.middle,
+  &.default {
     height: 48px;
     padding: 0 12px;
   }
@@ -65,6 +67,7 @@
   scrollbar-width: 0;
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
 
   &::-webkit-scrollbar {
     width: 0;
