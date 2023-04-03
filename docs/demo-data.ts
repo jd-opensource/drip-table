@@ -102,7 +102,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         layout: [1, 1],
         horizontalAlign: 'center',
         verticalAlign: 'middle',
-        gutter: [16, 8],
+        gutter: [8, 8],
         wrap: false,
         items: [
           {
