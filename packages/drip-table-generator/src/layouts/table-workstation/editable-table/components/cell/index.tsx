@@ -55,33 +55,35 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const options = props.column.options;
     return (
       <TableConfigsContext.Consumer>
-        { ({ updateTableConfig }) => (
-          <div>
-            { options.layout.map((colLength, rowIndex) => (
-              <Row
-                key={rowIndex}
-                gutter={options.gutter ?? [0, 0]}
-                justify={options.horizontalAlign}
-                wrap={options.wrap}
-              >
-                { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
-                  const itemColumn = options.items[getIndex(options.layout, rowIndex, colIndex)];
-                  return (
-                    <Col
-                      key={colIndex}
-                      style={{
-                        height: '100%',
-                        overflow: 'auto',
-                      }}
-                    >
-                      { itemColumn && <TableCell {...props} column={itemColumn} /> }
-                    </Col>
-                  );
-                }) }
-              </Row>
-            )) }
-          </div>
-        ) }
+        { ({ updateTableConfig }) => {
+          const gutter = options.gutter ?? [0, 0];
+          return (
+            <div
+              className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
+              onClick={e => e.stopPropagation()}
+              style={{ padding: `2px ${2 + gutter[1]}px` }}
+            >
+              { options.layout.map((colLength, rowIndex) => (
+                <Row
+                  key={rowIndex}
+                  gutter={options.gutter ?? [0, 0]}
+                  justify={options.horizontalAlign}
+                  wrap={options.wrap}
+                  style={{ marginTop: gutter[0], marginBottom: gutter[0] }}
+                >
+                  { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
+                    const itemColumn = options.items[getIndex(options.layout, rowIndex, colIndex)];
+                    return (
+                      <Col key={colIndex}>
+                        { itemColumn && <TableCell {...props} column={itemColumn} /> }
+                      </Col>
+                    );
+                  }) }
+                </Row>
+              )) }
+            </div>
+          );
+        } }
       </TableConfigsContext.Consumer>
     );
   }
