@@ -28,7 +28,7 @@ const Row = React.memo(({ ...props }: RowProps) => {
     () => {
       const st = Object.assign({}, props.style);
       if (props.gutter) {
-        st.margin = `${props.gutter[0]}px ${props.gutter[1]}px ${props.gutter[0]}px ${props.gutter[1]}px`;
+        st.margin = `${props.gutter[0]}px 0`;
       }
       if (props.justify) {
         st.justifyContent = props.justify;

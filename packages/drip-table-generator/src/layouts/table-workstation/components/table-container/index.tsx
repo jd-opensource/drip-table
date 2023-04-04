@@ -78,7 +78,8 @@ const SubTableSetting = (props: SubTableSettingProps) => {
                         hasSubTable: false,
                         dataSourceKey: value,
                       };
-                      updateTableConfig(newConfig, currentTableIndex + 1);
+                      newTableConfigs[currentTableIndex + 1] = newConfig;
+                      updateTableConfigs(newTableConfigs);
                     } else if (currentTableIndex < tableConfigs.length - 1) {
                       newTableConfigs.splice(currentTableIndex + 1, 1);
                       updateTableConfigs(newTableConfigs);

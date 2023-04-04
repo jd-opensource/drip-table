@@ -13,6 +13,7 @@ import React from 'react';
 
 export interface ColProps {
   className?: string;
+  gutter?: [number, number];
   style?: React.CSSProperties;
   span?: number;
   children?: React.ReactNode;
@@ -24,6 +25,10 @@ const Col = React.memo(({ ...props }: ColProps) => {
   const style = React.useMemo(
     () => {
       const st = Object.assign({}, props.style);
+      if (props.gutter) {
+        st.marginLeft = props.style?.marginLeft ?? `-${props.gutter[1]}px`;
+        st.padding = `0 ${props.gutter[1]}px`;
+      }
       if (props.span) {
         st.flexBasis = `${Math.floor((props.span / 24) * 100) / 100}%`;
       }
