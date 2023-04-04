@@ -127,7 +127,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             >
               { schema.options.layout[index]
               && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
-                .map(col => <Col key={col}>{ this.renderCell(Number(row), Number(col)) }</Col>) }
+                .map(col => (
+                  <Col key={col} gutter={schema.options.gutter} style={col ? void 0 : { marginLeft: 0 }}>
+                    { this.renderCell(Number(row), Number(col)) }
+                  </Col>
+                )) }
             </Row>
           ))
         }

@@ -53,6 +53,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
+  const leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
+  const rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
 
   React.useEffect(() => {
     if (scrollableRow.current && props.scrollTarget !== `__row_${props.rowIndex}`) {
@@ -118,9 +120,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           <Checkbox />
         </div>
       ) }
-      { sortableColumns[0] && sortableColumns[0].id > 1
-        ? props.tableConfig.columns
-          .filter((item, index) => item.fixed && index < sortableColumns[0].id)
+      { leftFixedColumns.length > 0
+        ? leftFixedColumns.map(item => item.column)
           .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
             showRightShadow: column.fixed && !props.tableConfig.columns[index + 1]?.fixed,
             isLastRow: props.isLastRow,
@@ -139,9 +140,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             isLastRow: props.isLastRow,
           })) }
       </div>
-      { sortableColumns[sortableColumns.length - 1] && sortableColumns[sortableColumns.length - 1].id < columnList.length
-        ? props.tableConfig.columns
-          .filter((item, index) => item.fixed && index >= sortableColumns[sortableColumns.length - 1].id)
+      { rightFixedColumns.length > 0
+        ? rightFixedColumns.map(item => item.column)
           .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
             showLeftShadow: !index,
             isLastRow: props.isLastRow,

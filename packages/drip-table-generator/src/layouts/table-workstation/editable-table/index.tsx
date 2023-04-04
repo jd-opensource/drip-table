@@ -50,14 +50,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   const dataSourceToUse = React.useMemo(() => {
     if (props.tableConfig.configs.pagination) {
-      const dataSource = props.dataSource.map((rec, idx) => ({ idx, rec }));
+      const dataSource = props.dataSource.map((rec, idx) => ({ id: idx, record: rec }));
       const pageSize = props.tableConfig.configs.pagination.pageSize;
-      return filterArray(dataSource, item => item.idx < pageSize).map(item => item.rec);
+      return filterArray(dataSource, item => item.id < pageSize);
     }
     if (typeof previewRecord === 'number') {
-      return [props.dataSource[previewRecord]];
+      return [{ id: 0, record: props.dataSource[previewRecord] }];
     }
-    return props.dataSource;
+    return props.dataSource.map((rec, idx) => ({ id: idx, record: rec }));
   }, [props.dataSource, props.tableConfig.configs.pagination, previewRecord]);
 
   return (
@@ -97,8 +97,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   onScroll={(left) => { setScrollLeft(left); }}
                 />
                 ) }
-                { previewDataSource.map((record, rowIndex) => {
-                  const hasSubTable = tableConfigs[props.index + 1] && Object.keys(record || {}).includes(tableConfigs[props.index + 1]?.dataSourceKey);
+                { previewDataSource.map((wrapRecord, rowIndex) => {
+                  const hasSubTable = tableConfigs[props.index + 1] && Object.keys(wrapRecord.record || {}).includes(tableConfigs[props.index + 1]?.dataSourceKey);
                   const tableInfo: DripTableTableInformation<RecordType, ExtraOptions> = {
                     uuid: tableConfigs[props.index]?.tableId,
                     schema: {
@@ -107,29 +107,29 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       columns: tableConfigs[props.index]?.columns,
                       dataSourceKey: tableConfigs[props.index]?.dataSourceKey,
                     } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
-                    dataSource: record?.[tableConfigs[props.index + 1]?.dataSourceKey || ''] as RecordType[] || [],
-                    record,
+                    dataSource: wrapRecord?.[tableConfigs[props.index + 1]?.dataSourceKey || ''] as RecordType[] || [],
+                    record: wrapRecord.record,
                   };
                   return (
                     <div
-                      key={rowIndex}
+                      key={wrapRecord.id}
                       className={classNames('jfe-drip-table-generator-workstation-table-row', {
-                        checked: checkedRecord === rowIndex && props.tableConfig.tableId === context.currentTableID,
+                        checked: checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID,
                       })}
                       onMouseEnter={(e) => { e.stopPropagation(); setScrollTarget(`__row_${rowIndex}`); }}
                       onMouseLeave={(e) => { e.stopPropagation(); setScrollTarget(''); }}
-                      onClick={(e) => { e.stopPropagation(); setCheckedRecord(checkedRecord === rowIndex ? void 0 : rowIndex); }}
+                      onClick={(e) => { e.stopPropagation(); setCheckedRecord(checkedRecord === wrapRecord.id ? void 0 : wrapRecord.id); }}
                     >
-                      { checkedRecord === rowIndex && props.tableConfig.tableId === context.currentTableID && (
+                      { checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID && (
                       <div className="jfe-drip-table-generator-workstation-table-row-tools">
                         <Button
-                          title={previewRecord === rowIndex ? '取消关注当前列' : '只关注当前列'}
+                          title={previewRecord === wrapRecord.id ? '取消关注当前列' : '只关注当前列'}
                           size="small"
                           type="primary"
-                          icon={previewRecord === rowIndex ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                          icon={previewRecord === wrapRecord.id ? <EyeInvisibleOutlined /> : <EyeOutlined />}
                           onClick={(e) => {
                             e.stopPropagation();
-                            setPreviewRecord(previewRecord === rowIndex ? void 0 : rowIndex);
+                            setPreviewRecord(previewRecord === wrapRecord.id ? void 0 : wrapRecord.id);
                           }}
                         />
                       </div>
@@ -140,7 +140,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         scrollTarget={scrollTarget}
                         scrollLeft={scrollLeft}
                         tableConfig={props.tableConfig}
-                        record={record}
+                        record={wrapRecord.record}
                         customComponents={props.customComponents}
                         customComponentPanel={props.customComponentPanel}
                         mockDataSource={props.mockDataSource}
@@ -155,7 +155,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         {...props}
                         index={props.index + 1}
                         tableConfig={tableConfigs[props.index + 1]}
-                        dataSource={record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
+                        dataSource={wrapRecord.record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
                         parent={tableInfo}
                       />
                     </div>

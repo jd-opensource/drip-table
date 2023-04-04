@@ -39,9 +39,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ColumnHeaderListProps<RecordType, ExtraOptions>) => {
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
-  const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
+  const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
-
+  const leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
+  const rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
   React.useEffect(() => {
     if (scrollableRow.current && props.scrollTarget !== '') {
       scrollableRow.current.scrollLeft = props.scrollLeft;
@@ -74,17 +75,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           <Checkbox />
         </div>
       ) }
-      { sortableColumns[0] && sortableColumns[0].id > 1
-        ? props.tableConfig.columns
-          .filter((item, index) => item.fixed && index < sortableColumns[0].id)
-          .map((column, index) => (
-            <ColumnHeader
-              showRightShadow={column.fixed && !props.tableConfig.columns[index + 1]?.fixed}
-              tableConfig={props.tableConfig}
-              column={column}
-              key={index}
-            />
-          ))
+      { leftFixedColumns.length > 0
+        ? leftFixedColumns.map(item => item.column).map((column, index) => (
+          <ColumnHeader
+            showRightShadow={column.fixed && !props.tableConfig.columns[index + 1]?.fixed}
+            tableConfig={props.tableConfig}
+            column={column}
+            key={index}
+          />
+        ))
         : null }
       <div
         ref={scrollableRow}
@@ -108,10 +107,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           )) }
         </ReactSortable>
       </div>
-      { sortableColumns[sortableColumns.length - 1] && sortableColumns[sortableColumns.length - 1].id < columnList.length
-        ? props.tableConfig.columns
-          .filter((item, index) => item.fixed && index >= sortableColumns[sortableColumns.length - 1].id)
-          .map((column, index) => <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={column} key={index} />)
+      { rightFixedColumns.length > 0
+        ? rightFixedColumns.map(item => item.column).map((column, index) => (
+          <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={column} key={index} />
+        ))
         : null }
       <div
         className={classNames('jfe-drip-table-generator-workstation-table-header-add-item', {

@@ -54,7 +54,7 @@ const AttributesLayout = <
             className={classNames('jfe-drip-table-generator-attributes-layout-attributes-drawer')}
             style={{
               width: drawerType ? 420 : void 0,
-              zIndex: drawerType ? void 0 : -1,
+              zIndex: drawerType ? 10 : -1,
               opacity: drawerType ? 1 : 0,
             }}
           >

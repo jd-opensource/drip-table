@@ -284,7 +284,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             const disabled = this.finalizeDisabled(config.disabled);
             if (event) {
               return (
-                <div key={index} style={{ display: 'flex' }}>
+                <div key={index} style={{ display: 'inline' }}>
                   <a
                     style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                     onClick={() => {
@@ -302,7 +302,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'flex' : 'none' }}>
+              <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
                 <a
                   className={disabled ? `${prefixCls}-link-disabled` : void 0}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
@@ -320,7 +320,6 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                 </a>
                 { this.renderToolTip() }
               </div>
-
             );
           })
         }

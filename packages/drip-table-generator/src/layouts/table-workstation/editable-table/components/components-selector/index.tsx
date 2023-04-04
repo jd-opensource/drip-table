@@ -12,7 +12,7 @@ import { Button, Input, Select } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
-import { mockId } from '@/utils';
+import { filterAttributes, mockId } from '@/utils';
 import Icon from '@/components/Icon';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getComponentsConfigs, getGroups } from '@/layouts/utils';
@@ -48,7 +48,7 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
     options.items = [null, null];
   }
   const columnSchema: DTGTableConfig['columns'][number] = {
-    ...additionalProps,
+    ...filterAttributes(additionalProps, ['dataIndexMode', 'title']),
     key: `${component['ui:type']}_${mockId()}`,
     dataIndex: '',
     title: title ?? component.title,
@@ -177,9 +177,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   if (props.onConfirm) {
                     props.onConfirm(column, tableIndex);
                   } else {
-                    const columns = props.customColumns
-                      ? props.customColumns(tableConfigs[tableIndex].columns, column)
-                      : [...tableConfigs[tableIndex].columns, column];
+                    const lastSortableColumnIndex = tableConfigs[tableIndex].columns.map(item => !!item.fixed).lastIndexOf(false);
+                    let columns = [...tableConfigs[tableIndex].columns];
+                    if (props.customColumns) {
+                      columns = props.customColumns(tableConfigs[tableIndex].columns, column);
+                    } else if (lastSortableColumnIndex < columns.length - 1) {
+                      columns.splice(lastSortableColumnIndex, 0, column);
+                    } else {
+                      columns = [...tableConfigs[tableIndex].columns, column];
+                    }
                     setTableColumns(columns, tableIndex);
                   }
                   initStates();
