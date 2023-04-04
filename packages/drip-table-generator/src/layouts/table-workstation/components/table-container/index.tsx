@@ -85,7 +85,6 @@ const SubTableSetting = (props: SubTableSettingProps) => {
                     }
                   }}
                 />
-
               </div>
             </div>
           </div>
@@ -104,7 +103,7 @@ const TableContainer = (props: TableContainerProps) => (
         })}
         onClick={(e) => {
           e.stopPropagation();
-          setState({ currentTableID: props.tableConfig.tableId });
+          setState({ currentTableID: props.tableConfig.tableId, currentColumnID: void 0, currentComponentID: void 0, currentComponentPath: [] });
         }}
       >
         { currentTableID === props.tableConfig.tableId && (

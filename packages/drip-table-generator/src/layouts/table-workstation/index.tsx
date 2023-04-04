@@ -5,6 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
+import './index.less';
 
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';

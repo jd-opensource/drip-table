@@ -137,7 +137,7 @@ export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOption
 export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTableExtraOptions> = never>
   (schema: DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ): DTGTableConfig[] => {
-  const rootTableId = `${schema.id ?? mockId()}`;
+  const rootTableId = mockId();
   if (!schema) {
     return [{
       tableId: rootTableId,
@@ -152,8 +152,8 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
   do {
     if (currentSchema) {
       configs.push({
-        tableId: `${currentSchema?.id || mockId()}`,
-        columns: currentSchema?.columns.map((column, index) => ({ ...column })) || [],
+        tableId: mockId(),
+        columns: currentSchema?.columns.map(column => ({ ...column, key: mockId() })) || [],
         configs: schema ? { ...currentSchema } : { pagination: false },
         hasSubTable: !!currentSchema?.subtable,
         dataSourceKey: currentSchema?.dataSourceKey || '',

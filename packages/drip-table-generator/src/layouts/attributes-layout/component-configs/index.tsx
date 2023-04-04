@@ -8,6 +8,7 @@
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -112,9 +113,9 @@ const ComponentConfigForm = <
         'type',
         'name',
         'dataIndex',
+        'dataIndexMode',
         'title',
         'titleStyle',
-        'width',
         'group',
         'style',
       ]),
@@ -126,7 +127,6 @@ const ComponentConfigForm = <
           style: titleStyle,
         }
         : formData.title,
-      width: formData.width as string,
       align: formData.align as 'left' | 'center' | 'right',
       component: currentColumn?.component ?? '',
       options: uiProps,
@@ -153,11 +153,11 @@ const ComponentConfigForm = <
             extraComponents={props.customAttributeComponents}
             groupType="tabs"
             onChange={(data) => {
-              const columns = tableIndex > -1 ? tableConfigs[tableIndex].columns : [];
+              const columns = tableIndex > -1 ? cloneDeep(tableConfigs[tableIndex].columns || []) : [];
               const newCurrentColumn = Object.assign({}, currentColumn, data);
               const keyIndex = columns.findIndex(item => item.key === currentColumn.key);
               columns[keyIndex] = Object.assign({}, newCurrentColumn);
-              setTableColumns([...columns || []], tableIndex);
+              setTableColumns(columns, tableIndex);
             }}
           />
         );

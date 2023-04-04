@@ -10,7 +10,6 @@ import './index.less';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
-import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -77,7 +76,7 @@ const ComponentItemConfigForm = <
 
   const encodeColumnConfigs = (formData: { [key: string]: unknown }, column: DTGTableConfig['columns'][number]) => {
     const uiProps: Record<string, unknown> = {};
-    const dataProps = {};
+    const dataProps: Record<string, unknown> = {};
     const columnStyle: Record<string, string> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
@@ -88,6 +87,9 @@ const ComponentItemConfigForm = <
         columnStyle[key.replace('style.', '')] = String(formData[key]);
       }
     });
+    if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
+      dataProps.width = Number(dataProps.width);
+    }
     if (column?.component === 'group') {
       const length = (uiProps.layout as number[])?.reduce((p, v) => p + v, 0) || 0;
       uiProps.items = Array.from({ length }, _ => null);
@@ -106,8 +108,9 @@ const ComponentItemConfigForm = <
         'type',
         'name',
         'dataIndex',
+        'dataIndexMode',
         'title',
-        'width',
+        'titleStyle',
         'group',
         'style',
       ]),
@@ -142,11 +145,12 @@ const ComponentItemConfigForm = <
             groupType="tabs"
             icons={props.icons}
             onChange={(data) => {
-              const columns = [...tableConfigs[tableIndex]?.columns];
+              const columns = [...tableConfigs[tableIndex].columns];
               const columnSchema = Object.assign({}, currentColumnItem, data);
               const index = columns.findIndex(item => item.key === currentColumn.key);
-              updateColumnItemByPath(columns[index], currentComponentPath || [], columnSchema);
-              setTableColumns(cloneDeep(columns), tableIndex);
+              const newColumn = updateColumnItemByPath(columns[index], currentComponentPath || [], columnSchema);
+              columns[index] = newColumn;
+              setTableColumns(columns, tableIndex);
             }}
           />
         );
