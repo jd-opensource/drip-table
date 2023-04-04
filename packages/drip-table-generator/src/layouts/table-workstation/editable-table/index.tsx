@@ -115,6 +115,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       key={wrapRecord.id}
                       className={classNames('jfe-drip-table-generator-workstation-table-row', {
                         checked: checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID,
+                        stripe: props.tableConfig.configs.stripe && wrapRecord.id % 2 === 0,
                       })}
                       onMouseEnter={(e) => { e.stopPropagation(); setScrollTarget(`__row_${rowIndex}`); }}
                       onMouseLeave={(e) => { e.stopPropagation(); setScrollTarget(''); }}
