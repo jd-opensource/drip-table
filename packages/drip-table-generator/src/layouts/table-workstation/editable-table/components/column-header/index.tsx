@@ -65,7 +65,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               showFilter
               customComponentPanel={props.customComponentPanel}
               onClose={() => setSelector('')}
-              onConfirm={(columns, column) => {
+              customColumns={(columns, column) => {
                 const index = columns.findIndex(item => item.key === props.column.key);
                 const newColumns = [...columns];
                 newColumns.splice(index < 0 ? 0 : index, 0, column);
@@ -96,7 +96,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               showFilter
               customComponentPanel={props.customComponentPanel}
               onClose={() => setSelector('')}
-              onConfirm={(columns, column) => {
+              customColumns={(columns, column) => {
                 const index = columns.findIndex(item => item.key === props.column.key);
                 const newColumns = [...columns];
                 newColumns.splice(index > columns.length - 1 ? columns.length - 1 : index + 1, 0, column);
@@ -115,7 +115,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   ], [selector]);
   return (
     <GeneratorContext.Consumer>
-      { ({ currentColumnID, currentTableID, drawerType, setState }) => (
+      { ({ currentComponentPath, currentColumnID, currentComponentID, currentTableID, drawerType, setState }) => (
         <div
           key={props.key}
           className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
@@ -130,8 +130,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             e.stopPropagation();
             setState({
               currentTableID: props.tableConfig.tableId,
-              currentColumnID: props.column.key,
-              drawerType: 'column',
+              currentColumnID: props.column.key === currentColumnID ? void 0 : props.column.key,
+              currentComponentID: void 0,
+              currentComponentPath: [],
+              drawerType: props.column.key === currentColumnID ? void 0 : 'column',
             });
           }}
           onMouseEnter={() => setState({ currentHoverColumnID: props.column.key })}
@@ -140,7 +142,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           { props.tableConfig.tableId === currentTableID && props.column.key === currentColumnID && (
             <TableConfigsContext.Consumer>
               { ({ tableConfigs, setTableColumns }) => (
-                <div className="jfe-drip-table-generator-workstation-table-header-tools">
+                <div className="jfe-drip-table-generator-workstation-table-header-tools" onClick={e => e.stopPropagation()}>
                   <Button
                     title="打开配置面板"
                     size="small"
@@ -178,8 +180,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     title="确定删除当前列么?"
                     onConfirm={(e) => {
                       e?.stopPropagation();
+                      const isGroupColumn = props.column.component === 'group';
                       setState({
                         currentColumnID: void 0,
+                        currentComponentID: isGroupColumn ? void 0 : currentComponentID,
+                        currentComponentPath: isGroupColumn ? [] : currentComponentPath,
                         drawerType: drawerType === 'column' ? void 0 : drawerType,
                       });
                       const tableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);

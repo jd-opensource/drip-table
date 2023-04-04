@@ -30,7 +30,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   open?: boolean;
   onClose: () => void;
-  onConfirm?: (columns: DTGTableConfig['columns'], newColumn: DTGTableConfig['columns'][number]) => DTGTableConfig['columns'];
+  customColumns?: (columns: DTGTableConfig['columns'], newColumn: DTGTableConfig['columns'][number]) => DTGTableConfig['columns'];
+  onConfirm?: (columns: DTGTableConfig['columns'][number], tableIndex: number) => void;
 }
 
 const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, title: string) => {
@@ -172,9 +173,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onClick={() => {
                 const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
                 if (componentConfig && tableIndex > -1) {
-                  const column = getColumnSchemaByComponent(componentConfig, title);
-                  const columns = props.onConfirm ? props.onConfirm(tableConfigs[tableIndex].columns, column) : [...tableConfigs[tableIndex].columns, column];
-                  setTableColumns(columns, tableIndex);
+                  const column = getColumnSchemaByComponent(componentConfig, props.showTitle ? title : '');
+                  if (props.onConfirm) {
+                    props.onConfirm(column, tableIndex);
+                  } else {
+                    const columns = props.customColumns
+                      ? props.customColumns(tableConfigs[tableIndex].columns, column)
+                      : [...tableConfigs[tableIndex].columns, column];
+                    setTableColumns(columns, tableIndex);
+                  }
                   initStates();
                   props.onClose();
                 }

@@ -14,20 +14,16 @@ export const updateColumnItemByPath = (
   path: number[],
   schema: DTGTableConfig['columns'][number] | null,
 ) => {
-  const newSchema = cloneDeep(schema);
+  const columnValue = cloneDeep(column);
   const [key, ...rest] = path;
-  if (column.component === 'group') {
-    if (!column.options.items) {
-      column.options.items = [];
+  if (columnValue.component === 'group') {
+    if (!columnValue.options.items) {
+      columnValue.options.items = [];
     }
-    const items = column.options.items as DTGTableConfig['columns'][number];
-    if (rest.length === 0) {
-      items[key] = newSchema;
-    } else {
-      column = updateColumnItemByPath(column[key], rest, newSchema);
-    }
+    const items = columnValue.options.items as DTGTableConfig['columns'][number];
+    items[key] = rest.length === 0 ? cloneDeep(schema) : updateColumnItemByPath(items[key], rest, schema);
   }
-  return column;
+  return columnValue;
 };
 
 export const getColumnItemByPath = (column: DTGTableConfig['columns'][number], path: number[]) => {

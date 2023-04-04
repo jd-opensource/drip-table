@@ -9,5 +9,42 @@
 @prefixCls: jfe-drip-table-generator-workstation-table-cell;
 
 .@{prefixCls}-group-wrapper {
-  border: 1px solid var(--drip-table-border-color);
+  min-height: 120px;
+  height: max-content;
+  margin: 2px;
+}
+
+.@{prefixCls}-group-row {
+  margin: 0 !important;
+  text-align: center;
+}
+
+.@{prefixCls}-group-col {
+  border: 1px dashed var(--drip-table-border-color);
+  text-align: center;
+
+  &.checked {
+    border-style: solid;
+    background:
+      linear-gradient(
+        45deg,
+        var(--drip-table-background-color) 0,
+        var(--drip-table-background-color) 25%,
+        transparent 25%,
+        transparent 50%,
+        var(--drip-table-background-color) 50%,
+        var(--drip-table-background-color) 75%,
+        transparent 75%,
+        transparent 100%
+      );
+    background-size: 50px 50px;
+  }
+}
+
+.@{prefixCls}-group-empty {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
 }

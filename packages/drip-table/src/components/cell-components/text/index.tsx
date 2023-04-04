@@ -568,7 +568,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         { rawTextEl }
       </div>
     );
-    if (this.props.schema.options.maxRow) {
+    if (this.props.schema.options.maxRow && !this.props.preview) {
       wrapperEl = (
         <Tooltip title={<div className={`${prefixCls}-word-break`} style={this.rawTextStyles}>{ rawTextEl }</div>}>
           { wrapperEl }
@@ -581,7 +581,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         <ResizeObserver onResize={this.onResize}>
           <div
             ref={this.$main}
-            className={classNames(`${prefixCls}-main`, { [`${prefixCls}-editable`]: this.props.editable, [`${prefixCls}-disabled`]: this.disabled })}
+            className={classNames(`${prefixCls}-main`, {
+              [`${prefixCls}-editable`]: this.props.editable && !this.props.preview,
+              [`${prefixCls}-disabled`]: this.disabled,
+            })}
             tabIndex={0}
             onDoubleClick={this.onDoubleClick}
             onKeyDown={this.onKeyDown}
