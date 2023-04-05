@@ -82,7 +82,7 @@ export default {
     {
       name: 'options.target',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '链接打开方式',
       'ui:type': 'auto-complete',
       'ui:props': {
@@ -208,7 +208,7 @@ export default {
       name: 'options.tooltip',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '设置提示内容',
+      'ui:title': '提示内容',
       'ui:titleStyle': { minWidth: 106 },
       'ui:description': {
         title: '(支持{{rec}}模版写法)',
@@ -222,7 +222,7 @@ export default {
     {
       name: 'options.maxTiledCount',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '最大平铺展示数',
       'ui:titleStyle': { minWidth: 106 },
       'ui:type': 'number',
@@ -237,7 +237,7 @@ export default {
       name: 'options.dropdownText',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '下拉展示框文案',
+      'ui:title': '展示框文案',
       'ui:titleStyle': { minWidth: 106 },
       'ui:type': 'text',
       type: 'string',
@@ -247,7 +247,7 @@ export default {
       name: 'options.textColor',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '下拉文案颜色',
+      'ui:title': '文案颜色',
       'ui:titleStyle': { minWidth: 106 },
       'ui:type': 'color-picker',
       type: 'string',
@@ -287,7 +287,7 @@ export default {
     {
       name: 'options.placement',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '菜单弹出位置',
       'ui:type': 'select',
       'ui:props': {

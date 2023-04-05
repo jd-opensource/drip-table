@@ -32,7 +32,7 @@ export default {
     {
       name: 'options.bordered',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},

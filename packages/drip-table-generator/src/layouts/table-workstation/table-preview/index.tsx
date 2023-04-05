@@ -40,6 +40,8 @@ const PreviewTable = <
         dataSource={context.previewDataSource as RecordType[]}
         components={props.components || props.customComponents}
         {...filterAttributes(props, [
+          'width',
+          'mode',
           'dataSource',
           'schema',
           'style',

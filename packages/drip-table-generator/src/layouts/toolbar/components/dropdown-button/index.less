@@ -13,6 +13,18 @@
   display: inline-block;
 }
 
+.@{prefixCls}-button {
+  background-color: var(--drip-table-primary-color);
+  border-color: var(--drip-table-border-color);
+}
+
+.@{prefixCls}-arrow {
+  height: 10px;
+  background-color: var(--drip-table-primary-color);
+  position: absolute;
+  width: 100%;
+}
+
 .@{prefixCls}-connector {
   position: absolute;
   bottom: 0;
@@ -26,4 +38,8 @@
   padding: 10px;
   border-radius: 0 0 8px 8px;
   z-index: 10;
+
+  &.page-mode {
+    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+  }
 }

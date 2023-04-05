@@ -8,6 +8,7 @@
 import './index.less';
 
 import { Button } from 'antd';
+import classNames from 'classnames';
 import React from 'react';
 
 import Corner from '../corner';
@@ -20,6 +21,7 @@ export interface DropDownButtonProps {
   height?: number | string;
   left?: number;
   style?: React.CSSProperties;
+  mode?: 'page' | 'model';
   innerStyle?: React.CSSProperties;
   open?: boolean;
   onOpen?: (open: boolean, key: string) => void;
@@ -30,6 +32,7 @@ const DropDownButton = (props: DropDownButtonProps) => {
   return (
     <div className="jfe-drip-table-generator-dropdown-wrapper" style={props.style}>
       <Button
+        className={isOpen ? 'jfe-drip-table-generator-dropdown-button' : ''}
         type={isOpen ? 'primary' : 'default'}
         style={{ borderRadius: isOpen ? '6px 6px 0 0' : '6px' }}
         onClick={() => {
@@ -44,17 +47,22 @@ const DropDownButton = (props: DropDownButtonProps) => {
       </Button>
       { isOpen && (
       <React.Fragment>
-        <div className="jfe-drip-table-generator-dropdown-connector" style={{ right: '-10px' }}>
-          <Corner position="bottomLeft" />
-        </div>
-        <div className="jfe-drip-table-generator-dropdown-connector" style={{ left: '-10px' }}>
-          <Corner position="bottomRight" />
+        <div className="jfe-drip-table-generator-dropdown-arrow">
+          <div className="jfe-drip-table-generator-dropdown-connector" style={{ right: '-10px' }}>
+            <Corner position="bottomLeft" />
+          </div>
+          <div className="jfe-drip-table-generator-dropdown-connector" style={{ left: '-10px' }}>
+            <Corner position="bottomRight" />
+          </div>
         </div>
         <div
-          className="jfe-drip-table-generator-dropdown-body"
+          className={classNames('jfe-drip-table-generator-dropdown-body', {
+            'page-mode': props.mode === 'page',
+          })}
           style={{
             width: props.width,
             height: props.height,
+            marginTop: 10,
             marginLeft: `${props.left ?? -10}px`,
             ...props.innerStyle,
           }}

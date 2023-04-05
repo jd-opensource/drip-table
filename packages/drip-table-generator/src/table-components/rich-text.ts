@@ -60,7 +60,7 @@ export default {
       name: 'options.tooltip',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '设置提示内容',
+      'ui:title': '提示内容',
       'ui:titleStyle': { minWidth: 105 },
       'ui:description': {
         title: '(支持{{rec}}模版写法)',
