@@ -27,6 +27,8 @@ const Demo = () => (
     SubtableDataSourceKey: SubtableDataSourceKey;
   }>
     mockDataSource
+    width={1108}
+    mode="page"
     style={{ height: '738px' }}
     schema={initSchema as DripTableSchema}
     dataSource={mockData}

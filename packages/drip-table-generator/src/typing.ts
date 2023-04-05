@@ -220,6 +220,7 @@ export interface DripTableGeneratorProps<
    * 模式：model-弹出框；page-页面模式
    */
   mode?: 'model' | 'page';
+  width?: number;
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;
@@ -233,4 +234,5 @@ export interface DripTableGeneratorProps<
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
+  onClose?: () => void;
 }

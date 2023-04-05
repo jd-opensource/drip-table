@@ -24,12 +24,18 @@ import ExportSchema from './components/export-schema';
 import ImportSchema from './components/import-schema';
 import { DTGBuiltInTemplates } from './templates';
 
-function generateDropdownProps(name: string, label: string): Omit<DropDownButtonProps, 'children'> {
+function generateDropdownProps(props: {
+  name: string;
+  label: string;
+  mode?: 'model' | 'page';
+  width?: number;
+}): Omit<DropDownButtonProps, 'children'> {
   return {
-    dataIndex: name,
-    label,
-    width: 1000,
-    height: 598,
+    dataIndex: props.name,
+    label: props.label,
+    width: props.width ?? 1000,
+    height: 588,
+    mode: props.mode,
   };
 }
 
@@ -61,7 +67,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { ({ updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div className="jfe-drip-table-generator-templates-toolbar left">
-            <DropDownButton {...generateDropdownProps('template', '模版')} open={operateMenu === 'template'} onOpen={onOpen} left={-10}>
+            <DropDownButton
+              {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width })}
+              open={operateMenu === 'template'}
+              onOpen={onOpen}
+              left={-10}
+            >
               <div className="jfe-drip-table-generator-templates-container">
                 { DTGBuiltInTemplates.map((iTemplate, key) => (
                   <div
@@ -85,7 +96,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               </div>
             </DropDownButton>
             <DropDownButton
-              {...generateDropdownProps('datasource', '数据源')}
+              {...generateDropdownProps({ name: 'datasource', label: '数据源', mode: props.mode, width: props.width })}
               open={operateMenu === 'datasource'}
               onOpen={onOpen}
               left={-98}
@@ -93,35 +104,35 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               innerStyle={{ padding: 0, background: '#1e1e1e' }}
             >
               <DataSourceEditor
-                width={1000}
-                height={598 - 8}
+                width={props.width ?? 1000}
+                height={588 - 8}
                 onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
               />
             </DropDownButton>
             <DropDownButton
-              {...generateDropdownProps('import', '表格导入')}
+              {...generateDropdownProps({ name: 'import', label: '配置导入', mode: props.mode, width: props.width })}
               open={operateMenu === 'import'}
               onOpen={onOpen}
               left={-196}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
             >
-              <ImportSchema height={598 - 8 - 40} />
+              <ImportSchema height={588 - 8 - 40} />
             </DropDownButton>
             <DropDownButton
-              {...generateDropdownProps('export', '配置编辑')}
+              {...generateDropdownProps({ name: 'export', label: '配置编辑', mode: props.mode, width: props.width })}
               open={operateMenu === 'export'}
               onOpen={onOpen}
               left={-308}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
             >
-              <ExportSchema height={598 - 8 - 40} />
+              <ExportSchema height={588 - 8 - 40} />
             </DropDownButton>
             <ModeSwitch />
           </div>
           <div className="jfe-drip-table-generator-templates-toolbar right">
-            <Button className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} />
+            { props.mode === 'model' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }
           </div>
         </div>
       ) }

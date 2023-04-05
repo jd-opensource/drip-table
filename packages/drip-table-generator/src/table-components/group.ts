@@ -16,7 +16,7 @@ export default {
       name: 'options.layout',
       group: '属性',
       required: true,
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '每行列数',
       'ui:type': 'select',
       'ui:description': {
@@ -52,7 +52,7 @@ export default {
       name: 'options.gutter',
       group: '属性',
       required: true,
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '栅格间隔',
       'ui:type': 'select',
       'ui:props': {
@@ -84,7 +84,7 @@ export default {
       name: 'options.wrap',
       group: '属性',
       required: true,
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '允许自动换行',
       'ui:titleStyle': { minWidth: 106 },
       'ui:type': 'switch',

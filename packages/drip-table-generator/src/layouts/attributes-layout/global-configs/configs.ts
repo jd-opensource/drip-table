@@ -41,7 +41,7 @@ const SlotItemConfigs = [
   },
   {
     name: 'selectorButtonType',
-    'ui:title': '列选择器按钮类型',
+    'ui:title': '筛选器按钮类型',
     'ui:type': 'radio',
     'ui:props': {
       mode: 'button',
@@ -58,7 +58,7 @@ const SlotItemConfigs = [
   },
   {
     name: 'selectorButtonText',
-    'ui:title': '列选择器按钮名称',
+    'ui:title': '筛选器按钮名称',
     'ui:type': 'input',
     'ui:props': {
       style: { width: '100%' },
@@ -380,6 +380,9 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     group: '分页配置',
     'ui:title': '展示快速跳转',
     'ui:type': 'switch',
+    'ui:titleStyle': {
+      minWidth: 120,
+    },
     'ui:description': {
       type: 'icon',
       trigger: 'hover',
@@ -527,11 +530,14 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     name: 'scrollX',
     group: '全局样式',
     'ui:title': '水平滚动宽度限制',
+    'ui:layout': {
+      labelCol: 10,
+      wrapperCol: 14,
+    },
     'ui:type': 'number',
     'ui:props': {
       min: 1,
     },
-    'ui:layout': { labelCol: 8, wrapperCol: 14 },
     type: 'number',
   },
   {
@@ -542,7 +548,10 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:props': {
       min: 1,
     },
-    'ui:layout': { labelCol: 8, wrapperCol: 14 },
+    'ui:layout': {
+      labelCol: 10,
+      wrapperCol: 14,
+    },
     type: 'number',
   },
   {
@@ -551,8 +560,8 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     'ui:title': '展示每行头部',
     'ui:type': 'switch',
     'ui:layout': {
-      labelCol: 6,
-      wrapperCol: 18,
+      labelCol: 8,
+      wrapperCol: 16,
     },
     'ui:props': {},
     type: 'boolean',
@@ -582,6 +591,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     name: 'innerStyle',
     group: '全局样式',
     'ui:title': '自定义全局样式',
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',

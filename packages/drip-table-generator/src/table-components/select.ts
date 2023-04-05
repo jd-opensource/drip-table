@@ -19,8 +19,8 @@ export default {
       name: 'options.options',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '自定义下拉菜单',
-      'ui:titleStyle': { minWidth: 105 },
+      'ui:title': '下拉菜单',
+      'ui:titleStyle': { minWidth: 96 },
       'ui:type': 'array-list',
       default: [],
       type: 'array',
@@ -67,7 +67,7 @@ export default {
     {
       name: 'options.bordered',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},
@@ -86,7 +86,7 @@ export default {
     {
       name: 'options.showArrow',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '展示下拉箭头',
       'ui:type': 'switch',
       'ui:props': {},
@@ -99,6 +99,8 @@ export default {
       'ui:title': '选中模式',
       'ui:type': 'radio',
       'ui:props': {
+        mode: 'button',
+        buttonStyle: 'solid',
         options: [
           { label: '单选模式', value: void 0 },
           { label: '多选模式', value: 'multiple' },
@@ -131,7 +133,7 @@ export default {
       name: 'options.bindValue',
       group: '属性',
       'ui:title': '值回显强制与数据绑定',
-      'ui:layout': { labelCol: 9, wrapperCol: 15 },
+      'ui:layout': { labelCol: 11, wrapperCol: 13 },
       'ui:type': 'switch',
       'ui:props': {},
       type: 'boolean',
@@ -140,7 +142,7 @@ export default {
     {
       name: 'options.placeholder',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '暗纹提示文案',
       'ui:type': 'text',
       default: '',
@@ -149,7 +151,7 @@ export default {
     {
       name: 'options.disabled',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 7, wrapperCol: 17 },
       'ui:title': '禁用组件条件',
       'ui:titleStyle': { minWidth: 106 },
       'ui:type': 'text',

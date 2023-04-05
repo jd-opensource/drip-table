@@ -329,7 +329,7 @@ const verticalAlign: DTGComponentPropertySchema = {
 const hidable: DTGComponentPropertySchema = {
   name: 'hidable',
   group: '属性',
-  'ui:layout': { labelCol: 6, wrapperCol: 18 },
+  'ui:layout': { labelCol: 7, wrapperCol: 17 },
   'ui:title': '该列支持隐藏',
   'ui:type': 'switch',
   'ui:props': {
@@ -377,7 +377,7 @@ const disableFunc: DTGComponentPropertySchema = {
 const visibleFunc: DTGComponentPropertySchema = {
   name: 'options.visibleFunc',
   group: '属性',
-  'ui:title': '组件显隐条件',
+  'ui:title': '显隐条件',
   'ui:titleStyle': { minWidth: 106 },
   'ui:type': 'text',
   'ui:props': {
@@ -496,6 +496,7 @@ export const styleAttributesSchema: DTGComponentPropertySchema[] = [
     group: '样式',
     subGroup: '单元格样式',
     'ui:title': '自定义单元格样式',
+    'ui:layout': { labelCol: 9, wrapperCol: 15 },
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
