@@ -8,16 +8,17 @@
 import './index.less';
 
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Empty } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
 import React from 'react';
 
-import { filterArray } from '@/utils';
+import { filterArray, mockId } from '@/utils';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
+import PaginationComponent from '../components/pagination';
 import TableContainer from '../components/table-container';
 import ColumnHeaderList from './components/header-list';
 import TableRowList from './components/row';
@@ -64,8 +65,27 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <TableConfigsContext.Consumer>
       { ({ tableConfigs, setTableColumns }) => {
         const previewDataSource = typeof previewRecord === 'number' ? [dataSourceToUse[previewRecord]] : dataSourceToUse;
+        const paginationInHeader = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('top');
+        const paginationInFooter = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('bottom');
+        const subTableInfo = {
+          uuid: props.tableConfig?.tableId,
+          schema: {
+            ...props.tableConfig?.configs,
+            id: props.tableConfig.tableId ?? mockId(),
+            columns: props.tableConfig?.columns,
+            dataSourceKey: props.tableConfig?.dataSourceKey,
+          } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
+          parent: props.parent,
+          dataSource: dataSourceToUse.map(item => item.record),
+        };
         return (
           <TableContainer tableConfig={props.tableConfig}>
+            { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
+            { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
+              ? (
+                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.dataSource.length} />
+              )
+              : null }
             <div
               className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
                 bordered: props.tableConfig.configs.bordered,
@@ -100,12 +120,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 { previewDataSource.map((wrapRecord, rowIndex) => {
                   const hasSubTable = tableConfigs[props.index + 1] && Object.keys(wrapRecord.record || {}).includes(tableConfigs[props.index + 1]?.dataSourceKey);
                   const tableInfo: DripTableTableInformation<RecordType, ExtraOptions> = {
-                    uuid: tableConfigs[props.index]?.tableId,
+                    uuid: props.tableConfig?.tableId,
                     schema: {
-                      ...tableConfigs[props.index]?.configs,
-                      id: tableConfigs[props.index]?.tableId,
-                      columns: tableConfigs[props.index]?.columns,
-                      dataSourceKey: tableConfigs[props.index]?.dataSourceKey,
+                      ...props.tableConfig?.configs,
+                      id: props.tableConfig.tableId ?? mockId(),
+                      columns: props.tableConfig?.columns,
+                      dataSourceKey: props.tableConfig?.dataSourceKey,
                     } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
                     dataSource: wrapRecord?.[tableConfigs[props.index + 1]?.dataSourceKey || ''] as RecordType[] || [],
                     record: wrapRecord.record,
@@ -164,8 +184,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     </div>
                   );
                 }) }
+                { previewDataSource.length <= 0 && <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
               </div>
             </div>
+            { props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter
+              ? (
+                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.dataSource.length} />
+              )
+              : null }
+            { props.parent?.record && (props.subtableFooter?.(props.parent.record, props.index || 0, subTableInfo) || '') }
           </TableContainer>
         );
       } }

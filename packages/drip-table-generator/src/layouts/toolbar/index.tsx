@@ -57,7 +57,7 @@ const Toolbar = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
-  const [defaultTemplate, setTemplate] = React.useState('basic-template');
+  const [defaultTemplate, setTemplate] = React.useState('');
   const [operateMenu, setOperateMenu] = React.useState(void 0 as string | undefined);
   const onOpen = (isOpen: boolean, key: string) => {
     setOperateMenu(isOpen ? key : void 0);
