@@ -117,7 +117,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             bordered: !!props.tableConfig.configs.bordered,
           })}
         >
-          <Checkbox />
+          <Checkbox disabled />
         </div>
       ) }
       { leftFixedColumns.length > 0
