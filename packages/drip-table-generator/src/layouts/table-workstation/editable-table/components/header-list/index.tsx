@@ -57,7 +57,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     >
       { props.tableConfig.hasSubTable && (
         <div
-          className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+          className={classNames('jfe-drip-table-generator-workstation-table-header-item disabled', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
             bordered: !!props.tableConfig.configs.bordered,
           })}
@@ -66,13 +66,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ) }
       { props.tableConfig.configs.rowSelection && (
         <div
-          className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
+          className={classNames('jfe-drip-table-generator-workstation-table-header-item disabled', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
             bordered: !!props.tableConfig.configs.bordered,
           })}
           style={{ width: 48, minWidth: 48 }}
         >
-          <Checkbox />
+          <Checkbox disabled />
         </div>
       ) }
       { leftFixedColumns.length > 0
