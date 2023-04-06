@@ -30,7 +30,7 @@ const Demo = () => (
     width={1108}
     mode="page"
     style={{ height: '738px' }}
-    schema={initSchema as DripTableSchema}
+    schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}
     dataSource={mockData}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}
     onExportSchema={(schema) => { message.success('已导出'); console.log(schema); }}
