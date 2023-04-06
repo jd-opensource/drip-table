@@ -11,7 +11,7 @@ import { DripTableGeneratorTemplate } from './index';
 export const subTableTemplate: DripTableGeneratorTemplate = {
   key: 'subTable-template',
   label: '母子表格',
-  previewImg: 'https://img.alicdn.com/imgextra/i4/O1CN01dtjMvv1heoyqst9u5_!!6000000004303-55-tps-56-56.svg',
+  previewImg: 'https://storage.360buyimg.com/interaction/babel/O1CN01N3gxxr1cj6000000003636-55-tps-56-56.svg',
   schema: {
     pagination: {
       pageSize: 20,
@@ -37,7 +37,7 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
       },
       {
         key: 'text_18722ec0683-132a',
-        dataIndex: 'id',
+        dataIndex: 'name',
         title: '名称',
         component: 'text',
         options: {
@@ -49,8 +49,21 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
             },
           ],
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
+      },
+      {
+        key: 'mock_4',
+        title: '价格',
+        width: 150,
+        align: 'center',
+        hidable: true,
+        dataIndex: 'price',
+        component: 'text',
+        options: {
+          mode: 'single',
+          prefix: '￥',
+        },
       },
       {
         key: 'tag_18722ec1c73-1336',
@@ -62,8 +75,22 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
           prefix: '',
           suffix: '',
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
+      },
+      {
+        key: 'date-picker_182e8eea517-1239',
+        dataIndex: 'startDate',
+        title: '日期',
+        width: 120,
+        description: '',
+        component: 'date-picker',
+        options: {
+          mode: 'basic',
+          format: 'YYYY-MM-DD',
+
+        },
+        align: 'center',
       },
       {
         key: 'link_18722ec2412-133d',
@@ -72,14 +99,14 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
         component: 'link',
         options: {
           mode: 'single',
-          label: '链接',
+          label: '编辑',
           href: 'http://api.example.com/api_path',
           event: '',
           operates: [],
           trigger: 'hover',
         },
         align: 'left',
-        verticalAlign: 'top',
+        verticalAlign: 'middle',
       },
     ],
     subtable: {
@@ -102,6 +129,7 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
           title: '开始/结束时间',
           align: 'center',
           hidable: true,
+          width: 140,
           dataIndex: 'description',
           component: 'text',
           options: {
@@ -137,6 +165,7 @@ export const subTableTemplate: DripTableGeneratorTemplate = {
           align: 'center',
           hidable: true,
           dataIndex: 'operate',
+          width: 150,
           component: 'link',
           options: {
             mode: 'multiple',

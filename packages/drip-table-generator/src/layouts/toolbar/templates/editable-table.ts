@@ -11,7 +11,7 @@ import { DripTableGeneratorTemplate } from './index';
 export const editableTableTemplate: DripTableGeneratorTemplate = {
   key: 'editable-template',
   label: '可编辑表格',
-  previewImg: 'https://img.alicdn.com/imgextra/i4/O1CN01dtjMvv1heoyqst9u5_!!6000000004303-55-tps-56-56.svg',
+  previewImg: 'https://storage.360buyimg.com/interaction/babel/6000000004303-55-tps-56-56.svg',
   schema: {
     editable: true,
     pagination: {
@@ -33,8 +33,8 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
             },
           ],
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'text_18722ec0683-132a',
@@ -50,8 +50,8 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
             },
           ],
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'tag_18722ec1c73-1336',
@@ -63,8 +63,8 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
           prefix: '',
           suffix: '',
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
       {
         key: 'link_18722ec2412-133d',
@@ -79,8 +79,8 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
           operates: [],
           trigger: 'hover',
         },
-        align: 'left',
-        verticalAlign: 'top',
+        align: 'center',
+        verticalAlign: 'middle',
       },
     ],
   },

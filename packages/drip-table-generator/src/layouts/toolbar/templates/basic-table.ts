@@ -11,7 +11,7 @@ import { DripTableGeneratorTemplate } from './index';
 export const basicTableTemplates: DripTableGeneratorTemplate = {
   key: 'basic-template',
   label: '通用表格',
-  previewImg: 'https://img.alicdn.com/imgextra/i1/O1CN01R1OdLV1GgCXW0rjop_!!6000000000651-2-tps-112-112.png',
+  previewImg: 'https://img12.360buyimg.com/imagetools/jfs/t1/110370/7/39274/1039/642e347aFb6fa2807/d43cfbb9a1bda8cf.png',
   schema: {
     pagination: {
       pageSize: 20,
