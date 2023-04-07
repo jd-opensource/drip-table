@@ -15,7 +15,7 @@ import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
-import { generateTableConfigsBySchema } from '@/layouts/utils';
+import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import DataSourceEditor from './components/datasource';
@@ -47,7 +47,6 @@ const ModeSwitch = () => (
         onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}
       >
         { mode === 'edit' ? '预览' : '编辑' }
-
       </Button>
     ) }
   </GeneratorContext.Consumer>
@@ -64,7 +63,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   };
   return (
     <TableConfigsContext.Consumer>
-      { ({ updateTableConfigs }) => (
+      { ({ tableConfigs, updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div className="jfe-drip-table-generator-templates-toolbar left">
             <DropDownButton
@@ -130,6 +129,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               <ExportSchema height={588 - 8 - 40} />
             </DropDownButton>
             <ModeSwitch />
+            { props.save && (
+            <Button
+              type="primary"
+              style={{ marginLeft: 24, borderRadius: '6px' }}
+              onClick={() => props.onSave?.(getSchemaValue(tableConfigs))}
+            >
+              保存
+            </Button>
+            ) }
           </div>
           <div className="jfe-drip-table-generator-templates-toolbar right">
             { props.mode === 'model' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }

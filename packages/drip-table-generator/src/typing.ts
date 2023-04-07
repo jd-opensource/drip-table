@@ -235,4 +235,6 @@ export interface DripTableGeneratorProps<
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
   onClose?: () => void;
+  save?: boolean;
+  onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
 }

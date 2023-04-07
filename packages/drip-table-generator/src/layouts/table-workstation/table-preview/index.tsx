@@ -30,7 +30,7 @@ const PreviewTable = <
     if (typeof item.width === 'string') { widthStr += ` + ${item.width}`; }
   });
   return (
-    <div className="jfe-drip-table-generator-workstation-table-preview-wrapper">
+    <div className="jfe-drip-table-generator-workstation-table-preview-wrapper" style={{ width: (props.width ?? 1000) - 16 }}>
       <DripTable
         style={Object.assign({
           ...props.style,
