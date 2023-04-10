@@ -57,8 +57,8 @@
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.3.0",
-    "antd": ">=4.9.4",
-    "drip-table": ">=2.6.1",
+    "antd": ">=4.24.0",
+    "drip-table": ">=3.0.0-alpha.0",
     "react": ">=16.9.0"
   },
   "keywords": [
