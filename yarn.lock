@@ -14331,10 +14331,10 @@ react-router@6.3.0:
   dependencies:
     history "^5.2.0"
 
-react-sortablejs@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/react-sortablejs/-/react-sortablejs-6.1.4.tgz#420ebfab602bbd935035dec24a04c8b3b836dbbf"
-  integrity sha512-fc7cBosfhnbh53Mbm6a45W+F735jwZ1UFIYSrIqcO/gRIFoDyZeMtgKlpV4DdyQfbCzdh5LoALLTDRxhMpTyXQ==
+react-sortablejs@6.1.1:
+  version "6.1.1"
+  resolved "http://registry.m.jd.com/react-sortablejs/download/react-sortablejs-6.1.1.tgz#1c90b6ae79a59490986c7918ebc9aa2eecf965cf"
+  integrity sha1-HJC2rnmllJCYbHkY68mqLuz5Zc8=
   dependencies:
     classnames "2.3.1"
     tiny-invariant "1.2.0"
