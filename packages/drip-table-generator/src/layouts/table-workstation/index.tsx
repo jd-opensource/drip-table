@@ -7,6 +7,7 @@
  */
 import './index.less';
 
+import classNames from 'classnames';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
@@ -26,7 +27,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const { mode, previewDataSource } = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
-    <div className="jfe-drip-table-generator-workstation-wrapper">
+    <div className={classNames('jfe-drip-table-generator-workstation-wrapper', { edit: mode === 'edit' })}>
       { mode === 'edit'
         ? (
           <React.Fragment>

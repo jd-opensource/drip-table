@@ -9,20 +9,25 @@
 @prefixCls: jfe-drip-table-generator-dropdown;
 
 .@{prefixCls}-wrapper {
-  position: relative;
   display: inline-block;
 }
 
 .@{prefixCls}-button {
   background-color: var(--drip-table-primary-color);
   border-color: var(--drip-table-border-color);
+
+  &:hover,
+  &:focus {
+    background-color: var(--drip-table-primary-color);
+    border-color: var(--drip-table-border-color);
+  }
 }
 
 .@{prefixCls}-arrow {
   height: 10px;
   background-color: var(--drip-table-primary-color);
   position: absolute;
-  width: 100%;
+  width: 73px;
 }
 
 .@{prefixCls}-connector {
@@ -36,6 +41,8 @@
   background: #ffffff;
   border-top: 1px solid var(--drip-table-border-color);
   padding: 10px;
+  margin-top: 10px;
+  left: 0;
   border-radius: 0 0 8px 8px;
   z-index: 10;
 
