@@ -221,6 +221,15 @@ export interface DripTableGeneratorProps<
    */
   mode?: 'model' | 'page';
   width?: number;
+  height?: number;
+  /**
+   * 是否展示 模板 按钮
+   */
+  showTemplate?: boolean;
+  /**
+   * 是否展示 保存 按钮
+   */
+  save?: boolean;
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;
@@ -235,6 +244,5 @@ export interface DripTableGeneratorProps<
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
   onClose?: () => void;
-  save?: boolean;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
 }

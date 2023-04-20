@@ -27,9 +27,10 @@ const Demo = () => (
     SubtableDataSourceKey: SubtableDataSourceKey;
   }>
     mockDataSource
-    width={1108}
+    width={1280}
+    height={738}
+    showTemplate
     mode="page"
-    style={{ height: '738px' }}
     schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}
     dataSource={mockData}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}

@@ -36,7 +36,10 @@ const GeneratorLayout = <
         width={props.width ?? 1000}
         open
         modalRender={() => (
-          <div className="jfe-drip-table-generator-layouts-model-container" style={{ width: props.width ?? 1000 }}>
+          <div
+            className="jfe-drip-table-generator-layouts-model-container"
+            style={{ width: props.width ?? 1000, height: props.height ?? 640 }}
+          >
             <Toolbar {...props} />
             <div className="jfe-drip-table-generator-layouts-wrapper">
               <div className="jfe-drip-table-generator-layouts-table-workstation">

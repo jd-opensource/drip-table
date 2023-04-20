@@ -22,29 +22,36 @@ const PreviewTable = <
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
   const context = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
-  let width = 0;
-  let widthStr = '';
-  tableConfigs[0].columns.forEach((item) => {
-    if (item.width === void 0) { width += 120; }
-    if (typeof item.width === 'number') { width += item.width; }
-    if (typeof item.width === 'string') { widthStr += ` + ${item.width}`; }
-  });
+
   return (
-    <div className="jfe-drip-table-generator-workstation-table-preview-wrapper" style={{ width: (props.width ?? 1000) - 16 }}>
+    <div
+      className="jfe-drip-table-generator-workstation-table-preview-wrapper"
+      style={props.mode === 'model'
+        ? {
+          width: (props.width ?? 1000) - 16,
+          height: (props.height ?? 640) - 53,
+        }
+        : {
+          width: '100%',
+        }}
+    >
       <DripTable
-        style={Object.assign({
-          ...props.style,
-          width: props.style?.width ?? `calc(${width}px${widthStr})`,
-        }, props.visible ? void 0 : { display: 'none' })}
+        style={Object.assign({ ...props.style },
+          props.visible ? void 0 : { display: 'none' },
+          props.mode === 'model' ? { height: '', width: '' } : void 0)}
         schema={getSchemaValue(tableConfigs)}
         dataSource={context.previewDataSource as RecordType[]}
         components={props.components || props.customComponents}
         {...filterAttributes(props, [
           'width',
+          'height',
           'mode',
           'dataSource',
           'schema',
           'style',
+          'save',
+          'onSave',
+          'showTemplate',
           'customComponents',
           'visible',
           'mockDataSource',

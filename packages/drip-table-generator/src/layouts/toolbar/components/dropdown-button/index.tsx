@@ -19,22 +19,25 @@ export interface DropDownButtonProps {
   children: React.ReactNode;
   width?: number | string;
   height?: number | string;
-  left?: number;
   style?: React.CSSProperties;
   mode?: 'page' | 'model';
   innerStyle?: React.CSSProperties;
   open?: boolean;
+  disabled?: boolean;
   onOpen?: (open: boolean, key: string) => void;
 }
 const DropDownButton = (props: DropDownButtonProps) => {
+  const rootButton = React.useRef<HTMLButtonElement>(null);
   const [openState, setOpenState] = React.useState(false);
   const isOpen = typeof props.open === 'boolean' ? !!props.open : openState;
   return (
     <div className="jfe-drip-table-generator-dropdown-wrapper" style={props.style}>
       <Button
+        ref={rootButton}
         className={isOpen ? 'jfe-drip-table-generator-dropdown-button' : ''}
         type={isOpen ? 'primary' : 'default'}
         style={{ borderRadius: isOpen ? '6px 6px 0 0' : '6px' }}
+        disabled={props.disabled}
         onClick={() => {
           if (typeof props.open === 'boolean') {
             props.onOpen?.(!isOpen, props.dataIndex);
@@ -47,7 +50,7 @@ const DropDownButton = (props: DropDownButtonProps) => {
       </Button>
       { isOpen && (
       <React.Fragment>
-        <div className="jfe-drip-table-generator-dropdown-arrow">
+        <div className="jfe-drip-table-generator-dropdown-arrow" style={{ width: rootButton.current?.offsetWidth }}>
           <div className="jfe-drip-table-generator-dropdown-connector" style={{ right: '-10px' }}>
             <Corner position="bottomLeft" />
           </div>
@@ -62,8 +65,6 @@ const DropDownButton = (props: DropDownButtonProps) => {
           style={{
             width: props.width,
             height: props.height,
-            marginTop: 10,
-            marginLeft: `${props.left ?? -10}px`,
             ...props.innerStyle,
           }}
         >

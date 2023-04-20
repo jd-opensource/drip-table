@@ -29,21 +29,22 @@ function generateDropdownProps(props: {
   label: string;
   mode?: 'model' | 'page';
   width?: number;
+  height?: number;
 }): Omit<DropDownButtonProps, 'children'> {
   return {
     dataIndex: props.name,
     label: props.label,
     width: props.width ?? 1000,
-    height: 588,
+    height: props.height ?? 588,
     mode: props.mode,
   };
 }
 
-const ModeSwitch = () => (
+const ModeSwitch = (props: { style?: React.CSSProperties }) => (
   <GeneratorContext.Consumer>
     { ({ mode, setState }) => (
       <Button
-        style={{ marginLeft: 24, borderRadius: '6px' }}
+        style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
         onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}
       >
         { mode === 'edit' ? '预览' : '编辑' }
@@ -61,16 +62,20 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const onOpen = (isOpen: boolean, key: string) => {
     setOperateMenu(isOpen ? key : void 0);
   };
+
+  const bodyHeight = (props.height ?? 640) - 52;
+
   return (
     <TableConfigsContext.Consumer>
       { ({ tableConfigs, updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div className="jfe-drip-table-generator-templates-toolbar left">
+            { props.showTemplate && (
             <DropDownButton
-              {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width })}
+              {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'template'}
               onOpen={onOpen}
-              left={-10}
+              disabled={!!operateMenu && operateMenu !== 'template'}
             >
               <div className="jfe-drip-table-generator-templates-container">
                 { DTGBuiltInTemplates.map((iTemplate, key) => (
@@ -94,45 +99,46 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 )) }
               </div>
             </DropDownButton>
+            ) }
             <DropDownButton
-              {...generateDropdownProps({ name: 'datasource', label: '数据源', mode: props.mode, width: props.width })}
+              {...generateDropdownProps({ name: 'datasource', label: '数据源', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'datasource'}
               onOpen={onOpen}
-              left={-98}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: 0, background: '#1e1e1e' }}
+              disabled={!!operateMenu && operateMenu !== 'datasource'}
             >
               <DataSourceEditor
                 width={props.width ?? 1000}
-                height={588 - 8}
+                height={bodyHeight - 8}
                 onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
               />
             </DropDownButton>
             <DropDownButton
-              {...generateDropdownProps({ name: 'import', label: '配置导入', mode: props.mode, width: props.width })}
+              {...generateDropdownProps({ name: 'import', label: '配置导入', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'import'}
               onOpen={onOpen}
-              left={-196}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
+              disabled={!!operateMenu && operateMenu !== 'import'}
             >
-              <ImportSchema height={588 - 8 - 40} />
+              <ImportSchema height={bodyHeight - 8 - 40} />
             </DropDownButton>
             <DropDownButton
-              {...generateDropdownProps({ name: 'export', label: '配置编辑', mode: props.mode, width: props.width })}
+              {...generateDropdownProps({ name: 'export', label: '配置编辑', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'export'}
               onOpen={onOpen}
-              left={-308}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
+              disabled={!!operateMenu && operateMenu !== 'export'}
             >
-              <ExportSchema height={588 - 8 - 40} />
+              <ExportSchema height={bodyHeight - 8 - 40} />
             </DropDownButton>
-            <ModeSwitch />
+            <ModeSwitch style={operateMenu ? { opacity: '0.0', visibility: 'hidden' } : void 0} />
             { props.save && (
             <Button
               type="primary"
-              style={{ marginLeft: 24, borderRadius: '6px' }}
+              style={{ marginLeft: 24, borderRadius: '6px', opacity: operateMenu ? '0.0' : void 0 }}
               onClick={() => props.onSave?.(getSchemaValue(tableConfigs))}
             >
               保存
