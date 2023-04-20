@@ -7,8 +7,8 @@
  */
 import './index.less';
 
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Image } from 'antd';
+import { CheckOutlined, CloseOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { Button, Image, Modal } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
@@ -83,9 +83,24 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     className={classNames('jfe-drip-table-generator-templates-wrapper', { checked: iTemplate.key === defaultTemplate })}
                     key={key}
                     onClick={() => {
-                      setTemplate(iTemplate.key);
-                      const newTableConfigs = generateTableConfigsBySchema(iTemplate.schema as DripTableSchema);
-                      updateTableConfigs(newTableConfigs);
+                      if (tableConfigs.length > 0 && tableConfigs[0].columns.length > 0) {
+                        Modal.confirm({
+                          title: '此操作会覆盖当前正在编辑的表格，确定要这么做吗?',
+                          icon: <ExclamationCircleFilled />,
+                          okText: '确定',
+                          okType: 'danger',
+                          cancelText: '我再想想',
+                          onOk() {
+                            setTemplate(iTemplate.key);
+                            const newTableConfigs = generateTableConfigsBySchema(iTemplate.schema as DripTableSchema);
+                            updateTableConfigs(newTableConfigs);
+                          },
+                        });
+                      } else {
+                        setTemplate(iTemplate.key);
+                        const newTableConfigs = generateTableConfigsBySchema(iTemplate.schema as DripTableSchema);
+                        updateTableConfigs(newTableConfigs);
+                      }
                     }}
                   >
                     { iTemplate.key === defaultTemplate && (
