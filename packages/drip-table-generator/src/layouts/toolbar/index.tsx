@@ -57,11 +57,18 @@ const Toolbar = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+  const { drawerType, setState } = React.useContext(GeneratorContext);
   const [defaultTemplate, setTemplate] = React.useState('');
   const [operateMenu, setOperateMenu] = React.useState(void 0 as string | undefined);
   const onOpen = (isOpen: boolean, key: string) => {
     setOperateMenu(isOpen ? key : void 0);
   };
+
+  React.useEffect(() => {
+    if (operateMenu && drawerType) {
+      setState({ drawerType: void 0 });
+    }
+  }, [operateMenu]);
 
   const bodyHeight = (props.height ?? 640) - 52;
 

@@ -79,6 +79,12 @@ const GlobalConfigForm = <
         if (headerItem.type === 'search') {
           headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
         }
+        if (headerItem.type === 'slot') {
+          const slotProps = typeof headerItem.data === 'object' ? { ...headerItem.props, ...headerItem.data } : { ...headerItem.props };
+          Object.keys(slotProps).forEach((key) => {
+            headerItem[key] = slotProps[key];
+          });
+        }
       }
       formData['header.items'] = headerElements;
     }
@@ -187,7 +193,7 @@ const GlobalConfigForm = <
         return {
           type: 'slot',
           slot: element.slot,
-          props: { ...filterAttributes(element, ['type', 'slot', 'props', 'span', 'align', 'visible']) },
+          data: { ...filterAttributes(element, ['type', 'slot', 'props', 'span', 'align', 'visible']) },
           span: Number(element.span) || element.span,
           align: element.align,
           visible: element.visible,

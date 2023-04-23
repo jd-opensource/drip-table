@@ -14,7 +14,7 @@ export const CustomGlobalConfigPanel: DripTableGeneratorPanel<DTGComponentProper
     {
       name: 'customProps',
       group: '自定义组',
-      'ui:title': '自定义属性透传',
+      'ui:title': '表格自定义属性',
       'ui:type': 'input',
       'ui:props': {},
       type: 'string',

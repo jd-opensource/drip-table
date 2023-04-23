@@ -13,7 +13,7 @@
   padding: 24px 12px 8px;
   width: max-content;
   position: relative;
-  min-width: 196px;
+  min-width: 300px;
 
   &.checked {
     border-style: solid;
@@ -33,6 +33,16 @@
   background-color: var(--drip-table-primary-color);
   color: #ffffff;
   box-shadow: 1px 1px 4px -1px rgb(0 0 0 / 85%);
+}
+
+.@{prefixCls}-inner-button {
+  border-color: transparent;
+  border-width: 0;
+
+  &:focus,
+  &:hover {
+    color: #e2e2e2 !important;
+  }
 }
 
 .@{prefixCls}-setting {
