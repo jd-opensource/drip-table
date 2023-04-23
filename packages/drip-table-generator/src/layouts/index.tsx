@@ -21,7 +21,10 @@ const GeneratorLayout = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (props.mode === 'page' || !props.mode
     ? (
-      <div className="jfe-drip-table-generator-layouts-container" style={{ ...props.style, height: props.style?.height ?? 640 }}>
+      <div
+        className="jfe-drip-table-generator-layouts-container"
+        style={{ ...props.style, width: props.width ?? props.style?.width ?? '100%', height: props.height ?? props.style?.height ?? '100%' }}
+      >
         <Toolbar {...props} />
         <div className="jfe-drip-table-generator-layouts-wrapper">
           <div className="jfe-drip-table-generator-layouts-table-workstation">
@@ -38,7 +41,7 @@ const GeneratorLayout = <
         modalRender={() => (
           <div
             className="jfe-drip-table-generator-layouts-model-container"
-            style={{ width: props.width ?? 1000, height: props.height ?? 640 }}
+            style={{ ...props.style, width: props.width ?? props.style?.width ?? 1000, height: props.height ?? props.style?.height ?? 640 }}
           >
             <Toolbar {...props} />
             <div className="jfe-drip-table-generator-layouts-wrapper">

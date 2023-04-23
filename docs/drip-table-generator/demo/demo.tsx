@@ -27,8 +27,6 @@ const Demo = () => (
     SubtableDataSourceKey: SubtableDataSourceKey;
   }>
     mockDataSource
-    width={1280}
-    height={738}
     showTemplate
     mode="page"
     schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}
@@ -54,7 +52,7 @@ const Demo = () => (
       'header-slot-sample': [{
         name: 'title',
         group: '',
-        'ui:title': '自定义属性透传',
+        'ui:title': '插槽自定义属性',
         'ui:type': 'input',
         'ui:props': {},
         type: 'string',

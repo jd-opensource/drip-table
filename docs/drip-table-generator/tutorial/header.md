@@ -18,49 +18,48 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-
-import { Input } from 'antd';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableGenerator from 'drip-table-generator';
-import React, { useState } from 'react';
+import { Input } from "antd";
+import { DripTableExtraOptions, DripTableSchema } from "drip-table";
+import DripTableGenerator from "drip-table-generator";
+import React, { useState } from "react";
 
 const schema = {
-  "header": {
-    "style": {
-        "margin": "0",
-        "padding": "12px 0"
+  header: {
+    style: {
+      margin: "0",
+      padding: "12px 0",
     },
-    "elements": [
+    elements: [
       {
-        "type": "display-column-selector",
-        "selectorButtonText": "列显隐控制"
+        type: "display-column-selector",
+        selectorButtonText: "列显隐控制",
       },
       {
-        "type": "text",
-        "span": 2,
-        "align": "flex-start",
-        "text": "表格标题"
+        type: "text",
+        span: 2,
+        align: "flex-start",
+        text: "表格标题",
       },
       {
-        "type": "spacer",
-        "style": {
-          "width": "360px"
-        }
+        type: "spacer",
+        style: {
+          width: "360px",
+        },
       },
       {
-        "type": "search",
-        "wrapperStyle": {},
-        "align": "flex-end",
-        "allowClear": true,
-        "searchButtonText": "搜索"
+        type: "search",
+        wrapperStyle: {},
+        align: "flex-end",
+        allowClear: true,
+        searchButtonText: "搜索",
       },
       {
-        "type": "insert-button",
-        "align": "flex-end",
-        "insertButtonText": "添加商品",
-        "showIcon": true
-      }
-    ]
+        type: "insert-button",
+        align: "flex-end",
+        insertButtonText: "添加商品",
+        showIcon: true,
+      },
+    ],
   },
   columns: [
     {
@@ -72,7 +71,7 @@ const schema = {
         mode: "single",
         maxRow: 1,
       },
-      "hidable": true
+      hidable: true,
     },
     {
       key: "mock_2",
@@ -85,7 +84,7 @@ const schema = {
         ellipsis: true,
         maxRow: 1,
       },
-      "hidable": true
+      hidable: true,
     },
   ],
 };
@@ -96,7 +95,8 @@ const dataSource = [
     name: "商品一",
     price: 7999,
     status: "onSale",
-    description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
   },
 ];
 
@@ -124,27 +124,26 @@ export default Demo;
  * hideActions: ["CSB"]
  */
 
-
-import { Button, Input } from 'antd';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
-import DripTableGenerator from 'drip-table-generator';
-import React, { useState } from 'react';
+import { Button, Input } from "antd";
+import { DripTableExtraOptions, DripTableSchema } from "drip-table";
+import DripTableGenerator from "drip-table-generator";
+import React, { useState } from "react";
 
 const schema = {
-  "header": {
-      "style": {
-        "margin": "0",
-        "padding": "12px 0"
+  header: {
+    style: {
+      margin: "0",
+      padding: "12px 0",
+    },
+    elements: [
+      {
+        type: "slot",
+        slot: "header-slot-sample",
+        props: {
+          title: "Title Click Count",
+        },
       },
-      "elements": [
-          {
-            "type": "slot",
-            "slot": "header-slot-sample",
-            "props": {
-              "title": "Title Click Count"
-            }
-          }
-      ]
+    ],
   },
   columns: [
     {
@@ -156,7 +155,7 @@ const schema = {
         mode: "single",
         maxRow: 1,
       },
-      "hidable": true
+      hidable: true,
     },
     {
       key: "mock_2",
@@ -169,7 +168,7 @@ const schema = {
         ellipsis: true,
         maxRow: 1,
       },
-      "hidable": true
+      hidable: true,
     },
   ],
 };
@@ -180,7 +179,8 @@ const dataSource = [
     name: "商品一",
     price: 7999,
     status: "onSale",
-    description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
   },
 ];
 
@@ -191,26 +191,38 @@ const Demo = () => {
       schema={schema}
       dataSource={dataSource}
       slots={{
-        'header-slot-sample': React.memo((props) => {
+        "header-slot-sample": React.memo((props) => {
           const [state, setState] = React.useState({ count: 0 });
           return (
-            <div className={props.className} style={{ border: '1px solid #1890ff', borderRadius: '3px' }}>
-              <Button type="primary" onClick={() => setState(st => ({ count: st.count + 1 }))}>{ props.title }</Button>
-              <span style={{ padding: '0 8px', color: '#1890ff' }}>{ `Count: ${state.count}` }</span>
+            <div
+              className={props.className}
+              style={{ border: "1px solid #1890ff", borderRadius: "3px" }}
+            >
+              <Button
+                type="primary"
+                onClick={() => setState((st) => ({ count: st.count + 1 }))}
+              >
+                {props.title}
+              </Button>
+              <span
+                style={{ padding: "0 8px", color: "#1890ff" }}
+              >{`Count: ${state.count}`}</span>
             </div>
           );
         }),
-        default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
+        default: (props) => <div>{`未知插槽类型：${props.slotType}`}</div>,
       }}
       slotsSchema={{
-        'header-slot-sample': [{
-          name: 'title',
-          group: '',
-          'ui:title': '自定义属性透传',
-          'ui:type': 'input',
-          'ui:props': {},
-          type: 'string',
-        }],
+        "header-slot-sample": [
+          {
+            name: "title",
+            group: "",
+            "ui:title": "插槽自定义属性",
+            "ui:type": "input",
+            "ui:props": {},
+            type: "string",
+          },
+        ],
       }}
     />
   );
