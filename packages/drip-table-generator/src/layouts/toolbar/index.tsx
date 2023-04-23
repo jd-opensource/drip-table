@@ -45,7 +45,7 @@ const ModeSwitch = (props: { style?: React.CSSProperties }) => (
     { ({ mode, setState }) => (
       <Button
         style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
-        onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit' })}
+        onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit', drawerType: void 0 })}
       >
         { mode === 'edit' ? '预览' : '编辑' }
       </Button>

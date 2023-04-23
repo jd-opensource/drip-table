@@ -60,7 +60,7 @@ const DropDownButton = (props: DropDownButtonProps) => {
         </div>
         <div
           className={classNames('jfe-drip-table-generator-dropdown-body', {
-            'page-mode': props.mode === 'page',
+            'page-mode': props.mode === 'page' || !props.mode,
           })}
           style={{
             width: props.width,
