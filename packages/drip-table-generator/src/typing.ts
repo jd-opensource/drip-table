@@ -217,7 +217,7 @@ export interface DripTableGeneratorProps<
    */
   defaultMode?: 'edit' | 'preview';
   /**
-   * 模式：model-弹出框；page-页面模式
+   * 模式：model-弹出框；page-页面模式, 默认页面模式
    */
   mode?: 'model' | 'page';
   width?: number;

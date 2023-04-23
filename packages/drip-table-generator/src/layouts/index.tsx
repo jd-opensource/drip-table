@@ -19,9 +19,9 @@ import Toolbar from './toolbar';
 const GeneratorLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (props.mode === 'page'
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (props.mode === 'page' || !props.mode
     ? (
-      <div className="jfe-drip-table-generator-layouts-container" style={{ ...props.style }}>
+      <div className="jfe-drip-table-generator-layouts-container" style={{ ...props.style, height: props.style?.height ?? 640 }}>
         <Toolbar {...props} />
         <div className="jfe-drip-table-generator-layouts-wrapper">
           <div className="jfe-drip-table-generator-layouts-table-workstation">
