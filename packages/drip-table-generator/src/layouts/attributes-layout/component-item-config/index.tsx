@@ -85,6 +85,8 @@ const ComponentItemConfigForm = <
         uiProps[key.replace('ui:props.', '')] = formData[key];
       } else if (key.startsWith('style.')) {
         columnStyle[key.replace('style.', '')] = String(formData[key]);
+      } else {
+        dataProps[key] = formData[key];
       }
     });
     if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
@@ -136,7 +138,7 @@ const ComponentItemConfigForm = <
         return (
           <CustomForm<DTGTableConfig['columns'][number]>
             primaryKey="key"
-            configs={columnConfig ? columnConfig.attrSchema || [] : []}
+            configs={columnConfig ? columnConfig.attrSchema.filter(item => item.name !== 'width') || [] : []}
             data={currentColumnItem}
             decodeData={decodeColumnConfigs}
             encodeData={formData => encodeColumnConfigs(formData, currentColumnItem)}
