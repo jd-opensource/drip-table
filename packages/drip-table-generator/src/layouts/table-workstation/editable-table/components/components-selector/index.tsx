@@ -40,6 +40,8 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
   component?.attrSchema.forEach((schema) => {
     if (schema.name.startsWith('options.')) {
       options[schema.name.replace('options.', '')] = schema.default;
+    } else if (schema.name.startsWith('ui:props.')) {
+      options[schema.name.replace('ui:props.', '')] = schema.default;
     } else if (!schema.name.startsWith('style') && !schema.name.startsWith('titleStyle')) {
       additionalProps[schema.name] = schema.default;
     }
@@ -182,7 +184,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     if (props.customColumns) {
                       columns = props.customColumns(tableConfigs[tableIndex].columns, column);
                     } else if (lastSortableColumnIndex < columns.length - 1) {
-                      columns.splice(lastSortableColumnIndex, 0, column);
+                      columns.splice(lastSortableColumnIndex + 1, 0, column);
                     } else {
                       columns = [...tableConfigs[tableIndex].columns, column];
                     }
