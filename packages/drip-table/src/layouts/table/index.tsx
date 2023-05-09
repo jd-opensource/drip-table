@@ -966,17 +966,13 @@ const TableLayout = <
 
   const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
-      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => {
-        const columnSchema = additionalProps?.columnSchema;
-        const columnTitle = columnSchema ? finalizeColumnTitle(columnSchema) : '';
-        return (
-          <th {...wrapperProps}>
-            <HeaderCell additionalProps={additionalProps}>
-              { columnTitle ? wrapperProps.children : void 0 }
-            </HeaderCell>
-          </th>
-        );
-      },
+      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => (
+        <th {...wrapperProps}>
+          <HeaderCell additionalProps={additionalProps}>
+            { wrapperProps.children }
+          </HeaderCell>
+        </th>
+      ),
     },
     body: tableInfo.schema.virtual
       ? (rawData, { scrollbarSize, onScroll }) => (
