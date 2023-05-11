@@ -66,6 +66,7 @@ export default {
     'dataTranslation',
     'options.visibleFunc',
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

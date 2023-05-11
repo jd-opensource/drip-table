@@ -76,12 +76,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         </div>
       ) }
       { leftFixedColumns.length > 0
-        ? leftFixedColumns.map(item => item.column).map((column, index) => (
+        ? leftFixedColumns.map((columnWrapper, index) => (
           <ColumnHeader
-            showRightShadow={column.fixed && !props.tableConfig.columns[index + 1]?.fixed}
+            showRightShadow={index === leftFixedColumns.length - 1}
             tableConfig={props.tableConfig}
-            column={column}
-            key={index}
+            column={columnWrapper.column}
+            columnId={columnWrapper.id}
           />
         ))
         : null }
@@ -102,14 +102,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           }}
           style={{ display: 'flex', border: '1px solid transparent' }}
         >
-          { props.tableConfig.columns.filter(item => !item.fixed).map((column, index) => (
-            <ColumnHeader tableConfig={props.tableConfig} column={column} key={index} />
+          { sortableColumns.map(columnWrapper => (
+            <ColumnHeader tableConfig={props.tableConfig} column={columnWrapper.column} columnId={columnWrapper.id} />
           )) }
         </ReactSortable>
       </div>
       { rightFixedColumns.length > 0
-        ? rightFixedColumns.map(item => item.column).map((column, index) => (
-          <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={column} key={index} />
+        ? rightFixedColumns.map((columnWrapper, index) => (
+          <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={columnWrapper.column} columnId={columnWrapper.id} />
         ))
         : null }
       <div

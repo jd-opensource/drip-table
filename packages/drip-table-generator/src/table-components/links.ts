@@ -304,6 +304,7 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
     },
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

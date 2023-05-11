@@ -51,7 +51,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableRowListProps<RecordType, ExtraOptions>) => {
   const { currentTableID, currentColumnID, currentHoverColumnID } = React.useContext(GeneratorContext);
   const scrollableRow = React.useRef<HTMLDivElement>(null);
-  const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index + 1, column: item })), [props.tableConfig.columns]);
+  const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
   const leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
   const rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
@@ -81,7 +81,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       style={{
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: column.width ?? 120,
+        width: column.width || 200,
       }}
     >
       <TableCell
@@ -121,9 +121,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         </div>
       ) }
       { leftFixedColumns.length > 0
-        ? leftFixedColumns.map(item => item.column)
-          .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
-            showRightShadow: column.fixed && !props.tableConfig.columns[index + 1]?.fixed,
+        ? leftFixedColumns.map((columnWrapper, index) =>
+          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
+            showRightShadow: index === leftFixedColumns.length - 1,
             isLastRow: props.isLastRow,
           }))
         : null }
@@ -135,14 +135,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         }}
         onScroll={(e) => { if (props.scrollTarget === `__row_${props.rowIndex}`) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >
-        { props.tableConfig.columns.filter(item => !item.fixed)
-          .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
+        { sortableColumns.map(columnWrapper =>
+          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
             isLastRow: props.isLastRow,
           })) }
       </div>
       { rightFixedColumns.length > 0
-        ? rightFixedColumns.map(item => item.column)
-          .map((column, index) => renderTableCell(column as DripTableBuiltInColumnSchema, index, {
+        ? rightFixedColumns.map((columnWrapper, index) =>
+          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
             showLeftShadow: !index,
             isLastRow: props.isLastRow,
           }))

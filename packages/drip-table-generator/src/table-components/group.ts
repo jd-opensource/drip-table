@@ -92,6 +92,7 @@ export default {
       type: 'boolean',
       default: false,
     },
+    'fixed',
     // styles
     'width',
     {
