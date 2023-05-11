@@ -50,7 +50,7 @@
 
     配置端正常渲染效果如下：
 
-    ![drip-table-generator](https://img10.360buyimg.com/imagetools/jfs/t1/209919/9/12490/4540144/61b71921Ee35a9a3c/e2f7167fef822f17.gif)
+    ![drip-table-generator](https://storage.360buyimg.com/imgtools/287adb8078-a09940a0-efc4-11ed-b3db-7f20d4d9a150.gif)
 
 ## 开发手册
 
