@@ -47,6 +47,7 @@ export default {
     },
     'dataTranslation',
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

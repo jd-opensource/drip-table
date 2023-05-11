@@ -10,19 +10,20 @@
 
 .@{prefixCls}-wrapper {
   border: 1px dashed var(--drip-table-border-color);
-  padding: 24px 12px 8px;
+  padding: 0 12px 8px;
   width: max-content;
   position: relative;
   min-width: 300px;
 
   &.checked {
     border-style: solid;
+    margin-top: 32px;
   }
 }
 
 .@{prefixCls}-tools {
   position: absolute;
-  top: 0;
+  top: -27px;
   left: -1px;
   display: flex;
   z-index: 1;
@@ -32,7 +33,7 @@
   padding: 2px 4px;
   background-color: var(--drip-table-primary-color);
   color: #ffffff;
-  box-shadow: 1px 1px 4px -1px rgb(0 0 0 / 85%);
+  box-shadow: 0 -1px 4px -1px rgb(0 0 0 / 56%);
 }
 
 .@{prefixCls}-inner-button {

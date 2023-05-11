@@ -35,6 +35,7 @@ export default {
       default: 'return rec.name',
     },
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

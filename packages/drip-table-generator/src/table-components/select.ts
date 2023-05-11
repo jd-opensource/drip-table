@@ -177,6 +177,7 @@ export default {
       default: '',
     },
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

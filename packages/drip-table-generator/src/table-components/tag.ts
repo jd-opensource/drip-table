@@ -83,6 +83,7 @@ export default {
       },
       type: 'string',
     },
+    'fixed',
     // styles
     'width',
     'align',

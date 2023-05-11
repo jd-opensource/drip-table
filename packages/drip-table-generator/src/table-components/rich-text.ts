@@ -55,6 +55,7 @@ export default {
       default: '<p><strong>{{rec.name}}</strong></p>',
     },
     'hidable',
+    'fixed',
     'description',
     {
       name: 'options.tooltip',

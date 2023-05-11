@@ -27,7 +27,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   tableConfig: DTGTableConfig;
   column: DTGTableConfig['columns'][number];
-  key?: string | number;
+  columnId?: string | number;
   showLeftShadow?: boolean;
   showRightShadow?: boolean;
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
@@ -113,11 +113,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ),
     },
   ], [selector]);
+
   return (
     <GeneratorContext.Consumer>
       { ({ currentComponentPath, currentColumnID, currentComponentID, currentTableID, drawerType, setState }) => (
         <div
-          key={props.key}
+          key={props.columnId}
           className={classNames('jfe-drip-table-generator-workstation-table-header-item', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
             checked: props.tableConfig.tableId === currentTableID && props.column.key === currentColumnID,
@@ -125,7 +126,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
           })}
-          style={{ width: props.column.width ?? 120 }}
+          style={{ width: props.column.width || 200 }}
           onClick={(e) => {
             e.stopPropagation();
             setState({
@@ -143,20 +144,22 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             <TableConfigsContext.Consumer>
               { ({ tableConfigs, setTableColumns }) => (
                 <div className="jfe-drip-table-generator-workstation-table-header-tools" onClick={e => e.stopPropagation()}>
-                  <Button
-                    title="打开配置面板"
-                    size="small"
-                    type="primary"
-                    icon={<SettingOutlined />}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setState({
-                        currentTableID: props.tableConfig.tableId,
-                        currentColumnID: props.column.key,
-                        drawerType: 'column',
-                      });
-                    }}
-                  />
+                  <Tooltip title="打开当前列组件配置面板">
+                    <Button
+                      size="small"
+                      className="jfe-drip-table-generator-workstation-table-header-tool"
+                      ghost
+                      icon={<SettingOutlined />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setState({
+                          currentTableID: props.tableConfig.tableId,
+                          currentColumnID: props.column.key,
+                          drawerType: 'column',
+                        });
+                      }}
+                    />
+                  </Tooltip>
                   <ClipboardButton
                     component="span"
                     style={{ lineHeight: '24px' }}
@@ -171,7 +174,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     <Button
                       title="复制列"
                       size="small"
-                      type="primary"
+                      className="jfe-drip-table-generator-workstation-table-header-tool"
+                      ghost
                       icon={<CopyOutlined />}
                       onClick={e => e.stopPropagation()}
                     />
@@ -199,7 +203,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     <Button
                       title="删除列"
                       size="small"
-                      type="primary"
+                      ghost
                       className="jfe-drip-table-generator-workstation-table-header-tool danger"
                       icon={<DeleteOutlined />}
                     />
@@ -212,7 +216,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     <Button
                       title="更多操作"
                       size="small"
-                      type="primary"
+                      ghost
+                      className="jfe-drip-table-generator-workstation-table-header-tool"
                       style={{ transform: 'rotate(90deg)' }}
                       icon={<EllipsisOutlined />}
                       onClick={e => e.stopPropagation()}

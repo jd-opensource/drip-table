@@ -339,6 +339,25 @@ const hidable: DTGComponentPropertySchema = {
   type: 'boolean',
 };
 
+const fixed: DTGComponentPropertySchema = {
+  name: 'fixed',
+  group: '属性',
+  'ui:title': '固定列',
+  'ui:type': 'radio',
+  'ui:props': {
+    mode: 'button',
+    buttonStyle: 'solid',
+    size: 'small',
+    options: [
+      { label: '不固定', value: void 0 },
+      { label: '靠左', value: 'left' },
+      { label: '靠右', value: 'right' },
+    ],
+  },
+  type: 'string',
+  default: void 0,
+};
+
 const dataTranslation: DTGComponentPropertySchema = {
   name: 'dataTranslation',
   group: '属性',
@@ -400,6 +419,7 @@ export const basicColumnAttrSchema = {
   align,
   verticalAlign,
   hidable,
+  fixed,
   dataTranslation,
   'options.disableFunc': disableFunc,
   'options.visibleFunc': visibleFunc,

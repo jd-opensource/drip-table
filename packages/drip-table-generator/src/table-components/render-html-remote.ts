@@ -24,6 +24,7 @@ export default {
       type: 'string',
     },
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

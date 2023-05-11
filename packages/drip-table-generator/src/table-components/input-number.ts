@@ -91,6 +91,7 @@ export default {
       default: 'middle',
     },
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

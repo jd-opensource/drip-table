@@ -74,7 +74,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onClick={e => e.stopPropagation()}
               style={{
                 width: props.path.length === 0 ? 'max-content' : void 0,
-                minWidth: props.path.length === 0 ? props.column.width ?? 120 : void 0,
+                minWidth: props.path.length === 0 ? props.column.width || 200 : void 0,
               }}
             >
               { options.layout.map((colLength, rowIndex) => (

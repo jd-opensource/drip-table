@@ -327,6 +327,7 @@ export default {
     'options.disableFunc',
     'options.visibleFunc',
     'hidable',
+    'fixed',
     'description',
     // styles
     'width',

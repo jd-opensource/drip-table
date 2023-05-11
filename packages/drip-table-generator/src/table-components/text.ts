@@ -127,6 +127,7 @@ export default {
       'ui:type': 'switch',
       type: 'boolean',
     },
+    'fixed',
     'description',
     // styles
     'width',
