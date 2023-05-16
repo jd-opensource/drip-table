@@ -277,6 +277,8 @@ const DRIP_TABLE_GENERATOR_SIDEBAR = [
           { title: 'customGlobalConfigPanel', link: '/drip-table-generator/props/custom-global-config-panel' },
           { title: 'customAttributeComponents', link: '/drip-table-generator/props/custom-attribute-components' },
           { title: 'dataFields', link: '/drip-table-generator/props/data-fields' },
+          { title: 'save', link: '/drip-table-generator/props/save' },
+          { title: 'mode', link: '/drip-table-generator/props/mode' },
           { title: 'mockDataSource', link: '/drip-table-generator/props/mock-data-source' },
           { title: 'noDataFeedback', link: '/drip-table-generator/props/no-data-feedback' },
           { title: 'onExportSchema', link: '/drip-table-generator/props/on-export-schema' },
