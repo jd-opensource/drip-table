@@ -10,15 +10,31 @@ import { Button, message } from 'antd';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
-import { TableConfigsContext } from '@/context/table-configs';
+import { DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 
 export interface ExportSchemaProps {
   height?: number | string;
+  mode?: 'page' | 'modal';
 }
 const ExportSchema = (props: ExportSchemaProps) => {
   const context = React.useContext(TableConfigsContext);
   const [code, setCode] = React.useState(JSON.stringify(getSchemaValue(context.tableConfigs), null, 4));
+  const handleCode = (value: string, updateTableConfigs: DTGTableConfigsContext['updateTableConfigs']) => {
+    let hasError = false;
+    try {
+      const json = JSON.parse(value);
+      const newTableConfigs = generateTableConfigsBySchema(json);
+      updateTableConfigs(newTableConfigs);
+    } catch {
+      hasError = true;
+      message.error('解析出错, 请传入正确的格式');
+    } finally {
+      if (!hasError) {
+        message.success('数据编辑成功');
+      }
+    }
+  };
   return (
     <TableConfigsContext.Consumer>
       { ({ updateTableConfigs }) => (
@@ -31,6 +47,9 @@ const ExportSchema = (props: ExportSchemaProps) => {
             value={code}
             onChange={(value) => {
               setCode(value);
+              if (props.mode === 'modal') {
+                handleCode(value, updateTableConfigs);
+              }
             }}
           />
           <div style={{ marginTop: 8, padding: '0 12px', textAlign: 'right' }}>
@@ -48,27 +67,17 @@ const ExportSchema = (props: ExportSchemaProps) => {
             >
               格式化
             </Button>
+            { props.mode === 'page' && (
             <Button
               type="primary"
               onClick={() => {
                 const value = (code || '').trim();
-                let hasError = false;
-                try {
-                  const json = JSON.parse(value);
-                  const newTableConfigs = generateTableConfigsBySchema(json);
-                  updateTableConfigs(newTableConfigs);
-                } catch {
-                  hasError = true;
-                  message.error('解析出错, 请传入正确的格式');
-                } finally {
-                  if (!hasError) {
-                    message.success('数据编辑成功');
-                  }
-                }
+                handleCode(value, updateTableConfigs);
               }}
             >
               确认编辑
             </Button>
+            ) }
           </div>
         </div>
       ) }

@@ -109,7 +109,11 @@ const TableContainer = (props: TableContainerProps) => (
       >
         { currentTableID === props.tableConfig.tableId && (
         <div className="jfe-drip-table-generator-table-container-tools">
-          <span className="jfe-drip-table-generator-table-container-tool">{ props.tableConfig.tableId }</span>
+          <span className="jfe-drip-table-generator-table-container-tool">
+            表格ID:
+            { ' ' }
+            { props.tableConfig.tableId }
+          </span>
           <div className="jfe-drip-table-generator-table-container-tool" style={{ marginLeft: '2px', padding: '0 4px' }}>
             <Tooltip title="打开当前表格配置面板">
               <Button

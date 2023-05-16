@@ -376,13 +376,13 @@ const dataTranslation: DTGComponentPropertySchema = {
 };
 
 const disableFunc: DTGComponentPropertySchema = {
-  name: 'options.disableFunc',
+  name: 'options.disabled',
   group: '属性',
   'ui:title': '禁用判断',
   'ui:type': 'text',
   'ui:props': {
     style: { width: '100%' },
-    placeholder: 'props.value对应dataIndex的值，props.record对应rowData的值,return语句写法案例: `return props.value === 1',
+    placeholder: 'props.value对应dataIndex的值，props.record对应rowData的值,条件写法案例: `props.value === 1',
 
   },
   'ui:description': {
@@ -421,7 +421,7 @@ export const basicColumnAttrSchema = {
   hidable,
   fixed,
   dataTranslation,
-  'options.disableFunc': disableFunc,
+  'options.disabled': disableFunc,
   'options.visibleFunc': visibleFunc,
 };
 

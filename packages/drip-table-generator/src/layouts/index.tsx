@@ -8,8 +8,11 @@
 import './index.less';
 
 import { Modal } from 'antd';
+import classNames from 'classnames';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
+
+import { GeneratorContext } from '@/context';
 
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
 import AttributesLayout from './attributes-layout';
@@ -19,7 +22,9 @@ import Toolbar from './toolbar';
 const GeneratorLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => (props.mode === 'page' || !props.mode
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+  const { drawerType } = React.useContext(GeneratorContext);
+  return props.mode === 'page' || !props.mode
     ? (
       <div
         className="jfe-drip-table-generator-layouts-container"
@@ -27,7 +32,10 @@ const GeneratorLayout = <
       >
         <Toolbar {...props} />
         <div className="jfe-drip-table-generator-layouts-wrapper">
-          <div className="jfe-drip-table-generator-layouts-table-workstation">
+          <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
+            fixed: drawerType === 'column' || drawerType === 'column-item',
+          })}
+          >
             <TableWorkStation {...props} />
           </div>
           <AttributesLayout {...props} />
@@ -53,6 +61,7 @@ const GeneratorLayout = <
           </div>
         )}
       />
-    ));
+    );
+};
 
 export default GeneratorLayout;

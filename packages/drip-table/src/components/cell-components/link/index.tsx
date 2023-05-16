@@ -264,9 +264,10 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div>
           <a
-            href={finalizeString('pattern', options.href || '', this.props.data)}
+            className={this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : void 0}
+            href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.data)}
             target={options.target}
-            onClick={this.props.preview ? e => e.preventDefault() : void 0}
+            onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
             style={{ lineHeight: options.lineHeight }}
           >
             { options.label }
