@@ -116,7 +116,7 @@ export default {
       type: 'string',
     },
     'dataTranslation',
-    'options.disableFunc',
+    'options.disabled',
     'options.visibleFunc',
     'hidable',
     {

@@ -20,7 +20,7 @@ export interface DropDownButtonProps {
   width?: number | string;
   height?: number | string;
   style?: React.CSSProperties;
-  mode?: 'page' | 'model';
+  mode?: 'page' | 'modal';
   innerStyle?: React.CSSProperties;
   open?: boolean;
   disabled?: boolean;

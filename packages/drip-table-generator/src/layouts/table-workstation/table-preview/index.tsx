@@ -26,7 +26,7 @@ const PreviewTable = <
   return (
     <div
       className="jfe-drip-table-generator-workstation-table-preview-wrapper"
-      style={props.mode === 'model'
+      style={props.mode === 'modal'
         ? {
           width: (props.width ?? 1000) - 16,
           height: (props.height ?? 640) - 53,
@@ -38,7 +38,7 @@ const PreviewTable = <
       <DripTable
         style={Object.assign({ ...props.style },
           props.visible ? void 0 : { display: 'none' },
-          props.mode === 'model' ? { height: '', width: '' } : void 0)}
+          props.mode === 'modal' ? { height: '', width: '' } : void 0)}
         schema={getSchemaValue(tableConfigs)}
         dataSource={context.previewDataSource as RecordType[]}
         components={props.components || props.customComponents}

@@ -202,7 +202,7 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
     },
     'dataTranslation',
-    'options.disableFunc',
+    'options.disabled',
     'options.visibleFunc',
     {
       name: 'options.tooltip',

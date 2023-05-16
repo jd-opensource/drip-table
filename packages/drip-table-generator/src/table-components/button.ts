@@ -266,7 +266,7 @@ export default {
             default: false,
           },
           {
-            name: 'disableFunc',
+            name: 'disabled',
             group: '属性',
             'ui:title': '禁用判断',
             'ui:type': 'text',
@@ -324,7 +324,7 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
     },
     'dataTranslation',
-    'options.disableFunc',
+    'options.disabled',
     'options.visibleFunc',
     'hidable',
     'fixed',

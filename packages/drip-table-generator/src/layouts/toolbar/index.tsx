@@ -27,7 +27,7 @@ import { DTGBuiltInTemplates } from './templates';
 function generateDropdownProps(props: {
   name: string;
   label: string;
-  mode?: 'model' | 'page';
+  mode?: 'modal' | 'page';
   width?: number;
   height?: number;
 }): Omit<DropDownButtonProps, 'children'> {
@@ -154,13 +154,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               innerStyle={{ padding: '0 0 8px 0' }}
               disabled={!!operateMenu && operateMenu !== 'export'}
             >
-              <ExportSchema height={bodyHeight - 8 - 40} />
+              <ExportSchema
+                height={bodyHeight - 8 - 40}
+                mode={props.mode}
+              />
             </DropDownButton>
             <ModeSwitch style={operateMenu ? { opacity: '0.0', visibility: 'hidden' } : void 0} />
             { props.save && (
             <Button
               type="primary"
-              style={{ marginLeft: 24, borderRadius: '6px', opacity: operateMenu ? '0.0' : void 0 }}
+              style={{ marginLeft: 24,
+                borderRadius: '6px',
+                opacity: operateMenu ? '0.0' : void 0,
+                visibility: operateMenu ? 'hidden' : void 0 }}
               onClick={() => props.onSave?.(getSchemaValue(tableConfigs))}
             >
               保存
@@ -168,7 +174,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             ) }
           </div>
           <div className="jfe-drip-table-generator-templates-toolbar right">
-            { props.mode === 'model' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }
+            { props.mode === 'modal' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }
           </div>
         </div>
       ) }
