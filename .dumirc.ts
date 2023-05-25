@@ -93,6 +93,7 @@ const DRIP_TABLE_SIDEBAR = [
               { title: '列可编辑 editable', link: '/drip-table/schema/columns/editable' },
               { title: '列可隐藏 hidable', link: '/drip-table/schema/columns/hidable' },
               { title: '过滤器 filters', link: '/drip-table/schema/columns/filters' },
+              { title: '过滤器最大数量 filtersMaxSelect', link: '/drip-table/schema/columns/filters-max-select' },
               { title: '过滤器默认值 defaultFilteredValue', link: '/drip-table/schema/columns/default-filtered-value' },
               { title: '组件类型 component', link: '/drip-table/schema/columns/component' },
               { title: '配置项 options', link: '/drip-table/schema/columns/options' },

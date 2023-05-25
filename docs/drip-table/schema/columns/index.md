@@ -32,6 +32,7 @@ toc: content
 | [column.editable](/drip-table/schema/columns/editable) | 根据行数据控制当前单元格组件是否隐藏不可见 | × | [🔗 示例](/drip-table/schema/columns/editable) |
 | [column.hidable](/drip-table/schema/columns/hidable) | 用户可控制该列显示隐藏 | × | [🔗 示例](/drip-table/schema/columns/hidable) |
 | [column.filters](/drip-table/schema/columns/filters) | 数据过滤器设置 | × | [🔗 示例](/drip-table/schema/columns/filters) |
+| [column.filtersMaxSelect](/drip-table/schema/columns/filters-max-select) | 数据过滤器最大选择数量 | × | [🔗 示例](/drip-table/schema/columns/filters-max-select) |
 | [column.defaultFilteredValue](/drip-table/schema/columns/default-filtered-value) | 默认数据过滤器值 | × | [🔗 示例](/drip-table/schema/columns/default-filtered-value) |
 | [column.component](/drip-table/schema/columns/component) | 组件类型标识符，自定义开发的业务组件以 `命名空间::组件名称` 格式填写 | √ | [🔗 示例](/drip-table/schema/columns/component) |
 | [column.options](/drip-table/schema/columns/options) | 组件类型的对应配置项 | √ | [🔗 示例](/drip-table/schema/columns/options) |

@@ -112,6 +112,9 @@ const HeaderCell = <
                               if (!checked) {
                                 value.push(f.value);
                               }
+                              if (columnSchema.filtersMaxSelect && value.length > columnSchema.filtersMaxSelect) {
+                                value.splice(0, value.length - columnSchema.filtersMaxSelect);
+                              }
                               setFilterDisplay(value);
                             }}
                           >

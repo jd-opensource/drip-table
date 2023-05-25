@@ -656,6 +656,7 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
           required: ['text', 'value'],
         },
       },
+      filtersMaxSelect: { type: 'number' },
       defaultFilteredValue: { typeof: ['string', 'number', 'object'] },
     },
     required: [

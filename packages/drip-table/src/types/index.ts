@@ -140,6 +140,10 @@ export interface DripTableDataColumnSchema extends DripTableBaseColumnSchema {
     value: string | number | boolean;
   }[];
   /**
+   * 数据过滤器最可多选数量
+   */
+  filtersMaxSelect?: number;
+  /**
    * 默认数据过滤器值
    */
   defaultFilteredValue?: React.Key[] | null;
