@@ -123,6 +123,10 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     </span>
   );
 
+  private formatLabel(label?: string) {
+    return finalizeString('pattern', label || '', this.props.data);
+  }
+
   private renderToolTip = (template?: string) => {
     const { tooltip } = this.props.schema.options;
     if (tooltip) {
@@ -209,7 +213,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                       this.props.fireEvent({ type: 'drip-link-click', payload: event });
                     }}
                   >
-                    { config.label }
+                    { this.formatLabel(config.label) }
                   </a>
                 </Menu.Item>
               );
@@ -221,7 +225,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                   onClick={this.props.preview ? e => e.preventDefault() : void 0}
                   target={config.target}
                 >
-                  { config.label }
+                  { this.formatLabel(config.label) }
                 </a>
               </Menu.Item>
             );
@@ -254,7 +258,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                 this.props.fireEvent({ type: 'drip-link-click', payload: event });
               }}
             >
-              { options.label }
+              { this.formatLabel(options.label) }
             </a>
             { this.renderToolTip() }
           </div>
@@ -270,8 +274,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
             style={{ lineHeight: options.lineHeight }}
           >
-            { options.label }
-
+            { this.formatLabel(options.label) }
           </a>
           { this.renderToolTip() }
         </div>
@@ -295,7 +298,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                       this.props.fireEvent({ type: 'drip-link-click', payload: event });
                     }}
                   >
-                    { config.label }
+                    { this.formatLabel(config.label) }
                   </a>
                   { this.renderToolTip() }
                 </div>
@@ -317,7 +320,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                     this.props.fireEvent({ type: 'drip-link-click', payload: event as string });
                   }}
                 >
-                  { config.label }
+                  { this.formatLabel(config.label) }
                 </a>
                 { this.renderToolTip() }
               </div>

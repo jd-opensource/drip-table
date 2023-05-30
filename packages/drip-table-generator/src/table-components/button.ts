@@ -180,6 +180,11 @@ export default {
           {
             name: 'label',
             'ui:title': '按钮文案',
+            'ui:description': {
+              title: '支持字符串模板写法{{rec.id}}',
+              trigger: 'hover',
+              type: 'icon',
+            },
             'ui:type': 'input',
             default: '',
             type: 'string',
