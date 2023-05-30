@@ -70,6 +70,14 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    */
   suffix?: string;
   /**
+   * 展示提示文案
+   */
+  showTooltip?: boolean;
+  /**
+   * 提示文案显示位置
+   */
+  placement?: 'top' | 'left' | 'right' | 'bottom' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
+  /**
    * 多行文本段落配置
    */
   parts?: {
@@ -166,6 +174,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       defaultValue: { type: 'string' },
       prefix: { type: 'string' },
       suffix: { type: 'string' },
+      showTooltip: { type: 'boolean' },
+      placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
       parts: {
         type: 'array',
         items: {
@@ -568,9 +578,14 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         { rawTextEl }
       </div>
     );
-    if (this.props.schema.options.maxRow && !this.props.preview) {
+    if (((this.props.schema.options.maxRow && this.props.schema.options.showTooltip === void 0)
+      || this.props.schema.options.showTooltip !== false
+    ) && !this.props.preview) {
       wrapperEl = (
-        <Tooltip title={<div className={`${prefixCls}-word-break`} style={this.rawTextStyles}>{ rawTextEl }</div>}>
+        <Tooltip
+          title={<div className={`${prefixCls}-word-break`} style={this.rawTextStyles}>{ rawTextEl }</div>}
+          placement={this.props.schema.options.placement}
+        >
           { wrapperEl }
         </Tooltip>
       );
