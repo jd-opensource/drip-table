@@ -1,13 +1,13 @@
 ---
-title: save
+title: onSave
 toc: content
 ---
 
 ## save
 
-- 描述：是否展示保存按钮
-- 类型：`boolean`
-- 默认值：`false`
+- 描述：点击保存按钮触发的事件
+- 类型：`Function(schema: DripTableSchema): void`
+- 默认值：`undefined`
 
 ```jsx
 /**
@@ -16,7 +16,7 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
 import DripTableGeneratorProvider from "drip-table-generator";
 import React, { useState } from "react";
@@ -60,20 +60,16 @@ const dataSource = [
 ];
 
 const Demo = () => {
-  const [save, setSaveBtn] = useState(false);
   return (
     <>
-      <Button
-        onClick={() => setSaveBtn(!save)}
-        type="primary"
-        style={{ margin: "8px 0" }}
-      >
-        点击切换保存按钮
-      </Button>
       <DripTableGeneratorProvider
         schema={schema}
         dataSource={dataSource}
-        save={save}
+        save={true}
+        onSave={(schema) => {
+          console.log(schema);
+          message.success(JSON.stringify(schema));
+        }}
       />
     </>
   );

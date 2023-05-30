@@ -1,12 +1,12 @@
 ---
-title: mockDataSource
+title: mode
 toc: content
 ---
 
-## mockDataSource
+## mode
 
-- 描述：是否展示 mock 数据源
-- 类型：`boolean`
+- 描述：生成器展示模式，目前支持内置页面组件和弹框两种形式
+- 类型：`modal` | `page`
 - 默认值：`false`
 
 ```jsx

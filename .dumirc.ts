@@ -284,6 +284,7 @@ const DRIP_TABLE_GENERATOR_SIDEBAR = [
           { title: 'noDataFeedback', link: '/drip-table-generator/props/no-data-feedback' },
           { title: 'onExportSchema', link: '/drip-table-generator/props/on-export-schema' },
           { title: 'onDataSourceChange', link: '/drip-table-generator/props/on-datasource-change' },
+          { title: 'onSave', link: '/drip-table-generator/props/on-save' },
           { title: 'showComponentLayout', link: '/drip-table-generator/props/show-component-layout' },
           { title: 'showToolLayout', link: '/drip-table-generator/props/show-tool-layout' },
           { title: 'slotsSchema', link: '/drip-table-generator/props/slots-schema' },
