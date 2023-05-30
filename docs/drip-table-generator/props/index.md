@@ -37,5 +37,6 @@ toc: content
 | [rowExpandable](/drip-table/props/row-expandable)                                    | 获取指定行是否可展开                       | ×    | [🔗 示例](/drip-table/props/row-expandable)                        |
 | [expandedRowRender](/drip-table/props/expanded-row-render)                           | 行展开自定义渲染函数                       | ×    | [🔗 示例](/drip-table/props/expanded-row-render)                   |
 | [onDataSourceChange](/drip-table/props/on-datasource-change)                         | 导出表格数据                               | ×    | [🔗 示例](/drip-table/props/on-datasource-change)                  |
+| [onSave](/drip-table/props/on-save)                                                  | 点击保存按钮回调                           | ×    | [🔗 示例](/drip-table/props/on-save)                               |
 
 > tips: `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 [`drip-table`](/drip-table/props)。
