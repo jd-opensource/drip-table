@@ -10,6 +10,8 @@ import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
 
 import { basicTableTemplates } from './basic-table';
 import { editableTableTemplate } from './editable-table';
+import { groupTableTemplate } from './group-table';
+import { proTableTemplate } from './pro-table';
 import { subTableTemplate } from './sub-table';
 
 export interface DripTableGeneratorTemplate {
@@ -35,4 +37,6 @@ export const DTGBuiltInTemplates: DripTableGeneratorTemplate[] = [
   basicTableTemplates,
   editableTableTemplate,
   subTableTemplate,
+  proTableTemplate,
+  groupTableTemplate,
 ];

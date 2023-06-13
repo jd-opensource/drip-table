@@ -8,15 +8,34 @@
 
 import { DripTableGeneratorTemplate } from './index';
 
-export const editableTableTemplate: DripTableGeneratorTemplate = {
-  key: 'editable-template',
-  label: '可编辑表格',
-  previewImg: 'https://storage.360buyimg.com/interaction/babel/6000000004303-55-tps-56-56.svg',
+export const groupTableTemplate: DripTableGeneratorTemplate = {
+  key: 'group-template',
+  label: '分组表格',
+  previewImg: 'https://img12.360buyimg.com/imagetools/jfs/t1/110370/7/39274/1039/642e347aFb6fa2807/d43cfbb9a1bda8cf.png',
   schema: {
-    editable: true,
-    pagination: {
-      pageSize: 20,
-      position: 'bottomRight',
+    rowSelection: true,
+    rowHeader: {
+      style: {
+        background: '#dfe8ff',
+        border: '1px solid #dfe8ff',
+        marginBottom: '5px',
+        paddingLeft: '10px',
+      },
+      elements: [
+        {
+          type: 'slot',
+          slot: 'row-slot-sample',
+        },
+        {
+          type: 'spacer',
+          span: 'flex-auto',
+        },
+        {
+          type: 'text',
+          text: '行头部插槽',
+          style: { marginRight: '20px' },
+        },
+      ],
     },
     columns: [
       {
@@ -46,7 +65,7 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
           format: '{{rec}}',
           parts: [
             {
-              dataIndex: 'name',
+              dataIndex: 'id',
             },
           ],
         },
@@ -103,5 +122,6 @@ export const editableTableTemplate: DripTableGeneratorTemplate = {
         verticalAlign: 'middle',
       },
     ],
+
   },
 };

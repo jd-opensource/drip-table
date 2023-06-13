@@ -2,6 +2,7 @@ import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTable
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { CustomComponentProps } from './components/CustomForm/components';
+import { DripTableGeneratorTemplate } from './layouts/toolbar/templates';
 
 export interface StringDataSchema {
   type: 'string';
@@ -226,6 +227,10 @@ export interface DripTableGeneratorProps<
    * 是否展示 模板 按钮
    */
   showTemplate?: boolean;
+  /**
+   * 自定义模板，可传入多个，如果key一样的话，后面的会替代前面的
+   */
+  customTemplates?: DripTableGeneratorTemplate[];
   /**
    * 是否展示 保存 按钮
    */
