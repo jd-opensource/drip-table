@@ -7,22 +7,21 @@
  */
 import './index.less';
 
-import { CheckOutlined, CloseOutlined, ExclamationCircleFilled } from '@ant-design/icons';
-import { Button, Image, Modal } from 'antd';
-import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
-import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
+import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import DataSourceEditor from './components/datasource';
 import DropDownButton, { DropDownButtonProps } from './components/dropdown-button';
 import ExportSchema from './components/export-schema';
 import ImportSchema from './components/import-schema';
-import { DTGBuiltInTemplates } from './templates';
+import TemplatesManager from './components/templates-manager';
 
 function generateDropdownProps(props: {
   name: string;
@@ -58,7 +57,6 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
   const { drawerType, setState } = React.useContext(GeneratorContext);
-  const [defaultTemplate, setTemplate] = React.useState('');
   const [operateMenu, setOperateMenu] = React.useState(void 0 as string | undefined);
   const onOpen = (isOpen: boolean, key: string) => {
     setOperateMenu(isOpen ? key : void 0);
@@ -84,42 +82,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onOpen={onOpen}
               disabled={!!operateMenu && operateMenu !== 'template'}
             >
-              <div className="jfe-drip-table-generator-templates-container">
-                { DTGBuiltInTemplates.map((iTemplate, key) => (
-                  <div
-                    className={classNames('jfe-drip-table-generator-templates-wrapper', { checked: iTemplate.key === defaultTemplate })}
-                    key={key}
-                    onClick={() => {
-                      if (tableConfigs.length > 0 && tableConfigs[0].columns.length > 0) {
-                        Modal.confirm({
-                          title: '此操作会覆盖当前正在编辑的表格，确定要这么做吗?',
-                          icon: <ExclamationCircleFilled />,
-                          okText: '确定',
-                          okType: 'danger',
-                          cancelText: '我再想想',
-                          onOk() {
-                            setTemplate(iTemplate.key);
-                            const newTableConfigs = generateTableConfigsBySchema(iTemplate.schema as DripTableSchema);
-                            updateTableConfigs(newTableConfigs);
-                          },
-                        });
-                      } else {
-                        setTemplate(iTemplate.key);
-                        const newTableConfigs = generateTableConfigsBySchema(iTemplate.schema as DripTableSchema);
-                        updateTableConfigs(newTableConfigs);
-                      }
-                    }}
-                  >
-                    { iTemplate.key === defaultTemplate && (
-                    <div className="jfe-drip-table-generator-templates-wrapper-corner">
-                      <CheckOutlined style={{ color: '#ffffff', marginRight: '2px' }} />
-                    </div>
-                    ) }
-                    <div><Image width={112} height={112} src={iTemplate.previewImg} preview={false} /></div>
-                    <div><span>{ iTemplate.label }</span></div>
-                  </div>
-                )) }
-              </div>
+              <TemplatesManager
+                dataFields={props.dataFields}
+                mockDataSource={props.mockDataSource}
+                customComponentPanel={props.customComponentPanel}
+                onOk={() => setOperateMenu(void 0)}
+              />
             </DropDownButton>
             ) }
             <DropDownButton

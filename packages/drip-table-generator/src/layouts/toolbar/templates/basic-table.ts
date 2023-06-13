@@ -53,6 +53,15 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
         verticalAlign: 'middle',
       },
       {
+        key: 'mock_2',
+        title: '详情',
+        align: 'center',
+        dataIndex: 'description',
+        component: 'text',
+        hidable: true,
+        options: { mode: 'single', ellipsis: true, maxRow: 1 },
+      },
+      {
         key: 'tag_18722ec1c73-1336',
         dataIndex: 'status',
         title: '状态',
@@ -71,11 +80,22 @@ export const basicTableTemplates: DripTableGeneratorTemplate = {
         title: '操作',
         component: 'link',
         options: {
-          mode: 'single',
+          mode: 'multiple',
           label: '链接',
           href: 'http://api.example.com/api_path',
           event: '',
-          operates: [],
+          operates: [
+            {
+              label: '编辑',
+              target: '',
+              event: 'edit',
+            },
+            {
+              label: '删除',
+              target: '',
+              event: 'delete',
+            },
+          ],
           trigger: 'hover',
         },
         align: 'center',
