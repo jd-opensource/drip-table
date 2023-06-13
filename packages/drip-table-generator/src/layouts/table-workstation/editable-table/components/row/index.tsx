@@ -19,6 +19,7 @@ import { DTGTableConfig } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import TableCell from '../cell';
+import RowHeader from './row-header';
 
 interface TableRowListProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -35,6 +36,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
+  ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
+  slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   onScroll: (scrollLeft: number) => void;
 }
 
@@ -99,8 +102,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   );
 
   return (
-    <div className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}>
-      { props.tableConfig.hasSubTable && (
+    <React.Fragment>
+      { props.tableConfig.configs.rowHeader && (
+        <RowHeader
+          ext={props.ext}
+          slots={props.slots}
+          tableConfig={props.tableConfig}
+          configs={props.tableConfig.configs.rowHeader}
+        />
+      ) }
+      <div className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}>
+        { props.tableConfig.hasSubTable && (
         <div
           className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
@@ -109,8 +121,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         >
           { props.hasSubTable && <PlusSquareOutlined /> }
         </div>
-      ) }
-      { props.tableConfig.configs.rowSelection && (
+        ) }
+        { props.tableConfig.configs.rowSelection && (
         <div
           className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
@@ -119,35 +131,37 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         >
           <Checkbox disabled />
         </div>
-      ) }
-      { leftFixedColumns.length > 0
-        ? leftFixedColumns.map((columnWrapper, index) =>
-          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
-            showRightShadow: index === leftFixedColumns.length - 1,
-            isLastRow: props.isLastRow,
-          }))
-        : null }
-      <div
-        ref={scrollableRow}
-        className="jfe-drip-table-generator-workstation-table-tr-scrollbar"
-        style={{
-          width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
-        }}
-        onScroll={(e) => { if (props.scrollTarget === `__row_${props.rowIndex}`) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
-      >
-        { sortableColumns.map(columnWrapper =>
-          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
-            isLastRow: props.isLastRow,
-          })) }
+        ) }
+        { leftFixedColumns.length > 0
+          ? leftFixedColumns.map((columnWrapper, index) =>
+            renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
+              showRightShadow: index === leftFixedColumns.length - 1,
+              isLastRow: props.isLastRow,
+            }))
+          : null }
+        <div
+          ref={scrollableRow}
+          className="jfe-drip-table-generator-workstation-table-tr-scrollbar"
+          style={{
+            width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
+          }}
+          onScroll={(e) => { if (props.scrollTarget === `__row_${props.rowIndex}`) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
+        >
+          { sortableColumns.map(columnWrapper =>
+            renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
+              isLastRow: props.isLastRow,
+            })) }
+        </div>
+        { rightFixedColumns.length > 0
+          ? rightFixedColumns.map((columnWrapper, index) =>
+            renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
+              showLeftShadow: !index,
+              isLastRow: props.isLastRow,
+            }))
+          : null }
       </div>
-      { rightFixedColumns.length > 0
-        ? rightFixedColumns.map((columnWrapper, index) =>
-          renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
-            showLeftShadow: !index,
-            isLastRow: props.isLastRow,
-          }))
-        : null }
-    </div>
+    </React.Fragment>
+
   );
 };
 
