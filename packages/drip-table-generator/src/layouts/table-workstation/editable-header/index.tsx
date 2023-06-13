@@ -187,7 +187,10 @@ const EditableTableHeader = <
                     onDrop={(e) => { e.preventDefault(); dropHeaderCell(element, index, globalConfigs, setTableConfigs); }}
                     onDragOver={e => e.preventDefault()}
                     key={index}
-                    className={classNames('jfe-drip-table-generator-workstation-editable-header-draggable-cell', { 'jfe-drip-table-generator-workstation-editable-header-text-cell': element.type === 'text' })}
+                    className={classNames('jfe-drip-table-generator-workstation-editable-header-draggable-cell', {
+                      'jfe-drip-table-generator-workstation-editable-header-text-cell': element.type === 'text',
+                      'jfe-drip-table-generator-workstation-editable-header-spacer-cell': element.type === 'spacer',
+                    })}
                     style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >
                     { renderColumnContent(element) }

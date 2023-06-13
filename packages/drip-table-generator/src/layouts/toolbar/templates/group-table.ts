@@ -24,7 +24,7 @@ export const groupTableTemplate: DripTableGeneratorTemplate = {
       elements: [
         {
           type: 'slot',
-          slot: 'row-slot-sample',
+          slot: 'header-slot-sample',
         },
         {
           type: 'spacer',

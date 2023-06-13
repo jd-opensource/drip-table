@@ -166,6 +166,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         customComponentPanel={props.customComponentPanel}
                         mockDataSource={props.mockDataSource}
                         dataFields={props.dataFields}
+                        ext={props.ext}
+                        slots={props.slots}
                         hasSubTable={hasSubTable}
                         onScroll={(left) => { setScrollLeft(left); }}
                       />
