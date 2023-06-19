@@ -102,6 +102,16 @@ const DripTableGenerator = React.forwardRef(<
     props.onSchemaChange?.(getSchemaValue(tableConfigs));
   }, [tableConfigs]);
 
+  React.useEffect(() => {
+    if (!props.dataSource) { return; }
+    if (Array.isArray(props.dataSource)) {
+      setGeneratorStates({
+        ...generatorStates,
+        previewDataSource: props.dataSource,
+      });
+    }
+  }, [props.dataSource]);
+
   message.config({ maxCount: 1 });
 
   return (
