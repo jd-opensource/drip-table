@@ -162,8 +162,10 @@ const hookColumRender = <
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     column: TableColumnType<RcTableRecordType<RecordType>>,
-    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBaseColumnSchema,
+    columnIndex: number,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+    rcTableInfo: RcTableInfo,
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   const render = column.render;
@@ -198,6 +200,12 @@ const hookColumRender = <
       }
     </React.Fragment>
   );
+  column.onCell = (row, index) => {
+    if (!index) {
+      return {};
+    }
+    return rcTableInfo.cellConfigs[columnIndex]?.[index] || {};
+  };
   return column;
 };
 
@@ -329,7 +337,6 @@ interface HeaderCellAdditionalProps<
  * @param tableInfo 表格信息
  * @param columnSchema 表格列 Schema
  * @param extraProps 一些额外的参数
- * @param columnCellConfigs 单元格配置
  * @returns 表格列配置
  */
 export const columnGenerator = <
@@ -339,7 +346,6 @@ export const columnGenerator = <
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
     extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
-    columnCellConfigs: Record<number, RcCellConfig> | undefined,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
@@ -394,12 +400,6 @@ export const columnGenerator = <
     dataIndex: columnSchema.dataIndex,
     fixed: columnSchema.fixed,
     render: columnRenderGenerator(tableInfo, columnSchema, extraProps),
-    onCell: (row, index) => {
-      if (!index) {
-        return {};
-      }
-      return columnCellConfigs?.[index] || {};
-    },
     onHeaderCell: () => ({ additionalProps: { columnSchema } as HeaderCellAdditionalProps<ExtraOptions> } as React.TdHTMLAttributes<Element>),
   };
 
@@ -531,6 +531,20 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
     rcTableInfo.cellConfigs[columnIndex] = rcTableInfo.cellConfigs[columnIndex - 1];
     // TODO: 完成插入行后的单元格配置矩阵合并
   }
+  rcTableInfo.maxColumnIndex += 1;
+};
+
+/**
+ * 像单元格配置矩阵中删除一列
+ * @param rcTableInfo 单元格配置矩阵
+ * @param targetColumnIndex 删除的单元格列下标
+ */
+const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: number) => {
+  for (let columnIndex = targetColumnIndex; columnIndex < rcTableInfo.maxColumnIndex; columnIndex++) {
+    rcTableInfo.cellConfigs[columnIndex] = rcTableInfo.cellConfigs[columnIndex + 1];
+    // TODO: 完成删除行后的单元格配置矩阵合并
+  }
+  delete rcTableInfo.cellConfigs[rcTableInfo.maxColumnIndex];
   rcTableInfo.maxColumnIndex += 1;
 };
 
@@ -706,16 +720,24 @@ const TableLayout = <
     [tableInfo.schema.columns, rowSelectionColumnSchema, rowDraggableColumnSchema],
   );
 
+  const hiddenColumnIndexes = React.useMemo(
+    (): number[] => tableProps.schema.columns
+      .map((columnSchema, rawColumnIndex) => ({ columnSchema, rawColumnIndex }))
+      .filter(({ columnSchema }) => columnSchema.hidable && !tableState.displayColumnKeys.includes(columnSchema.key))
+      .map(({ rawColumnIndex }) => rawColumnIndex),
+    [tableProps.schema.columns, tableState.displayColumnKeys],
+  );
+
   const rcTableInfo = React.useMemo(() => {
-    const ccs: RcTableInfo = { cellConfigs: {}, maxColumnIndex: 0, maxRowIndex: 0 };
+    const rti: RcTableInfo = { cellConfigs: {}, maxColumnIndex: 0, maxRowIndex: 0 };
     const offset = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
       ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
       : 0;
     const ds = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
       ? dataSource.slice(offset, tableState.pagination.pageSize * tableState.pagination.current)
       : dataSource;
-    ccs.maxRowIndex = ds.length - 1;
-    ccs.maxColumnIndex = tableInfo.schema.columns.length - 1;
+    rti.maxRowIndex = ds.length - 1;
+    rti.maxColumnIndex = tableInfo.schema.columns.length - 1;
     /**
      * 原始坐标系行数据
      */
@@ -723,7 +745,7 @@ const TableLayout = <
     if (spanSchema.rectangles) {
       for (const [rowIndex, columnIndex, rowSpan, colSpan] of spanSchema.rectangles) {
         if (rowIndex >= offset) {
-          setCellConfig(ccs, rowIndex - offset, columnIndex, {
+          setCellConfig(rti, rowIndex - offset, columnIndex, {
             rowSpan,
             colSpan,
             spanType: 'rectangle',
@@ -741,7 +763,7 @@ const TableLayout = <
           const context = { record, recordIndex: rowIndex + offset, column: columnSchema };
           const cc = generator(context) as { rowSpan?: number; colSpan?: number } | undefined;
           if (cc && (cc.rowSpan !== void 0 || cc.colSpan !== void 0)) {
-            setCellConfig(ccs, rowIndex, columnIndex, {
+            setCellConfig(rti, rowIndex, columnIndex, {
               rowSpan: cc.rowSpan ?? 1,
               colSpan: cc.colSpan ?? 1,
               spanType: 'rectangle',
@@ -757,7 +779,7 @@ const TableLayout = <
       for (const [rowIndex, record] of ds.entries()) {
         const slotType = rowSlotKey in record ? String(record[rowSlotKey]) : void 0;
         if (slotType) {
-          setCellConfig(ccs, rowIndex, 0, {
+          setCellConfig(rti, rowIndex, 0, {
             colSpan: tableProps.schema.columns.length,
             spanType: 'row',
             spanUid: `row-${rowIndex}`,
@@ -773,16 +795,16 @@ const TableLayout = <
     for (let index = ds.length - 1; index > 0; index--) {
       const record = ds[index];
       if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, index, tableInfo))) {
-        insertCellConfigRow(ccs, index + 1);
-        setCellConfig(ccs, index + 1, 0, {
+        insertCellConfigRow(rti, index + 1);
+        setCellConfig(rti, index + 1, 0, {
           colSpan: tableInfo.schema.columns.length,
           spanType: 'row',
           spanUid: `footer-${index}`,
         });
       }
       if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, index, tableInfo))) {
-        insertCellConfigRow(ccs, index);
-        setCellConfig(ccs, index, 0, {
+        insertCellConfigRow(rti, index);
+        setCellConfig(rti, index, 0, {
           colSpan: tableInfo.schema.columns.length,
           spanType: 'row',
           spanUid: `header-${index}`,
@@ -792,14 +814,21 @@ const TableLayout = <
     /**
      * 列坐标系转换
      */
+    // 隐藏列
+    for (let i = hiddenColumnIndexes.length - 1; i >= 0; i--) {
+      const columnIndex = hiddenColumnIndexes[i];
+      removeCellConfigColumn(rti, columnIndex);
+    }
+    // 拖拽列
     if (rowDraggableColumnSchema) {
-      insertCellConfigColumn(ccs, 0);
+      insertCellConfigColumn(rti, 0);
     }
+    // 选择列
     if (rowSelectionColumnSchema) {
-      insertCellConfigColumn(ccs, 0);
+      insertCellConfigColumn(rti, 0);
     }
-    return ccs;
-  }, [spanSchema, dataSource, tableInfo.schema.columns]);
+    return rti;
+  }, [spanSchema, dataSource, hiddenColumnIndexes, tableInfo.schema.columns]);
 
   const filteredColumns = React.useMemo(
     (): TableColumnType<RcTableRecordType<RecordType>>[] => {
@@ -810,9 +839,8 @@ const TableLayout = <
         onDataSourceChange: tableProps.onDataSourceChange,
       };
       const schemaColumns: { schema: DripTableBaseColumnSchema; column: TableColumnType<RcTableRecordType<RecordType>> }[] = tableProps.schema.columns
-        .map((columnSchema, rawColumnIndex) => ({ columnSchema, rawColumnIndex }))
-        .filter(({ columnSchema }) => !columnSchema.hidable || tableState.displayColumnKeys.includes(columnSchema.key))
-        .map(({ columnSchema, rawColumnIndex }) => ({ schema: columnSchema, column: columnGenerator(tableInfo, columnSchema, extraProps, rcTableInfo.cellConfigs?.[rawColumnIndex]) }));
+        .filter((_, i) => !hiddenColumnIndexes.includes(i))
+        .map(columnSchema => ({ schema: columnSchema, column: columnGenerator(tableInfo, columnSchema, extraProps) }));
       if (rowSelectionColumnSchema) {
         schemaColumns.unshift({
           schema: rowSelectionColumnSchema,
@@ -1029,7 +1057,7 @@ const TableLayout = <
           };
         }
       }
-      return schemaColumns.map((sc, i) => hookColumRender(sc.column, tableInfo, sc.schema, extraProps));
+      return schemaColumns.map((sc, i) => hookColumRender(sc.column, sc.schema, i, tableInfo, rcTableInfo, extraProps));
     },
     [
       dragInIndex,
