@@ -533,6 +533,7 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
       for (let columnIndex = rcTableInfo.maxColumnIndex; columnIndex >= targetColumnIndex; columnIndex--) {
         cellConfigRow[columnIndex + 1] = cellConfigRow[columnIndex];
       }
+      delete cellConfigRow[targetColumnIndex];
       // TODO: 完成插入行后的单元格配置矩阵合并
     }
   }
@@ -552,7 +553,7 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
         cellConfigRow[columnIndex] = cellConfigRow[columnIndex + 1];
       }
       delete cellConfigRow[rcTableInfo.maxColumnIndex];
-    // TODO: 完成删除行后的单元格配置矩阵合并
+      // TODO: 完成删除行后的单元格配置矩阵合并
     }
   }
   rcTableInfo.maxColumnIndex -= 1;
