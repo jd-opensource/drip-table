@@ -204,7 +204,7 @@ const hookColumRender = <
     if (!index) {
       return {};
     }
-    return rcTableInfo.cellConfigs[columnIndex]?.[index] || {};
+    return rcTableInfo.cellConfigs[index]?.[columnIndex] || {};
   };
   return column;
 };
@@ -476,8 +476,8 @@ type RcTableInfo = {
    * 单元格配置矩阵（稀疏矩阵，列号为一级数组下标）
    */
   cellConfigs: {
-    [columnIndex: number]: {
-      [rowIndex: number]: RcCellConfig;
+    [rowIndex: number]: {
+      [columnIndex: number]: RcCellConfig;
     };
   };
   maxColumnIndex: number;
@@ -492,14 +492,14 @@ type RcTableInfo = {
  * @param config 想要设置的单元格属性
  */
 const setCellConfig = (rcTableInfo: RcTableInfo, rowIndex: number, columnIndex: number, config: RcCellConfig) => {
-  if (!rcTableInfo.cellConfigs[columnIndex]) {
-    rcTableInfo.cellConfigs[columnIndex] = {};
+  if (!rcTableInfo.cellConfigs[rowIndex]) {
+    rcTableInfo.cellConfigs[rowIndex] = {};
   }
-  if (!rcTableInfo.cellConfigs[columnIndex][rowIndex]) {
-    rcTableInfo.cellConfigs[columnIndex][rowIndex] = {};
+  if (!rcTableInfo.cellConfigs[rowIndex][columnIndex]) {
+    rcTableInfo.cellConfigs[rowIndex][columnIndex] = {};
   }
   // 合并指定单元格
-  const cellConfig = rcTableInfo.cellConfigs[columnIndex][rowIndex];
+  const cellConfig = rcTableInfo.cellConfigs[rowIndex][columnIndex];
   if (
     (cellConfig.rowSpan !== void 0 && cellConfig.rowSpan !== config.rowSpan)
     || (cellConfig.colSpan !== void 0 && cellConfig.colSpan !== config.colSpan)
@@ -527,9 +527,14 @@ const setCellConfig = (rcTableInfo: RcTableInfo, rowIndex: number, columnIndex: 
  * @param targetColumnIndex 插入的单元格列下标
  */
 const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: number) => {
-  for (let columnIndex = rcTableInfo.maxColumnIndex; columnIndex >= targetColumnIndex; columnIndex--) {
-    rcTableInfo.cellConfigs[columnIndex] = rcTableInfo.cellConfigs[columnIndex - 1];
+  for (let rowIndex = 0; rowIndex <= rcTableInfo.maxRowIndex; rowIndex++) {
+    const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
+    if (cellConfigRow) {
+      for (let columnIndex = rcTableInfo.maxColumnIndex; columnIndex >= targetColumnIndex; columnIndex--) {
+        cellConfigRow[columnIndex] = cellConfigRow[columnIndex - 1];
+      }
     // TODO: 完成插入行后的单元格配置矩阵合并
+    }
   }
   rcTableInfo.maxColumnIndex += 1;
 };
@@ -540,11 +545,16 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
  * @param targetColumnIndex 删除的单元格列下标
  */
 const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: number) => {
-  for (let columnIndex = targetColumnIndex; columnIndex < rcTableInfo.maxColumnIndex; columnIndex++) {
-    rcTableInfo.cellConfigs[columnIndex] = rcTableInfo.cellConfigs[columnIndex + 1];
+  for (let rowIndex = 0; rowIndex <= rcTableInfo.maxRowIndex; rowIndex++) {
+    const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
+    if (cellConfigRow) {
+      for (let columnIndex = targetColumnIndex; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
+        cellConfigRow[columnIndex] = cellConfigRow[columnIndex + 1];
+      }
+      delete cellConfigRow[rcTableInfo.maxColumnIndex];
     // TODO: 完成删除行后的单元格配置矩阵合并
+    }
   }
-  delete rcTableInfo.cellConfigs[rcTableInfo.maxColumnIndex];
   rcTableInfo.maxColumnIndex += 1;
 };
 
@@ -554,14 +564,9 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
  * @param targetRowIndex 插入的单元格行下标
  */
 const insertCellConfigRow = (rcTableInfo: RcTableInfo, targetRowIndex: number) => {
-  for (let columnIndex = 0; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
-    const cellConfigRow = rcTableInfo.cellConfigs[columnIndex];
-    if (cellConfigRow) {
-      for (let rowIndex = rcTableInfo.maxRowIndex; rowIndex >= targetRowIndex; rowIndex--) {
-        cellConfigRow[rowIndex] = cellConfigRow[rowIndex - 1];
-      }
+  for (let rowIndex = rcTableInfo.maxRowIndex; rowIndex >= targetRowIndex; rowIndex--) {
+    rcTableInfo.cellConfigs[rowIndex] = rcTableInfo.cellConfigs[rowIndex - 1];
     // TODO: 完成插入行后的单元格配置矩阵合并
-    }
   }
   rcTableInfo.maxRowIndex += 1;
 };
