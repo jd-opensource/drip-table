@@ -118,6 +118,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '行插槽键名 rowSlotKey', link: '/drip-table/schema/row-slot-key' },
           { title: '行头插槽 rowHeader', link: '/drip-table/schema/row-header' },
           { title: '行尾插槽 rowFooter', link: '/drip-table/schema/row-footer' },
+          { title: '行列合并 span', link: '/drip-table/schema/span' },
           { title: '空表提示 emptyText', link: '/drip-table/schema/empty-text' },
           { title: '子表 subtable', link: '/drip-table/schema/subtable' },
         ],

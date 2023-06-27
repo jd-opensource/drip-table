@@ -341,6 +341,35 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         rowSlotKey: { type: 'string' },
         rowHeader: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
         rowFooter: DRIP_TABLE_GENERIC_RENDER_SCHEMA,
+        span: {
+          oneOf: [
+            { type: 'string' },
+            {
+              type: 'array',
+              items: {
+                type: 'array',
+                items: { type: 'number' },
+                minItems: 4,
+                maxItems: 4,
+              },
+            },
+            {
+              type: 'object',
+              properties: {
+                rectangles: {
+                  type: 'array',
+                  items: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    minItems: 4,
+                    maxItems: 4,
+                  },
+                },
+                generator: { type: 'string' },
+              },
+            },
+          ],
+        },
         emptyText: { type: 'string' },
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
         ext: {},

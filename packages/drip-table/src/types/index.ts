@@ -312,6 +312,25 @@ export interface DripTableSchema<
    */
   rowFooter?: DripTableSlotSchema;
   /**
+   * 行列合并配置
+   */
+  span?: string
+  | [
+    rowIndex: number,
+    columnIndex: number,
+    rowSpan: number,
+    columnSpan: number,
+  ][]
+  | {
+    rectangles?: [
+      rowIndex: number,
+      columnIndex: number,
+      rowSpan: number,
+      columnSpan: number,
+    ][];
+    generator?: string;
+  };
+  /**
    * 空表展示文案富文本
    */
   emptyText?: string;
