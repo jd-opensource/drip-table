@@ -171,7 +171,7 @@ const hookColumRender = <
   const render = column.render;
   column.render = (d, row, index) => {
     if (rcTableInfo.cellConfigConflictIDs[rcTableInfo.cellConfigs[index]?.[columnIndex]?.spanGroupID ?? '']) {
-      return <div className={`${prefixCls}-row-slot__error`}>Cell Span ERROR</div>;
+      return <div className={`${prefixCls}-row-slot__error`}>Cell Span Conflict</div>;
     }
     return (
       <React.Fragment>
@@ -486,6 +486,10 @@ interface RcCellConfig {
    */
   spanGroupID?: string;
   /**
+   * 是否为合并单元格的主单元格
+   */
+  spanPrimary?: boolean;
+  /**
    * 合并单元格开始行号
    */
   spanStartRowIndex?: number;
@@ -555,6 +559,7 @@ const setCellConfig = (rcTableInfo: RcTableInfo, rowIndex: number, columnIndex: 
   cellConfig.data.colSpan = colSpan;
   cellConfig.spanType = config.spanType;
   cellConfig.spanGroupID = config.spanGroupID;
+  cellConfig.spanPrimary = primary;
   cellConfig.spanStartRowIndex = primary ? rowIndex : config.spanStartRowIndex;
   cellConfig.spanStartColumnIndex = primary ? columnIndex : config.spanStartColumnIndex;
   cellConfig.spanEndRowIndex = primary ? rowIndex + rowSpan - 1 : config.spanEndRowIndex;
@@ -605,13 +610,13 @@ const insertCellConfigRow = (rcTableInfo: RcTableInfo, targetRowIndex: number) =
         continue;
       }
       if (config.spanStartRowIndex !== void 0 && config.spanStartRowIndex >= targetRowIndex) {
-        if (config.data.rowSpan !== void 0) {
+        if (config.spanPrimary && config.data.rowSpan !== void 0) {
           config.data.rowSpan -= 1;
         }
         config.spanStartRowIndex += 1;
       }
       if (config.spanEndRowIndex !== void 0 && config.spanEndRowIndex >= targetRowIndex) {
-        if (config.data.rowSpan !== void 0) {
+        if (config.spanPrimary && config.data.rowSpan !== void 0) {
           config.data.rowSpan += 1;
         }
         config.spanEndRowIndex += 1;
@@ -669,13 +674,13 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
         continue;
       }
       if (config.spanStartColumnIndex !== void 0 && config.spanStartColumnIndex >= targetColumnIndex) {
-        if (config.data.colSpan !== void 0) {
+        if (config.spanPrimary && config.data.colSpan !== void 0) {
           config.data.colSpan -= 1;
         }
         config.spanStartColumnIndex += 1;
       }
       if (config.spanEndColumnIndex !== void 0 && config.spanEndColumnIndex >= targetColumnIndex) {
-        if (config.data.colSpan !== void 0) {
+        if (config.spanPrimary && config.data.colSpan !== void 0) {
           config.data.colSpan += 1;
         }
         config.spanEndColumnIndex += 1;
