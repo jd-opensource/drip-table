@@ -204,7 +204,7 @@ const hookColumRender = <
     if (!index) {
       return {};
     }
-    return rcTableInfo.cellConfigs[index]?.[columnIndex] || {};
+    return rcTableInfo.cellConfigs[index]?.[columnIndex]?.data || {};
   };
   return column;
 };
@@ -460,16 +460,46 @@ const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }:
   );
 }, areEqual);
 
+/**
+ * 单元格配置
+ */
 interface RcCellConfig {
-  rowSpan?: number;
-  colSpan?: number;
-  className?: string;
-  spanType?: 'row' | 'rectangle';
+  /**
+   * 透传给 onCell 的属性
+   */
+  data: {
+    rowSpan?: number;
+    colSpan?: number;
+    className?: string;
+  };
+  /**
+   * 合并单元格类型
+   */
+  spanType?: 'none' | 'row' | 'rectangle' | 'error';
+  /**
+   * 合并单元格UID
+   */
   spanUid?: string;
+  /**
+   * 合并单元格开始行号
+   */
+  spanStartRowIndex?: number;
+  /**
+   * 合并单元格开始列号
+   */
+  spanStartColumnIndex?: number;
+  /**
+   * 合并单元格结束行号
+   */
+  spanEndRowIndex?: number;
+  /**
+   * 合并单元格结束列号
+   */
+  spanEndColumnIndex?: number;
 }
 
 /**
- * 单元格配置
+ * 所有单元格配置集合
  */
 type RcTableInfo = {
   /**
@@ -490,39 +520,60 @@ type RcTableInfo = {
  * @param rowIndex 设置的单元格行下标
  * @param columnIndex 设置的单元格列下标
  * @param config 想要设置的单元格属性
+ * @param spanConfig 合并单元格主单元格坐标跨度信息
  */
 const setCellConfig = (rcTableInfo: RcTableInfo, rowIndex: number, columnIndex: number, config: RcCellConfig) => {
+  // 初始化单元格配置
   if (!rcTableInfo.cellConfigs[rowIndex]) {
     rcTableInfo.cellConfigs[rowIndex] = {};
   }
   if (!rcTableInfo.cellConfigs[rowIndex][columnIndex]) {
-    rcTableInfo.cellConfigs[rowIndex][columnIndex] = {};
+    rcTableInfo.cellConfigs[rowIndex][columnIndex] = { data: {} };
   }
-  // 合并指定单元格
   const cellConfig = rcTableInfo.cellConfigs[rowIndex][columnIndex];
+  // 标准化参数
+  const rowSpan = config.data.rowSpan ?? cellConfig.data.rowSpan ?? 1;
+  const colSpan = config.data.colSpan ?? cellConfig.data.colSpan ?? 1;
+  // 合并指定单元格
   if (
-    (cellConfig.rowSpan !== void 0 && cellConfig.rowSpan !== config.rowSpan)
-    || (cellConfig.colSpan !== void 0 && cellConfig.colSpan !== config.colSpan)
+    (cellConfig.data.rowSpan !== void 0 && cellConfig.data.rowSpan !== rowSpan)
+    || (cellConfig.data.colSpan !== void 0 && cellConfig.data.colSpan !== colSpan)
   ) {
-    cellConfig.rowSpan = -1;
-    cellConfig.colSpan = -1;
+    cellConfig.spanType = 'error';
+    cellConfig.data.rowSpan = -1;
+    cellConfig.data.colSpan = -1;
   } else {
-    cellConfig.rowSpan = config.rowSpan;
-    cellConfig.colSpan = config.colSpan;
+    cellConfig.spanType = config.spanType;
+    cellConfig.data.rowSpan = rowSpan;
+    cellConfig.data.colSpan = colSpan;
+  }
+  if (config) {
+    Object.assign(cellConfig, config, { data: Object.assign(cellConfig.data, config.data) });
   }
   // 清空被合并单元格
-  for (let r = rowIndex; r < rowIndex + (config?.rowSpan ?? 1); r++) {
-    for (let c = columnIndex; c < columnIndex + (config?.colSpan ?? 1); c++) {
+  for (let r = rowIndex; r < rowIndex + rowSpan; r++) {
+    for (let c = columnIndex; c < columnIndex + colSpan; c++) {
       if (r === rowIndex && c === columnIndex) {
         continue;
       }
-      setCellConfig(rcTableInfo, r, c, { rowSpan: 0, colSpan: 0, spanType: config.spanType, spanUid: config.spanUid });
+      setCellConfig(rcTableInfo, r, c, {
+        data: {
+          rowSpan: 0,
+          colSpan: 0,
+        },
+        spanType: config.spanType,
+        spanUid: config.spanUid,
+        spanStartRowIndex: rowIndex,
+        spanStartColumnIndex: columnIndex,
+        spanEndRowIndex: rowIndex + rowSpan - 1,
+        spanEndColumnIndex: columnIndex + colSpan - 1,
+      });
     }
   }
 };
 
 /**
- * 像单元格配置矩阵中插入一列
+ * 向单元格配置矩阵中插入一列
  * @param rcTableInfo 单元格配置矩阵
  * @param targetColumnIndex 插入的单元格列下标
  */
@@ -531,7 +582,16 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
     const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
     if (cellConfigRow) {
       for (let columnIndex = rcTableInfo.maxColumnIndex; columnIndex >= targetColumnIndex; columnIndex--) {
-        cellConfigRow[columnIndex + 1] = cellConfigRow[columnIndex];
+        const config = cellConfigRow[columnIndex];
+        if (config) {
+          if (config.spanStartColumnIndex !== void 0 && config.spanStartColumnIndex >= targetColumnIndex) {
+            config.spanStartColumnIndex += 1;
+          }
+          if (config.spanEndColumnIndex !== void 0 && config.spanEndColumnIndex >= targetColumnIndex) {
+            config.spanEndColumnIndex += 1;
+          }
+          cellConfigRow[columnIndex + 1] = config;
+        }
       }
       delete cellConfigRow[targetColumnIndex];
       // TODO: 完成插入行后的单元格配置矩阵合并
@@ -541,7 +601,7 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
 };
 
 /**
- * 像单元格配置矩阵中删除一列
+ * 从单元格配置矩阵中删除一列
  * @param rcTableInfo 单元格配置矩阵
  * @param targetColumnIndex 删除的单元格列下标
  */
@@ -550,7 +610,16 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
     const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
     if (cellConfigRow) {
       for (let columnIndex = targetColumnIndex; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
-        cellConfigRow[columnIndex] = cellConfigRow[columnIndex + 1];
+        const config = cellConfigRow[columnIndex + 1];
+        if (config) {
+          if (config.spanStartColumnIndex !== void 0 && config.spanStartColumnIndex > targetColumnIndex) {
+            config.spanStartColumnIndex -= 1;
+          }
+          if (config.spanEndColumnIndex !== void 0 && config.spanEndColumnIndex > targetColumnIndex) {
+            config.spanEndColumnIndex -= 1;
+          }
+          cellConfigRow[columnIndex] = config;
+        }
       }
       delete cellConfigRow[rcTableInfo.maxColumnIndex];
       // TODO: 完成删除行后的单元格配置矩阵合并
@@ -560,13 +629,27 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
 };
 
 /**
- * 像单元格配置矩阵中插入一行
+ * 向单元格配置矩阵中插入一行
  * @param rcTableInfo 单元格配置矩阵
  * @param targetRowIndex 插入的单元格行下标
  */
 const insertCellConfigRow = (rcTableInfo: RcTableInfo, targetRowIndex: number) => {
   for (let rowIndex = rcTableInfo.maxRowIndex; rowIndex >= targetRowIndex; rowIndex--) {
-    rcTableInfo.cellConfigs[rowIndex] = rcTableInfo.cellConfigs[rowIndex - 1];
+    const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
+    if (cellConfigRow) {
+      for (let columnIndex = 0; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
+        const config = cellConfigRow[columnIndex];
+        if (config) {
+          if (config.spanStartRowIndex !== void 0 && config.spanStartRowIndex >= targetRowIndex) {
+            config.spanStartRowIndex += 1;
+          }
+          if (config.spanEndRowIndex !== void 0 && config.spanEndRowIndex >= targetRowIndex) {
+            config.spanEndRowIndex += 1;
+          }
+        }
+      }
+      rcTableInfo.cellConfigs[rowIndex + 1] = cellConfigRow;
+    }
     // TODO: 完成插入行后的单元格配置矩阵合并
   }
   rcTableInfo.maxRowIndex += 1;
@@ -636,7 +719,7 @@ const TableLayout = <
   const pageDataSourceRowHeaderVisible = React.useMemo(
     () => {
       const v: Record<number, boolean> = {};
-      for (let index = pageDataSource.length - 1; index > 0; index--) {
+      for (let index = pageDataSource.length - 1; index >= 0; index--) {
         if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(pageDataSource[index], pageDataSourceOffset + index, tableInfo))) {
           v[index] = true;
         }
@@ -650,7 +733,7 @@ const TableLayout = <
   const pageDataSourceRowFooterVisible = React.useMemo(
     () => {
       const v: Record<number, boolean> = {};
-      for (let index = pageDataSource.length - 1; index > 0; index--) {
+      for (let index = pageDataSource.length - 1; index >= 0; index--) {
         if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(pageDataSource[index], pageDataSourceOffset + index, tableInfo))) {
           v[index] = true;
         }
@@ -785,8 +868,10 @@ const TableLayout = <
       for (const [rowIndex, columnIndex, rowSpan, colSpan] of spanSchema.rectangles) {
         if (rowIndex >= pageDataSourceOffset) {
           setCellConfig(rti, rowIndex - pageDataSourceOffset, columnIndex, {
-            rowSpan,
-            colSpan,
+            data: {
+              rowSpan,
+              colSpan,
+            },
             spanType: 'rectangle',
             spanUid: `rectangle-${rowIndex + pageDataSourceOffset}-${columnIndex}-${rowSpan}-${colSpan}`,
           });
@@ -803,8 +888,10 @@ const TableLayout = <
           const cc = generator(context) as { rowSpan?: number; colSpan?: number } | undefined;
           if (cc && (cc.rowSpan !== void 0 || cc.colSpan !== void 0)) {
             setCellConfig(rti, rowIndex, columnIndex, {
-              rowSpan: cc.rowSpan ?? 1,
-              colSpan: cc.colSpan ?? 1,
+              data: {
+                rowSpan: cc.rowSpan ?? 1,
+                colSpan: cc.colSpan ?? 1,
+              },
               spanType: 'rectangle',
               spanUid: `generator-${rowIndex + pageDataSourceOffset}-${columnIndex}-${cc.rowSpan ?? 1}-${cc.colSpan ?? 1}`,
             });
@@ -819,10 +906,12 @@ const TableLayout = <
         const slotType = rowSlotKey in record ? String(record[rowSlotKey]) : void 0;
         if (slotType) {
           setCellConfig(rti, rowIndex, 0, {
-            colSpan: tableProps.schema.columns.length,
+            data: {
+              className: `${prefixCls}--slot`,
+              colSpan: tableProps.schema.columns.length,
+            },
             spanType: 'row',
             spanUid: `row-${rowIndex}`,
-            className: `${prefixCls}--slot`,
           });
         }
       }
@@ -831,19 +920,23 @@ const TableLayout = <
      * 行坐标系转换
      */
     // 行头尾插槽
-    for (let index = pageDataSource.length - 1; index > 0; index--) {
-      if (pageDataSourceRowHeaderVisible[index]) {
+    for (let index = pageDataSource.length - 1; index >= 0; index--) {
+      if (pageDataSourceRowFooterVisible[index]) {
         insertCellConfigRow(rti, index + 1);
         setCellConfig(rti, index + 1, 0, {
-          colSpan: tableInfo.schema.columns.length,
+          data: {
+            colSpan: columnsBaseSchema.length,
+          },
           spanType: 'row',
           spanUid: `footer-${index}`,
         });
       }
-      if (pageDataSourceRowFooterVisible[index]) {
+      if (pageDataSourceRowHeaderVisible[index]) {
         insertCellConfigRow(rti, index);
         setCellConfig(rti, index, 0, {
-          colSpan: tableInfo.schema.columns.length,
+          data: {
+            colSpan: columnsBaseSchema.length,
+          },
           spanType: 'row',
           spanUid: `header-${index}`,
         });
@@ -870,10 +963,10 @@ const TableLayout = <
     pageDataSource,
     pageDataSourceOffset,
     spanSchema,
+    columnsBaseSchema,
     hiddenColumnIndexes,
     pageDataSourceRowHeaderVisible,
     pageDataSourceRowFooterVisible,
-    tableInfo.schema.columns,
   ]);
 
   const filteredColumns = React.useMemo(
