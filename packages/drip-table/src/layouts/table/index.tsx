@@ -539,13 +539,21 @@ const setCellConfig = (rcTableInfo: RcTableInfo, rowIndex: number, columnIndex: 
     (cellConfig.data.rowSpan !== void 0 && cellConfig.data.rowSpan !== rowSpan)
     || (cellConfig.data.colSpan !== void 0 && cellConfig.data.colSpan !== colSpan)
   )) {
+    cellConfig.data.className = config.data.className;
     cellConfig.data.rowSpan = -1;
     cellConfig.data.colSpan = -1;
     cellConfig.spanType = 'error';
+    cellConfig.spanUid = '$$DRIP_TABLE_CELL_ERROR$$';
+    cellConfig.spanStartRowIndex = void 0;
+    cellConfig.spanStartColumnIndex = void 0;
+    cellConfig.spanEndRowIndex = void 0;
+    cellConfig.spanEndColumnIndex = void 0;
   } else {
+    cellConfig.data.className = config.data.className;
     cellConfig.data.rowSpan = rowSpan;
     cellConfig.data.colSpan = colSpan;
     cellConfig.spanType = config.spanType;
+    cellConfig.spanUid = config.spanUid;
     cellConfig.spanStartRowIndex = primary ? rowIndex : config.spanStartRowIndex;
     cellConfig.spanStartColumnIndex = primary ? columnIndex : config.spanStartColumnIndex;
     cellConfig.spanEndRowIndex = primary ? rowIndex + rowSpan - 1 : config.spanEndRowIndex;
@@ -1186,16 +1194,6 @@ const TableLayout = <
             }
             return render?.(o, row, index);
           };
-          schemaColumns[0].column.onCell = (row, index) => {
-            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
-            if (slotType) {
-              return {
-                colSpan: schemaColumns.length,
-                className: `${prefixCls}--slot`,
-              };
-            }
-            return {};
-          };
         }
         for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
           const render = schemaColumns[columnIndex].column.render;
@@ -1205,16 +1203,6 @@ const TableLayout = <
               return null;
             }
             return render?.(o, row, index);
-          };
-          schemaColumns[columnIndex].column.onCell = (row, index) => {
-            const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
-            if (slotType) {
-              return {
-                colSpan: 0,
-                className: `${prefixCls}--slot`,
-              };
-            }
-            return {};
           };
         }
       }
@@ -1245,15 +1233,6 @@ const TableLayout = <
             }
             return render?.(o, row, index);
           };
-          schemaColumns[0].column.onCell = (row, index) => {
-            if ((row.type === 'header' && tableProps.schema.rowHeader) || (row.type === 'footer' && tableProps.schema.rowFooter)) {
-              return {
-                colSpan: schemaColumns.length,
-                className: `${prefixCls}--slot`,
-              };
-            }
-            return {};
-          };
         }
         for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
           const render = schemaColumns[columnIndex].column.render;
@@ -1262,15 +1241,6 @@ const TableLayout = <
               return null;
             }
             return render?.(o, row, index);
-          };
-          schemaColumns[columnIndex].column.onCell = (row, index) => {
-            if (row.type === 'header' || row.type === 'footer') {
-              return {
-                colSpan: 0,
-                className: `${prefixCls}--slot`,
-              };
-            }
-            return {};
           };
         }
       }
