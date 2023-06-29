@@ -632,6 +632,34 @@ const TableLayout = <
     [dataSource, pageDataSourceOffset, tableInfo.schema.pagination, tableState.pagination.current, tableState.pagination.pageSize],
   );
 
+  // 当前分页原始数据源行头部插槽可见性
+  const pageDataSourceRowHeaderVisible = React.useMemo(
+    () => {
+      const v: Record<number, boolean> = {};
+      for (let index = pageDataSource.length - 1; index > 0; index--) {
+        if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(pageDataSource[index], pageDataSourceOffset + index, tableInfo))) {
+          v[index] = true;
+        }
+      }
+      return v;
+    },
+    [pageDataSource, tableProps.rowHeaderVisible, tableProps.schema.rowHeader],
+  );
+
+  // 当前分页原始数据源行尾部插槽可见性
+  const pageDataSourceRowFooterVisible = React.useMemo(
+    () => {
+      const v: Record<number, boolean> = {};
+      for (let index = pageDataSource.length - 1; index > 0; index--) {
+        if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(pageDataSource[index], pageDataSourceOffset + index, tableInfo))) {
+          v[index] = true;
+        }
+      }
+      return v;
+    },
+    [pageDataSource, tableProps.rowFooterVisible, tableProps.schema.rowFooter],
+  );
+
   // 原始数据行转 RcTable 数据行包装
   const packRcTableRecord = React.useCallback((record: RecordType, index: number, type: RcTableRecordType<RecordType>['type']): RcTableRecordType<RecordType> => ({
     type,
@@ -646,11 +674,11 @@ const TableLayout = <
       // 行头部/尾部插槽存在，通过内部 dataSource 插入行实现
       const spreadDs: RcTableRecordType<RecordType>[] = [];
       for (const [index, record] of pageDataSource.entries()) {
-        if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, pageDataSourceOffset + index, tableInfo))) {
+        if (pageDataSourceRowHeaderVisible[index]) {
           spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'header'));
         }
         spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'body'));
-        if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, pageDataSourceOffset + index, tableInfo))) {
+        if (pageDataSourceRowFooterVisible[index]) {
           spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'footer'));
         }
       }
@@ -659,6 +687,8 @@ const TableLayout = <
     [
       pageDataSource,
       pageDataSourceOffset,
+      pageDataSourceRowHeaderVisible,
+      pageDataSourceRowFooterVisible,
       tableProps.rowHeaderVisible,
       tableProps.rowFooterVisible,
       tableProps.schema.rowHeader,
@@ -802,8 +832,7 @@ const TableLayout = <
      */
     // 行头尾插槽
     for (let index = pageDataSource.length - 1; index > 0; index--) {
-      const record = pageDataSource[index];
-      if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, index, tableInfo))) {
+      if (pageDataSourceRowHeaderVisible[index]) {
         insertCellConfigRow(rti, index + 1);
         setCellConfig(rti, index + 1, 0, {
           colSpan: tableInfo.schema.columns.length,
@@ -811,7 +840,7 @@ const TableLayout = <
           spanUid: `footer-${index}`,
         });
       }
-      if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, index, tableInfo))) {
+      if (pageDataSourceRowFooterVisible[index]) {
         insertCellConfigRow(rti, index);
         setCellConfig(rti, index, 0, {
           colSpan: tableInfo.schema.columns.length,
@@ -842,6 +871,8 @@ const TableLayout = <
     pageDataSourceOffset,
     spanSchema,
     hiddenColumnIndexes,
+    pageDataSourceRowHeaderVisible,
+    pageDataSourceRowFooterVisible,
     tableInfo.schema.columns,
   ]);
 
