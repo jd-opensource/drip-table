@@ -616,6 +616,22 @@ const TableLayout = <
     [tableProps.dataSource, rowKey],
   );
 
+  // 当前分页原始数据源偏移量
+  const pageDataSourceOffset = React.useMemo(
+    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
+      ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
+      : 0),
+    [dataSource, tableInfo.schema.pagination, tableState.pagination.current, tableState.pagination.pageSize],
+  );
+
+  // 当前分页原始数据源
+  const pageDataSource = React.useMemo(
+    () => (tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
+      ? dataSource.slice(pageDataSourceOffset, tableState.pagination.pageSize * tableState.pagination.current)
+      : dataSource),
+    [dataSource, pageDataSourceOffset, tableInfo.schema.pagination, tableState.pagination.current, tableState.pagination.pageSize],
+  );
+
   // 原始数据行转 RcTable 数据行包装
   const packRcTableRecord = React.useCallback((record: RecordType, index: number, type: RcTableRecordType<RecordType>['type']): RcTableRecordType<RecordType> => ({
     type,
@@ -627,29 +643,22 @@ const TableLayout = <
   // RcTable 数据源
   const rcTableDataSource = React.useMemo(
     () => {
-      const offset = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-        ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
-        : 0;
-      const ds = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-        ? dataSource.slice(offset, tableState.pagination.pageSize * tableState.pagination.current)
-        : dataSource;
       // 行头部/尾部插槽存在，通过内部 dataSource 插入行实现
       const spreadDs: RcTableRecordType<RecordType>[] = [];
-      for (const [index, record] of ds.entries()) {
-        if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, offset + index, tableInfo))) {
-          spreadDs.push(packRcTableRecord(record, offset + index, 'header'));
+      for (const [index, record] of pageDataSource.entries()) {
+        if (tableProps.schema.rowHeader?.elements && (!tableProps.rowHeaderVisible || tableProps.rowHeaderVisible(record, pageDataSourceOffset + index, tableInfo))) {
+          spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'header'));
         }
-        spreadDs.push(packRcTableRecord(record, offset + index, 'body'));
-        if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, offset + index, tableInfo))) {
-          spreadDs.push(packRcTableRecord(record, offset + index, 'footer'));
+        spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'body'));
+        if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, pageDataSourceOffset + index, tableInfo))) {
+          spreadDs.push(packRcTableRecord(record, pageDataSourceOffset + index, 'footer'));
         }
       }
       return spreadDs;
     },
     [
-      dataSource,
-      tableState.pagination.current,
-      tableState.pagination.pageSize,
+      pageDataSource,
+      pageDataSourceOffset,
       tableProps.rowHeaderVisible,
       tableProps.rowFooterVisible,
       tableProps.schema.rowHeader,
@@ -736,13 +745,7 @@ const TableLayout = <
 
   const rcTableInfo = React.useMemo(() => {
     const rti: RcTableInfo = { cellConfigs: {}, maxColumnIndex: 0, maxRowIndex: 0 };
-    const offset = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-      ? tableState.pagination.pageSize * (tableState.pagination.current - 1)
-      : 0;
-    const ds = tableInfo.schema.pagination && dataSource.length > tableState.pagination.pageSize
-      ? dataSource.slice(offset, tableState.pagination.pageSize * tableState.pagination.current)
-      : dataSource;
-    rti.maxRowIndex = ds.length - 1;
+    rti.maxRowIndex = pageDataSource.length - 1;
     rti.maxColumnIndex = tableInfo.schema.columns.length - 1;
     /**
      * 原始坐标系行数据
@@ -750,12 +753,12 @@ const TableLayout = <
     // 指定坐标合并单元格
     if (spanSchema.rectangles) {
       for (const [rowIndex, columnIndex, rowSpan, colSpan] of spanSchema.rectangles) {
-        if (rowIndex >= offset) {
-          setCellConfig(rti, rowIndex - offset, columnIndex, {
+        if (rowIndex >= pageDataSourceOffset) {
+          setCellConfig(rti, rowIndex - pageDataSourceOffset, columnIndex, {
             rowSpan,
             colSpan,
             spanType: 'rectangle',
-            spanUid: `rectangle-${rowIndex + offset}-${columnIndex}-${rowSpan}-${colSpan}`,
+            spanUid: `rectangle-${rowIndex + pageDataSourceOffset}-${columnIndex}-${rowSpan}-${colSpan}`,
           });
         }
       }
@@ -763,17 +766,17 @@ const TableLayout = <
     // 动态合并单元格
     if (spanSchema.generator) {
       const generator = createExecutor(spanSchema.generator, ['props']);
-      for (const [rowIndex, record] of ds.entries()) {
+      for (const [rowIndex, record] of pageDataSource.entries()) {
         for (let columnIndex = 0; columnIndex < tableInfo.schema.columns.length; columnIndex++) {
           const columnSchema = tableInfo.schema.columns[columnIndex];
-          const context = { record, recordIndex: rowIndex + offset, column: columnSchema };
+          const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
           const cc = generator(context) as { rowSpan?: number; colSpan?: number } | undefined;
           if (cc && (cc.rowSpan !== void 0 || cc.colSpan !== void 0)) {
             setCellConfig(rti, rowIndex, columnIndex, {
               rowSpan: cc.rowSpan ?? 1,
               colSpan: cc.colSpan ?? 1,
               spanType: 'rectangle',
-              spanUid: `generator-${rowIndex + offset}-${columnIndex}-${cc.rowSpan ?? 1}-${cc.colSpan ?? 1}`,
+              spanUid: `generator-${rowIndex + pageDataSourceOffset}-${columnIndex}-${cc.rowSpan ?? 1}-${cc.colSpan ?? 1}`,
             });
           }
         }
@@ -782,7 +785,7 @@ const TableLayout = <
     // 整行自定义插槽
     const rowSlotKey = tableInfo.schema.rowSlotKey;
     if (rowSlotKey) {
-      for (const [rowIndex, record] of ds.entries()) {
+      for (const [rowIndex, record] of pageDataSource.entries()) {
         const slotType = rowSlotKey in record ? String(record[rowSlotKey]) : void 0;
         if (slotType) {
           setCellConfig(rti, rowIndex, 0, {
@@ -798,8 +801,8 @@ const TableLayout = <
      * 行坐标系转换
      */
     // 行头尾插槽
-    for (let index = ds.length - 1; index > 0; index--) {
-      const record = ds[index];
+    for (let index = pageDataSource.length - 1; index > 0; index--) {
+      const record = pageDataSource[index];
       if (tableProps.schema.rowFooter?.elements && (!tableProps.rowFooterVisible || tableProps.rowFooterVisible(record, index, tableInfo))) {
         insertCellConfigRow(rti, index + 1);
         setCellConfig(rti, index + 1, 0, {
@@ -834,7 +837,13 @@ const TableLayout = <
       insertCellConfigColumn(rti, 0);
     }
     return rti;
-  }, [spanSchema, dataSource, hiddenColumnIndexes, tableInfo.schema.columns]);
+  }, [
+    pageDataSource,
+    pageDataSourceOffset,
+    spanSchema,
+    hiddenColumnIndexes,
+    tableInfo.schema.columns,
+  ]);
 
   const filteredColumns = React.useMemo(
     (): TableColumnType<RcTableRecordType<RecordType>>[] => {
