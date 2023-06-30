@@ -213,11 +213,6 @@ export interface DripTableGeneratorProps<
    */
   customThemeOptions?: DTGCustomThemeOptions<RecordType, ExtraOptions>[];
   /**
-   * @deprecated 已废弃
-   * 默认打开编辑模式还是预览模式
-   */
-  defaultMode?: 'edit' | 'preview';
-  /**
    * 模式：modal-弹出框；page-页面模式, 默认页面模式
    */
   mode?: 'modal' | 'page';
@@ -235,6 +230,15 @@ export interface DripTableGeneratorProps<
    * 是否展示 保存 按钮
    */
   save?: boolean;
+  /**
+   * 是否展示工具栏, 默认打开，需要传false
+   */
+  showToolbar?: boolean;
+  /*
+   * 默认打开时是编辑还是预览模式
+   * @type {('edit' | 'preview')}
+   */
+  defaultMode?: 'edit' | 'preview';
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;

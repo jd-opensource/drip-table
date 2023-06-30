@@ -31,14 +31,15 @@ const DropDownButton = (props: DropDownButtonProps) => {
   const [openState, setOpenState] = React.useState(false);
   const isOpen = typeof props.open === 'boolean' ? !!props.open : openState;
   return (
-    <div className="jfe-drip-table-generator-dropdown-wrapper" style={props.style}>
+    <div className="jfe-drip-table-generator-dropdown-wrapper" style={props.style} onClick={e => e.stopPropagation()}>
       <Button
         ref={rootButton}
         className={isOpen ? 'jfe-drip-table-generator-dropdown-button' : ''}
         type={isOpen ? 'primary' : 'default'}
         style={{ borderRadius: isOpen ? '6px 6px 0 0' : '6px' }}
         disabled={props.disabled}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (typeof props.open === 'boolean') {
             props.onOpen?.(!isOpen, props.dataIndex);
           } else {

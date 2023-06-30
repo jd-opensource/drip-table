@@ -51,7 +51,9 @@ const AttributesLayout = <
         const currentColumnItem = isGroupColumn && currentComponentPath ? getColumnItemByPath(currentColumn, currentComponentPath) : void 0;
         return (
           <div
-            className={classNames('jfe-drip-table-generator-attributes-layout-attributes-drawer')}
+            className={classNames('jfe-drip-table-generator-attributes-layout-attributes-drawer', {
+              radius: props.mode === 'modal',
+            })}
             style={{
               width: drawerType ? 420 : void 0,
               zIndex: drawerType ? 10 : -1,

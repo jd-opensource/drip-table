@@ -30,8 +30,8 @@ const GeneratorLayout = <
         className="jfe-drip-table-generator-layouts-container"
         style={{ ...props.style, width: props.width ?? props.style?.width ?? '100%', height: props.height ?? props.style?.height ?? '100%' }}
       >
-        <Toolbar {...props} />
-        <div className="jfe-drip-table-generator-layouts-wrapper">
+        { props.showToolbar !== false && <Toolbar {...props} /> }
+        <div className={classNames('jfe-drip-table-generator-layouts-wrapper', { full: props.showToolbar === false })}>
           <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
             fixed: drawerType === 'column' || drawerType === 'column-item',
           })}
@@ -51,8 +51,8 @@ const GeneratorLayout = <
             className="jfe-drip-table-generator-layouts-model-container"
             style={{ ...props.style, width: props.width ?? props.style?.width ?? 1000, height: props.height ?? props.style?.height ?? 640 }}
           >
-            <Toolbar {...props} />
-            <div className="jfe-drip-table-generator-layouts-wrapper">
+            { props.showToolbar !== false && <Toolbar {...props} /> }
+            <div className={classNames('jfe-drip-table-generator-layouts-wrapper', { full: props.showToolbar === false })}>
               <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
                 fixed: drawerType === 'column' || drawerType === 'column-item',
               })}

@@ -39,12 +39,13 @@ function generateDropdownProps(props: {
   };
 }
 
-const ModeSwitch = (props: { style?: React.CSSProperties }) => (
+const ModeSwitch = (props: { style?: React.CSSProperties; disabled?: boolean }) => (
   <GeneratorContext.Consumer>
     { ({ mode, setState }) => (
       <Button
         style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
         onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit', drawerType: void 0 })}
+        disabled={props.disabled}
       >
         { mode === 'edit' ? '预览' : '编辑' }
       </Button>
@@ -74,13 +75,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <TableConfigsContext.Consumer>
       { ({ tableConfigs, updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
-          <div className="jfe-drip-table-generator-templates-toolbar left">
+          <div
+            className="jfe-drip-table-generator-templates-toolbar left"
+            onClick={() => {
+              if (operateMenu) { setOperateMenu(void 0); }
+            }}
+          >
             { props.showTemplate && (
             <DropDownButton
               {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'template'}
               onOpen={onOpen}
-              disabled={!!operateMenu && operateMenu !== 'template'}
             >
               <TemplatesManager
                 dataFields={props.dataFields}
@@ -96,7 +101,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onOpen={onOpen}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: 0, background: '#1e1e1e' }}
-              disabled={!!operateMenu && operateMenu !== 'datasource'}
             >
               <DataSourceEditor
                 width={props.width ?? 1000}
@@ -110,7 +114,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onOpen={onOpen}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
-              disabled={!!operateMenu && operateMenu !== 'import'}
             >
               <ImportSchema height={bodyHeight - 8 - 40} />
             </DropDownButton>
@@ -120,22 +123,22 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               onOpen={onOpen}
               style={{ marginLeft: 24 }}
               innerStyle={{ padding: '0 0 8px 0' }}
-              disabled={!!operateMenu && operateMenu !== 'export'}
             >
               <ExportSchema
                 height={bodyHeight - 8 - 40}
                 mode={props.mode}
               />
             </DropDownButton>
-            <ModeSwitch style={operateMenu ? { opacity: '0.0', visibility: 'hidden' } : void 0} />
+            <ModeSwitch disabled={operateMenu ? true : void 0} />
             { props.save && (
             <Button
               type="primary"
-              style={{ marginLeft: 24,
-                borderRadius: '6px',
-                opacity: operateMenu ? '0.0' : void 0,
-                visibility: operateMenu ? 'hidden' : void 0 }}
-              onClick={() => props.onSave?.(getSchemaValue(tableConfigs))}
+              style={{ marginLeft: 24, borderRadius: '6px' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                props.onSave?.(getSchemaValue(tableConfigs));
+              }}
+              disabled={!!operateMenu && operateMenu !== 'export'}
             >
               保存
             </Button>
