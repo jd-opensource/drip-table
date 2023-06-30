@@ -29,6 +29,9 @@ const Demo = () => (
     mockDataSource
     showTemplate
     mode="page"
+    save
+    defaultMode="preview"
+    showToolbar={false}
     schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}
     dataSource={mockData}
     dataFields={['id', 'name', 'status', 'description', 'ext.state']}

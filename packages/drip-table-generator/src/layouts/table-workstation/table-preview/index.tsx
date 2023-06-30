@@ -65,6 +65,7 @@ const PreviewTable = <
           'defaultTheme',
           'customThemeOptions',
           'defaultMode',
+          'showToolbar',
           'dataFields',
           'noDataFeedBack',
           'customComponentPanel',

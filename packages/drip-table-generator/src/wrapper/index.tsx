@@ -32,7 +32,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>): DripTableGeneratorStates => ({
     currentTableID: void 0,
     previewDataSource: [...props.dataSource || []],
-    mode: 'edit',
+    mode: props.defaultMode ?? 'edit',
   });
 
 const DripTableGenerator = React.forwardRef(<
