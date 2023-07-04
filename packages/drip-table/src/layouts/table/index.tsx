@@ -629,6 +629,7 @@ const insertCellConfigRow = (rcTableInfo: RcTableInfo, targetRowIndex: number) =
   delete rcTableInfo.cellConfigs[targetRowIndex];
   rcTableInfo.maxRowIndex += 1;
   // 完成插入：纵向调整合并单元格
+  const hasSet: Record<number, Record<number, string | undefined>> = {};
   for (let columnIndex = 0; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
     const configT = rcTableInfo.cellConfigs[targetRowIndex - 1]?.[columnIndex];
     const configB = rcTableInfo.cellConfigs[targetRowIndex + 1]?.[columnIndex];
@@ -639,6 +640,15 @@ const insertCellConfigRow = (rcTableInfo: RcTableInfo, targetRowIndex: number) =
         && spanConfig.spanStartRowIndex !== void 0 && spanConfig.spanEndRowIndex !== void 0
         && spanConfig.spanStartColumnIndex !== void 0 && spanConfig.spanEndColumnIndex !== void 0
       ) {
+        // 过滤重复的合并单元格优化性能
+        if (hasSet[spanConfig.spanStartRowIndex]?.[spanConfig.spanStartColumnIndex] === spanConfig.spanGroupID) {
+          continue;
+        }
+        if (!hasSet[spanConfig.spanStartRowIndex]) {
+          hasSet[spanConfig.spanStartRowIndex] = {};
+        }
+        hasSet[spanConfig.spanStartRowIndex][spanConfig.spanStartColumnIndex] = spanConfig.spanGroupID;
+        // 设置合并单元格
         setCellConfig(rcTableInfo, spanConfig.spanStartRowIndex, spanConfig.spanStartColumnIndex, {
           ...spanConfig,
           data: {
@@ -693,12 +703,22 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
   }
   rcTableInfo.maxColumnIndex += 1;
   // 完成插入：横向调整合并单元格
+  const hasSet: Record<number, Record<number, string | undefined>> = {};
   for (let rowIndex = 0; rowIndex <= rcTableInfo.maxRowIndex; rowIndex++) {
     const configL = rcTableInfo.cellConfigs[rowIndex]?.[targetColumnIndex - 1];
     const configR = rcTableInfo.cellConfigs[rowIndex]?.[targetColumnIndex + 1];
     if (configL?.spanType === 'row' && configL.spanStartRowIndex !== void 0 && configL.spanStartColumnIndex !== void 0) {
       const spanConfig = rcTableInfo.cellConfigs[configL.spanStartRowIndex]?.[configL.spanStartColumnIndex];
       if (spanConfig) {
+        // 过滤重复的合并单元格优化性能
+        if (hasSet[rowIndex]?.[0] === spanConfig.spanGroupID) {
+          continue;
+        }
+        if (!hasSet[rowIndex]) {
+          hasSet[rowIndex] = {};
+        }
+        hasSet[rowIndex][0] = spanConfig.spanGroupID;
+        // 设置合并单元格
         setCellConfig(rcTableInfo, rowIndex, 0, {
           ...spanConfig,
           data: {
@@ -712,6 +732,15 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
     if (configR?.spanType === 'row' && configR.spanStartRowIndex !== void 0 && configR.spanStartColumnIndex !== void 0) {
       const spanConfig = rcTableInfo.cellConfigs[configR.spanStartRowIndex]?.[configR.spanStartColumnIndex];
       if (spanConfig) {
+        // 过滤重复的合并单元格优化性能
+        if (hasSet[rowIndex]?.[0] === spanConfig.spanGroupID) {
+          continue;
+        }
+        if (!hasSet[rowIndex]) {
+          hasSet[rowIndex] = {};
+        }
+        hasSet[rowIndex][0] = spanConfig.spanGroupID;
+        // 设置合并单元格
         setCellConfig(rcTableInfo, rowIndex, 0, {
           ...spanConfig,
           data: {
@@ -729,6 +758,15 @@ const insertCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
         && spanConfig.spanStartRowIndex !== void 0 && spanConfig.spanEndRowIndex !== void 0
         && spanConfig.spanStartColumnIndex !== void 0 && spanConfig.spanEndColumnIndex !== void 0
       ) {
+        // 过滤重复的合并单元格优化性能
+        if (hasSet[spanConfig.spanStartRowIndex]?.[spanConfig.spanStartColumnIndex] === spanConfig.spanGroupID) {
+          continue;
+        }
+        if (!hasSet[spanConfig.spanStartRowIndex]) {
+          hasSet[spanConfig.spanStartRowIndex] = {};
+        }
+        hasSet[spanConfig.spanStartRowIndex][spanConfig.spanStartColumnIndex] = spanConfig.spanGroupID;
+        // 设置合并单元格
         setCellConfig(rcTableInfo, spanConfig.spanStartRowIndex, spanConfig.spanStartColumnIndex, {
           ...spanConfig,
           data: {
@@ -783,6 +821,7 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
   }
   rcTableInfo.maxColumnIndex -= 1;
   // 完成插入：调整合并单元格
+  const hasSet: Record<number, Record<number, string | undefined>> = {};
   for (let rowIndex = 0; rowIndex <= rcTableInfo.maxRowIndex; rowIndex++) {
     const config = rcTableInfo.cellConfigs[rowIndex]?.[targetColumnIndex];
     if (config && config.spanStartRowIndex !== void 0 && config.spanStartColumnIndex !== void 0) {
@@ -791,6 +830,15 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
         && spanConfig.spanStartRowIndex !== void 0 && spanConfig.spanEndRowIndex !== void 0
         && spanConfig.spanStartColumnIndex !== void 0 && spanConfig.spanEndColumnIndex !== void 0
       ) {
+        // 过滤重复的合并单元格优化性能
+        if (hasSet[spanConfig.spanStartRowIndex]?.[spanConfig.spanStartColumnIndex] === spanConfig.spanGroupID) {
+          continue;
+        }
+        if (!hasSet[spanConfig.spanStartRowIndex]) {
+          hasSet[spanConfig.spanStartRowIndex] = {};
+        }
+        hasSet[spanConfig.spanStartRowIndex][spanConfig.spanStartColumnIndex] = spanConfig.spanGroupID;
+        // 设置合并单元格
         setCellConfig(rcTableInfo, spanConfig.spanStartRowIndex, spanConfig.spanStartColumnIndex, {
           ...spanConfig,
           data: {
