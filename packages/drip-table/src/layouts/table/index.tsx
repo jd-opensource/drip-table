@@ -752,25 +752,34 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
   // 执行删除：调整稀疏矩阵元素下标
   for (let rowIndex = 0; rowIndex <= rcTableInfo.maxRowIndex; rowIndex++) {
     const cellConfigRow = rcTableInfo.cellConfigs[rowIndex];
-    if (cellConfigRow) {
-      for (let columnIndex = targetColumnIndex; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
-        const config = columnIndex === targetColumnIndex && cellConfigRow[columnIndex + 1]?.spanGroupID && cellConfigRow[columnIndex + 1]?.spanGroupID === cellConfigRow[columnIndex]?.spanGroupID
-          ? cellConfigRow[columnIndex]
-          : cellConfigRow[columnIndex + 1];
-        if (config) {
-          if (config.spanStartColumnIndex !== void 0 && config.spanStartColumnIndex > targetColumnIndex) {
-            config.spanStartColumnIndex -= 1;
-          }
-          if (config.spanEndColumnIndex !== void 0 && config.spanEndColumnIndex > targetColumnIndex) {
-            config.spanEndColumnIndex -= 1;
-          }
-          cellConfigRow[columnIndex] = config;
-        } else {
-          delete cellConfigRow[columnIndex];
-        }
-      }
-      delete cellConfigRow[rcTableInfo.maxColumnIndex];
+    if (!cellConfigRow) {
+      continue;
     }
+    for (let columnIndex = 0; columnIndex <= rcTableInfo.maxColumnIndex; columnIndex++) {
+      const config = cellConfigRow[columnIndex];
+      if (!config) {
+        if (columnIndex > targetColumnIndex) {
+          delete cellConfigRow[columnIndex - 1];
+        }
+        continue;
+      }
+      if (config.spanStartColumnIndex !== void 0 && config.spanStartColumnIndex > targetColumnIndex) {
+        if (config.spanPrimary && config.data.colSpan !== void 0) {
+          config.data.colSpan += 1;
+        }
+        config.spanStartColumnIndex -= 1;
+      }
+      if (config.spanEndColumnIndex !== void 0 && config.spanEndColumnIndex >= targetColumnIndex) {
+        if (config.spanPrimary && config.data.colSpan !== void 0) {
+          config.data.colSpan -= 1;
+        }
+        config.spanEndColumnIndex -= 1;
+      }
+      if (columnIndex > targetColumnIndex) {
+        cellConfigRow[columnIndex - 1] = config;
+      }
+    }
+    delete cellConfigRow[rcTableInfo.maxColumnIndex];
   }
   rcTableInfo.maxColumnIndex -= 1;
   // 完成插入：调整合并单元格
@@ -782,7 +791,7 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
         && spanConfig.spanStartRowIndex !== void 0 && spanConfig.spanEndRowIndex !== void 0
         && spanConfig.spanStartColumnIndex !== void 0 && spanConfig.spanEndColumnIndex !== void 0
       ) {
-        setCellConfig(rcTableInfo, rowIndex, 0, {
+        setCellConfig(rcTableInfo, spanConfig.spanStartRowIndex, spanConfig.spanStartColumnIndex, {
           ...spanConfig,
           data: {
             ...spanConfig.data,
