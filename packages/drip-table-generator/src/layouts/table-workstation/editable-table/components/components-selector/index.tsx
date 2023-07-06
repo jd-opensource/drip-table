@@ -28,6 +28,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   showTitle?: boolean;
   showFilter?: boolean;
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   open?: boolean;
   onClose: () => void;
   customColumns?: (columns: DTGTableConfig['columns'], newColumn: DTGTableConfig['columns'][number]) => DTGTableConfig['columns'];
@@ -85,9 +86,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableColumns }) => (
-        <div className="jfe-drip-table-generator-components-bar-wrapper" onClick={e => e.stopPropagation()}>
-          { props.showTitle && (
+      { ({ tableConfigs, setTableColumns }) => (props.customColumnAddPanel
+        ? props.customColumnAddPanel({
+          tableConfig: tableConfigs.find(c => c.tableId === props.tableId),
+          components,
+        })
+        : (
+          <div className="jfe-drip-table-generator-components-bar-wrapper" onClick={e => e.stopPropagation()}>
+            { props.showTitle && (
             <div className="jfe-drip-table-generator-components-bar-navigation">
               <Input
                 className="jfe-drip-table-generator-components-bar-no-border"
@@ -96,110 +102,110 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onChange={(e) => { setTitle(e.target.value); }}
               />
             </div>
-          ) }
-          { componentConfig
-            ? (
-              <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
-                <Select
-                  className="jfe-drip-table-generator-components-bar-no-border"
-                  value={componentConfig['ui:type']}
-                  options={[{ label: componentConfig.title, value: componentConfig['ui:type'] }]}
-                  onFocus={() => { setComponentConfig(void 0); }}
-                />
-              </div>
-            )
-            : (
-              <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
-                { props.showFilter && (
-                <div>
-                  <Input
+            ) }
+            { componentConfig
+              ? (
+                <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
+                  <Select
                     className="jfe-drip-table-generator-components-bar-no-border"
-                    prefix={<SearchOutlined />}
-                    allowClear
-                    placeholder="输入组件名搜索"
-                    value={keyword}
-                    onChange={(e) => {
-                      setKeyWord(e.target.value);
-                      let componentConfigs = getComponentsConfigs('', props.customComponentPanel);
-                      let groupsToUse = getGroups(props.customComponentPanel);
-                      if (e.target.value) {
-                        componentConfigs = componentConfigs.filter(item => item.title.includes(e.target.value));
-                        groupsToUse = componentConfigs.map(item => item.group);
-                      }
-                      setComponents(componentConfigs);
-                      setGroups(groupsToUse);
-                    }}
+                    value={componentConfig['ui:type']}
+                    options={[{ label: componentConfig.title, value: componentConfig['ui:type'] }]}
+                    onFocus={() => { setComponentConfig(void 0); }}
                   />
                 </div>
-                ) }
-                <div className="jfe-drip-table-generator-components-bar-components-list">
-                  {
-                groups.map((groupName, groupIndex) => (
-                  <div key={groupIndex}>
-                    <div className="jfe-drip-table-generator-components-bar-component-title">
-                      { groupName }
-                    </div>
+              )
+              : (
+                <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
+                  { props.showFilter && (
+                  <div>
+                    <Input
+                      className="jfe-drip-table-generator-components-bar-no-border"
+                      prefix={<SearchOutlined />}
+                      allowClear
+                      placeholder="输入组件名搜索"
+                      value={keyword}
+                      onChange={(e) => {
+                        setKeyWord(e.target.value);
+                        let componentConfigs = getComponentsConfigs('', props.customComponentPanel);
+                        let groupsToUse = getGroups(props.customComponentPanel);
+                        if (e.target.value) {
+                          componentConfigs = componentConfigs.filter(item => item.title.includes(e.target.value));
+                          groupsToUse = componentConfigs.map(item => item.group);
+                        }
+                        setComponents(componentConfigs);
+                        setGroups(groupsToUse);
+                      }}
+                    />
+                  </div>
+                  ) }
+                  <div className="jfe-drip-table-generator-components-bar-components-list">
                     {
-                      components.filter(item => item.group === groupName).map((component, index) => (
-                        <Button
-                          key={index}
-                          type="text"
-                          className="jfe-drip-table-generator-components-bar-component-title-item"
-                          onClick={(e) => { setComponentConfig(component); }}
-                        >
-                          <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
-                          <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title }</span>
-                        </Button>
+                      groups.map((groupName, groupIndex) => (
+                        <div key={groupIndex}>
+                          <div className="jfe-drip-table-generator-components-bar-component-title">
+                            { groupName }
+                          </div>
+                          {
+                            components.filter(item => item.group === groupName).map((component, index) => (
+                              <Button
+                                key={index}
+                                type="text"
+                                className="jfe-drip-table-generator-components-bar-component-title-item"
+                                onClick={(e) => { setComponentConfig(component); }}
+                              >
+                                <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
+                                <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title }</span>
+                              </Button>
+                            ))
+                          }
+                        </div>
                       ))
                     }
                   </div>
-                ))
-              }
                 </div>
-              </div>
-            ) }
+              ) }
 
-          <div className="jfe-drip-table-generator-components-bar-actions">
-            <Button
-              style={{ marginRight: 12 }}
-              onClick={() => {
-                initStates();
-                props.onClose();
-              }}
-            >
-              取消
-            </Button>
-            <Button
-              disabled={!componentConfig}
-              type="primary"
-              onClick={() => {
-                const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
-                if (componentConfig && tableIndex > -1) {
-                  const column = getColumnSchemaByComponent(componentConfig, props.showTitle ? title : '');
-                  if (props.onConfirm) {
-                    props.onConfirm(column, tableIndex);
-                  } else {
-                    const lastSortableColumnIndex = tableConfigs[tableIndex].columns.map(item => !!item.fixed).lastIndexOf(false);
-                    let columns = [...tableConfigs[tableIndex].columns];
-                    if (props.customColumns) {
-                      columns = props.customColumns(tableConfigs[tableIndex].columns, column);
-                    } else if (lastSortableColumnIndex < columns.length - 1) {
-                      columns.splice(lastSortableColumnIndex + 1, 0, column);
-                    } else {
-                      columns = [...tableConfigs[tableIndex].columns, column];
-                    }
-                    setTableColumns(columns, tableIndex);
-                  }
+            <div className="jfe-drip-table-generator-components-bar-actions">
+              <Button
+                style={{ marginRight: 12 }}
+                onClick={() => {
                   initStates();
                   props.onClose();
-                }
-              }}
-            >
-              确认
-            </Button>
+                }}
+              >
+                取消
+              </Button>
+              <Button
+                disabled={!componentConfig}
+                type="primary"
+                onClick={() => {
+                  const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
+                  if (componentConfig && tableIndex > -1) {
+                    const column = getColumnSchemaByComponent(componentConfig, props.showTitle ? title : '');
+                    if (props.onConfirm) {
+                      props.onConfirm(column, tableIndex);
+                    } else {
+                      const lastSortableColumnIndex = tableConfigs[tableIndex].columns.map(item => !!item.fixed).lastIndexOf(false);
+                      let columns = [...tableConfigs[tableIndex].columns];
+                      if (props.customColumns) {
+                        columns = props.customColumns(tableConfigs[tableIndex].columns, column);
+                      } else if (lastSortableColumnIndex < columns.length - 1) {
+                        columns.splice(lastSortableColumnIndex + 1, 0, column);
+                      } else {
+                        columns = [...tableConfigs[tableIndex].columns, column];
+                      }
+                      setTableColumns(columns, tableIndex);
+                    }
+                    initStates();
+                    props.onClose();
+                  }
+                }}
+              >
+                确认
+              </Button>
+            </div>
           </div>
-        </div>
-      ) }
+        )) }
     </TableConfigsContext.Consumer>
 
   );

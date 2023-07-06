@@ -30,7 +30,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   columnId?: string | number;
   showLeftShadow?: boolean;
   showRightShadow?: boolean;
-  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
 }
 const ColumnHeader = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -64,6 +65,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               showTitle
               showFilter
               customComponentPanel={props.customComponentPanel}
+              customColumnAddPanel={props.customColumnAddPanel}
               onClose={() => setSelector('')}
               customColumns={(columns, column) => {
                 const index = columns.findIndex(item => item.key === props.column.key);
@@ -95,6 +97,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               showTitle
               showFilter
               customComponentPanel={props.customComponentPanel}
+              customColumnAddPanel={props.customColumnAddPanel}
               onClose={() => setSelector('')}
               customColumns={(columns, column) => {
                 const index = columns.findIndex(item => item.key === props.column.key);

@@ -28,7 +28,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   scrollTarget: string;
   scrollLeft: number;
   tableConfig: DTGTableConfig;
-  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onResort: (column: DTGTableConfig['columns']) => void;
   onScroll: (scrollLeft: number) => void;
 }
@@ -82,6 +83,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             tableConfig={props.tableConfig}
             column={columnWrapper.column}
             columnId={columnWrapper.id}
+            customColumnAddPanel={props.customColumnAddPanel}
+            customComponentPanel={props.customComponentPanel}
           />
         ))
         : null }
@@ -103,13 +106,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           style={{ display: 'flex', border: '1px solid transparent' }}
         >
           { sortableColumns.map(columnWrapper => (
-            <ColumnHeader tableConfig={props.tableConfig} column={columnWrapper.column} columnId={columnWrapper.id} />
+            <ColumnHeader
+              tableConfig={props.tableConfig}
+              column={columnWrapper.column}
+              columnId={columnWrapper.id}
+              customColumnAddPanel={props.customColumnAddPanel}
+              customComponentPanel={props.customComponentPanel}
+            />
           )) }
         </ReactSortable>
       </div>
       { rightFixedColumns.length > 0
         ? rightFixedColumns.map((columnWrapper, index) => (
-          <ColumnHeader showLeftShadow={!index} tableConfig={props.tableConfig} column={columnWrapper.column} columnId={columnWrapper.id} />
+          <ColumnHeader
+            showLeftShadow={!index}
+            tableConfig={props.tableConfig}
+            column={columnWrapper.column}
+            columnId={columnWrapper.id}
+            customColumnAddPanel={props.customColumnAddPanel}
+            customComponentPanel={props.customComponentPanel}
+          />
         ))
         : null }
       <div
@@ -129,6 +145,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               showTitle
               showFilter
               customComponentPanel={props.customComponentPanel}
+              customColumnAddPanel={props.customColumnAddPanel}
               onClose={() => setDropdownOpen(false)}
             />
           )}

@@ -34,7 +34,8 @@ interface TableCellProps<
   columnIndex: number;
   record: RecordType;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
-  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   path: number[];
@@ -127,6 +128,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                         tableId={props.tableConfig.tableId}
                                         showFilter
                                         customComponentPanel={props.customComponentPanel}
+                                        customColumnAddPanel={props.customColumnAddPanel}
                                         onClose={() => setDropdownIndex(-1)}
                                         onConfirm={(column, tableIndex) => {
                                           const path = [...props.path, componentIndex];

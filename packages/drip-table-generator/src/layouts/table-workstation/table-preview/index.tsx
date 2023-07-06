@@ -70,6 +70,7 @@ const PreviewTable = <
           'noDataFeedBack',
           'customComponentPanel',
           'customGlobalConfigPanel',
+          'customColumnAddPanel',
           'customAttributeComponents',
           'slotsSchema',
           'onExportSchema',
