@@ -93,9 +93,16 @@ const DripTableGenerator = React.forwardRef(<
   };
 
   React.useImperativeHandle(ref, () => ({
-    getState: () => false,
+    getState: () => generatorStates,
+    getTableConfigs: () => tableConfigs,
     getSchemaValue: () => getSchemaValue(tableConfigs),
     getDataSource: () => generatorStates.previewDataSource,
+    setTableConfigs: {
+      updateTableConfig: tableConfigsContext.updateTableConfig,
+      updateTableConfigs: tableConfigsContext.updateTableConfigs,
+      setTableConfigs: tableConfigsContext.setTableConfigs,
+      setTableColumns: tableConfigsContext.setTableColumns,
+    },
   }));
 
   React.useEffect(() => {

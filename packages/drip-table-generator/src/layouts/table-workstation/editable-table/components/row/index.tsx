@@ -33,7 +33,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   record: RecordType;
   hasSubTable?: boolean;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
-  customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'] | undefined;
+  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
@@ -94,6 +95,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         tableConfig={props.tableConfig}
         customComponents={props.customComponents}
         customComponentPanel={props.customComponentPanel}
+        customColumnAddPanel={props.customColumnAddPanel}
         mockDataSource={props.mockDataSource}
         dataFields={props.dataFields}
         path={[]}

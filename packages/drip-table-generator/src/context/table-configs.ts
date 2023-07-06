@@ -25,11 +25,20 @@ export interface DTGTableConfigsContext {
    */
   tableConfigs: DTGTableConfig[];
   /**
-   * 更新某一项配置
+   * 更新位置为index的表格的所有配置
    */
   updateTableConfig: (config: DTGTableConfig, index: number, callback?: (configs: DTGTableConfig[]) => void) => void;
+  /**
+   * 更新所有表格的所有配置
+   */
   updateTableConfigs: (configs: DTGTableConfig[], callback?: (configs: DTGTableConfig[]) => void) => void;
+  /**
+   * 更新位置为index的表格的非列配置
+   */
   setTableConfigs: (config: DTGTableConfig['configs'], index: number, callback?: (configs: DTGTableConfig[]) => void) => void;
+  /**
+   * 更新位置为index的表格的列配置
+   */
   setTableColumns: (columns: DTGTableConfig['columns'], index: number, callback?: (configs: DTGTableConfig[]) => void) => void;
 }
 

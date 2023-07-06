@@ -98,6 +98,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     scrollTarget={scrollTarget}
                     scrollLeft={scrollLeft}
                     customComponentPanel={props.customComponentPanel}
+                    customColumnAddPanel={props.customColumnAddPanel}
                     tableConfig={props.tableConfig}
                     onResort={newColumns => setTableColumns([...newColumns], props.index)}
                     onScroll={(left) => { setScrollLeft(left); }}
@@ -112,6 +113,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   scrollTarget={scrollTarget}
                   scrollLeft={scrollLeft}
                   customComponentPanel={props.customComponentPanel}
+                  customColumnAddPanel={props.customColumnAddPanel}
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                   onScroll={(left) => { setScrollLeft(left); }}
