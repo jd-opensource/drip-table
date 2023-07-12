@@ -13,16 +13,26 @@
   justify-content: space-between;
   align-items: center;
 
-  &-body {
-    position: relative;
-    z-index: 1;
-    flex: 0 1 auto;
-    display: inline-flex;
-    justify-content: center;
+  &-content {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+
+    &-body {
+      position: relative;
+      z-index: 1;
+      flex: 0 1 auto;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &-toolbox {
+    flex: 0 0 auto;
+    user-select: none;
+
     &-icon {
       position: relative;
       display: flex;
@@ -49,6 +59,36 @@
 
       &:hover {
         background-color: #f0f0f0;
+      }
+    }
+
+    &-sorter {
+      margin-inline-start: 4px;
+      color: #0000004a;
+      font-size: 0;
+      transition: color .3s;
+      flex: 0 0 auto;
+
+      &-inner {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &-up,
+      &-down {
+        font-size: 12px;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      &-up + &-down {
+        margin-top: -.3em;
+      }
+
+      &-up&--active,
+      &-down&--active {
+        color: #1677ff;
       }
     }
 

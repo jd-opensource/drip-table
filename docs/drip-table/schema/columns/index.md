@@ -31,6 +31,7 @@ toc: content
 | [column.disable](/drip-table/schema/columns/disable) | 根据行数据控制当前单元格组件是否禁用 | × | [🔗 示例](/drip-table/schema/columns/disable) |
 | [column.editable](/drip-table/schema/columns/editable) | 根据行数据控制当前单元格组件是否隐藏不可见 | × | [🔗 示例](/drip-table/schema/columns/editable) |
 | [column.hidable](/drip-table/schema/columns/hidable) | 用户可控制该列显示隐藏 | × | [🔗 示例](/drip-table/schema/columns/hidable) |
+| [column.sorter](/drip-table/schema/columns/sorter) | 排序设置 | × | [🔗 示例](/drip-table/schema/columns/sorter) |
 | [column.filters](/drip-table/schema/columns/filters) | 数据过滤器设置 | × | [🔗 示例](/drip-table/schema/columns/filters) |
 | [column.filtersMaxSelect](/drip-table/schema/columns/filters-max-select) | 数据过滤器最大选择数量 | × | [🔗 示例](/drip-table/schema/columns/filters-max-select) |
 | [column.defaultFilteredValue](/drip-table/schema/columns/default-filtered-value) | 默认数据过滤器值 | × | [🔗 示例](/drip-table/schema/columns/default-filtered-value) |

@@ -133,6 +133,14 @@ export interface DripTableDataColumnSchema extends DripTableBaseColumnSchema {
    */
   hideInLayout?: boolean;
   /**
+   * 数据排序设置
+   */
+  sorter?: string;
+  /**
+   * 数据排序支持的方式
+   */
+  sortDirections?: ('descend' | 'ascend')[];
+  /**
    * 数据过滤器设置
    */
   filters?: {

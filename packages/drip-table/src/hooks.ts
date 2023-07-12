@@ -54,6 +54,8 @@ export interface IDripTableContext<
       pageSize: number;
     };
     filters: Record<string, (boolean | React.Key)[] | null>;
+    sortColumnKey: string | null;
+    sortDirection: 'ascend' | 'descend' | null;
     tableSize: 'default';
     layout: 'table' | 'card' | 'calendar';
     checkPassed: boolean;
@@ -77,6 +79,8 @@ export const createTableState = (): IDripTableContext['state'] => ({
     pageSize: 10,
   },
   filters: {},
+  sortColumnKey: null,
+  sortDirection: null,
   tableSize: 'default',
   checkPassed: true,
   selectedRowKeys: [],

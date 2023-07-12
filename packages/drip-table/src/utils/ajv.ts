@@ -674,6 +674,11 @@ export const validateDripTableColumnSchema = (data: unknown, schema?: SchemaObje
         ],
       },
       hidable: { type: 'boolean' },
+      sorter: { type: 'string' },
+      sortDirections: {
+        type: 'array',
+        items: { enum: ['ascend', 'descend'] },
+      },
       filters: {
         type: 'array',
         items: {
