@@ -870,7 +870,7 @@ const TableLayout = <
       return;
     }
     tableProps.onPaginationChange?.(tableState.pagination, tableInfo);
-    setTableState({ paginationChanged: false });
+    setTableState({ paginationChanged: false, pendingChanging: true });
   }, [tableState.pagination]);
 
   React.useEffect(() => {
@@ -878,7 +878,7 @@ const TableLayout = <
       return;
     }
     tableProps.onSorterChange?.(tableState.sorter, tableInfo);
-    setTableState({ sorterChanged: false });
+    setTableState({ sorterChanged: false, pendingChanging: true });
   }, [tableState.sorter]);
 
   React.useEffect(() => {
@@ -886,11 +886,11 @@ const TableLayout = <
       return;
     }
     tableProps.onFilterChange?.(tableState.filters, tableInfo);
-    setTableState({ filtersChanged: false });
+    setTableState({ filtersChanged: false, pendingChanging: true });
   }, [tableState.filters]);
 
   React.useEffect(() => {
-    if (!tableState.paginationChanged && !tableState.sorterChanged && !tableState.filtersChanged) {
+    if (!tableState.pendingChanging) {
       return;
     }
     tableProps.onChange?.({ pagination: tableState.pagination, sorter: tableState.sorter, filters: tableState.filters }, tableInfo);
