@@ -49,8 +49,10 @@ toc: content
 | [onSelectionChange](/drip-table/props/on-selection-change) | 选择行变化 | × | [🔗 示例](/drip-table/props/on-selection-change) |
 | [onSearch](/drip-table/props/on-search) | 搜索触发 | × | [🔗 示例](/drip-table/props/on-search) |
 | [onInsertButtonClick](/drip-table/props/on-insert-button-click) | 点击添加按钮触发 | × | [🔗 示例](/drip-table/props/on-insert-button-click) |
-| [onFilterChange](/drip-table/props/on-filter-change) | 过滤器触发 | × | [🔗 示例](/drip-table/props/on-filter-change) |
 | [onPageChange](/drip-table/props/on-page-change) | 页码/页大小变化 | × | [🔗 示例](/drip-table/props/on-page-change) |
+| [onPaginationChange](/drip-table/props/on-pagination-change) | 分页器变动触发 | × | [🔗 示例](/drip-table/props/on-pagination-change) |
+| [onSortChange](/drip-table/props/on-sort-change) | 排序变动触发 | × | [🔗 示例](/drip-table/props/on-sort-change) |
+| [onFilterChange](/drip-table/props/on-filter-change) | 过滤器触发 | × | [🔗 示例](/drip-table/props/on-filter-change) |
 | [onChange](/drip-table/props/on-change) | 过滤器、分页器 等配置变化 | × | [🔗 示例](/drip-table/props/on-change) |
 | [onDisplayColumnKeysChange](/drip-table/props/on-display-column-keys-change) | 用户修改展示的列时 | × | [🔗 示例](/drip-table/props/on-display-column-keys-change) |
 | [onEvent](/drip-table/props/on-event) | 通用事件机制 | × | [🔗 示例](/drip-table/props/on-event) |

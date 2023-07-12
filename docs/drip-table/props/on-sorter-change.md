@@ -1,13 +1,22 @@
 ---
-title: 排序方式 sortDirections
+title: 排序触发 onSorterChange
 toc: content
 ---
 
-## 排序方式 columns.sortDirections
+## 排序变动触发 onSorterChange
 
-- 描述：数据排序支持的方式
-- 类型：`('ascend' | 'descend')[]`
+- 描述：排序配置变化
+- 类型：
+
+```typescript
+type onSorterChange = (
+  sorter: DripTableSorter,
+  tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+) => void;
+```
+
 - 默认值：`undefined`
+- 说明：[`DripTableTableInformation<RecordType, ExtraOptions>`](/drip-table/types/table-information)
 
 ```jsx
 /**
@@ -26,7 +35,10 @@ const schema = {
       title: "商品名称",
       dataIndex: "name",
       component: "text",
-      options: { mode: "single", maxRow: 1 },
+      options: {
+        mode: "single",
+        maxRow: 1,
+      },
       sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
     },
     {
@@ -35,8 +47,11 @@ const schema = {
       align: "center",
       dataIndex: "description",
       component: "text",
-      options: { mode: "single", ellipsis: true, maxRow: 1 },
-      sorter: 'return props.leftRecord.description == props.rightRecord.description ? 0 : props.leftRecord.description > props.rightRecord.description ? 1 : -1',
+      options: {
+        mode: "single",
+        ellipsis: true,
+        maxRow: 1,
+      },
     },
     {
       key: 'mock_3',
@@ -45,6 +60,12 @@ const schema = {
       align: 'center',
       dataIndex: 'status',
       description: '这是一条提示信息',
+      hidable: true,
+      filters: [
+        { text: '售卖中', value: 'onSale' },
+        { text: '已售罄', value: 'soldOut' },
+      ],
+      defaultFilteredValue: ['onSale', 'soldOut'],
       component: 'text',
       options: {
         mode: 'single',
@@ -53,8 +74,6 @@ const schema = {
           soldOut: '已售罄',
         },
       },
-      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
-      sortDirections: ['ascend'],
     },
   ],
 };
@@ -63,22 +82,16 @@ const dataSource = Array(100).fill(0).map((_, i) => ({
   id: i + 1,
   name: `商品${i + 1}`,
   price: 7999,
-  status: Math.random() > 0.5 ? "onSale" : "soldOut",
+  status: "onSale",
   description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
 }));
 
 const Demo = () => {
-  const [ds, setDS] = React.useState(dataSource);
   return (
     <DripTable
       schema={schema}
-      dataSource={ds}
-      onChange={({ sorter }) => {
-        if (sorter.comparer) {
-          setDS([...dataSource].sort(sorter.comparer))
-        } else {
-          setDS(dataSource)
-        }
+      dataSource={dataSource}
+      onSorterChange={(sorter) => {
         message.info(`排序：${JSON.stringify(sorter)}。`);
         console.log('onChange', sorter);
       }}
