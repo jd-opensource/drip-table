@@ -463,6 +463,11 @@ export interface DripTablePagination {
 
 export type DripTableFilters = Record<string, (React.Key | boolean)[] | null>;
 
+export type DripTableSorter = {
+  key: string | null;
+  direction: 'ascend' | 'descend' | null;
+};
+
 /**
  * 指定子表格的参数
  */
@@ -732,6 +737,20 @@ export interface DripTableProps<
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
+   * 分页器触发
+   */
+  onPaginationChange?: (
+    pagination: DripTablePagination,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => void;
+  /**
+   * 排序触发
+   */
+  onSorterChange?: (
+    sorter: DripTableSorter,
+    tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
+  ) => void;
+  /**
    * 过滤器触发
    */
   onFilterChange?: (
@@ -753,6 +772,7 @@ export interface DripTableProps<
     options: {
       pagination: DripTablePagination;
       filters: DripTableFilters;
+      sorter: DripTableSorter;
     },
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;

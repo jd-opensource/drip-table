@@ -13,11 +13,12 @@ import isEqual from 'lodash/isEqual';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import React from 'react';
 
+import { safeExecute } from '@/utils/sandbox';
 import Checkbox from '@/components/react-components/checkbox';
 import SlotRender from '@/components/react-components/slot-render';
 import Tooltip from '@/components/react-components/tooltip';
 import { type IDripTableContext, useTableContext } from '@/hooks';
-import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption } from '@/index';
+import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption, indexValue } from '@/index';
 
 const prefixCls = 'jfe-drip-table-layout-table-column-header-cell';
 
@@ -40,7 +41,7 @@ const HeaderCell = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<ExtraOptions>) => {
-  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const { state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
   const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
   const [filterDisplay, setFilterDisplay] = React.useState<NonNullable<IDripTableContext['state']['filters'][string]>>((typeof dataIndex === 'string' && tableState.filters[dataIndex]) || []);
@@ -111,15 +112,30 @@ const HeaderCell = <
                           role="img"
                           aria-label="caret-up"
                           className={classNames(`${prefixCls}-toolbox-sorter-up`, {
-                            [`${prefixCls}-toolbox-sorter--active`]: tableState.sortColumnKey === columnSchema.key && tableState.sortDirection === 'ascend',
+                            [`${prefixCls}-toolbox-sorter--active`]: tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'ascend',
                           })}
                           onClick={React.useCallback(() => {
-                            if (tableState.sortColumnKey === columnSchema.key && tableState.sortDirection === 'ascend') {
-                              setTableState({ sortColumnKey: null, sortDirection: null });
+                            if (tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'ascend') {
+                              setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
                             } else {
-                              setTableState({ sortColumnKey: columnSchema.key, sortDirection: 'ascend' });
+                              setTableState({
+                                sorter: {
+                                  key: columnSchema.key,
+                                  direction: 'ascend',
+                                  comparer: (a, b) => safeExecute(columnSchema.sorter || '', {
+                                    props: {
+                                      column: columnSchema,
+                                      leftRecord: a,
+                                      rightRecord: b,
+                                      leftValue: indexValue(a, columnSchema.dataIndex),
+                                      rightValue: indexValue(b, columnSchema.dataIndex),
+                                    },
+                                  }, 0),
+                                },
+                                sorterChanged: true,
+                              });
                             }
-                          }, [columnSchema.key, tableState.sortColumnKey, tableState.sortDirection])}
+                          }, [columnSchema.key, tableState.sorter])}
                         >
                           <svg viewBox="0 0 1024 1024" focusable="false" data-icon="caret-up" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                             <path d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z" />
@@ -135,15 +151,30 @@ const HeaderCell = <
                           role="img"
                           aria-label="caret-down"
                           className={classNames(`${prefixCls}-toolbox-sorter-down`, {
-                            [`${prefixCls}-toolbox-sorter--active`]: tableState.sortColumnKey === columnSchema.key && tableState.sortDirection === 'descend',
+                            [`${prefixCls}-toolbox-sorter--active`]: tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'descend',
                           })}
                           onClick={React.useCallback(() => {
-                            if (tableState.sortColumnKey === columnSchema.key && tableState.sortDirection === 'descend') {
-                              setTableState({ sortColumnKey: null, sortDirection: null });
+                            if (tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'descend') {
+                              setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
                             } else {
-                              setTableState({ sortColumnKey: columnSchema.key, sortDirection: 'descend' });
+                              setTableState({
+                                sorter: {
+                                  key: columnSchema.key,
+                                  direction: 'descend',
+                                  comparer: (a, b) => 0 - safeExecute(columnSchema.sorter || '', {
+                                    props: {
+                                      column: columnSchema,
+                                      leftRecord: a,
+                                      rightRecord: b,
+                                      leftValue: indexValue(a, columnSchema.dataIndex),
+                                      rightValue: indexValue(b, columnSchema.dataIndex),
+                                    },
+                                  }, 0),
+                                },
+                                sorterChanged: true,
+                              });
                             }
-                          }, [columnSchema.key, tableState.sortColumnKey, tableState.sortDirection])}
+                          }, [columnSchema.key, tableState.sorter])}
                         >
                           <svg viewBox="0 0 1024 1024" focusable="false" data-icon="caret-down" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                             <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z" />
@@ -212,9 +243,7 @@ const HeaderCell = <
                           if (typeof dataIndex === 'string' && filterDisplay?.length) {
                             filters[dataIndex] = filterDisplay;
                           }
-                          setTableState({ filters });
-                          tableProps.onFilterChange?.(filters, tableInfo);
-                          tableProps.onChange?.({ pagination: tableState.pagination, filters }, tableInfo);
+                          setTableState({ filters, filtersChanged: true });
                         }}
                       >
                         <span>确 定</span>

@@ -8,6 +8,7 @@ toc: content
 - 描述：数据排序设置
 - 类型：`string`
 - 默认值：`undefined`
+- 注：需要配合表格事件 `onSorterChange` 或 `onChange` 调整传入的 `dataSource` 条目顺序，如下示例：
 
 ```jsx
 /**
@@ -27,7 +28,7 @@ const schema = {
       dataIndex: "name",
       component: "text",
       options: { mode: "single", maxRow: 1 },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
     },
     {
       key: "mock_2",
@@ -36,7 +37,7 @@ const schema = {
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftRecord.description == props.rightRecord.description ? 0 : props.leftRecord.description > props.rightRecord.description ? 1 : -1',
     },
     {
       key: 'mock_3',
@@ -53,7 +54,7 @@ const schema = {
           soldOut: '已售罄',
         },
       },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
       sortDirections: ['ascend'],
     },
   ],
@@ -73,14 +74,14 @@ const Demo = () => {
     <DripTable
       schema={schema}
       dataSource={ds}
-      onChange={({ pagination, filters }) => {
-        if (filters.status?.length) {
-          setDS(dataSource.filter(d => filters.status.includes(d.status)));
+      onChange={({ sorter }) => {
+        if (sorter.comparer) {
+          setDS([...dataSource].sort(sorter.comparer))
         } else {
-          setDS(dataSource);
+          setDS(dataSource)
         }
-        message.info(`过滤器：${JSON.stringify(filters)}，分页器：current = ${pagination.current}, pageSize = ${pagination.pageSize}。`);
-        console.log('onChange', pagination, filters);
+        message.info(`排序：${JSON.stringify(sorter)}。`);
+        console.log('onChange', sorter);
       }}
     />
   );

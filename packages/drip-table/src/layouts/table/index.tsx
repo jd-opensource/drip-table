@@ -863,6 +863,39 @@ const TableLayout = <
   const [rcTableWidth, setRcTableWidth] = React.useState(0);
   const [dragInIndex, setDragInIndex] = React.useState(-1);
 
+  // 触发器事件回调
+
+  React.useEffect(() => {
+    if (!tableState.paginationChanged) {
+      return;
+    }
+    tableProps.onPaginationChange?.(tableState.pagination, tableInfo);
+    setTableState({ paginationChanged: false });
+  }, [tableState.pagination]);
+
+  React.useEffect(() => {
+    if (!tableState.sorterChanged) {
+      return;
+    }
+    tableProps.onSorterChange?.(tableState.sorter, tableInfo);
+    setTableState({ sorterChanged: false });
+  }, [tableState.sorter]);
+
+  React.useEffect(() => {
+    if (!tableState.filtersChanged) {
+      return;
+    }
+    tableProps.onFilterChange?.(tableState.filters, tableInfo);
+    setTableState({ filtersChanged: false });
+  }, [tableState.filters]);
+
+  React.useEffect(() => {
+    if (!tableState.paginationChanged && !tableState.sorterChanged && !tableState.filtersChanged) {
+      return;
+    }
+    tableProps.onChange?.({ pagination: tableState.pagination, sorter: tableState.sorter, filters: tableState.filters }, tableInfo);
+  }, [tableState.pagination, tableState.sorter, tableState.filters]);
+
   const initialPagination = tableInfo.schema?.pagination || void 0;
   React.useEffect(() => {
     setTableState(state => ({
@@ -1481,9 +1514,8 @@ const TableLayout = <
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
         onChange={(page, pageSize) => {
           const pagination = { ...tableState.pagination, current: page, pageSize };
-          setTableState({ pagination });
+          setTableState({ pagination, paginationChanged: true });
           tableProps.onPageChange?.(page, pageSize, tableInfo);
-          tableProps.onChange?.({ pagination, filters: tableState.filters }, tableInfo);
         }}
       />
     )
