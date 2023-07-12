@@ -8,7 +8,14 @@ toc: content
 - 描述：数据排序设置
 - 类型：`string`
 - 默认值：`undefined`
-- 注：需要配合表格事件 `onSorterChange` 或 `onChange` 调整传入的 `dataSource` 条目顺序，如下示例：
+- 注：
+
+1. 函数通过 `props.column` 获取当前列 `schema`；
+2. 函数通过 `props.leftValue` 获取当前对比函数左侧数据值；
+3. 函数通过 `props.rightValue` 获取当前对比函数右侧数据值；
+4. 函数通过 `props.leftRecord` 获取当前对比函数左侧行数据；
+5. 函数通过 `props.rightRecord` 获取当前对比函数右侧行数据；
+6. 需要配合表格事件 `onSorterChange` 或 `onChange` 调整传入的 `dataSource` 条目顺序，如下示例：
 
 ```jsx
 /**
