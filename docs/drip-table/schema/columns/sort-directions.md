@@ -6,7 +6,7 @@ toc: content
 ## 排序 columns.sortDirections
 
 - 描述：数据排序支持的方式
-- 类型：`string`
+- 类型：`('ascend' | 'descend')[]`
 - 默认值：`undefined`
 
 ```jsx
@@ -27,7 +27,7 @@ const schema = {
       dataIndex: "name",
       component: "text",
       options: { mode: "single", maxRow: 1 },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
     },
     {
       key: "mock_2",
@@ -36,7 +36,7 @@ const schema = {
       dataIndex: "description",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftRecord.description == props.rightRecord.description ? 0 : props.leftRecord.description > props.rightRecord.description ? 1 : -1',
     },
     {
       key: 'mock_3',
@@ -53,7 +53,7 @@ const schema = {
           soldOut: '已售罄',
         },
       },
-      sorter: 'return props.leftRecord.status > props.rightRecord.status',
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
       sortDirections: ['ascend'],
     },
   ],
