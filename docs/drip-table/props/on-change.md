@@ -13,6 +13,7 @@ type OnChange = (
   options: {
     pagination: DripTablePagination;
     filters: DripTableFilters;
+    sorter: DripTableSorter;
   },
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
 ) => void;
@@ -42,6 +43,7 @@ const schema = {
         mode: "single",
         maxRow: 1,
       },
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
     },
     {
       key: "mock_2",
