@@ -95,8 +95,8 @@ const Demo = () => {
     <DripTable
       schema={schema}
       dataSource={dataSource}
-      onChange={({ pagination, filters }) => {
-        message.info(`过滤器：${JSON.stringify(filters)}，分页器：current = ${pagination.current}, pageSize = ${pagination.pageSize}。`);
+      onChange={({ pagination, sorter, filters }) => {
+        message.info(`排序：${JSON.stringify(sorter)}，过滤器：${JSON.stringify(filters)}，分页器：current = ${pagination.current}, pageSize = ${pagination.pageSize}。`);
         console.log('onChange', pagination, filters);
       }}
     />
