@@ -247,13 +247,6 @@ export interface DripTableGeneratorProps<
     tableConfig?: DTGTableConfig;
     components: DripTableComponentAttrConfig[];
   }) => ReactNode;
-  /**
-   * 当点击生成器中的按钮触发的事件
-   */
-  onClick?: (
-    type: 'table' | 'column' | 'column-item' | 'column-insert-left' | 'column-insert-right',
-    payload: Record<string, unknown>,
-  ) => void;
   dataFields?: string[];
   mockDataSource?: boolean;
   noDataFeedBack?: string | ReactNode;
@@ -269,4 +262,11 @@ export interface DripTableGeneratorProps<
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
   onClose?: () => void;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
+  /**
+   * 当点击生成器中的按钮触发的事件
+   */
+  onClick?: (
+    type: 'table' | 'column' | 'column-item' | 'column-insert-left' | 'column-insert-right' | 'column-delete',
+    payload: Record<string, unknown>,
+  ) => void;
 }

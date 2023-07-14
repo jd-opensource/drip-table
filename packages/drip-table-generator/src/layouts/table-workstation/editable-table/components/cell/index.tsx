@@ -40,6 +40,7 @@ interface TableCellProps<
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   path: number[];
   tableConfig: DTGTableConfig;
+  onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
 const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>(column: T): T => (
@@ -111,6 +112,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                   currentComponentID: isCurrentItem ? void 0 : itemColumn?.key,
                                   currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
                                   drawerType: isCurrentItem ? void 0 : 'column-item',
+                                });
+                                props.onClick?.('column-item', {
+                                  currentTableID: props.tableConfig.tableId,
+                                  currentColumnID: props.tableConfig.columns[props.columnIndex].key,
+                                  currentComponentID: isCurrentItem ? void 0 : itemColumn?.key,
+                                  currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
+                                  tableConfig: props.tableConfig,
                                 });
                               }}
                             >
