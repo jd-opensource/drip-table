@@ -11,15 +11,21 @@ import './index.less';
 import { PicLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import { AutoComplete, Button, Dropdown, Tooltip } from 'antd';
 import classNames from 'classnames';
+import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { mockId } from '@/utils';
 import { DripTableGeneratorContext, GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
-export interface TableContainerProps {
+export interface TableContainerProps<
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   tableConfig: DTGTableConfig;
   children: React.ReactNode;
+  onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
 interface SubTableSettingProps {
@@ -95,7 +101,10 @@ const SubTableSetting = (props: SubTableSettingProps) => {
   );
 };
 
-const TableContainer = (props: TableContainerProps) => (
+const TableContainer = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: TableContainerProps<RecordType, ExtraOptions>) => (
   <GeneratorContext.Consumer>
     { ({ currentTableID, setState }) => (
       <div
@@ -105,6 +114,10 @@ const TableContainer = (props: TableContainerProps) => (
         onClick={(e) => {
           e.stopPropagation();
           setState({ currentTableID: props.tableConfig.tableId, currentColumnID: void 0, currentComponentID: void 0, currentComponentPath: [] });
+          props.onClick?.('table', {
+            currentTableID: props.tableConfig.tableId,
+            tableConfig: props.tableConfig,
+          });
         }}
       >
         { currentTableID === props.tableConfig.tableId && (
@@ -126,6 +139,10 @@ const TableContainer = (props: TableContainerProps) => (
                   setState({
                     currentTableID: props.tableConfig.tableId,
                     drawerType: 'table',
+                  });
+                  props.onClick?.('table', {
+                    currentTableID: props.tableConfig.tableId,
+                    tableConfig: props.tableConfig,
                   });
                 }}
               >
@@ -156,6 +173,6 @@ const TableContainer = (props: TableContainerProps) => (
       </div>
     ) }
   </GeneratorContext.Consumer>
-);
+  );
 
 export default TableContainer;

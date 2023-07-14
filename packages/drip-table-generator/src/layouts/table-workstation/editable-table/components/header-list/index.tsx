@@ -32,6 +32,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onResort: (column: DTGTableConfig['columns']) => void;
   onScroll: (scrollLeft: number) => void;
+  onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
 const ColumnHeaderList = <
@@ -85,6 +86,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             columnId={columnWrapper.id}
             customColumnAddPanel={props.customColumnAddPanel}
             customComponentPanel={props.customComponentPanel}
+            onClick={props.onClick}
           />
         ))
         : null }
@@ -112,6 +114,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               columnId={columnWrapper.id}
               customColumnAddPanel={props.customColumnAddPanel}
               customComponentPanel={props.customComponentPanel}
+              onClick={props.onClick}
             />
           )) }
         </ReactSortable>
@@ -125,6 +128,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             columnId={columnWrapper.id}
             customColumnAddPanel={props.customColumnAddPanel}
             customComponentPanel={props.customComponentPanel}
+            onClick={props.onClick}
           />
         ))
         : null }

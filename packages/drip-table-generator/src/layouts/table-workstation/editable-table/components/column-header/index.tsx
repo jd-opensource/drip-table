@@ -32,6 +32,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   showRightShadow?: boolean;
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
+  onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 const ColumnHeader = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -71,6 +72,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 const index = columns.findIndex(item => item.key === props.column.key);
                 const newColumns = [...columns];
                 newColumns.splice(index < 0 ? 0 : index, 0, column);
+                props.onClick?.('column-insert-left', {
+                  columns: newColumns,
+                  currentTableID: props.tableConfig.tableId,
+                  tableConfig: props.tableConfig,
+                });
                 return newColumns;
               }}
             />
@@ -103,6 +109,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 const index = columns.findIndex(item => item.key === props.column.key);
                 const newColumns = [...columns];
                 newColumns.splice(index > columns.length - 1 ? columns.length - 1 : index + 1, 0, column);
+                props.onClick?.('column-insert-right', {
+                  columns: newColumns,
+                  currentTableID: props.tableConfig.tableId,
+                  tableConfig: props.tableConfig,
+                });
                 return newColumns;
               }}
             />
@@ -139,6 +150,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               currentComponentPath: [],
               drawerType: props.column.key === currentColumnID ? void 0 : 'column',
             });
+            props.onClick?.('column', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: props.column.key === currentColumnID ? void 0 : props.column.key,
+              tableConfig: props.tableConfig,
+            });
           }}
           onMouseEnter={() => setState({ currentHoverColumnID: props.column.key })}
           onMouseLeave={() => setState({ currentHoverColumnID: void 0 })}
@@ -159,6 +175,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                           currentTableID: props.tableConfig.tableId,
                           currentColumnID: props.column.key,
                           drawerType: 'column',
+                        });
+                        props.onClick?.('column', {
+                          currentTableID: props.tableConfig.tableId,
+                          currentColumnID: props.column.key === currentColumnID ? void 0 : props.column.key,
+                          tableConfig: props.tableConfig,
                         });
                       }}
                     />
@@ -199,6 +220,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       const columns = [...tableConfigs[tableIndex]?.columns];
                       columns.splice(columnIndex, 1);
                       setTableColumns(columns, tableIndex);
+                      props.onClick?.('column-delete', {
+                        columns,
+                        currentTableID: props.tableConfig.tableId,
+                        tableConfig: props.tableConfig,
+                      });
                     }}
                     okText="是的"
                     cancelText="我再想想"

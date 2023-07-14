@@ -40,6 +40,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   onScroll: (scrollLeft: number) => void;
+  onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
 const VerticalAligns = {
@@ -99,6 +100,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         mockDataSource={props.mockDataSource}
         dataFields={props.dataFields}
         path={[]}
+        onClick={props.onClick}
       />
     </div>
   );

@@ -79,7 +79,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           dataSource: dataSourceToUse.map(item => item.record),
         };
         return (
-          <TableContainer tableConfig={props.tableConfig}>
+          <TableContainer tableConfig={props.tableConfig} onClick={props.onClick}>
             { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
               ? (
@@ -102,6 +102,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     tableConfig={props.tableConfig}
                     onResort={newColumns => setTableColumns([...newColumns], props.index)}
                     onScroll={(left) => { setScrollLeft(left); }}
+                    onClick={props.onClick}
                   />
                 )
                 : null }
@@ -117,6 +118,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   tableConfig={props.tableConfig}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                   onScroll={(left) => { setScrollLeft(left); }}
+                  onClick={props.onClick}
                 />
                 ) }
                 { previewDataSource.map((wrapRecord, rowIndex) => {
@@ -172,6 +174,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         slots={props.slots}
                         hasSubTable={hasSubTable}
                         onScroll={(left) => { setScrollLeft(left); }}
+                        onClick={props.onClick}
                       />
                       { (props.tableConfig.hasSubTable && hasSubTable)
                     && (
