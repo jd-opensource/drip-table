@@ -1,13 +1,21 @@
 ---
-title: showComponentLayout
+title: customColumnAddPanel
 toc: content
 ---
 
-## showComponentLayout
+## customColumnAddPanel
 
-- 描述：是否展示组件栏
-- 类型：`boolean`
-- 默认值：`false`
+- 描述：自定义表格列添加面板
+- 类型：
+
+```ts
+function(props: {
+    tableConfig?: DTGTableConfig;
+    components: DripTableComponentAttrConfig[];
+  }): ReactNode;
+```
+
+- 默认值：`undefined`
 
 ```jsx
 /**
@@ -16,9 +24,9 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-import { Button } from "antd";
+import { Input } from "antd";
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
-import DripTableGenerator from "drip-table-generator";
+import DripTableGeneratorProvider from "drip-table-generator";
 import React, { useState } from "react";
 
 const schema = {
@@ -60,20 +68,28 @@ const dataSource = [
 ];
 
 const Demo = () => {
-  const [showComponentLayout, setShowComponentLayout] = useState(false);
   return (
     <>
-      <Button
-        onClick={() => setShowComponentLayout(!showComponentLayout)}
-        type="primary"
-        style={{ margin: "8px 0" }}
-      >
-        点击切换组件栏
-      </Button>
-      <DripTableGenerator
-        showComponentLayout={showComponentLayout}
+      <DripTableGeneratorProvider
         schema={schema}
         dataSource={dataSource}
+        mode={"page"}
+        height={480}
+        customColumnAddPanel={(...args) => {
+          console.log(args);
+          return (
+            <div
+              style={{
+                padding: "6px",
+                background: "#efefef",
+                boxShadow: "0 0 4px 0 #333",
+              }}
+            >
+              <h3>添加面板</h3>
+              <Input />
+            </div>
+          );
+        }}
       />
     </>
   );
