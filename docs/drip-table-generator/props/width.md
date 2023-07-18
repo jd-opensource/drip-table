@@ -1,13 +1,13 @@
 ---
-title: showComponentLayout
+title: width
 toc: content
 ---
 
-## showComponentLayout
+## width
 
-- 描述：是否展示组件栏
-- 类型：`boolean`
-- 默认值：`false`
+- 描述：生成器宽度
+- 类型：`number`
+- 默认值：`undefined`
 
 ```jsx
 /**
@@ -16,9 +16,9 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-import { Button } from "antd";
+import { Radio } from "antd";
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
-import DripTableGenerator from "drip-table-generator";
+import DripTableGeneratorProvider from "drip-table-generator";
 import React, { useState } from "react";
 
 const schema = {
@@ -60,20 +60,21 @@ const dataSource = [
 ];
 
 const Demo = () => {
-  const [showComponentLayout, setShowComponentLayout] = useState(false);
+  const [width, setWidth] = useState(500);
   return (
     <>
-      <Button
-        onClick={() => setShowComponentLayout(!showComponentLayout)}
-        type="primary"
-        style={{ margin: "8px 0" }}
-      >
-        点击切换组件栏
-      </Button>
-      <DripTableGenerator
-        showComponentLayout={showComponentLayout}
+      <Radio.Group onChange={(e) => setWidth(e.target.value)} value={width}>
+        <Radio value={500}>500px</Radio>
+        <Radio value={700}>700px</Radio>
+        <Radio value={800}>800px</Radio>
+        <Radio value={1000}>1000px</Radio>
+      </Radio.Group>
+      <DripTableGeneratorProvider
         schema={schema}
         dataSource={dataSource}
+        mode={"page"}
+        width={width}
+        height={600}
       />
     </>
   );

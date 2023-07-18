@@ -224,7 +224,7 @@ export interface DripTableGeneratorProps<
    */
   showTemplate?: boolean;
   /**
-   * 自定义模板，可传入多个，如果key一样的话，后面的会替代前面的
+   * 自定义模板，可传入多个
    */
   customTemplates?: DripTableGeneratorTemplate[];
   /**

@@ -91,6 +91,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 dataFields={props.dataFields}
                 mockDataSource={props.mockDataSource}
                 customComponentPanel={props.customComponentPanel}
+                customTemplates={props.customTemplates}
                 onOk={() => setOperateMenu(void 0)}
               />
             </DropDownButton>

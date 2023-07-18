@@ -31,6 +31,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
+  customTemplates: DripTableGeneratorProps<RecordType, ExtraOptions>['customTemplates'];
   onOk: () => void;
 }
 
@@ -82,6 +83,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const [schemaToAdd, setSchemaToAdd] = React.useState(void 0 as DripTableSchema | undefined);
   const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel));
 
+  const templates = React.useMemo(() => {
+    const allTemplates = [...DTGBuiltInTemplates];
+    (props.customTemplates || []).forEach((template) => {
+      const index = allTemplates.findIndex(t => t.key === template.key);
+      allTemplates.push({
+        ...template,
+        key: index < 0 ? template.key : mockId(),
+      });
+    });
+    return allTemplates;
+  }, props.customTemplates);
+
   const initStep2State = () => {
     setComponents(getComponentsConfigs('', props.customComponentPanel));
     setSchemaToAdd(void 0);
@@ -130,7 +143,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <div className="jfe-drip-table-generator-templates-manager">
       { currentStep === 0 && (
         <div className="jfe-drip-table-generator-templates-container">
-          { DTGBuiltInTemplates.map((iTemplate, key) => (
+          { templates.map((iTemplate, key) => (
             <div
               className={classNames('jfe-drip-table-generator-templates-wrapper', { checked: iTemplate.key === currentTemplate })}
               key={key}

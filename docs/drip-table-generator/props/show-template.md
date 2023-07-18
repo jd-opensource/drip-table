@@ -1,11 +1,11 @@
 ---
-title: showComponentLayout
+title: showTemplate
 toc: content
 ---
 
-## showComponentLayout
+## showTemplate
 
-- 描述：是否展示组件栏
+- 描述：是否展示表格模板配置功能，默认开启
 - 类型：`boolean`
 - 默认值：`false`
 
@@ -16,9 +16,9 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-import { Button } from "antd";
+import { Switch } from "antd";
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
-import DripTableGenerator from "drip-table-generator";
+import DripTableGeneratorProvider from "drip-table-generator";
 import React, { useState } from "react";
 
 const schema = {
@@ -60,20 +60,22 @@ const dataSource = [
 ];
 
 const Demo = () => {
-  const [showComponentLayout, setShowComponentLayout] = useState(false);
+  const [showTemplate, setShowTemplate] = useState(true);
   return (
     <>
-      <Button
-        onClick={() => setShowComponentLayout(!showComponentLayout)}
-        type="primary"
-        style={{ margin: "8px 0" }}
-      >
-        点击切换组件栏
-      </Button>
-      <DripTableGenerator
-        showComponentLayout={showComponentLayout}
+      <span>展示表格模板</span>
+      <Switch
+        checkedChildren="开启"
+        unCheckedChildren="关闭"
+        checked={showTemplate}
+        onChange={(checked) => setShowTemplate(checked)}
+      />
+      <DripTableGeneratorProvider
         schema={schema}
         dataSource={dataSource}
+        mode={"page"}
+        showTemplate={showTemplate}
+        height={480}
       />
     </>
   );
