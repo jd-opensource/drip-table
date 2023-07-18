@@ -7,8 +7,8 @@
  */
 import './index.less';
 
-import { CloseOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { ArrowLeftOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
@@ -81,10 +81,30 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               if (operateMenu) { setOperateMenu(void 0); }
             }}
           >
+            { props.save && !operateMenu && (
+              <Tooltip title="保存表格" placement="bottom">
+                <Button
+                  type="primary"
+                  icon={<SaveOutlined />}
+                  shape="circle"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    props.onSave?.(getSchemaValue(tableConfigs));
+                  }}
+                  disabled={!!operateMenu && operateMenu !== 'export'}
+                />
+              </Tooltip>
+            ) }
+            { operateMenu && (
+              <Tooltip title="退出当前操作" placement="bottom">
+                <Button icon={<ArrowLeftOutlined />} shape="circle" onClick={() => setOperateMenu(void 0)} />
+              </Tooltip>
+            ) }
             { props.showTemplate && (
             <DropDownButton
               {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width, height: bodyHeight })}
               open={operateMenu === 'template'}
+              style={{ marginLeft: 24 }}
               onOpen={onOpen}
             >
               <TemplatesManager
@@ -131,19 +151,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               />
             </DropDownButton>
             <ModeSwitch disabled={operateMenu ? true : void 0} />
-            { props.save && (
-            <Button
-              type="primary"
-              style={{ marginLeft: 24, borderRadius: '6px' }}
-              onClick={(e) => {
-                e.stopPropagation();
-                props.onSave?.(getSchemaValue(tableConfigs));
-              }}
-              disabled={!!operateMenu && operateMenu !== 'export'}
-            >
-              保存
-            </Button>
-            ) }
           </div>
           <div className="jfe-drip-table-generator-templates-toolbar right">
             { props.mode === 'modal' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }
