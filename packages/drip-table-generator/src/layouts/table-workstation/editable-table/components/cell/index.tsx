@@ -7,7 +7,8 @@
  */
 import './index.less';
 
-import { Alert, Col, Dropdown, Row } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import { Alert, Button, Col, Dropdown, Row } from 'antd';
 import classNames from 'classnames';
 import {
   DripTableBuiltInColumnSchema,
@@ -122,6 +123,24 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                 });
                               }}
                             >
+                              { isCurrentItem && (
+                                <Button
+                                  className="jfe-drip-table-generator-workstation-table-cell-group-close"
+                                  danger
+                                  size="small"
+                                  shape="circle"
+                                  icon={<CloseOutlined />}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const tableIndex = tableConfigs.findIndex(x => x.tableId === props.tableConfig.tableId);
+                                    const path = [...props.path, componentIndex];
+                                    const rootColumn = updateColumnItemByPath(props.tableConfig.columns[props.columnIndex], path, null);
+                                    const columns = [...props.tableConfig.columns];
+                                    columns[props.columnIndex] = rootColumn;
+                                    setTableColumns(columns, tableIndex);
+                                  }}
+                                />
+                              ) }
                               { itemColumn
                                 ? <TableCell {...props} column={itemColumn} path={[...props.path, componentIndex]} />
                                 : (
