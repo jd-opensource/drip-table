@@ -232,9 +232,13 @@ export interface DripTableGeneratorProps<
    */
   save?: boolean;
   /**
-   * 是否展示工具栏, 默认打开，需要传false
+   * 是否展示工具栏, 默认打开，关闭需要传false
    */
   showToolbar?: boolean;
+  /**
+   * 是否展示右侧属性栏, 默认打开，关闭需要传false
+   */
+  showAttributeLayout?: boolean;
   /*
    * 默认打开时是编辑还是预览模式
    * @type {('edit' | 'preview')}
