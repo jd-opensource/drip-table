@@ -99,7 +99,7 @@ export default {
       name: 'options.horizontalAlign',
       group: '样式',
       'ui:layout': { labelCol: 8, wrapperCol: 16 },
-      'ui:title': '水平排列方式',
+      'ui:title': '子组件水平对齐方式',
       'ui:type': 'radio',
       'ui:props': {
         mode: 'button',
@@ -116,6 +116,7 @@ export default {
       type: 'string',
       default: 'start',
     },
+    'align',
     'verticalAlign',
     ...styleAttributesSchema,
   ]),
