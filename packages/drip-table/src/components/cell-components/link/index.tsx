@@ -249,7 +249,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         return (
           <div>
             <a
-              className={this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : void 0}
+              className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
               style={{ lineHeight: options.lineHeight }}
               onClick={() => {
                 if (this.props.preview || this.finalizeDisabled(options.disabled)) {
@@ -268,7 +268,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div>
           <a
-            className={this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : void 0}
+            className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
             href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.data)}
             target={options.target}
             onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
@@ -308,7 +308,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
                 <a
-                  className={disabled ? `${prefixCls}-link-disabled` : void 0}
+                  className={`${prefixCls}-link-break ${disabled ? `${prefixCls}-link-disabled` : ''}`}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                   href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
                   target={disabled ? void 0 : config.target}

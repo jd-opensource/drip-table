@@ -12,8 +12,33 @@
   display: flex;
 
   &.invisible {
-    opacity: .5;
-    border: 1px dashed var(--drip-table-border-color);
+    .@{prefixCls}-item {
+      opacity: .7;
+      background:
+        linear-gradient(
+          45deg,
+          var(--drip-table-background-color) 0,
+          var(--drip-table-background-color) 10%,
+          transparent 10%,
+          transparent 20%,
+          var(--drip-table-background-color) 20%,
+          var(--drip-table-background-color) 30%,
+          transparent 30%,
+          transparent 40%,
+          var(--drip-table-background-color) 40%,
+          var(--drip-table-background-color) 50%,
+          transparent 50%,
+          transparent 60%,
+          var(--drip-table-background-color) 60%,
+          var(--drip-table-background-color) 70%,
+          transparent 70%,
+          transparent 80%,
+          var(--drip-table-background-color) 80%,
+          var(--drip-table-background-color) 90%,
+          transparent 90%,
+          transparent 100%
+        );
+    }
   }
 
   &.small {
@@ -37,6 +62,7 @@
   color: #000000d9;
   font-weight: 500;
   background: #f5f5f5;
+  border-top: 1px solid transparent;
   border-bottom: 1px solid #e0e0e0;
   transition: all .3s ease;
   height: 48px;
