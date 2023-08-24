@@ -102,8 +102,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                 checked: isCurrentItem,
                               })}
                               style={{
-                                padding: `${gutter[0] + 4}px ${gutter[1] + 4}px`,
-                                width: `${100 / colLength}%`,
+                                padding: `${gutter[0]}px ${gutter[1]}px`,
+                                minWidth: `${100 / colLength}%`,
+                                width: 'max-content',
                               }}
                               onClick={(e) => {
                                 e.stopPropagation();
