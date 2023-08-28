@@ -42,7 +42,7 @@ export default {
             default: '',
           },
           {
-            name: 'disabled',
+            name: 'disable',
             group: '属性',
             'ui:title': '禁用条件',
             'ui:type': 'text',
@@ -148,20 +148,7 @@ export default {
       default: '',
       type: 'string',
     },
-    {
-      name: 'options.disabled',
-      group: '属性',
-      'ui:layout': { labelCol: 7, wrapperCol: 17 },
-      'ui:title': '禁用组件条件',
-      'ui:titleStyle': { minWidth: 106 },
-      'ui:type': 'text',
-      'ui:description': {
-        title: '可以直接填写 true/false 或者代码片段，参数为rec',
-        trigger: 'hover',
-        type: 'icon',
-      },
-      type: 'string',
-    },
+    'disable',
     {
       name: 'options.event',
       group: '属性',

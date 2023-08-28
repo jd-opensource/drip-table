@@ -173,7 +173,7 @@ export default {
             default: '',
           },
           {
-            name: 'disabled',
+            name: 'disable',
             group: '属性',
             'ui:title': '禁用条件',
             'ui:type': 'text',
@@ -207,7 +207,7 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'multiple',
     },
     'dataTranslation',
-    'options.disabled',
+    'disable',
     'options.visibleFunc',
     {
       name: 'options.tooltip',

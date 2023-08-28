@@ -16,16 +16,22 @@
 
 .@{prefixCls}-group-row {
   margin: 0 !important;
+  padding: 0 1px;
   text-align: center;
 }
 
 .@{prefixCls}-group-col {
-  border: 1px dashed var(--drip-table-border-color);
+  border: 1px solid transparent;
   text-align: center;
   word-break: break-word;
 
+  &:hover,
+  &.empty {
+    border: 1px dashed var(--drip-table-border-color);
+  }
+
   &.checked {
-    border-style: solid;
+    border: 1px solid var(--drip-table-border-color);
     background:
       linear-gradient(
         45deg,
@@ -57,5 +63,5 @@
   position: absolute;
   right: -10px;
   top: -10px;
-  z-index: 10;
+  z-index: 8;
 }

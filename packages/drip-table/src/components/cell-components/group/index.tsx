@@ -111,7 +111,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const rowLength = schema.options.layout?.length;
     const rows = [...Array.from({ length: rowLength }).keys()];
     return (
-      <div>
+      <div style={{ wordBreak: 'break-word' }}>
         {
           rows.map((row, index) => (
             <Row
@@ -128,7 +128,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               { schema.options.layout[index]
               && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
                 .map(col => (
-                  <Col key={col} gutter={schema.options.gutter} style={col ? void 0 : { marginLeft: 0 }}>
+                  <Col
+                    key={col}
+                    gutter={schema.options.gutter}
+                    style={{
+                      ...col ? void 0 : { marginLeft: 0 },
+                      wordBreak: 'break-word',
+                    }}
+                  >
                     { this.renderCell(Number(row), Number(col)) }
                   </Col>
                 )) }

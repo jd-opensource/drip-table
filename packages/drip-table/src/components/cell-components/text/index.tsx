@@ -78,6 +78,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    */
   placement?: 'top' | 'left' | 'right' | 'bottom' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
   /**
+   * 自定义提示文案，支持 {{ data }} 格式字符串模板
+   */
+  tooltip?: string;
+  /**
    * 多行文本段落配置
    */
   parts?: {
@@ -107,6 +111,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    *  固定高度
    */
   height?: number;
+  /**
+   * 固定宽度
+   */
+  width?: number;
   /**
    * 超出部分显示省略号
    */
@@ -176,6 +184,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       suffix: { type: 'string' },
       showTooltip: { type: 'boolean' },
       placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
+      tooltip: { type: 'string' },
       parts: {
         type: 'array',
         items: {
@@ -196,6 +205,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       maxRow: { type: 'number' },
       lineHeight: { type: 'number' },
       height: { type: 'number' },
+      width: { type: 'number' },
       ellipsis: { type: 'boolean' },
       clipboard: { type: 'boolean' },
       dataProcess: { type: 'string' },
@@ -283,6 +293,9 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (this.props.schema.options.height) {
       textStyles.height = this.props.schema.options.height;
     }
+    if (this.props.schema.options.width) {
+      textStyles.width = this.props.schema.options.width;
+    }
     return textStyles;
   }
 
@@ -357,6 +370,18 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return dataProcessValue(data, dataIndex, disableFunc);
     }
     return this.props.disable ?? false;
+  }
+
+  private get tooltip(): string {
+    const { schema, data } = this.props;
+    if (schema.options.tooltip) {
+      return (schema.options.tooltip || '')
+        .replace(
+          /\{\{(.+?)\}\}/guis, (s, s1) =>
+            finalizeString('script', `return ${s1}`, data),
+        );
+    }
+    return '';
   }
 
   private updateCellRect = ($main: HTMLElement) => {
@@ -583,7 +608,14 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     ) && !this.props.preview) {
       wrapperEl = (
         <Tooltip
-          title={<div className={`${prefixCls}-word-break`} style={this.rawTextStyles}>{ rawTextEl }</div>}
+          title={(
+            <div
+              className={`${prefixCls}-word-break`}
+              style={this.rawTextStyles}
+            >
+              { this.props.schema.options.tooltip ? this.tooltip : rawTextEl }
+            </div>
+          )}
           placement={this.props.schema.options.placement}
         >
           { wrapperEl }
