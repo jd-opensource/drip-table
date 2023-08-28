@@ -1746,6 +1746,10 @@ const TableLayout = <
                 [tableProps.emptyText, tableProps.schema.emptyText],
               )
             }
+            onRow={(row, index) => ({
+              onClick: () => tableProps.onRowClick?.(row.record, row.index ?? index, tableInfo),
+              onDoubleClick: () => tableProps.onRowDoubleClick?.(row.record, row.index ?? index, tableInfo),
+            })}
           />
         </div>
       </ResizeObserver>

@@ -130,6 +130,7 @@ const ComponentConfigForm = <
       align: formData.align as 'left' | 'center' | 'right',
       component: currentColumn?.component ?? '',
       options: uiProps,
+      dataTranslation: formData.dataTranslation as string ? formData.dataTranslation : void 0,
       style: formData.style ? columnStyle : void 0,
     } as DTGTableConfig['columns'][number];
   };

@@ -376,7 +376,7 @@ const dataTranslation: DTGComponentPropertySchema = {
 };
 
 const disableFunc: DTGComponentPropertySchema = {
-  name: 'options.disabled',
+  name: 'disable',
   group: '属性',
   'ui:title': '禁用判断',
   'ui:type': 'text',
@@ -421,7 +421,7 @@ export const basicColumnAttrSchema = {
   hidable,
   fixed,
   dataTranslation,
-  'options.disabled': disableFunc,
+  disable: disableFunc,
   'options.visibleFunc': visibleFunc,
 };
 

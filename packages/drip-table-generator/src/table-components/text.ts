@@ -122,6 +122,7 @@ export default {
       'ui:title': '展示提示框',
       'ui:type': 'switch',
       type: 'boolean',
+      default: true,
     },
     {
       name: 'options.placement',
@@ -151,8 +152,25 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.showTooltip'] !== false,
       type: 'string',
     },
+    {
+      name: 'options.tooltip',
+      group: '属性',
+      'ui:title': '定义提示文案',
+      'ui:type': 'input',
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
+      'ui:props': {
+        placeholder: '请输入自定义提示文案',
+      },
+      'ui:description': {
+        trigger: 'hover',
+        type: 'icon',
+        title: '自定义提示文案，允许{{rec}}格式字符串模板',
+      },
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.showTooltip'] !== false,
+      type: 'string',
+    },
     'dataTranslation',
-    'options.disabled',
+    'disable',
     'options.visibleFunc',
     'hidable',
     {
@@ -226,6 +244,22 @@ export default {
         trigger: 'hover',
         type: 'icon',
         title: '文本组件的固定高度',
+      },
+      'ui:props': {
+        style: { width: 160 },
+        min: 1,
+      },
+      type: 'number',
+    },
+    {
+      name: 'options.width',
+      group: '样式',
+      'ui:title': '固定宽度',
+      'ui:type': 'number',
+      'ui:description': {
+        trigger: 'hover',
+        type: 'icon',
+        title: '文本组件的固定宽度，固定文本和提示的宽度',
       },
       'ui:props': {
         style: { width: 160 },

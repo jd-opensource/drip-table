@@ -100,6 +100,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                               key={colIndex}
                               className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
                                 checked: isCurrentItem,
+                                empty: !itemColumn,
                               })}
                               style={{
                                 padding: `${gutter[0]}px ${gutter[1]}px`,

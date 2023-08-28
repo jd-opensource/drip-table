@@ -18,8 +18,10 @@ export type DTCImageColumnSchema = DripTableColumnSchema<'image', {
   popover?: boolean;
   trigger?: 'click' | 'hover';
   preview?: boolean;
-  imageWidth?: number;
-  imageHeight?: number;
+  previewWidth?: number | string;
+  previewHeight?: number | string;
+  imageWidth?: number | string;
+  imageHeight?: number | string;
   imagePlaceholder?: string;
 }>;
 
@@ -34,6 +36,8 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     properties: {
       popover: { type: 'boolean' },
       preview: { type: 'boolean' },
+      previewWidth: { typeof: ['string', 'number'] },
+      previewHeight: { typeof: ['string', 'number'] },
       trigger: { enum: ['click', 'hover'] },
       imageWidth: { typeof: ['string', 'number'] },
       imageHeight: { typeof: ['string', 'number'] },
@@ -57,8 +61,8 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
       return (
         <img
           style={{
-            width: options.imageWidth ? `${options.imageWidth}px` : '',
-            height: options.imageHeight ? `${options.imageHeight}px` : '',
+            width: options.imageWidth,
+            height: options.imageHeight,
           }}
           src={this.value || options.imagePlaceholder || this.DEFAULT_IMAGE}
         />
@@ -79,7 +83,11 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     const options = this.props.schema.options;
     return options.popover && !this.props.preview
       ? (
-        <Tooltip trigger={options.trigger} overlay={(<img src={this.value} />)} placement="top">
+        <Tooltip
+          trigger={options.trigger}
+          overlay={(<img src={this.value} style={{ width: options.previewWidth, height: options.previewHeight }} />)}
+          placement="top"
+        >
           { this.renderImage() }
         </Tooltip>
       )

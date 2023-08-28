@@ -54,6 +54,30 @@ export default {
     'align',
     'verticalAlign',
     {
+      name: 'options.previewWidth',
+      group: '样式',
+      'ui:title': '预览宽度',
+      'ui:type': 'number',
+      'ui:props': {
+        minium: 0.01,
+        step: 0.01,
+      },
+      type: 'number',
+      default: 100,
+    },
+    {
+      name: 'options.previewHeight',
+      group: '样式',
+      'ui:title': '预览高度',
+      'ui:type': 'number',
+      'ui:props': {
+        minium: 0.01,
+        step: 0.01,
+      },
+      type: 'number',
+      default: 100,
+    },
+    {
       name: 'options.imageWidth',
       group: '样式',
       'ui:title': '图片宽度',
