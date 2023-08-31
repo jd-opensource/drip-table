@@ -148,18 +148,18 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
     }];
   }
   const configs: DTGTableConfig[] = [];
-  let currentSchema = schema ? Object.assign({ dataSourceKey: void 0 }, schema) : void 0;
+  let currentSchema = schema ? cloneDeep({ dataSourceKey: void 0, ...schema }) : void 0;
   do {
     if (currentSchema) {
       configs.push({
-        tableId: mockId(),
-        columns: currentSchema?.columns.map(column => ({ ...column, key: mockId() })) || [],
+        tableId: String(currentSchema.id) || mockId(),
+        columns: currentSchema?.columns.map(column => ({ ...column, key: String(column.key) || mockId() })) || [],
         configs: schema ? { ...currentSchema } : { pagination: false },
         hasSubTable: !!currentSchema?.subtable,
         dataSourceKey: currentSchema?.dataSourceKey || '',
       });
     }
-    currentSchema = currentSchema?.subtable ? Object.assign({ dataSourceKey: void 0 }, currentSchema.subtable) : void 0;
+    currentSchema = currentSchema?.subtable ? cloneDeep(Object.assign({ dataSourceKey: void 0 }, currentSchema.subtable)) : void 0;
   } while (currentSchema);
 
   if (configs.length < 0) {
@@ -171,6 +171,6 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
       dataSourceKey: '',
     }];
   }
-  configs[0].tableId = rootTableId;
+  if (!configs[0].tableId) { configs[0].tableId = rootTableId; }
   return configs;
 };

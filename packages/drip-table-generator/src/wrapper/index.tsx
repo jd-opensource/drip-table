@@ -14,7 +14,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { DripTableGeneratorContext, DripTableGeneratorStates, GeneratorContext } from '@/context';
-import { DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
+import { DTGTableConfig, DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import GeneratorLayout from '@/layouts';
 import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 
@@ -24,6 +24,13 @@ export type GeneratorWrapperHandler = {
   getState: () => void;
   getSchemaValue: () => void;
   getDataSource: () => void;
+  getTableConfigs: () => DTGTableConfig[];
+  setter: {
+    updateTableConfig: DTGTableConfigsContext['updateTableConfig'];
+    updateTableConfigs: DTGTableConfigsContext['updateTableConfigs'];
+    setTableConfigs: DTGTableConfigsContext['setTableConfigs'];
+    setTableColumns: DTGTableConfigsContext['setTableColumns'];
+  };
 }
 
 const generateStates = <
@@ -97,7 +104,7 @@ const DripTableGenerator = React.forwardRef(<
     getTableConfigs: () => tableConfigs,
     getSchemaValue: () => getSchemaValue(tableConfigs),
     getDataSource: () => generatorStates.previewDataSource,
-    setTableConfigs: {
+    setter: {
       updateTableConfig: tableConfigsContext.updateTableConfig,
       updateTableConfigs: tableConfigsContext.updateTableConfigs,
       setTableConfigs: tableConfigsContext.setTableConfigs,
