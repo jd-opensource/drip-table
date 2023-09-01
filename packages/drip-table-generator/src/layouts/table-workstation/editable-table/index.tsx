@@ -120,6 +120,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                   onScroll={(left) => { setScrollLeft(left); }}
                   onClick={props.onClick}
+                  onColumnAdded={props.onColumnAdded}
                 />
                 ) }
                 { previewDataSource.map((wrapRecord, rowIndex) => {
