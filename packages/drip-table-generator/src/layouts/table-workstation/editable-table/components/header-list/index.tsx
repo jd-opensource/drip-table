@@ -30,6 +30,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   tableConfig: DTGTableConfig;
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
+  onColumnAdded?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnAdded'];
   onResort: (column: DTGTableConfig['columns']) => void;
   onScroll: (scrollLeft: number) => void;
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
@@ -151,6 +152,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               customComponentPanel={props.customComponentPanel}
               customColumnAddPanel={props.customColumnAddPanel}
               onClose={() => setDropdownOpen(false)}
+              onColumnAdded={props.onColumnAdded}
             />
           )}
         >

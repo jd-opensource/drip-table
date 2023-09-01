@@ -245,6 +245,10 @@ export interface DripTableGeneratorProps<
    */
   defaultMode?: 'edit' | 'preview';
   /**
+   * 控制表格的工具栏显隐
+   */
+  tableTools?: ('config' | 'subtable')[];
+  /**
    * 自定义列添加面板
    */
   customColumnAddPanel?: (props: {
@@ -264,6 +268,7 @@ export interface DripTableGeneratorProps<
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
+  onColumnAdded?: (column: DripTableSchema<DripTableColumnSchema>['columns'][number], schema: DripTableSchema<DripTableColumnSchema>) => void;
   onClose?: () => void;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   /**

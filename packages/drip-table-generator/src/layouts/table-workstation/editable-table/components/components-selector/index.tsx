@@ -15,7 +15,7 @@ import React from 'react';
 import { filterAttributes, mockId } from '@/utils';
 import Icon from '@/components/Icon';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { getComponentsConfigs, getGroups } from '@/layouts/utils';
+import { getComponentsConfigs, getGroups, getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
 import { defaultComponentIcon } from './configs';
@@ -33,6 +33,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   onClose: () => void;
   customColumns?: (columns: DTGTableConfig['columns'], newColumn: DTGTableConfig['columns'][number]) => DTGTableConfig['columns'];
   onConfirm?: (columns: DTGTableConfig['columns'][number], tableIndex: number) => void;
+  onColumnAdded?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnAdded'];
 }
 
 const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, title: string) => {
@@ -194,7 +195,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       } else {
                         columns = [...tableConfigs[tableIndex].columns, column];
                       }
-                      setTableColumns(columns, tableIndex);
+                      setTableColumns(columns, tableIndex, (configs) => {
+                        props.onColumnAdded?.(column, getSchemaValue(configs));
+                      });
                     }
                     initStates();
                     props.onClose();
