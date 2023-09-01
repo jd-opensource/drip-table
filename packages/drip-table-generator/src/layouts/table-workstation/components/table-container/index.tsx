@@ -25,6 +25,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   tableConfig: DTGTableConfig;
   children: React.ReactNode;
+  tableTools: DripTableGeneratorProps<RecordType, ExtraOptions>['tableTools'];
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
@@ -128,44 +129,52 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             { props.tableConfig.tableId }
           </span>
           <div className="jfe-drip-table-generator-table-container-tool" style={{ marginLeft: '2px', padding: '0 4px' }}>
-            <Tooltip title="打开当前表格配置面板">
-              <Button
-                size="small"
-                ghost
-                className="jfe-drip-table-generator-table-container-inner-button"
-                icon={<SettingOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setState({
-                    currentTableID: props.tableConfig.tableId,
-                    drawerType: 'table',
-                  });
-                  props.onClick?.('table', {
-                    currentTableID: props.tableConfig.tableId,
-                    tableConfig: props.tableConfig,
-                  });
-                }}
-              >
-                配置
-              </Button>
-            </Tooltip>
-            <Dropdown
-              placement="bottomRight"
-              trigger={['click']}
-              dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
-            >
-              <Tooltip title="添加字段用以配置子表格">
-                <Button
-                  size="small"
-                  ghost
-                  className="jfe-drip-table-generator-table-container-inner-button"
-                  icon={<PicLeftOutlined />}
-                  onClick={e => e.stopPropagation()}
+            { !props.tableTools || props.tableTools.includes('config')
+              ? (
+                <Tooltip title="打开当前表格配置面板">
+                  <Button
+                    size="small"
+                    ghost
+                    className="jfe-drip-table-generator-table-container-inner-button"
+                    icon={<SettingOutlined />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setState({
+                        currentTableID: props.tableConfig.tableId,
+                        drawerType: 'table',
+                      });
+                      props.onClick?.('table', {
+                        currentTableID: props.tableConfig.tableId,
+                        tableConfig: props.tableConfig,
+                      });
+                    }}
+                  >
+                    配置
+                  </Button>
+                </Tooltip>
+              )
+              : null }
+            { !props.tableTools || props.tableTools.includes('subtable')
+              ? (
+                <Dropdown
+                  placement="bottomRight"
+                  trigger={['click']}
+                  dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
                 >
-                  子表格
-                </Button>
-              </Tooltip>
-            </Dropdown>
+                  <Tooltip title="添加字段用以配置子表格">
+                    <Button
+                      size="small"
+                      ghost
+                      className="jfe-drip-table-generator-table-container-inner-button"
+                      icon={<PicLeftOutlined />}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      子表格
+                    </Button>
+                  </Tooltip>
+                </Dropdown>
+              )
+              : null }
           </div>
         </div>
         ) }

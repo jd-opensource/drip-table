@@ -152,8 +152,8 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
   do {
     if (currentSchema) {
       configs.push({
-        tableId: String(currentSchema.id) || mockId(),
-        columns: currentSchema?.columns.map(column => ({ ...column, key: String(column.key) || mockId() })) || [],
+        tableId: currentSchema.id ? String(currentSchema.id) : mockId(),
+        columns: currentSchema?.columns.map(column => ({ ...column, key: mockId() })) || [],
         configs: schema ? { ...currentSchema } : { pagination: false },
         hasSubTable: !!currentSchema?.subtable,
         dataSourceKey: currentSchema?.dataSourceKey || '',
