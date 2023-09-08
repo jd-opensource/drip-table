@@ -28,7 +28,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   scrollTarget: string;
   scrollLeft: number;
   tableConfig: DTGTableConfig;
-  generatorRowSelectable?: DripTableGeneratorProps<RecordType, ExtraOptions>['generatorRowSelectable'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onColumnAdded?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnAdded'];
@@ -74,7 +73,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
             bordered: !!props.tableConfig.configs.bordered,
           })}
-          style={props.generatorRowSelectable === false ? { width: 47, minWidth: 47 } : { width: 48, minWidth: 48 }}
+          style={{ width: 48, minWidth: 48 }}
         >
           <Checkbox disabled />
         </div>
