@@ -11,7 +11,7 @@ import './index.less';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Alert, Col, Collapse, Form, Popover, Row, Tabs } from 'antd';
-import { TabsPosition } from 'antd/lib/tabs';
+import { TabsPosition, TabsProps } from 'antd/lib/tabs';
 import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import React, { Component } from 'react';
 
@@ -26,6 +26,8 @@ interface Props<T> {
   groupType?: boolean | 'collapse' | 'tabs';
   labelAlign?: 'left' | 'right';
   tabPosition?: TabsPosition;
+  tabProps?: TabsProps;
+  wrapperClassName?: string;
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   data?: T;
   primaryKey?: string;
@@ -287,13 +289,14 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
           tabPosition={this.props.tabPosition}
           type="card"
           centered
+          {...this.props.tabProps}
           items={groups.map((groupName, groupIndex) => {
             const subGroups = [...new Set(configs.filter(item => groupName === (item.group || '其他')).map(item => item.subGroup || ''))].filter(group => !!group);
             return {
               label: groupName,
               key: String(groupIndex),
               children: (
-                <div>
+                <div className={this.props.wrapperClassName}>
                   { configs.filter(item => groupName === (item.group || '其他') && !item.subGroup).map((item, index) => this.renderFormItem(item, index)) }
                   { subGroups.length > 0 && (
                   <Collapse style={{ width: 'calc(100% + 24px)', marginLeft: '-12px' }}>
@@ -312,7 +315,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       );
     }
     return (
-      <div>
+      <div className={this.props.wrapperClassName}>
         { configs.map((item, index) => this.renderFormItem(item, index)) }
       </div>
     );
