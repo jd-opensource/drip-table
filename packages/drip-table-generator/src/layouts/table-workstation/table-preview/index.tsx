@@ -75,6 +75,11 @@ const PreviewTable = <
           'slotsSchema',
           'onExportSchema',
           'onSchemaChange',
+          'onClose',
+          'onClick',
+          'tableTools',
+          'onColumnAdded',
+          'generatorRowSelectable',
         ])}
       />
     </div>

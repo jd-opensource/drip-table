@@ -239,6 +239,7 @@ export interface DripTableGeneratorProps<
    * 是否展示右侧属性栏, 默认打开，关闭需要传false
    */
   showAttributeLayout?: boolean;
+  generatorRowSelectable?: boolean;
   /*
    * 默认打开时是编辑还是预览模式
    * @type {('edit' | 'preview')}

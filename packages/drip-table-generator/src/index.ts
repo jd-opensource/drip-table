@@ -13,4 +13,6 @@ export { default as DTGComponentConfigsForm } from './layouts/attributes-layout/
 export { default as DTGTableConfigsForm } from './layouts/attributes-layout/global-configs';
 export { default as DTGComponentItemConfigForm } from './layouts/attributes-layout/component-item-config';
 
+export { getGroups, getComponentsConfigs } from './layouts/utils';
+
 export { default } from './wrapper';
