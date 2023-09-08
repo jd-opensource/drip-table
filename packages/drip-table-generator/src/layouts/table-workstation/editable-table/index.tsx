@@ -97,7 +97,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   <ColumnHeaderList
                     scrollTarget={scrollTarget}
                     scrollLeft={scrollLeft}
-                    generatorRowSelectable={props.generatorRowSelectable}
                     customComponentPanel={props.customComponentPanel}
                     customColumnAddPanel={props.customColumnAddPanel}
                     tableConfig={props.tableConfig}
@@ -115,7 +114,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 <ColumnHeaderList
                   scrollTarget={scrollTarget}
                   scrollLeft={scrollLeft}
-                  generatorRowSelectable={props.generatorRowSelectable}
                   customComponentPanel={props.customComponentPanel}
                   customColumnAddPanel={props.customColumnAddPanel}
                   tableConfig={props.tableConfig}
