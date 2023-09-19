@@ -107,14 +107,20 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableContainerProps<RecordType, ExtraOptions>) => (
   <GeneratorContext.Consumer>
-    { ({ currentTableID, setState }) => (
+    { ({ currentTableID, drawerType, setState }) => (
       <div
         className={classNames('jfe-drip-table-generator-table-container-wrapper', {
           checked: currentTableID === props.tableConfig.tableId,
         })}
         onClick={(e) => {
           e.stopPropagation();
-          setState({ currentTableID: props.tableConfig.tableId, currentColumnID: void 0, currentComponentID: void 0, currentComponentPath: [] });
+          setState({
+            currentTableID: props.tableConfig.tableId,
+            currentColumnID: void 0,
+            currentComponentID: void 0,
+            currentComponentPath: [],
+            drawerType: drawerType === 'table' ? void 0 : 'table',
+          });
           props.onClick?.('table', {
             currentTableID: props.tableConfig.tableId,
             tableConfig: props.tableConfig,

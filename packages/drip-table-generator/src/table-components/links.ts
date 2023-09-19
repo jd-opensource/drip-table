@@ -83,7 +83,7 @@ export default {
       name: 'options.target',
       group: '属性',
       'ui:layout': { labelCol: 7, wrapperCol: 17 },
-      'ui:title': '链接打开方式',
+      'ui:title': '打开方式',
       'ui:type': 'auto-complete',
       'ui:props': {
         style: { width: '100%' },
@@ -116,7 +116,7 @@ export default {
     {
       name: 'options.operates',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 12, wrapperCol: 24 },
       'ui:title': '多链接配置',
       'ui:type': 'array-list',
       'ui:props': {
@@ -147,7 +147,7 @@ export default {
           },
           {
             name: 'target',
-            'ui:title': '链接打开方式',
+            'ui:title': '打开方式',
             'ui:type': 'auto-complete',
             'ui:props': {
               options: [

@@ -13,7 +13,7 @@ export default {
   attrSchema: generateColumnAttrComponentsByNames([
     titleConfig('图片'),
     ...dataIndexColumnAttrComponents('pictureUrl', {
-      layout: { labelCol: 6, wrapperCol: 18 },
+      layout: { labelCol: 8, wrapperCol: 16 },
     }),
     {
       name: 'options.preview',

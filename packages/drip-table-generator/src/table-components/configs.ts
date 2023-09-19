@@ -329,8 +329,8 @@ const verticalAlign: DTGComponentPropertySchema = {
 const hidable: DTGComponentPropertySchema = {
   name: 'hidable',
   group: '属性',
-  'ui:layout': { labelCol: 7, wrapperCol: 17 },
-  'ui:title': '该列支持隐藏',
+  'ui:layout': { labelCol: 10, wrapperCol: 14 },
+  'ui:title': '本列支持隐藏',
   'ui:type': 'switch',
   'ui:props': {
     checkedChildren: '是',
@@ -342,6 +342,7 @@ const hidable: DTGComponentPropertySchema = {
 const fixed: DTGComponentPropertySchema = {
   name: 'fixed',
   group: '属性',
+  'ui:layout': { labelCol: 6, wrapperCol: 18 },
   'ui:title': '固定列',
   'ui:type': 'radio',
   'ui:props': {
@@ -490,7 +491,8 @@ export const styleAttributesSchema: DTGComponentPropertySchema[] = [
     name: 'titleStyle',
     group: '样式',
     subGroup: '表头样式',
-    'ui:title': '自定义表头样式',
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
+    'ui:title': '配置表头样式',
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -515,8 +517,8 @@ export const styleAttributesSchema: DTGComponentPropertySchema[] = [
     name: 'style',
     group: '样式',
     subGroup: '单元格样式',
-    'ui:title': '自定义单元格样式',
-    'ui:layout': { labelCol: 9, wrapperCol: 15 },
+    'ui:title': '配置单元格样式',
+    'ui:layout': { labelCol: 10, wrapperCol: 14 },
     'ui:type': 'switch',
     'ui:props': {},
     type: 'boolean',
@@ -655,7 +657,7 @@ export const basicColumnAttrComponents = (
   {
     name: 'hidable',
     group: '属性',
-    'ui:title': '该列是否支持隐藏',
+    'ui:title': '本列支持隐藏',
     'ui:type': 'switch',
     'ui:props': {
       checkedChildren: '是',

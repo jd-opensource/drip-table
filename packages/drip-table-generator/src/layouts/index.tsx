@@ -33,7 +33,7 @@ const GeneratorLayout = <
         { props.showToolbar !== false && <Toolbar {...props} /> }
         <div className={classNames('jfe-drip-table-generator-layouts-wrapper', { full: props.showToolbar === false })}>
           <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
-            fixed: (drawerType === 'column' || drawerType === 'column-item') && props.showAttributeLayout !== false,
+            fixed: drawerType && props.showAttributeLayout !== false,
           })}
           >
             <TableWorkStation {...props} />

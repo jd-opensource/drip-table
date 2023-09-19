@@ -39,6 +39,7 @@ const EditableTableFooter = <
   const tableConfigsContext = React.useContext(TableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
   const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
+  const [draggingIndex, setDraggingIndex] = React.useState(-1);
 
   const textAlignMapper = {
     bottomLeft: 'left',
@@ -184,10 +185,18 @@ const EditableTableFooter = <
                   <div
                     draggable
                     onDragStart={e => startDragCell(element, index)}
-                    onDrop={(e) => { e.preventDefault(); dropFooterCell(element, index, globalConfigs, setTableConfigs); }}
-                    onDragOver={e => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      dropFooterCell(element, index, globalConfigs, setTableConfigs);
+                      setDraggingIndex(-1);
+                    }}
+                    onDragOver={(e) => { e.preventDefault(); setDraggingIndex(index); }}
                     key={index}
-                    className={classNames('jfe-drip-table-generator-workstation-editable-footer-draggable-cell', { 'jfe-drip-table-generator-workstation-editable-footer-text-cell': element.type === 'text' })}
+                    className={classNames('jfe-drip-table-generator-workstation-editable-footer-draggable-cell', {
+                      'jfe-drip-table-generator-workstation-editable-footer-text-cell': element.type === 'text',
+                      'jfe-drip-table-generator-workstation-editable-footer-spacer-cell': element.type === 'spacer',
+                      'jfe-drip-table-generator-workstation-editable-footer-dragging': index === draggingIndex,
+                    })}
                     style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >
                     { renderColumnContent(element) }

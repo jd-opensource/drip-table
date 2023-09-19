@@ -39,6 +39,7 @@ const EditableTableHeader = <
   const tableConfigsContext = React.useContext(TableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
   const [currentCell, setCurrentCell] = React.useState<DripTableSlotElementSchema>();
+  const [draggingIndex, setDraggingIndex] = React.useState(-1);
 
   const textAlignMapper = {
     topLeft: 'left',
@@ -184,12 +185,17 @@ const EditableTableHeader = <
                   <div
                     draggable
                     onDragStart={e => startDragCell(element, index)}
-                    onDrop={(e) => { e.preventDefault(); dropHeaderCell(element, index, globalConfigs, setTableConfigs); }}
-                    onDragOver={e => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      dropHeaderCell(element, index, globalConfigs, setTableConfigs);
+                      setDraggingIndex(-1);
+                    }}
+                    onDragOver={(e) => { e.preventDefault(); setDraggingIndex(index); }}
                     key={index}
                     className={classNames('jfe-drip-table-generator-workstation-editable-header-draggable-cell', {
                       'jfe-drip-table-generator-workstation-editable-header-text-cell': element.type === 'text',
                       'jfe-drip-table-generator-workstation-editable-header-spacer-cell': element.type === 'spacer',
+                      'jfe-drip-table-generator-workstation-editable-header-dragging': index === draggingIndex,
                     })}
                     style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >

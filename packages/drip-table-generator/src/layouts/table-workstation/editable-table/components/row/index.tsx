@@ -84,6 +84,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         'last-row': extraOptions?.isLastRow,
       })}
       style={{
+        ...typeof column.style === 'object' ? column.style : {},
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
         width: column.width || 200,
