@@ -190,7 +190,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         });
                         props.onClick?.('column', {
                           currentTableID: props.tableConfig.tableId,
-                          currentColumnID: props.column.key === currentColumnID ? void 0 : props.column.key,
+                          currentColumnID: props.column.key,
                           tableConfig: props.tableConfig,
                         });
                       }}
