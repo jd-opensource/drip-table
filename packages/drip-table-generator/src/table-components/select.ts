@@ -13,12 +13,12 @@ export default {
   attrSchema: generateColumnAttrComponentsByNames([
     titleConfig('选择器'),
     ...dataIndexColumnAttrComponents('status', {
-      layout: { labelCol: 6, wrapperCol: 18 },
+      layout: { labelCol: 8, wrapperCol: 16 },
     }),
     {
       name: 'options.options',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 24 },
       'ui:title': '下拉菜单',
       'ui:titleStyle': { minWidth: 96 },
       'ui:type': 'array-list',
@@ -58,7 +58,7 @@ export default {
     {
       name: 'options.allowClear',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '允许清空值',
       'ui:type': 'switch',
       'ui:props': {},
@@ -67,7 +67,7 @@ export default {
     {
       name: 'options.bordered',
       group: '属性',
-      'ui:layout': { labelCol: 7, wrapperCol: 17 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '允许展示边框',
       'ui:type': 'switch',
       'ui:props': {},
@@ -77,7 +77,7 @@ export default {
     {
       name: 'options.showSearch',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '允许搜索',
       'ui:type': 'switch',
       'ui:props': {},
@@ -86,7 +86,7 @@ export default {
     {
       name: 'options.showArrow',
       group: '属性',
-      'ui:layout': { labelCol: 7, wrapperCol: 17 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '展示下拉箭头',
       'ui:type': 'switch',
       'ui:props': {},
@@ -101,6 +101,7 @@ export default {
       'ui:props': {
         mode: 'button',
         buttonStyle: 'solid',
+        size: 'small',
         options: [
           { label: '单选模式', value: void 0 },
           { label: '多选模式', value: 'multiple' },

@@ -13,7 +13,7 @@ export default {
   attrSchema: generateColumnAttrComponentsByNames([
     titleConfig('标签'),
     ...dataIndexColumnAttrComponents('status', {
-      layout: { labelCol: 6, wrapperCol: 18 },
+      layout: { labelCol: 8, wrapperCol: 16 },
     }),
     'dataTranslation',
     {
@@ -40,7 +40,7 @@ export default {
       required: false,
       'ui:title': '枚举值',
       'ui:type': 'array-list',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 24 },
       'ui:props': {
         mode: 'narrow',
         items: [

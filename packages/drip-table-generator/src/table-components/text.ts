@@ -49,7 +49,7 @@ export default {
       group: '属性',
       'ui:title': '字段配置',
       'ui:type': 'array-list',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 24 },
       'ui:props': {
         mode: 'narrow',
         items: [
@@ -80,7 +80,7 @@ export default {
         modeDiffFn: (_1, formData) => formData?.['options.mode'] === 'single',
         directDiffFn: (_1, formData) => formData?.['options.mode'] === 'single' && (!formData?.dataIndexMode || formData?.dataIndexMode === 'direct'),
         nestedDiffFn: (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'nested',
-        layout: { labelCol: 6, wrapperCol: 18 },
+        layout: { labelCol: 8, wrapperCol: 16 },
       },
     ),
     {
@@ -118,7 +118,7 @@ export default {
     {
       name: 'options.showTooltip',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '展示提示框',
       'ui:type': 'switch',
       type: 'boolean',
@@ -127,7 +127,7 @@ export default {
     {
       name: 'options.placement',
       group: '属性',
-      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '提示框位置',
       'ui:type': 'radio',
       'ui:props': {

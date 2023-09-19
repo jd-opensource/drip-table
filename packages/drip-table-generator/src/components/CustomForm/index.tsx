@@ -29,11 +29,18 @@ interface Props<T> {
   tabProps?: TabsProps;
   wrapperClassName?: string;
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
+  replacedComponents?: string[];
   data?: T;
   primaryKey?: string;
   extendKeys?: string[];
   icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
+  /**
+   * 将原本的数据转换成 FormData
+   */
   decodeData?: (data?: T, defaultData?: Record<string, unknown>) => Record<string, unknown>;
+  /**
+   * 将 FormData 转成 原本数据
+   */
   encodeData: (formData: Record<string, unknown>) => T;
   onChange?: (data?: T) => void;
 }
@@ -140,7 +147,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         <RichText html={config.default as string} />
       );
     }
-    if (config['ui:type']?.startsWith('custom::')) {
+    if (config['ui:type']?.startsWith('custom::') || this.props.replacedComponents?.includes(config['ui:type'])) {
       const ComponentName = config['ui:type']?.replace('custom::', '');
       const CustomComponent = this.props.extraComponents?.[ComponentName] || config['ui:externalComponent'];
       if (!CustomComponent) { return <Alert message="未知表单组件" type="error" showIcon />; }

@@ -51,6 +51,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     return title;
   }, [props.column.title]);
 
+  const columnStyle = React.useMemo(() => {
+    let styles: React.CSSProperties = {};
+    if (typeof props.column.title === 'string') {
+      styles = {};
+    } else if (typeof props.column.title?.body === 'string') {
+      styles = props.column.title?.style ?? {};
+    } else {
+      styles = props.column.title?.body?.style ?? {};
+    }
+    return styles;
+  }, [props.column]);
+
   const menuItems: MenuProps['items'] = React.useMemo(() => [
     {
       key: '1',
@@ -140,7 +152,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
           })}
-          style={{ width: props.column.width || 200 }}
+          style={{ ...columnStyle, width: props.column.width || 200 }}
           onClick={(e) => {
             e.stopPropagation();
             setState({
@@ -255,7 +267,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 </div>
               ) }
             </TableConfigsContext.Consumer>
-
           ) }
           <RichText
             className="jfe-drip-table-generator-workstation-table-header-column-title"

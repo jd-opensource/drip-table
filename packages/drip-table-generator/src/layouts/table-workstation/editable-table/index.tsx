@@ -146,7 +146,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       })}
                       onMouseEnter={(e) => { e.stopPropagation(); setScrollTarget(`__row_${rowIndex}`); }}
                       onMouseLeave={(e) => { e.stopPropagation(); setScrollTarget(''); }}
-                      onClick={(e) => { e.stopPropagation(); setCheckedRecord(checkedRecord === wrapRecord.id ? void 0 : wrapRecord.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (props.generatorRowSelectable === false) { return; }
+                        setCheckedRecord(checkedRecord === wrapRecord.id ? void 0 : wrapRecord.id);
+                      }}
                     >
                       { checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID && (
                       <div className="jfe-drip-table-generator-workstation-table-row-tools">
