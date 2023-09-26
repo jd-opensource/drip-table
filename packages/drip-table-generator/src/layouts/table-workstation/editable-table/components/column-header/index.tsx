@@ -30,6 +30,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   columnId?: string | number;
   showLeftShadow?: boolean;
   showRightShadow?: boolean;
+  columnTools?: DripTableGeneratorProps<RecordType, ExtraOptions>['columnTools'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
@@ -175,6 +176,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             <TableConfigsContext.Consumer>
               { ({ tableConfigs, setTableColumns }) => (
                 <div className="jfe-drip-table-generator-workstation-table-header-tools" onClick={e => e.stopPropagation()}>
+                  { (!props.columnTools || props.columnTools.includes('config')) && (
                   <Tooltip title="打开当前列组件配置面板">
                     <Button
                       size="small"
@@ -196,6 +198,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       }}
                     />
                   </Tooltip>
+                  ) }
+                  { (!props.columnTools || props.columnTools.includes('copy')) && (
                   <ClipboardButton
                     component="span"
                     style={{ lineHeight: '24px' }}
@@ -216,6 +220,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       onClick={e => e.stopPropagation()}
                     />
                   </ClipboardButton>
+                  ) }
+                  { (!props.columnTools || props.columnTools.includes('delete')) && (
                   <Popconfirm
                     title="确定删除当前列么?"
                     onConfirm={(e) => {
@@ -249,6 +255,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       icon={<DeleteOutlined />}
                     />
                   </Popconfirm>
+                  ) }
+                  { (!props.columnTools || props.columnTools.includes('more')) && (
                   <Dropdown
                     placement="bottomRight"
                     trigger={['click']}
@@ -264,6 +272,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       onClick={e => e.stopPropagation()}
                     />
                   </Dropdown>
+                  ) }
                 </div>
               ) }
             </TableConfigsContext.Consumer>

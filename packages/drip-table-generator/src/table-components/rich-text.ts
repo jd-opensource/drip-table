@@ -12,6 +12,7 @@ export default {
   default: '',
   attrSchema: generateColumnAttrComponentsByNames([
     titleConfig('富文本'),
+    'hidden',
     {
       name: 'options.render',
       group: '属性',

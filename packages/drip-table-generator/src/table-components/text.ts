@@ -171,7 +171,7 @@ export default {
     },
     'dataTranslation',
     'disable',
-    'options.visibleFunc',
+    'hidden',
     'hidable',
     {
       name: 'options.clipboard',

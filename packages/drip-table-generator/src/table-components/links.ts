@@ -208,7 +208,7 @@ export default {
     },
     'dataTranslation',
     'disable',
-    'options.visibleFunc',
+    'hidden',
     {
       name: 'options.tooltip',
       group: '属性',

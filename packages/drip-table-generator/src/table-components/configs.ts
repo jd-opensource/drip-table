@@ -395,7 +395,7 @@ const disableFunc: DTGComponentPropertySchema = {
   type: 'string',
 };
 const visibleFunc: DTGComponentPropertySchema = {
-  name: 'options.visibleFunc',
+  name: 'hidden',
   group: '属性',
   'ui:title': '显隐条件',
   'ui:titleStyle': { minWidth: 106 },
@@ -423,7 +423,7 @@ export const basicColumnAttrSchema = {
   fixed,
   dataTranslation,
   disable: disableFunc,
-  'options.visibleFunc': visibleFunc,
+  hidden: visibleFunc,
 };
 
 export const dataIndexColumnAttrComponents = (

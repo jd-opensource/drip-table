@@ -330,7 +330,7 @@ export default {
     },
     'dataTranslation',
     'disable',
-    'options.visibleFunc',
+    'hidden',
     'hidable',
     'fixed',
     'description',
