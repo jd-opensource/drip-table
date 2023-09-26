@@ -16,6 +16,7 @@ export default {
       layout: { labelCol: 8, wrapperCol: 16 },
     }),
     'dataTranslation',
+    'hidden',
     {
       name: 'options.prefix',
       group: '属性',

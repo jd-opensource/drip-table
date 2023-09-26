@@ -9,7 +9,7 @@
 @prefixCls: jfe-drip-table-generator-table-container;
 
 .@{prefixCls}-wrapper {
-  border: 1px dashed transparent;
+  border: 1px solid transparent;
   padding: 0 12px 8px;
   width: max-content;
   position: relative;
@@ -17,6 +17,10 @@
 
   &:hover {
     border: 1px dashed var(--drip-table-border-color);
+  }
+
+  &.disabled {
+    border: 1px solid transparent;
   }
 
   &.checked {

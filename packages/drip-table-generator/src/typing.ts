@@ -246,9 +246,10 @@ export interface DripTableGeneratorProps<
    */
   defaultMode?: 'edit' | 'preview';
   /**
-   * 控制表格的工具栏显隐
+   * 控制表格的工具栏显隐，若为空数组则进入无法选中表格的状态
    */
   tableTools?: ('config' | 'subtable')[];
+  columnTools?: ('config' | 'copy' | 'more' | 'delete')[];
   /**
    * 自定义列添加面板
    */

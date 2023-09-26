@@ -90,7 +90,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
                 bordered: props.tableConfig.configs.bordered,
               })}
-              style={{ height: tableHeight, overflow: props.tableConfig.configs.sticky ? 'hidden' : 'auto' }}
+              style={{
+                height: tableHeight,
+              }}
             >
               { props.tableConfig.configs.sticky
                 ? (
@@ -99,6 +101,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     scrollLeft={scrollLeft}
                     customComponentPanel={props.customComponentPanel}
                     customColumnAddPanel={props.customColumnAddPanel}
+                    columnTools={props.columnTools}
                     tableConfig={props.tableConfig}
                     onResort={newColumns => setTableColumns([...newColumns], props.index)}
                     onScroll={(left) => { setScrollLeft(left); }}
@@ -117,6 +120,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   customComponentPanel={props.customComponentPanel}
                   customColumnAddPanel={props.customColumnAddPanel}
                   tableConfig={props.tableConfig}
+                  columnTools={props.columnTools}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                   onScroll={(left) => { setScrollLeft(left); }}
                   onClick={props.onClick}

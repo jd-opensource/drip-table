@@ -78,6 +78,7 @@ const PreviewTable = <
           'onClose',
           'onClick',
           'tableTools',
+          'columnTools',
           'onColumnAdded',
           'generatorRowSelectable',
         ])}
