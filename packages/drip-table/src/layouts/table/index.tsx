@@ -1225,7 +1225,9 @@ const TableLayout = <
                   checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
                   onChange={(e) => {
                     const selectedRowKeys = indexValue(e.target, 'checked')
-                      ? rcTableDataSource.map(d => d.record[rowKey] as React.Key)
+                      ? rcTableDataSource
+                        .filter(d => !tableProps.rowSelectable || tableProps.rowSelectable(d.record, d.index, tableInfo))
+                        .map(d => d.record[rowKey] as React.Key)
                       : [];
                     const selectedRows = rcTableDataSource
                       .filter(d => selectedRowKeys.includes(d.record[rowKey] as React.Key))
@@ -1398,6 +1400,7 @@ const TableLayout = <
       tableProps.schema.columns,
       tableProps.components,
       tableProps.ext,
+      tableProps.rowSelectable,
       tableProps.onEvent,
       tableProps.onDataSourceChange,
       tableState.displayColumnKeys,
