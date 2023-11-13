@@ -523,6 +523,17 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     },
     type: 'string',
   },
+  {
+    name: 'rowKey',
+    group: '全局属性',
+    'ui:title': '行主键值',
+    'ui:type': 'auto-complete',
+    'ui:props': {
+      style: { width: '100%' },
+      optionsParam: '$$FIELD_KEY_OPTIONS$$',
+    },
+    type: 'string',
+  },
   ...HeaderAttrConfigs,
   ...PaginationAttrConfigs,
   ...FooterAttrConfigs,

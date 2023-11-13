@@ -28,7 +28,6 @@ const Demo = () => (
       SubtableDataSourceKey: SubtableDataSourceKey;
     }>
       mockDataSource
-      showTemplate
       mode="page"
       save
       schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}

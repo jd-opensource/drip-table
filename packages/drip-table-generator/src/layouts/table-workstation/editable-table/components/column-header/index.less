@@ -79,6 +79,22 @@
   }
 }
 
+.@{prefixCls}-item:first-of-type {
+  &.checked {
+    > .@{prefixCls}-tools {
+      top: 0;
+    }
+  }
+}
+
+.@{prefixCls}-item:not(first-of-type) {
+  &.checked {
+    > .@{prefixCls}-tools {
+      top: -30px;
+    }
+  }
+}
+
 .@{prefixCls}-column {
   &-title {
     display: inline-block;
@@ -99,7 +115,6 @@
 
 .@{prefixCls}-tools {
   position: absolute;
-  top: -30px;
   right: -1px;
   display: flex;
   padding: 2px 4px;
