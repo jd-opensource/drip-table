@@ -170,6 +170,10 @@ export interface DripTableGeneratorProps<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableProps<RecordType, ExtraOptions> {
   /**
+   * 是否允许列拖拽
+   */
+  draggable?: boolean;
+  /**
    * 全局样式
    */
   style?: CSSProperties;

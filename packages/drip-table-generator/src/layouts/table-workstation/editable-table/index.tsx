@@ -97,6 +97,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               { props.tableConfig.configs.sticky
                 ? (
                   <ColumnHeaderList
+                    draggable={props.draggable}
                     scrollTarget={scrollTarget}
                     scrollLeft={scrollLeft}
                     customComponentPanel={props.customComponentPanel}
@@ -115,6 +116,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               >
                 { !props.tableConfig.configs.sticky && (
                 <ColumnHeaderList
+                  draggable={props.draggable}
                   scrollTarget={scrollTarget}
                   scrollLeft={scrollLeft}
                   customComponentPanel={props.customComponentPanel}
