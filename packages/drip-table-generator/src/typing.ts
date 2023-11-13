@@ -220,10 +220,6 @@ export interface DripTableGeneratorProps<
   width?: number;
   height?: number;
   /**
-   * 是否展示 模板 按钮
-   */
-  showTemplate?: boolean;
-  /**
    * 自定义模板，可传入多个
    */
   customTemplates?: DripTableGeneratorTemplate[];
@@ -232,9 +228,13 @@ export interface DripTableGeneratorProps<
    */
   save?: boolean;
   /**
-   * 是否展示工具栏, 默认打开，关闭需要传false
+   * 保存按钮展示位置
    */
-  showToolbar?: boolean;
+  savePosition?: 'left' | 'right';
+  /**
+   * 是否展示工具栏, 默认打开，关闭需要传false， 使用部分功能则传入：('template' | 'datasource' | 'import' | 'export' | 'preview')[]
+   */
+  showToolbar?: boolean | ('template' | 'datasource' | 'import' | 'export' | 'preview')[];
   /**
    * 是否展示右侧属性栏, 默认打开，关闭需要传false
    */
@@ -271,7 +271,7 @@ export interface DripTableGeneratorProps<
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
   onColumnAdded?: (column: DripTableSchema<DripTableColumnSchema>['columns'][number], schema: DripTableSchema<DripTableColumnSchema>) => void;
-  onClose?: () => void;
+  onClose?: (schema?: DripTableSchema<DripTableColumnSchema>) => void;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   /**
    * 当点击生成器中的按钮触发的事件

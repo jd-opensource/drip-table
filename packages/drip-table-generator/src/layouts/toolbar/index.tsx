@@ -77,11 +77,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div
             className="jfe-drip-table-generator-templates-toolbar left"
+            style={{ width: `calc(100% - ${props.save && props.savePosition === 'right' && props.mode === 'modal' ? 64 : 32}px)` }}
             onClick={() => {
               if (operateMenu) { setOperateMenu(void 0); }
             }}
           >
-            { props.save && !operateMenu && (
+            { props.save && props.savePosition !== 'right' && !operateMenu && (
               <Tooltip title="保存表格" placement="bottom">
                 <Button
                   type="primary"
@@ -95,65 +96,108 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 />
               </Tooltip>
             ) }
-            { operateMenu && (
-              <Tooltip title="退出当前操作" placement="bottom">
-                <Button icon={<ArrowLeftOutlined />} shape="circle" onClick={() => setOperateMenu(void 0)} />
-              </Tooltip>
-            ) }
-            { props.showTemplate && (
-            <DropDownButton
-              {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width, height: bodyHeight })}
-              open={operateMenu === 'template'}
-              style={{ marginLeft: 24 }}
-              onOpen={onOpen}
-            >
-              <TemplatesManager
-                dataFields={props.dataFields}
-                mockDataSource={props.mockDataSource}
-                customComponentPanel={props.customComponentPanel}
-                customTemplates={props.customTemplates}
-                onOk={() => setOperateMenu(void 0)}
-              />
-            </DropDownButton>
-            ) }
-            <DropDownButton
-              {...generateDropdownProps({ name: 'datasource', label: '数据源', mode: props.mode, width: props.width, height: bodyHeight })}
-              open={operateMenu === 'datasource'}
-              onOpen={onOpen}
-              style={{ marginLeft: 24 }}
-              innerStyle={{ padding: 0, background: '#1e1e1e' }}
-            >
-              <DataSourceEditor
-                width={props.width ?? 1000}
-                height={bodyHeight - 8}
-                onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
-              />
-            </DropDownButton>
-            <DropDownButton
-              {...generateDropdownProps({ name: 'import', label: '配置导入', mode: props.mode, width: props.width, height: bodyHeight })}
-              open={operateMenu === 'import'}
-              onOpen={onOpen}
-              style={{ marginLeft: 24 }}
-              innerStyle={{ padding: '0 0 8px 0' }}
-            >
-              <ImportSchema height={bodyHeight - 8 - 40} />
-            </DropDownButton>
-            <DropDownButton
-              {...generateDropdownProps({ name: 'export', label: '配置编辑', mode: props.mode, width: props.width, height: bodyHeight })}
-              open={operateMenu === 'export'}
-              onOpen={onOpen}
-              style={{ marginLeft: 24 }}
-              innerStyle={{ padding: '0 0 8px 0' }}
-            >
-              <ExportSchema
-                height={bodyHeight - 8 - 40}
-                mode={props.mode}
-              />
-            </DropDownButton>
-            <ModeSwitch disabled={operateMenu ? true : void 0} />
+            { operateMenu
+              ? (
+                <Tooltip title="退出当前操作" placement="bottom">
+                  <Button icon={<ArrowLeftOutlined />} shape="circle" onClick={() => setOperateMenu(void 0)} />
+                </Tooltip>
+              )
+              : (<div style={props.save && props.savePosition !== 'right' ? void 0 : { width: 32, height: 32 }} />) }
+            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('template')
+              ? null
+              : (
+                <DropDownButton
+                  {...generateDropdownProps({ name: 'template', label: '模版', mode: props.mode, width: props.width, height: bodyHeight })}
+                  open={operateMenu === 'template'}
+                  style={{ marginLeft: 24 }}
+                  onOpen={onOpen}
+                >
+                  <TemplatesManager
+                    dataFields={props.dataFields}
+                    mockDataSource={props.mockDataSource}
+                    customComponentPanel={props.customComponentPanel}
+                    customTemplates={props.customTemplates}
+                    onOk={() => setOperateMenu(void 0)}
+                  />
+                </DropDownButton>
+              ) }
+            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('datasource')
+              ? null
+              : (
+                <DropDownButton
+                  {...generateDropdownProps({ name: 'datasource', label: '数据源', mode: props.mode, width: props.width, height: bodyHeight })}
+                  open={operateMenu === 'datasource'}
+                  onOpen={onOpen}
+                  style={{ marginLeft: 24 }}
+                  innerStyle={{ padding: 0, background: '#1e1e1e' }}
+                >
+                  <DataSourceEditor
+                    width={props.width ?? 1000}
+                    height={bodyHeight - 8}
+                    onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
+                  />
+                </DropDownButton>
+              ) }
+            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('import')
+              ? null
+              : (
+                <DropDownButton
+                  {...generateDropdownProps({ name: 'import', label: '配置导入', mode: props.mode, width: props.width, height: bodyHeight })}
+                  open={operateMenu === 'import'}
+                  onOpen={onOpen}
+                  style={{ marginLeft: 24 }}
+                  innerStyle={{ padding: '0 0 8px 0' }}
+                >
+                  <ImportSchema height={bodyHeight - 8 - 40} />
+                </DropDownButton>
+              ) }
+            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('export')
+              ? null
+              : (
+                <DropDownButton
+                  {...generateDropdownProps({ name: 'export', label: '配置编辑', mode: props.mode, width: props.width, height: bodyHeight })}
+                  open={operateMenu === 'export'}
+                  onOpen={onOpen}
+                  style={{ marginLeft: 24 }}
+                  innerStyle={{ padding: '0 0 8px 0' }}
+                >
+                  <ExportSchema
+                    height={bodyHeight - 8 - 40}
+                    mode={props.mode}
+                  />
+                </DropDownButton>
+              ) }
+            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('preview')
+              ? null
+              : (<ModeSwitch disabled={operateMenu ? true : void 0} />) }
           </div>
-          <div className="jfe-drip-table-generator-templates-toolbar right">
-            { props.mode === 'modal' && <Button onClick={props.onClose} className="jfe-drip-table-generator-templates-close" type="text" icon={<CloseOutlined />} /> }
+          <div
+            className="jfe-drip-table-generator-templates-toolbar right"
+            style={{ width: props.save && props.savePosition === 'right' && props.mode === 'modal' ? 64 : 32 }}
+          >
+            { props.save && props.savePosition === 'right' && (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                props.onSave?.(getSchemaValue(tableConfigs));
+              }}
+              type="text"
+              shape="default"
+              icon={<SaveOutlined />}
+              disabled={!!operateMenu && operateMenu !== 'export'}
+            />
+            ) }
+            { props.mode === 'modal' && (
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  props.onClose?.(getSchemaValue(tableConfigs));
+                }}
+                className="jfe-drip-table-generator-templates-close"
+                type="text"
+                icon={<CloseOutlined />}
+              />
+            ) }
           </div>
         </div>
       ) }

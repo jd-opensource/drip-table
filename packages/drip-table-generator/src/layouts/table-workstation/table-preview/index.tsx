@@ -51,6 +51,7 @@ const PreviewTable = <
           'style',
           'save',
           'onSave',
+          'savePosition',
           'showTemplate',
           'customComponents',
           'visible',
