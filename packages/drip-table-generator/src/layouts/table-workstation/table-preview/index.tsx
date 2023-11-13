@@ -67,7 +67,7 @@ const PreviewTable = <
           'customThemeOptions',
           'defaultMode',
           'showToolbar',
-          'dataFields',
+          'draggable',
           'noDataFeedBack',
           'customComponentPanel',
           'customGlobalConfigPanel',

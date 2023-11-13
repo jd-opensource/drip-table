@@ -28,6 +28,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   scrollTarget: string;
   scrollLeft: number;
   tableConfig: DTGTableConfig;
+  draggable: DripTableGeneratorProps<RecordType, ExtraOptions>['draggable'];
   columnTools?: DripTableGeneratorProps<RecordType, ExtraOptions>['columnTools'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
@@ -103,6 +104,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       >
         <ReactSortable
           animation={250}
+          filter={props.draggable === false ? '.jfe-drip-table-generator-workstation-table-header-item' : void 0}
           list={columnList}
           setList={(newList) => {
             const newColumns = newList.map(item => item.column);
