@@ -57,6 +57,11 @@ export default {
     },
     'hidable',
     'fixed',
+    'sorter',
+    'sortDirections',
+    'filters',
+    'filtersMaxSelect',
+    'defaultFilteredValue',
     'description',
     {
       name: 'options.tooltip',

@@ -7,13 +7,14 @@
  */
 import './index.less';
 
-import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, DeleteOutlined, EllipsisOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Dropdown, MenuProps, message, Popconfirm, Tooltip } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CaretDownOutlined, CaretUpOutlined, CopyOutlined, DeleteOutlined, EllipsisOutlined, FilterFilled, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { Alert, Button, Checkbox, Col, Dropdown, MenuProps, message, Popconfirm, Popover, Row, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import ClipboardButton from 'react-clipboard.js';
 
+import { get } from '@/utils';
 import RichText from '@/components/RichText';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
@@ -30,6 +31,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   columnId?: string | number;
   showLeftShadow?: boolean;
   showRightShadow?: boolean;
+  dataSource?: DripTableGeneratorProps<RecordType, ExtraOptions>['dataSource'];
   columnTools?: DripTableGeneratorProps<RecordType, ExtraOptions>['columnTools'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
@@ -39,7 +41,10 @@ const ColumnHeader = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ColumnHeaderProps<RecordType, ExtraOptions>) => {
+  const tableContext = React.useContext(TableConfigsContext);
   const [selector, setSelector] = React.useState('');
+  const [filteredValue, setFilteredValue] = React.useState(props.column.defaultFilteredValue || []);
+  const [storedDataSource] = React.useState([...props.dataSource || []]);
   const columnTitle = React.useMemo(() => {
     let title = '';
     if (typeof props.column.title === 'string') {
@@ -62,6 +67,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       styles = props.column.title?.body?.style ?? {};
     }
     return styles;
+  }, [props.column]);
+
+  const [columnRightCount, columnTitleWidth] = React.useMemo(() => {
+    let count = 0;
+    let titleWidth = 'calc(100%';
+    if (props.column.description) {
+      count += 1;
+      titleWidth += ' - 24px';
+    }
+    if (props.column.sorter) {
+      count += 1;
+      titleWidth += ' - 24px';
+    }
+    if (props.column.filters && props.column.filters.length > 0) {
+      count += 1;
+      titleWidth += ' - 24px';
+    }
+    titleWidth += ')';
+    return [count, titleWidth];
   }, [props.column]);
 
   const menuItems: MenuProps['items'] = React.useMemo(() => [
@@ -279,14 +303,80 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           ) }
           <RichText
             className="jfe-drip-table-generator-workstation-table-header-column-title"
-            style={{ width: props.column.description ? 'calc(100% - 34px)' : void 0 }}
+            style={{ width: columnRightCount > 0 ? columnTitleWidth : void 0 }}
             html={columnTitle}
           />
-          { props.column.description && (
-          <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
-            <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
-          </Tooltip>
-          ) }
+          {
+            columnRightCount > 0 && (
+              <div style={{ display: 'inline-block', verticalAlign: 'top', height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+                  { props.column.description && (
+                  <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
+                    <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
+                  </Tooltip>
+                  ) }
+                  { props.column.sorter && (
+                  <Popover placement="top" content={(<Alert showIcon description="此处仅供配置展示，如要体验功能，请打开预览模式" type="warning" />)}>
+                    { props.column.sortDirections?.length === 1 && props.column.sortDirections[0] === 'ascend' && (
+                    <span style={{ marginLeft: 6, verticalAlign: 'top', color: '#b1b1b1', fontSize: '12px' }}><CaretUpOutlined /></span>
+                    ) }
+                    { props.column.sortDirections?.length === 1 && props.column.sortDirections[0] === 'descend' && (
+                    <span style={{ marginLeft: 6, verticalAlign: 'bottom', color: '#b1b1b1', fontSize: '12px' }}><CaretDownOutlined /></span>
+                    ) }
+                    { (!props.column.sortDirections || props.column.sortDirections?.length !== 1) && (
+                    <span style={{ marginLeft: 6, display: 'flex', flexDirection: 'column', color: '#b1b1b1', fontSize: '12px' }}>
+                      <CaretUpOutlined style={{ height: 10 }} />
+                      <CaretDownOutlined />
+                    </span>
+                    ) }
+                  </Popover>
+                  ) }
+                  { props.column.filters && props.column.filters.length > 0 && (
+                    <Popconfirm
+                      title={(
+                        <Checkbox.Group
+                          defaultValue={props.column.defaultFilteredValue as string[]}
+                          onChange={checkedValues => setFilteredValue(checkedValues as React.Key[])}
+                        >
+                          { props.column.filters.map((item, index) => (
+                            <Row key={index}>
+                              <Col span={24}><Checkbox value={item.value}>{ item.text }</Checkbox></Col>
+                            </Row>
+                          )) }
+                        </Checkbox.Group>
+                      )}
+                      icon={null}
+                      cancelText="重置"
+                      okText="确认"
+                      onCancel={(e) => {
+                        e?.stopPropagation();
+                        if (props.tableConfig.tableId === tableContext.tableConfigs[0].tableId) {
+                          setFilteredValue([]);
+                          setState({ previewDataSource: storedDataSource });
+                        } else {
+                          message.warn('子表格暂不支持编辑状态下预览过滤器效果');
+                        }
+                      }}
+                      onConfirm={(e) => {
+                        e?.stopPropagation();
+                        if (props.tableConfig.tableId === tableContext.tableConfigs[0].tableId) {
+                          const newDataSource = filteredValue.length > 0 && filteredValue.length < (props.column.filters?.length || 0)
+                            ? storedDataSource.filter(item => filteredValue.includes(get(item, props.column.dataIndex)))
+                            : storedDataSource;
+                          setState({ previewDataSource: newDataSource });
+                        } else {
+                          message.warn('子表格暂不支持编辑状态下预览过滤器效果');
+                        }
+                      }}
+                    >
+                      <span style={{ marginLeft: 6, verticalAlign: 'top', color: '#b1b1b1', cursor: 'pointer' }}><FilterFilled /></span>
+                    </Popconfirm>
+                  ) }
+                </div>
+              </div>
+            )
+          }
+
         </div>
       ) }
     </GeneratorContext.Consumer>

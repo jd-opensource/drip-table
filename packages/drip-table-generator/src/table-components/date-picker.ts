@@ -67,6 +67,11 @@ export default {
     'hidden',
     'hidable',
     'fixed',
+    'sorter',
+    'sortDirections',
+    'filters',
+    'filtersMaxSelect',
+    'defaultFilteredValue',
     'description',
     // styles
     'width',
