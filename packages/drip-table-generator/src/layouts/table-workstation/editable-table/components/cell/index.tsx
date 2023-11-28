@@ -34,13 +34,14 @@ interface TableCellProps<
   column: DripTableBuiltInColumnSchema;
   columnIndex: number;
   record: RecordType;
+  path: number[];
+  tableConfig: DTGTableConfig;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
-  path: number[];
-  tableConfig: DTGTableConfig;
+  ext?: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
@@ -202,7 +203,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       columnSchema,
       {
         components: props.customComponents,
-        ext: void 0, // TODO: ext
+        ext: props.ext,
         unknownComponent: <Alert type="error" message="未知组件" />,
         preview: true,
       },

@@ -101,6 +101,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         mockDataSource={props.mockDataSource}
         dataFields={props.dataFields}
         path={[]}
+        ext={props.ext}
         onClick={props.onClick}
       />
     </div>
