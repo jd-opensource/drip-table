@@ -11,7 +11,7 @@ import './index.less';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSlotElementSchema, DripTableTableInformation } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -30,6 +30,7 @@ interface EditableTableFooterProps<
   ext: ExtraOptions['CustomComponentExtraData'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   total?: DripTableGeneratorProps<RecordType, ExtraOptions>['total'];
+  onPageChange?: DripTableGeneratorProps<RecordType, ExtraOptions>['onPageChange'];
 }
 
 const EditableTableFooter = <
@@ -163,6 +164,17 @@ const EditableTableFooter = <
       { ({ tableConfigs, setTableConfigs }) => {
         const globalConfigs = tableConfigs[0].configs;
         const paginationInFooter = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('bottom');
+        const tableInfo = {
+          uuid: tableConfigs[0]?.tableId,
+          schema: {
+            ...tableConfigs[0]?.configs,
+            id: tableConfigs[0].tableId,
+            columns: tableConfigs[0]?.columns,
+            dataSourceKey: tableConfigs[0]?.dataSourceKey,
+          } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
+          parent: void 0,
+          dataSource: context.previewDataSource as RecordType[],
+        };
         return (
           <div style={{ marginTop: '12px' }}>
             { paginationInFooter && typeof globalConfigs.pagination === 'object' && (
@@ -176,7 +188,9 @@ const EditableTableFooter = <
                     configs.pagination.pageSize = size;
                   }
                   setTableConfigs(configs, 0);
+                  props.onPageChange?.(current, size, tableInfo);
                 }}
+                onChange={(page, pageSize) => props.onPageChange?.(page, pageSize, tableInfo)}
               />
             ) }
             <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0', overflowX: 'auto' }}>

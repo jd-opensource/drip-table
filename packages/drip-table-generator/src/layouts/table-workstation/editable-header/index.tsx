@@ -11,7 +11,7 @@ import './index.less';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableSlotElementSchema, DripTableTableInformation } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -30,6 +30,7 @@ interface EditableTableHeaderProps<
   ext: ExtraOptions['CustomComponentExtraData'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   total?: DripTableGeneratorProps<RecordType, ExtraOptions>['total'];
+  onPageChange?: DripTableGeneratorProps<RecordType, ExtraOptions>['onPageChange'];
 }
 
 const EditableTableHeader = <
@@ -163,6 +164,17 @@ const EditableTableHeader = <
       { ({ tableConfigs, setTableConfigs }) => {
         const globalConfigs = tableConfigs[0].configs;
         const paginationInHeader = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('top');
+        const tableInfo = {
+          uuid: tableConfigs[0]?.tableId,
+          schema: {
+            ...tableConfigs[0]?.configs,
+            id: tableConfigs[0].tableId,
+            columns: tableConfigs[0]?.columns,
+            dataSourceKey: tableConfigs[0]?.dataSourceKey,
+          } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
+          parent: void 0,
+          dataSource: context.previewDataSource as RecordType[],
+        };
         return (
           <div style={{ marginBottom: '12px' }}>
             { paginationInHeader && typeof globalConfigs.pagination === 'object' && (
@@ -176,6 +188,7 @@ const EditableTableHeader = <
                     configs.pagination.pageSize = size;
                   }
                   setTableConfigs(configs, 0);
+                  props.onPageChange?.(current, size, tableInfo);
                 }}
               />
             ) }
