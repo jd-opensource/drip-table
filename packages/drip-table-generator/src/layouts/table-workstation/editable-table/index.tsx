@@ -83,7 +83,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
               ? (
-                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.dataSource.length} />
+                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.total || props.dataSource.length} />
               )
               : null }
             <div
@@ -204,12 +204,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     </div>
                   );
                 }) }
-                { previewDataSource.length <= 0 && <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} /> }
+                { previewDataSource.length <= 0 && (props.emptyText ? props.emptyText?.(subTableInfo) : <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} />) }
               </div>
             </div>
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter
               ? (
-                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.dataSource.length} />
+                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.total || props.dataSource.length} />
               )
               : null }
             { props.parent?.record && (props.subtableFooter?.(props.parent.record, props.index || 0, subTableInfo) || '') }

@@ -29,6 +29,7 @@ interface EditableTableFooterProps<
 > {
   ext: ExtraOptions['CustomComponentExtraData'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
+  total?: DripTableGeneratorProps<RecordType, ExtraOptions>['total'];
 }
 
 const EditableTableFooter = <
@@ -168,7 +169,7 @@ const EditableTableFooter = <
               <PaginationComponent
                 style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
                 {...globalConfigs.pagination}
-                total={context.previewDataSource.length}
+                total={props.total || context.previewDataSource.length}
                 onShowSizeChange={(current, size) => {
                   const configs = { ...globalConfigs };
                   if (typeof configs.pagination === 'object') {
