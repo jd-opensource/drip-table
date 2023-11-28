@@ -359,6 +359,109 @@ const fixed: DTGComponentPropertySchema = {
   default: void 0,
 };
 
+const sorter: DTGComponentPropertySchema = {
+  name: 'sorter',
+  group: '属性',
+  'ui:layout': {
+    labelCol: 6,
+    wrapperCol: 18,
+    extraRow: true,
+    customHelpMsg: true,
+  },
+  'ui:title': '排序设置',
+  'ui:type': 'code-editor',
+  'ui:description': {
+    title: `1. 函数通过 props.column 获取当前列 schema ；<br/>
+2. 函数通过 props.leftValue 获取当前对比函数左侧数据值；<br/>
+3. 函数通过 props.rightValue 获取当前对比函数右侧数据值；<br/>
+4. 函数通过 props.leftRecord 获取当前对比函数左侧行数据；<br/>
+5. 函数通过 props.rightRecord 获取当前对比函数右侧行数据；<br/>
+6. 需要配合表格事件 onSorterChange 或 onChange 调整传入的 dataSource 条目顺序，如下示例：<br/>
+return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1`,
+    trigger: 'hover',
+    type: 'icon',
+  },
+  'ui:props': {
+    style: {
+      height: 240,
+      margin: '-16px 0 24px 0',
+    },
+  },
+  type: 'string',
+};
+
+const sortDirections: DTGComponentPropertySchema = {
+  name: 'sortDirections',
+  group: '属性',
+  'ui:layout': { labelCol: 6, wrapperCol: 18 },
+  'ui:title': '排序方向',
+  'ui:type': 'select',
+  'ui:props': {
+    mode: 'tags',
+    style: { width: '100%' },
+    options: [
+      { label: '升序', value: 'ascend' },
+      { label: '降序', value: 'descend' },
+    ],
+  },
+  type: 'string',
+  default: void 0,
+};
+
+const filters: DTGComponentPropertySchema = {
+  name: 'filters',
+  group: '属性',
+  'ui:layout': { labelCol: 6, wrapperCol: 18 },
+  'ui:title': '过滤器设置',
+  'ui:type': 'array-list',
+  'ui:props': {
+    mode: 'narrow',
+    style: { border: '1px solid #3e3e3e', borderRadius: 2 },
+    items: [
+      {
+        name: 'text',
+        'ui:title': '文案',
+        'ui:type': 'input',
+        type: 'string',
+      },
+      {
+        name: 'value',
+        'ui:title': '值',
+        'ui:type': 'input',
+        type: 'string',
+      },
+    ],
+  },
+  type: 'string',
+  default: void 0,
+};
+
+const filtersMaxSelect: DTGComponentPropertySchema = {
+  name: 'filtersMaxSelect',
+  group: '属性',
+  'ui:title': '过滤器最大选择数',
+  'ui:type': 'number',
+  'ui:props': {
+    minium: 1,
+    step: 1,
+  },
+  type: 'number',
+  default: void 0,
+};
+
+const defaultFilteredValue: DTGComponentPropertySchema = {
+  name: 'defaultFilteredValue',
+  group: '属性',
+  'ui:title': '默认过滤器值',
+  'ui:type': 'auto-complete',
+  'ui:props': {
+    style: { width: '100%' },
+    options: [],
+  },
+  type: 'array',
+  default: void 0,
+};
+
 const dataTranslation: DTGComponentPropertySchema = {
   name: 'dataTranslation',
   group: '属性',
@@ -421,6 +524,11 @@ export const basicColumnAttrSchema = {
   verticalAlign,
   hidable,
   fixed,
+  sorter,
+  sortDirections,
+  filters,
+  filtersMaxSelect,
+  defaultFilteredValue,
   dataTranslation,
   disable: disableFunc,
   hidden: visibleFunc,

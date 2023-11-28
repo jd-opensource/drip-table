@@ -182,6 +182,11 @@ export default {
       type: 'boolean',
     },
     'fixed',
+    'sorter',
+    'sortDirections',
+    'filters',
+    'filtersMaxSelect',
+    'defaultFilteredValue',
     'description',
     // styles
     'width',

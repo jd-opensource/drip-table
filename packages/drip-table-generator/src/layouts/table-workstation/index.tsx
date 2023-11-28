@@ -37,6 +37,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               {...props}
               index={0}
               tableConfig={tableConfigs[0]}
+              originDataSource={props.dataSource}
               dataSource={previewDataSource as RecordType[]}
             />
             ) }

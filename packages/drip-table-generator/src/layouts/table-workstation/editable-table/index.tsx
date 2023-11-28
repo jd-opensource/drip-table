@@ -30,6 +30,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   index: number;
   tableConfig: DTGTableConfig;
   dataSource: RecordType[];
+  originDataSource?: RecordType[];
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
@@ -104,6 +105,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     customColumnAddPanel={props.customColumnAddPanel}
                     columnTools={props.columnTools}
                     tableConfig={props.tableConfig}
+                    dataSource={props.originDataSource}
                     onResort={newColumns => setTableColumns([...newColumns], props.index)}
                     onScroll={(left) => { setScrollLeft(left); }}
                     onClick={props.onClick}
@@ -123,6 +125,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   customColumnAddPanel={props.customColumnAddPanel}
                   tableConfig={props.tableConfig}
                   columnTools={props.columnTools}
+                  dataSource={props.originDataSource}
                   onResort={newColumns => setTableColumns([...newColumns], props.index)}
                   onScroll={(left) => { setScrollLeft(left); }}
                   onClick={props.onClick}

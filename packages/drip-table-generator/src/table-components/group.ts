@@ -93,6 +93,11 @@ export default {
       default: false,
     },
     'fixed',
+    'sorter',
+    'sortDirections',
+    'filters',
+    'filtersMaxSelect',
+    'defaultFilteredValue',
     // styles
     'width',
     {
