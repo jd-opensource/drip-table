@@ -1,12 +1,12 @@
 ---
-title: showToolbar
+title: draggable
 toc: content
 ---
 
-## showToolbar
+## draggable
 
-- 描述：自定义是否展示工具栏以及工具栏栏目
-- 类型：`boolean | ('template' | 'datasource' | 'import' | 'export' | 'preview')[];`
+- 描述：编辑模式下生成器的列是否允许拖拽
+- 类型：`boolean`
 - 默认值：`true`
 
 ```jsx
@@ -16,7 +16,7 @@ toc: content
  * hideActions: ["CSB"]
  */
 
-import { Select, Switch } from "antd";
+import { Switch } from "antd";
 import { DripTableExtraOptions, DripTableSchema } from "drip-table";
 import DripTableGeneratorProvider from "drip-table-generator";
 import React, { useState } from "react";
@@ -60,35 +60,21 @@ const dataSource = [
 ];
 
 const Demo = () => {
-  const [showToolbar, setShowToolbar] = useState(true);
+  const [draggable, setDraggable] = useState(true);
   return (
     <>
       <span>展示表格工具栏</span>
       <Switch
         checkedChildren="开启"
         unCheckedChildren="关闭"
-        checked={!!showToolbar}
+        checked={!!draggable}
         onChange={(checked) => setShowToolbar(checked)}
       />
-      {showToolbar && (
-        <Select
-          mode="tags"
-          style={{ minWidth: "320px" }}
-          options={[
-            { label: "模板(template)", value: "template" },
-            { label: "数据源(datasource)", value: "datasource" },
-            { label: "配置导入(import)", value: "import" },
-            { label: "配置编辑(export)", value: "export" },
-            { label: "预览模式(preview)", value: "preview" },
-          ]}
-          onChange={(v) => setShowToolbar(v)}
-        />
-      )}
       <DripTableGeneratorProvider
         schema={schema}
         dataSource={dataSource}
         mode={"page"}
-        showToolbar={showToolbar}
+        draggable={draggable}
         height={480}
       />
     </>

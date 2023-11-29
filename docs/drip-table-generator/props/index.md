@@ -11,6 +11,7 @@ toc: content
 
 | 参数名                                                                               | 描述                                       | 必填 | 详情                                                               |
 | ------------------------------------------------------------------------------------ | ------------------------------------------ | ---- | ------------------------------------------------------------------ |
+| [draggable](/drip-table/props/draggable)                                             | 编辑模式下生成器的列是否允许拖拽           | ×    | [🔗 示例](/drip-table/props/draggable)                             |
 | [style](/drip-table/props/style)                                                     | 自定义样式表                               | ×    | [🔗 示例](/drip-table/props/style)                                 |
 | [width](/drip-table/props-generator/props/width)                                     | 表格生成器宽度                             | ×    | [🔗 示例](/drip-table-generator/props/width)                       |
 | [height](/drip-table-generator/props/height)                                         | 表格生成器高度                             | ×    | [🔗 示例](/drip-table-generator/props/height)                      |

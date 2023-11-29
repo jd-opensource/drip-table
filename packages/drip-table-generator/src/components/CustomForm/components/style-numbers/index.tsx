@@ -90,12 +90,10 @@ export default class StyleNumbersComponent extends React.PureComponent<Props> {
                 />
               )}
             />
-
             <MinusCircleTwoTone
               className="jfe-drip-table-generator-style-numbers-minus"
               twoToneColor="#ff4d4f"
               onClick={() => {
-                console.debug(this.value);
                 let value = [...this.value];
                 if (value.length > 1) {
                   value.splice(index, 1);

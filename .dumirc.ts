@@ -279,6 +279,8 @@ const DRIP_TABLE_GENERATOR_SIDEBAR = [
         link: '/drip-table-generator/props',
         children: [
           { title: 'index', link: '/drip-table-generator/props' },
+          { title: 'draggable', link: '/drip-table-generator/props/draggable' },
+          { title: 'style', link: '/drip-table-generator/props/style' },
           { title: 'width', link: '/drip-table-generator/props/width' },
           { title: 'height', link: '/drip-table-generator/props/height' },
           { title: 'showTemplate', link: '/drip-table-generator/props/show-template' },
@@ -296,8 +298,6 @@ const DRIP_TABLE_GENERATOR_SIDEBAR = [
           { title: 'onDataSourceChange', link: '/drip-table-generator/props/on-datasource-change' },
           { title: 'onSave', link: '/drip-table-generator/props/on-save' },
           { title: 'onClick', link: '/drip-table-generator/props/on-click' },
-          { title: 'showComponentLayout', link: '/drip-table-generator/props/show-component-layout' },
-          { title: 'showToolLayout', link: '/drip-table-generator/props/show-tool-layout' },
           { title: 'slotsSchema', link: '/drip-table-generator/props/slots-schema' },
         ],
       },
