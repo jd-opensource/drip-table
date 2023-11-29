@@ -316,7 +316,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   </Tooltip>
                   ) }
                   { props.column.sorter && (
-                  <Popover placement="top" content={(<Alert showIcon description="此处仅供配置展示，如要体验功能，请打开预览模式，并且配置事件onSorterChanged" type="warning" />)}>
+                  <Popover placement="top" content={(<Alert showIcon description="此处仅用于展示配置，如果您想要体验功能，请切换到预览模式，并配置事件onSorterChanged。" type="warning" />)}>
                     { props.column.sortDirections?.length === 1 && props.column.sortDirections[0] === 'ascend' && (
                     <span style={{ marginLeft: 6, verticalAlign: 'top', color: '#b1b1b1', fontSize: '12px' }}><CaretUpOutlined /></span>
                     ) }
