@@ -108,10 +108,10 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (options.mode === 'basic') {
       const value = indexValue(dataIndex, '');
       if (typeof value === 'string' || typeof value === 'number') {
-        return String(value);
+        return value;
       }
       if (typeof defaultValue === 'string' || typeof defaultValue === 'number') {
-        return String(defaultValue);
+        return defaultValue;
       }
     }
     return '';
@@ -123,10 +123,10 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     if (options.mode === 'range') {
       const value = indexValue(dataIndex, []);
       if (Array.isArray(value) && !value.some(v => typeof v !== 'string' && typeof v !== 'number')) {
-        return value.map(String);
+        return value;
       }
       if (Array.isArray(defaultValue) && !defaultValue.some(v => typeof v !== 'string' && typeof v !== 'number')) {
-        return defaultValue.map(String);
+        return defaultValue;
       }
     }
     return [];
@@ -216,7 +216,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
         >
           <Picker.DatePicker
             autoFocus
-            date={this.basicValue}
+            date={this.basicValue as string}
             onChange={(value) => {
               if (this.props.preview) { return; }
               this.props.onChange?.(moment(value).format(options.format));
@@ -237,7 +237,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
           style={{ width: 380, height: 300, justifyContent }}
         >
           <Picker.DateRangePicker
-            date={this.rangeValue}
+            date={this.rangeValue as string[]}
             autoFocus
             style={Object.assign({}, { width: 340 })}
             format={options.format}
