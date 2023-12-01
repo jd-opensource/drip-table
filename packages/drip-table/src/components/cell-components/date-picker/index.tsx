@@ -15,7 +15,6 @@ import { EventInjector } from 'react-event-injector';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { indexValue } from '@/utils/operator';
 import Alert from '@/components/react-components/alert';
 import Picker from '@/components/react-components/date-picker';
 
@@ -103,19 +102,34 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
     return false;
   }
 
-  private get value() {
+  private get basicValue() {
     const { dataIndex, options, defaultValue } = this.props.schema;
-    const { data } = this.props;
-    if (!data) {
-      return defaultValue;
-    }
+    const { indexValue } = this.props;
     if (options.mode === 'basic') {
-      return indexValue(data, dataIndex, '');
+      const value = indexValue(dataIndex, '');
+      if (typeof value === 'string' || typeof value === 'number') {
+        return String(value);
+      }
+      if (typeof defaultValue === 'string' || typeof defaultValue === 'number') {
+        return String(defaultValue);
+      }
     }
+    return '';
+  }
+
+  private get rangeValue() {
+    const { dataIndex, options, defaultValue } = this.props.schema;
+    const { indexValue } = this.props;
     if (options.mode === 'range') {
-      return indexValue(data, dataIndex, '');
+      const value = indexValue(dataIndex, []);
+      if (Array.isArray(value) && !value.some(v => typeof v !== 'string' && typeof v !== 'number')) {
+        return value.map(String);
+      }
+      if (Array.isArray(defaultValue) && !defaultValue.some(v => typeof v !== 'string' && typeof v !== 'number')) {
+        return defaultValue.map(String);
+      }
     }
-    return defaultValue;
+    return [];
   }
 
   public componentDidUpdate() {
@@ -202,7 +216,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
         >
           <Picker.DatePicker
             autoFocus
-            date={this.value}
+            date={this.basicValue}
             onChange={(value) => {
               if (this.props.preview) { return; }
               this.props.onChange?.(moment(value).format(options.format));
@@ -223,7 +237,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
           style={{ width: 380, height: 300, justifyContent }}
         >
           <Picker.DateRangePicker
-            date={this.value}
+            date={this.rangeValue}
             autoFocus
             style={Object.assign({}, { width: 340 })}
             format={options.format}
@@ -290,8 +304,7 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
   }
 
   public render() {
-    const { format } = this.props.schema.options;
-
+    const options = this.props.schema.options;
     if (!this.configured) {
       return <Alert message="未正确配置字段" showIcon type="error" />;
     }
@@ -304,7 +317,11 @@ export default class DTCDate<RecordType extends DripTableRecordTypeBase> extends
           onDoubleClick={this.onDoubleClick}
           onKeyDown={this.onKeyDown}
         >
-          { Array.isArray(this.value) ? this.value.map(v => moment(v).format(format)).join(' - ') : moment(this.value).format(format) }
+          {
+            options.mode === 'basic'
+              ? moment(this.basicValue).format(options.format)
+              : this.rangeValue.map(v => moment(v).format(options.format)).join(' - ')
+          }
           { this.renderEdit() }
         </div>
         <div className={`${prefixCls}-focus-border`} />
