@@ -44,7 +44,7 @@
 1. 安装依赖
 
    ```sh
-   lerna bootstrap
+   yarn
    ```
 
 2. 构建依赖包

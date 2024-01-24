@@ -42,7 +42,7 @@ English | [简体中文](./DEVELOP.zh-CN.md)
 1. install dependencies
 
    ```sh
-   lerna bootstrap
+   yarn
    ```
 
 2. build independecies
