@@ -91,7 +91,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   public renderGenerator(schema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>): React.ReactNode {
     const { tableInfo, extraProps } = this.props.ext as DripTableColumnRenderOptions<RecordType, ExtraOptions>;
     const render = columnRenderGenerator(tableInfo, schema, extraProps);
-    return render(null, { type: 'body', key: schema.key, index: 0, record: this.props.data }, 0);
+    return render(null, { type: 'body', key: schema.key, index: this.props.recordIndex, record: this.props.data }, 0);
   }
 
   public renderCell(row: number, col: number) {

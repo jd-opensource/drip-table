@@ -23,6 +23,10 @@ export interface DripTableComponentProps<
    */
   schema: ColumnSchema;
   /**
+   * 当前渲染行数据下标（`i of list[i]`）
+   */
+  recordIndex: number;
+  /**
    * 当前渲染行数据结构（`list[i]`）
    */
   data: RecordType;
