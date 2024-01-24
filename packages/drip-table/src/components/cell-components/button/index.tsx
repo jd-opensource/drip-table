@@ -103,7 +103,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.data);
+    return finalizeString('pattern', options.label || '', this.props.record);
   }
 
   private getIcon(iconName: string) {
@@ -118,21 +118,21 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
   }
 
   private getVisible(visibleFunc?: string): boolean {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     const { dataIndex } = schema;
     if (!visibleFunc) {
       return true;
     }
-    return dataProcessValue(data, dataIndex, visibleFunc);
+    return dataProcessValue(record, dataIndex, visibleFunc);
   }
 
   private getDisabled(disableFunc?: string): boolean {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     const { dataIndex } = schema;
     if (!disableFunc) {
       return this.props.disable ?? false;
     }
-    return dataProcessValue(data, dataIndex, disableFunc);
+    return dataProcessValue(record, dataIndex, disableFunc);
   }
 
   public render() {

@@ -124,7 +124,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
   );
 
   private formatLabel(label?: string) {
-    return finalizeString('pattern', label || '', this.props.data);
+    return finalizeString('pattern', label || '', this.props.record);
   }
 
   private renderToolTip = (template?: string) => {
@@ -135,7 +135,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
           { this.props.preview
             ? this.renderInfoCircle()
             : (
-              <Tooltip title={finalizeString('pattern', tooltip, this.props.data)}>
+              <Tooltip title={finalizeString('pattern', tooltip, this.props.record)}>
                 { this.renderInfoCircle() }
               </Tooltip>
             ) }
@@ -154,7 +154,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       }
       return false;
     }
-    if (options.mode === 'single' && (finalizeString('pattern', options.href || '', this.props.data) || options.event)) {
+    if (options.mode === 'single' && (finalizeString('pattern', options.href || '', this.props.record) || options.event)) {
       return true;
     }
     return false;
@@ -165,20 +165,20 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return safeExecute(`return ${disabled}`, {
         props: {
           value: this.props.value,
-          record: this.props.data,
+          record: this.props.record,
         },
-        rec: this.props.data,
+        rec: this.props.record,
       }, false);
     }
     return !!disabled;
   }
 
   private get visible(): boolean {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
     if (mode === 'single' && visibleFunc) {
-      return dataProcessValue(data, dataIndex, visibleFunc);
+      return dataProcessValue(record, dataIndex, visibleFunc);
     }
     return true;
   }
@@ -221,7 +221,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                 <a
-                  href={finalizeString('pattern', config.href || '', this.props.data)}
+                  href={finalizeString('pattern', config.href || '', this.props.record)}
                   onClick={this.props.preview ? e => e.preventDefault() : void 0}
                   target={config.target}
                 >
@@ -269,7 +269,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         <div>
           <a
             className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
-            href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.data)}
+            href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.record)}
             target={options.target}
             onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
             style={{ lineHeight: options.lineHeight }}
@@ -306,11 +306,11 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <div key={index} style={{ display: dataProcessValue(this.props.data, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
+              <div key={index} style={{ display: dataProcessValue(this.props.record, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
                 <a
                   className={`${prefixCls}-link-break ${disabled ? `${prefixCls}-link-disabled` : ''}`}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
-                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.data)}
+                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.record)}
                   target={disabled ? void 0 : config.target}
                   onClick={(e) => {
                     if (this.props.preview || disabled) {

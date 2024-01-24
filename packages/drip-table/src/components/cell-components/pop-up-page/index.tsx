@@ -65,7 +65,7 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.data);
+    return finalizeString('pattern', options.label || '', this.props.record);
   }
 
   private handlePopUpVisible = () => {

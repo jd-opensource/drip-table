@@ -85,9 +85,9 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       const html = execute(this.state.render, {
         props: {
           value: this.props.value,
-          record: this.props.data,
+          record: this.props.record,
         },
-        rec: this.props.data,
+        rec: this.props.record,
       });
       if (typeof html === 'object') {
         return (

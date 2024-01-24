@@ -23,19 +23,24 @@ export interface DripTableComponentProps<
    */
   schema: ColumnSchema;
   /**
+   * 当前渲染行数据结构（`list[i]`）
+   */
+  record: RecordType;
+  /**
    * 当前渲染行数据下标（`i of list[i]`）
    */
   recordIndex: number;
   /**
-   * 当前渲染行数据结构（`list[i]`）
+   * 已弃用，请使用 `record` 字段
+   * @deprecated
    */
   data: RecordType;
   /**
-   * 当前渲染单元格数据（`data[schema.dataIndex]`）
+   * 当前渲染单元格数据（`record[schema.dataIndex]`）
    */
   value: unknown;
   /**
-   * 获取该行其他渲染单元格数据（`data[dataIndex]`）
+   * 获取该行其他渲染单元格数据（`record[dataIndex]`）
    */
   indexValue: (dataIndex: ColumnSchema['dataIndex'], defaultValue?: unknown) => unknown;
   /**

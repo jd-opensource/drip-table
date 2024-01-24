@@ -277,6 +277,7 @@ export const columnRenderGenerator = <
         return (
           <BuiltInComponent
             data={record}
+            record={record}
             recordIndex={recordIndex}
             value={value}
             indexValue={(dataIndex, defaultValue) => {
@@ -311,6 +312,7 @@ export const columnRenderGenerator = <
           return (
             <ExtraComponent
               data={record}
+              record={record}
               recordIndex={recordIndex}
               value={value}
               indexValue={(dataIndex, defaultValue) => {

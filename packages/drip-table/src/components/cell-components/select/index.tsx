@@ -211,9 +211,9 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return safeExecute(`return ${options.disabled}`, {
         props: {
           value: this.props.value,
-          record: this.props.data,
+          record: this.props.record,
         },
-        rec: this.props.data,
+        rec: this.props.record,
       }, false);
     }
     return !!options.disabled;
@@ -242,10 +242,10 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return safeExecute(`return ${disabled}`, {
         props: {
           value,
-          record: this.props.data,
+          record: this.props.record,
         },
         value,
-        rec: this.props.data,
+        rec: this.props.record,
       }, false);
     }
     return !!disabled;
@@ -257,9 +257,9 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       try {
         finalBodyString = execute(`return ${body}`, {
           props: {
-            rec: this.props.data,
+            rec: this.props.record,
           },
-          rec: this.props.data,
+          rec: this.props.record,
         });
         if (typeof finalBodyString !== 'string') {
           return void 0;
@@ -303,7 +303,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     const options = this.props.schema.options;
     if (options.url && !options.options) {
       this.setState({ loading: true });
-      fetch(finalizeString('pattern', options.url, this.props.data), options.request
+      fetch(finalizeString('pattern', options.url, this.props.record), options.request
         ? {
           method: options.request.method,
           headers: options.request.headers,

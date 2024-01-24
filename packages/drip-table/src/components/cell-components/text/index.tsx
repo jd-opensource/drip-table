@@ -312,7 +312,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get rawText(): string[] {
-    const { schema, value, data, indexValue } = this.props;
+    const { schema, value, record, indexValue } = this.props;
     const { dataIndex, options } = schema;
     const { mode, format, prefix, suffix, parts: params } = options;
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
@@ -320,14 +320,14 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return (format || '')
         .replace(
           /\{\{(.+?)\}\}/guis, (s, s1) =>
-            finalizeString('script', `return ${s1}`, data),
+            finalizeString('script', `return ${s1}`, record),
         )
         .split('\n');
     }
     if (mode === 'single') {
       if (options.dataProcess) {
         console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
-        return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(data, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
+        return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(record, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
       }
       return `${prefix ?? ''}${translate(schema.options.i18n, `${value ?? defaultValue}`)}${suffix ?? ''}`.split('\n');
     }
@@ -335,7 +335,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       if (options.dataProcess) {
         console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
         return (params || [])
-          .map((config, i) => `${config.prefix || ''}${translate(config.i18n, dataProcessIndex(data, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
+          .map((config, i) => `${config.prefix || ''}${translate(config.i18n, dataProcessIndex(record, config.dataIndex, defaultValue, options.dataProcess)) ?? ''}${config.suffix || ''}`)
           .join('\n')
           .split('\n');
       }
@@ -351,34 +351,34 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get visible(): boolean {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
     if (mode === 'single' && visibleFunc) {
       console.warn('schema.columns[].options.visibleFunc is deprecated, use schema.columns[].hidden instead.');
-      return dataProcessValue(data, dataIndex, visibleFunc);
+      return dataProcessValue(record, dataIndex, visibleFunc);
     }
     return true;
   }
 
   private get disabled(): boolean {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     const { dataIndex, options } = schema;
     const { mode, disableFunc } = options;
     if (mode === 'single' && disableFunc) {
       console.warn('schema.columns[].options.disableFunc is deprecated, use schema.columns[].disable instead.');
-      return dataProcessValue(data, dataIndex, disableFunc);
+      return dataProcessValue(record, dataIndex, disableFunc);
     }
     return this.props.disable ?? false;
   }
 
   private get tooltip(): string {
-    const { schema, data } = this.props;
+    const { schema, record } = this.props;
     if (schema.options.tooltip) {
       return (schema.options.tooltip || '')
         .replace(
           /\{\{(.+?)\}\}/guis, (s, s1) =>
-            finalizeString('script', `return ${s1}`, data),
+            finalizeString('script', `return ${s1}`, record),
         );
     }
     return '';
