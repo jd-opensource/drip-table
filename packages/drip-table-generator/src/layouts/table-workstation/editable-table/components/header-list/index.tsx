@@ -101,6 +101,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         className="jfe-drip-table-generator-workstation-table-header-scrollbar"
         style={{
           width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
+          overflowX: props.tableConfig.configs.scroll?.x ? 'auto' : void 0,
         }}
         onScroll={(e) => { if (!props.scrollTarget) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >
@@ -112,7 +113,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             const newColumns = newList.map(item => item.column);
             props.onResort(newColumns);
           }}
-          style={{ display: 'flex', border: '1px solid transparent' }}
+          style={{ display: 'flex' }}
         >
           { sortableColumns.map(columnWrapper => (
             <ColumnHeader

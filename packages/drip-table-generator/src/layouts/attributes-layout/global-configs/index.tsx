@@ -71,8 +71,12 @@ const GlobalConfigForm = <
 
     if (typeof globalConfigs?.header === 'object') {
       formData.header = true;
-      const headerElements = globalConfigs?.header?.elements || [];
+      const headerElements = [...globalConfigs?.header?.elements || []].map(item => ({ ...item }));
+      const currentTable = configContext.tableConfigs.find(item => item.tableId === context.currentTableID);
       for (const headerItem of headerElements) {
+        if (headerItem.type === 'display-column-selector') {
+          (headerItem as Record<string, unknown>).selectorColumns = currentTable?.columns.filter(column => column.hidable).map(column => column.key);
+        }
         if (headerItem.type === 'spacer') {
           headerItem['style.width'] = headerItem.style?.width;
         }
@@ -134,8 +138,12 @@ const GlobalConfigForm = <
   };
 
   const encodeGlobalConfigs = (formData: { [key: string]: unknown }): DTGTableConfig['configs'] => {
+    const currentTableIndex = configContext.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
     const formatElement = (element) => {
       if (element.type === 'display-column-selector') {
+        const columns = [...configContext.tableConfigs[currentTableIndex]?.columns || []];
+        columns.forEach((column) => { column.hidable = (element.selectorColumns || []).includes(column.key); });
+        configContext.setTableColumns(columns, currentTableIndex);
         return {
           type: 'display-column-selector',
           selectorButtonType: element.selectorButtonType,
@@ -255,6 +263,18 @@ const GlobalConfigForm = <
     };
   };
 
+  const getColumnTitle = (column) => {
+    let title = '';
+    if (typeof column.title === 'string') {
+      title = column.title;
+    } else if (typeof column.title.body === 'string') {
+      title = column.title.body;
+    } else {
+      title = column.title.body.content;
+    }
+    return title;
+  };
+
   const getGlobalFormConfigs = () => {
     let globalFormConfigs = GlobalAttrFormConfigs;
     const currentTableIndex = configContext.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
@@ -290,11 +310,23 @@ const GlobalConfigForm = <
           },
         };
       }
+      if (uiProps?.optionsParam === '$$TABLE_COLUMNS_OPTIONS$$') {
+        config = {
+          ...config,
+          'ui:props': {
+            ...uiProps,
+            options: configContext.tableConfigs[currentTableIndex]?.columns.map(column => ({ label: getColumnTitle(column), value: column.key })),
+          },
+        };
+      }
       if (uiProps?.items) {
         const uiPropsItems = (uiProps.items as DTGComponentPropertySchema[])?.map((item, index) => {
           const itemUiProps = item['ui:props'];
           if (itemUiProps?.optionsParam === '$$SLOT_NAME_OPTIONS$$') {
             itemUiProps.options = Object.keys(props.slots || {}).map(key => ({ label: key, value: key }));
+          }
+          if (itemUiProps?.optionsParam === '$$TABLE_COLUMNS_OPTIONS$$') {
+            itemUiProps.options = configContext.tableConfigs[currentTableIndex]?.columns.map(column => ({ label: getColumnTitle(column), value: column.key }));
           }
           return {
             ...item,
