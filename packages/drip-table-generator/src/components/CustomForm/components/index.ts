@@ -49,7 +49,6 @@ export default {
 export interface CustomComponentProps {
   icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   schema: DTGComponentPropertySchema;
-  extraParams?: Record<string, unknown>;
   value?: unknown;
   onChange?: (value: unknown) => void;
   onValidate?: (errorMessage: string) => void;
@@ -57,7 +56,6 @@ export interface CustomComponentProps {
 export interface DTGComponentBaseProperty<T> {
   extraComponents?: Record<string, new <P extends CustomComponentProps>(props: P) => React.PureComponent<P>>;
   schema: DTGComponentPropertySchema;
-  extraParams?: Record<string, unknown>;
   icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   value?: T;
   onChange?: (value: T) => void;
