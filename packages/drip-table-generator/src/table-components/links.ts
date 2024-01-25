@@ -82,7 +82,7 @@ export default {
     {
       name: 'options.target',
       group: '属性',
-      'ui:layout': { labelCol: 7, wrapperCol: 17 },
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
       'ui:title': '打开方式',
       'ui:type': 'auto-complete',
       'ui:props': {

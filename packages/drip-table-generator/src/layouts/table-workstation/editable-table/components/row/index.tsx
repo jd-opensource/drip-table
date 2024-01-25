@@ -87,7 +87,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ...typeof column.style === 'object' ? column.style : {},
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: column.width || 200,
+        width: column.width ?? 200,
       }}
     >
       <TableCell
@@ -153,10 +153,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           }}
           onScroll={(e) => { if (props.scrollTarget === `__row_${props.rowIndex}`) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
         >
-          { sortableColumns.map(columnWrapper =>
-            renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
-              isLastRow: props.isLastRow,
-            })) }
+          <div style={{ display: 'flex' }}>
+            { sortableColumns.map(columnWrapper =>
+              renderTableCell(columnWrapper.column as DripTableBuiltInColumnSchema, columnWrapper.id, {
+                isLastRow: props.isLastRow,
+              })) }
+          </div>
         </div>
         { rightFixedColumns.length > 0
           ? rightFixedColumns.map((columnWrapper, index) =>

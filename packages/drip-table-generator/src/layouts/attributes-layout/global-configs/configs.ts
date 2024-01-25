@@ -57,6 +57,20 @@ const SlotItemConfigs = [
     visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
   },
   {
+    name: 'selectorColumns',
+    'ui:title': '筛选器列选项',
+    'ui:type': 'select',
+    'ui:props': {
+      mode: 'multiple',
+      optionsParam: '$$TABLE_COLUMNS_OPTIONS$$',
+      style: { width: '100%' },
+    },
+    'ui:layout': { labelCol: 8, wrapperCol: 14 },
+    type: 'string',
+    default: 'primary',
+    visible: (value: string, formData?: Record<string, unknown>) => formData?.type === 'display-column-selector',
+  },
+  {
     name: 'selectorButtonText',
     'ui:title': '筛选器按钮名称',
     'ui:type': 'input',
