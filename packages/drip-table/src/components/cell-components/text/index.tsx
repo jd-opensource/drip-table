@@ -346,7 +346,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get rawText(): string[] {
-    const { schema, value, record, indexValue } = this.props;
+    const { schema, value, record, recordIndex, indexValue } = this.props;
     const { dataIndex, options } = schema;
     const { mode, format, prefix, suffix, parts: params } = options;
     const defaultValue = 'defaultValue' in options ? options.defaultValue : String(schema.defaultValue ?? '');
@@ -354,7 +354,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return (format || '')
         .replace(
           /\{\{(.+?)\}\}/guis, (s, s1) =>
-            finalizeString('script', `return ${s1}`, record),
+            finalizeString('script', `return ${s1}`, record, recordIndex),
         )
         .split('\n');
     }
@@ -407,7 +407,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
   }
 
   private get tooltip(): string {
-    const { schema, record } = this.props;
+    const { schema, record, recordIndex } = this.props;
     const tooltip = (typeof schema.options.tooltip === 'object'
       ? schema.options.tooltip.content
       : schema.options.tooltip) || '';
@@ -415,7 +415,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       return tooltip
         .replace(
           /\{\{(.+?)\}\}/guis, (s, s1) =>
-            finalizeString('script', `return ${s1}`, record),
+            finalizeString('script', `return ${s1}`, record, recordIndex),
         );
     }
     return '';

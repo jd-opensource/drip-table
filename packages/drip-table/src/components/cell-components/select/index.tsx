@@ -303,7 +303,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     const options = this.props.schema.options;
     if (options.url && !options.options) {
       this.setState({ loading: true });
-      fetch(finalizeString('pattern', options.url, this.props.record), options.request
+      fetch(finalizeString('pattern', options.url, this.props.record, this.props.recordIndex), options.request
         ? {
           method: options.request.method,
           headers: options.request.headers,

@@ -103,7 +103,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.record);
+    return finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex);
   }
 
   private getIcon(iconName: string) {

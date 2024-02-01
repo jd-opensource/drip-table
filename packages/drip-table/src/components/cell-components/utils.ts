@@ -33,24 +33,26 @@ export const stringify = (v: unknown) => {
  * 格式化模板字符串，填充变量值
  * @param mode 格式化模式
  * @param text 模板字符串
- * @param rec 填充数据源对象
+ * @param record 填充数据源对象
+ * @param recordIndex 填充数据源下标
  * @returns 最终字符串
  */
-export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, rec: DripTableRecordTypeBase) => {
+export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex?: number) => {
   let value = '';
   if (!mode || mode === 'plain') {
     value = stringify(text);
   } else if (mode === 'key') {
-    value = stringify(get(rec, text, ''));
+    value = stringify(get(record, text, ''));
   } else if (mode === 'pattern') {
     value = stringify(text)
       .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
         try {
           return execute(`return ${s1}`, {
             props: {
-              record: rec,
+              record,
+              recordIndex,
             },
-            rec,
+            rec: record,
           });
         } catch (error) {
           return error instanceof Error
@@ -62,9 +64,10 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
     try {
       value = stringify(execute(text, {
         props: {
-          record: rec,
+          record,
+          recordIndex,
         },
-        rec,
+        rec: record,
       }));
     } catch (error) {
       value = error instanceof Error
