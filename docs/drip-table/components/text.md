@@ -69,6 +69,7 @@ export default Demo;
 | [lineHeight](/drip-table/components/text#lineheight)     | 行高                   | ×                                 | [🔗 示例](/drip-table/components/text#lineheight)   |
 | [ellipsis](/drip-table/components/text#ellipsis)         | 超出部分显示省略号     | ×                                 | [🔗 示例](/drip-table/components/text#ellipsis)     |
 | [showTooltip](/drip-table/components/text#showtooltip)   | 展示提示框             | ×                                 | [🔗 示例](/drip-table/components/text#showtooltip)  |
+| [tooltip](/drip-table/components/text#tooltip)           | 提示框设置项             | ×                                 | [🔗 示例](/drip-table/components/text#tooltip)  |
 | [placement](/drip-table/components/text#placement)       | 提示框显示位置         | ×                                 | [🔗 示例](/drip-table/components/text#placement)    |
 
 ## mode
@@ -843,6 +844,91 @@ const Demo = () => {
         checked={showTooltip}
         onChange={(checked) => setShowTooltip(checked)}
       />
+      <DripTable
+        schema={schema}
+        dataSource={dataSource}
+        onDataSourceChange={React.useMemo(
+          () => (ds) => {
+            setDataSource(ds);
+          },
+          []
+        )}
+      />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```
+
+## tooltip
+
+- 描述：提示框设置项
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import { Switch } from "antd";
+import React from "react";
+import DripTable from "drip-table";
+
+const Demo = () => {
+  const [dataSource, setDataSource] = React.useState([
+    {
+      id: 1,
+      name: "商品一",
+      price: 7999,
+      status: "onSale",
+      description:
+        "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    },
+  ]);
+
+  const schema = React.useMemo(() => {
+    return {
+      editable: true,
+      columns: [
+        {
+          key: "mock_1",
+          title: "商品描述",
+          dataIndex: "description",
+          component: "text",
+          options: {
+            mode: "single",
+            maxRow: 1,
+            ellipsis: true,
+            tooltip: {
+              style: {
+                background: '#ff4f78',
+              },
+              content: 'TOOLTIP!!!',
+            },
+          },
+          width: "100px",
+        },
+        {
+          key: "mock_2",
+          title: "商品价格",
+          dataIndex: "price",
+          component: "text",
+          options: {
+            mode: "single",
+            tooltip: {
+              style: {
+                background: '#ff4f78',
+              },
+            },
+          },
+          width: "100px",
+        },
+      ],
+    };
+  }, []);
+  return (
+    <React.Fragment>
       <DripTable
         schema={schema}
         dataSource={dataSource}

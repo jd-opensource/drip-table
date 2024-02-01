@@ -80,7 +80,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
   /**
    * 自定义提示文案，支持 {{ data }} 格式字符串模板
    */
-  tooltip?: string;
+  tooltip?: string | {
+    content?: string;
+    style?: React.CSSProperties;
+  };
   /**
    * 多行文本段落配置
    */
@@ -184,7 +187,28 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
       suffix: { type: 'string' },
       showTooltip: { type: 'boolean' },
       placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
-      tooltip: { type: 'string' },
+      tooltip: {
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            properties: {
+              content: { type: 'string' },
+              style: {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {
+                    anyOf: [
+                      { type: 'string' },
+                      { type: 'number' },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
       parts: {
         type: 'array',
         items: {
@@ -284,7 +308,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return classNames(wrapperClassName, this.props.schema.options.className);
   }
 
-  private get rawTextStyles(): React.CSSProperties {
+  private get commonStyles(): React.CSSProperties {
     const lineHeight = this.lineHeight;
     const textStyles: React.CSSProperties = {
       fontSize: this.fontSize,
@@ -299,11 +323,21 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     return textStyles;
   }
 
+  private get rawTextStyles(): React.CSSProperties {
+    const { schema } = this.props;
+    const commonStyles = this.commonStyles;
+    const textStyles = Object.assign({}, commonStyles);
+    if (typeof schema.options.tooltip === 'object') {
+      Object.assign(textStyles, schema.options.tooltip.style);
+    }
+    return textStyles;
+  }
+
   private get wrapperStyles(): React.CSSProperties {
-    const rawTextStyles = this.rawTextStyles;
+    const commonStyles = this.commonStyles;
     const maxRow = this.props.schema.options.maxRow;
     const lineHeight = this.lineHeight;
-    const wrapperStyles: React.CSSProperties = Object.assign({}, rawTextStyles);
+    const wrapperStyles: React.CSSProperties = Object.assign({}, commonStyles);
     if (maxRow) {
       wrapperStyles.WebkitLineClamp = maxRow;
       wrapperStyles.maxHeight = `${maxRow * lineHeight}em`;
@@ -374,8 +408,11 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
 
   private get tooltip(): string {
     const { schema, record } = this.props;
-    if (schema.options.tooltip) {
-      return (schema.options.tooltip || '')
+    const tooltip = (typeof schema.options.tooltip === 'object'
+      ? schema.options.tooltip.content
+      : schema.options.tooltip) || '';
+    if (tooltip) {
+      return tooltip
         .replace(
           /\{\{(.+?)\}\}/guis, (s, s1) =>
             finalizeString('script', `return ${s1}`, record),
@@ -613,7 +650,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
               className={`${prefixCls}-word-break`}
               style={this.rawTextStyles}
             >
-              { this.props.schema.options.tooltip ? this.tooltip : rawTextEl }
+              { this.tooltip || rawTextEl }
             </div>
           )}
           placement={this.props.schema.options.placement}
