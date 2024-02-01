@@ -191,9 +191,27 @@ import React from "react";
 import DripTable from "drip-table";
 
 const schema = {
+  pagination: {
+    size: 'small',
+    pageSize: 2,
+    position: 'bottomCenter',
+  },
   columns: [
     {
       key: "mock_1",
+      title: "序号",
+      dataIndex: "name",
+      component: "text",
+      width: "80px",
+      align: "center",
+      options: {
+        mode: "custom",
+        format:
+          "{{props.recordIndex + 1}}",
+      },
+    },
+    {
+      key: "mock_2",
       title: "商品名称",
       dataIndex: "name",
       component: "text",
@@ -210,6 +228,30 @@ const dataSource = [
   {
     id: 1,
     name: "商品一",
+    price: 7999,
+    status: "onSale",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+  },
+  {
+    id: 2,
+    name: "商品二",
+    price: 7999,
+    status: "onSale",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+  },
+  {
+    id: 3,
+    name: "商品三",
+    price: 7999,
+    status: "onSale",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+  },
+  {
+    id: 4,
+    name: "商品四",
     price: 7999,
     status: "onSale",
     description:
