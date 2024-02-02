@@ -123,7 +123,6 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         obj = { ...obj, ...this.props.decodeData(material, obj) };
       }
     }
-    console.debug('decode', obj);
     return obj;
   }
 
@@ -157,7 +156,6 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     this.setState({ helpMsg });
     if (count <= 0) {
       const result = this.props.encodeData(formData);
-      console.debug('encode', result);
       return result;
     }
     return void 0;
