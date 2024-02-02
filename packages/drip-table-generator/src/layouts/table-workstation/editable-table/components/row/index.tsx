@@ -93,6 +93,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       <TableCell
         record={props.record}
         column={column}
+        rowIndex={index}
         columnIndex={props.tableConfig.columns.findIndex(item => item.key === column.key)}
         tableConfig={props.tableConfig}
         customComponents={props.customComponents}

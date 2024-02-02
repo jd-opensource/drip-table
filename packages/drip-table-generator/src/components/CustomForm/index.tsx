@@ -33,6 +33,7 @@ interface Props<T> {
   data?: T;
   primaryKey?: string;
   extendKeys?: string[];
+  mode?: 'old';
   icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
   /**
    * 将原本的数据转换成 FormData
@@ -76,6 +77,24 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     this.setState({ formValues: this.decodeData(data || this.props.data), helpMsg: {} });
   }
 
+  public flattenObject(obj, prefix = '') {
+    let result = {};
+    // 数组不再划分 交给 Array 组件处理
+    if (Array.isArray(obj)) {
+      const key = prefix.endsWith('.') ? prefix.slice(0, -1) : prefix;
+      result[key] = obj;
+    } else {
+      Object.keys(obj).forEach((key) => {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          result = { ...result, ...this.flattenObject(obj[key], `${prefix}${key}.`) };
+        } else {
+          result[prefix + key] = obj[key];
+        }
+      });
+    }
+    return result;
+  }
+
   public decodeData(material?: T) {
     let obj: { [key: string]: unknown } = {};
     // 注入 defaultValue
@@ -83,18 +102,28 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
       if (item.default !== void 0 && this.visible(item)) { obj[item.name] = item.default; }
     });
     if (material) {
-      Object.keys(material)
-        .filter(key => (this.props.extendKeys ? !this.props.extendKeys.includes(key) : true))
-        .forEach((key) => { obj[key] = material[key]; });
-      if (this.props.extendKeys) {
-        this.props.extendKeys.forEach(extKey =>
-          Object.keys(material[extKey] || {})
-            .forEach((key) => { obj[`${extKey}.${key}`] = (material[extKey] || {})[key]; }));
+      if (this.props.mode === 'old') {
+        Object.keys(material)
+          .filter(key => (this.props.extendKeys ? !this.props.extendKeys.includes(key) : true))
+          .forEach((key) => { obj[key] = material[key]; });
+        if (this.props.extendKeys) {
+          this.props.extendKeys.forEach(extKey =>
+            Object.keys(material[extKey] || {})
+              .forEach((key) => { obj[`${extKey}.${key}`] = (material[extKey] || {})[key]; }));
+        }
+      } else if (this.props.extendKeys) {
+        Object.keys(material).forEach((key) => {
+          obj = this.props.extendKeys?.includes(key) ? { ...obj, ...this.flattenObject(material[key], `${key}.`) } : { ...obj, [key]: material[key] };
+        });
+      } else {
+        obj = this.flattenObject(material);
       }
+
       if (this.props.decodeData) {
         obj = { ...obj, ...this.props.decodeData(material, obj) };
       }
     }
+    console.debug('decode', obj);
     return obj;
   }
 
@@ -127,7 +156,9 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     });
     this.setState({ helpMsg });
     if (count <= 0) {
-      return this.props.encodeData(formData);
+      const result = this.props.encodeData(formData);
+      console.debug('encode', result);
+      return result;
     }
     return void 0;
   }

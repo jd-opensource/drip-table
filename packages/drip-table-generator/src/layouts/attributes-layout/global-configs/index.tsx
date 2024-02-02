@@ -90,7 +90,7 @@ const GlobalConfigForm = <
           });
         }
       }
-      formData['header.items'] = headerElements;
+      formData['header.elements'] = headerElements;
     }
     if (typeof globalConfigs?.footer === 'object') {
       formData.footer = true;
@@ -103,7 +103,7 @@ const GlobalConfigForm = <
           footerItem['wrapperStyle.width'] = footerItem.wrapperStyle?.width;
         }
       }
-      formData['footer.items'] = footerElements;
+      formData['footer.elements'] = footerElements;
     }
     if (typeof globalConfigs?.rowHeader === 'object') {
       formData.rowHeader = true;
@@ -119,7 +119,7 @@ const GlobalConfigForm = <
           headerItem['wrapperStyle.width'] = headerItem.wrapperStyle?.width;
         }
       }
-      formData['rowHeader.items'] = rowHeaderElements;
+      formData['rowHeader.elements'] = rowHeaderElements;
     }
     if (typeof globalConfigs?.pagination === 'object') {
       formData.pagination = true;
@@ -209,6 +209,7 @@ const GlobalConfigForm = <
       }
       return { ...element };
     };
+    const tableStyle = encodeStyles('style', formData);
     const innerStyle = encodeStyles('innerStyle', formData);
     const rowHeaderStyle = encodeStyles('rowHeaderStyle', formData);
     const ext: Record<string, unknown> = {};
@@ -218,35 +219,41 @@ const GlobalConfigForm = <
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|innerStyle|rowHeader|rowHeaderStyle)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|(innerS|s)tyle|rowHeader(Style)?)\.|scroll)/u),
+      id: formData.id as string,
+      className: formData.className as string,
+      innerClassName: formData.innerClassName as string,
       bordered: formData.bordered as boolean,
       showHeader: formData.showHeader as boolean,
       size: formData.size as 'small' | 'middle' | 'large' | undefined,
       tableLayout: formData.tableLayout as 'auto' | 'fixed',
       sticky: formData.sticky as boolean,
       rowSelection: formData.rowSelection as boolean,
+      rowDraggable: formData.rowDraggable as boolean,
+      editable: formData.editable as boolean,
       virtual: formData.virtual as boolean,
       scroll: {
         x: formData.scrollX as number,
         y: formData.scrollY as number,
       },
+      style: formData.style ? tableStyle : void 0,
       innerStyle: formData.innerStyle ? innerStyle : void 0,
       rowHeader: formData.rowHeader
         ? {
           style: { ...rowHeaderStyle },
-          elements: (formData['rowHeader.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['rowHeader.elements'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : void 0,
       header: formData.header
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['header.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['header.elements'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : false,
       footer: formData.footer
         ? {
           style: { margin: '0', padding: '12px 0' },
-          elements: (formData['footer.items'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
+          elements: (formData['footer.elements'] as DripTableSlotElementSchema[] || []).map(item => ({ ...formatElement(item) })),
         }
         : void 0,
       pagination: formData.pagination
@@ -260,6 +267,7 @@ const GlobalConfigForm = <
         }
         : false,
       ext: Object.keys(ext).length > 0 ? { ...ext } : void 0,
+      layout: formData.layout as DTGTableConfig['configs']['layout'],
     };
   };
 
@@ -279,8 +287,8 @@ const GlobalConfigForm = <
     let globalFormConfigs = GlobalAttrFormConfigs;
     const currentTableIndex = configContext.tableConfigs.findIndex(item => item.tableId === context.currentTableID);
     if (props.slotsSchema) {
-      const headerConfigItems = globalFormConfigs.find(item => item.name === 'header.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
-      const footerConfigItems = globalFormConfigs.find(item => item.name === 'footer.items')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
+      const headerConfigItems = globalFormConfigs.find(item => item.name === 'header.elements')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
+      const footerConfigItems = globalFormConfigs.find(item => item.name === 'footer.elements')?.['ui:props']?.items as DTGComponentPropertySchema[] || [];
       Object.keys(props.slotsSchema).forEach((key) => {
         const configs = props.slotsSchema?.[key] || [];
         headerConfigItems.push(...configs
@@ -360,6 +368,7 @@ const GlobalConfigForm = <
             data={cloneDeep(tableConfigs[currentTableIndex]?.configs)}
             decodeData={decodeGlobalConfigs}
             encodeData={encodeGlobalConfigs}
+            mode="old"
             groupType="collapse"
             extraComponents={props.customAttributeComponents}
             onChange={(data) => {
