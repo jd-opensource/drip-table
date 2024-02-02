@@ -34,6 +34,7 @@ interface TableCellProps<
   column: DripTableBuiltInColumnSchema;
   columnIndex: number;
   record: RecordType;
+  rowIndex: number;
   path: number[];
   tableConfig: DTGTableConfig;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
@@ -211,7 +212,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     : () => <div />;
   return (
     <React.Fragment>
-      { renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: 0 }, 0) }
+      { renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: props.rowIndex }, props.rowIndex) }
     </React.Fragment>
   );
 };

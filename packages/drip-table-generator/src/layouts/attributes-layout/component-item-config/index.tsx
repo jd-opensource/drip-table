@@ -81,7 +81,15 @@ const ComponentItemConfigForm = <
     const columnStyle: Record<string, string> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
-        uiProps[key.replace('options.', '')] = formData[key];
+        if (key.startsWith('options.popconfirm')) {
+          if (key === 'options.popconfirm') {
+            uiProps.popconfirm = formData[key] ? {} : false;
+          } else {
+            (uiProps.popconfirm as Record<string, unknown>)[key.replace('options.popconfirm.', '')] = formData[key];
+          }
+        } else {
+          uiProps[key.replace('options.', '')] = formData[key];
+        }
       } else if (key.startsWith('ui:props.')) {
         uiProps[key.replace('ui:props.', '')] = formData[key];
       } else if (key.startsWith('style.')) {

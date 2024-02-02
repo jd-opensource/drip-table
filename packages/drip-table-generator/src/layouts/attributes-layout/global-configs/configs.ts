@@ -262,7 +262,7 @@ const HeaderAttrConfigs: DTGComponentPropertySchema[] = [
     default: false,
   },
   {
-    name: 'header.items',
+    name: 'header.elements',
     group: '头部设置',
     'ui:title': '头部插槽配置',
     'ui:type': 'array-list',
@@ -295,7 +295,7 @@ const FooterAttrConfigs: DTGComponentPropertySchema[] = [
     default: false,
   },
   {
-    name: 'footer.items',
+    name: 'footer.elements',
     group: '底部设置',
     'ui:title': '底部插槽配置',
     'ui:type': 'array-list',
@@ -596,7 +596,7 @@ export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
     visible: (v, formData) => !!formData?.rowHeader,
   }),
   {
-    name: 'rowHeader.items',
+    name: 'rowHeader.elements',
     group: '行头部配置',
     'ui:title': '行头部插槽',
     'ui:type': 'array-list',

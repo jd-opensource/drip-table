@@ -362,6 +362,7 @@ const fixed: DTGComponentPropertySchema = {
 const sorter: DTGComponentPropertySchema = {
   name: 'sorter',
   group: '属性',
+  subGroup: '排序功能配置',
   'ui:layout': {
     labelCol: 6,
     wrapperCol: 18,
@@ -393,6 +394,7 @@ return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightVa
 const sortDirections: DTGComponentPropertySchema = {
   name: 'sortDirections',
   group: '属性',
+  subGroup: '排序功能配置',
   'ui:layout': { labelCol: 6, wrapperCol: 18 },
   'ui:title': '排序方向',
   'ui:type': 'select',
@@ -411,6 +413,7 @@ const sortDirections: DTGComponentPropertySchema = {
 const filters: DTGComponentPropertySchema = {
   name: 'filters',
   group: '属性',
+  subGroup: '过滤器配置',
   'ui:layout': { labelCol: 6, wrapperCol: 18 },
   'ui:title': '过滤器设置',
   'ui:type': 'array-list',
@@ -439,6 +442,7 @@ const filters: DTGComponentPropertySchema = {
 const filtersMaxSelect: DTGComponentPropertySchema = {
   name: 'filtersMaxSelect',
   group: '属性',
+  subGroup: '过滤器配置',
   'ui:title': '过滤器最大选择数',
   'ui:type': 'number',
   'ui:props': {
@@ -452,6 +456,7 @@ const filtersMaxSelect: DTGComponentPropertySchema = {
 const defaultFilteredValue: DTGComponentPropertySchema = {
   name: 'defaultFilteredValue',
   group: '属性',
+  subGroup: '过滤器配置',
   'ui:title': '默认过滤器值',
   'ui:type': 'auto-complete',
   'ui:props': {
