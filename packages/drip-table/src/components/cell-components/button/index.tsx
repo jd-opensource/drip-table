@@ -9,6 +9,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import Button from '@/components/react-components/button';
+import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -27,6 +28,13 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   icon?: string;
   event?: string;
   margin?: number;
+  popconfirm?: {
+    title: string;
+    content: string;
+    placement?: string;
+    cancelText?: string;
+    confirmText?: string;
+  };
   disableFunc?: string;
   visibleFunc?: string;
   buttons?: {
@@ -50,7 +58,9 @@ export interface DTCButtonEvent {
 
 interface DTCButtonProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCButtonColumnSchema> { }
 
-interface DTCButtonState {}
+interface DTCButtonState {
+  showPopconfirm: boolean;
+}
 
 export default class DTCButton<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCButtonProps<RecordType>, DTCButtonState> {
   public static componentName: DTCButtonColumnSchema['component'] = 'button';
@@ -67,6 +77,16 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       icon: { type: 'string' },
       event: { type: 'string' },
       margin: { type: 'number' },
+      popconfirm: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          content: { type: 'string' },
+          placement: { type: 'string' },
+          cancelText: { type: 'string' },
+          confirmText: { type: 'string' },
+        },
+      },
       disableFunc: { type: 'string' },
       visibleFunc: { type: 'string' },
       buttons: {
@@ -88,6 +108,10 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
         },
       },
     },
+  };
+
+  public state: DTCButtonState = {
+    showPopconfirm: false,
   };
 
   private get configured() {
@@ -144,7 +168,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       if (!this.getVisible(options.visibleFunc)) {
         return null;
       }
-      return (
+      const wrapperEl = (
         <Button
           type={options.buttonType}
           size={options.size}
@@ -154,7 +178,13 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           disabled={this.getDisabled(options.disableFunc)}
           icon={options.icon ? this.getIcon(options.icon) : void 0}
           onClick={() => {
-            if (this.props.preview) { return; }
+            if (this.props.preview) {
+              return;
+            }
+            if (options.popconfirm) {
+              this.setState({ showPopconfirm: true });
+              return;
+            }
             if (options.event) {
               this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
             }
@@ -163,6 +193,65 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           { this.label }
         </Button>
       );
+      if (options.popconfirm) {
+        return (
+          <Tooltip
+            title={(
+              <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
+                { finalizeString('pattern', options.popconfirm.title, this.props.record, this.props.recordIndex) }
+              </div>
+            )}
+            overlay={(
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
+                  { finalizeString('pattern', options.popconfirm.content, this.props.record, this.props.recordIndex) }
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                  {
+                    options.popconfirm.cancelText
+                      ? (
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            this.setState({ showPopconfirm: false });
+                          }}
+                        >
+                          { options.popconfirm.cancelText }
+                        </Button>
+                      )
+                      : null
+                  }
+                  <Button
+                    style={{ marginLeft: '10px' }}
+                    type="primary"
+                    size="small"
+                    shape={options.shape}
+                    danger={options.danger}
+                    ghost={options.ghost}
+                    onClick={() => {
+                      if (options.event) {
+                        this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
+                      }
+                      this.setState({ showPopconfirm: false });
+                    }}
+                  >
+                    { options.popconfirm.confirmText || 'Yes' }
+                  </Button>
+                </div>
+              </div>
+            )}
+            visible={this.state.showPopconfirm}
+            onVisibleChange={(visible) => {
+              this.setState({ showPopconfirm: visible });
+            }}
+            trigger="click"
+            placement={options.popconfirm.placement}
+          >
+            { wrapperEl }
+          </Tooltip>
+        );
+      }
+      return wrapperEl;
     }
     if (options.mode === 'multiple') {
       return options.buttons?.map((config, index) => this.getVisible(config.visibleFunc) && (
