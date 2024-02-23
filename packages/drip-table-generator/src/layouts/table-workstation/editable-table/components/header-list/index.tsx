@@ -102,6 +102,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         style={{
           width: typeof props.tableConfig.configs.scroll?.x === 'boolean' ? '100%' : props.tableConfig.configs.scroll?.x,
           overflowX: props.tableConfig.configs.scroll?.x ? 'auto' : void 0,
+          overflowY: 'hidden',
         }}
         onScroll={(e) => { if (!props.scrollTarget) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >

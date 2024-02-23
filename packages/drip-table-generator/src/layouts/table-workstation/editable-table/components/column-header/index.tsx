@@ -304,14 +304,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           <RichText
             className="jfe-drip-table-generator-workstation-table-header-column-title"
             style={{ width: columnRightCount > 0 ? columnTitleWidth : void 0 }}
-            html={columnTitle}
+            html={columnTitle ?? ''}
           />
           {
             columnRightCount > 0 && (
               <div style={{ display: 'inline-block', verticalAlign: 'top', height: '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
                   { props.column.description && (
-                  <Tooltip placement="top" overlay={<RichText html={props.column.description} />}>
+                  <Tooltip placement="top" overlay={<RichText html={props.column.description ?? ''} />}>
                     <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
                   </Tooltip>
                   ) }
