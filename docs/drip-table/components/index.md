@@ -159,6 +159,20 @@ toc: false
       </div>
     </div>
   </a>
+  <a href="/drip-table/components/switch">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">开关组件 switch</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/zNdJQMhfm/Switch.svg" alt="switch">
+        </div>
+      </div>
+    </div>
+  </a>
 </div>
 
 <!-- | 组件名 | 描述 | 详情 |

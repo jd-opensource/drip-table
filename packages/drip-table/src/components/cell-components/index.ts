@@ -19,6 +19,7 @@ import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
 import DTCSelect, { DTCSelectColumnSchema, DTCSelectEvent } from './select';
+import DTCSwitch, { DTCSwitchColumnSchema, DTCSwitchEvent } from './switch';
 import DTCTag, { DTCTagColumnSchema } from './tag';
 import DTCText, { DTCTextColumnSchema, DTCTextEvent } from './text';
 
@@ -28,7 +29,8 @@ export type DripTableBuiltInComponentEvent =
   | DTCLinkEvent
   | DTCTextEvent
   | DTCButtonEvent
-  | DTCSelectEvent;
+  | DTCSelectEvent
+  | DTCSwitchEvent;
 
 export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> =
   | DTCImageColumnSchema
@@ -40,6 +42,7 @@ export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDat
   | DTCRenderHTMLRemoteColumnSchema
   | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
+  | DTCSwitchColumnSchema
   | DTCDatePickerColumnSchema
   | DTCRichTextColumnSchema
   | DTCPopUpPageColumnSchema
@@ -57,6 +60,7 @@ const DripTableBuiltInComponents = {
   [DTCGroup.componentName]: DTCGroup,
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
+  [DTCSwitch.componentName]: DTCSwitch,
   [DTCDatePicker.componentName]: DTCDatePicker,
   [DTCPopUpPage.componentName]: DTCPopUpPage,
   [DTCInputNumber.componentName]: DTCInputNumber,
