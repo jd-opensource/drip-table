@@ -1417,12 +1417,30 @@ const TableLayout = <
 
   const columnsWidth = React.useMemo(
     () => {
-      const csWidth = filteredColumns.map(c => parseNumber(c.width, 0));
-      const restWidth = Math.max(rcTableWidth - csWidth.reduce((v, w) => v + w, 0) - rowExpandColumnWidth, 0);
-      const flexibleCount = csWidth.filter(w => w === 0).length;
-      return flexibleCount === 0
-        ? csWidth.map(w => w + restWidth / csWidth.length)
-        : csWidth.map(w => (w === 0 ? restWidth / flexibleCount : w));
+      // 计算用户固定宽度列宽
+      const userColumnsWidth = filteredColumns.map(c => parseNumber(c.width, 0));
+      const restWidth = Math.max(rcTableWidth - userColumnsWidth.reduce((v, w) => v + w, 0) - rowExpandColumnWidth, 0);
+      const flexibleCount = userColumnsWidth.filter(w => w === 0).length;
+      // 将剩余宽度分配给未固定列宽的列，全部固定列宽时将平均分配剩余宽度
+      const preciseColumnsWidth = flexibleCount === 0
+        ? userColumnsWidth.map(w => w + restWidth / userColumnsWidth.length)
+        : userColumnsWidth.map(w => (w === 0 ? restWidth / flexibleCount : w));
+      // 整型化列宽，保证不出现精度问题
+      let offset = 0;
+      const integerColumnsWidth = preciseColumnsWidth.map((w, i) => {
+        offset += w - Math.floor(w);
+        w = Math.floor(w);
+        if (offset >= 1) {
+          w += 1;
+          offset -= 1;
+        }
+        if (i === preciseColumnsWidth.length - 1) {
+          w += offset;
+          offset = 0;
+        }
+        return w;
+      });
+      return integerColumnsWidth;
     },
     [filteredColumns, rcTableWidth],
   );
