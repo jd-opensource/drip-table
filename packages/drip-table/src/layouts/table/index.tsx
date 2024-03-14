@@ -291,6 +291,7 @@ export const columnRenderGenerator = <
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>}
             ext={ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
+            icons={extraProps.icons}
             fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
           />
         );
@@ -325,6 +326,8 @@ export const columnRenderGenerator = <
               onChange={v => onChange(record, recordIndex, v)}
               schema={columnSchema as ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>}
               ext={extraProps.ext}
+              components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
+              icons={extraProps.icons}
               fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
             />
           );
@@ -1209,6 +1212,7 @@ const TableLayout = <
     (): TableColumnType<RcTableRecordType<RecordType>>[] => {
       const extraProps = {
         components: tableProps.components,
+        icons: tableProps.icons,
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,

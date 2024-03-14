@@ -14,7 +14,7 @@ export interface DripTableColumnRenderOptions<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   tableInfo: DripTableTableInformation<RecordType, ExtraOptions>;
-  extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
+  extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'icons' | 'ext' | 'onEvent' | 'onDataSourceChange'> & {
     unknownComponent?: React.ReactNode;
     preview?: DripTableComponentProps<RecordType, ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentEvent'>, ExtractDripTableExtraOption<ExtraOptions, 'CustomComponentExtraData'>>['preview'];
   };
