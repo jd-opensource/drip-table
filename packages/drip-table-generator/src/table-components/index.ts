@@ -10,6 +10,7 @@ import renderHtml from './render-html';
 import renderHtmlRemote from './render-html-remote';
 import richText from './rich-text';
 import select from './select';
+import switchConfig from './switch';
 import tag from './tag';
 import text from './text';
 
@@ -23,6 +24,7 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   datePicker,
   popUpPage,
   inputNumber,
+  switchConfig,
 ];
 
 const containerComponentList: DripTableComponentAttrConfig[] = [

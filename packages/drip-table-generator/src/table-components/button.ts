@@ -1,17 +1,6 @@
 import { DripTableComponentAttrConfig } from '../typing';
 import { generateColumnAttrComponentsByNames, styleAttributesSchema, titleConfig } from './configs';
 
-const iconOptions = [
-  'StepBackwardOutlined',
-  'StepForwardOutlined',
-  'QuestionCircleOutlined',
-  'SearchOutlined',
-  'DownloadOutlined',
-  'PoweroffOutlined',
-  'PlusOutlined',
-  'EditOutlined',
-].map(key => ({ value: key, label: key, icon: key }));
-
 export default {
   $id: '$display_buttons',
   'ui:type': 'button',
@@ -172,20 +161,6 @@ export default {
             type: 'string',
           },
           {
-            name: 'icon',
-            'ui:title': '按钮图标',
-            'ui:description': {
-              title: '更多图标可参考<a href="https://ant.design/components/icon-cn/" target="_blank">ANTD官网图标库</a>',
-              trigger: 'hover',
-              type: 'icon',
-            },
-            'ui:type': 'auto-complete',
-            'ui:props': {
-              options: iconOptions,
-            },
-            default: '',
-          },
-          {
             name: 'buttonType',
             'ui:title': '按钮类型',
             'ui:type': 'select',
@@ -290,7 +265,7 @@ export default {
             name: 'event',
             'ui:title': '事件名称',
             'ui:description': {
-              title: '事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
+              title: '事件类型为"drip-button-click", 事件机制详见<a href="https://drip-table.jd.com/drip-table/props/on-event" target="_blank">官网文档</a>',
               trigger: 'hover',
               type: 'icon',
             },
@@ -412,5 +387,5 @@ export default {
     'verticalAlign',
     ...styleAttributesSchema,
   ]),
-  icon: '<svg t="1641556690789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3528" width="14" height="14"><path d="M789.333333 1024h-554.666666A234.922667 234.922667 0 0 1 0 789.333333v-554.666666C0 105.301333 105.258667 0 234.666667 0h554.666666C918.741333 0 1024 105.301333 1024 234.666667v554.666666c0 129.365333-105.258667 234.666667-234.666667 234.666667zM234.666667 42.666667A192.213333 192.213333 0 0 0 42.666667 234.666667v554.666666C42.666667 895.189333 128.810667 981.333333 234.666667 981.333333h554.666666c105.856 0 192-86.144 192-192v-554.666666C981.333333 128.810667 895.189333 42.666667 789.333333 42.666667h-554.666666z" p-id="3529"></path><path d="M704 725.333333h-384a21.333333 21.333333 0 0 1-21.333333-21.333333v-384a21.333333 21.333333 0 0 1 21.333333-21.333333h384a21.333333 21.333333 0 0 1 21.333333 21.333333v384a21.333333 21.333333 0 0 1-21.333333 21.333333zM341.333333 682.666667h341.333334V341.333333H341.333333v341.333334z" p-id="3530"></path></svg>',
+  icon: '<svg t="1710732389139" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7891" width="64" height="64"><path d="M389.12 671.36a90.24 90.24 0 0 0 37.76-80 90.24 90.24 0 0 0-18.56-58.88 88.32 88.32 0 0 0-54.4-28.8 90.24 90.24 0 0 0 42.24-29.44 85.76 85.76 0 0 0 15.36-51.84 82.56 82.56 0 0 0-28.8-64 124.16 124.16 0 0 0-83.2-24.96H134.4v360.96h165.12a161.28 161.28 0 0 0 89.6-23.04zM192 376.96h96a87.68 87.68 0 0 1 53.76 12.8 45.44 45.44 0 0 1 16.64 39.04 53.12 53.12 0 0 1-16.64 42.88 94.08 94.08 0 0 1-55.04 12.8H192z m0 270.08V529.92h101.76a95.36 95.36 0 0 1 58.24 14.08 54.4 54.4 0 0 1 19.2 46.72 49.28 49.28 0 0 1-24.32 45.44 118.4 118.4 0 0 1-55.04 10.88zM503.04 627.2a71.68 71.68 0 0 0 14.08 48 64 64 0 0 0 49.28 17.28h42.88v-44.16H576a22.4 22.4 0 0 1-14.72-5.12 28.16 28.16 0 0 1-4.48-16V475.52h60.16v-44.16h-60.8V346.24l-53.12 22.4v64H454.4v44.16h48.64zM712.96 535.04a78.72 78.72 0 0 1 21.76-49.92 55.04 55.04 0 0 1 39.68-16c40.96 0 64 22.4 64 64v156.8h53.76V531.2c0-71.68-33.28-107.52-97.92-107.52a93.44 93.44 0 0 0-44.16 10.24 114.56 114.56 0 0 0-34.56 29.44v-32h-56.32v261.12h53.76z" fill="#5A5A5A" p-id="7892"></path><path d="M102.4 870.4h819.2A102.4 102.4 0 0 0 1024 768V256a102.4 102.4 0 0 0-102.4-102.4H102.4A102.4 102.4 0 0 0 0 256v512a102.4 102.4 0 0 0 102.4 102.4zM64 256a38.4 38.4 0 0 1 38.4-38.4h819.2a38.4 38.4 0 0 1 38.4 38.4v512a38.4 38.4 0 0 1-38.4 38.4H102.4A38.4 38.4 0 0 1 64 768z" fill="#5A5A5A" p-id="7893"></path></svg>',
 } as DripTableComponentAttrConfig;
