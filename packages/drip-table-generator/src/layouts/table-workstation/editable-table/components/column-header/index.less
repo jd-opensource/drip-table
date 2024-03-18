@@ -65,6 +65,10 @@
   &.checked {
     border: 1px solid var(--drip-table-border-color);
     border-bottom: 1px solid #e0e0e0;
+
+    > .@{prefixCls}-tools {
+      top: 0;
+    }
   }
 
   &.right-shadow {
@@ -76,22 +80,6 @@
   &.left-shadow {
     box-shadow: 0 0 4px 0 #ffffff, -4px 0 2px -2px rgb(0 0 0 / 32%);
     margin-left: 4px;
-  }
-}
-
-.@{prefixCls}-item:first-of-type {
-  &.checked {
-    > .@{prefixCls}-tools {
-      top: 0;
-    }
-  }
-}
-
-.@{prefixCls}-item:not(first-of-type) {
-  &.checked {
-    > .@{prefixCls}-tools {
-      top: -30px;
-    }
   }
 }
 
