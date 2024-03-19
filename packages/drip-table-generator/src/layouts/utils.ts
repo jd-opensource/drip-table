@@ -106,6 +106,9 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
         items[index] = subComponentItem;
       }
     });
+    if (!Object.isExtensible(schemaItem.options)) {
+      schemaItem.options = { ...schemaItem.options };
+    }
     schemaItem.options.items = items;
   }
   return schemaItem;
