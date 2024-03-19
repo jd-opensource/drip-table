@@ -44,5 +44,6 @@ toc: content
 | [onDataSourceChange](/drip-table/props/on-datasource-change)                         | 导出表格数据                               | ×    | [🔗 示例](/drip-table/props/on-datasource-change)                  |
 | [onSave](/drip-table/props/on-save)                                                  | 点击保存按钮回调                           | ×    | [🔗 示例](/drip-table/props/on-save)                               |
 | [onClick](/drip-table-generator/props/on-click)                                      | 点击按钮回调                               | ×    | [🔗 示例](/drip-table-generator/props/on-click)                    |
+| [onClick](/drip-table-generator/props/on-column-item-changed)                        | 新增或删除组合组件子组件回调               | ×    | [🔗 示例](/drip-table-generator/props/on-column-item-changed)      |
 
 > tips: `schema`, `dataSource`, `customComponents`, `slots`, `ext`, `sticky`, `title`, `footer`, `subtableTitle`, `subtableFooter`, `rowExpandable`, `expandedRowRender` 属性均继承自 [`drip-table`](/drip-table/props)。
