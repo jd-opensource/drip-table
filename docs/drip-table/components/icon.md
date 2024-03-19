@@ -92,6 +92,7 @@ const Demo = () => {
                 style: {
                   padding: '0 3px',
                   color: "#2a64ff",
+                  fontSize: "16px",
                 },
                 event: "copy-icon",
               },
@@ -108,6 +109,7 @@ const Demo = () => {
                 style: {
                   padding: '0 3px',
                   color: "#ff4d4f",
+                  fontSize: "16px",
                 },
                 event: "delete-icon",
               },
