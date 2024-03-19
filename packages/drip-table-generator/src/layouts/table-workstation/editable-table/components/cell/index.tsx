@@ -44,6 +44,7 @@ interface TableCellProps<
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   ext?: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
+  onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
 
 const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>(column: T): T => (
@@ -142,6 +143,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                     const columns = [...props.tableConfig.columns];
                                     columns[props.columnIndex] = rootColumn;
                                     setTableColumns(columns, tableIndex);
+                                    props.onColumnItemChanged?.('remove', {
+                                      currentTableID: props.tableConfig.tableId,
+                                      currentColumnID: props.tableConfig.columns[props.columnIndex].key,
+                                      currentComponent: rootColumn,
+                                      currentComponentPath: path,
+                                      tableConfig: props.tableConfig,
+                                    });
                                   }}
                                 />
                               ) }
@@ -167,6 +175,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                           const columns = [...props.tableConfig.columns];
                                           columns[props.columnIndex] = rootColumn;
                                           setTableColumns(columns, tableIndex);
+                                          props.onColumnItemChanged?.('add', {
+                                            currentTableID: props.tableConfig.tableId,
+                                            currentColumnID: props.tableConfig.columns[props.columnIndex].key,
+                                            currentComponent: column,
+                                            currentColumn: rootColumn,
+                                            currentComponentPath: path,
+                                            tableConfig: props.tableConfig,
+                                          });
                                         }}
                                       />
                                     )}

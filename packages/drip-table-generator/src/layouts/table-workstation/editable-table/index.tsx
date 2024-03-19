@@ -191,6 +191,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         hasSubTable={hasSubTable}
                         onScroll={(left) => { setScrollLeft(left); }}
                         onClick={props.onClick}
+                        onColumnItemChanged={props.onColumnItemChanged}
                       />
                       { (props.tableConfig.hasSubTable && hasSubTable)
                     && (

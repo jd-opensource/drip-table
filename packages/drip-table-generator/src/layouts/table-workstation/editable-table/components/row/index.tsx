@@ -41,6 +41,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   onScroll: (scrollLeft: number) => void;
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
+  onColumnItemChanged: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
 
 const VerticalAligns = {
@@ -104,6 +105,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         path={[]}
         ext={props.ext}
         onClick={props.onClick}
+        onColumnItemChanged={props.onColumnItemChanged}
       />
     </div>
   );
