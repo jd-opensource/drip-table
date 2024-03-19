@@ -11,6 +11,7 @@ import { DripTableDataColumnSchema } from '@/types';
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
 import DTCDatePicker, { DTCDateColumnSchema as DTCDatePickerColumnSchema } from './date-picker';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
+import DTCIcon, { DTCIconColumnSchema, DTCIconEvent } from './icon';
 import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCInputNumber, { DTCInputNumberColumnSchema } from './input-number';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
@@ -26,6 +27,7 @@ import DTCText, { DTCTextColumnSchema, DTCTextEvent } from './text';
 export type { DripTableComponentProps } from './component';
 
 export type DripTableBuiltInComponentEvent =
+  | DTCIconEvent
   | DTCLinkEvent
   | DTCTextEvent
   | DTCButtonEvent
@@ -33,6 +35,7 @@ export type DripTableBuiltInComponentEvent =
   | DTCSwitchEvent;
 
 export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> =
+  | DTCIconColumnSchema
   | DTCImageColumnSchema
   | DTCLinkColumnSchema
   | DTCButtonColumnSchema
@@ -50,6 +53,7 @@ export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDat
   | DTCGroupColumnSchema<CustomColumnSchema>;
 
 const DripTableBuiltInComponents = {
+  [DTCIcon.componentName]: DTCIcon,
   [DTCImage.componentName]: DTCImage,
   [DTCLink.componentName]: DTCLink,
   [DTCButton.componentName]: DTCButton,

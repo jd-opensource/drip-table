@@ -173,6 +173,20 @@ toc: false
       </div>
     </div>
   </a>
+  <a href="/drip-table/components/icon">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">图标组件 icon</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*PdAYS7anRpoAAAAAAAAAAAAADrJ8AQ/original" alt="switch">
+        </div>
+      </div>
+    </div>
+  </a>
 </div>
 
 <!-- | 组件名 | 描述 | 详情 |
