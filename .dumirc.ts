@@ -298,6 +298,7 @@ const DRIP_TABLE_GENERATOR_SIDEBAR = [
           { title: 'onDataSourceChange', link: '/drip-table-generator/props/on-datasource-change' },
           { title: 'onSave', link: '/drip-table-generator/props/on-save' },
           { title: 'onClick', link: '/drip-table-generator/props/on-click' },
+          { title: 'onColumnItemChanged', link: '/drip-table-generator/props/on-column-item-changed' },
           { title: 'slotsSchema', link: '/drip-table-generator/props/slots-schema' },
         ],
       },
