@@ -284,4 +284,8 @@ export interface DripTableGeneratorProps<
     type: 'table' | 'column' | 'column-item' | 'column-insert-left' | 'column-insert-right' | 'column-delete',
     payload: Record<string, unknown>,
   ) => void;
+  /**
+   * 当新增或删除组合组件子组件事触发
+   */
+  onColumnItemChanged?: (type: 'add' | 'remove', payload: Record<string, unknown>) => void;
 }
