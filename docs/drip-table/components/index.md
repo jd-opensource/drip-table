@@ -189,6 +189,25 @@ toc: false
   </a>
 </div>
 
+## 容器组件
+
+<div class="components-overview-card">
+  <a href="/drip-table/components/group">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">容器组件 group</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg" alt="switch">
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
 <!-- | 组件名 | 描述 | 详情 |
 | ----- | ---- | ---- |
 | [text](/drip-table/components/text) | 文本组件 | [🔗 示例](/drip-table/components/text) |
