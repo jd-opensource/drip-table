@@ -17,6 +17,7 @@ import {
 } from '@/types';
 import Col from '@/components/react-components/col';
 import Row from '@/components/react-components/row';
+import Tooltip from '@/components/react-components/tooltip';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
 
@@ -52,6 +53,27 @@ export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnS
    * 每个栅格栏的配置
    */
   items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[];
+  /**
+   * 悬浮框配置
+   */
+  popover?: {
+    /**
+     * 自定义样式
+     */
+    style?: React.CSSProperties;
+    /**
+     * 触发器
+     */
+    trigger?: 'click' | 'hover';
+    /**
+     * 提示文案显示位置
+     */
+    placement?: 'top' | 'left' | 'right' | 'bottom' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
+    /**
+     * 渲染 Schema
+     */
+    schema: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema);
+  };
 }>;
 
 interface DTCGroupProps<
@@ -80,6 +102,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         type: 'array',
         items: {},
       },
+      popover: {
+        type: 'object',
+        properties: {
+          style: {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
+          },
+          trigger: { enum: ['click', 'hover'] },
+          placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
+          schema: {},
+        },
+        required: ['schema'],
+      },
     },
   };
 
@@ -107,30 +149,30 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }
 
   public render() {
-    const schema = this.props.schema;
-    const rowLength = schema.options.layout?.length;
+    const options = this.props.schema.options;
+    const rowLength = options.layout?.length;
     const rows = [...Array.from({ length: rowLength }).keys()];
-    return (
+    let el = (
       <div style={{ wordBreak: 'break-word' }}>
         {
           rows.map((row, index) => (
             <Row
               key={index}
               style={{
-                marginTop: schema.options.gutter?.[1],
-                marginBottom: schema.options.gutter?.[1],
+                marginTop: options.gutter?.[1],
+                marginBottom: options.gutter?.[1],
               }}
-              gutter={schema.options.gutter}
-              justify={schema.options.horizontalAlign}
-              align={schema.options.verticalAlign}
-              wrap={schema.options.wrap}
+              gutter={options.gutter}
+              justify={options.horizontalAlign}
+              align={options.verticalAlign}
+              wrap={options.wrap}
             >
-              { schema.options.layout[index]
-              && [...Array.from({ length: schema.options.layout[index] || 1 }).keys()]
+              { options.layout[index]
+              && [...Array.from({ length: options.layout[index] || 1 }).keys()]
                 .map(col => (
                   <Col
                     key={col}
-                    gutter={schema.options.gutter}
+                    gutter={options.gutter}
                     style={{
                       ...col ? void 0 : { marginLeft: 0 },
                       wordBreak: 'break-word',
@@ -144,5 +186,23 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         }
       </div>
     );
+    if (options.popover) {
+      el = (
+        <Tooltip
+          trigger={options.popover.trigger}
+          title={(
+            <div
+              style={options.popover.style}
+            >
+              { this.renderGenerator(options.popover.schema) }
+            </div>
+          )}
+          placement={options.popover.placement}
+        >
+          { el }
+        </Tooltip>
+      );
+    }
+    return el;
   }
 }
