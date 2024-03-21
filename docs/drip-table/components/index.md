@@ -196,12 +196,26 @@ toc: false
     <div class="card-container">
       <div class="card-head">
         <div class="card-head-title">
-          <div class="components-overview-title">容器组件 group</div>
+          <div class="components-overview-title">组合组件 group</div>
         </div>
       </div>
       <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
         <div class="components-overview-img">
           <img src="https://gw.alipayobjects.com/zos/alicdn/5rWLU27so/Grid.svg" alt="switch">
+        </div>
+      </div>
+    </div>
+  </a>
+  <a href="/drip-table/components/popover">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">浮窗组件 popover</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg" alt="switch">
         </div>
       </div>
     </div>

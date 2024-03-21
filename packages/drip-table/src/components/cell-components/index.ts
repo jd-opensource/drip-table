@@ -16,6 +16,7 @@ import DTCImage, { DTCImageColumnSchema } from './image';
 import DTCInputNumber, { DTCInputNumberColumnSchema } from './input-number';
 import DTCLink, { DTCLinkColumnSchema, DTCLinkEvent } from './link';
 import DTCPopUpPage, { DTCPopUpPageColumnSchema } from './pop-up-page';
+import DTCPopover, { DTCPopoverColumnSchema } from './popover';
 import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
@@ -27,46 +28,48 @@ import DTCText, { DTCTextColumnSchema, DTCTextEvent } from './text';
 export type { DripTableComponentProps } from './component';
 
 export type DripTableBuiltInComponentEvent =
+  | DTCButtonEvent
   | DTCIconEvent
   | DTCLinkEvent
-  | DTCTextEvent
-  | DTCButtonEvent
   | DTCSelectEvent
-  | DTCSwitchEvent;
+  | DTCSwitchEvent
+  | DTCTextEvent;
 
 export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> =
+  | DTCButtonColumnSchema
+  | DTCDatePickerColumnSchema
   | DTCIconColumnSchema
   | DTCImageColumnSchema
+  | DTCInputNumberColumnSchema
   | DTCLinkColumnSchema
-  | DTCButtonColumnSchema
-  | DTCTextColumnSchema
-  | DTCTagColumnSchema
+  | DTCPopUpPageColumnSchema
   | DTCRenderHTMLColumnSchema
   | DTCRenderHTMLRemoteColumnSchema
   | DTCRichTextColumnSchema
+  | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
   | DTCSwitchColumnSchema
-  | DTCDatePickerColumnSchema
-  | DTCRichTextColumnSchema
-  | DTCPopUpPageColumnSchema
-  | DTCInputNumberColumnSchema
-  | DTCGroupColumnSchema<CustomColumnSchema>;
+  | DTCTagColumnSchema
+  | DTCTextColumnSchema
+  | DTCGroupColumnSchema<CustomColumnSchema>
+  | DTCPopoverColumnSchema<CustomColumnSchema>;
 
 const DripTableBuiltInComponents = {
+  [DTCButton.componentName]: DTCButton,
+  [DTCDatePicker.componentName]: DTCDatePicker,
   [DTCIcon.componentName]: DTCIcon,
   [DTCImage.componentName]: DTCImage,
+  [DTCInputNumber.componentName]: DTCInputNumber,
   [DTCLink.componentName]: DTCLink,
-  [DTCButton.componentName]: DTCButton,
-  [DTCText.componentName]: DTCText,
-  [DTCTag.componentName]: DTCTag,
+  [DTCPopUpPage.componentName]: DTCPopUpPage,
   [DTCRenderHTML.componentName]: DTCRenderHTML,
   [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
-  [DTCGroup.componentName]: DTCGroup,
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
   [DTCSwitch.componentName]: DTCSwitch,
-  [DTCDatePicker.componentName]: DTCDatePicker,
-  [DTCPopUpPage.componentName]: DTCPopUpPage,
-  [DTCInputNumber.componentName]: DTCInputNumber,
+  [DTCTag.componentName]: DTCTag,
+  [DTCText.componentName]: DTCText,
+  [DTCGroup.componentName]: DTCGroup,
+  [DTCPopover.componentName]: DTCPopover,
 };
 export default DripTableBuiltInComponents;

@@ -1,11 +1,11 @@
 ---
-title: 组合组件 Group
+title: 浮窗组件 Popover
 toc: content
 ---
 
-## 组合组件 group
+## 浮窗组件 popover
 
-组合组件
+浮窗组件
 
 ## 代码演示
 
@@ -54,24 +54,63 @@ const Demo = () => {
         align: "center",
         verticalAlign: "middle",
         dataIndex: "",
-        component: "group",
+        component: "popover",
         options: {
-          layout: [2],
-          wrap: false,
-          horizontalAlign: "center",
-          items: [
-            {
-              key: "mock_1",
-              title: "名称",
-              align: "center",
-              dataIndex: "name",
-              component: "text",
-              options: {
-                mode: "single",
-                showTooltip: false,
-              },
+          placement: 'top',
+          popover: {
+            "key": "18e5af30cb0-12e6",
+            "title": "",
+            "width": 140,
+            "align": "center",
+            "verticalAlign": "middle",
+            "dataIndex": "",
+            "component": "group",
+            "options": {
+              "layout": [
+                1,
+                1
+              ],
+              "horizontalAlign": "center",
+              "verticalAlign": "middle",
+              "gutter": [
+                8,
+                8
+              ],
+              "wrap": false,
+              "items": [
+                {
+                  "key": "mock_1_1",
+                  "title": "",
+                  "component": "image",
+                  "options": {
+                    "imageWidth": 86,
+                    "imageHeight": 86
+                  },
+                  "dataIndex": "pictureUrl"
+                },
+                {
+                  "key": "mock_1_2",
+                  "title": "",
+                  "component": "text",
+                  "options": {
+                    "mode": "single"
+                  },
+                  "dataIndex": "name"
+                }
+              ]
+            }
+          },
+          content: {
+            key: "mock_1",
+            title: "名称",
+            align: "center",
+            dataIndex: "name",
+            component: "text",
+            options: {
+              mode: "single",
+              showTooltip: false,
             },
-          ],
+          },
         },
       },
       {
@@ -82,55 +121,6 @@ const Demo = () => {
         component: "text",
         options: {
           mode: "single",
-        },
-      },
-      {
-        key: "mock_3",
-        title: "操作",
-        align: "center",
-        verticalAlign: "middle",
-        dataIndex: "",
-        component: "group",
-        options: {
-          layout: [2],
-          wrap: false,
-          horizontalAlign: "center",
-          items: [
-            {
-              dataIndex: "",
-              align: "center",
-              verticalAlign: "middle",
-              key: "mock_icon_1",
-              title: "",
-              component: "icon",
-              options: {
-                icon: "CopyOutlined",
-                style: {
-                  padding: '0 3px',
-                  color: "#2a64ff",
-                  fontSize: "16px",
-                },
-                event: "copy-icon",
-              },
-            },
-            {
-              dataIndex: "",
-              align: "center",
-              verticalAlign: "middle",
-              key: "mock_icon_1",
-              title: "",
-              component: "icon",
-              options: {
-                icon: "DeleteOutlined",
-                style: {
-                  padding: '0 3px',
-                  color: "#ff4d4f",
-                  fontSize: "16px",
-                },
-                event: "delete-icon",
-              },
-            },
-          ],
         },
       },
     ],

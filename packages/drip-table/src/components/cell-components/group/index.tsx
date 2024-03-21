@@ -17,7 +17,6 @@ import {
 } from '@/types';
 import Col from '@/components/react-components/col';
 import Row from '@/components/react-components/row';
-import Tooltip from '@/components/react-components/tooltip';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
 
@@ -53,27 +52,6 @@ export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnS
    * 每个栅格栏的配置
    */
   items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[];
-  /**
-   * 悬浮框配置
-   */
-  popover?: {
-    /**
-     * 自定义样式
-     */
-    style?: React.CSSProperties;
-    /**
-     * 触发器
-     */
-    trigger?: 'click' | 'hover';
-    /**
-     * 提示文案显示位置
-     */
-    placement?: 'top' | 'left' | 'right' | 'bottom' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
-    /**
-     * 渲染 Schema
-     */
-    schema: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema);
-  };
 }>;
 
 interface DTCGroupProps<
@@ -101,26 +79,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       items: {
         type: 'array',
         items: {},
-      },
-      popover: {
-        type: 'object',
-        properties: {
-          style: {
-            type: 'object',
-            patternProperties: {
-              '^.*$': {
-                anyOf: [
-                  { type: 'string' },
-                  { type: 'number' },
-                ],
-              },
-            },
-          },
-          trigger: { enum: ['click', 'hover'] },
-          placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
-          schema: {},
-        },
-        required: ['schema'],
       },
     },
   };
@@ -152,7 +110,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const options = this.props.schema.options;
     const rowLength = options.layout?.length;
     const rows = [...Array.from({ length: rowLength }).keys()];
-    let el = (
+    return (
       <div style={{ wordBreak: 'break-word' }}>
         {
           rows.map((row, index) => (
@@ -186,23 +144,5 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         }
       </div>
     );
-    if (options.popover) {
-      el = (
-        <Tooltip
-          trigger={options.popover.trigger}
-          title={(
-            <div
-              style={options.popover.style}
-            >
-              { this.renderGenerator(options.popover.schema) }
-            </div>
-          )}
-          placement={options.popover.placement}
-        >
-          { el }
-        </Tooltip>
-      );
-    }
-    return el;
   }
 }

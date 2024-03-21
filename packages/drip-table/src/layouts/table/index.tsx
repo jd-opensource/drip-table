@@ -268,7 +268,7 @@ export const columnRenderGenerator = <
         const recordIndex = row.index;
         const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
         const translatorContext = { value, record, recordIndex };
-        const ext = columnSchema.component === 'group'
+        const ext = columnSchema.component === 'group' || columnSchema.component === 'popover'
           ? { tableInfo, extraProps } as unknown as typeof extraProps.ext
           : extraProps.ext;
         if (hiddenTranslator(false, translatorContext)) {
