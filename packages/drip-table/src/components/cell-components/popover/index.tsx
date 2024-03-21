@@ -16,8 +16,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import Tooltip from '@/components/react-components/tooltip';
-import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
-import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
+import { type ExtractDripTableExtraOption } from '@/index';
 
 import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
@@ -80,23 +79,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     required: ['popover', 'content'],
   };
 
-  /**
-   * 根据组件类型，生成表格渲染器
-   * @param schema Schema
-   * @returns 表格
-   */
-  public schemaRender(schema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>): React.ReactNode {
-    const { tableInfo, extraProps } = this.props.ext as DripTableColumnRenderOptions<RecordType, ExtraOptions>;
-    const render = columnRenderGenerator(tableInfo, schema, extraProps);
-    return render(null, { type: 'body', key: schema.key, index: this.props.recordIndex, record: this.props.record }, 0);
-  }
-
-  public renderContent() {
-    const options = this.props.schema.options;
-    return this.schemaRender(options.content);
-  }
-
   public render() {
+    const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
     return (
       <Tooltip
@@ -105,13 +89,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           <div
             style={options.style}
           >
-            { this.schemaRender(options.popover) }
+            { renderSchema(options.popover, record, recordIndex) }
           </div>
         )}
         placement={options.placement}
       >
         <div>
-          { this.schemaRender(options.content) }
+          { renderSchema(options.content, record, recordIndex) }
         </div>
       </Tooltip>
     );

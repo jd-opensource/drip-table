@@ -268,9 +268,6 @@ export const columnRenderGenerator = <
         const recordIndex = row.index;
         const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
         const translatorContext = { value, record, recordIndex };
-        const ext = columnSchema.component === 'group' || columnSchema.component === 'popover'
-          ? { tableInfo, extraProps } as unknown as typeof extraProps.ext
-          : extraProps.ext;
         if (hiddenTranslator(false, translatorContext)) {
           return null;
         }
@@ -284,12 +281,16 @@ export const columnRenderGenerator = <
               const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
               return dataTranslator(v, { value: v, record, recordIndex });
             }}
+            renderSchema={(sc, r, ri): React.ReactNode => {
+              const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
+              return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
+            }}
             preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
             onChange={v => onChange(record, recordIndex, v)}
             schema={columnSchema as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>}
-            ext={ext}
+            ext={extraProps.ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             icons={extraProps.icons}
             fireEvent={event => extraProps.onEvent?.({ record, recordIndex, ...event }, tableInfo)}
@@ -319,6 +320,10 @@ export const columnRenderGenerator = <
               indexValue={(dataIndex, defaultValue) => {
                 const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
                 return dataTranslator(v, { value: v, record, recordIndex });
+              }}
+              renderSchema={(sc, r, ri): React.ReactNode => {
+                const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
+                return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
               }}
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}

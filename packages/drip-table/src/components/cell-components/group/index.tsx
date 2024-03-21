@@ -17,8 +17,7 @@ import {
 } from '@/types';
 import Col from '@/components/react-components/col';
 import Row from '@/components/react-components/row';
-import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
-import { type DripTableColumnRenderOptions } from '@/layouts/table/types';
+import { type ExtractDripTableExtraOption } from '@/index';
 
 import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
@@ -83,18 +82,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     },
   };
 
-  /**
-   * 根据组件类型，生成表格渲染器
-   * @param schema Schema
-   * @returns 表格
-   */
-  public renderGenerator(schema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>): React.ReactNode {
-    const { tableInfo, extraProps } = this.props.ext as DripTableColumnRenderOptions<RecordType, ExtraOptions>;
-    const render = columnRenderGenerator(tableInfo, schema, extraProps);
-    return render(null, { type: 'body', key: schema.key, index: this.props.recordIndex, record: this.props.record }, 0);
-  }
-
   public renderCell(row: number, col: number) {
+    const { record, recordIndex, renderSchema } = this.props;
     const schema = this.props.schema;
     const schemaItems = schema.options.items ?? [];
     let index = 0;
@@ -103,7 +92,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     index += col;
     const schemaItem = schemaItems[index];
-    return schemaItem ? this.renderGenerator(schemaItem) : null;
+    return schemaItem ? renderSchema(schemaItem, record, recordIndex) : null;
   }
 
   public render() {

@@ -44,6 +44,10 @@ export interface DripTableComponentProps<
    */
   indexValue: (dataIndex: ColumnSchema['dataIndex'], defaultValue?: unknown) => unknown;
   /**
+   * 手动渲染组件 Schema
+   */
+  renderSchema: (schema: DripTableColumnSchema, record: RecordType, recordIndex: number) => React.ReactNode;
+  /**
    * 是否处于禁用状态
    */
   disable?: boolean;
