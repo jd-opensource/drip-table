@@ -10,6 +10,7 @@ import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import Tag from '@/components/react-components/tag';
+import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
 
@@ -52,6 +53,10 @@ export type DTCTagColumnSchema = DripTableColumnSchema<'tag', {
     borderColor?: string;
     backgroundColor?: string;
   }[];
+  /**
+   * 最大显示数量
+   */
+  maxDisplay?: number;
 }>;
 
 interface DTCTagProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCTagColumnSchema> { }
@@ -70,9 +75,6 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
       prefix: { type: 'string' },
       suffix: { type: 'string' },
       content: { type: 'string' },
-      /**
-       * 枚举
-       */
       tagOptions: {
         type: 'array',
         items: {
@@ -87,6 +89,7 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
           required: ['label', 'value'],
         },
       },
+      maxDisplay: { type: 'number' },
     },
   };
 
@@ -94,24 +97,61 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
     return this.props.value;
   }
 
+  private renderTag(value: unknown) {
+    const options = this.props.schema.options;
+    const tagOption = options.tagOptions?.find(item => item.value === value);
+    return (
+      <Tag
+        color={tagOption ? tagOption.color : options.color}
+        style={{
+          color: tagOption ? tagOption.color : options.color,
+          borderColor: tagOption ? tagOption.borderColor : options.borderColor,
+          backgroundColor: tagOption ? tagOption.backgroundColor : options.backgroundColor,
+          borderRadius: options.radius,
+        }}
+      >
+        { options.content || tagOption?.label || String(value ?? '') }
+      </Tag>
+    );
+  }
+
   public render() {
     const options = this.props.schema.options;
-    const value = this.value;
-    const tagOption = options.tagOptions?.find(item => item.value === value);
+    const values = Array.isArray(this.value) ? this.value : [this.value];
+    const maxDisplay = options.maxDisplay ?? 0;
+    const displayValues = maxDisplay >= 0 ? values.filter((_, i) => i < maxDisplay) : values;
+    const collapseValues = maxDisplay >= 0 ? values.filter((_, i) => i >= maxDisplay) : values;
     return (
       <div>
         { options.prefix || '' }
-        <Tag
-          color={tagOption ? tagOption.color : options.color}
-          style={{
-            color: tagOption ? tagOption.color : options.color,
-            borderColor: tagOption ? tagOption.borderColor : options.borderColor,
-            backgroundColor: tagOption ? tagOption.backgroundColor : options.backgroundColor,
-            borderRadius: options.radius,
-          }}
-        >
-          { options.content || tagOption?.label || String(value ?? '') }
-        </Tag>
+        { displayValues.map(v => this.renderTag(v)) }
+        {
+          collapseValues.length > 0
+            ? (
+              <Tooltip
+                title={(
+                  <div>
+                    { collapseValues.map(v => this.renderTag(v)) }
+                  </div>
+                )}
+              >
+                <div style={{ display: 'inline-block' }}>
+                  <Tag
+                    color={options.color}
+                    style={{
+                      color: options.color,
+                      borderColor: options.borderColor,
+                      backgroundColor: options.backgroundColor,
+                      borderRadius: options.radius,
+                    }}
+                  >
+                    { `+${collapseValues.length}` }
+                  </Tag>
+                </div>
+              </Tooltip>
+            )
+            : null
+        }
         { options.suffix || '' }
       </div>
     );

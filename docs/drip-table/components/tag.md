@@ -30,6 +30,7 @@ const dataSource = [
     name: "商品一",
     price: 7999,
     status: 1,
+    keywords: ['商品', '售卖', '促销', '买一送一', '满300减40'],
     description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
     pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
   },
@@ -38,6 +39,7 @@ const dataSource = [
     name: "商品二",
     price: 3899,
     status: 0,
+    keywords: ['商品', '售卖', '促销', '买一送一', '满300减40'],
     description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
     pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
   },
@@ -86,6 +88,17 @@ const Demo = () => {
             { label: '售卖中', value: 1, color: 'success' },
             { label: '已下架', value: 0, color: 'error' }
           ]
+        },
+      },
+      {
+        key: 'mock_4',
+        title: '最大数量显示',
+        align: 'center',
+        hidable: true,
+        dataIndex: 'keywords',
+        component: 'tag',
+        options: {
+          maxDisplay: 3,
         },
       },
     ],
