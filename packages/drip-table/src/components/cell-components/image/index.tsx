@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -13,6 +15,8 @@ import Image from '@/components/react-components/image';
 import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
+
+const prefixCls = 'jfe-drip-table-cc-image';
 
 export type DTCImageColumnSchema = DripTableColumnSchema<'image', {
   popover?: boolean;
@@ -77,15 +81,40 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
       );
     }
     return (
-      <Image.PreviewGroup items={this.groupItems} preview={this.props.preview ? false : options.preview}>
-        <Image
-          width={options.imageWidth}
-          height={options.imageHeight}
-          src={this.value}
-          preview={this.props.preview ? false : options.preview}
-          fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
-        />
-      </Image.PreviewGroup>
+      <div className={`${prefixCls}-wrapper`}>
+        <Image.PreviewGroup items={this.groupItems} preview={this.props.preview ? false : options.preview}>
+          <Image
+            width={options.imageWidth}
+            height={options.imageHeight}
+            src={this.value}
+            preview={this.props.preview ? false : options.preview}
+            fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
+          />
+        </Image.PreviewGroup>
+        {
+          this.groupItems.length > 1
+            ? (
+              <div className={`${prefixCls}-corner-mark`}>
+                <svg viewBox="0 0 11 23.9" width="11" height="23.9" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 3.305 8.046 C 3.305 3.628 6.886 0.046 11 0 L 11 23.9 L 0 23.876 C 2.075 22.38 3.305 19.977 3.305 17.419 L 3.305 8.046 Z" fill="black" fillOpacity="0.45" />
+                </svg>
+                <div className={`${prefixCls}-corner-mark-body`}>
+                  <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M2.58268 4.54159C2.58268 3.414 3.49677 2.49992 4.62435 2.49992C5.75193 2.49992 6.66602 3.414 6.66602 4.54159C6.66602 5.66917 5.75193 6.58325 4.62435 6.58325C3.49677 6.58325 2.58268 5.66917 2.58268 4.54159ZM4.62435 3.66659C4.1411 3.66659 3.74935 4.05834 3.74935 4.54159C3.74935 5.02483 4.1411 5.41659 4.62435 5.41659C5.1076 5.41659 5.49935 5.02483 5.49935 4.54159C5.49935 4.05834 5.1076 3.66659 4.62435 3.66659Z" fill="white" />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M0.541016 2.79159C0.541016 1.50292 1.58568 0.458252 2.87435 0.458252H10.4577C11.7463 0.458252 12.791 1.50292 12.791 2.79159V9.20825C12.791 10.4969 11.7463 11.5416 10.4577 11.5416H2.87435C1.58568 11.5416 0.541016 10.4969 0.541016 9.20825V2.79159ZM2.87435 1.62492C2.23002 1.62492 1.70768 2.14725 1.70768 2.79159V9.20825C1.70768 9.85258 2.23002 10.3749 2.87435 10.3749H6.08268C6.08268 7.25106 8.53819 4.70072 11.6243 4.54875V2.79159C11.6243 2.14725 11.102 1.62492 10.4577 1.62492H2.87435ZM11.6243 5.71722C9.18289 5.86778 7.24935 7.89555 7.24935 10.3749H10.4577C11.102 10.3749 11.6243 9.85258 11.6243 9.20825V5.71722Z" fill="white" />
+                  </svg>
+                  <span className={`${prefixCls}-corner-mark-text`}>
+                    { this.groupItems.length }
+                  </span>
+                </div>
+                <svg viewBox="0 0 7 28.013" width="7" height="28.013" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 0 28.013 L 0 4 C 2.9779999999999998 4.17 5.71 2.577 7 0 L 7 24 C 7 26.2 5.378 28 3 28 L 0 28.013 Z" fill="black" fillOpacity="0.45" />
+                </svg>
+              </div>
+            )
+            : null
+        }
+      </div>
     );
   }
 
