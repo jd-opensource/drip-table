@@ -31,6 +31,12 @@ const dataSource = [
     status: "onSale",
     description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
     pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+    pictureUrls: [
+      'https://img11.360buyimg.com/babel/s590x470_jfs/t20270321/243923/15/6316/24523/65fc09e1F8fcb071a/5a5b1023517fd35d.jpg.avif',
+      'https://imgcps.jd.com/img-cubic/creative_server_cia_jdcloud/v2/2000366/100025821724/FocusFullshop/CkRqZnMvdDEvMTM2MTIyLzE4LzM5ODg0LzE5MDM2Mi82NWY0OWVkZUYyNmQ0MjZjNy84NDBiZjY2ZWJiNjc0NzFjLnBuZxIJMy10eV8wXzU0MAI47ot6QhMKD3lvdHRveeeRnOS8veafsRABQhAKDOmch-aSvOadpeS4tBACQhAKDOeri-WNs-aKoui0rRAGQgoKBuWKm-iNkBAHWJzUg9D0Ag/cr/s/q.jpg',
+      'https://img11.360buyimg.com/babel/s590x470_jfs/t20270321/243923/15/6316/24523/65fc09e1F8fcb071a/5a5b1023517fd35d.jpg.avif',
+      'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+    ],
   },
 ];
 
@@ -69,6 +75,17 @@ const Demo = () => {
         component: "image",
         options: {
           imagePlaceholder: "https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg",
+          imageWidth: imageWidth,
+          imageHeight: imageHeight,
+        },
+      },
+      {
+        key: "mock_4",
+        title: "图片角标",
+        dataIndex: "pictureUrls",
+        component: "image",
+        options: {
+          preview: true,
           imageWidth: imageWidth,
           imageHeight: imageHeight,
         },

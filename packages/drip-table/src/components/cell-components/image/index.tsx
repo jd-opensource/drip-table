@@ -52,7 +52,15 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     if (typeof value === 'string') {
       return value;
     }
+    if (Array.isArray(value) && typeof value[0] === 'string') {
+      return value[0];
+    }
     return '';
+  }
+
+  private get groupItems() {
+    const srcs = Array.isArray(this.props.value) ? this.props.value : [this.props.value];
+    return srcs.map(src => ({ src }));
   }
 
   private renderImage() {
@@ -69,13 +77,15 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
       );
     }
     return (
-      <Image
-        width={options.imageWidth}
-        height={options.imageHeight}
-        src={this.value}
-        preview={this.props.preview ? false : options.preview}
-        fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
-      />
+      <Image.PreviewGroup items={this.groupItems} preview={this.props.preview ? false : options.preview}>
+        <Image
+          width={options.imageWidth}
+          height={options.imageHeight}
+          src={this.value}
+          preview={this.props.preview ? false : options.preview}
+          fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
+        />
+      </Image.PreviewGroup>
     );
   }
 
@@ -88,7 +98,9 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
           overlay={(<img src={this.value} style={{ width: options.previewWidth, height: options.previewHeight }} />)}
           placement="top"
         >
-          { this.renderImage() }
+          <div>
+            { this.renderImage() }
+          </div>
         </Tooltip>
       )
       : this.renderImage();
