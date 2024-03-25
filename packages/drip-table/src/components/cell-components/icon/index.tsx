@@ -121,7 +121,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
           record: this.props.record,
         },
       }, '');
-      return <RichText html={html} />;
+      return <RichText html={html ?? ''} />;
     }
     return null;
   }

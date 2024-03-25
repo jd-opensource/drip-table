@@ -38,6 +38,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
+  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   onScroll: (scrollLeft: number) => void;
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
@@ -104,6 +105,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         dataFields={props.dataFields}
         path={[]}
         ext={props.ext}
+        icons={props.icons}
         onClick={props.onClick}
         onColumnItemChanged={props.onColumnItemChanged}
       />

@@ -43,6 +43,7 @@ interface TableCellProps<
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   ext?: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
+  icons?: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
@@ -224,6 +225,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ext: props.ext,
         unknownComponent: <Alert type="error" message="未知组件" />,
         preview: true,
+        icons: props.icons,
       },
     )
     : () => <div />;

@@ -2,6 +2,7 @@ import { DripTableComponentAttrConfig } from '../typing';
 import button from './button';
 import datePicker from './date-picker';
 import group from './group';
+import icon from './icon';
 import inputNumber from './input-number';
 import links from './links';
 import image from './picture';
@@ -25,6 +26,7 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   popUpPage,
   inputNumber,
   switchConfig,
+  icon,
 ];
 
 const containerComponentList: DripTableComponentAttrConfig[] = [

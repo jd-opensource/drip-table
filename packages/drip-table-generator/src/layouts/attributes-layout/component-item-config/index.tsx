@@ -54,6 +54,7 @@ const ComponentItemConfigForm = <
     mockDataSource: props.mockDataSource,
     dataFields: props.dataFields,
     filterSchema: true,
+    icons: props.icons,
   });
 
   const decodeColumnConfigs = (columnConfigs?: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {

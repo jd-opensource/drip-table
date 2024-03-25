@@ -7,6 +7,7 @@
 
 import './demo.module.less';
 
+import * as Icons from '@ant-design/icons';
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import DripTableGenerator from 'drip-table-generator';
@@ -29,6 +30,7 @@ const Demo = () => (
     }>
       mockDataSource
       mode="page"
+      icons={Icons}
       save
       schema={{ ...initSchema, columns: initSchema.columns.filter(item => !item.component.startsWith('custom::')) } as DripTableSchema}
       dataSource={mockData}
