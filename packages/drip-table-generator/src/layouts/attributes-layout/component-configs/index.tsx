@@ -26,6 +26,7 @@ interface ComponentConfigFormProps<
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
 }
 
 const errorBoundary = (message?: string) => (
@@ -48,6 +49,7 @@ const ComponentConfigForm = <
     previewDataSource,
     mockDataSource: props.mockDataSource,
     dataFields: props.dataFields,
+    icons: props.icons,
   });
 
   const decodeColumnConfigs = (columnConfigs?: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {
@@ -70,6 +72,22 @@ const ComponentConfigForm = <
       Object.keys(columnConfigs.style).forEach((key) => {
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
+    }
+    if (columnConfigs?.component === 'icon') {
+      const iconConfig = columnConfigs?.options?.icon as Record<string, unknown> | string ?? '';
+      if (typeof iconConfig === 'string') {
+        formData['options.mode'] = 'library';
+        formData['options.icon'] = iconConfig;
+        formData['options.iconRender'] = '';
+      } else if (typeof iconConfig.name === 'string') {
+        formData['options.mode'] = 'library';
+        formData['options.icon'] = iconConfig?.name;
+        formData['options.iconRender'] = '';
+      } else {
+        formData['options.mode'] = 'custom';
+        formData['options.icon'] = '';
+        formData['options.iconRender'] = iconConfig?.html || iconConfig?.render;
+      }
     }
     formData.dataIndexMode = typeof columnConfigs?.dataIndex === 'string' ? 'direct' : 'nested';
     return formData;
@@ -101,6 +119,15 @@ const ComponentConfigForm = <
         dataProps[key] = formData[key];
       }
     });
+    if (currentColumn?.component === 'icon') {
+      if (formData['options.mode'] === 'custom') {
+        uiProps.icon = {
+          render: uiProps.iconRender,
+        };
+      }
+      delete uiProps.mode;
+      delete uiProps.iconRender;
+    }
     if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
       dataProps.width = Number(dataProps.width);
     }
@@ -162,6 +189,7 @@ const ComponentConfigForm = <
             extendKeys={['ui:props', 'options']}
             extraComponents={props.customAttributeComponents}
             groupType="tabs"
+            icons={props.icons}
             onChange={(data) => {
               const columns = tableIndex > -1 ? cloneDeep(tableConfigs[tableIndex].columns || []) : [];
               const newCurrentColumn = Object.assign({}, currentColumn, data);

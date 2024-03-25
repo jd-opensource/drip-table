@@ -106,6 +106,7 @@ const AttributesLayout = <
                     customComponentPanel={props.customComponentPanel}
                     dataFields={props.dataFields}
                     mockDataSource={props.mockDataSource}
+                    icons={props.icons}
                   />
                 )
               }

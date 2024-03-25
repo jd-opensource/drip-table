@@ -57,6 +57,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     previewDataSource: DripTableGeneratorContext['previewDataSource'];
     dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
     mockDataSource?: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+    icons?: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
     filterSchema?: boolean;
   }) => {
   const theComponent = options.componentsConfigs.find(schema => schema['ui:type'] === componentType);
@@ -74,6 +75,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ? Object.keys(options.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
         : options.dataFields?.map(key => ({ label: key, value: key })) || [];
     }
+    if (uiProps.optionsParam === '$$PROPS_ICONS_OPTIONS$$') {
+      uiProps.options = Object.keys(options.icons || {}).map(key => ({ label: key, value: key, icon: key }));
+    }
     if (uiProps.items) {
       (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
         const itemUiProps = item['ui:props'];
@@ -84,6 +88,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           itemUiProps.options = options.mockDataSource
             ? Object.keys(options.previewDataSource[0] || {}).map(key => ({ label: key, value: key }))
             : options.dataFields?.map(key => ({ label: key, value: key })) || [];
+        }
+        if (itemUiProps.optionsParam === '$$PROPS_ICONS_OPTIONS$$') {
+          itemUiProps.options = Object.keys(options.icons || {}).map(key => ({ label: key, value: key, icon: key }));
         }
       });
     }
