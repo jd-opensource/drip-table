@@ -187,6 +187,7 @@ const ComponentConfigForm = <
             decodeData={decodeColumnConfigs}
             encodeData={formData => encodeColumnConfigs(formData, currentColumn)}
             extendKeys={['ui:props', 'options']}
+            skippedKeys={['options.popover', 'options.content']}
             extraComponents={props.customAttributeComponents}
             groupType="tabs"
             icons={props.icons}

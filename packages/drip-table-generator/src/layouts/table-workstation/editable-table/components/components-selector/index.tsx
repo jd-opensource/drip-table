@@ -7,18 +7,16 @@
  */
 import './index.less';
 
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Select } from 'antd';
+import { Button, Input, message } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes, mockId } from '@/utils';
-import Icon from '@/components/Icon';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getComponentsConfigs, getGroups, getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
-import { defaultComponentIcon } from './configs';
+import Selector from './selector';
 
 interface ComponentsSelectorProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -70,14 +68,14 @@ const ComponentsSelector = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentsSelectorProps<RecordType, ExtraOptions>) => {
-  const [keyword, setKeyWord] = React.useState('');
   const [groups, setGroups] = React.useState(getGroups(props.customComponentPanel));
   const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel));
   const [title, setTitle] = React.useState('');
   const [componentConfig, setComponentConfig] = React.useState(void 0 as DripTableComponentAttrConfig | undefined);
+  const [popoverConfig, setPopoverConfig] = React.useState(void 0 as DripTableComponentAttrConfig | undefined);
+  const [contentConfig, setContentConfig] = React.useState(void 0 as DripTableComponentAttrConfig | undefined);
 
   const initStates = React.useCallback(() => {
-    setKeyWord('');
     setTitle('');
     setComponentConfig(void 0);
     setGroups(getGroups(props.customComponentPanel));
@@ -107,68 +105,65 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               />
             </div>
             ) }
-            { componentConfig
-              ? (
-                <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
-                  <Select
-                    className="jfe-drip-table-generator-components-bar-no-border"
-                    value={componentConfig['ui:type']}
-                    options={[{ label: componentConfig.title, value: componentConfig['ui:type'] }]}
-                    onFocus={() => { setComponentConfig(void 0); }}
-                  />
-                </div>
-              )
-              : (
-                <div className="jfe-drip-table-generator-components-bar-navigation" style={{ marginTop: 8 }}>
-                  { props.showFilter && (
-                  <div>
-                    <Input
-                      className="jfe-drip-table-generator-components-bar-no-border"
-                      prefix={<SearchOutlined />}
-                      allowClear
-                      placeholder="输入组件名搜索"
-                      value={keyword}
-                      onChange={(e) => {
-                        setKeyWord(e.target.value);
-                        let componentConfigs = getComponentsConfigs('', props.customComponentPanel);
-                        let groupsToUse = getGroups(props.customComponentPanel);
-                        if (e.target.value) {
-                          componentConfigs = componentConfigs.filter(item => item.title.includes(e.target.value));
-                          groupsToUse = componentConfigs.map(item => item.group);
-                        }
-                        setComponents(componentConfigs);
-                        setGroups(groupsToUse);
-                      }}
-                    />
-                  </div>
-                  ) }
-                  <div className="jfe-drip-table-generator-components-bar-components-list">
-                    {
-                      groups.map((groupName, groupIndex) => (
-                        <div key={groupIndex}>
-                          <div className="jfe-drip-table-generator-components-bar-component-title">
-                            { groupName }
-                          </div>
-                          {
-                            components.filter(item => item.group === groupName).map((component, index) => (
-                              <Button
-                                key={index}
-                                type="text"
-                                className="jfe-drip-table-generator-components-bar-component-title-item"
-                                onClick={(e) => { setComponentConfig(component); }}
-                              >
-                                <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
-                                <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title }</span>
-                              </Button>
-                            ))
-                          }
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
-              ) }
+            <Selector
+              showFilter={props.showFilter}
+              openPanel
+              value={componentConfig?.['ui:type']}
+              options={components.map(item => ({
+                label: item.title,
+                value: item['ui:type'],
+                group: item.group,
+                icon: item.icon,
+              }))}
+              groups={groups}
+              onChange={(value) => {
+                const component = components.find(item => item['ui:type'] === value);
+                setComponentConfig(component);
+              }}
+            />
+            { componentConfig?.['ui:type'] === 'popover' && (
+              <React.Fragment>
+                <div className="jfe-drip-table-generator-components-bar-sub-component-title">浮窗组件</div>
+                <Selector
+                  showFilter={props.showFilter}
+                  floatPanel
+                  value={popoverConfig?.['ui:type']}
+                  options={components.map(item => ({
+                    label: item.title,
+                    value: item['ui:type'],
+                    group: item.group,
+                    icon: item.icon,
+                  }))}
+                  groups={groups}
+                  onChange={(value) => {
+                    const component = components.find(item => item['ui:type'] === value);
+                    setPopoverConfig(component);
+                  }}
+                />
+              </React.Fragment>
+            ) }
+            { componentConfig?.['ui:type'] === 'popover' && (
+              <React.Fragment>
+                <div className="jfe-drip-table-generator-components-bar-sub-component-title">单元格内组件</div>
+                <Selector
+                  showFilter={props.showFilter}
+                  floatPanel
+                  value={contentConfig?.['ui:type']}
+                  options={components.map(item => ({
+                    label: item.title,
+                    value: item['ui:type'],
+                    group: item.group,
+                    icon: item.icon,
+                  }))}
+                  groups={groups}
+                  onChange={(value) => {
+                    const component = components.find(item => item['ui:type'] === value);
+                    setContentConfig(component);
+                  }}
+                />
+              </React.Fragment>
 
+            ) }
             <div className="jfe-drip-table-generator-components-bar-actions">
               <Button
                 style={{ marginRight: 12 }}
@@ -185,7 +180,24 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onClick={() => {
                   const tableIndex = tableConfigs.findIndex(item => item.tableId === props.tableId);
                   if (componentConfig && tableIndex > -1) {
-                    const column = getColumnSchemaByComponent(componentConfig, props.showTitle ? title : '');
+                    let column = getColumnSchemaByComponent(componentConfig, props.showTitle ? title : '');
+                    if (column.component === 'popover') {
+                      if (popoverConfig && contentConfig) {
+                        const popover = getColumnSchemaByComponent(popoverConfig, '');
+                        const content = getColumnSchemaByComponent(contentConfig, '');
+                        column = {
+                          ...column,
+                          options: {
+                            ...column.options,
+                            popover,
+                            content,
+                          },
+                        };
+                      } else {
+                        message.error('浮窗组件需要优先设置浮窗展示所需组件，请先选择好组件再确认');
+                        return;
+                      }
+                    }
                     if (props.onConfirm) {
                       props.onConfirm(column, tableIndex);
                     } else {

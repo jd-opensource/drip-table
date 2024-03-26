@@ -7,25 +7,21 @@
  */
 import './index.less';
 
-import { CloseOutlined } from '@ant-design/icons';
-import { Alert, Button, Col, Dropdown, Row } from 'antd';
-import classNames from 'classnames';
 import {
   DripTableBuiltInColumnSchema,
   DripTableExtraOptions,
   DripTableProps,
-  TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator,
 } from 'drip-table';
 import React from 'react';
 
-import { filterAttributes } from '@/utils';
-import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { updateColumnItemByPath } from '@/layouts/attributes-layout/utils';
+import { updateColumnItemByPath, updateColumnItemByType } from '@/layouts/attributes-layout/utils';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
-import ComponentsSelector from '../components-selector';
+import CellComponent from './cell';
+import { GroupCellProps } from './group';
+import { PopoverCellProps } from './popover';
 
 interface TableCellProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -48,191 +44,127 @@ interface TableCellProps<
   onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
 
-const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>(column: T): T => (
-  column
-    ? {
-      ...column,
-      options: {
-        ...filterAttributes(column.options, 'visibleFunc'),
-      },
-    }
-    : column
-);
-
-const getIndex = (layout: number[], rowIndex: number, colIndex: number) => layout.slice(0, rowIndex).reduce((prev, curr) => prev + curr, 0) + colIndex;
-
 const TableCell = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableCellProps<RecordType, ExtraOptions>) => {
-  const [dropdownIndex, setDropdownIndex] = React.useState(-1);
   const { tableConfigs } = React.useContext(TableConfigsContext);
-
-  // 组合组件支持可视化编辑
-  if (props.column?.component === 'group') {
-    const options = props.column.options;
-    return (
-      <TableConfigsContext.Consumer>
-        { ({ setTableColumns }) => {
-          const gutter = options.gutter ?? [0, 0];
-          return (
-            <div
-              className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
-              onClick={e => e.stopPropagation()}
-              style={{
-                width: props.path.length === 0 ? 'max-content' : void 0,
-                minWidth: props.path.length === 0 ? props.column.width || 200 : void 0,
-              }}
-            >
-              { options.layout.map((colLength, rowIndex) => (
-                <Row
-                  key={rowIndex}
-                  justify={options.horizontalAlign}
-                  wrap={options.wrap}
-                  className="jfe-drip-table-generator-workstation-table-cell-group-row"
-                  style={{ minHeight: 120 / options.layout.length }}
-                >
-                  { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
-                    const componentIndex = getIndex(options.layout, rowIndex, colIndex);
-                    const itemColumn = options.items[componentIndex] ?? null;
-                    const itemColumnSchema = itemColumn && 'component' in itemColumn ? itemColumn : itemColumn?.schema;
-                    return (
-                      <GeneratorContext.Consumer>
-                        { ({ currentComponentPath, currentComponentID, setState }) => {
-                          const isCurrentItem = itemColumnSchema && itemColumnSchema.key === currentComponentID && (currentComponentPath || []).join(',') === [...props.path, componentIndex].join(',');
-                          return (
-                            <Col
-                              key={colIndex}
-                              className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
-                                checked: isCurrentItem,
-                                empty: !itemColumnSchema,
-                              })}
-                              style={{
-                                padding: `${gutter[0]}px ${gutter[1]}px`,
-                                minWidth: `${100 / colLength}%`,
-                                width: 'max-content',
-                              }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setState({
-                                  currentTableID: props.tableConfig.tableId,
-                                  currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                  currentComponentID: isCurrentItem ? void 0 : itemColumnSchema?.key,
-                                  currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
-                                  drawerType: isCurrentItem ? void 0 : 'column-item',
-                                });
-                                props.onClick?.('column-item', {
-                                  currentTableID: props.tableConfig.tableId,
-                                  currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                  currentComponentID: isCurrentItem ? void 0 : itemColumnSchema?.key,
-                                  currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
-                                  tableConfig: props.tableConfig,
-                                });
-                              }}
-                            >
-                              { isCurrentItem && (
-                                <Button
-                                  className="jfe-drip-table-generator-workstation-table-cell-group-close"
-                                  danger
-                                  size="small"
-                                  shape="circle"
-                                  icon={<CloseOutlined />}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    const tableIndex = tableConfigs.findIndex(x => x.tableId === props.tableConfig.tableId);
-                                    const path = [...props.path, componentIndex];
-                                    const rootColumn = updateColumnItemByPath(props.tableConfig.columns[props.columnIndex], path, null);
-                                    const columns = [...props.tableConfig.columns];
-                                    columns[props.columnIndex] = rootColumn;
-                                    setTableColumns(columns, tableIndex);
-                                    props.onColumnItemChanged?.('remove', {
-                                      currentTableID: props.tableConfig.tableId,
-                                      currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                      currentComponent: rootColumn,
-                                      currentComponentPath: path,
-                                      tableConfig: props.tableConfig,
-                                    });
-                                  }}
-                                />
-                              ) }
-                              { itemColumnSchema
-                                ? <TableCell {...props} column={itemColumnSchema} path={[...props.path, componentIndex]} />
-                                : (
-                                  <Dropdown
-                                    placement="bottomRight"
-                                    trigger={['click']}
-                                    open={dropdownIndex === componentIndex}
-                                    onOpenChange={(open) => { if (!open) { setDropdownIndex(-1); } }}
-                                    dropdownRender={() => (
-                                      <ComponentsSelector
-                                        open={dropdownIndex === componentIndex}
-                                        tableId={props.tableConfig.tableId}
-                                        showFilter
-                                        customComponentPanel={props.customComponentPanel}
-                                        customColumnAddPanel={props.customColumnAddPanel}
-                                        onClose={() => setDropdownIndex(-1)}
-                                        onConfirm={(column, tableIndex) => {
-                                          const path = [...props.path, componentIndex];
-                                          const rootColumn = updateColumnItemByPath(props.tableConfig.columns[props.columnIndex], path, column);
-                                          const columns = [...props.tableConfig.columns];
-                                          columns[props.columnIndex] = rootColumn;
-                                          setTableColumns(columns, tableIndex);
-                                          props.onColumnItemChanged?.('add', {
-                                            currentTableID: props.tableConfig.tableId,
-                                            currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                            currentComponent: column,
-                                            currentColumn: rootColumn,
-                                            currentComponentPath: path,
-                                            tableConfig: props.tableConfig,
-                                          });
-                                        }}
-                                      />
-                                    )}
-                                  >
-                                    <div
-                                      className="jfe-drip-table-generator-workstation-table-cell-group-empty"
-                                      onClick={(e) => { e.stopPropagation(); setDropdownIndex(componentIndex); }}
-                                    >
-                                      <span>点击添加子组件</span>
-                                    </div>
-                                  </Dropdown>
-                                ) }
-                            </Col>
-                          );
-                        } }
-                      </GeneratorContext.Consumer>
-                    );
-                  }) }
-                </Row>
-              )) }
-            </div>
-          );
-        } }
-      </TableConfigsContext.Consumer>
-    );
-  }
-  const columnSchema = generatorComponentSchema(props.column);
-  const renderCommonCell = columnSchema
-    ? columnRenderGenerator<RecordType, ExtraOptions>(
-      {
-        uuid: 'DRIP-TABLE-GENERATOR-INSTANCE',
-        schema: getSchemaValue(tableConfigs),
-        dataSource: [props.record],
-      },
-      columnSchema,
-      {
-        components: props.customComponents,
-        ext: props.ext,
-        unknownComponent: <Alert type="error" message="未知组件" />,
-        preview: true,
-        icons: props.icons,
-      },
-    )
-    : () => <div />;
   return (
-    <React.Fragment>
-      { renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: props.rowIndex }, props.rowIndex) }
-    </React.Fragment>
+    <TableConfigsContext.Consumer>
+      { ({ setTableColumns }) => {
+        const onChangeColumnItem: PopoverCellProps<RecordType, ExtraOptions>['onChangeColumnItem'] = (key, column, tableIndex, path) => {
+          if (props.column.component === 'popover') {
+            const rootColumnToChange = {
+              ...props.column,
+              options: {
+                ...props.column.options,
+                content: key === 'content' ? { ...column } : props.column.options?.content,
+                popover: key === 'popover' ? { ...column } : props.column.options?.popover,
+              },
+            };
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, rootColumnToChange);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('edit', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: rootColumnToChange.key,
+              currentComponent: column,
+              currentColumn: rootColumnToChange,
+              currentComponentType: key,
+              tableConfig: props.tableConfig,
+            });
+          } else if (props.column.component === 'group' && path) {
+            const groupColumn = updateColumnItemByPath(props.column, path, column);
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, groupColumn);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('edit', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: groupColumn.key,
+              currentComponent: column,
+              currentColumn: groupColumn,
+              currentComponentType: key,
+              tableConfig: props.tableConfig,
+            });
+          }
+        };
+        const onAddColumnItem: GroupCellProps<RecordType, ExtraOptions>['onAddColumnItem'] = (path, column, tableIndex, type) => {
+          if (props.column.component === 'popover' && type) {
+            const options = props.column.options;
+            const groupColumn = updateColumnItemByPath(type === 'content' ? options.content : options.popover, path, column);
+            const rootColumn = updateColumnItemByType(props.column, type, groupColumn);
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, rootColumn);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('add', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: rootColumn.key,
+              currentComponent: column,
+              currentColumn: rootColumn,
+              currentComponentType: type,
+              currentComponentPath: path,
+              tableConfig: props.tableConfig,
+            });
+          } else if (props.column.component === 'group') {
+            const rootColumn = updateColumnItemByPath(props.column, path, column);
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, rootColumn);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('add', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: rootColumn.key,
+              currentComponent: column,
+              currentColumn: rootColumn,
+              currentComponentPath: path,
+              tableConfig: props.tableConfig,
+            });
+          }
+        };
+        const onRemoveColumnItem: GroupCellProps<RecordType, ExtraOptions>['onRemoveColumnItem'] = (path, columnIndex, tableId, type) => {
+          const tableIndex = tableConfigs.findIndex(item => item.tableId === tableId);
+          if (tableIndex < -1) { return; }
+          if (props.column.component === 'popover' && type) {
+            const options = props.column.options;
+            const groupColumn = updateColumnItemByPath(type === 'content' ? options.content : options.popover, path, null);
+            const rootColumn = updateColumnItemByType(props.column, type, groupColumn);
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, rootColumn);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('remove', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: rootColumn.key,
+              currentColumn: rootColumn,
+              currentComponentType: type,
+              currentComponentPath: path,
+              tableConfig: props.tableConfig,
+            });
+          } else if (props.column.component === 'group') {
+            const rootColumn = updateColumnItemByPath(props.column, path, null);
+            const newColumns = [...props.tableConfig.columns];
+            newColumns.splice(props.columnIndex, 1, rootColumn);
+            setTableColumns(newColumns, tableIndex);
+            props.onColumnItemChanged?.('remove', {
+              currentTableID: props.tableConfig.tableId,
+              currentColumnID: rootColumn.key,
+              currentColumn: rootColumn,
+              currentComponentType: type,
+              currentComponentPath: path,
+              tableConfig: props.tableConfig,
+            });
+          }
+        };
+        return (
+          <CellComponent
+            {...props}
+            icons={props.icons}
+            schema={getSchemaValue(tableConfigs)}
+            onChangeColumnItem={onChangeColumnItem}
+            onAddColumnItem={onAddColumnItem}
+            onRemoveColumnItem={onRemoveColumnItem}
+          />
+        );
+      } }
+    </TableConfigsContext.Consumer>
   );
 };
 

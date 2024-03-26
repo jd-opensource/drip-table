@@ -24,6 +24,8 @@ export interface DripTableGeneratorContext {
    */
   currentComponentPath?: number[];
   currentComponentID?: string;
+  // 浮窗组件特有，表示当前选中的是浮窗内组件还是单元格内组件
+  currentComponentType?: 'popover' | 'content';
   /**
    * 表格数据，generator 不解析具体数据结构，仅仅透传给 drip-table
    */

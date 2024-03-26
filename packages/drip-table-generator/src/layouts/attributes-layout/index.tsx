@@ -22,7 +22,7 @@ import { getComponentsConfigs } from '../utils';
 import ComponentConfigForm from './component-configs';
 import ComponentItemConfigForm from './component-item-config';
 import GlobalConfigForm from './global-configs';
-import { getColumnItemByPath } from './utils';
+import { getColumnItemByPath, getColumnItemByType } from './utils';
 
 const AttributesLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -44,11 +44,16 @@ const AttributesLayout = <
 
   return (
     <GeneratorContext.Consumer>
-      { ({ currentTableID, currentColumnID, currentComponentPath, drawerType, setState }) => {
+      { ({ currentTableID, currentColumnID, currentComponentPath, currentComponentType, drawerType, setState }) => {
         const currentTable = tableConfigs.find(item => item.tableId === currentTableID);
         const currentColumn = currentTable?.columns.find(item => item.key === currentColumnID);
-        const isGroupColumn = currentColumn && currentColumn.component === 'group';
-        const currentColumnItem = isGroupColumn && currentComponentPath ? getColumnItemByPath(currentColumn, currentComponentPath) : void 0;
+        const isContainerColumn = currentColumn && (currentColumn.component === 'group' || currentColumn.component === 'popover');
+        let currentColumnItem;
+        if (currentColumn?.component === 'group') {
+          currentColumnItem = currentComponentPath ? getColumnItemByPath(currentColumn, currentComponentPath) : null;
+        } else if (currentColumn?.component === 'popover') {
+          currentColumnItem = currentComponentType ? getColumnItemByType(currentColumn, currentComponentType) : null;
+        }
         return (
           <div
             className={classNames('jfe-drip-table-generator-attributes-layout-attributes-drawer', {
@@ -61,7 +66,16 @@ const AttributesLayout = <
             }}
           >
             <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-header">
-              <Button icon={<CloseOutlined />} type="text" onClick={() => setState({ drawerType: void 0 })} />
+              <Button
+                icon={<CloseOutlined />}
+                type="text"
+                onClick={() => setState({
+                  drawerType: void 0,
+                  currentComponentPath: [],
+                  currentComponentType: void 0,
+                  currentComponentID: void 0,
+                })}
+              />
               <span className="jfe-drip-table-generator-attributes-layout-title">{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
               { drawerType === 'column'
                 ? (
@@ -111,8 +125,9 @@ const AttributesLayout = <
                 )
               }
               {
-                drawerType === 'column-item' && isGroupColumn && (
+                drawerType === 'column-item' && isContainerColumn && (
                   <ComponentItemConfigForm
+                    containerType={currentColumn.component === 'group' ? 'group' : 'popover'}
                     customAttributeComponents={props.customAttributeComponents}
                     customComponentPanel={props.customComponentPanel}
                     icons={props.icons}
