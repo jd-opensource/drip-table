@@ -57,11 +57,33 @@
 }
 
 .@{prefixCls}-group-close {
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
   position: absolute;
-  right: -10px;
-  top: -10px;
+  right: -12px;
+  top: -12px;
   z-index: 8;
+
+  &.primary {
+    background-color: #ffffff;
+    color: var(--drip-table-primary-color);
+    fill: var(--drip-table-primary-color);
+    cursor: pointer;
+    border: 1px solid var(--drip-table-border-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+  }
+
+  &.danger {
+    background-color: #ffffff;
+    color: #ff4d4f;
+    fill: #ff4d4f;
+    cursor: pointer;
+    border: 1px solid #ff4d4f;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+  }
 }

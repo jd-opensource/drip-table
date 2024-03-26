@@ -171,7 +171,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           <Button
             icon={<PlusOutlined />}
             size={props.tableConfig.configs.size === 'small' ? props.tableConfig.configs.size : void 0}
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDropdownOpen(!dropdownOpen);
+            }}
           />
         </Dropdown>
       </div>

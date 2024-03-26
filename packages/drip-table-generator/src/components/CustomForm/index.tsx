@@ -35,6 +35,7 @@ interface Props<T> {
   extendKeys?: string[];
   mode?: 'old';
   icons?: DripTableProps<DripTableRecordTypeBase>['icons'];
+  skippedKeys?: string[];
   /**
    * 将原本的数据转换成 FormData
    */
@@ -77,7 +78,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     this.setState({ formValues: this.decodeData(data || this.props.data), helpMsg: {} });
   }
 
-  public flattenObject(obj, prefix = '') {
+  public flattenObject(obj, prefix = '', skippedKeys = [] as string[]) {
     let result = {};
     // 数组不再划分 交给 Array 组件处理
     if (Array.isArray(obj)) {
@@ -86,7 +87,12 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     } else {
       Object.keys(obj).forEach((key) => {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
-          result = { ...result, ...this.flattenObject(obj[key], `${prefix}${key}.`) };
+          const keySkipped = skippedKeys.includes(`${prefix}${key}`);
+          if (keySkipped) {
+            result[prefix + key] = obj[key];
+          } else {
+            result = { ...result, ...this.flattenObject(obj[key], `${prefix}${key}.`, skippedKeys) };
+          }
         } else {
           result[prefix + key] = obj[key];
         }
@@ -113,10 +119,12 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
         }
       } else if (this.props.extendKeys) {
         Object.keys(material).forEach((key) => {
-          obj = this.props.extendKeys?.includes(key) ? { ...obj, ...this.flattenObject(material[key], `${key}.`) } : { ...obj, [key]: material[key] };
+          obj = this.props.extendKeys?.includes(key)
+            ? { ...obj, ...this.flattenObject(material[key], `${key}.`, this.props.skippedKeys) }
+            : { ...obj, [key]: material[key] };
         });
       } else {
-        obj = this.flattenObject(material);
+        obj = this.flattenObject(material, '', this.props.skippedKeys);
       }
 
       if (this.props.decodeData) {

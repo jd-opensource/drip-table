@@ -287,5 +287,5 @@ export interface DripTableGeneratorProps<
   /**
    * 当新增或删除组合组件子组件事触发
    */
-  onColumnItemChanged?: (type: 'add' | 'remove', payload: Record<string, unknown>) => void;
+  onColumnItemChanged?: (type: 'add' | 'remove' | 'edit', payload: Record<string, unknown>) => void;
 }

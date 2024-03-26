@@ -35,6 +35,15 @@
   height: 352px;
   overflow: auto;
   overflow-x: hidden;
+
+  &.float {
+    position: absolute;
+    z-index: 2;
+    width: calc(100% - 20px);
+    background: #ffffff;
+    box-shadow: 0 0 4px -1px #000000b0;
+    border-radius: 2px;
+  }
 }
 
 .@{prefixCls}-component-title {
@@ -89,4 +98,10 @@
   position: absolute;
   width: calc(100% - 20px);
   bottom: 6px;
+}
+
+.@{prefixCls}-sub-component-title {
+  color: #8e8e8e;
+  margin-top: 8px;
+  font-size: 12px;
 }

@@ -7,6 +7,7 @@ import inputNumber from './input-number';
 import links from './links';
 import image from './picture';
 import popUpPage from './pop-up-page';
+import popover from './popover';
 import renderHtml from './render-html';
 import renderHtmlRemote from './render-html-remote';
 import richText from './rich-text';
@@ -27,6 +28,7 @@ const baseComponentList: DripTableComponentAttrConfig[] = [
   inputNumber,
   switchConfig,
   icon,
+  popover,
 ];
 
 const containerComponentList: DripTableComponentAttrConfig[] = [

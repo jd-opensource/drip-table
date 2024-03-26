@@ -61,6 +61,9 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
   if (component['ui:type'] === 'group') {
     options.items = [null, null];
   }
+  if (component['ui:type'] === 'icon') {
+    options.icon = 'HomeOutlined';
+  }
   const columnSchema: DTGTableConfig['columns'][number] = {
     ...filterAttributes(additionalProps, ['dataIndexMode', 'title']),
     key: `${component['ui:type']}_${mockId()}`,

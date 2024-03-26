@@ -1,0 +1,193 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+import './index.less';
+
+import { SwitcherOutlined } from '@ant-design/icons';
+import { Dropdown, Popover, Row, Tooltip } from 'antd';
+import classNames from 'classnames';
+import {
+  DripTableBuiltInColumnSchema,
+  DripTableExtraOptions,
+  DripTableProps,
+} from 'drip-table';
+import React from 'react';
+
+import { GeneratorContext } from '@/context';
+import { DTGTableConfig } from '@/context/table-configs';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+
+import ComponentsSelector from '../components-selector';
+import CellComponent from './cell';
+import { CommonCellProps } from './common';
+
+export interface PopoverCellProps<
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCellProps<RecordType, ExtraOptions> {
+  column: DripTableBuiltInColumnSchema;
+  onChangeColumnItem: (key: 'popover' | 'content', column: DripTableBuiltInColumnSchema, tableIndex: number, path?: number[]) => void;
+  // 对应表格配置信息
+  tableConfig: DTGTableConfig;
+  customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
+  customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
+  customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
+  mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
+  dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
+  onAddColumnItem: (path: number[], column: DripTableBuiltInColumnSchema, tableIndex: number, type: 'content' | 'popover') => void;
+  onRemoveColumnItem: (path: number[], columnIndex: number, tableId: string, type?: 'content' | 'popover') => void;
+  onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
+}
+
+const PopoverCell = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCellProps<RecordType, ExtraOptions>) => {
+  const [dropDown, setDropDown] = React.useState(false);
+  const [popoverDropDown, setPopoverDropDown] = React.useState(false);
+
+  if (props.column.component === 'popover') {
+    const options = props.column.options;
+    return (
+      <GeneratorContext.Consumer>
+        { ({ currentComponentID, setState }) => (
+          <Popover
+            content={(
+              <div
+                className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
+                  checked: options.popover.key === currentComponentID,
+                })}
+                style={{ position: 'relative' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setState({
+                    currentComponentType: options.popover.key === currentComponentID ? void 0 : 'popover',
+                    currentComponentID: options.popover.key === currentComponentID ? void 0 : options.popover.key,
+                    currentColumnID: props.column.key,
+                    currentTableID: props.tableConfig.tableId,
+                    drawerType: 'column-item',
+                  });
+                  props.onClick?.('column-item', {
+                    currentComponentType: options.popover.key === currentComponentID ? void 0 : 'popover',
+                    currentComponentID: options.popover.key === currentComponentID ? void 0 : options.popover.key,
+                    currentColumnID: props.column.key,
+                    currentTableID: props.tableConfig.tableId,
+                    tableConfig: props.tableConfig,
+                  });
+                }}
+              >
+                { options.popover.key === currentComponentID && (
+                <Dropdown
+                  placement="bottomRight"
+                  trigger={['click']}
+                  open={popoverDropDown}
+                  onOpenChange={(open) => { if (!open) { setPopoverDropDown(false); } }}
+                  dropdownRender={() => (
+                    <ComponentsSelector
+                      open={popoverDropDown}
+                      tableId={props.tableConfig.tableId}
+                      showFilter
+                      customComponentPanel={props.customComponentPanel}
+                      customColumnAddPanel={props.customColumnAddPanel}
+                      onClose={() => setPopoverDropDown(false)}
+                      onConfirm={(column, tableIndex) => {
+                        props.onChangeColumnItem('popover', column as DripTableBuiltInColumnSchema, tableIndex);
+                      }}
+                    />
+                  )}
+                >
+                  <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
+                    <Tooltip title="点击更换组件">
+                      <SwitcherOutlined onClick={() => setPopoverDropDown(true)} />
+                    </Tooltip>
+                  </div>
+                </Dropdown>
+                ) }
+                <CellComponent
+                  {...props}
+                  column={options.popover}
+                  onAddColumnItem={(path, column, tableIndex) => {
+                    props.onAddColumnItem(path, column, tableIndex, 'popover');
+                  }}
+                  onRemoveColumnItem={(path, columnIndex, tableId) => {
+                    props.onRemoveColumnItem(path, columnIndex, tableId, 'popover');
+                  }}
+                />
+              </div>
+        )}
+            trigger={options.trigger}
+            placement={options.placement}
+          >
+            <Row
+              className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
+                checked: options.content.key === currentComponentID,
+              })}
+              style={{ padding: '4px', position: 'relative' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setState({
+                  currentComponentType: options.content.key === currentComponentID ? void 0 : 'content',
+                  currentComponentID: options.content.key === currentComponentID ? void 0 : options.content.key,
+                  currentColumnID: props.column.key,
+                  currentTableID: props.tableConfig.tableId,
+                  drawerType: 'column-item',
+                });
+                props.onClick?.('column-item', {
+                  currentComponentType: options.content.key === currentComponentID ? void 0 : 'content',
+                  currentComponentID: options.content.key === currentComponentID ? void 0 : options.content.key,
+                  currentColumnID: props.column.key,
+                  currentTableID: props.tableConfig.tableId,
+                  tableConfig: props.tableConfig,
+                });
+              }}
+            >
+              { options.content.key === currentComponentID && (
+              <Dropdown
+                placement="bottomRight"
+                trigger={['click']}
+                open={dropDown}
+                onOpenChange={(open) => { if (!open) { setDropDown(false); } }}
+                dropdownRender={() => (
+                  <ComponentsSelector
+                    open={dropDown}
+                    tableId={props.tableConfig.tableId}
+                    showFilter
+                    customComponentPanel={props.customComponentPanel}
+                    customColumnAddPanel={props.customColumnAddPanel}
+                    onClose={() => setDropDown(false)}
+                    onConfirm={(column, tableIndex) => {
+                      props.onChangeColumnItem('content', column as DripTableBuiltInColumnSchema, tableIndex);
+                    }}
+                  />
+                )}
+              >
+                <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
+                  <Tooltip title="点击更换组件">
+                    <SwitcherOutlined onClick={() => setDropDown(true)} />
+                  </Tooltip>
+                </div>
+              </Dropdown>
+              ) }
+              <CellComponent
+                {...props}
+                column={options.content}
+                onAddColumnItem={(path, column, tableIndex) => {
+                  props.onAddColumnItem(path, column, tableIndex, 'content');
+                }}
+                onRemoveColumnItem={(path, columnIndex, tableId) => {
+                  props.onRemoveColumnItem(path, columnIndex, tableId, 'content');
+                }}
+              />
+            </Row>
+          </Popover>
+        ) }
+      </GeneratorContext.Consumer>
+    );
+  }
+  return null;
+};
+
+export default PopoverCell;
