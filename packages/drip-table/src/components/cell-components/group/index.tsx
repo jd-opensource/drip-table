@@ -50,7 +50,10 @@ export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnS
   /**
    * 每个栅格栏的配置
    */
-  items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[];
+  items: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null)[] | {
+    style?: React.CSSProperties;
+    schema: (DripTableBuiltInColumnSchema<CustomColumnSchema> | CustomColumnSchema | null);
+  }[];
 }>;
 
 interface DTCGroupProps<
@@ -82,29 +85,34 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     },
   };
 
-  public renderCell(row: number, col: number) {
-    const { record, recordIndex, renderSchema } = this.props;
-    const schema = this.props.schema;
-    const schemaItems = schema.options.items ?? [];
-    let index = 0;
-    for (let i = 0; i < row; i++) {
-      index += schema.options.layout[i];
-    }
-    index += col;
-    const schemaItem = schemaItems[index];
-    return schemaItem ? renderSchema(schemaItem, record, recordIndex) : null;
+  private get rowItems(): {
+    style?: React.CSSProperties;
+    schema: (DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'> | null);
+  }[][] {
+    const options = this.props.schema.options;
+    const items = options.items.map((item) => {
+      if (!item || 'component' in item) {
+        return { schema: item };
+      }
+      return item;
+    });
+    let startIndex = 0;
+    return options.layout.map((columnLength) => {
+      const columnItems = items.slice(startIndex, startIndex + columnLength);
+      startIndex += columnLength;
+      return columnItems;
+    });
   }
 
   public render() {
+    const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
-    const rowLength = options.layout?.length;
-    const rows = [...Array.from({ length: rowLength }).keys()];
     return (
       <div style={{ wordBreak: 'break-word' }}>
         {
-          rows.map((row, index) => (
+          this.rowItems.map((columnItems, rowIndex) => (
             <Row
-              key={index}
+              key={rowIndex}
               style={{
                 marginTop: options.gutter?.[1],
                 marginBottom: options.gutter?.[1],
@@ -114,20 +122,22 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               align={options.verticalAlign}
               wrap={options.wrap}
             >
-              { options.layout[index]
-              && [...Array.from({ length: options.layout[index] || 1 }).keys()]
-                .map(col => (
-                  <Col
-                    key={col}
-                    gutter={options.gutter}
-                    style={{
-                      ...col ? void 0 : { marginLeft: 0 },
-                      wordBreak: 'break-word',
-                    }}
-                  >
-                    { this.renderCell(Number(row), Number(col)) }
-                  </Col>
-                )) }
+              {
+                columnItems
+                  .map((item, columnIndex) => (
+                    <Col
+                      key={columnIndex}
+                      gutter={options.gutter}
+                      style={{
+                        ...columnIndex ? void 0 : { marginLeft: 0 },
+                        wordBreak: 'break-word',
+                        ...item.style,
+                      }}
+                    >
+                      { item.schema ? renderSchema(item.schema, record, recordIndex) : null }
+                    </Col>
+                  ))
+              }
             </Row>
           ))
         }

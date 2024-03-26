@@ -94,16 +94,17 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
                     const componentIndex = getIndex(options.layout, rowIndex, colIndex);
                     const itemColumn = options.items[componentIndex] ?? null;
+                    const itemColumnSchema = itemColumn && 'component' in itemColumn ? itemColumn : itemColumn?.schema;
                     return (
                       <GeneratorContext.Consumer>
                         { ({ currentComponentPath, currentComponentID, setState }) => {
-                          const isCurrentItem = itemColumn && itemColumn.key === currentComponentID && (currentComponentPath || []).join(',') === [...props.path, componentIndex].join(',');
+                          const isCurrentItem = itemColumnSchema && itemColumnSchema.key === currentComponentID && (currentComponentPath || []).join(',') === [...props.path, componentIndex].join(',');
                           return (
                             <Col
                               key={colIndex}
                               className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
                                 checked: isCurrentItem,
-                                empty: !itemColumn,
+                                empty: !itemColumnSchema,
                               })}
                               style={{
                                 padding: `${gutter[0]}px ${gutter[1]}px`,
@@ -115,14 +116,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                 setState({
                                   currentTableID: props.tableConfig.tableId,
                                   currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                  currentComponentID: isCurrentItem ? void 0 : itemColumn?.key,
+                                  currentComponentID: isCurrentItem ? void 0 : itemColumnSchema?.key,
                                   currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
                                   drawerType: isCurrentItem ? void 0 : 'column-item',
                                 });
                                 props.onClick?.('column-item', {
                                   currentTableID: props.tableConfig.tableId,
                                   currentColumnID: props.tableConfig.columns[props.columnIndex].key,
-                                  currentComponentID: isCurrentItem ? void 0 : itemColumn?.key,
+                                  currentComponentID: isCurrentItem ? void 0 : itemColumnSchema?.key,
                                   currentComponentPath: isCurrentItem ? [] : [...props.path, componentIndex],
                                   tableConfig: props.tableConfig,
                                 });
@@ -153,8 +154,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                                   }}
                                 />
                               ) }
-                              { itemColumn
-                                ? <TableCell {...props} column={itemColumn} path={[...props.path, componentIndex]} />
+                              { itemColumnSchema
+                                ? <TableCell {...props} column={itemColumnSchema} path={[...props.path, componentIndex]} />
                                 : (
                                   <Dropdown
                                     placement="bottomRight"
