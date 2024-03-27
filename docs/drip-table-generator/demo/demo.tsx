@@ -7,7 +7,7 @@
 
 import './demo.module.less';
 
-import * as Icons from '@ant-design/icons';
+import * as AntIcons from '@ant-design/icons';
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import DripTableGenerator from 'drip-table-generator';
@@ -19,6 +19,10 @@ import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '.
 import components from './component-settings';
 import { CustomGlobalConfigPanel } from './custom-global-settings';
 import TextComponent, { TextColumnSchema } from './text-component';
+
+const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ...Icons } = AntIcons;
+
+console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
 const Demo = () => (
   <React.Fragment>
