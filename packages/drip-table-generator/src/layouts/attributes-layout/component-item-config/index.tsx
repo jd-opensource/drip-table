@@ -19,7 +19,7 @@ import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getColumnItemConfigs, getComponentsConfigs } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
-import { getColumnItemByPath, getColumnItemByType, updateColumnItemByPath, updateColumnItemByType } from '../utils';
+import { getColumnItemByPath, updateColumnItemByPath } from '../utils';
 
 interface ComponentItemConfigFormProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -45,7 +45,7 @@ const ComponentItemConfigForm = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentItemConfigFormProps<RecordType, ExtraOptions>) => {
-  const { currentColumnID, currentComponentPath, currentComponentType, currentTableID, previewDataSource } = React.useContext(GeneratorContext);
+  const { currentColumnID, currentComponentPath, currentTableID, previewDataSource } = React.useContext(GeneratorContext);
 
   const allComponentsConfigs = React.useMemo(() => getComponentsConfigs('', props.customComponentPanel), [props.customComponentPanel]);
 
@@ -142,11 +142,8 @@ const ComponentItemConfigForm = <
         const tableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
         const currentColumn = tableConfigs[tableIndex]?.columns.find(item => item.key === currentColumnID);
         let currentColumnItem;
-        if (props.containerType === 'group') {
+        if (props.containerType === 'group' || props.containerType === 'popover') {
           currentColumnItem = currentColumn ? getColumnItemByPath(currentColumn, currentComponentPath || []) : void 0;
-        } else if (props.containerType === 'popover') {
-          // GET Popover or Content
-          currentColumnItem = currentColumn ? getColumnItemByType(currentColumn, currentComponentType) : void 0;
         }
         if (!currentColumnItem || !currentColumn) {
           return errorBoundary('请选择要载入的组件');
@@ -168,11 +165,8 @@ const ComponentItemConfigForm = <
               const columns = [...tableConfigs[tableIndex].columns];
               const columnSchema = Object.assign({}, currentColumnItem, data);
               const index = columns.findIndex(item => item.key === currentColumn.key);
-              if (props.containerType === 'group') {
+              if (props.containerType === 'group' || props.containerType === 'popover') {
                 const newColumn = updateColumnItemByPath(columns[index], currentComponentPath || [], columnSchema);
-                columns[index] = newColumn;
-              } else if (props.containerType === 'popover' && currentComponentType) {
-                const newColumn = updateColumnItemByType(columns[index], currentComponentType, columnSchema);
                 columns[index] = newColumn;
               }
               setTableColumns(columns, tableIndex);

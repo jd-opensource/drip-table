@@ -22,7 +22,7 @@ import { getComponentsConfigs } from '../utils';
 import ComponentConfigForm from './component-configs';
 import ComponentItemConfigForm from './component-item-config';
 import GlobalConfigForm from './global-configs';
-import { getColumnItemByPath, getColumnItemByType } from './utils';
+import { getColumnItemByPath } from './utils';
 
 const AttributesLayout = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -44,15 +44,13 @@ const AttributesLayout = <
 
   return (
     <GeneratorContext.Consumer>
-      { ({ currentTableID, currentColumnID, currentComponentPath, currentComponentType, drawerType, setState }) => {
+      { ({ currentTableID, currentColumnID, currentComponentPath, drawerType, setState }) => {
         const currentTable = tableConfigs.find(item => item.tableId === currentTableID);
         const currentColumn = currentTable?.columns.find(item => item.key === currentColumnID);
         const isContainerColumn = currentColumn && (currentColumn.component === 'group' || currentColumn.component === 'popover');
         let currentColumnItem;
-        if (currentColumn?.component === 'group') {
+        if (isContainerColumn) {
           currentColumnItem = currentComponentPath ? getColumnItemByPath(currentColumn, currentComponentPath) : null;
-        } else if (currentColumn?.component === 'popover') {
-          currentColumnItem = currentComponentType ? getColumnItemByType(currentColumn, currentComponentType) : null;
         }
         return (
           <div
@@ -72,7 +70,6 @@ const AttributesLayout = <
                 onClick={() => setState({
                   drawerType: void 0,
                   currentComponentPath: [],
-                  currentComponentType: void 0,
                   currentComponentID: void 0,
                 })}
               />

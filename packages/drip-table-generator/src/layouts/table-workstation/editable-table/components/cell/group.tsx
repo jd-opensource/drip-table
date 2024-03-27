@@ -33,14 +33,13 @@ export interface GroupCellProps<
   column: DripTableBuiltInColumnSchema;
   columnIndex: number;
   // 用来嵌套渲染
-  path: number[];
+  path: (number | 'content' | 'popover')[];
   // 对应表格配置信息
   tableConfig: DTGTableConfig;
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
   dataFields: DripTableGeneratorProps<RecordType, ExtraOptions>['dataFields'];
-  onAddColumnItem: (path: number[], column: DripTableBuiltInColumnSchema, tableIndex: number, type?: 'content' | 'popover') => void;
-  onRemoveColumnItem: (path: number[], columnIndex: number, tableId: string, type?: 'content' | 'popover') => void;
-  onChangeColumnItem: (key: 'popover' | 'content', column: DripTableBuiltInColumnSchema, tableIndex: number, path?: number[]) => void;
+  onAddColumnItem: (path: (number | 'content' | 'popover')[], column: DripTableBuiltInColumnSchema, tableIndex: number) => void;
+  onRemoveColumnItem: (path: (number | 'content' | 'popover')[], columnIndex: number, tableId: string) => void;
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
@@ -52,127 +51,118 @@ const GroupCell = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GroupCellProps<RecordType, ExtraOptions>) => {
-  const [dropDownIndex, setDropDownIndex] = React.useState([] as number[]);
+  const [dropDownIndex, setDropDownIndex] = React.useState([] as (number | 'content' | 'popover')[]);
+  const { currentComponentID } = React.useContext(GeneratorContext);
   const columnToRender = props.path.length > 0 ? getColumnItemByPath(props.column, props.path) : props.column;
   if (columnToRender?.component === 'group') {
     const options = columnToRender.options;
     const gutter = options.gutter ?? [0, 0];
     const rootColumn = props.path.length > 0 ? props.tableConfig.columns[props.path[0]] : props.column;
     return (
-      <GeneratorContext.Consumer>
-        { ({ currentComponentPath, currentComponentID, setState }) => (
-          <div
-            className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
-            onClick={e => e.stopPropagation()}
-            style={{
-              width: props.path.length === 0 ? 'max-content' : void 0,
-              minWidth: props.path.length === 0 ? props.column.width || 128 : void 0,
-              padding: 6,
-            }}
+      <div
+        className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: props.path.length === 0 ? 'max-content' : void 0,
+          minWidth: props.path.length === 0 ? props.column.width || 128 : void 0,
+          padding: 6,
+        }}
+      >
+        { options.layout.map((colLength, rowIndex) => (
+          <Row
+            key={rowIndex}
+            justify={options.horizontalAlign}
+            wrap={options.wrap}
+            className="jfe-drip-table-generator-workstation-table-cell-group-row"
+            style={{ minHeight: 120 / options.layout.length }}
           >
-            { options.layout.map((colLength, rowIndex) => (
-              <Row
-                key={rowIndex}
-                justify={options.horizontalAlign}
-                wrap={options.wrap}
-                className="jfe-drip-table-generator-workstation-table-cell-group-row"
-                style={{ minHeight: 120 / options.layout.length }}
-              >
-                { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
-                  const componentIndex = getIndex(options.layout, rowIndex, colIndex);
-                  const itemColumn = options.items[componentIndex] ?? null;
-                  const itemColumnSchema = itemColumn && 'component' in itemColumn ? itemColumn : itemColumn?.schema;
-                  const colChecked = currentComponentPath?.join(',') === [...props.path, componentIndex].join(',');
-                  return (
-                    <Col
-                      key={colIndex}
-                      className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
-                        checked: colChecked,
-                        empty: !itemColumnSchema,
-                      })}
-                      style={{
-                        padding: `${gutter[0]}px ${gutter[1]}px`,
-                        minWidth: `${100 / colLength}%`,
-                        width: 'max-content',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setState({
-                          currentComponentPath: colChecked ? [] : [...props.path, componentIndex],
-                          currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
-                          currentColumnID: rootColumn.key,
-                          currentTableID: props.tableConfig.tableId,
-                          drawerType: 'column-item',
-                        });
-                        props.onClick?.('column-item', {
-                          currentComponentPath: colChecked ? [] : [...props.path, componentIndex],
-                          currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
-                          currentColumnID: rootColumn.key,
-                          currentTableID: props.tableConfig.tableId,
-                          tableConfig: props.tableConfig,
-                        });
-                      }}
-                    >
-                      { itemColumnSchema && itemColumnSchema.key === currentComponentID && (
-                      <div className="jfe-drip-table-generator-workstation-table-cell-group-close danger">
-                        <Tooltip title="点击删除子组件">
-                          <CloseOutlined
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              props.onRemoveColumnItem([...props.path, componentIndex], props.columnIndex, props.tableConfig.tableId);
+            { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
+              const componentIndex = getIndex(options.layout, rowIndex, colIndex);
+              const itemColumn = options.items[componentIndex] ?? null;
+              const itemColumnSchema = itemColumn && 'component' in itemColumn ? itemColumn : itemColumn?.schema;
+              const colChecked = currentComponentID && currentComponentID === itemColumnSchema?.key;
+              return (
+                <Col
+                  key={colIndex}
+                  className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
+                    checked: colChecked,
+                    empty: !itemColumnSchema,
+                  })}
+                  style={{
+                    ...itemColumn && 'style' in itemColumn && 'schema' in itemColumn ? itemColumn.style : {},
+                    padding: `${gutter[0]}px ${gutter[1]}px`,
+                    minWidth: `${100 / colLength}%`,
+                    width: 'max-content',
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    props.onClick?.('column-item', {
+                      currentComponentPath: colChecked ? [] : [...props.path, componentIndex],
+                      currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
+                      currentColumnID: rootColumn.key,
+                      currentTableID: props.tableConfig.tableId,
+                      tableConfig: props.tableConfig,
+                    });
+                  }}
+                >
+                  { itemColumnSchema && itemColumnSchema.key === currentComponentID && (
+                  <div className="jfe-drip-table-generator-workstation-table-cell-group-close danger">
+                    <Tooltip title="点击删除子组件">
+                      <CloseOutlined
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          props.onRemoveColumnItem([...props.path, componentIndex], props.columnIndex, props.tableConfig.tableId);
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                  ) }
+                  { itemColumnSchema
+                    ? (
+                      <TableCell
+                        {...props}
+                        column={itemColumnSchema}
+                        path={[...props.path, componentIndex]}
+                      />
+                    )
+                    : (
+                      <Dropdown
+                        placement="bottomRight"
+                        trigger={['click']}
+                        open={dropDownIndex.join(',') === [...props.path, componentIndex].join(',')}
+                        onOpenChange={(open) => { if (!open) { setDropDownIndex([]); } }}
+                        dropdownRender={() => (
+                          <ComponentsSelector
+                            open={dropDownIndex.join(',') === [...props.path, componentIndex].join(',')}
+                            tableId={props.tableConfig.tableId}
+                            showFilter
+                            customComponentPanel={props.customComponentPanel}
+                            customColumnAddPanel={props.customColumnAddPanel}
+                            onClose={() => setDropDownIndex([])}
+                            onConfirm={(column, tableIndex) => {
+                              const path = [...props.path, componentIndex];
+                              props.onAddColumnItem(path, column as DripTableBuiltInColumnSchema, tableIndex);
                             }}
                           />
-                        </Tooltip>
-                      </div>
-                      ) }
-                      { itemColumnSchema
-                        ? (
-                          <TableCell
-                            {...props}
-                            column={itemColumnSchema}
-                            path={[...props.path, componentIndex]}
-                          />
-                        )
-                        : (
-                          <Dropdown
-                            placement="bottomRight"
-                            trigger={['click']}
-                            open={dropDownIndex.join(',') === [...props.path, componentIndex].join(',')}
-                            onOpenChange={(open) => { if (!open) { setDropDownIndex([]); } }}
-                            dropdownRender={() => (
-                              <ComponentsSelector
-                                open={dropDownIndex.join(',') === [...props.path, componentIndex].join(',')}
-                                tableId={props.tableConfig.tableId}
-                                showFilter
-                                customComponentPanel={props.customComponentPanel}
-                                customColumnAddPanel={props.customColumnAddPanel}
-                                onClose={() => setDropDownIndex([])}
-                                onConfirm={(column, tableIndex) => {
-                                  const path = [...props.path, componentIndex];
-                                  props.onAddColumnItem(path, column as DripTableBuiltInColumnSchema, tableIndex);
-                                }}
-                              />
-                            )}
-                          >
-                            <div
-                              className="jfe-drip-table-generator-workstation-table-cell-group-empty"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setDropDownIndex([...props.path, componentIndex]);
-                              }}
-                            >
-                              <span>点击添加子组件</span>
-                            </div>
-                          </Dropdown>
-                        ) }
-                    </Col>
-                  );
-                }) }
-              </Row>
-            )) }
-          </div>
-        ) }
-      </GeneratorContext.Consumer>
+                        )}
+                      >
+                        <div
+                          className="jfe-drip-table-generator-workstation-table-cell-group-empty"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDropDownIndex([...props.path, componentIndex]);
+                          }}
+                        >
+                          <span>点击添加子组件</span>
+                        </div>
+                      </Dropdown>
+                    ) }
+                </Col>
+              );
+            }) }
+          </Row>
+        )) }
+      </div>
     );
   }
 
