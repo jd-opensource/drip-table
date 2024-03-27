@@ -119,8 +119,8 @@ export default class DTCTag<RecordType extends DripTableRecordTypeBase> extends 
     const options = this.props.schema.options;
     const values = Array.isArray(this.value) ? this.value : [this.value];
     const maxDisplay = options.maxDisplay ?? 0;
-    const displayValues = maxDisplay >= 0 ? values.filter((_, i) => i < maxDisplay) : values;
-    const collapseValues = maxDisplay >= 0 ? values.filter((_, i) => i >= maxDisplay) : values;
+    const displayValues = maxDisplay > 0 ? values.filter((_, i) => i < maxDisplay) : values;
+    const collapseValues = maxDisplay > 0 ? values.filter((_, i) => i >= maxDisplay) : [];
     return (
       <div>
         { options.prefix || '' }

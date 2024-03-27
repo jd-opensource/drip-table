@@ -36,6 +36,17 @@ export default {
       default: '',
     },
     {
+      name: 'options.maxDisplay',
+      group: '属性',
+      required: false,
+      'ui:title': '最大展示数量',
+      'ui:type': 'number',
+      'ui:props': {
+        minimum: 0,
+      },
+      type: 'number',
+    },
+    {
       name: 'options.tagOptions',
       group: '属性',
       required: false,
@@ -132,7 +143,7 @@ export default {
         minimum: 0,
         maximum: 24,
       },
-      type: 'string',
+      type: 'number',
     },
     ...styleAttributesSchema,
   ]),
