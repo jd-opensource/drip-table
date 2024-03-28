@@ -8,7 +8,7 @@
 
 import './index.less';
 
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -107,9 +107,10 @@ const DripTableWrapper = React.forwardRef(<
             if (columnErrorMessage) {
               errorMessage = columnErrorMessage.replace(/^column/u, path);
             } else if (column.component === 'group') {
-              const items = column.options.items as (typeof column)[];
+              const items = column.options.items as (typeof column | { style: CSSProperties; schema: typeof column })[];
               for (const [index, item] of items.entries()) {
-                const message = validateColumnSchema(item, `${path ?? ''}/options/items/${index}`);
+                const itemSchema = item && 'schema' in item ? item.schema : item;
+                const message = validateColumnSchema(itemSchema, `${path ?? ''}/options/items/${index}`);
                 if (message) {
                   errorMessage = message;
                   break;
