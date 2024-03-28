@@ -30,7 +30,7 @@ export interface PopoverCellProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCellProps<RecordType, ExtraOptions> {
   column: DripTableBuiltInColumnSchema;
-  path?: (number | 'popover' | 'content')[];
+  path: (number | 'popover' | 'content')[];
   onChangeColumnItem: (path: (number | 'popover' | 'content')[], schema: DripTableBuiltInColumnSchema, tableIndex: number) => void;
   // 对应表格配置信息
   tableConfig: DTGTableConfig;
@@ -87,7 +87,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
                   customColumnAddPanel={props.customColumnAddPanel}
                   onClose={() => setPopoverDropDown(false)}
                   onConfirm={(column, tableIndex) => {
-                    props.onChangeColumnItem([...props.path ?? [], 'popover'], column as DripTableBuiltInColumnSchema, tableIndex);
+                    props.onChangeColumnItem(['popover'], column as DripTableBuiltInColumnSchema, tableIndex);
                   }}
                 />
               )}
@@ -106,11 +106,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
             <CellComponent
               {...props}
               column={options.popover}
+              path={[...props.path, 'popover']}
               onAddColumnItem={(path, column, tableIndex) => {
                 props.onAddColumnItem?.(['popover', ...path], column, tableIndex);
               }}
               onRemoveColumnItem={(path, columnIndex, tableId) => {
                 props.onRemoveColumnItem?.(['popover', ...path], columnIndex, tableId);
+              }}
+              onChangeColumnItem={(path, column, tableIndex) => {
+                props.onChangeColumnItem?.(['popover', ...path], column, tableIndex);
               }}
               onClick={(type, payload) => {
                 const path = payload.currentComponentPath as (number | 'popover' | 'content')[] | undefined;
@@ -156,7 +160,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
                 customColumnAddPanel={props.customColumnAddPanel}
                 onClose={() => setDropDown(false)}
                 onConfirm={(column, tableIndex) => {
-                  props.onChangeColumnItem([...props.path ?? [], 'content'], column as DripTableBuiltInColumnSchema, tableIndex);
+                  props.onChangeColumnItem(['content'], column as DripTableBuiltInColumnSchema, tableIndex);
                 }}
               />
             )}
@@ -175,11 +179,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
           <CellComponent
             {...props}
             column={options.content}
+            path={[...props.path, 'content']}
             onAddColumnItem={(path, column, tableIndex) => {
               props.onAddColumnItem?.(['content', ...path], column, tableIndex);
             }}
             onRemoveColumnItem={(path, columnIndex, tableId) => {
               props.onRemoveColumnItem?.(['content', ...path], columnIndex, tableId);
+            }}
+            onChangeColumnItem={(path, column, tableIndex) => {
+              props.onChangeColumnItem?.(['content', ...path], column, tableIndex);
             }}
             onClick={(type, payload) => {
               const path = payload.currentComponentPath as (number | 'popover' | 'content')[] | undefined;
