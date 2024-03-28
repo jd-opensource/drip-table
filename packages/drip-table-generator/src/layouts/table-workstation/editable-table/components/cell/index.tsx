@@ -54,8 +54,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     <TableConfigsContext.Consumer>
       { ({ setTableColumns }) => {
         const onChangeColumnItem: PopoverCellProps<RecordType, ExtraOptions>['onChangeColumnItem'] = (path, schema, tableIndex) => {
-          const newColumn = updateColumnItemByPath(props.column, path, schema);
           const newColumns = [...props.tableConfig.columns];
+          const newColumn = updateColumnItemByPath(newColumns[props.columnIndex], path, schema);
           newColumns.splice(props.columnIndex, 1, newColumn);
           setTableColumns(newColumns, tableIndex);
           props.onColumnItemChanged?.('edit', {
@@ -90,8 +90,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           setTableColumns(newColumns, tableIndex);
           props.onColumnItemChanged?.('remove', {
             currentTableID: props.tableConfig.tableId,
-            currentColumnID: props.column.key,
-            currentColumn: props.column,
+            currentColumnID: newColumn.key,
+            currentColumn: newColumn,
             currentComponentPath: path,
             tableConfig: props.tableConfig,
           });
