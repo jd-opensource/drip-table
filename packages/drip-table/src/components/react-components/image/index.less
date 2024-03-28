@@ -242,22 +242,37 @@
   cursor: not-allowed;
 }
 
-.@{prefixCls}-preview-switch-left-disabled>.anticon,
-.@{prefixCls}-preview-switch-right-disabled>.anticon,
-.@{prefixCls}-preview-switch-left-disabled:hover>.anticon,
-.@{prefixCls}-preview-switch-right-disabled:hover>.anticon {
+.@{prefixCls}-preview-switch-left-disabled>.@{prefixCls}-icon,
+.@{prefixCls}-preview-switch-right-disabled>.@{prefixCls}-icon,
+.@{prefixCls}-preview-switch-left-disabled:hover>.@{prefixCls}-icon,
+.@{prefixCls}-preview-switch-right-disabled:hover>.@{prefixCls}-icon {
   cursor: not-allowed;
 }
 
-.@{prefixCls}-preview-switch-left>.anticon,
-.@{prefixCls}-preview-switch-right>.anticon {
+.@{prefixCls}-preview-switch-left>.@{prefixCls}-icon,
+.@{prefixCls}-preview-switch-right>.@{prefixCls}-icon {
   font-size: 18px;
 }
 
 .@{prefixCls}-preview-switch-left {
   left: 8px;
+  font-size: 18px;
 }
 
 .@{prefixCls}-preview-switch-right {
   right: 8px;
+  font-size: 18px;
+}
+
+.@{prefixCls}-icon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -.125em;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
