@@ -19,12 +19,11 @@ import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
-import { getColumnItemByPath } from '@/layouts/attributes-layout/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import ComponentsSelector from '../components-selector';
+import CellComponent from './cell';
 import { CommonCellProps } from './common';
-import TableCell from './index';
 
 export interface GroupCellProps<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -43,6 +42,7 @@ export interface GroupCellProps<
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
+  onChangeColumnItem: (path: (number | 'popover' | 'content')[], schema: DripTableBuiltInColumnSchema, tableIndex: number) => void;
 }
 
 const getIndex = (layout: number[], rowIndex: number, colIndex: number) => layout.slice(0, rowIndex).reduce((prev, curr) => prev + curr, 0) + colIndex;
@@ -53,7 +53,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GroupCellProps<RecordType, ExtraOptions>) => {
   const [dropDownIndex, setDropDownIndex] = React.useState([] as (number | 'content' | 'popover')[]);
   const { currentComponentID } = React.useContext(GeneratorContext);
-  const columnToRender = props.path.length > 0 ? getColumnItemByPath(props.column, props.path) : props.column;
+  const columnToRender = 'schema' in props.column ? props.column.schema as DripTableBuiltInColumnSchema : props.column;
   if (columnToRender?.component === 'group') {
     const options = columnToRender.options;
     const gutter = options.gutter ?? [0, 0];
@@ -74,7 +74,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             justify={options.horizontalAlign}
             wrap={options.wrap}
             className="jfe-drip-table-generator-workstation-table-cell-group-row"
-            style={{ minHeight: 120 / options.layout.length }}
+            style={{ minHeight: 60 / options.layout.length }}
           >
             { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
               const componentIndex = getIndex(options.layout, rowIndex, colIndex);
@@ -111,7 +111,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       <CloseOutlined
                         onClick={(e) => {
                           e.stopPropagation();
-                          props.onRemoveColumnItem([...props.path, componentIndex], props.columnIndex, props.tableConfig.tableId);
+                          props.onRemoveColumnItem([componentIndex], props.columnIndex, props.tableConfig.tableId);
                         }}
                       />
                     </Tooltip>
@@ -119,10 +119,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   ) }
                   { itemColumnSchema
                     ? (
-                      <TableCell
+                      <CellComponent
                         {...props}
                         column={itemColumnSchema}
                         path={[...props.path, componentIndex]}
+                        onAddColumnItem={(path, column, tableIndex) => {
+                          props.onAddColumnItem?.([componentIndex, ...path], column, tableIndex);
+                        }}
+                        onRemoveColumnItem={(path, columnIndex, tableId) => {
+                          props.onRemoveColumnItem?.([componentIndex, ...path], columnIndex, tableId);
+                        }}
+                        onChangeColumnItem={(path, column, tableIndex) => {
+                          props.onChangeColumnItem?.([componentIndex, ...path], column, tableIndex);
+                        }}
+                        onClick={(type, payload) => {
+                          const path = payload.currentComponentPath as (number | 'popover' | 'content')[] | undefined;
+                          props.onClick?.(type, {
+                            ...payload,
+                            currentComponentPath: path ? [componentIndex, ...path] : void 0,
+                          });
+                        }}
                       />
                     )
                     : (
@@ -140,8 +156,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                             customColumnAddPanel={props.customColumnAddPanel}
                             onClose={() => setDropDownIndex([])}
                             onConfirm={(column, tableIndex) => {
-                              const path = [...props.path, componentIndex];
-                              props.onAddColumnItem(path, column as DripTableBuiltInColumnSchema, tableIndex);
+                              props.onAddColumnItem([componentIndex], column as DripTableBuiltInColumnSchema, tableIndex);
                             }}
                           />
                         )}

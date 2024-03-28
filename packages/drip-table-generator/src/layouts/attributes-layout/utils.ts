@@ -15,6 +15,9 @@ export const updateColumnItemByPath = (
   schema: DTGTableConfig['columns'][number] | null,
 ) => {
   const columnSchema = column && 'schema' in column ? cloneDeep(column.schema) as DTGTableConfig['columns'][number] : cloneDeep(column);
+  if (!columnSchema) {
+    return column;
+  }
   const [key, ...rest] = path;
   if (columnSchema.component === 'group') {
     if (!columnSchema.options.items) {
@@ -37,10 +40,10 @@ export const updateColumnItemByPath = (
       ? cloneDeep(schema)
       : updateColumnItemByPath(columnSchema.options[key] as DTGTableConfig['columns'][number], rest, schema);
   }
-  if ('component' in (column ?? {})) {
-    return columnSchema;
+  if ('schema' in (column ?? {})) {
+    return { ...column, schema: columnSchema };
   }
-  return { ...column, schema: columnSchema };
+  return columnSchema;
 };
 
 export const getColumnItemByPath = (column: DTGTableConfig['columns'][number], path: (number | 'popover' | 'content')[]) => {
