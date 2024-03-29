@@ -97,7 +97,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   onClick={(e) => {
                     e.stopPropagation();
                     props.onClick?.('column-item', {
-                      currentComponentPath: colChecked ? [] : [...props.path, componentIndex],
+                      currentComponentPath: colChecked ? [] : [componentIndex],
                       currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
                       currentColumnID: rootColumn.key,
                       currentTableID: props.tableConfig.tableId,

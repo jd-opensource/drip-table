@@ -63,9 +63,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
             style={{ position: 'relative' }}
             onClick={(e) => {
               e.stopPropagation();
-              const path = props.path ?? [];
               props.onClick?.('column-item', {
-                currentComponentPath: options.popover.key === currentComponentID ? void 0 : [...path, 'popover'],
+                currentComponentPath: options.popover.key === currentComponentID ? void 0 : ['popover'],
                 currentComponentID: options.popover.key === currentComponentID ? void 0 : options.popover.key,
                 currentColumnID: props.column.key,
                 currentTableID: props.tableConfig.tableId,
@@ -136,9 +135,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
           style={{ padding: '4px', position: 'relative' }}
           onClick={(e) => {
             e.stopPropagation();
-            const path = props.path ?? [];
             props.onClick?.('column-item', {
-              currentComponentPath: options.content.key === currentComponentID ? void 0 : [...path, 'content'],
+              currentComponentPath: options.content.key === currentComponentID ? void 0 : ['content'],
               currentComponentID: options.content.key === currentComponentID ? void 0 : options.content.key,
               currentColumnID: props.column.key,
               currentTableID: props.tableConfig.tableId,
