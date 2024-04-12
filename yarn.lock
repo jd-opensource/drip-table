@@ -13666,10 +13666,10 @@ rc-dialog@^9.0.2, rc-dialog@~9.0.0, rc-dialog@~9.0.2:
     rc-motion "^2.3.0"
     rc-util "^5.21.0"
 
-rc-dialog@~9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/rc-dialog/-/rc-dialog-9.1.0.tgz#6bf6fcc0453503b7643e54a5a445e835e3850649"
-  integrity sha512-5ry+JABAWEbaKyYsmITtrJbZbJys8CtMyzV8Xn4LYuXMeUx5XVHNyJRoqLFE4AzBuXXzOWeaC49cg+XkxK6kHA==
+rc-dialog@~9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/rc-dialog/-/rc-dialog-9.4.0.tgz#194c107d34cb36a56f1db4a49dc73f6d59eeae85"
+  integrity sha512-AScCexaLACvf8KZRqCPz12BJ8olszXOS4lKlkMyzDQHS1m0zj1KZMYgmMCh39ee0Dcv8kyrj8mTqxuLyhH+QuQ==
   dependencies:
     "@babel/runtime" "^7.10.1"
     "@rc-component/portal" "^1.0.0-8"
@@ -13707,17 +13707,17 @@ rc-field-form@~1.27.0:
     async-validator "^4.1.0"
     rc-util "^5.8.0"
 
-rc-image@^5.18.1:
-  version "5.18.1"
-  resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-5.18.1.tgz#829a5e879cdb000b87b12ba3c428e66da998ba29"
-  integrity sha512-xdr5zHpSJ6sGdV5oIkHWbttc21LlGKZZjWXVXxSS0sNmqSn97WzOKQBNrTA85UP7oBPPThZAGGGNmGnTkx2qYQ==
+rc-image@^7.6.0:
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-7.6.0.tgz#2867087b77c8595ea9eb37d18ca863e47904b191"
+  integrity sha512-tL3Rvd1sS+frZQ01i+tkeUPaOeFz2iG9/scAt/Cfs0hyCRVA/w0Pu1J/JxIX8blalvmHE0bZQRYdOmRAzWu4Hg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@rc-component/portal" "^1.0.2"
     classnames "^2.2.6"
-    rc-dialog "~9.1.0"
+    rc-dialog "~9.4.0"
     rc-motion "^2.6.2"
-    rc-util "^5.0.6"
+    rc-util "^5.34.1"
 
 rc-image@~5.13.0:
   version "5.13.0"
@@ -14209,6 +14209,14 @@ rc-util@^5.30.0:
   version "5.38.2"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.38.2.tgz#240da546b51ee838e616f7a2e3fcf62c753b0330"
   integrity sha512-yRGRPKyi84H7NkRSP6FzEIYBdUt4ufdsmXUZ7qM2H5qoByPax70NnGPkfo36N+UKUnUBj2f2Q2eUbwYMuAsIOQ==
+  dependencies:
+    "@babel/runtime" "^7.18.3"
+    react-is "^18.2.0"
+
+rc-util@^5.34.1:
+  version "5.39.1"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.39.1.tgz#7bca4fb55e20add0eef5c23166cd9f9e5f51a8a1"
+  integrity sha512-OW/ERynNDgNr4y0oiFmtes3rbEamXw7GHGbkbNd9iRr7kgT03T6fT0b9WpJ3mbxKhyOcAHnGcIoh5u/cjrC2OQ==
   dependencies:
     "@babel/runtime" "^7.18.3"
     react-is "^18.2.0"
