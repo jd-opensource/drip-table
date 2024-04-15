@@ -156,7 +156,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                             customColumnAddPanel={props.customColumnAddPanel}
                             onClose={() => setDropDownIndex([])}
                             onConfirm={(column, tableIndex) => {
-                              props.onAddColumnItem([componentIndex], column as DripTableBuiltInColumnSchema, tableIndex);
+                              const columnSchema = {
+                                ...column,
+                                style: { width: `${100 / colLength}%` },
+                              } as DripTableBuiltInColumnSchema;
+                              props.onAddColumnItem([componentIndex], columnSchema, tableIndex);
                             }}
                           />
                         )}

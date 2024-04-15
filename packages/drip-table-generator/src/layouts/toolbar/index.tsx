@@ -8,12 +8,12 @@
 import './index.less';
 
 import { ArrowLeftOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
-import { DripTableExtraOptions } from 'drip-table';
+import { Button, message, Tooltip } from 'antd';
+import { DripTableColumnSchema, DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
-import { TableConfigsContext } from '@/context/table-configs';
+import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -39,19 +39,47 @@ function generateDropdownProps(props: {
   };
 }
 
-const ModeSwitch = (props: { style?: React.CSSProperties; disabled?: boolean }) => (
-  <GeneratorContext.Consumer>
-    { ({ mode, setState }) => (
-      <Button
-        style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
-        onClick={() => setState({ mode: mode === 'edit' ? 'preview' : 'edit', drawerType: void 0 })}
-        disabled={props.disabled}
-      >
-        { mode === 'edit' ? '预览' : '编辑' }
-      </Button>
-    ) }
-  </GeneratorContext.Consumer>
-);
+const ModeSwitch = (props: { style?: React.CSSProperties; disabled?: boolean }) => {
+  const { tableConfigs } = React.useContext(TableConfigsContext);
+  const hasNullItem = (configs: DTGTableConfig[]) => {
+    const hasNullColumn = (columns: (DripTableColumnSchema | null)[]): boolean => {
+      for (const column of columns) {
+        if (column === null) {
+          return true;
+        }
+        if (column.component === 'group' && column.options?.items && hasNullColumn(column.options.items as (DripTableColumnSchema | null)[])) {
+          return true;
+        }
+      }
+      return false;
+    };
+    for (const config of configs) {
+      if (hasNullColumn(config.columns)) {
+        return true;
+      }
+    }
+    return false;
+  };
+  return (
+    <GeneratorContext.Consumer>
+      { ({ mode, setState }) => (
+        <Button
+          style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
+          onClick={() => {
+            if (hasNullItem(tableConfigs)) {
+              message.warning('组合组件的子组件未设置完成，请设置完成后预览');
+              return;
+            }
+            setState({ mode: mode === 'edit' ? 'preview' : 'edit', drawerType: void 0 });
+          }}
+          disabled={props.disabled}
+        >
+          { mode === 'edit' ? '预览' : '编辑' }
+        </Button>
+      ) }
+    </GeneratorContext.Consumer>
+  );
+};
 
 const Toolbar = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,

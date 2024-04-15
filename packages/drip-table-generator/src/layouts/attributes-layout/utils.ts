@@ -26,12 +26,12 @@ export const updateColumnItemByPath = (
     const items = columnSchema.options.items as DTGTableConfig['columns'][number];
     if (rest.length === 0) {
       const newSchema = cloneDeep(schema);
-      items[key] = items[key] && 'component' in items[key]
-        ? newSchema
-        : {
+      items[key] = items[key] && 'schema' in items[key]
+        ? {
           ...items[key],
           schema: newSchema,
-        };
+        }
+        : newSchema;
     } else {
       items[key] = updateColumnItemByPath(items[key], rest, schema);
     }
@@ -40,7 +40,7 @@ export const updateColumnItemByPath = (
       ? cloneDeep(schema)
       : updateColumnItemByPath(columnSchema.options[key] as DTGTableConfig['columns'][number], rest, schema);
   }
-  if ('schema' in (column ?? {})) {
+  if (column && 'schema' in column) {
     return { ...column, schema: columnSchema };
   }
   return columnSchema;

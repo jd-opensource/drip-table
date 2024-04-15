@@ -71,12 +71,12 @@ export default class DTCImage<RecordType extends DripTableRecordTypeBase> extend
     const options = this.props.schema.options;
     if (this.props.preview) {
       return (
-        <img
-          style={{
-            width: options.imageWidth,
-            height: options.imageHeight,
-          }}
-          src={this.value || options.imagePlaceholder || this.DEFAULT_IMAGE}
+        <Image
+          width={options.imageWidth}
+          height={options.imageHeight}
+          src={this.value}
+          preview={false}
+          fallback={options.imagePlaceholder || this.DEFAULT_IMAGE}
         />
       );
     }
