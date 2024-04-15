@@ -439,7 +439,10 @@ export const mockData: DripTableRecordTypeWithSubtable<SampleRecordType, Subtabl
   {
     id: 1,
     name: '商品一',
-    pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+    pictureUrl: [
+      'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+      'https://img11.360buyimg.com/n1/jfs/t1/159786/31/30814/90307/6343dea0E9d5574ae/12d488e175b2525f.jpg.avif',
+    ],
     description: '商品是为了出售而生产的劳动成果',
     status: 'onSale',
     price: 7999,

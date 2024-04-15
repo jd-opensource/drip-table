@@ -90,14 +90,14 @@ const DripTableWrapper = React.forwardRef(<
         const validateColumnSchema = (column: (typeof rtp.schema.columns)[number], path: string = 'column'): string | null => {
           let errorMessage: string | null = null;
           let schema: SchemaObject | undefined;
-          const BuiltInComponent = DripTableBuiltInComponents[column.component];
+          const BuiltInComponent = DripTableBuiltInComponents[column?.component];
           if (BuiltInComponent) {
             schema = BuiltInComponent.schema;
             if (!schema) {
               errorMessage = `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
             }
           } else {
-            const [libName, componentName] = column.component.split('::');
+            const [libName, componentName] = column?.component.split('::');
             if (libName && componentName) {
               schema = rtp.components?.[libName]?.[componentName]?.schema;
             }
