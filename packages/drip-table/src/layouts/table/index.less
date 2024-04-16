@@ -303,14 +303,42 @@
       }
     }
 
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tbody > tr:last-child > td,
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tfoot > tr:last-child > td {
+      &:not(.@{prefixCls}--slot) {
+        &:first-child {
+          border-bottom-left-radius: var(--drip-table-border-radius);
+        }
+
+        &:last-child {
+          border-bottom-right-radius: var(--drip-table-border-radius);
+        }
+      }
+    }
+
     & > .@{prefixCls}-container > .@{prefixCls}-content > table,
     & > .@{prefixCls}-container > .@{prefixCls}-header > table {
       border-top: 1px solid #f0f0f0;
+      border-top-left-radius: var(--drip-table-border-radius);
+      border-top-right-radius: var(--drip-table-border-radius);
     }
 
     & > .@{prefixCls}-footer {
       border: 1px solid #f0f0f0;
       border-top: 0;
+    }
+
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tfoot > tr > th,
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > thead > tr > th {
+      &:not(.@{prefixCls}--slot) {
+        &:first-child {
+          border-top-left-radius: var(--drip-table-border-radius);
+        }
+
+        &:last-child {
+          border-top-right-radius: var(--drip-table-border-radius);
+        }
+      }
     }
   }
 

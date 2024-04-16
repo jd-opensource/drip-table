@@ -209,7 +209,12 @@ export interface DripTableSchema<
   /**
    * 是否展示表格边框
    */
-  bordered?: boolean;
+  bordered?: boolean | {
+    /**
+     * 边框圆角
+     */
+    radius?: string;
+  };
   /**
    * 是否显示表头，注意：这是表格标题栏所在头部 (<thead>) 而不是 drip-table 自定义的头部
    */

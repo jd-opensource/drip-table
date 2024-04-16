@@ -245,7 +245,17 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         style: DRIP_TABLE_CSS_SCHEMA,
         innerClassName: { type: 'string' },
         innerStyle: DRIP_TABLE_CSS_SCHEMA,
-        bordered: { type: 'boolean' },
+        bordered: {
+          anyOf: [
+            { type: 'boolean' },
+            {
+              type: 'object',
+              properties: {
+                radius: { type: 'string' },
+              },
+            },
+          ],
+        },
         showHeader: { type: 'boolean' },
         header: {
           anyOf: [

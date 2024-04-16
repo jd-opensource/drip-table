@@ -1770,7 +1770,15 @@ const TableLayout = <
               [`${prefixCls}--bordered`]: tableProps.schema.bordered,
               [`${prefixCls}--stripe`]: tableProps.schema.stripe,
             })}
-            style={tableProps.schema.innerStyle}
+            style={
+              Object.assign(
+                {},
+                tableProps.schema.innerStyle,
+                {
+                  '--drip-table-border-radius': (typeof tableProps.schema.bordered === 'object' && tableProps.schema.bordered.radius) ?? '0px',
+                },
+              )
+            }
             rowKey="key"
             columns={rcTableColumns}
             data={rcTableDataSource}
