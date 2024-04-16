@@ -184,7 +184,7 @@ const hookColumRender = <
               ref={(el) => {
                 const tdEl = el?.parentElement;
                 if (tdEl) {
-                  const context = { props: { record: row.record, recordIndex: row.index } };
+                  const context = { props: { record: row.record, recordIndex: row.index, ext: extraProps.ext } };
                   const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
                   tdEl.dataset.tableUuid = tableInfo.uuid;
                   tdEl.dataset.columnKey = columnSchema.key;
@@ -239,7 +239,7 @@ export const columnRenderGenerator = <
       ds[index] = rec;
       extraProps.onDataSourceChange?.(ds, tableInfo);
     };
-    type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number }) => unknown;
+    type PropsTranslator = (rawValue: unknown, context: { value: unknown; record: RecordType; recordIndex: number; ext: typeof extraProps.ext }) => unknown;
     const generatePropsTranslator = (translatorSchema: unknown): PropsTranslator => {
       if (translatorSchema === void 0) {
         return (v, c) => v;
@@ -266,8 +266,9 @@ export const columnRenderGenerator = <
         const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
         const record = row.record;
         const recordIndex = row.index;
-        const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
-        const translatorContext = { value, record, recordIndex };
+        const ext = extraProps.ext;
+        const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex, ext });
+        const translatorContext = { value, record, recordIndex, ext };
         if (hiddenTranslator(false, translatorContext)) {
           return null;
         }
@@ -279,7 +280,7 @@ export const columnRenderGenerator = <
             value={value}
             indexValue={(dataIndex, defaultValue) => {
               const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
-              return dataTranslator(v, { value: v, record, recordIndex });
+              return dataTranslator(v, { value: v, record, recordIndex, ext });
             }}
             renderSchema={(sc, r, ri): React.ReactNode => {
               const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
@@ -306,8 +307,9 @@ export const columnRenderGenerator = <
           const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
           const record = row.record;
           const recordIndex = row.index;
-          const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex });
-          const translatorContext = { value, record, recordIndex };
+          const ext = extraProps.ext;
+          const value = dataTranslator(rawValue, { value: rawValue, record, recordIndex, ext });
+          const translatorContext = { value, record, recordIndex, ext };
           if (hiddenTranslator(false, translatorContext)) {
             return null;
           }
@@ -319,7 +321,7 @@ export const columnRenderGenerator = <
               value={value}
               indexValue={(dataIndex, defaultValue) => {
                 const v = indexValue(row.record, dataIndex, defaultValue ?? columnSchema.defaultValue);
-                return dataTranslator(v, { value: v, record, recordIndex });
+                return dataTranslator(v, { value: v, record, recordIndex, ext });
               }}
               renderSchema={(sc, r, ri): React.ReactNode => {
                 const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
@@ -430,16 +432,17 @@ interface VirtualCellItemData {
   dataSource: RcTableRecordType<DripTableRecordTypeBase>[];
   rowKey: React.Key;
   selectedRowKeys: IDripTableContext['state']['selectedRowKeys'];
+  ext: unknown;
 }
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
-  const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys } = data;
+  const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys, ext } = data;
   const columnBaseSchema = columnsBaseSchema[columnIndex];
   const column = columns[columnIndex];
   const row = dataSource[rowIndex];
   const recKey = row.record[rowKey] as React.Key;
   const selected = selectedRowKeys.includes(recKey);
-  const context = { props: { record: row.record, recordIndex: row.index } };
+  const context = { props: { record: row.record, recordIndex: row.index, ext } };
   const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
   const styleText = stringifyCSS(Object.assign(
     { 'text-align': columnBaseSchema.align },
@@ -1589,6 +1592,7 @@ const TableLayout = <
             dataSource: rcTableDataSource,
             rowKey,
             selectedRowKeys: tableState.selectedRowKeys,
+            ext: tableProps.ext,
           }}
           className={`${prefixCls}-virtual-list`}
           columnCount={rcTableColumns.length}

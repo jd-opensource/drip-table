@@ -41,7 +41,7 @@ const HeaderCell = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<ExtraOptions>) => {
-  const { state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
   const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
   const [filterDisplay, setFilterDisplay] = React.useState<NonNullable<IDripTableContext['state']['filters'][string]>>((typeof dataIndex === 'string' && tableState.filters[dataIndex]) || []);
@@ -129,6 +129,7 @@ const HeaderCell = <
                                       rightRecord: b,
                                       leftValue: indexValue(a, columnSchema.dataIndex),
                                       rightValue: indexValue(b, columnSchema.dataIndex),
+                                      ext: tableProps.ext,
                                     },
                                   }, 0),
                                 },
@@ -168,6 +169,7 @@ const HeaderCell = <
                                       rightRecord: b,
                                       leftValue: indexValue(a, columnSchema.dataIndex),
                                       rightValue: indexValue(b, columnSchema.dataIndex),
+                                      ext: tableProps.ext,
                                     },
                                   }, 0),
                                 },

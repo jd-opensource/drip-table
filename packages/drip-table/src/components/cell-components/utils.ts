@@ -35,9 +35,10 @@ export const stringify = (v: unknown) => {
  * @param text 模板字符串
  * @param record 填充数据源对象
  * @param recordIndex 填充数据源下标
+ * @param ext 透传自定义额外数据
  * @returns 最终字符串
  */
-export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex?: number) => {
+export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex: number, ext: unknown) => {
   let value = '';
   if (!mode || mode === 'plain') {
     value = stringify(text);
@@ -51,6 +52,7 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
             props: {
               record,
               recordIndex,
+              ext,
             },
             rec: record,
           });
@@ -66,6 +68,7 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
         props: {
           record,
           recordIndex,
+          ext,
         },
         rec: record,
       }));

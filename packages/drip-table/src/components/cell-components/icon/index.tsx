@@ -68,6 +68,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
         props: {
           value: this.value,
           record: this.props.record,
+          ext: this.props.ext,
         },
       }, false);
     }
@@ -119,6 +120,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
         props: {
           value: this.value,
           record: this.props.record,
+          ext: this.props.ext,
         },
       }, '');
       return <RichText html={html ?? ''} />;

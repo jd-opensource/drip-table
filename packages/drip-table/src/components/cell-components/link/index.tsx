@@ -124,7 +124,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
   );
 
   private formatLabel(label?: string) {
-    return finalizeString('pattern', label || '', this.props.record, this.props.recordIndex);
+    return finalizeString('pattern', label || '', this.props.record, this.props.recordIndex, this.props.ext);
   }
 
   private renderToolTip = (template?: string) => {
@@ -135,7 +135,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
           { this.props.preview
             ? this.renderInfoCircle()
             : (
-              <Tooltip title={finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex)}>
+              <Tooltip title={finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex, this.props.ext)}>
                 { this.renderInfoCircle() }
               </Tooltip>
             ) }
@@ -154,7 +154,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       }
       return false;
     }
-    if (options.mode === 'single' && (finalizeString('pattern', options.href || '', this.props.record, this.props.recordIndex) || options.event)) {
+    if (options.mode === 'single' && (finalizeString('pattern', options.href || '', this.props.record, this.props.recordIndex, this.props.ext) || options.event)) {
       return true;
     }
     return false;
@@ -166,6 +166,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         props: {
           value: this.props.value,
           record: this.props.record,
+          ext: this.props.ext,
         },
         rec: this.props.record,
       }, false);
@@ -221,7 +222,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                 <a
-                  href={finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex)}
+                  href={finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
                   onClick={this.props.preview ? e => e.preventDefault() : void 0}
                   target={config.target}
                 >
@@ -269,7 +270,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         <div>
           <a
             className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
-            href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.record, this.props.recordIndex)}
+            href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
             target={options.target}
             onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
             style={{ lineHeight: options.lineHeight }}
@@ -310,7 +311,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
                 <a
                   className={`${prefixCls}-link-break ${disabled ? `${prefixCls}-link-disabled` : ''}`}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
-                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex)}
+                  href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
                   target={disabled ? void 0 : config.target}
                   onClick={(e) => {
                     if (this.props.preview || disabled) {

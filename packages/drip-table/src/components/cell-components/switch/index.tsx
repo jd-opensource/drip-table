@@ -70,6 +70,7 @@ export default class DTCSwitch<RecordType extends DripTableRecordTypeBase> exten
         props: {
           value: this.props.value,
           record: this.props.record,
+          ext: this.props.ext,
         },
         rec: this.props.record,
       }, false);

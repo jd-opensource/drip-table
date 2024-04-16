@@ -55,6 +55,7 @@ const schema = {
       width: 200,
       align: "center",
       dataIndex: "price",
+      dataTranslation: "return String(props.value) + props.ext.getMoneyUnit()",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
@@ -64,7 +65,7 @@ const schema = {
       width: 200,
       align: "center",
       dataIndex: "price",
-      dataTranslation: "return props.value * props.record.count",
+      dataTranslation: "return String(props.value * props.record.count) + props.ext.getMoneyUnit()",
       component: "text",
       options: { mode: "single", ellipsis: true, maxRow: 1 },
     },
@@ -85,6 +86,9 @@ const Demo = () => {
     <DripTable
       schema={schema}
       dataSource={dataSource}
+      ext={{
+        getMoneyUnit: () => '元',
+      }}
     />
   );
 };

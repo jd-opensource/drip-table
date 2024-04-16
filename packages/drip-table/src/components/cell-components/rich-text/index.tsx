@@ -55,7 +55,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     if (tooltip) {
       return (
         <div style={{ marginLeft: 8 }}>
-          <Tooltip title={finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex)}>
+          <Tooltip title={finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex, this.props.ext)}>
             { this.renderInfoCircle() }
           </Tooltip>
         </div>
@@ -70,7 +70,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     try {
       const html = options.render.replace(
         /\{\{(.+?)\}\}/guis, (s, s1) =>
-          finalizeString('script', `return ${s1}`, record, recordIndex),
+          finalizeString('script', `return ${s1}`, record, recordIndex, this.props.ext),
       );
       return (
         <div className={`${prefixCls}-container`}>

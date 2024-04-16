@@ -35,12 +35,13 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
   };
 
   public render(): JSX.Element {
-    const { record, schema: { options } } = this.props;
+    const { record, schema: { options }, ext } = this.props;
     try {
       const html = execute(options.render, {
         props: {
           value: this.props.value,
           record,
+          ext,
         },
         rec: record,
       });

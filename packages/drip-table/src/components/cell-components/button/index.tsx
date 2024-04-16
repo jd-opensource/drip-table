@@ -127,7 +127,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex);
+    return finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex, this.props.ext);
   }
 
   private getIcon(iconName: string) {
@@ -198,13 +198,13 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           <Tooltip
             title={(
               <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
-                { finalizeString('pattern', options.popconfirm.title, this.props.record, this.props.recordIndex) }
+                { finalizeString('pattern', options.popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
               </div>
             )}
             overlay={(
               <div>
                 <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
-                  { finalizeString('pattern', options.popconfirm.content, this.props.record, this.props.recordIndex) }
+                  { finalizeString('pattern', options.popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
                   {
