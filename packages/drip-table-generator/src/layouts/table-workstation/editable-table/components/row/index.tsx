@@ -89,7 +89,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ...typeof column.style === 'object' ? column.style : {},
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: column.width ?? 200,
+        width: column.width || 200,
       }}
     >
       <TableCell

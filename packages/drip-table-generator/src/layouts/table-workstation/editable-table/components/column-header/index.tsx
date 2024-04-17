@@ -177,7 +177,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
           })}
-          style={{ ...columnStyle, width: props.column.width ?? 200 }}
+          style={{ ...columnStyle, width: props.column.width || 200 }}
           onClick={(e) => {
             e.stopPropagation();
             setState({
