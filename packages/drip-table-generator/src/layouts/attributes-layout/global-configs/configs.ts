@@ -422,6 +422,29 @@ const PaginationAttrConfigs: DTGComponentPropertySchema[] = [
     default: false,
     visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
   },
+  {
+    name: 'pagination.pageSizeOptions',
+    group: '分页配置',
+    'ui:title': '每页条数选项',
+    'ui:description': {
+      type: 'text',
+      trigger: 'hover',
+      title: '指定每页可以显示多少条',
+    },
+    'ui:type': 'select',
+    'ui:props': {
+      style: { width: '100%' },
+      placeholder: '请输入栅格间隔，以逗号隔开',
+      mode: 'tags',
+      tokenSeparators: ['.', ',', '，'],
+    },
+    type: 'array',
+    items: {
+      type: 'number',
+    },
+    default: void 0,
+    visible: (value: unknown, formData?: Record<string, unknown>) => formData?.pagination === true,
+  },
 ];
 
 export const GlobalAttrFormConfigs: DTGComponentPropertySchema[] = [
