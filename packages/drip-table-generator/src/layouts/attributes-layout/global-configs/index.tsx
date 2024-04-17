@@ -264,6 +264,7 @@ const GlobalConfigForm = <
           showQuickJumper: formData['pagination.showQuickJumper'] as boolean,
           showSizeChanger: formData['pagination.showSizeChanger'] as boolean,
           showTotal: formData['pagination.showTotal'] as string,
+          pageSizeOptions: formData['pagination.pageSizeOptions'] as number[],
         }
         : false,
       ext: Object.keys(ext).length > 0 ? { ...ext } : void 0,
