@@ -78,9 +78,27 @@ export const filterRecursive = <T extends ChildrenLike<T>>(
   return iter(columns);
 };
 
+export const findRecursive = <T extends ChildrenLike<T>>(
+  columns: readonly T[],
+  callbackfn: (column: T, index: number) => unknown,
+): T | undefined => {
+  let index = -1;
+  let found: T | undefined = void 0;
+  forEachRecursive(columns, (c) => {
+    if (found) {
+      return;
+    }
+    index += 1;
+    if (callbackfn(c, index)) {
+      found = c;
+    }
+  });
+  return found;
+};
+
 export const findIndexRecursive = <T extends ChildrenLike<T>>(
   columns: readonly T[],
-  callbackfn: (c: T) => unknown,
+  callbackfn: (column: T, index: number) => unknown,
 ): number => {
   let index = -1;
   let found = false;
@@ -89,7 +107,7 @@ export const findIndexRecursive = <T extends ChildrenLike<T>>(
       return;
     }
     index += 1;
-    if (callbackfn(c)) {
+    if (callbackfn(c, index)) {
       found = true;
     }
   });

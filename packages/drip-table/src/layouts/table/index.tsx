@@ -428,7 +428,7 @@ export const columnGenerator = <
 
 interface VirtualCellItemData {
   tableUUID: string;
-  columns: TableColumnType<unknown>[];
+  columns: TableColumnsType<unknown>;
   columnsBaseSchema: DripTableBaseColumnSchema[];
   dataSource: RcTableRecordType<DripTableRecordTypeBase>[];
   rowKey: React.Key;
@@ -438,8 +438,8 @@ interface VirtualCellItemData {
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
   const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys, ext } = data;
-  const columnBaseSchema = columnsBaseSchema[columnIndex];
-  const column = columns[columnIndex];
+  const columnBaseSchema = childrenLike.findRecursive(columnsBaseSchema, (_, i) => i === columnIndex) as DripTableBaseColumnSchema;
+  const column = childrenLike.findRecursive(columns, (_, i) => i === columnIndex) as TableColumnType<unknown>;
   const row = dataSource[rowIndex];
   const recKey = row.record[rowKey] as React.Key;
   const selected = selectedRowKeys.includes(recKey);
@@ -1614,7 +1614,7 @@ const TableLayout = <
           ref={refVirtualGrid}
           itemData={{
             tableUUID,
-            columns: rcTableColumns as TableColumnType<unknown>[],
+            columns: rcTableColumns as TableColumnsType<unknown>,
             columnsBaseSchema,
             dataSource: rcTableDataSource,
             rowKey,
@@ -1622,7 +1622,7 @@ const TableLayout = <
             ext: tableProps.ext,
           }}
           className={`${prefixCls}-virtual-list`}
-          columnCount={rcTableColumns.length}
+          columnCount={flattenColumnsWidth.length}
           columnWidth={(index) => {
             const width = flattenColumnsWidth[index];
             return index === rcTableColumns.length - 1 ? width - scrollbarSize - 1 : width;
