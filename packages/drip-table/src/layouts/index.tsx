@@ -15,6 +15,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type ExtractDripTableExtraOption,
 } from '@/types';
+import * as childrenLike from '@/utils/children-like';
 import ErrorBoundary from '@/components/react-components/error-boundary';
 import SlotRender, { type DripTableSlotSchema } from '@/components/react-components/slot-render';
 import Spin from '@/components/react-components/spin';
@@ -38,8 +39,8 @@ const DripTableLayout = <
 
   React.useEffect(() => {
     setTableState(state => ({
-      filters: Object.fromEntries(tableProps.schema.columns.map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
-      displayColumnKeys: tableProps.displayColumnKeys || tableProps.schema.columns.filter(c => c.hidable).map(c => c.key),
+      filters: Object.fromEntries(childrenLike.flattenRecursive(tableProps.schema.columns).map(c => [c.dataIndex, c.defaultFilteredValue]).filter(([k, v]) => typeof k === 'string' && v)),
+      displayColumnKeys: tableProps.displayColumnKeys || childrenLike.flattenRecursive(tableProps.schema.columns).filter(c => c.hidable).map(c => c.key),
     }));
   }, [tableProps.displayColumnKeys]);
 

@@ -50,8 +50,8 @@ const DripTableWrapper = React.forwardRef(<
     props: React.PropsWithChildren<DripTableProps<RecordType, ExtraOptions> & React.RefAttributes<DripTableWrapperContext<RecordType, ExtraOptions>>>,
     ref: React.ForwardedRef<DripTableWrapperContext<RecordType, ExtraOptions>>,
   ) => {
-  // 标准化参数
-  const tableProps = React.useMemo(
+  // 旧版参数兼容
+  const tablePropsMigrated = React.useMemo(
     () => {
       let rtp = props;
       // 兼容旧版本数据
@@ -84,7 +84,15 @@ const DripTableWrapper = React.forwardRef(<
           ),
         };
       }
-      // 列 ajv 校验
+      return rtp;
+    },
+    [props],
+  );
+
+  // 列 ajv 校验
+  const tableProps = React.useMemo(
+    () => {
+      let rtp = tablePropsMigrated;
       const ajv = rtp.ajv;
       if (ajv !== false) {
         const validateColumnSchema = (column: (typeof rtp.schema.columns)[number], path: string = 'column'): string | null => {
@@ -97,7 +105,7 @@ const DripTableWrapper = React.forwardRef(<
               errorMessage = `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
             }
           } else {
-            const [libName, componentName] = column?.component.split('::');
+            const [libName, componentName] = column?.component?.split('::') || [];
             if (libName && componentName) {
               schema = rtp.components?.[libName]?.[componentName]?.schema;
             }
@@ -149,7 +157,7 @@ const DripTableWrapper = React.forwardRef(<
       }
       return rtp;
     },
-    [props],
+    [tablePropsMigrated],
   );
 
   // 创建上下文

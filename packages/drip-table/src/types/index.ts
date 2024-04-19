@@ -157,7 +157,10 @@ export interface DripTableDataColumnSchema extends DripTableBaseColumnSchema {
   defaultFilteredValue?: React.Key[] | null;
 }
 
-export interface DripTableColumnSchema<T = string, P extends Record<string, unknown> = Record<string, unknown>> extends DripTableDataColumnSchema {
+export interface DripTableColumnSchema<
+  T = string,
+  P extends Record<string, unknown> = Record<string, unknown>,
+> extends DripTableDataColumnSchema {
   /**
    * 组件类型标识符，自定义开发的业务组件以`命名空间::组件名称`格式填写；通过 components 属性传入组件库实现
    */
@@ -181,6 +184,15 @@ export type ExtractDripTableColumnSchema<T, TKey extends string> = T extends Dri
   : never;
 
 export type DripTableID = string | number | undefined;
+
+type ColumnWithChildren<
+  CustomColumnSchema extends DripTableColumnSchema = never,
+> = (CustomColumnSchema | DripTableBuiltInColumnSchema<CustomColumnSchema>) & {
+  /**
+   * 表头拆分，配置该字段后除了 key、title 的其它字段将失去作用
+   */
+  children?: ColumnWithChildren<CustomColumnSchema>[];
+};
 
 export interface DripTableSchema<
   CustomColumnSchema extends DripTableColumnSchema = never,
@@ -307,7 +319,7 @@ export interface DripTableSchema<
   /**
    * 列定义
    */
-  columns: (CustomColumnSchema | DripTableBuiltInColumnSchema<CustomColumnSchema>)[];
+  columns: ColumnWithChildren<CustomColumnSchema>[];
   /**
    * 表格行主键
    */

@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import forEach from 'lodash/forEach';
 import ResizeObserver from 'rc-resize-observer';
 import RcTable from 'rc-table';
-import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
+import type { ColumnsType as TableColumnsType, ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import { TableProps as RcTableProps } from 'rc-table/lib/Table';
 import React from 'react';
 import { type GridChildComponentProps, areEqual, VariableSizeGrid } from 'react-window';
@@ -29,6 +29,7 @@ import {
   type ExtractDripTableExtraOption,
   type SchemaObject,
 } from '@/types';
+import * as childrenLike from '@/utils/children-like';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
@@ -1094,7 +1095,7 @@ const TableLayout = <
   );
 
   const hiddenColumnIndexes = React.useMemo(
-    (): number[] => tableProps.schema.columns
+    (): number[] => childrenLike.flattenRecursive(tableProps.schema.columns)
       .map((columnSchema, rawColumnIndex) => ({ columnSchema, rawColumnIndex }))
       .filter(({ columnSchema }) => columnSchema.hidable && !tableState.displayColumnKeys.includes(columnSchema.key))
       .map(({ rawColumnIndex }) => rawColumnIndex),
@@ -1102,6 +1103,7 @@ const TableLayout = <
   );
 
   const rcTableInfo = React.useMemo(() => {
+    const flattenColumns = childrenLike.flattenRecursive(tableInfo.schema.columns);
     const rti: RcTableInfo = { cellConfigs: {}, cellConfigConflictIDs: {}, maxColumnIndex: 0, maxRowIndex: 0 };
     rti.maxRowIndex = pageDataSource.length - 1;
     rti.maxColumnIndex = tableInfo.schema.columns.length - 1;
@@ -1127,8 +1129,7 @@ const TableLayout = <
     if (spanSchema.generator) {
       const generator = createExecutor(spanSchema.generator, ['props']);
       for (const [rowIndex, record] of pageDataSource.entries()) {
-        for (let columnIndex = 0; columnIndex < tableInfo.schema.columns.length; columnIndex++) {
-          const columnSchema = tableInfo.schema.columns[columnIndex];
+        for (const [columnIndex, columnSchema] of flattenColumns.entries()) {
           const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
           const cc = generator(context) as { rowSpan?: number; colSpan?: number } | undefined;
           if (cc && (cc.rowSpan !== void 0 || cc.colSpan !== void 0)) {
@@ -1153,7 +1154,7 @@ const TableLayout = <
           setCellConfig(rti, rowIndex, 0, {
             data: {
               className: `${prefixCls}--slot`,
-              colSpan: tableProps.schema.columns.length,
+              colSpan: flattenColumns.length,
             },
             spanType: 'row',
             spanGroupID: `row-${rowIndex}`,
@@ -1171,7 +1172,7 @@ const TableLayout = <
         setCellConfig(rti, index + 1, 0, {
           data: {
             className: `${prefixCls}--slot`,
-            colSpan: tableInfo.schema.columns.length,
+            colSpan: flattenColumns.length,
           },
           spanType: 'row',
           spanGroupID: `footer-${index}`,
@@ -1182,7 +1183,7 @@ const TableLayout = <
         setCellConfig(rti, index, 0, {
           data: {
             className: `${prefixCls}--slot`,
-            colSpan: tableInfo.schema.columns.length,
+            colSpan: flattenColumns.length,
           },
           spanType: 'row',
           spanGroupID: `header-${index}`,
@@ -1216,8 +1217,8 @@ const TableLayout = <
     pageDataSourceRowFooterVisible,
   ]);
 
-  const filteredColumns = React.useMemo(
-    (): TableColumnType<RcTableRecordType<RecordType>>[] => {
+  const rcTableColumnsRAW = React.useMemo(
+    (): TableColumnsType<RcTableRecordType<RecordType>> => {
       const extraProps = {
         components: tableProps.components,
         icons: tableProps.icons,
@@ -1225,16 +1226,21 @@ const TableLayout = <
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
       };
-      const schemaColumns: { schema: DripTableBaseColumnSchema; column: TableColumnType<RcTableRecordType<RecordType>> }[] = tableProps.schema.columns
-        .filter((_, i) => !hiddenColumnIndexes.includes(i))
+      const visibleColumns = childrenLike.filterRecursive(
+        tableProps.schema.columns,
+        (_, i) => !hiddenColumnIndexes.includes(i),
+      );
+      // 树形结构转为拍平结构方便计算
+      const flattenSchemaColumns: { schema: DripTableBaseColumnSchema; column: TableColumnType<RcTableRecordType<RecordType>> }[] = childrenLike.flattenRecursive(visibleColumns)
         .map(columnSchema => ({ schema: columnSchema, column: columnGenerator(tableInfo, columnSchema, extraProps) }));
+      let flattenSchemaColumnsOffset = 0;
       if (rowSelectionColumnSchema) {
-        schemaColumns.unshift({
+        flattenSchemaColumns.unshift({
           schema: rowSelectionColumnSchema,
           column: {
             align: rowSelectionColumnSchema.align,
             width: 50,
-            fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
+            fixed: flattenSchemaColumns[0]?.column.fixed === 'left' || flattenSchemaColumns[0]?.column.fixed === true ? 'left' : void 0,
             title: (
               <div className={`${prefixCls}-column-title-selection`}>
                 <Checkbox
@@ -1275,14 +1281,15 @@ const TableLayout = <
             ),
           },
         });
+        flattenSchemaColumnsOffset += 1;
       }
       if (rowDraggableColumnSchema) {
-        schemaColumns.unshift({
+        flattenSchemaColumns.unshift({
           schema: rowDraggableColumnSchema,
           column: {
             align: 'center',
             width: 50,
-            fixed: schemaColumns[0]?.column.fixed === 'left' || schemaColumns[0]?.column.fixed === true ? 'left' : void 0,
+            fixed: flattenSchemaColumns[0]?.column.fixed === 'left' || flattenSchemaColumns[0]?.column.fixed === true ? 'left' : void 0,
             render: (_, row) => (
               <div
                 className={classNames(`${prefixCls}-column-draggable-row`, {
@@ -1324,16 +1331,17 @@ const TableLayout = <
             ),
           },
         });
+        flattenSchemaColumnsOffset += 1;
       }
-      if (schemaColumns.length === 0) {
+      if (flattenSchemaColumns.length === 0) {
         return [];
       }
       // 整行自定义插槽
       if (tableInfo.schema.rowSlotKey) {
         const rowSlotKey = tableInfo.schema.rowSlotKey;
         {
-          const render = schemaColumns[0].column.render;
-          schemaColumns[0].column.render = (o, row, index) => {
+          const render = flattenSchemaColumns[0].column.render;
+          flattenSchemaColumns[0].column.render = (o, row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               const Slot = tableProps.slots?.[slotType] || tableProps.slots?.default;
@@ -1359,9 +1367,9 @@ const TableLayout = <
             return render?.(o, row, index);
           };
         }
-        for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
-          const render = schemaColumns[columnIndex].column.render;
-          schemaColumns[columnIndex].column.render = (o, row, index) => {
+        for (let columnIndex = 1; columnIndex < flattenSchemaColumns.length; columnIndex++) {
+          const render = flattenSchemaColumns[columnIndex].column.render;
+          flattenSchemaColumns[columnIndex].column.render = (o, row, index) => {
             const slotType = rowSlotKey in row.record ? String(row.record[rowSlotKey]) : void 0;
             if (slotType) {
               return null;
@@ -1373,9 +1381,9 @@ const TableLayout = <
       // 行头尾插槽
       if (tableProps.schema.rowHeader || tableProps.schema.rowFooter) {
         {
-          const render = schemaColumns[0].column.render;
-          const columnKey = schemaColumns[0].schema.key;
-          schemaColumns[0].column.render = (o, row, index) => {
+          const render = flattenSchemaColumns[0].column.render;
+          const columnKey = flattenSchemaColumns[0].schema.key;
+          flattenSchemaColumns[0].column.render = (o, row, index) => {
             if (row.type === 'header' && tableProps.schema.rowHeader) {
               return (
                 <SlotRender
@@ -1398,9 +1406,9 @@ const TableLayout = <
             return render?.(o, row, index);
           };
         }
-        for (let columnIndex = 1; columnIndex < schemaColumns.length; columnIndex++) {
-          const render = schemaColumns[columnIndex].column.render;
-          schemaColumns[columnIndex].column.render = (o, row, index) => {
+        for (let columnIndex = 1; columnIndex < flattenSchemaColumns.length; columnIndex++) {
+          const render = flattenSchemaColumns[columnIndex].column.render;
+          flattenSchemaColumns[columnIndex].column.render = (o, row, index) => {
             if (row.type === 'header' || row.type === 'footer') {
               return null;
             }
@@ -1408,7 +1416,21 @@ const TableLayout = <
           };
         }
       }
-      return schemaColumns.map((sc, i) => hookColumRender(sc.column, sc.schema, i, tableInfo, rcTableInfo, extraProps));
+      const flattenRcTableColumns = flattenSchemaColumns.map((sc, i) => hookColumRender(sc.column, sc.schema, i, tableInfo, rcTableInfo, extraProps));
+      // 拍平结构组装回树形结构
+      let iterIndex = flattenSchemaColumnsOffset - 1;
+      const iter = (cs: typeof visibleColumns): TableColumnsType<RcTableRecordType<RecordType, never>> => cs.map((c) => {
+        if (c.children?.length) {
+          // 非叶子结点仅支持部分属性
+          return { key: c.key, title: finalizeColumnTitle(c), align: c.align, children: iter(c.children) };
+        }
+        iterIndex += 1;
+        return flattenRcTableColumns[iterIndex];
+      });
+      return [
+        ...Array.from({ length: flattenSchemaColumnsOffset }).map((_, i) => flattenRcTableColumns[i]),
+        ...iter(visibleColumns),
+      ];
     },
     [
       dragInIndex,
@@ -1427,10 +1449,12 @@ const TableLayout = <
     ],
   );
 
-  const columnsWidth = React.useMemo(
+  const flattenColumnsWidth = React.useMemo(
     () => {
+      // 树形结构转为拍平结构方便计算
+      const flattenRcTableColumnsRAW = childrenLike.flattenRecursive(rcTableColumnsRAW);
       // 计算用户固定宽度列宽
-      const userColumnsWidth = filteredColumns.map(c => parseNumber(c.width, 0));
+      const userColumnsWidth = flattenRcTableColumnsRAW.map(c => ('width' in c ? parseNumber(c.width, 0) : 0));
       const restWidth = Math.max(rcTableWidth - userColumnsWidth.reduce((v, w) => v + w, 0) - rowExpandColumnWidth, 0);
       const flexibleCount = userColumnsWidth.filter(w => w === 0).length;
       // 将剩余宽度分配给未固定列宽的列，全部固定列宽时将平均分配剩余宽度
@@ -1454,23 +1478,26 @@ const TableLayout = <
       });
       return integerColumnsWidth;
     },
-    [filteredColumns, rcTableWidth],
+    [rcTableColumnsRAW, rcTableWidth],
   );
 
   const rcTableColumns = React.useMemo(
-    (): TableColumnType<RcTableRecordType<RecordType>>[] =>
-      filteredColumns.map((c, i) => ({ ...c, width: columnsWidth[i] })),
-    [filteredColumns, columnsWidth],
+    (): TableColumnsType<RcTableRecordType<RecordType>> =>
+      childrenLike.mapRecursive(
+        rcTableColumnsRAW,
+        (c, i) => ({ ...c, width: flattenColumnsWidth[i] }),
+      ),
+    [rcTableColumnsRAW, flattenColumnsWidth],
   );
 
   const rcTableScroll = React.useMemo(() => {
     const sc = Object.assign({}, tableProps.schema.scroll);
-    const scrollX = columnsWidth.reduce((v, w) => v + w, 0);
+    const scrollX = flattenColumnsWidth.reduce((v, w) => v + w, 0);
     if (sc.x === void 0 && rcTableWidth < scrollX) {
       sc.x = scrollX;
     }
     return sc;
-  }, [tableProps.schema.scroll, columnsWidth, rcTableWidth]);
+  }, [tableProps.schema.scroll, flattenColumnsWidth, rcTableWidth]);
 
   const refVirtualGrid = React.useRef<VariableSizeGrid>(null);
   const resetVirtualGrid = () => {
@@ -1597,7 +1624,7 @@ const TableLayout = <
           className={`${prefixCls}-virtual-list`}
           columnCount={rcTableColumns.length}
           columnWidth={(index) => {
-            const width = columnsWidth[index];
+            const width = flattenColumnsWidth[index];
             return index === rcTableColumns.length - 1 ? width - scrollbarSize - 1 : width;
           }}
           height={parseNumber(tableInfo.schema.scroll?.y, 500)}
@@ -1614,7 +1641,7 @@ const TableLayout = <
   [
     tableInfo,
     tableInfo.schema.virtual,
-    columnsWidth,
+    flattenColumnsWidth,
     rcTableColumns,
     tableInfo.schema.scroll?.y,
     tableInfo.schema.rowHeight,

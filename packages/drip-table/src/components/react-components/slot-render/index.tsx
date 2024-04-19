@@ -17,6 +17,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type ExtractDripTableExtraOption,
 } from '@/types';
+import * as childrenLike from '@/utils/children-like';
 import { parseReactCSS } from '@/utils/dom';
 import Button, { type ButtonProps } from '@/components/react-components/button';
 import Col from '@/components/react-components/col';
@@ -324,7 +325,7 @@ const SlotRender = <
 
     if (config.type === 'slot') {
       const Slot = tableProps.slots?.[config.slot] || tableProps.slots?.default;
-      const columnIndex = typeof props.columnKey === 'string' ? tableProps.schema.columns.findIndex(c => c.key === props.columnKey) : -1;
+      const columnIndex = typeof props.columnKey === 'string' ? childrenLike.findIndexRecursive(tableProps.schema.columns, c => c.key === props.columnKey) : -1;
       if (Slot) {
         const DEPRECATED_PROPS = 'props';
         const deprecatedProps = config[DEPRECATED_PROPS];
@@ -367,7 +368,7 @@ const SlotRender = <
     }
 
     if (config.type === 'display-column-selector') {
-      const hidableColumns = tableProps.schema.columns.filter(c => c.hidable);
+      const hidableColumns = childrenLike.filterRecursive(tableProps.schema.columns, c => c.hidable);
       if (hidableColumns.length === 0) {
         return null;
       }

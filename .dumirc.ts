@@ -80,6 +80,7 @@ const DRIP_TABLE_SIDEBAR = [
               { title: '目录', link: '/drip-table/schema/columns' },
               { title: '唯一标识 key', link: '/drip-table/schema/columns/key' },
               { title: '列头 title', link: '/drip-table/schema/columns/title' },
+              { title: '列拆分 children', link: '/drip-table/schema/columns/children' },
               { title: '列索引 dataIndex', link: '/drip-table/schema/columns/data-index' },
               { title: '列数据处理 dataTranslation', link: '/drip-table/schema/columns/data-translation' },
               { title: '默认数据 defaultValue', link: '/drip-table/schema/columns/default-value' },
