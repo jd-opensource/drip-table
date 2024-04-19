@@ -9,6 +9,7 @@
 import './styles/index.less';
 
 export * from './types';
+export * as UTILS_CHILDREN_LIKE_DO_NOT_USE_IN_PRODUCTION from './utils/children-like';
 export { indexValue } from './utils/operator';
 export { default as builtInComponents } from './components/cell-components';
 export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './components/cell-components';
