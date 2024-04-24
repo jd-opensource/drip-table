@@ -15,7 +15,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
-import { parseReactCSS } from '@/utils/dom';
+import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
 import Tooltip from '@/components/react-components/tooltip';
 import { DripTableContext } from '@/hooks';
@@ -140,7 +140,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             return (
               <Tooltip
                 trigger={options.trigger}
-                overlayStyle={this.parseReactCSS(options.overlayStyle)}
+                overlayStyle={{ ...this.parseReactCSS(options.overlayStyle), ...parseThemeCSS(context.info.schema.theme) }}
                 overlayInnerStyle={this.parseReactCSS(options.overlayInnerStyle)}
                 title={(
                   <div

@@ -12,6 +12,7 @@ toc: content
 | 参数名 | 描述 | 必填 | 详情 |
 | ----- | ---- | ---- | ---- |
 | [id](/drip-table/schema/id) | 表格标识符 | × | [🔗 示例](/drip-table/schema/id) |
+| [theme](/drip-table/schema/theme) | 主题配置 | × | [🔗 示例](/drip-table/schema/theme) |
 | [className](/drip-table/schema/class-name) | 自定义表格类名 | × | [🔗 示例](/drip-table/schema/class-name) |
 | [style](/drip-table/schema/style) | 自定义表格样式 | × | [🔗 示例](/drip-table/schema/style) |
 | [innerClassName](/drip-table/schema/inner-class-name) | 内部表格组件类名 | × | [🔗 示例](/drip-table/schema/inner-class-name) |

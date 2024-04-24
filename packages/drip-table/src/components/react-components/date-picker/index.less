@@ -35,8 +35,8 @@
   transition: border .3s, box-shadow .3s;
 
   &-focused {
-    border-color: #40a9ff;
-    box-shadow: 0 0 0 2px #1890ff33;
+    border-color: var(--drip-table-primary-active-color);
+    box-shadow: 0 0 0 2px var(--drip-table-primary-shadow-color);
     border-right-width: 1px;
     outline: 0;
   }
@@ -184,7 +184,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        border: 1px dashed #1890ff;
+        border: 1px dashed var(--drip-table-primary-color);
         border-right: 0;
         border-left: 0;
         content: "";
@@ -193,11 +193,11 @@
     }
 
     &-range-hover-start::after {
-      border-left: 1px dashed #1890ff !important;
+      border-left: 1px dashed var(--drip-table-primary-color) !important;
     }
 
     &-range-hover-end::after {
-      border-right: 1px dashed #1890ff !important;
+      border-right: 1px dashed var(--drip-table-primary-color) !important;
     }
 
     &-today > &-inner {
@@ -207,7 +207,7 @@
     &-range-start > &-inner,
     &-range-end > &-inner,
     &-selected > &-inner {
-      background: #1890ff;
+      background: var(--drip-table-primary-color);
       color: #ffffff;
     }
   }
@@ -518,11 +518,11 @@
   // ========================================================
 
   &-cell-range-start &-cell-inner {
-    background: #1890ff;
+    background: var(--drip-table-primary-color);
   }
 
   &-cell-range-end &-cell-inner {
-    background: #1890ff;
+    background: var(--drip-table-primary-color);
   }
 
   &-cell-range-start::before {
@@ -552,15 +552,15 @@
     .@{prefix-cls}-active-bar {
       bottom: 0;
       height: 2px;
-      background: #1890ff;
+      background: var(--drip-table-primary-color);
       opacity: 0;
       transition: all .3s;
       pointer-events: none;
     }
 
     &.@{prefix-cls}-focused {
-      border-color: #40a9ff;
-      box-shadow: 0 0 0 2px #1890ff33;
+      border-color: var(--drip-table-primary-active-color);
+      box-shadow: 0 0 0 2px var(--drip-table-primary-shadow-color);
       border-right-width: 1px;
       outline: 0;
 

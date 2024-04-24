@@ -202,6 +202,13 @@ export interface DripTableSchema<
    * 表格标识符，当存在子表嵌套渲染、回调时可用于区分不同层级表格
    */
   id?: DripTableID;
+  theme?: {
+    primaryColor?: string;
+    primaryActiveColor?: string;
+    primaryShadowColor?: string;
+    borderColor?: string;
+    backgroundColor?: string;
+  };
   /**
    * 自定义表格类名
    */

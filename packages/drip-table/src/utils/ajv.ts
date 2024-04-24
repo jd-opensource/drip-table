@@ -241,6 +241,16 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
       type: 'object',
       properties: {
         id: { typeof: ['number', 'string'] },
+        theme: {
+          type: 'object',
+          properties: {
+            primaryColor: { type: 'string' },
+            primaryActiveColor: { type: 'string' },
+            primaryShadowColor: { type: 'string' },
+            borderColor: { type: 'string' },
+            backgroundColor: { type: 'string' },
+          },
+        },
         className: { type: 'string' },
         style: DRIP_TABLE_CSS_SCHEMA,
         innerClassName: { type: 'string' },

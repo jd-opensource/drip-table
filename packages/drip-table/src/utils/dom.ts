@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import kebabCase from 'lodash/kebabCase';
 import React from 'react';
 
 /**
@@ -59,6 +60,23 @@ export const parseCSS = (style: string | Record<string, string>): Record<string,
     )
     : {};
 };
+
+/**
+ * Parse Theme CSS
+ * @param theme schema.theme
+ * @returns Theme CSS Object
+ */
+export const parseThemeCSS = (theme: Record<string, string> | undefined) => Object.fromEntries(
+  Object.entries({
+    primaryColor: '#1890ff',
+    primaryActiveColor: '#40a9ff',
+    primaryShadowColor: '#1890ff33',
+    borderColor: '#3b82f6',
+    backgroundColor: '#e6f7ff',
+    ...theme,
+  })
+    .map(([k, v]) => [`--drip-table-${kebabCase(k)}`, v]),
+);
 
 /**
  * Stringify CSSProperties

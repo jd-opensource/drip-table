@@ -69,6 +69,7 @@ const DRIP_TABLE_SIDEBAR = [
         children: [
           { title: '目录', link: '/drip-table/schema' },
           { title: '标识符 id', link: '/drip-table/schema/id' },
+          { title: '主题配置 theme', link: '/drip-table/schema/theme' },
           { title: '类名 className', link: '/drip-table/schema/class-name' },
           { title: '样式 style', link: '/drip-table/schema/style' },
           { title: '内部类名 innerClassName', link: '/drip-table/schema/inner-class-name' },

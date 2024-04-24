@@ -16,6 +16,7 @@ import {
   type ExtractDripTableExtraOption,
 } from '@/types';
 import * as childrenLike from '@/utils/children-like';
+import { parseThemeCSS } from '@/utils/dom';
 import ErrorBoundary from '@/components/react-components/error-boundary';
 import SlotRender, { type DripTableSlotSchema } from '@/components/react-components/slot-render';
 import Spin from '@/components/react-components/spin';
@@ -128,12 +129,17 @@ const DripTableLayout = <
     return null;
   }, [tableProps, tableInfo, tableState, setTableState, headerNode, footerNode]);
 
+  const themeStyle = React.useMemo(
+    () => parseThemeCSS(tableProps.schema.theme),
+    [tableProps.schema.theme],
+  );
+
   return (
     <ErrorBoundary>
       <Spin spinning={tableProps.loading}>
         <div
           className={classnames(tableProps.className, tableProps.schema.className)}
-          style={Object.assign({}, tableProps.style, tableProps.schema.style)}
+          style={Object.assign({}, tableProps.style, tableProps.schema.style, themeStyle)}
         >
           { layoutNode }
         </div>

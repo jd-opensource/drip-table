@@ -281,6 +281,203 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       },
     },
     {
+      key: '18f0f4c4125-11e3',
+      title: '删除',
+      width: 140,
+      align: 'center',
+      verticalAlign: 'middle',
+      dataIndex: '',
+      component: 'group',
+      options: {
+        layout: [
+          1,
+        ],
+        wrap: false,
+        horizontalAlign: 'center',
+        verticalAlign: 'middle',
+        gutter: [
+          8,
+          8,
+        ],
+        items: [
+          {
+            align: 'center',
+            verticalAlign: 'middle',
+            key: 'popover_18f0f03d7a6-13b6',
+            dataIndex: '',
+            title: '',
+            component: 'popover',
+            options: {
+              placement: 'left',
+              trigger: 'click',
+              popover: {
+                align: 'center',
+                verticalAlign: 'middle',
+                key: 'group_18f0f03d7a7-13b7',
+                dataIndex: '',
+                title: '',
+                component: 'group',
+                options: {
+                  layout: [
+                    1,
+                    1,
+                  ],
+                  wrap: false,
+                  horizontalAlign: 'start',
+                  items: [
+                    {
+                      align: 'center',
+                      verticalAlign: 'middle',
+                      key: 'group_18f0f071b8b-195d',
+                      dataIndex: '',
+                      title: '',
+                      component: 'group',
+                      options: {
+                        layout: [
+                          2,
+                        ],
+                        wrap: false,
+                        horizontalAlign: 'start',
+                        items: [
+                          {
+                            schema: {
+                              align: 'center',
+                              verticalAlign: 'middle',
+                              key: 'icon_18f0f09db8b-1c57',
+                              dataIndex: '',
+                              title: '',
+                              component: 'icon',
+                              options: {
+                                event: '',
+                                icon: 'InfoCircleOutlined',
+                              },
+                            },
+                            style: {
+                              marginRight: '5px',
+                            },
+                          },
+                          {
+                            schema: {
+                              dataIndex: ' ',
+                              align: 'center',
+                              verticalAlign: 'middle',
+                              key: 'text_18f0f0a75f5-1d62',
+                              title: '',
+                              component: 'text',
+                              options: {
+                                mode: 'single',
+                                showTooltip: true,
+                                format: '{{rec}}',
+                                parts: [
+                                  {
+                                    dataIndex: 'id',
+                                  },
+                                ],
+                                defaultValue: '确认删除该用户吗？',
+                              },
+                            },
+                            style: {},
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      align: 'center',
+                      verticalAlign: 'middle',
+                      key: 'group_18f0f0737dd-1997',
+                      dataIndex: '',
+                      title: '',
+                      component: 'group',
+                      options: {
+                        layout: [
+                          2,
+                        ],
+                        wrap: false,
+                        horizontalAlign: 'end',
+                        items: [
+                          {
+                            schema: {
+                              align: 'center',
+                              verticalAlign: 'middle',
+                              key: 'button_18f0f0c00db-2283',
+                              dataIndex: '',
+                              title: '',
+                              component: 'button',
+                              options: {
+                                style: {
+                                  borderRadius: '5px',
+                                },
+                                mode: 'single',
+                                label: '确定',
+                                size: 'middle',
+                                ghost: false,
+                                danger: false,
+                                event: 'delete-confirm',
+                                buttonType: 'primary',
+                                buttons: [],
+                                closePopover: 'popover_18f0f03d7a6-13b6',
+                              },
+                            },
+                            style: {},
+                          },
+                          {
+                            schema: {
+                              align: 'center',
+                              verticalAlign: 'middle',
+                              key: 'button_18f0f0bf074-2249',
+                              dataIndex: '',
+                              title: '',
+                              component: 'button',
+                              options: {
+                                style: {
+                                  borderRadius: '5px',
+                                },
+                                mode: 'single',
+                                label: '取消',
+                                size: 'middle',
+                                ghost: false,
+                                danger: false,
+                                event: 'delete-cancel',
+                                buttons: [],
+                                closePopover: 'popover_18f0f03d7a6-13b6',
+                              },
+                            },
+                            style: {
+                              marginLeft: '10px',
+                            },
+                          },
+                        ],
+                        style: {
+                          padding: '10px',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+              content: {
+                align: 'center',
+                verticalAlign: 'middle',
+                key: 'button_18f0f03d7a7-13b8',
+                dataIndex: '',
+                title: '',
+                component: 'button',
+                options: {
+                  mode: 'single',
+                  label: '删除',
+                  size: 'middle',
+                  buttonType: 'link',
+                },
+              },
+              overlayInnerStyle: {
+                borderRadius: '5px',
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
       key: 'mock_7',
       title: '操作',
       width: 200,
