@@ -15,6 +15,8 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
+import { parseReactCSS } from '@/utils/dom';
+import { safeExecute } from '@/utils/sandbox';
 import Tooltip from '@/components/react-components/tooltip';
 import { DripTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption } from '@/index';
@@ -26,7 +28,15 @@ export type DTCPopoverColumnSchema<CustomColumnSchema extends DripTableDataColum
   /**
    * 悬浮框自定义样式
    */
-  style?: React.CSSProperties;
+  style?: string | Record<string, string>;
+  /**
+   * 弹出层自定义样式
+   */
+  overlayStyle?: string | Record<string, string>;
+  /**
+   * 弹出层内部自定义样式
+   */
+  overlayInnerStyle?: string | Record<string, string>;
   /**
    * 悬浮框触发器
    */
@@ -74,6 +84,28 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           },
         },
       },
+      overlayStyle: {
+        type: 'object',
+        patternProperties: {
+          '^.*$': {
+            anyOf: [
+              { type: 'string' },
+              { type: 'number' },
+            ],
+          },
+        },
+      },
+      overlayInnerStyle: {
+        type: 'object',
+        patternProperties: {
+          '^.*$': {
+            anyOf: [
+              { type: 'string' },
+              { type: 'number' },
+            ],
+          },
+        },
+      },
       trigger: { enum: ['click', 'hover'] },
       placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
       popover: {},
@@ -85,6 +117,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   public state: DTCPopoverState = {
     visible: false,
   };
+
+  private parseReactCSS(style?: string | Record<string, string>) {
+    const { record, recordIndex, ext } = this.props;
+    const styleObject = typeof style === 'string'
+      ? safeExecute(style, { props: { record, recordIndex, ext } })
+      : style;
+    return parseReactCSS(styleObject);
+  }
 
   public render() {
     const { record, recordIndex, renderSchema } = this.props;
@@ -100,9 +140,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             return (
               <Tooltip
                 trigger={options.trigger}
+                overlayStyle={this.parseReactCSS(options.overlayStyle)}
+                overlayInnerStyle={this.parseReactCSS(options.overlayInnerStyle)}
                 title={(
                   <div
-                    style={options.style}
+                    style={this.parseReactCSS(options.style)}
                   >
                     { renderSchema(options.popover, record, recordIndex) }
                   </div>

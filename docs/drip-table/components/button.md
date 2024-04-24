@@ -558,6 +558,9 @@ const Demo = () => {
                     buttonType: 'link',
                   },
                 },
+                overlayInnerStyle: {
+                  borderRadius: '5px',
+                },
               },
             },
           ],
