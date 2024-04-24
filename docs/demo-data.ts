@@ -75,7 +75,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_1',
       title: {
-        body: '商品图名',
+        body: '图名',
         header: {
           elements: [{
             type: 'text',
@@ -93,6 +93,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
           }],
         },
       },
+      description: '组合组件 group (image + text)',
       width: 140,
       align: 'center',
       verticalAlign: 'middle',
@@ -129,8 +130,9 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     },
     {
       key: 'mock_2',
-      title: '商品详情',
-      width: 200,
+      title: '详情',
+      description: '文本组件 text',
+      width: 100,
       align: 'center',
       hidable: true,
       dataIndex: 'description',
@@ -145,7 +147,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       key: 'link_1828c3251ad-1391',
       dataIndex: '',
       title: '链接',
-      description: '',
+      description: '链接组件 link',
+      width: 100,
       component: 'link',
       options: {
         mode: 'single',
@@ -162,7 +165,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       key: 'rich-text_1828c32cb02-1392',
       dataIndex: '',
       title: '富文本',
-      description: '',
+      description: '富文本组件 rich-text',
+      width: 100,
       component: 'rich-text',
       options: {
         render: '<p><strong>{{rec.name}}</strong></p>',
@@ -173,10 +177,10 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_3',
       title: '库存状态',
-      width: 150,
+      description: '文本组件 text',
+      width: 100,
       align: 'center',
       dataIndex: 'status',
-      description: '这是一条提示信息',
       hidable: true,
       filters: [
         { text: '售卖中', value: 'onSale' },
@@ -193,11 +197,25 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       },
     },
     {
+      key: 'switch_mock',
+      title: '是否售罄',
+      description: '开关组件 switch',
+      width: 100,
+      align: 'center',
+      hidable: true,
+      dataIndex: 'soldOut',
+      component: 'switch',
+      options: {
+        event: 'sold-out',
+        bindValue: false,
+      },
+    },
+    {
       key: 'date-picker_182e8eea517-1239',
       dataIndex: 'startDate',
       title: '日期',
+      description: '日期组件 date-picker',
       width: 120,
-      description: '',
       component: 'date-picker',
       options: {
         mode: 'basic',
@@ -211,7 +229,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
       dataIndex: 'dateRange',
       width: 120,
       title: '日期范围',
-      description: '',
+      description: '日期组件 date-picker',
       component: 'date-picker',
       options: {
         mode: 'range',
@@ -222,7 +240,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_8',
       title: '状态选择',
-      width: 120,
+      description: '下拉框组件 select',
+      width: 100,
       dataIndex: 'status',
       component: 'select',
       options: {
@@ -234,7 +253,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_9',
       title: '数字显示',
-      width: 120,
+      description: '数字组件 input-number',
+      width: 100,
       dataIndex: 'num',
       component: 'input-number',
       options: {
@@ -247,7 +267,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_4',
       title: '商品价格',
-      width: 150,
+      width: 100,
       align: 'center',
       hidable: true,
       dataIndex: 'price',
@@ -260,7 +280,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_5',
       title: '渲染组件',
-      width: 150,
+      description: '渲染组件 render-html',
+      width: 100,
       align: 'center',
       hidable: true,
       dataIndex: 'render',
@@ -272,6 +293,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_6',
       title: '自定义组件',
+      description: '自定义组件 custom::CustomComponentSample',
       width: 200,
       hidable: true,
       dataIndex: 'custom',
@@ -283,7 +305,8 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: '18f0f4c4125-11e3',
       title: '删除',
-      width: 140,
+      description: '弹层组合组件 group + popover + icon + text + button',
+      width: 100,
       align: 'center',
       verticalAlign: 'middle',
       dataIndex: '',
@@ -480,6 +503,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     {
       key: 'mock_7',
       title: '操作',
+      description: '链接组件 link',
       width: 200,
       align: 'center',
       fixed: 'right',
