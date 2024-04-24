@@ -15,7 +15,7 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
-import { parseCSS } from '@/utils/dom';
+import { parseReactCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
 import Col from '@/components/react-components/col';
 import Row from '@/components/react-components/row';
@@ -126,19 +126,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     });
   }
 
-  private parseStyle(style?: string | Record<string, string>) {
+  private parseReactCSS(style?: string | Record<string, string>) {
     const { record, recordIndex, ext } = this.props;
     const styleObject = typeof style === 'string'
       ? safeExecute(style, { props: { record, recordIndex, ext } })
       : style;
-    return parseCSS(styleObject);
+    return parseReactCSS(styleObject);
   }
 
   public render() {
     const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
     return (
-      <div style={{ wordBreak: 'break-word', ...this.parseStyle(options.style) }}>
+      <div style={{ wordBreak: 'break-word', ...this.parseReactCSS(options.style) }}>
         {
           this.rowItems.map((columnItems, rowIndex) => (
             <Row
