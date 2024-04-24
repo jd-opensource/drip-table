@@ -8,6 +8,7 @@
 
 import './index.less';
 
+import classNames from 'classnames';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
@@ -207,6 +208,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               return (
                 <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                   <a
+                    className={`${prefixCls}-link`}
                     onClick={() => {
                       if (this.props.preview) {
                         return;
@@ -222,6 +224,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <Menu.Item key={index} disabled={this.finalizeDisabled(config.disabled)}>
                 <a
+                  className={`${prefixCls}-link`}
                   href={finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
                   onClick={this.props.preview ? e => e.preventDefault() : void 0}
                   target={config.target}
@@ -250,7 +253,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
         return (
           <div>
             <a
-              className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
+              className={classNames(`${prefixCls}-link`, `${prefixCls}-link-break`, {
+                [`${prefixCls}-link-disabled`]: this.finalizeDisabled(options.disabled),
+              })}
               style={{ lineHeight: options.lineHeight }}
               onClick={() => {
                 if (this.props.preview || this.finalizeDisabled(options.disabled)) {
@@ -269,7 +274,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
       return (
         <div>
           <a
-            className={`${prefixCls}-link-break ${this.finalizeDisabled(options.disabled) ? `${prefixCls}-link-disabled` : ''}`}
+            className={classNames(`${prefixCls}-link`, `${prefixCls}-link-break`, {
+              [`${prefixCls}-link-disabled`]: this.finalizeDisabled(options.disabled),
+            })}
             href={this.finalizeDisabled(options.disabled) ? void 0 : finalizeString('pattern', options.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
             target={options.target}
             onClick={this.props.preview || this.finalizeDisabled(options.disabled) ? e => e.preventDefault() : void 0}
@@ -291,6 +298,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               return (
                 <div key={index} style={{ display: 'inline' }}>
                   <a
+                    className={`${prefixCls}-link`}
                     style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                     onClick={() => {
                       if (this.props.preview) {
@@ -309,7 +317,9 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
             return (
               <div key={index} style={{ display: dataProcessValue(this.props.record, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
                 <a
-                  className={`${prefixCls}-link-break ${disabled ? `${prefixCls}-link-disabled` : ''}`}
+                  className={classNames(`${prefixCls}-link`, `${prefixCls}-link-break`, {
+                    [`${prefixCls}-link-disabled`]: disabled,
+                  })}
                   style={{ marginRight: '5px', lineHeight: options.lineHeight }}
                   href={disabled ? void 0 : finalizeString('pattern', config.href || '', this.props.record, this.props.recordIndex, this.props.ext)}
                   target={disabled ? void 0 : config.target}
@@ -335,7 +345,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               trigger={options.trigger ? [options.trigger] : void 0}
               placement={options.placement}
             >
-              <a style={{ color: options.textColor }}>
+              <a className={`${prefixCls}-link`} style={{ color: options.textColor }}>
                 { options.dropdownText || 'more' }
                 { options.suffixIcon ? ' ' : '' }
                 { options.suffixIcon ? this.getIcon(options.suffixIcon) : null }
