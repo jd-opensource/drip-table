@@ -68,6 +68,7 @@ export interface IDripTableContext<
     checkPassed: boolean;
     selectedRowKeys: React.Key[];
     displayColumnKeys: React.Key[];
+    closePopover: string | null;
   };
   /**
    * 设置表格状态
@@ -99,6 +100,7 @@ export const createTableState = (): IDripTableContext['state'] => ({
   checkPassed: true,
   selectedRowKeys: [],
   displayColumnKeys: [],
+  closePopover: null,
   layout: 'table',
 });
 

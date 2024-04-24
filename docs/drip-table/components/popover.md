@@ -68,6 +68,7 @@ const Demo = () => {
             "options": {
               "layout": [
                 1,
+                1,
                 1
               ],
               "horizontalAlign": "center",
@@ -96,7 +97,26 @@ const Demo = () => {
                     "mode": "single"
                   },
                   "dataIndex": "name"
-                }
+                },
+                {
+                  align: 'center',
+                  verticalAlign: 'middle',
+                  key: 'button_18f0f0c00db-2283',
+                  dataIndex: '',
+                  title: '',
+                  component: 'button',
+                  options: {
+                    mode: 'single',
+                    label: '关闭',
+                    size: 'small',
+                    ghost: false,
+                    danger: false,
+                    event: 'close-popover-button-click',
+                    buttonType: 'primary',
+                    buttons: [],
+                    closePopover: 'mock_3',
+                  },
+                },
               ]
             }
           },

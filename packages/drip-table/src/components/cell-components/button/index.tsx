@@ -10,6 +10,7 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import Button from '@/components/react-components/button';
 import Tooltip from '@/components/react-components/tooltip';
+import { DripTableContext } from '@/hooks';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -27,6 +28,7 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   ghost?: boolean;
   icon?: string;
   event?: string;
+  closePopover?: string;
   margin?: number;
   popconfirm?: {
     title: string;
@@ -40,6 +42,7 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   buttons?: {
     label?: string;
     event?: string;
+    closePopover?: string;
     buttonType?: 'primary' | 'dashed' | 'text' | 'link';
     shape?: 'circle' | 'round';
     size?: 'large' | 'middle' | 'small';
@@ -76,6 +79,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       ghost: { type: 'boolean' },
       icon: { type: 'string' },
       event: { type: 'string' },
+      closePopover: { type: 'string' },
       margin: { type: 'number' },
       popconfirm: {
         type: 'object',
@@ -96,6 +100,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           properties: {
             label: { type: 'string' },
             event: { type: 'string' },
+            closePopover: { type: 'string' },
             buttonType: { enum: ['primary', 'dashed', 'text', 'link'] },
             shape: { enum: ['circle', 'round'] },
             size: { enum: ['large', 'middle', 'small'] },
@@ -169,29 +174,38 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
         return null;
       }
       const wrapperEl = (
-        <Button
-          type={options.buttonType}
-          size={options.size}
-          shape={options.shape}
-          danger={options.danger}
-          ghost={options.ghost}
-          disabled={this.getDisabled(options.disableFunc)}
-          icon={options.icon ? this.getIcon(options.icon) : void 0}
-          onClick={() => {
-            if (this.props.preview) {
-              return;
-            }
-            if (options.popconfirm) {
-              this.setState({ showPopconfirm: true });
-              return;
-            }
-            if (options.event) {
-              this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
-            }
-          }}
-        >
-          { this.label }
-        </Button>
+        <DripTableContext.Consumer>
+          {
+            context => (
+              <Button
+                type={options.buttonType}
+                size={options.size}
+                shape={options.shape}
+                danger={options.danger}
+                ghost={options.ghost}
+                disabled={this.getDisabled(options.disableFunc)}
+                icon={options.icon ? this.getIcon(options.icon) : void 0}
+                onClick={() => {
+                  if (this.props.preview) {
+                    return;
+                  }
+                  if (options.popconfirm) {
+                    this.setState({ showPopconfirm: true });
+                    return;
+                  }
+                  if (options.event) {
+                    this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
+                  }
+                  if (options.closePopover) {
+                    context.setState({ closePopover: options.closePopover });
+                  }
+                }}
+              >
+                { this.label }
+              </Button>
+            )
+          }
+        </DripTableContext.Consumer>
       );
       if (options.popconfirm) {
         return (

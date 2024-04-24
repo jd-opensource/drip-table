@@ -16,6 +16,7 @@ import {
   type SchemaObject,
 } from '@/types';
 import Tooltip from '@/components/react-components/tooltip';
+import { DripTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption } from '@/index';
 
 import { DripTableBuiltInColumnSchema } from '..';
@@ -50,7 +51,9 @@ interface DTCPopoverProps<
 > extends DripTableComponentProps<RecordType, DTCPopoverColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>> {
 }
 
-interface DTCPopoverState {}
+interface DTCPopoverState {
+  visible: boolean;
+}
 
 export default class DTCPopover<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
@@ -79,25 +82,43 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     required: ['popover', 'content'],
   };
 
+  public state: DTCPopoverState = {
+    visible: false,
+  };
+
   public render() {
     const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
     return (
-      <Tooltip
-        trigger={options.trigger}
-        title={(
-          <div
-            style={options.style}
-          >
-            { renderSchema(options.popover, record, recordIndex) }
-          </div>
-        )}
-        placement={options.placement}
-      >
-        <div>
-          { renderSchema(options.content, record, recordIndex) }
-        </div>
-      </Tooltip>
+      <DripTableContext.Consumer>
+        {
+          (context) => {
+            if (context.state.closePopover === this.props.schema.key) {
+              setTimeout(() => { this.setState({ visible: false }); }, 1);
+              setTimeout(() => { context.setState({ closePopover: null }); }, 2);
+            }
+            return (
+              <Tooltip
+                trigger={options.trigger}
+                title={(
+                  <div
+                    style={options.style}
+                  >
+                    { renderSchema(options.popover, record, recordIndex) }
+                  </div>
+                )}
+                placement={options.placement}
+                visible={this.state.visible}
+                onVisibleChange={v => this.setState({ visible: v })}
+              >
+                <div>
+                  { renderSchema(options.content, record, recordIndex) }
+                </div>
+              </Tooltip>
+            );
+          }
+        }
+      </DripTableContext.Consumer>
     );
   }
 }
