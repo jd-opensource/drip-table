@@ -8,6 +8,8 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { parseReactCSS } from '@/utils/dom';
+import { safeExecute } from '@/utils/sandbox';
 import Button from '@/components/react-components/button';
 import Tooltip from '@/components/react-components/tooltip';
 import { DripTableContext } from '@/hooks';
@@ -16,6 +18,10 @@ import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
 
 export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
+  /**
+   * 自定义样式
+   */
+  style?: string | Record<string, string>;
   /**
    * 展示模式：单按钮、多按钮
    */
@@ -70,6 +76,22 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
   public static schema: SchemaObject = {
     type: 'object',
     properties: {
+      style: {
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
+          },
+        ],
+      },
       mode: { enum: ['single', 'multiple'] },
       label: { type: 'string' },
       buttonType: { enum: ['primary', 'dashed', 'text', 'link'] },
@@ -164,6 +186,14 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     return dataProcessValue(record, dataIndex, disableFunc);
   }
 
+  private parseReactCSS(style?: string | Record<string, string>) {
+    const { record, recordIndex, ext } = this.props;
+    const styleObject = typeof style === 'string'
+      ? safeExecute(style, { props: { record, recordIndex, ext } })
+      : style;
+    return parseReactCSS(styleObject);
+  }
+
   public render() {
     const options = this.props.schema.options;
     if (!this.configured) {
@@ -178,6 +208,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           {
             context => (
               <Button
+                style={this.parseReactCSS(options.style)}
                 type={options.buttonType}
                 size={options.size}
                 shape={options.shape}

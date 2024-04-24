@@ -499,6 +499,9 @@ const Demo = () => {
                                 title: '',
                                 component: 'button',
                                 options: {
+                                  style: {
+                                    borderRadius: '5px',
+                                  },
                                   mode: 'single',
                                   label: '确定',
                                   size: 'middle',
@@ -521,6 +524,9 @@ const Demo = () => {
                                 title: '',
                                 component: 'button',
                                 options: {
+                                  style: {
+                                    borderRadius: '5px',
+                                  },
                                   mode: 'single',
                                   label: '取消',
                                   size: 'middle',
