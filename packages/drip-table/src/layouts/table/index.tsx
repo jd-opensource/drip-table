@@ -1576,6 +1576,21 @@ const TableLayout = <
         showSizeChanger={tableInfo.schema.pagination?.showSizeChanger}
         pageSizeOptions={tableInfo.schema.pagination?.pageSizeOptions}
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
+        pageNumberStyle={parseReactCSS(
+          typeof tableInfo.schema.pagination?.pageNumberStyle === 'string'
+            ? safeExecute(tableInfo.schema.pagination.pageNumberStyle, { props: { ext: tableProps.ext } })
+            : tableInfo.schema.pagination?.pageNumberStyle,
+        )}
+        pageStepperStyle={parseReactCSS(
+          typeof tableInfo.schema.pagination?.pageStepperStyle === 'string'
+            ? safeExecute(tableInfo.schema.pagination.pageStepperStyle, { props: { ext: tableProps.ext } })
+            : tableInfo.schema.pagination?.pageStepperStyle,
+        )}
+        pageSelectorStyle={parseReactCSS(
+          typeof tableInfo.schema.pagination?.pageSelectorStyle === 'string'
+            ? safeExecute(tableInfo.schema.pagination.pageSelectorStyle, { props: { ext: tableProps.ext } })
+            : tableInfo.schema.pagination?.pageSelectorStyle,
+        )}
         onChange={(page, pageSize) => {
           const pagination = { ...tableState.pagination, current: page, pageSize };
           setTableState({ pagination, paginationChanged: true });

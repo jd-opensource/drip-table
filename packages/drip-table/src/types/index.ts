@@ -252,6 +252,9 @@ export interface DripTableSchema<
     showSizeChanger?: boolean;
     pageSizeOptions?: string[] | number[];
     hideOnSinglePage?: boolean;
+    pageNumberStyle?: string | Record<string, string>;
+    pageStepperStyle?: string | Record<string, string>;
+    pageSelectorStyle?: string | Record<string, string>;
   };
   size?: 'small' | 'middle' | 'large' | 'default';
   /**

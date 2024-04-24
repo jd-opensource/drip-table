@@ -49,15 +49,18 @@ import DripTable from "drip-table";
 
 const schema = {
   pagination: {
-    size: 'small',
+    size: 'default',
     pageSize: 10,
-    position: 'bottomLeft',
+    position: 'bottomCenter',
     showLessItems: true,
     showQuickJumper: true,
     showSizeChanger: true,
     pageSizeOptions: [3, 5, 10, 20, 50],
     hideOnSinglePage: true,
     showTotal: 'Total: {{total}}',
+    pageNumberStyle: { borderRadius: '10px' },
+    pageStepperStyle: { borderRadius: '10px' },
+    pageSelectorStyle: { borderRadius: '10px' },
   },
   columns: [
     {
