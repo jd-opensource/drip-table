@@ -6,7 +6,7 @@
 
 import 'jsoneditor-react/es/editor.min.css';
 
-import { CloseCircleTwoTone, CloudSyncOutlined } from '@ant-design/icons';
+import * as AntIcons from '@ant-design/icons';
 import { Button, message, Switch, Tabs } from 'antd';
 import DripTable, { DripTableFilters, DripTableInstance } from 'drip-table';
 import { JsonEditor } from 'jsoneditor-react';
@@ -16,6 +16,10 @@ import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '.
 import { CustomColumnSchema, CustomComponentEvent, CustomComponents } from './custom-components';
 
 import styles from './demo.module.less';
+
+const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ...Icons } = AntIcons;
+
+console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
 const Demo = () => {
   const [loading, setLoading] = React.useState(false);
@@ -114,6 +118,7 @@ const Demo = () => {
         total={totalNum}
         dataSource={dataSource}
         components={React.useMemo(() => ({ custom: CustomComponents }), [])}
+        icons={Icons}
         slots={React.useMemo(() => ({
           'header-slot-sample': React.memo((props) => {
             const [state, setState] = React.useState({ count: 0 });
@@ -139,7 +144,7 @@ const Demo = () => {
                   console.log('expandable-footer-click', record, index, tableInfo);
                 }}
               >
-                <CloudSyncOutlined />
+                <AntIcons.CloudSyncOutlined />
                 <span style={{ marginLeft: '5px' }}>加载更多</span>
               </div>
             )
@@ -195,7 +200,7 @@ const Demo = () => {
       <div className={styles['popup-wrapper']} style={{ height: editVisible ? '70vh' : '0' }} />
       <div className={styles['popup-layer']} style={{ height: editVisible ? '70%' : '0' }}>
         <div style={{ position: 'absolute', right: '10px', top: '8px', zIndex: 1 }}>
-          <CloseCircleTwoTone style={{ fontSize: '24px' }} onClick={() => { setEditVisible(!editVisible); }} />
+          <AntIcons.CloseCircleTwoTone style={{ fontSize: '24px' }} onClick={() => { setEditVisible(!editVisible); }} />
         </div>
         <div className={styles['popup-main']}>
           <Tabs className={styles['popup-tabs']} size="small">
