@@ -15,6 +15,8 @@ import {
   type DripTableRecordTypeWithSubtable,
   type SchemaObject,
 } from '@/types';
+import { parseCSS } from '@/utils/dom';
+import { safeExecute } from '@/utils/sandbox';
 import Col from '@/components/react-components/col';
 import Row from '@/components/react-components/row';
 import { type ExtractDripTableExtraOption } from '@/index';
@@ -23,6 +25,10 @@ import { DripTableBuiltInColumnSchema } from '..';
 import { DripTableComponentProps } from '../component';
 
 export type DTCGroupColumnSchema<CustomColumnSchema extends DripTableDataColumnSchema = never> = DripTableColumnSchema<'group', {
+  /**
+   * 自定义样式
+   */
+  style?: string | Record<string, string>;
   /**
    * 布局配置：水平排列对齐方式
    */
@@ -72,6 +78,22 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   public static schema: SchemaObject = {
     type: 'object',
     properties: {
+      style: {
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
+          },
+        ],
+      },
       horizontalAlign: { enum: ['start', 'end', 'center', 'space-around', 'space-between'] },
       verticalAlign: { enum: ['top', 'middle', 'bottom'] },
       layout: { type: 'array', items: { type: 'number' } },
@@ -104,11 +126,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     });
   }
 
+  private parseStyle(style?: string | Record<string, string>) {
+    const { record, recordIndex, ext } = this.props;
+    const styleObject = typeof style === 'string'
+      ? safeExecute(style, { props: { record, recordIndex, ext } })
+      : style;
+    return parseCSS(styleObject);
+  }
+
   public render() {
     const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
     return (
-      <div style={{ wordBreak: 'break-word' }}>
+      <div style={{ wordBreak: 'break-word', ...this.parseStyle(options.style) }}>
         {
           this.rowItems.map((columnItems, rowIndex) => (
             <Row
