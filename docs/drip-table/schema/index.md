@@ -18,6 +18,7 @@ toc: content
 | [innerStyle](/drip-table/schema/inner-style) | 内部表格组件样式 | × | [🔗 示例](/drip-table/schema/inner-style) |
 | [columns](/drip-table/schema/columns) | 列定义 | √ | [🔗 示例](/drip-table/schema/columns) |
 | [bordered](/drip-table/schema/bordered) | 是否展示表格边框 | × | [🔗 示例](/drip-table/schema/bordered) |
+| [borderRadius](/drip-table/schema/border-radius) | 表格边框圆角 | × | [🔗 示例](/drip-table/schema/border-radius) |
 | [showHeader](/drip-table/schema/show-header) | 是否显示表头 | × | [🔗 示例](/drip-table/schema/show-header) |
 | [header](/drip-table/schema/header) | 是否展示头部以及配置 | × | [🔗 示例](/drip-table/schema/header) |
 | [footer](/drip-table/schema/footer) | 是否展示尾部以及配置 | × | [🔗 示例](/drip-table/schema/footer) |

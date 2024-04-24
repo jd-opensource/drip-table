@@ -342,6 +342,27 @@
     }
   }
 
+  &&--border-radius:not(&--bordered) {
+    .@{prefixCls}-thead > tr > th {
+      border-bottom: none;
+    }
+
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > tfoot > tr > th,
+    & > .@{prefixCls}-container > .@{prefixCls}-content > table > thead > tr > th {
+      &:not(.@{prefixCls}--slot) {
+        &:first-child {
+          border-top-left-radius: var(--drip-table-border-radius);
+          border-bottom-left-radius: var(--drip-table-border-radius);
+        }
+
+        &:last-child {
+          border-top-right-radius: var(--drip-table-border-radius);
+          border-bottom-right-radius: var(--drip-table-border-radius);
+        }
+      }
+    }
+  }
+
   // ====================================
   // ==             Fixed              ==
   // ====================================

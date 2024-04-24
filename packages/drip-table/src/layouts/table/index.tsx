@@ -1795,6 +1795,7 @@ const TableLayout = <
               [`${prefixCls}-small`]: tableProps.schema.size === 'small',
               [`${prefixCls}-middle`]: tableProps.schema.size === 'middle',
               [`${prefixCls}--bordered`]: tableProps.schema.bordered,
+              [`${prefixCls}--border-radius`]: tableProps.schema.borderRadius,
               [`${prefixCls}--stripe`]: tableProps.schema.stripe,
             })}
             style={
@@ -1802,7 +1803,7 @@ const TableLayout = <
                 {},
                 tableProps.schema.innerStyle,
                 {
-                  '--drip-table-border-radius': (typeof tableProps.schema.bordered === 'object' && tableProps.schema.bordered.radius) ?? '0px',
+                  '--drip-table-border-radius': tableProps.schema.borderRadius || '0px',
                 },
               )
             }

@@ -107,6 +107,7 @@ const DRIP_TABLE_SIDEBAR = [
             ],
           },
           { title: '边框 bordered', link: '/drip-table/schema/bordered' },
+          { title: '边框圆角 borderRadius', link: '/drip-table/schema/border-radius' },
           { title: '显示表头 showHeader', link: '/drip-table/schema/show-header' },
           { title: '头部 header', link: '/drip-table/schema/header' },
           { title: '尾部 footer', link: '/drip-table/schema/footer' },
