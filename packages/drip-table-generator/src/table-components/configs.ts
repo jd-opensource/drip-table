@@ -543,43 +543,9 @@ export const dataIndexColumnAttrComponents = (
   dataIndex?: string,
   extraOptions?: {
     modeDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean;
-    directDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean;
-    nestedDiffFn?: (value: unknown, formData?: Record<string, unknown>) => boolean;
     layout?: DTGComponentPropertySchema['ui:layout'];
   },
 ): DTGComponentPropertySchema[] => [
-  {
-    name: 'dataIndexMode',
-    group: '属性',
-    required: true,
-    'ui:layout': extraOptions?.layout,
-    'ui:title': '字段读取模式',
-    'ui:titleStyle': { minWidth: 96 },
-    'ui:type': 'radio',
-    'ui:props': {
-      options: [
-        { label: '直接读取', value: 'direct' },
-        { label: '嵌套路径', value: 'nested' },
-      ],
-    },
-    type: 'string',
-    default: 'direct',
-    visible: extraOptions?.modeDiffFn,
-  },
-  {
-    name: 'dataIndex',
-    group: '属性',
-    required: true,
-    'ui:layout': extraOptions?.layout,
-    'ui:title': '字段选择',
-    'ui:type': 'auto-complete',
-    'ui:props': {
-      optionsParam: '$$FIELD_KEY_OPTIONS$$',
-    },
-    type: 'string',
-    visible: extraOptions?.directDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode !== 'nested'),
-    default: dataIndex,
-  },
   {
     name: 'dataIndex',
     group: '属性',
@@ -595,7 +561,7 @@ export const dataIndexColumnAttrComponents = (
     },
     type: 'string',
     default: dataIndex,
-    visible: extraOptions?.nestedDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.dataIndexMode === 'nested'),
+    visible: extraOptions?.modeDiffFn || ((_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single'),
   },
 ];
 

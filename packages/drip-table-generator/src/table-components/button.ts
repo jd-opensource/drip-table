@@ -137,6 +137,16 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
+      name: 'options.closePopover',
+      group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:title': '关闭浮窗ID',
+      'ui:type': 'text',
+      default: '',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
+    },
+    {
       name: 'options.buttons',
       group: '属性',
       'ui:title': '多按钮配置',
@@ -245,23 +255,6 @@ export default {
             type: 'string',
           },
           {
-            name: 'visibleFunc',
-            group: '属性',
-            'ui:title': '显隐条件',
-            'ui:type': 'text',
-            'ui:props': {
-              style: { width: '100%' },
-              placeholder: 'value对应dataIndex的值，rec对应rowData的值,return语句写法案例: `return value === 1',
-
-            },
-            'ui:description': {
-              title: '根据逻辑语句返回的布尔值决定该组件是否被隐藏,true为显示,false为隐藏',
-              trigger: 'hover',
-              type: 'icon',
-            },
-            type: 'string',
-          },
-          {
             name: 'event',
             'ui:title': '事件名称',
             'ui:description': {
@@ -269,6 +262,13 @@ export default {
               trigger: 'hover',
               type: 'icon',
             },
+            'ui:type': 'input',
+            type: 'string',
+            default: '',
+          },
+          {
+            name: 'closePopover',
+            'ui:title': '关闭浮窗ID',
             'ui:type': 'input',
             type: 'string',
             default: '',
