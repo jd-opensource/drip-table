@@ -53,7 +53,9 @@ export default {
       'ui:props': {
         mode: 'narrow',
         items: [
-          ...dataIndexColumnAttrComponents('id'),
+          ...dataIndexColumnAttrComponents('id', {
+            modeDiffFn: _1 => true,
+          }),
           {
             name: 'prefix',
             'ui:title': '前缀文案',
@@ -78,8 +80,6 @@ export default {
       'id',
       {
         modeDiffFn: (_1, formData) => formData?.['options.mode'] === 'single',
-        directDiffFn: (_1, formData) => formData?.['options.mode'] === 'single' && (!formData?.dataIndexMode || formData?.dataIndexMode === 'direct'),
-        nestedDiffFn: (_1, formData) => formData?.['options.mode'] === 'single' && formData?.dataIndexMode === 'nested',
         layout: { labelCol: 8, wrapperCol: 16 },
       },
     ),

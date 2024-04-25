@@ -118,6 +118,14 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
     }
     schemaItem.options.items = items;
   }
+  if (schemaItem.component === 'text' && schemaItem.options.parts) {
+    schemaItem.options.parts = (schemaItem.options.parts as Record<string, unknown>[] || []).map((partItem) => {
+      delete partItem.dataIndexMode;
+      return {
+        ...partItem,
+      };
+    });
+  }
   return schemaItem;
 });
 

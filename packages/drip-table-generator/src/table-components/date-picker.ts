@@ -15,8 +15,6 @@ export default {
     ...dataIndexColumnAttrComponents('startDate',
       {
         modeDiffFn: (_1, formData) => true,
-        directDiffFn: (_1, formData) => true && formData?.dataIndexMode === 'direct',
-        nestedDiffFn: (_1, formData) => true && formData?.dataIndexMode === 'nested',
         layout: { labelCol: 8, wrapperCol: 16 },
       }),
     {
@@ -47,7 +45,9 @@ export default {
       'ui:type': 'array-list',
       'ui:props': {
         items: [
-          ...dataIndexColumnAttrComponents(),
+          ...dataIndexColumnAttrComponents('startDate', {
+            modeDiffFn: () => true,
+          }),
         ],
       },
       default: [],

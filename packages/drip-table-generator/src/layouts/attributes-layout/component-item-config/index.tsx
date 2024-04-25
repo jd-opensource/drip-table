@@ -73,7 +73,6 @@ const ComponentItemConfigForm = <
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
     }
-    formData.dataIndexMode = typeof columnConfigs?.dataIndex === 'string' ? 'direct' : 'nested';
     return formData;
   };
 

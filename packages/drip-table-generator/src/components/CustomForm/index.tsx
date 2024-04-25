@@ -39,7 +39,7 @@ interface Props<T> {
   /**
    * 将原本的数据转换成 FormData
    */
-  decodeData?: (data?: T, defaultData?: Record<string, unknown>) => Record<string, unknown>;
+  decodeData?: (data: T, defaultData?: Record<string, unknown>) => Record<string, unknown>;
   /**
    * 将 FormData 转成 原本数据
    */

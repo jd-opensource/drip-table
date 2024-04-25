@@ -52,28 +52,28 @@ const ComponentConfigForm = <
     icons: props.icons,
   });
 
-  const decodeColumnConfigs = (columnConfigs?: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {
+  const decodeColumnConfigs = (columnConfigs: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {
     const formData: Record<string, unknown> = {};
-    if (typeof columnConfigs?.title === 'string') {
+    if (typeof columnConfigs.title === 'string') {
       formData.title = columnConfigs.title;
-    } else if (typeof columnConfigs?.title?.body === 'string') {
-      formData.title = columnConfigs?.title?.body;
-    } else if (typeof columnConfigs?.title?.body === 'object') {
-      formData.title = columnConfigs?.title?.body.content;
+    } else if (typeof columnConfigs.title?.body === 'string') {
+      formData.title = columnConfigs.title?.body;
+    } else if (typeof columnConfigs.title?.body === 'object') {
+      formData.title = columnConfigs.title?.body.content;
     }
-    if (typeof columnConfigs?.title === 'object' && columnConfigs.title.style) {
+    if (typeof columnConfigs.title === 'object' && columnConfigs.title.style) {
       formData.titleStyle = true;
       Object.keys(columnConfigs.title.style).forEach((key) => {
         formData[`titleStyle.${key}`] = typeof columnConfigs?.title === 'object' ? columnConfigs.title.style?.[key] : void 0;
       });
     }
-    if (typeof columnConfigs?.style === 'object') {
+    if (typeof columnConfigs.style === 'object') {
       formData.style = true;
       Object.keys(columnConfigs.style).forEach((key) => {
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
     }
-    if (columnConfigs?.component === 'icon') {
+    if (columnConfigs.component === 'icon') {
       const iconConfig = columnConfigs?.options?.icon as Record<string, unknown> | string ?? '';
       if (typeof iconConfig === 'string') {
         formData['options.mode'] = 'library';
@@ -89,7 +89,9 @@ const ComponentConfigForm = <
         formData['options.iconRender'] = iconConfig?.html || iconConfig?.render;
       }
     }
-    formData.dataIndexMode = typeof columnConfigs?.dataIndex === 'string' ? 'direct' : 'nested';
+    if (columnConfigs.component === 'button') {
+      formData['options.popconfirm'] = !!columnConfigs.options.popconfirm;
+    }
     return formData;
   };
 
@@ -104,6 +106,7 @@ const ComponentConfigForm = <
           if (key === 'options.popconfirm') {
             uiProps.popconfirm = formData[key] ? {} : false;
           } else {
+            if (!uiProps.popconfirm) { uiProps.popconfirm = {}; }
             (uiProps.popconfirm as Record<string, unknown>)[key.replace('options.popconfirm.', '')] = formData[key];
           }
         } else {
