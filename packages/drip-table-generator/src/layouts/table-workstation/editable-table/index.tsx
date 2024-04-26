@@ -190,6 +190,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         slots={props.slots}
                         icons={props.icons}
                         preview={props.preview}
+                        onEvent={props.onEvent}
                         hasSubTable={hasSubTable}
                         onScroll={(left) => { setScrollLeft(left); }}
                         onClick={props.onClick}

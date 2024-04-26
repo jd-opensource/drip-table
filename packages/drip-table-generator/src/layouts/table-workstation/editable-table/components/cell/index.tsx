@@ -42,6 +42,7 @@ interface TableCellProps<
   ext?: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
   icons?: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   preview?: DripTableGeneratorProps<RecordType, ExtraOptions>['preview'];
+  onEvent?: DripTableGeneratorProps<RecordType, ExtraOptions>['onEvent'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
