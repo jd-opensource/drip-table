@@ -271,6 +271,7 @@ export interface DripTableGeneratorProps<
   slotsSchema?: {
     [componentType: string]: DTGComponentPropertySchema[];
   };
+  preview?: boolean;
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;

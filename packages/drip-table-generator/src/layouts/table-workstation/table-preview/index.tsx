@@ -54,6 +54,7 @@ const PreviewTable = <
           'savePosition',
           'showTemplate',
           'customComponents',
+          'preview',
           'visible',
           'mockDataSource',
           'showComponentLayout',

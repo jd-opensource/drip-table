@@ -9,10 +9,16 @@
 @prefixCls: jfe-drip-table-generator-workstation-table-cell;
 
 .@{prefixCls}-group-wrapper {
-  min-height: 120px;
+  min-height: 80px;
   height: max-content;
-  margin: 2px;
+  margin: 1px;
   width: 100%;
+  padding: 6px;
+  border: 1px solid transparent;
+}
+
+.@{prefixCls}-group-wrapper:hover {
+  border-color: var(--drip-table-border-color);
 }
 
 .@{prefixCls}-group-row {
