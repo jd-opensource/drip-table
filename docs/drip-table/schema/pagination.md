@@ -58,6 +58,7 @@ const schema = {
     pageSizeOptions: [3, 5, 10, 20, 50],
     hideOnSinglePage: true,
     showTotal: 'Total: {{total}}',
+    style: { margin: '5px 0', padding: '5px 0', border: '1px solid #eeeeee', background: '#fcfcfc' },
     pageNumberStyle: { borderRadius: '10px' },
     pageStepperStyle: { borderRadius: '10px' },
     pageSelectorStyle: { borderRadius: '10px' },

@@ -1576,6 +1576,11 @@ const TableLayout = <
         showSizeChanger={tableInfo.schema.pagination?.showSizeChanger}
         pageSizeOptions={tableInfo.schema.pagination?.pageSizeOptions}
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
+        style={parseReactCSS(
+          typeof tableInfo.schema.pagination?.style === 'string'
+            ? safeExecute(tableInfo.schema.pagination.style, { props: { ext: tableProps.ext } })
+            : tableInfo.schema.pagination?.style,
+        )}
         pageNumberStyle={parseReactCSS(
           typeof tableInfo.schema.pagination?.pageNumberStyle === 'string'
             ? safeExecute(tableInfo.schema.pagination.pageNumberStyle, { props: { ext: tableProps.ext } })

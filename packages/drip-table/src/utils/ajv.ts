@@ -285,6 +285,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
                   ],
                 },
                 hideOnSinglePage: { type: 'boolean' },
+                style: DRIP_TABLE_GENERIC_CSS_SCHEMA,
                 pageNumberStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
                 pageStepperStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
                 pageSelectorStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,

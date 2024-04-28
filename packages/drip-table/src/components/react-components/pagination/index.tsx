@@ -24,6 +24,7 @@ const selectPrefixCls = 'jfe-drip-table-rc-select';
 interface PaginationProps extends RcPaginationProps {
   align?: 'left' | 'center' | 'right';
   size?: 'small' | 'default';
+  style?: React.CSSProperties;
   pageNumberStyle?: React.CSSProperties;
   pageStepperStyle?: React.CSSProperties;
   pageSelectorStyle?: React.CSSProperties;
@@ -39,6 +40,7 @@ const Pagination = React.memo((props: PaginationProps) => {
       </style>
       <RcPagination
         {...props}
+        style={props.style}
         prefixCls={prefixCls}
         className={classNames(`${prefixCls}--id-${componentId}`, {
           [`${prefixCls}--mini`]: props.size === 'small',
