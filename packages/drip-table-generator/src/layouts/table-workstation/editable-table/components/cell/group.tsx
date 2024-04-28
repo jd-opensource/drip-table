@@ -57,7 +57,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   if (columnToRender?.component === 'group') {
     const options = columnToRender.options;
     const gutter = options.gutter ?? [0, 0];
-    const rootColumn = props.path.length > 0 ? props.tableConfig.columns[props.path[0]] : props.column;
+    const rootColumn = props.tableConfig.columns[props.columnIndex];
     return (
       <div
         className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
@@ -74,7 +74,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               justify={options.horizontalAlign}
               wrap={options.wrap}
               className="jfe-drip-table-generator-workstation-table-cell-group-row"
-              style={{ minHeight: 60 / options.layout.length }}
+              style={{ minHeight: 40 / options.layout.length }}
             >
               { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
                 const componentIndex = getIndex(options.layout, rowIndex, colIndex);
@@ -90,7 +90,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     })}
                     style={{
                       ...itemColumn && 'style' in itemColumn && 'schema' in itemColumn ? itemColumn.style : {},
-                      padding: `${gutter[0]}px ${gutter[1]}px`,
+                      margin: `${gutter[0]}px ${gutter[1]}px`,
                       minWidth: `${100 / colLength}%`,
                       width: 'max-content',
                     }}

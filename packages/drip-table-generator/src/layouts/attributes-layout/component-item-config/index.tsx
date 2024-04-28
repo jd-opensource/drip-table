@@ -10,6 +10,7 @@ import './index.less';
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
 import { DripTableExtraOptions } from 'drip-table';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
@@ -58,7 +59,7 @@ const ComponentItemConfigForm = <
     icons: props.icons,
   });
 
-  const decodeColumnConfigs = (columnConfigs?: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {
+  const decodeColumnConfigs = (columnConfigs: DTGTableConfig['columns'][number], defaultData?: Record<string, unknown>) => {
     const formData: Record<string, unknown> = {};
     if (typeof columnConfigs?.title === 'string') {
       formData.title = columnConfigs.title;
@@ -72,6 +73,25 @@ const ComponentItemConfigForm = <
       Object.keys(columnConfigs.style).forEach((key) => {
         formData[`style.${key}`] = columnConfigs.style?.[key];
       });
+    }
+    if (columnConfigs.component === 'icon') {
+      const iconConfig = columnConfigs?.options?.icon as Record<string, unknown> | string ?? '';
+      if (typeof iconConfig === 'string') {
+        formData['options.mode'] = 'library';
+        formData['options.icon'] = iconConfig;
+        formData['options.icon.render'] = '';
+      } else if (typeof iconConfig.name === 'string') {
+        formData['options.mode'] = 'library';
+        formData['options.icon'] = iconConfig?.name;
+        formData['options.icon.render'] = '';
+      } else {
+        formData['options.mode'] = 'custom';
+        formData['options.icon'] = '';
+        formData['options.icon.render'] = iconConfig?.html || iconConfig?.render;
+      }
+    }
+    if (columnConfigs.component === 'button') {
+      formData['options.popconfirm'] = !!columnConfigs.options.popconfirm;
     }
     return formData;
   };
@@ -99,6 +119,15 @@ const ComponentItemConfigForm = <
         dataProps[key] = formData[key];
       }
     });
+    if (column?.component === 'icon') {
+      if (formData['options.mode'] === 'custom') {
+        uiProps.icon = {
+          render: uiProps['icon.render'],
+        };
+      }
+      delete uiProps.mode;
+      delete uiProps['icon.render'];
+    }
     if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
       dataProps.width = Number(dataProps.width);
     }
@@ -152,7 +181,7 @@ const ComponentItemConfigForm = <
           <CustomForm<DTGTableConfig['columns'][number]>
             primaryKey="key"
             configs={columnConfig ? columnConfig.attrSchema.filter(item => item.name !== 'width') || [] : []}
-            data={currentColumnItem}
+            data={cloneDeep(currentColumnItem)}
             decodeData={decodeColumnConfigs}
             encodeData={formData => encodeColumnConfigs(formData, currentColumnItem)}
             extendKeys={['ui:props', 'options']}

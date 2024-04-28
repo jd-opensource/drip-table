@@ -48,7 +48,7 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'library',
     },
     {
-      name: 'options.iconRender',
+      name: 'options.icon.render',
       group: '属性',
       'ui:title': '自定义图标',
       'ui:type': 'code-editor',
