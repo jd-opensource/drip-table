@@ -1723,6 +1723,12 @@ const TableLayout = <
                 Object.entries(subtable)
                   .filter(([key]) => key !== 'dataSourceKey'),
               ) as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
+              if (tableProps.schema.theme) {
+                subtableSchema.theme = {
+                  ...tableProps.schema.theme,
+                  ...subtableSchema.theme,
+                };
+              }
               subtableEl = (
                 <DripTableWrapper<RecordType, ExtraOptions>
                   {...tableProps}
