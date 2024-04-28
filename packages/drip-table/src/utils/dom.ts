@@ -71,6 +71,7 @@ export const parseThemeCSS = (theme: Record<string, string> | undefined) => Obje
     primaryColor: '#1890ff',
     primaryActiveColor: '#40a9ff',
     primaryShadowColor: '#1890ff33',
+    textColor: '#000000d9',
     borderColor: '#3b82f6',
     backgroundColor: '#e6f7ff',
     ...theme,

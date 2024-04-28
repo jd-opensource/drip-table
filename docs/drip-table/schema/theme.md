@@ -26,6 +26,7 @@ const schema = {
     primaryColor: '#FF6666',
     primaryActiveColor: '#FF0033',
     primaryShadowColor: '#FF003333',
+    textColor: '#d18888',
     borderColor: '#CC9999',
     backgroundColor: '#FFCCCC',
   },

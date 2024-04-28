@@ -206,6 +206,7 @@ export interface DripTableSchema<
     primaryColor?: string;
     primaryActiveColor?: string;
     primaryShadowColor?: string;
+    textColor?: string;
     borderColor?: string;
     backgroundColor?: string;
   };

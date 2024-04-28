@@ -247,6 +247,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             primaryColor: { type: 'string' },
             primaryActiveColor: { type: 'string' },
             primaryShadowColor: { type: 'string' },
+            textColor: { type: 'string' },
             borderColor: { type: 'string' },
             backgroundColor: { type: 'string' },
           },
