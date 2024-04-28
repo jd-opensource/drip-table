@@ -78,15 +78,15 @@ const ComponentConfigForm = <
       if (typeof iconConfig === 'string') {
         formData['options.mode'] = 'library';
         formData['options.icon'] = iconConfig;
-        formData['options.iconRender'] = '';
+        formData['options.icon.render'] = '';
       } else if (typeof iconConfig.name === 'string') {
         formData['options.mode'] = 'library';
         formData['options.icon'] = iconConfig?.name;
-        formData['options.iconRender'] = '';
+        formData['options.icon.render'] = '';
       } else {
         formData['options.mode'] = 'custom';
         formData['options.icon'] = '';
-        formData['options.iconRender'] = iconConfig?.html || iconConfig?.render;
+        formData['options.icon.render'] = iconConfig?.html || iconConfig?.render;
       }
     }
     if (columnConfigs.component === 'button') {
@@ -125,11 +125,11 @@ const ComponentConfigForm = <
     if (currentColumn?.component === 'icon') {
       if (formData['options.mode'] === 'custom') {
         uiProps.icon = {
-          render: uiProps.iconRender,
+          render: uiProps['icon.render'],
         };
       }
       delete uiProps.mode;
-      delete uiProps.iconRender;
+      delete uiProps['icon.render'];
     }
     if (dataProps.width && !Number.isNaN(Number(dataProps.width))) {
       dataProps.width = Number(dataProps.width);

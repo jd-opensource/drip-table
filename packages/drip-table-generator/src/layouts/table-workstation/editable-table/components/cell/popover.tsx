@@ -55,12 +55,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
     const options = props.column.options;
     return (
       <Popover
+        overlayStyle={typeof options.overlayStyle === 'object' ? options.overlayStyle : void 0}
+        overlayInnerStyle={typeof options.overlayInnerStyle === 'object' ? options.overlayInnerStyle : void 0}
         content={(
           <div
             className={classNames('jfe-drip-table-generator-workstation-table-cell-group-col', {
               checked: options.popover.key === currentComponentID,
             })}
-            style={{ position: 'relative' }}
+            style={{ position: 'relative', padding: '8px' }}
             onClick={(e) => {
               e.stopPropagation();
               props.onClick?.('column-item', {
