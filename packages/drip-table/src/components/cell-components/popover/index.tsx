@@ -74,37 +74,52 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     type: 'object',
     properties: {
       style: {
-        type: 'object',
-        patternProperties: {
-          '^.*$': {
-            anyOf: [
-              { type: 'string' },
-              { type: 'number' },
-            ],
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
           },
-        },
+        ],
       },
       overlayStyle: {
-        type: 'object',
-        patternProperties: {
-          '^.*$': {
-            anyOf: [
-              { type: 'string' },
-              { type: 'number' },
-            ],
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
           },
-        },
+        ],
       },
       overlayInnerStyle: {
-        type: 'object',
-        patternProperties: {
-          '^.*$': {
-            anyOf: [
-              { type: 'string' },
-              { type: 'number' },
-            ],
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            patternProperties: {
+              '^.*$': {
+                anyOf: [
+                  { type: 'string' },
+                  { type: 'number' },
+                ],
+              },
+            },
           },
-        },
+        ],
       },
       trigger: { enum: ['click', 'hover'] },
       placement: { enum: ['top', 'left', 'right', 'bottom', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'leftTop', 'leftBottom', 'rightTop', 'rightBottom'] },
