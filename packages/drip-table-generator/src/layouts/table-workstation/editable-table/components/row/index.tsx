@@ -62,9 +62,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
-  const leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
-  const rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
-
+  let leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left');
+  let rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right');
+  if (sortableColumns.length > 0) {
+    leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
+    rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
+  }
   React.useEffect(() => {
     if (scrollableRow.current && props.scrollTarget !== `__row_${props.rowIndex}`) {
       scrollableRow.current.scrollLeft = props.scrollLeft;
