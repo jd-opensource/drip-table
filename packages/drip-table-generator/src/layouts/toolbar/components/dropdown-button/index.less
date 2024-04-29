@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../styles/index.less");
+
 @prefixCls: jfe-drip-table-generator-dropdown;
 
 .@{prefixCls}-wrapper {
@@ -13,20 +15,20 @@
 }
 
 .@{prefixCls}-button {
-  background-color: var(--drip-table-primary-color);
-  border-color: var(--drip-table-border-color);
+  background-color: var(--drip-table-primary-color, @primary-color);
+  border-color: var(--drip-table-border-color, @border-color);
   box-shadow: 0 -2px 4px -2px rgb(0 0 0 / 57%);
 
   &:hover,
   &:focus {
-    background-color: var(--drip-table-primary-color);
-    border-color: var(--drip-table-border-color);
+    background-color: var(--drip-table-primary-color, @primary-color);
+    border-color: var(--drip-table-border-color, @border-color);
   }
 }
 
 .@{prefixCls}-arrow {
   height: 10px;
-  background-color: var(--drip-table-primary-color);
+  background-color: var(--drip-table-primary-color, @primary-color);
   position: absolute;
   width: 73px;
 }
@@ -40,7 +42,7 @@
 .@{prefixCls}-body {
   position: absolute;
   background: #ffffff;
-  border-top: 1px solid var(--drip-table-border-color);
+  border-top: 1px solid var(--drip-table-border-color, @border-color);
   padding: 10px;
   margin-top: 10px;
   left: 0;

@@ -6,13 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-/**
- * This file is part of the drip-table project.
- * @link     : https://drip-table.jd.com/
- * @author   : helloqian12138 (johnhello12138@163.com)
- * @modifier : helloqian12138 (johnhello12138@163.com)
- * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
- */
+@import url("../../../../../styles/index.less");
 
 @prefixCls: jfe-drip-table-generator-workstation-table-header;
 
@@ -54,7 +48,7 @@
   }
 
   &:hover {
-    border: 1px dashed var(--drip-table-border-color);
+    border: 1px dashed var(--drip-table-border-color, @border-color);
     border-bottom: 1px solid #e0e0e0;
 
     &.disabled {
@@ -63,7 +57,7 @@
   }
 
   &.checked {
-    border: 1px solid var(--drip-table-border-color);
+    border: 1px solid var(--drip-table-border-color, @border-color);
     border-bottom: 1px solid #e0e0e0;
 
     > .@{prefixCls}-tools {
@@ -97,7 +91,7 @@
   }
 
   &.@{prefixCls}-checked {
-    border-color: var(--drip-table-primary-color);
+    border-color: var(--drip-table-primary-color, @primary-color);
   }
 }
 
@@ -106,7 +100,7 @@
   right: -1px;
   display: flex;
   padding: 2px 4px;
-  background-color: var(--drip-table-primary-color);
+  background-color: var(--drip-table-primary-color, @primary-color);
   color: #ffffff;
   box-shadow: 0 -1px 4px -1px rgb(0 0 0 / 85%);
   z-index: 1;

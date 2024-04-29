@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../../styles/theme.less");
+
 @prefixCls: jfe-drip-table-generator-workstation-table-cell;
 
 .@{prefixCls}-group-wrapper {
@@ -18,7 +20,7 @@
 }
 
 .@{prefixCls}-group-wrapper:hover {
-  border-color: var(--drip-table-border-color);
+  border-color: var(--drip-table-border-color, @border-color);
 }
 
 .@{prefixCls}-group-row {
@@ -35,20 +37,20 @@
 
   &:hover,
   &.empty {
-    border: 1px dashed var(--drip-table-border-color);
+    border: 1px dashed var(--drip-table-border-color, @border-color);
   }
 
   &.checked {
-    border: 1px solid var(--drip-table-border-color);
+    border: 1px solid var(--drip-table-border-color, @border-color);
     background:
       linear-gradient(
         45deg,
-        var(--drip-table-background-color) 0,
-        var(--drip-table-background-color) 25%,
+        var(--drip-table-background-color, @background-color) 0,
+        var(--drip-table-background-color, @background-color) 25%,
         transparent 25%,
         transparent 50%,
-        var(--drip-table-background-color) 50%,
-        var(--drip-table-background-color) 75%,
+        var(--drip-table-background-color, @background-color) 50%,
+        var(--drip-table-background-color, @background-color) 75%,
         transparent 75%,
         transparent 100%
       );
@@ -75,10 +77,10 @@
 
   &.primary {
     background-color: #ffffff;
-    color: var(--drip-table-primary-color);
-    fill: var(--drip-table-primary-color);
+    color: var(--drip-table-primary-color, @primary-color);
+    fill: var(--drip-table-primary-color, @primary-color);
     cursor: pointer;
-    border: 1px solid var(--drip-table-border-color);
+    border: 1px solid var(--drip-table-border-color, @border-color);
     border-radius: 50%;
     width: 24px;
     height: 24px;
