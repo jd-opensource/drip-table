@@ -295,6 +295,8 @@ const Demo = () => {
           danger: true,
           event: 'delete',
           popconfirm: {
+            overlayStyle: { maxWidth: '300px' },
+            overlayInnerStyle: { borderRadius: '10px' },
             title: '确认要删除“{{props.record.name}}”？',
             content: '您确认要执行删除“{{props.record.name}}”这个操作吗？该操作将无法撤销！',
             placement: 'top',

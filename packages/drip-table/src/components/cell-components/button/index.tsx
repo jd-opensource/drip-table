@@ -8,7 +8,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { parseReactCSS } from '@/utils/dom';
+import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
 import Button from '@/components/react-components/button';
 import Tooltip from '@/components/react-components/tooltip';
@@ -37,6 +37,14 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   closePopover?: string;
   margin?: number;
   popconfirm?: {
+    /**
+     * 弹出层自定义样式
+     */
+    overlayStyle?: string | Record<string, string>;
+    /**
+     * 弹出层内部自定义样式
+     */
+    overlayInnerStyle?: string | Record<string, string>;
     title: string;
     content: string;
     placement?: string;
@@ -106,6 +114,38 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       popconfirm: {
         type: 'object',
         properties: {
+          overlayStyle: {
+            anyOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {
+                    anyOf: [
+                      { type: 'string' },
+                      { type: 'number' },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
+          overlayInnerStyle: {
+            anyOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {
+                    anyOf: [
+                      { type: 'string' },
+                      { type: 'number' },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
           title: { type: 'string' },
           content: { type: 'string' },
           placement: { type: 'string' },
@@ -239,61 +279,70 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
         </DripTableContext.Consumer>
       );
       if (options.popconfirm) {
+        const popconfirm = options.popconfirm;
         return (
-          <Tooltip
-            title={(
-              <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
-                { finalizeString('pattern', options.popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
-              </div>
-            )}
-            overlay={(
-              <div>
-                <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
-                  { finalizeString('pattern', options.popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                  {
-                    options.popconfirm.cancelText
-                      ? (
+          <DripTableContext.Consumer>
+            {
+              context => (
+                <Tooltip
+                  overlayStyle={{ ...this.parseReactCSS(popconfirm.overlayStyle), ...parseThemeCSS(context.info.schema.theme) }}
+                  overlayInnerStyle={this.parseReactCSS(popconfirm.overlayInnerStyle)}
+                  title={(
+                    <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
+                      { finalizeString('pattern', popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
+                    </div>
+                  )}
+                  overlay={(
+                    <div>
+                      <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
+                        { finalizeString('pattern', popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                        {
+                          popconfirm.cancelText
+                            ? (
+                              <Button
+                                size="small"
+                                onClick={() => {
+                                  this.setState({ showPopconfirm: false });
+                                }}
+                              >
+                                { popconfirm.cancelText }
+                              </Button>
+                            )
+                            : null
+                        }
                         <Button
+                          style={{ marginLeft: '10px' }}
+                          type="primary"
                           size="small"
+                          shape={options.shape}
+                          danger={options.danger}
+                          ghost={options.ghost}
                           onClick={() => {
+                            if (options.event) {
+                              this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
+                            }
                             this.setState({ showPopconfirm: false });
                           }}
                         >
-                          { options.popconfirm.cancelText }
+                          { popconfirm.confirmText || 'Yes' }
                         </Button>
-                      )
-                      : null
-                  }
-                  <Button
-                    style={{ marginLeft: '10px' }}
-                    type="primary"
-                    size="small"
-                    shape={options.shape}
-                    danger={options.danger}
-                    ghost={options.ghost}
-                    onClick={() => {
-                      if (options.event) {
-                        this.props.fireEvent({ type: 'drip-button-click', payload: options.event });
-                      }
-                      this.setState({ showPopconfirm: false });
-                    }}
-                  >
-                    { options.popconfirm.confirmText || 'Yes' }
-                  </Button>
-                </div>
-              </div>
-            )}
-            visible={this.state.showPopconfirm}
-            onVisibleChange={(visible) => {
-              this.setState({ showPopconfirm: visible });
-            }}
-            trigger="click"
-            placement={options.popconfirm.placement}
-          >
-            { wrapperEl }
-          </Tooltip>
+                      </div>
+                    </div>
+                  )}
+                  visible={this.state.showPopconfirm}
+                  onVisibleChange={(visible) => {
+                    this.setState({ showPopconfirm: visible });
+                  }}
+                  trigger="click"
+                  placement={popconfirm.placement}
+                >
+                  { wrapperEl }
+                </Tooltip>
+              )
+            }
+          </DripTableContext.Consumer>
         );
       }
       return wrapperEl;
