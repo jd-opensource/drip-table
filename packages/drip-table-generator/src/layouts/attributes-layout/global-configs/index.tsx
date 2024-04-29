@@ -258,7 +258,7 @@ const GlobalConfigForm = <
         : void 0,
       pagination: formData.pagination
         ? {
-          size: formData['pagination.size'] as 'small' | 'default',
+          size: formData['pagination.size'] as 'small' | 'default' || 'default',
           pageSize: formData['pagination.pageSize'] as number,
           position: formData['pagination.position'] as 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight',
           showQuickJumper: formData['pagination.showQuickJumper'] as boolean,
