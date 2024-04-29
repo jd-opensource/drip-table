@@ -1,12 +1,14 @@
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-cc-link;
 
 .@{prefixCls}-link {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-link:active,
 .@{prefixCls}-link:hover {
-  color: var(--drip-table-primary-active-color);
+  color: @drip-table-primary-active-color;
 }
 
 .@{prefixCls}-link-disabled,

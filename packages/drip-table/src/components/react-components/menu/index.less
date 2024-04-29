@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-menu;
 
 .@{prefixCls}-item-danger.@{prefixCls}-item,
@@ -52,7 +54,7 @@
   font-variant: tabular-nums;
   font-feature-settings: "tnum", "tnum";
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   line-height: 0;
   text-align: left;
@@ -113,7 +115,7 @@
 }
 
 .@{prefixCls}-submenu-selected {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-item:active,
@@ -131,11 +133,11 @@
 }
 
 .@{prefixCls}-item a {
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
 }
 
 .@{prefixCls}-item a:hover {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-item a:before {
@@ -149,11 +151,11 @@
 }
 
 .@{prefixCls}-item>.ant-badge a {
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
 }
 
 .@{prefixCls}-item>.ant-badge a:hover {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-item-divider {
@@ -182,7 +184,7 @@
 .@{prefixCls}-item-selected,
 .@{prefixCls}-item-selected a,
 .@{prefixCls}-item-selected a:hover {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-selected {
@@ -345,7 +347,7 @@
   top: 50%;
   right: 16px;
   width: 10px;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   transform: translateY(-50%);
   transition: transform .3s cubic-bezier(.645, .045, .355, 1);
 }
@@ -375,7 +377,7 @@
 
 .@{prefixCls}-submenu:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-expand-icon,
 .@{prefixCls}-submenu:hover>.@{prefixCls}-submenu-title>.@{prefixCls}-submenu-arrow {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-inline-collapsed .@{prefixCls}-submenu-arrow:before,
@@ -407,7 +409,7 @@
 .@{prefixCls}-vertical .@{prefixCls}-submenu-selected,
 .@{prefixCls}-vertical-left .@{prefixCls}-submenu-selected,
 .@{prefixCls}-vertical-right .@{prefixCls}-submenu-selected {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-horizontal {
@@ -432,7 +434,7 @@
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-open,
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-selected,
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-selected {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item:hover:after,
@@ -443,7 +445,7 @@
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-open:after,
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-item-selected:after,
 .@{prefixCls}-horizontal:not(.@{prefixCls}-dark)>.@{prefixCls}-submenu-selected:after {
-  border-bottom: 2px solid var(--drip-table-primary-color);
+  border-bottom: 2px solid @drip-table-primary-color;
 }
 
 .@{prefixCls}-horizontal>.@{prefixCls}-item,
@@ -470,11 +472,11 @@
 }
 
 .@{prefixCls}-horizontal>.@{prefixCls}-item a {
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
 }
 
 .@{prefixCls}-horizontal>.@{prefixCls}-item a:hover {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-horizontal>.@{prefixCls}-item a:before {
@@ -482,7 +484,7 @@
 }
 
 .@{prefixCls}-horizontal>.@{prefixCls}-item-selected a {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-horizontal:after {
@@ -507,7 +509,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  border-right: 3px solid var(--drip-table-primary-color);
+  border-right: 3px solid @drip-table-primary-color;
   transform: scaleY(.0001);
   opacity: 0;
   transition: transform .15s cubic-bezier(.215, .61, .355, 1), opacity .15s cubic-bezier(.215, .61, .355, 1);
@@ -762,7 +764,7 @@
 .@{prefixCls}-light .@{prefixCls}:not(.@{prefixCls}-inline) .@{prefixCls}-submenu-open,
 .@{prefixCls}-light .@{prefixCls}-submenu-active,
 .@{prefixCls}-light .@{prefixCls}-submenu-title:hover {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}.@{prefixCls}-root:focus-visible {
@@ -819,7 +821,7 @@
 }
 
 .@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-item:hover {
-  background-color: var(--drip-table-primary-color);
+  background-color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-dark.@{prefixCls}-horizontal>.@{prefixCls}-item>a:before {
@@ -915,7 +917,7 @@
 }
 
 .@{prefixCls}-dark.@{prefixCls}-dark:not(.@{prefixCls}-horizontal) .@{prefixCls}-item-selected {
-  background-color: var(--drip-table-primary-color);
+  background-color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-dark .@{prefixCls}-item-selected {
@@ -946,7 +948,7 @@
 
 .@{prefixCls}.@{prefixCls}-dark .@{prefixCls}-item-selected,
 .@{prefixCls}-submenu-popup.@{prefixCls}-dark .@{prefixCls}-item-selected {
-  background-color: var(--drip-table-primary-color);
+  background-color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-dark .@{prefixCls}-item-disabled,

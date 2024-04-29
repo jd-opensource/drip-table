@@ -6,13 +6,15 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-layout-table;
 
 .@{prefixCls} {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-variant: tabular-nums;
   line-height: 1.5715;
   list-style: none;
@@ -29,7 +31,7 @@
 
   &-thead > tr > th {
     position: relative;
-    color: var(--drip-table-text-color);
+    color: @drip-table-text-color;
     font-weight: 500;
     text-align: left;
     background: #fafafa;
@@ -82,7 +84,7 @@
 
   &-footer {
     padding: 16px;
-    color: var(--drip-table-text-color);
+    color: @drip-table-text-color;
     background: #fafafa;
     border-radius: 0 0 2px 2px;
   }
@@ -212,7 +214,7 @@
 
   &-row-expand-icon:focus,
   &-row-expand-icon:hover {
-    color: var(--drip-table-primary-active-color);
+    color: @drip-table-primary-active-color;
   }
 
   &-row-expand-icon:active {

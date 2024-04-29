@@ -23,7 +23,7 @@
 }
 
 html {
-  --drip-wave-shadow-color: @primary-color;
+  --drip-wave-shadow-color: @drip-table-primary-color;
   --scroll-bar: 0;
 }
 
@@ -38,7 +38,7 @@ html {
   left: 0;
   display: block;
   border-radius: inherit;
-  box-shadow: 0 0 0 0 @primary-color;
+  box-shadow: 0 0 0 0 @drip-table-primary-color;
   box-shadow: 0 0 0 0 var(--drip-wave-shadow-color);
   opacity: .2;
   animation: jfe-drip-table-motion-fade-effect 2s @ease-out-circ, jfe-drip-table-motion-wave-effect .4s @ease-out-circ;
@@ -49,7 +49,7 @@ html {
 
 @keyframes jfe-drip-table-motion-wave-effect {
   100% {
-    box-shadow: 0 0 0 @primary-color;
+    box-shadow: 0 0 0 @drip-table-primary-color;
     box-shadow: 0 0 0 @wave-animation-width var(--drip-wave-shadow-color);
   }
 }

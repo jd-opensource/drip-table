@@ -68,14 +68,10 @@ export const parseCSS = (style: string | Record<string, string>): Record<string,
  */
 export const parseThemeCSS = (theme: Record<string, string> | undefined) => Object.fromEntries(
   Object.entries({
-    primaryColor: '#1890ff',
-    primaryActiveColor: '#40a9ff',
-    primaryShadowColor: '#1890ff33',
-    textColor: '#000000d9',
-    borderColor: '#3b82f6',
-    backgroundColor: '#e6f7ff',
+    // Default theme css see: '@/styles/theme/default.less'
     ...theme,
   })
+    .filter(([k, v]) => k && v)
     .map(([k, v]) => [`--drip-table-${kebabCase(k)}`, v]),
 );
 

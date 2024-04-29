@@ -1,3 +1,5 @@
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefix-cls: jfe-drip-table-rc-date-picker;
 
 @background-color: #fff;
@@ -19,7 +21,7 @@
 .@{prefix-cls} {
   box-sizing: border-box;
   margin: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -35,8 +37,8 @@
   transition: border .3s, box-shadow .3s;
 
   &-focused {
-    border-color: var(--drip-table-primary-active-color);
-    box-shadow: 0 0 0 2px var(--drip-table-primary-shadow-color);
+    border-color: @drip-table-primary-active-color;
+    box-shadow: 0 0 0 2px @drip-table-primary-shadow-color;
     border-right-width: 1px;
     outline: 0;
   }
@@ -112,7 +114,7 @@
       > button {
         padding: 0;
         border: 0;
-        color: var(--drip-table-text-color);
+        color: @drip-table-text-color;
       }
     }
   }
@@ -166,7 +168,7 @@
     }
 
     &-in-view {
-      color: var(--drip-table-text-color);
+      color: @drip-table-text-color;
     }
 
     &-in-range > &-inner {
@@ -184,7 +186,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        border: 1px dashed var(--drip-table-primary-color);
+        border: 1px dashed @drip-table-primary-color;
         border-right: 0;
         border-left: 0;
         content: "";
@@ -193,11 +195,11 @@
     }
 
     &-range-hover-start::after {
-      border-left: 1px dashed var(--drip-table-primary-color) !important;
+      border-left: 1px dashed @drip-table-primary-color !important;
     }
 
     &-range-hover-end::after {
-      border-right: 1px dashed var(--drip-table-primary-color) !important;
+      border-right: 1px dashed @drip-table-primary-color !important;
     }
 
     &-today > &-inner {
@@ -207,7 +209,7 @@
     &-range-start > &-inner,
     &-range-end > &-inner,
     &-selected > &-inner {
-      background: var(--drip-table-primary-color);
+      background: @drip-table-primary-color;
       color: #ffffff;
     }
   }
@@ -397,7 +399,7 @@
       position: relative;
       display: inline-block;
       width: 100%;
-      color: var(--drip-table-text-color);
+      color: @drip-table-text-color;
       font-size: 14px;
       line-height: 1.5715;
       border-radius: 2px;
@@ -518,11 +520,11 @@
   // ========================================================
 
   &-cell-range-start &-cell-inner {
-    background: var(--drip-table-primary-color);
+    background: @drip-table-primary-color;
   }
 
   &-cell-range-end &-cell-inner {
-    background: var(--drip-table-primary-color);
+    background: @drip-table-primary-color;
   }
 
   &-cell-range-start::before {
@@ -552,15 +554,15 @@
     .@{prefix-cls}-active-bar {
       bottom: 0;
       height: 2px;
-      background: var(--drip-table-primary-color);
+      background: @drip-table-primary-color;
       opacity: 0;
       transition: all .3s;
       pointer-events: none;
     }
 
     &.@{prefix-cls}-focused {
-      border-color: var(--drip-table-primary-active-color);
-      box-shadow: 0 0 0 2px var(--drip-table-primary-shadow-color);
+      border-color: @drip-table-primary-active-color;
+      box-shadow: 0 0 0 2px @drip-table-primary-shadow-color;
       border-right-width: 1px;
       outline: 0;
 

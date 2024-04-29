@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-layout-table-column-header-cell;
 
 .@{prefixCls} {
@@ -96,7 +98,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      color: var(--drip-table-text-color);
+      color: @drip-table-text-color;
       font-size: 14px;
       font-variant: tabular-nums;
       line-height: 1.5715;
@@ -127,7 +129,7 @@
         clear: both;
         margin: 0;
         padding: 5px 12px;
-        color: var(--drip-table-text-color);
+        color: @drip-table-text-color;
         font-weight: normal;
         font-size: 14px;
         line-height: 22px;
@@ -139,7 +141,7 @@
         align-items: center;
 
         &--selected {
-          color: var(--drip-table-primary-color);
+          color: @drip-table-primary-color;
           background-color: #e6f7ff;
         }
 
@@ -149,7 +151,7 @@
 
         &-content {
           display: flex;
-          color: var(--drip-table-text-color);
+          color: @drip-table-text-color;
           font-weight: normal;
           font-size: 14px;
           line-height: 22px;
@@ -190,7 +192,7 @@
         padding: 0 7px;
         font-size: 14px;
         border-radius: 2px;
-        color: var(--drip-table-primary-color);
+        color: @drip-table-primary-color;
         border-color: transparent;
         background: transparent;
         box-shadow: none;
@@ -223,8 +225,8 @@
         font-size: 14px;
         border-radius: 2px;
         color: #ffffff;
-        border-color: var(--drip-table-primary-color);
-        background: var(--drip-table-primary-color);
+        border-color: @drip-table-primary-color;
+        background: @drip-table-primary-color;
         text-shadow: 0 -1px 0 #0000001f;
         box-shadow: 0 2px 0 #0000000d;
       }

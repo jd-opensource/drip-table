@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-dropdown;
 
 .@{prefixCls}-menu-item.@{prefixCls}-menu-item-danger {
@@ -21,7 +23,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -208,7 +210,7 @@
   clear: both;
   margin: 0;
   padding: 5px 12px;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -218,7 +220,7 @@
 
 .@{prefixCls}-menu-item-selected,
 .@{prefixCls}-menu-submenu-title-selected {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
   background-color: #e6f7ff;
 }
 
@@ -309,7 +311,7 @@
 }
 
 .@{prefixCls}-menu-submenu-selected .@{prefixCls}-menu-submenu-title {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-button {
@@ -325,7 +327,7 @@
 .@{prefixCls}-menu-dark .@{prefixCls}-menu-item-selected:hover,
 .@{prefixCls}-menu-dark .@{prefixCls}-menu-item-selected>a {
   color: #ffffff;
-  background: var(--drip-table-primary-color);
+  background: @drip-table-primary-color;
 }
 
 .@{prefixCls}-rtl {

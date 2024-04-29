@@ -1,3 +1,5 @@
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-modal;
 
 .@{prefixCls}-mask {
@@ -25,7 +27,7 @@
 .@{prefixCls} {
   box-sizing: border-box;
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -55,7 +57,7 @@
 
 .@{prefixCls}-header {
   padding: 16px 24px;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   background: #ffffff;
   border-radius: 4px 4px 0 0;
   border-bottom: 1px solid #eeeeee;
@@ -63,7 +65,7 @@
 
 .@{prefixCls}-title {
   margin: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;

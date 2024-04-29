@@ -6,12 +6,14 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-tag;
 
 .@{prefixCls} {
   box-sizing: border-box;
   margin: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-variant: tabular-nums;
   list-style: none;
   font-feature-settings: "tnum", "tnum";
@@ -161,8 +163,8 @@
 
   &-color-blue-inverse {
     color: #ffffff;
-    background: var(--drip-table-primary-color);
-    border-color: var(--drip-table-primary-color);
+    background: @drip-table-primary-color;
+    border-color: @drip-table-primary-color;
   }
 
   &-color-geekblue {
@@ -196,7 +198,7 @@
   }
 
   &-color-processing {
-    color: var(--drip-table-primary-color);
+    color: @drip-table-primary-color;
     background: #e6f7ff;
     border-color: #91d5ff;
   }

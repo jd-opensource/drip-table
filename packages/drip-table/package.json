@@ -17,7 +17,7 @@
     "./dist/index.min.css": "./dist/index.min.css"
   },
   "scripts": {
-    "build": "father build",
+    "build": "father build && node ./post-build.js",
     "dev": "father dev",
     "analyze": "ANALYZE=1 dumi dev",
     "prepare": "yarn build && yarn lint",
