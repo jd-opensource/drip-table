@@ -49,7 +49,15 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
     content: string;
     placement?: string;
     cancelText?: string;
+    /**
+     * 取消按钮自定义样式
+     */
+    cancelStyle?: string | Record<string, string>;
     confirmText?: string;
+    /**
+     * 确认按钮自定义样式
+     */
+    confirmStyle?: string | Record<string, string>;
   };
   disableFunc?: string;
   visibleFunc?: string;
@@ -150,7 +158,39 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
           content: { type: 'string' },
           placement: { type: 'string' },
           cancelText: { type: 'string' },
+          cancelStyle: {
+            anyOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {
+                    anyOf: [
+                      { type: 'string' },
+                      { type: 'number' },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
           confirmText: { type: 'string' },
+          confirmStyle: {
+            anyOf: [
+              { type: 'string' },
+              {
+                type: 'object',
+                patternProperties: {
+                  '^.*$': {
+                    anyOf: [
+                      { type: 'string' },
+                      { type: 'number' },
+                    ],
+                  },
+                },
+              },
+            ],
+          },
         },
       },
       disableFunc: { type: 'string' },
@@ -302,6 +342,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                           popconfirm.cancelText
                             ? (
                               <Button
+                                style={this.parseReactCSS(popconfirm.cancelStyle)}
                                 size="small"
                                 onClick={() => {
                                   this.setState({ showPopconfirm: false });
@@ -313,7 +354,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                             : null
                         }
                         <Button
-                          style={{ marginLeft: '10px' }}
+                          style={{ marginLeft: '10px', ...this.parseReactCSS(popconfirm.confirmStyle) }}
                           type="primary"
                           size="small"
                           shape={options.shape}
