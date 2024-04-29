@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../../styles/index.less");
+
 @prefixCls: jfe-drip-table-generator-workstation-table-header;
 
 .@{prefixCls}-wrapper {
@@ -18,24 +20,24 @@
       background:
         linear-gradient(
           45deg,
-          var(--drip-table-background-color) 0,
-          var(--drip-table-background-color) 10%,
+          var(--drip-table-background-color, @background-color) 0,
+          var(--drip-table-background-color, @background-color) 10%,
           transparent 10%,
           transparent 20%,
-          var(--drip-table-background-color) 20%,
-          var(--drip-table-background-color) 30%,
+          var(--drip-table-background-color, @background-color) 20%,
+          var(--drip-table-background-color, @background-color) 30%,
           transparent 30%,
           transparent 40%,
-          var(--drip-table-background-color) 40%,
-          var(--drip-table-background-color) 50%,
+          var(--drip-table-background-color, @background-color) 40%,
+          var(--drip-table-background-color, @background-color) 50%,
           transparent 50%,
           transparent 60%,
-          var(--drip-table-background-color) 60%,
-          var(--drip-table-background-color) 70%,
+          var(--drip-table-background-color, @background-color) 60%,
+          var(--drip-table-background-color, @background-color) 70%,
           transparent 70%,
           transparent 80%,
-          var(--drip-table-background-color) 80%,
-          var(--drip-table-background-color) 90%,
+          var(--drip-table-background-color, @background-color) 80%,
+          var(--drip-table-background-color, @background-color) 90%,
           transparent 90%,
           transparent 100%
         );

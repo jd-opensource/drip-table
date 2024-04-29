@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../../styles/index.less");
+
 @prefixCls: jfe-drip-table-generator-components-bar;
 
 .@{prefixCls}-wrapper {
@@ -61,12 +63,12 @@
     margin: 2px;
 
     &:hover {
-      border-color: var(--drip-table-border-color);
-      fill: var(--drip-table-primary-color);
-      color: var(--drip-table-primary-color);
+      border-color: var(--drip-table-border-color, @border-color);
+      fill: var(--drip-table-primary-color, @primary-color);
+      color: var(--drip-table-primary-color, @primary-color);
 
       .@{prefixCls}-component-text {
-        color: var(--drip-table-primary-color);
+        color: var(--drip-table-primary-color, @primary-color);
       }
     }
   }

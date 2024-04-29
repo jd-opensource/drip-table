@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../../styles/index.less");
+
 @prefixCls: jfe-drip-table-generator-workstation-table-tr;
 
 .@{prefixCls}-wrapper {
@@ -37,21 +39,21 @@
   }
 
   &.hovered {
-    border-left: 1px dashed var(--drip-table-border-color);
-    border-right: 1px dashed var(--drip-table-border-color);
+    border-left: 1px dashed var(--drip-table-border-color, @border-color);
+    border-right: 1px dashed var(--drip-table-border-color, @border-color);
   }
 
   &.last-row.hovered {
-    border-bottom: 1px dashed var(--drip-table-border-color);
+    border-bottom: 1px dashed var(--drip-table-border-color, @border-color);
   }
 
   &.checked {
-    border-left: 1px solid var(--drip-table-border-color);
-    border-right: 1px solid var(--drip-table-border-color);
+    border-left: 1px solid var(--drip-table-border-color, @border-color);
+    border-right: 1px solid var(--drip-table-border-color, @border-color);
   }
 
   &.last-row.checked {
-    border-bottom: 1px solid var(--drip-table-border-color);
+    border-bottom: 1px solid var(--drip-table-border-color, @border-color);
   }
 
   &.right-shadow {

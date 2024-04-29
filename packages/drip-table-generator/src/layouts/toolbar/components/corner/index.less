@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
+@import url("../../../../styles/index.less");
+
 @prefixCls: jfe-drip-table-generator-corner;
 
 .@{prefixCls}-front {
@@ -38,5 +40,5 @@
 .@{prefixCls}-background {
   position: relative;
   overflow: hidden;
-  background: var(--drip-table-primary-color);
+  background: var(--drip-table-primary-color, @primary-color);
 }
