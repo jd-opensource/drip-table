@@ -8,6 +8,7 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import { DRIP_TABLE_GENERIC_CSS_SCHEMA } from '@/utils/ajv';
 import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
 import Button from '@/components/react-components/button';
@@ -46,7 +47,17 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
      */
     overlayInnerStyle?: string | Record<string, string>;
     title: string;
+    titleIcon?: string;
+    /**
+     * 标题图标自定义样式
+     */
+    titleIconStyle?: string | Record<string, string>;
     content: string;
+    contentIcon?: string;
+    /**
+     * 正文图标自定义样式
+     */
+    contentIconStyle?: string | Record<string, string>;
     placement?: string;
     cancelText?: string;
     /**
@@ -155,7 +166,11 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             ],
           },
           title: { type: 'string' },
+          titleIcon: { type: 'string' },
+          titleIconStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
           content: { type: 'string' },
+          contentIcon: { type: 'string' },
+          contentIconStyle: DRIP_TABLE_GENERIC_CSS_SCHEMA,
           placement: { type: 'string' },
           cancelText: { type: 'string' },
           cancelStyle: {
@@ -320,6 +335,8 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       );
       if (options.popconfirm) {
         const popconfirm = options.popconfirm;
+        const TitleIcon = popconfirm.titleIcon ? this.props.icons?.[popconfirm.titleIcon] : null;
+        const ContentIcon = popconfirm.contentIcon ? this.props.icons?.[popconfirm.contentIcon] : null;
         return (
           <DripTableContext.Consumer>
             {
@@ -329,12 +346,14 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                   overlayInnerStyle={this.parseReactCSS(popconfirm.overlayInnerStyle)}
                   title={(
                     <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
+                      { TitleIcon ? <TitleIcon style={this.parseReactCSS(popconfirm.titleIconStyle)} /> : null }
                       { finalizeString('pattern', popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
                     </div>
                   )}
                   overlay={(
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
+                        { ContentIcon ? <ContentIcon style={this.parseReactCSS(popconfirm.contentIconStyle)} /> : null }
                         { finalizeString('pattern', popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>

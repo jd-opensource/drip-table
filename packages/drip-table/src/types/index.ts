@@ -672,7 +672,7 @@ export interface DripTableProps<
    * 图标库
    */
   icons?: {
-    [iconName: string]: React.JSXElementConstructor<React.PropsWithChildren<unknown>>;
+    [iconName: string]: React.JSXElementConstructor<React.PropsWithChildren<{ style?: React.CSSProperties }>>;
   };
   /**
    * Schema 校验配置项
