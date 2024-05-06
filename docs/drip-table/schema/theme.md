@@ -26,7 +26,6 @@ const schema = {
     primaryColor: '#FF6666',
     primaryActiveColor: '#FF0033',
     primaryShadowColor: '#FF003333',
-    textColor: '#d18888',
     borderColor: '#CC9999',
     backgroundColor: '#FFCCCC',
   },
@@ -39,11 +38,14 @@ const dataSource = mockData;
 
 const Demo = () => {
   return (
-    <DripTable
-      schema={schema}
-      dataSource={dataSource}
-      icons={Icons}
-    />
+    <React.Fragment>
+      <style>{'html { --drip-table-text-color: #d18888 }'}</style>
+      <DripTable
+        schema={schema}
+        dataSource={dataSource}
+        icons={Icons}
+      />
+    </React.Fragment>
   );
 };
 

@@ -411,6 +411,7 @@ export default defineConfig({
   // https://d.umijs.org/config#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E9%A1%B9
   alias: {
     'drip-table': path.resolve(__dirname, './packages/drip-table'),
+    '@@drip-table-src': path.resolve(__dirname, './packages/drip-table/src/'),
     'drip-table-generator': path.resolve(__dirname, './packages/drip-table-generator'),
   },
   chainWebpack(config, { webpack }) {

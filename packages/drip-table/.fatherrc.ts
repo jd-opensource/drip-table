@@ -3,6 +3,9 @@ import path from 'path';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 
 export default defineConfig({
+  alias: {
+    '@@drip-table-src': path.resolve(__dirname, 'src/'),
+  },
   umd: {
     entry: {
       'src/index': {

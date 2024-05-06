@@ -1,3 +1,5 @@
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @import url("../../../styles/mixins/disabled.less");
 
 @prefixCls: jfe-drip-table-rc-input-number;
@@ -42,7 +44,7 @@
 
     &:hover &-up-inner,
     &:hover &-down-inner {
-      color: var(--drip-table-primary-color);
+      color: @drip-table-primary-color;
     }
   }
 
@@ -79,7 +81,7 @@
   }
 
   &:hover {
-    border-color: var(--drip-table-primary-color);
+    border-color: @drip-table-primary-color;
     transition: opacity .24s linear .24s;
   }
 

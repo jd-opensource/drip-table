@@ -6,13 +6,15 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-select;
 
 .@{prefixCls}-auto-complete {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -395,7 +397,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -433,8 +435,8 @@
 }
 
 .@{prefixCls}-focused:not(.@{prefixCls}-disabled).@{prefixCls}:not(.@{prefixCls}-customize-input) .@{prefixCls}-selector {
-  border-color: var(--drip-table-primary-active-color);
-  box-shadow: 0 0 0 2px var(--drip-table-primary-shadow-color);
+  border-color: @drip-table-primary-active-color;
+  box-shadow: 0 0 0 2px @drip-table-primary-shadow-color;
   border-right-width: 1px !important;
   outline: 0;
 }
@@ -468,7 +470,7 @@
 }
 
 .@{prefixCls}:not(.@{prefixCls}-disabled):hover .@{prefixCls}-selector {
-  border-color: var(--drip-table-primary-active-color);
+  border-color: @drip-table-primary-active-color;
   border-right-width: 1px !important;
 }
 
@@ -593,7 +595,7 @@
 
 .@{prefixCls}-dropdown {
   margin: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   line-height: 1.5715;
   list-style: none;
   font-feature-settings: "tnum", "tnum",;
@@ -654,7 +656,7 @@
   display: block;
   min-height: 32px;
   padding: 5px 12px;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -688,13 +690,13 @@
 }
 
 .@{prefixCls}-item-option-selected:not(.@{prefixCls}-item-option-disabled) {
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-weight: 600;
   background-color: #e6f7ff;
 }
 
 .@{prefixCls}-item-option-selected:not(.@{prefixCls}-item-option-disabled) .@{prefixCls}-item-option-state {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 
 .@{prefixCls}-item-option-disabled {

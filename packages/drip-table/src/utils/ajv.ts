@@ -69,7 +69,7 @@ const finalizeSchema = <T extends SchemaObject = SchemaObject>(schema: T, option
   return schema;
 };
 
-const DRIP_TABLE_CSS_SCHEMA: SchemaObject = {
+export const DRIP_TABLE_CSS_SCHEMA: SchemaObject = {
   type: 'object',
   patternProperties: {
     '^.*$': {
@@ -81,7 +81,7 @@ const DRIP_TABLE_CSS_SCHEMA: SchemaObject = {
   },
 };
 
-const DRIP_TABLE_GENERIC_CSS_SCHEMA: SchemaObject = {
+export const DRIP_TABLE_GENERIC_CSS_SCHEMA: SchemaObject = {
   anyOf: [
     { type: 'string' },
     DRIP_TABLE_CSS_SCHEMA,

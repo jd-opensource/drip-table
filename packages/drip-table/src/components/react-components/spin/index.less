@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-spin;
 
 .@{prefixCls} {
@@ -19,7 +21,7 @@
   font-feature-settings: "tnum", "tnum";
   position: absolute;
   display: none;
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
   text-align: center;
   vertical-align: middle;
   opacity: 0;
@@ -141,7 +143,7 @@
   display: block;
   width: 9px;
   height: 9px;
-  background-color: var(--drip-table-primary-color);
+  background-color: @drip-table-primary-color;
   border-radius: 100%;
   transform: scale(.75);
   transform-origin: 50% 50%;

@@ -6,12 +6,14 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+@import url("@@drip-table-src/styles/theme/default.less");
+
 @prefixCls: jfe-drip-table-rc-alert;
 
 .@{prefixCls} {
   box-sizing: border-box;
   margin: 0;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -48,7 +50,7 @@
   border: 1px solid #91d5ff;
 }
 .@{prefixCls}-info .@{prefixCls}-icon {
-  color: var(--drip-table-primary-color);
+  color: @drip-table-primary-color;
 }
 .@{prefixCls}-warning {
   background-color: #fffbe6;
@@ -110,11 +112,11 @@
 .@{prefixCls}-with-description .@{prefixCls}-message {
   display: block;
   margin-bottom: 4px;
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
   font-size: 16px;
 }
 .@{prefixCls}-message {
-  color: var(--drip-table-text-color);
+  color: @drip-table-text-color;
 }
 .@{prefixCls}-with-description .@{prefixCls}-description {
   display: block;

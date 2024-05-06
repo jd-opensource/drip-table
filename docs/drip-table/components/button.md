@@ -265,6 +265,7 @@ export default Demo;
  * hideActions: ["CSB"]
  */
 import { message } from 'antd';
+import * as Icons from '@ant-design/icons';
 import React from "react";
 import DripTable from "drip-table";
 
@@ -295,11 +296,19 @@ const Demo = () => {
           danger: true,
           event: 'delete',
           popconfirm: {
+            overlayStyle: { maxWidth: '300px' },
+            overlayInnerStyle: { borderRadius: '10px' },
             title: '确认要删除“{{props.record.name}}”？',
+            titleIcon: 'InfoCircleOutlined',
+            titleIconStyle: { color: '#ff4900', marginRight: '5px' },
             content: '您确认要执行删除“{{props.record.name}}”这个操作吗？该操作将无法撤销！',
+            contentIcon: 'InfoCircleOutlined',
+            contentIconStyle: { color: '#ff4900', marginRight: '5px' },
             placement: 'top',
             cancelText: '取消',
+            cancelStyle: { transform: 'translateX(120%)' },
             confirmText: '确认',
+            confirmStyle: { transform: 'translateX(-120%)' },
           },
         },
       },
@@ -309,6 +318,7 @@ const Demo = () => {
   return (
     <React.Fragment>
       <DripTable
+        icons={Icons}
         schema={schema}
         dataSource={dataSource}
         onEvent={(event, tableInfo) => {
