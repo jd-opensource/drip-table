@@ -90,7 +90,12 @@ const ComponentConfigForm = <
       }
     }
     if (columnConfigs.component === 'button') {
-      formData['options.popconfirm'] = !!columnConfigs.options.popconfirm;
+      const popconfirm = columnConfigs.options.popconfirm as Record<string, unknown>;
+      formData['options.popconfirm'] = !!popconfirm;
+      formData['options.popconfirm.overlayInnerStyle'] = popconfirm ? !!popconfirm.overlayInnerStyle : false;
+      formData['options.popconfirm.contentIconStyle'] = popconfirm ? !!popconfirm.contentIconStyle : false;
+      formData['options.popconfirm.cancelStyle'] = popconfirm ? !!popconfirm.cancelStyle : false;
+      formData['options.popconfirm.confirmStyle'] = popconfirm ? !!popconfirm.confirmStyle : false;
     }
     return formData;
   };
@@ -102,16 +107,7 @@ const ComponentConfigForm = <
     const columnStyle: Record<string, string> = {};
     Object.keys(formData).forEach((key) => {
       if (key.startsWith('options.')) {
-        if (key.startsWith('options.popconfirm')) {
-          if (key === 'options.popconfirm') {
-            uiProps.popconfirm = formData[key] ? {} : false;
-          } else {
-            if (!uiProps.popconfirm) { uiProps.popconfirm = {}; }
-            (uiProps.popconfirm as Record<string, unknown>)[key.replace('options.popconfirm.', '')] = formData[key];
-          }
-        } else {
-          uiProps[key.replace('options.', '')] = formData[key];
-        }
+        uiProps[key.replace('options.', '')] = formData[key];
       } else if (key.startsWith('ui:props.')) {
         uiProps[key.replace('ui:props.', '')] = formData[key];
       } else if (key.startsWith('titleStyle.')) {
@@ -142,6 +138,53 @@ const ComponentConfigForm = <
           .slice(0, length)
           .forEach((item, i) => { (uiProps.items as Record<string, unknown>[])[i] = item; });
       }
+    }
+    if (currentColumn?.component === 'button') {
+      uiProps.popconfirm = uiProps.popconfirm
+        ? {
+          overlayInnerStyle: formData['options.popconfirm.overlayInnerStyle']
+            ? {
+              borderRadius: formData['options.popconfirm.overlayInnerStyle.borderRadius'],
+            }
+            : void 0,
+          title: formData['options.popconfirm.title'],
+          content: formData['options.popconfirm.content'],
+          contentIcon: formData['options.popconfirm.contentIcon'],
+          contentIconStyle: formData['options.popconfirm.contentIconStyle']
+            ? {
+              color: formData['options.popconfirm.contentIconStyle.color'],
+              marginRight: formData['options.popconfirm.contentIconStyle.marginRight'],
+            }
+            : void 0,
+          placement: formData['options.popconfirm.placement'],
+          cancelText: formData['options.popconfirm.cancelText'],
+          cancelStyle: formData['options.popconfirm.cancelStyle']
+            ? {
+              color: formData['options.popconfirm.cancelStyle.color'],
+              backgroundColor: formData['options.popconfirm.cancelStyle.backgroundColor'],
+              borderRadius: formData['options.popconfirm.cancelStyle.borderRadius'],
+              padding: formData['options.popconfirm.cancelStyle.padding'],
+              fontSize: formData['options.popconfirm.cancelStyle.fontSize'],
+              height: formData['options.popconfirm.cancelStyle.height'],
+              border: formData['options.popconfirm.cancelStyle.border'],
+              transform: formData['options.popconfirm.cancelStyle.transform'],
+            }
+            : void 0,
+          confirmText: formData['options.popconfirm.confirmText'],
+          confirmStyle: formData['options.popconfirm.confirmStyle']
+            ? {
+              color: formData['options.popconfirm.confirmStyle.color'],
+              backgroundColor: formData['options.popconfirm.confirmStyle.backgroundColor'],
+              borderRadius: formData['options.popconfirm.confirmStyle.borderRadius'],
+              padding: formData['options.popconfirm.confirmStyle.padding'],
+              fontSize: formData['options.popconfirm.confirmStyle.fontSize'],
+              height: formData['options.popconfirm.confirmStyle.height'],
+              border: formData['options.popconfirm.confirmStyle.border'],
+              transform: formData['options.popconfirm.confirmStyle.transform'],
+            }
+            : void 0,
+        }
+        : void 0;
     }
     return {
       ...filterAttributes(dataProps, [

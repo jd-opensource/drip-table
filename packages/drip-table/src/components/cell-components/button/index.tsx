@@ -312,11 +312,11 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                 disabled={this.getDisabled(options.disableFunc)}
                 icon={options.icon ? this.getIcon(options.icon) : void 0}
                 onClick={() => {
-                  if (this.props.preview) {
-                    return;
-                  }
                   if (options.popconfirm) {
                     this.setState({ showPopconfirm: true });
+                    return;
+                  }
+                  if (this.props.preview) {
                     return;
                   }
                   if (options.event) {
@@ -426,7 +426,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             }
           }}
         >
-          { config.label }
+          { finalizeString('pattern', config.label || '', this.props.record, this.props.recordIndex, this.props.ext) }
         </Button>
       ));
     }
