@@ -122,7 +122,7 @@ export default {
       'ui:title': '展示提示框',
       'ui:type': 'switch',
       type: 'boolean',
-      default: true,
+      default: false,
     },
     {
       name: 'options.placement',
