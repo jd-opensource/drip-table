@@ -41,6 +41,16 @@ export interface DripTableWrapperContext<
    * @param selectedRowKeys 选中的行标识符数组
    */
   select: (selectedRowKeys: IDripTableContext<RecordType, ExtraOptions>['state']['selectedRowKeys']) => void;
+  /**
+   * 当前显示列数据
+   */
+  displayColumnKeys: IDripTableContext<RecordType, ExtraOptions>['state']['displayColumnKeys'];
+  /**
+   * 通过接口设置展示列
+   *
+   * @param displayColumnKeys 展示列标识符数组
+   */
+  setDisplayColumnKeys: (displayColumnKeys: IDripTableContext<RecordType, ExtraOptions>['state']['displayColumnKeys']) => void;
 }
 
 const DripTableWrapper = React.forwardRef(<
@@ -191,6 +201,10 @@ const DripTableWrapper = React.forwardRef(<
         setState({ selectedRowKeys });
       },
       selectedRowKeys: context.state.selectedRowKeys,
+      setDisplayColumnKeys: (displayColumnKeys) => {
+        setState({ displayColumnKeys });
+      },
+      displayColumnKeys: context.state.displayColumnKeys,
     }),
     [setState, context.state.selectedRowKeys],
   );
