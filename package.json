@@ -25,6 +25,7 @@
     "lint:drip-table": "lerna run lint --stream --scope=drip-table || exit 1",
     "lint:drip-table-generator": "lerna run lint --stream --scope=drip-table-generator || exit 1",
     "lint:docs": "eslint \"**/*.{js,jsx,ts,tsx,json}\" --ignore-pattern \"packages/**\" --format pretty || exit 1",
+    "publish": "lerna publish",
     "commit": "cz"
   },
   "devDependencies": {
