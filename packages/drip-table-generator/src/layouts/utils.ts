@@ -169,7 +169,7 @@ export const generateTableConfigsBySchema = <ExtraOptions extends Partial<DripTa
   let currentSchema = schema ? cloneDeep({ dataSourceKey: void 0, ...schema }) : void 0;
   do {
     if (currentSchema) {
-      const columns = currentSchema?.columns.map(column => ({ ...column, key: mockId() })) || [];
+      const columns = currentSchema?.columns.map(column => ({ ...column, key: column.key ?? mockId() })) || [];
       const pureGlobalConfig = { ...currentSchema } as Omit<typeof currentSchema, 'columns' | 'subtable'> & { columns?: unknown[]; subtable?: unknown };
       delete pureGlobalConfig.columns;
       delete pureGlobalConfig.subtable;
