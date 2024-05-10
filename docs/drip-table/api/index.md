@@ -12,3 +12,4 @@ toc: content
 | 参数名 | 描述 | 必填 | 详情 |
 | ----- | ---- | ---- | ---- |
 | [displayColumnKeys](/drip-table/api/display-column-keys) | 表格展示列 | × | [🔗 示例](/drip-table/api/display-column-keys) |
+| [setDisplayColumnKeys](/drip-table/api/set-display-column-keys) | 设置表格展示列 | × | [🔗 示例](/drip-table/api/set-display-column-keys) |

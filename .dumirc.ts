@@ -206,7 +206,8 @@ const DRIP_TABLE_SIDEBAR = [
         link: '/drip-table/api',
         children: [
           { title: '目录', link: '/drip-table/api' },
-          { title: '展示列 displayColumnKeys', link: '/drip-table/types/display-column-keys' },
+          { title: '展示列 displayColumnKeys', link: '/drip-table/api/display-column-keys' },
+          { title: '展示列 setDisplayColumnKeys', link: '/drip-table/api/set-display-column-keys' },
         ],
       },
       {
