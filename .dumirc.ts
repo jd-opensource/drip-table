@@ -202,6 +202,14 @@ const DRIP_TABLE_SIDEBAR = [
         ],
       },
       {
+        title: '接口 Api',
+        link: '/drip-table/api',
+        children: [
+          { title: '目录', link: '/drip-table/api' },
+          { title: '展示列 displayColumnKeys', link: '/drip-table/types/display-column-keys' },
+        ],
+      },
+      {
         title: '类型 Types',
         link: '/drip-table/types',
         children: [
@@ -398,6 +406,7 @@ export default defineConfig({
       '/drip-table/slot': DRIP_TABLE_SIDEBAR,
       '/drip-table/layout': DRIP_TABLE_SIDEBAR,
       '/drip-table/props': DRIP_TABLE_SIDEBAR,
+      '/drip-table/api': DRIP_TABLE_SIDEBAR,
       '/drip-table/types': DRIP_TABLE_SIDEBAR,
       '/drip-table/migration': DRIP_TABLE_SIDEBAR,
       '/drip-table-generator': DRIP_TABLE_GENERATOR_SIDEBAR,
