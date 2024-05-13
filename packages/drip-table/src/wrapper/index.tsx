@@ -206,7 +206,7 @@ const DripTableWrapper = React.forwardRef(<
       },
       displayColumnKeys: context.state.displayColumnKeys,
     }),
-    [setState, context.state.selectedRowKeys],
+    [setState, context.state.selectedRowKeys, context.state.displayColumnKeys],
   );
 
   // 校验参数
