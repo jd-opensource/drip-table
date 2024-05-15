@@ -674,8 +674,8 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
             onKeyDown={this.onKeyDown}
           >
             { wrapperEl }
-            { !this.disabled && this.renderEdit() }
             { this.renderClipboard() }
+            { !this.disabled && this.renderEdit() }
           </div>
         </ResizeObserver>
         <div className={`${prefixCls}-focus-border`} />
