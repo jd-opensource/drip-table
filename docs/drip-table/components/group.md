@@ -75,6 +75,61 @@ const Demo = () => {
         },
       },
       {
+        align: "center",
+        verticalAlign: "middle",
+        key: "group_18f7a40dffd-1271",
+        dataIndex: "",
+        title: "详情",
+        component: "group",
+        options: {
+          layout: [1, 1],
+          wrap: false,
+          horizontalAlign: "start",
+          items: [
+            {
+              dataIndex: ["name"],
+              align: "center",
+              verticalAlign: "middle",
+              key: "text_18f7a41408a-1276",
+              title: "",
+              component: "text",
+              options: {
+                mode: "single",
+                showTooltip: false,
+                format: "{{rec}}",
+                parts: [
+                  {
+                    dataIndexMode: "direct",
+                    dataIndex: "id",
+                  },
+                ],
+                clipboard: true,
+              },
+            },
+            {
+              dataIndex: ["description"],
+              align: "center",
+              verticalAlign: "middle",
+              key: "text_18f7a4195e3-127b",
+              title: "",
+              component: "text",
+              options: {
+                mode: "single",
+                showTooltip: false,
+                format: "{{rec}}",
+                parts: [
+                  {
+                    dataIndexMode: "direct",
+                    dataIndex: "id",
+                  },
+                ],
+                maxRow: 3,
+              },
+            },
+          ],
+        },
+      },
+      {
         key: "mock_2",
         title: "价格",
         align: "center",
@@ -106,7 +161,7 @@ const Demo = () => {
               options: {
                 icon: "CopyOutlined",
                 style: {
-                  padding: '0 3px',
+                  padding: "0 3px",
                   color: "#2a64ff",
                   fontSize: "16px",
                 },
@@ -123,7 +178,7 @@ const Demo = () => {
               options: {
                 icon: "DeleteOutlined",
                 style: {
-                  padding: '0 3px',
+                  padding: "0 3px",
                   color: "#ff4d4f",
                   fontSize: "16px",
                 },
