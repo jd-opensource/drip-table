@@ -59,6 +59,7 @@ export default Demo;
 | -------------------------------------------------------- | ---------------------- | --------------------------------- | --------------------------------------------------- |
 | [mode](/drip-table/components/text#mode)                 | 换行模式               | √                                 | [🔗 示例](/drip-table/components/text#mode)         |
 | [fontSize](/drip-table/components/text#fontsize)         | 字体大小               | ×                                 | [🔗 示例](/drip-table/components/text#fontsize)     |
+| [fontWeight](/drip-table/components/text#fontweight)     | 字体大小               | ×                                 | [🔗 示例](/drip-table/components/text#fontweight)   |
 | [format](/drip-table/components/text#format)             | 自定义渲染格式化字符串 | ×（当 `mode` 为 `custom` 时必填） | [🔗 示例](/drip-table/components/text#format)       |
 | [i18n](/drip-table/components/text#i18n)                 | 内容展示翻译文案       | ×                                 | [🔗 示例](/drip-table/components/text#i18n)         |
 | [defaultValue](/drip-table/components/text#defaultvalue) | 兜底文案               | ×                                 | [🔗 示例](/drip-table/components/text#defaultvalue) |
@@ -295,6 +296,58 @@ const schema = {
       options: {
         mode: "single",
         fontSize: "32px",
+      },
+    },
+  ],
+};
+
+const dataSource = [
+  {
+    id: 1,
+    name: "商品一",
+    price: 7999,
+    status: "onSale",
+    description:
+      "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+  },
+];
+
+const Demo = () => {
+  return (
+    <React.Fragment>
+      <DripTable schema={schema} dataSource={dataSource} />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```
+
+## fontWeight
+
+- 描述：字重大小
+- 类型：`string`
+- 默认值：`undefined`
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import React from "react";
+import DripTable from "drip-table";
+
+const schema = {
+  columns: [
+    {
+      key: "mock_1",
+      title: "商品名称",
+      dataIndex: "name",
+      component: "text",
+      options: {
+        mode: "single",
+        fontWeight: "bold",
       },
     },
   ],

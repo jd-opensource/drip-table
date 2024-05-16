@@ -38,6 +38,10 @@ export type DTCTextColumnSchema = DripTableColumnSchema<'text', {
    */
   fontSize?: string;
   /**
+   * 字重大小
+   */
+  fontWeight?: string;
+  /**
    * 展示模式：
    * {'single'}   单行文本；
    * {'multiple'} 多行文本；
@@ -178,6 +182,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     type: 'object',
     properties: {
       fontSize: { type: 'string' },
+      fontWeight: { type: 'string' },
       mode: { enum: ['single', 'multiple', 'custom'] },
       format: { type: 'string' },
       static: { type: 'string' },
@@ -312,6 +317,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     const lineHeight = this.lineHeight;
     const textStyles: React.CSSProperties = {
       fontSize: this.fontSize,
+      fontWeight: this.props.schema.options.fontWeight,
       lineHeight,
     };
     if (this.props.schema.options.height) {
