@@ -147,6 +147,32 @@ export default {
       visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
     },
     {
+      name: 'options.icon',
+      group: '属性',
+      'ui:title': '按钮图标',
+      'ui:type': 'select',
+      'ui:props': {
+        optionsParam: '$$PROPS_ICONS_OPTIONS$$',
+        allowClear: true,
+        style: { width: '100%' },
+      },
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
+    },
+    {
+      name: 'options.iconPosition',
+      group: '属性',
+      'ui:title': '按钮图标',
+      'ui:type': 'select',
+      'ui:props': {
+        options: [{ label: '左', value: 'left' }, { label: '右', value: 'right' }],
+        allowClear: true,
+        style: { width: '100%' },
+      },
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'single',
+    },
+    {
       name: 'options.buttons',
       group: '属性',
       'ui:title': '多按钮配置',
@@ -236,6 +262,18 @@ export default {
               checkedChildren: '是',
             },
             default: false,
+          },
+          {
+            name: 'options.icon',
+            group: '属性',
+            'ui:title': '按钮图标',
+            'ui:type': 'select',
+            'ui:props': {
+              optionsParam: '$$PROPS_ICONS_OPTIONS$$',
+              allowClear: true,
+              style: { width: '100%' },
+            },
+            type: 'string',
           },
           {
             name: 'disableFunc',
