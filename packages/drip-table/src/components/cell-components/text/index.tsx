@@ -612,6 +612,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
     if (!showClipboard) { return null; }
     return (
       <Clipboard
+        className={`${prefixCls}-clipboard`}
         component="div"
         option-text={() => this.rawText.join(' ')}
         onSuccess={() => { this.props.fireEvent({ type: 'drip-text-copy', payload: { success: true } }); }}
