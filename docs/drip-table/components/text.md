@@ -72,6 +72,7 @@ export default Demo;
 | [showTooltip](/drip-table/components/text#showtooltip)   | 展示提示框             | ×                                 | [🔗 示例](/drip-table/components/text#showtooltip)  |
 | [tooltip](/drip-table/components/text#tooltip)           | 提示框设置项             | ×                                 | [🔗 示例](/drip-table/components/text#tooltip)  |
 | [placement](/drip-table/components/text#placement)       | 提示框显示位置         | ×                                 | [🔗 示例](/drip-table/components/text#placement)    |
+| [clipboard](/drip-table/components/text#clipboard)       | 一键复制按钮           | ×                                 | [🔗 示例](/drip-table/components/text#clipboard)    |
 
 ## mode
 
@@ -1214,6 +1215,84 @@ const Demo = () => {
           },
           []
         )}
+      />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```
+
+## clipboard
+
+- 描述：一键复制按钮
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import { Switch, message } from "antd";
+import React from "react";
+import DripTable from "drip-table";
+
+const Demo = () => {
+  const [dataSource, setDataSource] = React.useState([
+    {
+      id: 1,
+      name: "商品一",
+      price: 7999,
+      status: "onSale",
+      description:
+        "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    },
+  ]);
+
+  const schema = React.useMemo(() => {
+    return {
+      columns: [
+        {
+          key: "mock_1",
+          title: "商品描述",
+          dataIndex: "description",
+          component: "text",
+          options: {
+            mode: "single",
+            maxRow: 1,
+            ellipsis: true,
+            clipboard: true,
+          },
+          width: "100px",
+        },
+        {
+          key: "mock_2",
+          title: "商品价格",
+          dataIndex: "price",
+          component: "text",
+          options: {
+            mode: "single",
+            clipboard: true,
+          },
+          width: "100px",
+        },
+      ],
+    };
+  }, []);
+  return (
+    <React.Fragment>
+      <DripTable
+        schema={schema}
+        dataSource={dataSource}
+        onEvent={(e) => {
+          if (e.type === 'drip-text-copy') {
+            if (e.payload.success) {
+              message.info('复制成功！');
+            } else {
+              message.info('复制失败！');
+            }
+          }
+        }}
       />
     </React.Fragment>
   );
