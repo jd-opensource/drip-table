@@ -21,6 +21,7 @@ import DTCRenderHTML, { DTCRenderHTMLColumnSchema } from './render-html';
 import DTCRenderHTMLRemote, { DTCRenderHTMLRemoteColumnSchema } from './render-html-remote';
 import DTCRichText, { DTCRichTextColumnSchema } from './rich-text';
 import DTCSelect, { DTCSelectColumnSchema, DTCSelectEvent } from './select';
+import DTCStatus, { DTCStatusColumnSchema } from './status';
 import DTCSwitch, { DTCSwitchColumnSchema, DTCSwitchEvent } from './switch';
 import DTCTag, { DTCTagColumnSchema } from './tag';
 import DTCText, { DTCTextColumnSchema, DTCTextEvent } from './text';
@@ -48,6 +49,7 @@ export type DripTableBuiltInColumnSchema<CustomColumnSchema extends DripTableDat
   | DTCRichTextColumnSchema
   | DTCRichTextColumnSchema
   | DTCSelectColumnSchema
+  | DTCStatusColumnSchema
   | DTCSwitchColumnSchema
   | DTCTagColumnSchema
   | DTCTextColumnSchema
@@ -66,6 +68,7 @@ const DripTableBuiltInComponents = {
   [DTCRenderHTMLRemote.componentName]: DTCRenderHTMLRemote,
   [DTCRichText.componentName]: DTCRichText,
   [DTCSelect.componentName]: DTCSelect,
+  [DTCStatus.componentName]: DTCStatus,
   [DTCSwitch.componentName]: DTCSwitch,
   [DTCTag.componentName]: DTCTag,
   [DTCText.componentName]: DTCText,

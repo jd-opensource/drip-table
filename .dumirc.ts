@@ -49,6 +49,7 @@ const DRIP_TABLE_SIDEBAR = [
         children: [
           { title: '目录', link: '/drip-table/components' },
           { title: '文本 Text', link: '/drip-table/components/text' },
+          { title: '状态 Status', link: '/drip-table/components/status' },
           { title: '图片 Image', link: '/drip-table/components/image' },
           { title: '链接 Link', link: '/drip-table/components/link' },
           { title: '标签 Tag', link: '/drip-table/components/tag' },

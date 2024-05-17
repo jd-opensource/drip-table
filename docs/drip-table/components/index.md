@@ -89,6 +89,20 @@ toc: false
       </div>
     </div>
   </a>
+  <a href="/drip-table/components/status">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">状态组件 status</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg" alt="status">
+        </div>
+      </div>
+    </div>
+  </a>
   <a href="/drip-table/components/image">
     <div class="card-container">
       <div class="card-head">
