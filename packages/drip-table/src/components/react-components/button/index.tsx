@@ -20,6 +20,7 @@ export interface ButtonProps {
   danger?: boolean;
   ghost?: boolean;
   icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
   disabled?: boolean;
   children?: React.ReactNode;
   onClick?: React.DOMAttributes<HTMLButtonElement>['onClick'];
@@ -47,8 +48,9 @@ const Button = React.memo((props: ButtonProps) => (
     disabled={props.disabled}
     onClick={props.onClick}
   >
+    { props.icon && props.iconPosition === 'left' && <span className={`${prefixCls}-icon`}>{ props.icon }</span> }
     { props.children && <span className={`${prefixCls}-label`}>{ props.children }</span> }
-    { props.icon && <span className={`${prefixCls}-icon`}>{ props.icon }</span> }
+    { props.icon && props.iconPosition !== 'left' && <span className={`${prefixCls}-icon`}>{ props.icon }</span> }
   </button>
 ));
 

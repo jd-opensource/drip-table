@@ -241,6 +241,140 @@ const Demo = () => {
 export default Demo;
 ```
 
+### icon
+
+- 描述：图标
+- 类型：`string`
+- 默认值：`undefined`
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import { message } from 'antd';
+import * as Icons from '@ant-design/icons';
+import React from "react";
+import DripTable from "drip-table";
+
+const dataSource = [
+  {
+    id: 1,
+    name: "商品一",
+    price: 7999,
+    status: 1,
+    description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+  },
+];
+
+const Demo = () => {
+  const schema = {
+    columns: [
+      {
+        key: 'mock_1',
+        title: '按钮',
+        align: 'center',
+        dataIndex: 'name',
+        component: 'button',
+        options: {
+          mode: 'single',
+          label: '新增',
+          icon: 'PlusOutlined',
+        },
+      },
+    ],
+  };
+
+  return (
+    <React.Fragment>
+      <DripTable
+        schema={schema}
+        dataSource={dataSource}
+        icons={Icons}
+      />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```
+
+### iconPosition
+
+- 描述：图标
+- 类型：`string`
+- 默认值：`undefined`
+
+```jsx
+/**
+ * transform: true
+ * defaultShowCode: false
+ * hideActions: ["CSB"]
+ */
+import { message } from 'antd';
+import * as Icons from '@ant-design/icons';
+import React from "react";
+import DripTable from "drip-table";
+
+const dataSource = [
+  {
+    id: 1,
+    name: "商品一",
+    price: 7999,
+    status: 1,
+    description: "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
+    pictureUrl: 'https://img14.360buyimg.com/imagetools/jfs/t1/119951/14/21336/15771/6218427eE68f8f468/e0647b9b7507755d.png',
+  },
+];
+
+const Demo = () => {
+  const schema = {
+    columns: [
+      {
+        key: 'mock_1',
+        title: '按钮左侧',
+        align: 'center',
+        dataIndex: 'name',
+        component: 'button',
+        options: {
+          mode: 'single',
+          label: '新增',
+          icon: 'PlusOutlined',
+          iconPosition: 'left',
+        },
+      },
+      {
+        key: 'mock_2',
+        title: '按钮右侧',
+        align: 'center',
+        dataIndex: 'name',
+        component: 'button',
+        options: {
+          mode: 'single',
+          label: '新增',
+          icon: 'PlusOutlined',
+          iconPosition: 'right',
+        },
+      },
+    ],
+  };
+
+  return (
+    <React.Fragment>
+      <DripTable
+        schema={schema}
+        dataSource={dataSource}
+        icons={Icons}
+      />
+    </React.Fragment>
+  );
+};
+
+export default Demo;
+```
+
 ## popconfirm
 
 - 按钮弹出确认

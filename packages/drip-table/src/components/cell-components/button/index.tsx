@@ -34,6 +34,7 @@ export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   danger?: boolean;
   ghost?: boolean;
   icon?: string;
+  iconPosition?: 'left' | 'right';
   event?: string;
   closePopover?: string;
   margin?: number;
@@ -127,6 +128,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
       danger: { type: 'boolean' },
       ghost: { type: 'boolean' },
       icon: { type: 'string' },
+      iconPosition: { enum: ['left', 'right'] },
       event: { type: 'string' },
       closePopover: { type: 'string' },
       margin: { type: 'number' },
@@ -311,6 +313,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                 ghost={options.ghost}
                 disabled={this.getDisabled(options.disableFunc)}
                 icon={options.icon ? this.getIcon(options.icon) : void 0}
+                iconPosition={options.iconPosition}
                 onClick={() => {
                   if (options.popconfirm) {
                     this.setState({ showPopconfirm: true });
