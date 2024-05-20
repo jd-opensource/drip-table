@@ -162,7 +162,7 @@ export default {
     {
       name: 'options.iconPosition',
       group: '属性',
-      'ui:title': '按钮图标',
+      'ui:title': '图标位置',
       'ui:type': 'select',
       'ui:props': {
         options: [{ label: '左', value: 'left' }, { label: '右', value: 'right' }],
