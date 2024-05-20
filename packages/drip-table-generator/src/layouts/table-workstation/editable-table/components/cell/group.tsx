@@ -56,7 +56,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const columnToRender = 'schema' in props.column ? props.column.schema as DripTableBuiltInColumnSchema : props.column;
   if (columnToRender?.component === 'group') {
     const options = columnToRender.options;
-    const gutter = options.gutter ?? [0, 0];
     const rootColumn = props.tableConfig.columns[props.columnIndex];
     return (
       <div
@@ -90,9 +89,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     })}
                     style={{
                       ...itemColumn && 'style' in itemColumn && 'schema' in itemColumn ? itemColumn.style : {},
-                      margin: `${gutter[0]}px ${gutter[1]}px`,
                       minWidth: `${100 / colLength}%`,
-                      width: 'max-content',
+                      justifyContent: options.horizontalAlign,
                     }}
                     onClick={(e) => {
                       e.stopPropagation();

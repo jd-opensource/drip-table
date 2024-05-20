@@ -54,6 +54,11 @@ export default {
       required: true,
       'ui:layout': { labelCol: 8, wrapperCol: 16 },
       'ui:title': '栅格间隔',
+      'ui:description': {
+        type: 'icon',
+        trigger: 'hover',
+        title: '栅格间隔效果在编辑态暂不展示，具体效果可以在预览状态下查看',
+      },
       'ui:type': 'select',
       'ui:props': {
         style: { width: '100%' },
