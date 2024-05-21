@@ -244,6 +244,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         props: {
           value,
           record: this.props.record,
+          recordIndex: this.props.recordIndex,
           ext: this.props.ext,
         },
         value,
@@ -259,7 +260,8 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       try {
         finalBodyString = execute(`return ${body}`, {
           props: {
-            rec: this.props.record,
+            record: this.props.record,
+            recordIndex: this.props.recordIndex,
             ext: this.props.ext,
           },
           rec: this.props.record,

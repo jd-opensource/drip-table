@@ -120,6 +120,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
         props: {
           value: this.value,
           record: this.props.record,
+          recordIndex: this.props.recordIndex,
           ext: this.props.ext,
         },
       }, '');
