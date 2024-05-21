@@ -176,6 +176,12 @@ const translate = (i18n: Record<string, string> | undefined, origin: string) => 
   return origin;
 };
 
+const justifyContentMap = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
 export default class DTCText<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCTextProps<RecordType>, DTCTextState> {
   public static componentName: DTCTextColumnSchema['component'] = 'text';
   public static schema: SchemaObject = {
@@ -676,6 +682,10 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
               [`${prefixCls}-editable`]: this.props.editable && !this.props.preview,
               [`${prefixCls}-disabled`]: this.disabled,
             })}
+            style={{
+              justifyContent: this.props.schema.align ? justifyContentMap[this.props.schema.align] : void 0,
+              alignItems: this.props.schema.verticalAlign,
+            }}
             tabIndex={0}
             onDoubleClick={this.onDoubleClick}
             onKeyDown={this.onKeyDown}
