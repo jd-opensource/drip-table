@@ -56,7 +56,19 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
           },
         },
       },
-      icon: { type: 'string' },
+      icon: {
+        anyOf: [
+          { type: 'string' },
+          {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              html: { type: 'string' },
+              render: { type: 'string' },
+            },
+          },
+        ],
+      },
       event: { type: 'string' },
     },
   };
