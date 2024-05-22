@@ -375,7 +375,7 @@ export default class DTCText<RecordType extends DripTableRecordTypeBase> extends
         console.warn('[DripTable] schema.columns[].options.dataProcess is deprecated, use schema.columns[].dataTranslation instead.');
         return `${prefix ?? ''}${translate(schema.options.i18n, dataProcessIndex(record, dataIndex, defaultValue, options.dataProcess)) ?? ''}${suffix ?? ''}`.split('\n');
       }
-      return `${prefix ?? ''}${translate(schema.options.i18n, `${value || defaultValue}`)}${suffix ?? ''}`.split('\n');
+      return `${prefix ?? ''}${translate(schema.options.i18n, `${value === '' || value === null || value === void 0 ? defaultValue : value}`)}${suffix ?? ''}`.split('\n');
     }
     if (mode === 'multiple') {
       if (options.dataProcess) {
