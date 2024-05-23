@@ -84,7 +84,7 @@ const Demo = () => {
         options: {
           layout: [1, 1],
           wrap: false,
-          horizontalAlign: "start",
+          horizontalAlign: "center",
           items: [
             {
               dataIndex: ["name"],
