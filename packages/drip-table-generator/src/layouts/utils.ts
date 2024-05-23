@@ -116,15 +116,16 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
     if (!Object.isExtensible(schemaItem.options)) {
       schemaItem.options = { ...schemaItem.options };
     }
-    schemaItem.options.items = items;
+    schemaItem.options = { ...schemaItem.options, items };
   }
   if (schemaItem.component === 'text' && schemaItem.options.parts) {
-    schemaItem.options.parts = (schemaItem.options.parts as Record<string, unknown>[] || []).map((partItem) => {
+    const parts = (schemaItem.options.parts as Record<string, unknown>[] || []).map((partItem) => {
       delete partItem.dataIndexMode;
       return {
         ...partItem,
       };
     });
+    schemaItem.options = { ...schemaItem.options, parts };
   }
   return schemaItem;
 });
