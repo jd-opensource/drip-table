@@ -35,6 +35,7 @@ import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
 import { createExecutor, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
+import { preventEvent } from '@/components/cell-components/utils';
 import Checkbox from '@/components/react-components/checkbox';
 import Pagination from '@/components/react-components/pagination';
 import RichText from '@/components/react-components/rich-text';
@@ -44,7 +45,7 @@ import { type IDripTableContext, useTableContext } from '@/hooks';
 import DripTableWrapper from '@/wrapper';
 
 import { type TableLayoutComponentProps } from '../types';
-import HeaderCell from './components/header-cell';
+import HeaderCell, { type HeaderCellAdditionalProps } from './components/header-cell';
 import { type DripTableColumnRenderOptions } from './types';
 import { finalizeColumnTitle } from './utils';
 
@@ -346,12 +347,6 @@ export const columnRenderGenerator = <
   return () => extraProps.unknownComponent ?? <div className="ajv-error">{ `Unknown column component: ${columnSchema.component}` }</div>;
 };
 
-interface HeaderCellAdditionalProps<
-  ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> {
-  columnSchema: ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'> | DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>;
-}
-
 /**
  * 根据列 Schema，生成表格列配置
  * @param tableInfo 表格信息
@@ -406,7 +401,7 @@ export const columnGenerator = <
             <span style={{ marginRight: '6px' }}>
               <RichText className={`${prefixCls}-column-title`} style={titleStyle} html={columnTitle} />
             </span>
-            <Tooltip placement="top" title={<RichText html={columnSchema.description} />}>
+            <Tooltip placement="top" title={<div onClick={preventEvent}><RichText html={columnSchema.description} /></div>}>
               <span role="img" aria-label="question-circle" className={`${prefixCls}-column-title__question-icon`}>
                 <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
                   <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" />
@@ -1620,12 +1615,10 @@ const TableLayout = <
 
   const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
-      cell: ({ additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => (
-        <th {...wrapperProps}>
-          <HeaderCell additionalProps={additionalProps}>
-            { wrapperProps.children }
-          </HeaderCell>
-        </th>
+      cell: ({ children, additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => (
+        <HeaderCell wrapperProps={wrapperProps} additionalProps={additionalProps}>
+          { children }
+        </HeaderCell>
       ),
     },
     body: tableInfo.schema.virtual
