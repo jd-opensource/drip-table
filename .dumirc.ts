@@ -208,7 +208,9 @@ const DRIP_TABLE_SIDEBAR = [
         children: [
           { title: '目录', link: '/drip-table/api' },
           { title: '展示列 displayColumnKeys', link: '/drip-table/api/display-column-keys' },
-          { title: '展示列 setDisplayColumnKeys', link: '/drip-table/api/set-display-column-keys' },
+          { title: '设置展示列 setDisplayColumnKeys', link: '/drip-table/api/set-display-column-keys' },
+          { title: '排序器 sorter', link: '/drip-table/api/sorter' },
+          { title: '设置排序器 setSorter', link: '/drip-table/api/set-sorter' },
         ],
       },
       {

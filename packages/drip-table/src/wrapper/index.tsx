@@ -19,9 +19,10 @@ import {
   type SchemaObject,
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
+import { safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents from '@/components/cell-components';
 import { type IDripTableContext, createTableState, DripTableContext, useState } from '@/hooks';
-import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption } from '@/index';
+import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption, indexValue } from '@/index';
 import DripTableLayout from '@/layouts';
 
 /**
@@ -51,6 +52,16 @@ export interface DripTableWrapperContext<
    * @param displayColumnKeys 展示列标识符数组
    */
   setDisplayColumnKeys: (displayColumnKeys: IDripTableContext<RecordType, ExtraOptions>['state']['displayColumnKeys']) => void;
+  /**
+   * 当前排序器
+   */
+  sorter: IDripTableContext<RecordType, ExtraOptions>['state']['sorter'];
+  /**
+   * 通过接口设置当前排序
+   *
+   * @param sorter 目标排序设置
+   */
+  setSorter: (sorter: Omit<IDripTableContext<RecordType, ExtraOptions>['state']['sorter'], 'comparer'> | null) => void;
 }
 
 const DripTableWrapper = React.forwardRef(<
@@ -205,8 +216,47 @@ const DripTableWrapper = React.forwardRef(<
         setState({ displayColumnKeys });
       },
       displayColumnKeys: context.state.displayColumnKeys,
+      sorter: context.state.sorter,
+      setSorter: (sorter) => {
+        if (sorter) {
+          const columnSchema = tableInfo.schema.columns.find(c => c.key === sorter.key);
+          if (!columnSchema?.sorter) {
+            return;
+          }
+          setState({
+            sorter: {
+              key: sorter.key,
+              direction: sorter.direction,
+              comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
+                props: {
+                  column: columnSchema,
+                  leftRecord: a,
+                  rightRecord: b,
+                  leftValue: indexValue(a, columnSchema.dataIndex),
+                  rightValue: indexValue(b, columnSchema.dataIndex),
+                  ext: tableProps.ext,
+                },
+              }, 0),
+            },
+            sorterChanged: true,
+          });
+        } else {
+          setState({
+            sorter: { key: null, direction: null, comparer: null },
+            sorterChanged: true,
+          });
+        }
+      },
     }),
-    [setState, context.state.selectedRowKeys, context.state.displayColumnKeys],
+    [
+      setState,
+      safeExecute,
+      indexValue,
+      context.state.selectedRowKeys,
+      context.state.displayColumnKeys,
+      context.state.sorter,
+      tableInfo.schema.columns,
+    ],
   );
 
   // 校验参数
