@@ -40,6 +40,7 @@ toc: content
 | [rowFooter](/drip-table/schema/row-footer) | 行尾部插槽 | × | [🔗 示例](/drip-table/schema/row-footer) |
 | [span](/drip-table/schema/span) | 行列合并设置 | × | [🔗 示例](/drip-table/schema/span) |
 | [emptyText](/drip-table/schema/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/schema/empty-text) |
+| [initialSorter](/drip-table/schema/initial-sorter) | 表格默认排序 | × | [🔗 示例](/drip-table/schema/initial-sorter) |
 | [subtable](/drip-table/schema/subtable) | 子表设置项 | × | [🔗 示例](/drip-table/schema/subtable) |
 
 ### 示例

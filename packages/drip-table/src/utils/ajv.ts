@@ -387,6 +387,13 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           ],
         },
         emptyText: { type: 'string' },
+        initialSorter: {
+          type: 'object',
+          properties: {
+            key: { type: 'string' },
+            direction: { enum: ['ascend', 'descend'] },
+          },
+        },
         subtable: {}, // （不校验子表，因为 ajv 不支持循环引用）
         ext: {},
       },

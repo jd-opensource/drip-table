@@ -371,6 +371,19 @@ export interface DripTableSchema<
    */
   emptyText?: string;
   /**
+   * 初始排序设置
+   */
+  initialSorter?: {
+    /**
+     * 排序键
+     */
+    key: string;
+    /**
+     * 排序方向
+     */
+    direction: 'ascend' | 'descend';
+  };
+  /**
    * 子表设置项
    */
   subtable?: {

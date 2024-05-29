@@ -279,6 +279,30 @@ const DripTableWrapper = React.forwardRef(<
   }
 
   React.useEffect(() => {
+    const sorter = tableInfo.schema.initialSorter;
+    if (sorter) {
+      const columnSchema = tableInfo.schema.columns.find(c => c.key === sorter.key);
+      if (!columnSchema?.sorter) {
+        return;
+      }
+      setState({
+        sorter: {
+          key: sorter.key,
+          direction: sorter.direction,
+          comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
+            props: {
+              column: columnSchema,
+              leftRecord: a,
+              rightRecord: b,
+              leftValue: indexValue(a, columnSchema.dataIndex),
+              rightValue: indexValue(b, columnSchema.dataIndex),
+              ext: tableProps.ext,
+            },
+          }, 0),
+        },
+        sorterChanged: true,
+      });
+    }
     tableProps.componentDidMount?.(tableInfo);
     return () => {
       tableProps.componentWillUnmount?.(tableInfo);

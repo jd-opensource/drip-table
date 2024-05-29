@@ -130,6 +130,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '行尾插槽 rowFooter', link: '/drip-table/schema/row-footer' },
           { title: '行列合并 span', link: '/drip-table/schema/span' },
           { title: '空表提示 emptyText', link: '/drip-table/schema/empty-text' },
+          { title: '默认排序 initialSorter', link: '/drip-table/schema/initial-sorter' },
           { title: '子表 subtable', link: '/drip-table/schema/subtable' },
         ],
       },
