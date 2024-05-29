@@ -282,7 +282,7 @@ export interface DripTableGeneratorProps<
    * 当点击生成器中的按钮触发的事件
    */
   onClick?: (
-    type: 'table' | 'column' | 'column-item' | 'column-insert-left' | 'column-insert-right' | 'column-delete',
+    type: 'table' | 'column' | 'column-item' | 'column-insert-left' | 'column-insert-right' | 'column-delete' | 'row-click',
     payload: Record<string, unknown>,
   ) => void;
   /**
