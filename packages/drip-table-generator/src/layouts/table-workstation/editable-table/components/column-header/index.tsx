@@ -14,7 +14,7 @@ import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import ClipboardButton from 'react-clipboard.js';
 
-import { get } from '@/utils';
+import { formatNumber, get } from '@/utils';
 import RichText from '@/components/RichText';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
@@ -177,7 +177,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
           })}
-          style={{ ...columnStyle, width: props.column.width || 200 }}
+          style={{ ...columnStyle, width: formatNumber(props.column.width || 200) }}
           onClick={(e) => {
             e.stopPropagation();
             setState({

@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableProps } from 'drip-table';
 import React from 'react';
 
-import { filterArray } from '@/utils';
+import { filterArray, formatNumber } from '@/utils';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
@@ -94,7 +94,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ...typeof column.style === 'object' ? column.style : {},
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: column.width || 200,
+        width: formatNumber(column.width || 200),
       }}
     >
       <TableCell
@@ -129,7 +129,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           configs={props.tableConfig.configs.rowHeader}
         />
       ) }
-      <div className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}>
+      <div
+        className={classNames('jfe-drip-table-generator-workstation-table-tr-wrapper')}
+        onClick={(e) => {
+          e.stopPropagation();
+          props.onClick?.('row-click', { record: props.record, recordIndex: props.rowIndex });
+        }}
+      >
         { props.tableConfig.hasSubTable && (
         <div
           className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {

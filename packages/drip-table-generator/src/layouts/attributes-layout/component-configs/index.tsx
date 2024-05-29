@@ -11,7 +11,7 @@ import { DripTableExtraOptions } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
-import { filterAttributes } from '@/utils';
+import { filterAttributes, formatNumber } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
@@ -200,9 +200,11 @@ const ComponentConfigForm = <
         'titleStyle',
         'group',
         'style',
+        'width',
       ]),
       key: currentColumn?.key ?? '',
       dataIndex: formData.dataIndex as string | string[],
+      width: formatNumber(formData.width as string),
       title: formData.titleStyle
         ? {
           body: formData.title,

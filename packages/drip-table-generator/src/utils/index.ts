@@ -69,3 +69,13 @@ export const filterArray = <T,>(originArray: T[], filterCallback: (item: T) => b
   });
   return result;
 };
+
+export const formatNumber = (str: string | number | null | undefined) => {
+  if (str === '' || str === null || str === void 0) {
+    return void 0;
+  }
+  if (!Number.isNaN(Number(str))) {
+    return Number(str);
+  }
+  return str;
+};

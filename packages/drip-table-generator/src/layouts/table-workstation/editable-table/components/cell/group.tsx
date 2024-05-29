@@ -17,6 +17,7 @@ import {
 } from 'drip-table';
 import React from 'react';
 
+import { formatNumber } from '@/utils';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
@@ -62,8 +63,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         className="jfe-drip-table-generator-workstation-table-cell-group-wrapper"
         onClick={e => e.stopPropagation()}
         style={{
-          width: props.path.length === 0 ? 'max-content' : void 0,
-          minWidth: props.path.length === 0 ? props.column.width || 128 : void 0,
+          width: props.path.length === 0 ? formatNumber(props.column.width || 200) : void 0,
         }}
       >
         <div className="jfe-drip-table-generator-workstation-table-cell-group-inner-border">
