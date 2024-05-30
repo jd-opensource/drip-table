@@ -76,6 +76,9 @@ const HeaderCell = <
       {...wrapperProps}
       className={classNames(wrapperProps?.className, { [`${prefixCls}-has-sorter`]: columnSchema.sorter })}
       onClick={React.useCallback(() => {
+        if (!columnSchema.sorter) {
+          return;
+        }
         const sortDirections = columnSchema.sortDirections || ['ascend', 'descend'];
         if (tableState.sorter.key === columnSchema.key && tableState.sorter.direction === sortDirections[sortDirections.length - 1]) {
           setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
