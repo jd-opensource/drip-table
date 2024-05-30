@@ -91,6 +91,19 @@
         font-size: 12px;
         cursor: pointer;
         line-height: 1;
+        padding: 4px;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+      }
+
+      &-full &-up {
+        padding-bottom: 0;
+      }
+
+      &-full &-down {
+        padding-top: 0;
       }
 
       &-up + &-down {
