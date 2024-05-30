@@ -70,6 +70,10 @@
 
       &:hover {
         background-color: #f0f0f0;
+
+        .@{prefixCls}-has-sorter & {
+          background-color: #eaeaea;
+        }
       }
     }
 
@@ -95,15 +99,19 @@
 
         &:hover {
           background-color: #f0f0f0;
+
+          .@{prefixCls}-has-sorter & {
+            background-color: #eaeaea;
+          }
         }
       }
 
       &-full &-up {
-        padding-bottom: 0;
+        padding: 1px 4px 0;
       }
 
       &-full &-down {
-        padding-top: 0;
+        padding: 0 4px 1px;
       }
 
       &-up + &-down {
