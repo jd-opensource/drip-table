@@ -187,6 +187,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
         { text: '已售罄', value: 'soldOut' },
       ],
       defaultFilteredValue: ['onSale', 'soldOut'],
+      sorter: 'return props.leftValue == props.rightValue ? 0 : props.leftValue > props.rightValue ? 1 : -1',
       component: 'text',
       options: {
         mode: 'single',
