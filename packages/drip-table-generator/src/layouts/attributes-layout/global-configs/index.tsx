@@ -127,6 +127,11 @@ const GlobalConfigForm = <
     if (typeof globalConfigs?.innerStyle === 'object') {
       formData.innerStyle = true;
     }
+    if (typeof globalConfigs?.initialSorter === 'object') {
+      formData.initialSorter = true;
+      formData['initialSorter.key'] = globalConfigs.initialSorter.key;
+      formData['initialSorter.direction'] = globalConfigs.initialSorter.direction;
+    }
     if (globalConfigs) {
       globalConfigsPrefix.forEach((prefix) => {
         decodeConfigsWithPrefix(prefix, globalConfigs, formData);
@@ -219,7 +224,7 @@ const GlobalConfigForm = <
       }
     });
     return {
-      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|(innerS|s)tyle|rowHeader(Style)?)\.|scroll)/u),
+      ...filterAttributesByRegExp(formData, /^((footer|header|pagination|ext|(innerS|s)tyle|rowHeader(Style)?)\.|scroll|initialSorter)/u),
       id: formData.id as string,
       className: formData.className as string,
       innerClassName: formData.innerClassName as string,
@@ -232,6 +237,12 @@ const GlobalConfigForm = <
       rowDraggable: formData.rowDraggable as boolean,
       editable: formData.editable as boolean,
       virtual: formData.virtual as boolean,
+      initialSorter: formData.initialSorter
+        ? {
+          key: formData['initialSorter.key'] as string,
+          direction: formData['initialSorter.direction'] as 'ascend' | 'descend',
+        }
+        : void 0,
       scroll: {
         x: formData.scrollX as number,
         y: formData.scrollY as number,
