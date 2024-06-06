@@ -176,6 +176,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '子表底部渲染函数 subtableFooter', link: '/drip-table/props/subtable-footer' },
           { title: '子表配置项 subtableProps', link: '/drip-table/props/subtable-props' },
           { title: '自定义组件库 components', link: '/drip-table/props/components' },
+          { title: '默认组件库名 defaultComponentLib', link: '/drip-table/props/default-component-lib' },
           { title: '组件插槽 slots', link: '/drip-table/props/slots' },
           { title: '附加透传数据 ext', link: '/drip-table/props/ext' },
           { title: '指定行可展开 rowExpandable', link: '/drip-table/props/row-expandable' },

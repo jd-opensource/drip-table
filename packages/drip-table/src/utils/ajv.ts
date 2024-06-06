@@ -438,6 +438,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         loading: { type: 'boolean' },
         ...subtablePropsSchema.properties,
         components: {},
+        defaultComponentLib: { type: 'string' },
         slots: {},
         icons: {},
         ajv: {

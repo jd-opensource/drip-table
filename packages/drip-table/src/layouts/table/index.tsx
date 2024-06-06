@@ -232,7 +232,9 @@ export const columnRenderGenerator = <
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
   if ('component' in (columnSchema as DripTableBuiltInColumnSchema)) {
-    const BuiltInComponent = DripTableBuiltInComponents[columnSchema.component] as
+    const BuiltInComponent = extraProps.defaultComponentLib
+      ? null
+      : DripTableBuiltInComponents[columnSchema.component] as
       React.JSXElementConstructor<DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>> & { schema?: SchemaObject };
     const onChange = (record: RecordType, index: number, value: unknown) => {
       const ds = [...tableInfo.dataSource];
@@ -301,7 +303,11 @@ export const columnRenderGenerator = <
         );
       };
     }
-    const [libName, componentName] = columnSchema.component.split('::');
+    let [libName, componentName] = columnSchema.component.split('::');
+    if (!componentName && extraProps.defaultComponentLib) {
+      componentName = libName;
+      libName = extraProps.defaultComponentLib;
+    }
     if (libName && componentName) {
       const ExtraComponent = extraProps.components?.[libName]?.[componentName];
       if (ExtraComponent) {
@@ -1216,6 +1222,7 @@ const TableLayout = <
     (): TableColumnsType<RcTableRecordType<RecordType>> => {
       const extraProps = {
         components: tableProps.components,
+        defaultComponentLib: tableProps.defaultComponentLib,
         icons: tableProps.icons,
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,

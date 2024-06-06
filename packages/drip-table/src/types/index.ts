@@ -623,6 +623,10 @@ export interface DripTableProps<
     };
   };
   /**
+   * 默认组件库名称，不传入默认内置组件
+   */
+  defaultComponentLib?: string;
+  /**
    * 组件插槽，可通过 Schema 控制自定义区域渲染
    */
   slots?: {
