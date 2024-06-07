@@ -69,6 +69,7 @@ const HeaderCell = <
   } else {
     justifyContent = 'flex-start';
   }
+  const HeaderCellFilterComponent = tableProps.renderHeaderCellFilter ?? HeaderCellFilter;
   return (
     <th
       {...wrapperProps}
@@ -173,7 +174,7 @@ const HeaderCell = <
           {
             columnSchema.filters?.length
               ? (
-                <HeaderCellFilter
+                <HeaderCellFilterComponent
                   columnSchema={columnSchema}
                   filter={filter}
                   setFilter={(newFilter) => {

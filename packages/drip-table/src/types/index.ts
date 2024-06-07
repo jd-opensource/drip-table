@@ -13,6 +13,7 @@ import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/cell-components';
 import type { PaginationProps } from '@/components/react-components/pagination';
 import type { DripTableSlotSchema } from '@/components/react-components/slot-render';
+import type { HeaderCellFilterProps } from '@/layouts/table/components/header-cell/components/filter';
 
 export { SchemaObject } from 'ajv';
 
@@ -851,6 +852,10 @@ export interface DripTableProps<
    * 自定义渲染分页器
    */
   renderPagination?: React.ComponentType<PaginationProps>;
+  /**
+   * 自定义渲染列头筛选器
+   */
+  renderHeaderCellFilter?: React.ComponentType<HeaderCellFilterProps>;
   /**
    * 渲染子表时用于透传父级信息，仅限内部使用
    * @internal
