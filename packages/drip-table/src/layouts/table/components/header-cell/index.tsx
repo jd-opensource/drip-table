@@ -13,12 +13,12 @@ import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import React from 'react';
 
 import { safeExecute } from '@/utils/sandbox';
-import { preventEvent } from '@/components/cell-components/utils';
 import SlotRender from '@/components/react-components/slot-render';
 import { useTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption, indexValue } from '@/index';
 
 import HeaderCellFilter from './components/filter';
+import HeaderCellSorter from './components/sorter';
 
 const prefixCls = 'jfe-drip-table-layout-table-column-header-cell';
 
@@ -140,96 +140,33 @@ const HeaderCell = <
           {
             columnSchema.sorter
               ? (
-                <span
-                  className={classNames(`${prefixCls}-toolbox-sorter`, {
-                    [`${prefixCls}-toolbox-sorter-full`]: !columnSchema.sortDirections || columnSchema.sortDirections.length === 2,
-                  })}
-                >
-                  <span className={`${prefixCls}-toolbox-sorter-inner`} aria-hidden="true">
-                    {
-                      !columnSchema.sortDirections || columnSchema.sortDirections.includes('ascend')
-                        ? (
-                          <span
-                            role="img"
-                            aria-label="caret-up"
-                            className={classNames(`${prefixCls}-toolbox-sorter-up`, {
-                              [`${prefixCls}-toolbox-sorter--active`]: tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'ascend',
-                            })}
-                            onClick={React.useCallback((e) => {
-                              if (tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'ascend') {
-                                setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
-                              } else {
-                                setTableState({
-                                  sorter: {
-                                    key: columnSchema.key,
-                                    direction: 'ascend',
-                                    comparer: (a, b) => safeExecute(columnSchema.sorter || '', {
-                                      props: {
-                                        column: columnSchema,
-                                        leftRecord: a,
-                                        rightRecord: b,
-                                        leftValue: indexValue(a, columnSchema.dataIndex),
-                                        rightValue: indexValue(b, columnSchema.dataIndex),
-                                        ext: tableProps.ext,
-                                      },
-                                    }, 0),
-                                  },
-                                  sorterChanged: true,
-                                });
-                              }
-                              return preventEvent(e);
-                            }, [columnSchema.key, tableState.sorter])}
-                          >
-                            <svg viewBox="0 0 1024 1024" focusable="false" data-icon="caret-up" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                              <path d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z" />
-                            </svg>
-                          </span>
-                        )
-                        : null
+                <HeaderCellSorter
+                  columnSchema={columnSchema}
+                  sorter={tableState.sorter}
+                  setSorter={(sorter) => {
+                    if (sorter && sorter.key) {
+                      setTableState({
+                        sorter: {
+                          key: sorter.key,
+                          direction: sorter.direction,
+                          comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
+                            props: {
+                              column: columnSchema,
+                              leftRecord: a,
+                              rightRecord: b,
+                              leftValue: indexValue(a, columnSchema.dataIndex),
+                              rightValue: indexValue(b, columnSchema.dataIndex),
+                              ext: tableProps.ext,
+                            },
+                          }, 0),
+                        },
+                        sorterChanged: true,
+                      });
+                    } else {
+                      setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
                     }
-                    {
-                      !columnSchema.sortDirections || columnSchema.sortDirections.includes('descend')
-                        ? (
-                          <span
-                            role="img"
-                            aria-label="caret-down"
-                            className={classNames(`${prefixCls}-toolbox-sorter-down`, {
-                              [`${prefixCls}-toolbox-sorter--active`]: tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'descend',
-                            })}
-                            onClick={React.useCallback((e) => {
-                              if (tableState.sorter.key === columnSchema.key && tableState.sorter.direction === 'descend') {
-                                setTableState({ sorter: { key: null, direction: null, comparer: null }, sorterChanged: true });
-                              } else {
-                                setTableState({
-                                  sorter: {
-                                    key: columnSchema.key,
-                                    direction: 'descend',
-                                    comparer: (a, b) => 0 - safeExecute(columnSchema.sorter || '', {
-                                      props: {
-                                        column: columnSchema,
-                                        leftRecord: a,
-                                        rightRecord: b,
-                                        leftValue: indexValue(a, columnSchema.dataIndex),
-                                        rightValue: indexValue(b, columnSchema.dataIndex),
-                                        ext: tableProps.ext,
-                                      },
-                                    }, 0),
-                                  },
-                                  sorterChanged: true,
-                                });
-                              }
-                              return preventEvent(e);
-                            }, [columnSchema.key, tableState.sorter])}
-                          >
-                            <svg viewBox="0 0 1024 1024" focusable="false" data-icon="caret-down" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                              <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z" />
-                            </svg>
-                          </span>
-                        )
-                        : null
-                    }
-                  </span>
-                </span>
+                  }}
+                />
               )
               : null
           }
