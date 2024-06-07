@@ -21,7 +21,7 @@ import MiniSelect from './mini-select';
 const prefixCls = 'jfe-drip-table-rc-pagination';
 const selectPrefixCls = 'jfe-drip-table-rc-select';
 
-interface PaginationProps extends RcPaginationProps {
+export interface PaginationProps extends RcPaginationProps {
   align?: 'left' | 'center' | 'right';
   size?: 'small' | 'default';
   style?: React.CSSProperties;

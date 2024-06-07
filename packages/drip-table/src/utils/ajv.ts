@@ -502,6 +502,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         onDataSourceChange: { instanceof: 'Function' },
         onDisplayColumnKeysChange: { instanceof: 'Function' },
         onEvent: { instanceof: 'Function' },
+        renderPagination: {},
         __PARENT_INFO__: {},
       },
       required: [

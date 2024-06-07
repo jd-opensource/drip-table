@@ -24,6 +24,7 @@ toc: content
 | [loading](/drip-table/props/loading) | 加载中 | × | [🔗 示例](/drip-table/props/loading) |
 | [subtableProps](/drip-table/props/subtable-props) | 子表参数匹配设置 | × | [🔗 示例](/drip-table/props/subtable-props) |
 | [components](/drip-table/props/components) | 表格单元格组件库 | × | [🔗 示例](/drip-table/props/components) |
+| [defaultComponentLib](/drip-table/props/default-component-lib) | 表格默认组件库名称 | × | [🔗 示例](/drip-table/props/default-component-lib) |
 | [slots](/drip-table/props/slots) | 组件插槽，可通过 Schema 控制自定义区域渲染 | × | [🔗 示例](/drip-table/props/slots) |
 | [ext](/drip-table/props/ext) | 自定义组件附加透传数据 | × | [🔗 示例](/drip-table/props/ext) |
 | [sticky](/drip-table/props/sticky) | 冻结表头和滚动条设置项 | × | [🔗 示例](/drip-table/props/sticky) |
@@ -56,6 +57,7 @@ toc: content
 | [onChange](/drip-table/props/on-change) | 过滤器、分页器 等配置变化 | × | [🔗 示例](/drip-table/props/on-change) |
 | [onDisplayColumnKeysChange](/drip-table/props/on-display-column-keys-change) | 用户修改展示的列时 | × | [🔗 示例](/drip-table/props/on-display-column-keys-change) |
 | [onEvent](/drip-table/props/on-event) | 通用事件机制 | × | [🔗 示例](/drip-table/props/on-event) |
+| [renderPagination](/drip-table/props/render-pagination) | 自定义分页器 | × | [🔗 示例](/drip-table/props/render-pagination) |
 
 ### 示例
 

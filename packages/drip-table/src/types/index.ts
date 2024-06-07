@@ -11,6 +11,7 @@ import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/cell-components';
+import type { PaginationProps } from '@/components/react-components/pagination';
 import type { DripTableSlotSchema } from '@/components/react-components/slot-render';
 
 export { SchemaObject } from 'ajv';
@@ -846,6 +847,10 @@ export interface DripTableProps<
     },
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
+  /**
+   * 自定义渲染分页器
+   */
+  renderPagination?: React.ComponentType<PaginationProps>;
   /**
    * 渲染子表时用于透传父级信息，仅限内部使用
    * @internal

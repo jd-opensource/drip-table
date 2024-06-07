@@ -1564,9 +1564,10 @@ const TableLayout = <
     return void 0;
   }, [tableInfo.schema.pagination ? tableInfo.schema.pagination.showTotal : tableInfo.schema.pagination]);
 
+  const PaginationComponent = tableProps.renderPagination ?? Pagination;
   const renderPagination = tableInfo.schema.pagination
     ? (
-      <Pagination
+      <PaginationComponent
         size={tableInfo.schema.pagination?.size === void 0 ? 'small' : tableInfo.schema.pagination.size}
         pageSize={tableState.pagination.pageSize}
         total={tableProps.total === void 0 ? tableInfo.dataSource.length : tableProps.total}
