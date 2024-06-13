@@ -8,30 +8,13 @@
 
 import React from 'react';
 
-import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from './types';
-
-export type SetStateAction<S> = Partial<S> | ((prevState: S) => Partial<S>);
-
-/**
- * 使用状态对象，设置属性时可传入部分
- * @param initState 初始状态
- * @returns [状态对象, 状态转移函数]
- */
-export const useState = <T>(initState: T): [T, (action: SetStateAction<T>) => void] => React.useReducer(
-  (state: T, action: SetStateAction<T>): T => {
-    const data = typeof action === 'function'
-      ? action(state)
-      : action;
-    return { ...state, ...data };
-  },
-  initState,
-);
+import type { SetStateAction } from '@/utils/hooks';
+import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from '@/types';
 
 export interface IDripTableContext<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  readonly _CTX_SOURCE: 'CONTEXT' | 'PROVIDER';
   /**
    * 表格属性
    */
@@ -68,7 +51,6 @@ export interface IDripTableContext<
     checkPassed: boolean;
     selectedRowKeys: React.Key[];
     displayColumnKeys: React.Key[];
-    closePopover: string | null;
   };
   /**
    * 设置表格状态
@@ -100,12 +82,10 @@ export const createTableState = (): IDripTableContext['state'] => ({
   checkPassed: true,
   selectedRowKeys: [],
   displayColumnKeys: [],
-  closePopover: null,
   layout: 'table',
 });
 
 export const DripTableContext = React.createContext<IDripTableContext>({
-  _CTX_SOURCE: 'CONTEXT',
   props: {
     schema: { columns: [] },
     dataSource: [],

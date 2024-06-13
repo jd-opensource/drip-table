@@ -13,8 +13,8 @@ export * as UTILS_CHILDREN_LIKE_DO_NOT_USE_IN_PRODUCTION from './utils/children-
 export { indexValue } from './utils/operator';
 export { default as builtInComponents } from './components/cell-components';
 export type { DripTableComponentProps, DripTableBuiltInColumnSchema } from './components/cell-components';
+export { useTableComponentContext, DripTableComponentContext } from '@/components/cell-components/hooks';
 export type { DripTableSlotElementSchema, DripTableSlotSchema } from './components/react-components/slot-render';
 export type { DripTableWrapperContext as DripTableInstance } from './wrapper';
 export { default } from './wrapper';
 export { columnRenderGenerator as TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION } from './layouts/table';
-export { DripTableContext as TABLE_CONTEXT_DO_NOT_USE_IN_PRODUCTION } from './hooks';

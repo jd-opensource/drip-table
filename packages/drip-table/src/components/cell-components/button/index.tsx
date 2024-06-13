@@ -11,9 +11,9 @@ import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/
 import { DRIP_TABLE_GENERIC_CSS_SCHEMA } from '@/utils/ajv';
 import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
+import { DripTableComponentContext } from '@/components/cell-components/hooks';
 import Button from '@/components/react-components/button';
 import Tooltip from '@/components/react-components/tooltip';
-import { DripTableContext } from '@/hooks';
 
 import { DripTableComponentProps } from '../component';
 import { dataProcessValue, finalizeString } from '../utils';
@@ -301,7 +301,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
         return null;
       }
       const wrapperEl = (
-        <DripTableContext.Consumer>
+        <DripTableComponentContext.Consumer>
           {
             context => (
               <Button
@@ -334,14 +334,14 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
               </Button>
             )
           }
-        </DripTableContext.Consumer>
+        </DripTableComponentContext.Consumer>
       );
       if (options.popconfirm) {
         const popconfirm = options.popconfirm;
         const TitleIcon = popconfirm.titleIcon ? this.props.icons?.[popconfirm.titleIcon] : null;
         const ContentIcon = popconfirm.contentIcon ? this.props.icons?.[popconfirm.contentIcon] : null;
         return (
-          <DripTableContext.Consumer>
+          <DripTableComponentContext.Consumer>
             {
               context => (
                 <Tooltip
@@ -405,7 +405,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                 </Tooltip>
               )
             }
-          </DripTableContext.Consumer>
+          </DripTableComponentContext.Consumer>
         );
       }
       return wrapperEl;

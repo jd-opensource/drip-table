@@ -19,9 +19,11 @@ import {
   type SchemaObject,
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
+import { useState } from '@/utils/hooks';
 import { safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents from '@/components/cell-components';
-import { type IDripTableContext, createTableState, DripTableContext, useState } from '@/hooks';
+import { createTableComponentState, DripTableComponentContext, IDripTableComponentContext } from '@/components/cell-components/hooks';
+import { type IDripTableContext, createTableState, DripTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption, indexValue } from '@/index';
 import DripTableLayout from '@/layouts';
 
@@ -183,6 +185,7 @@ const DripTableWrapper = React.forwardRef(<
 
   // 创建上下文
   const [state, setState] = useState(createTableState());
+  const [componentState, setComponentState] = useState(createTableComponentState());
 
   const [tableUUID] = React.useState(uuidv4());
 
@@ -195,13 +198,22 @@ const DripTableWrapper = React.forwardRef(<
 
   const context = React.useMemo(
     (): IDripTableContext<RecordType, ExtraOptions> => ({
-      _CTX_SOURCE: 'CONTEXT',
       props: tableProps,
       info: tableInfo,
       state,
       setState,
     }),
     [props, tableInfo, state, setState],
+  );
+
+  const componentContext = React.useMemo(
+    (): IDripTableComponentContext<RecordType, ExtraOptions> => ({
+      props: tableProps,
+      info: tableInfo,
+      state: componentState,
+      setState: setComponentState,
+    }),
+    [props, tableInfo, componentState, setComponentState],
   );
 
   // 组件提供给外部的公共接口
@@ -315,7 +327,9 @@ const DripTableWrapper = React.forwardRef(<
 
   return (
     <DripTableContext.Provider value={context as unknown as IDripTableContext}>
-      <DripTableLayout />
+      <DripTableComponentContext.Provider value={componentContext as unknown as IDripTableComponentContext}>
+        <DripTableLayout />
+      </DripTableComponentContext.Provider>
     </DripTableContext.Provider>
   );
 }) as <

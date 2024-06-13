@@ -17,8 +17,8 @@ import {
 } from '@/types';
 import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
 import { safeExecute } from '@/utils/sandbox';
+import { DripTableComponentContext } from '@/components/cell-components/hooks';
 import Tooltip from '@/components/react-components/tooltip';
-import { DripTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption } from '@/index';
 
 import { DripTableBuiltInColumnSchema } from '..';
@@ -145,7 +145,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     const { record, recordIndex, renderSchema } = this.props;
     const options = this.props.schema.options;
     return (
-      <DripTableContext.Consumer>
+      <DripTableComponentContext.Consumer>
         {
           (context) => {
             if (context.state.closePopover === this.props.schema.key) {
@@ -175,7 +175,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             );
           }
         }
-      </DripTableContext.Consumer>
+      </DripTableComponentContext.Consumer>
     );
   }
 }
