@@ -40,6 +40,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
   icons: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   preview: DripTableGeneratorProps<RecordType, ExtraOptions>['preview'];
+  defaultComponentLib: DripTableGeneratorProps<RecordType, ExtraOptions>['defaultComponentLib'];
   onEvent: DripTableGeneratorProps<RecordType, ExtraOptions>['onEvent'];
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   onScroll: (scrollLeft: number) => void;
@@ -104,6 +105,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         columnIndex={props.tableConfig.columns.findIndex(item => item.key === column.key)}
         tableConfig={props.tableConfig}
         customComponents={props.customComponents}
+        defaultComponentLib={props.defaultComponentLib}
         customComponentPanel={props.customComponentPanel}
         customColumnAddPanel={props.customColumnAddPanel}
         mockDataSource={props.mockDataSource}

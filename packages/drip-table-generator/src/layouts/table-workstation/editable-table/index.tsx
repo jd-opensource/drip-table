@@ -183,6 +183,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         tableConfig={props.tableConfig}
                         record={wrapRecord.record}
                         customComponents={props.customComponents}
+                        defaultComponentLib={props.defaultComponentLib}
                         customComponentPanel={props.customComponentPanel}
                         mockDataSource={props.mockDataSource}
                         dataFields={props.dataFields}

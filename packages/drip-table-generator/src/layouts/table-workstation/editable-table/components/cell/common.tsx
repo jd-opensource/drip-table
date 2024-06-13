@@ -33,6 +33,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   icons?: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   preview?: DripTableGeneratorProps<RecordType, ExtraOptions>['preview'];
   onEvent?: DripTableGeneratorProps<RecordType, ExtraOptions>['onEvent'];
+  defaultComponentLib?: DripTableGeneratorProps<RecordType, ExtraOptions>['defaultComponentLib'];
 }
 
 const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>(column: T): T => (
@@ -69,6 +70,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         unknownComponent: <Alert type="error" message="未知组件" />,
         preview: props.preview !== false,
         icons: props.icons,
+        defaultComponentLib: props.defaultComponentLib,
         onEvent: props.preview === false ? props.onEvent : void 0,
       },
     )
