@@ -17,3 +17,4 @@ export type { DripTableSlotElementSchema, DripTableSlotSchema } from './componen
 export type { DripTableWrapperContext as DripTableInstance } from './wrapper';
 export { default } from './wrapper';
 export { columnRenderGenerator as TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION } from './layouts/table';
+export { DripTableContext as TABLE_CONTEXT_DO_NOT_USE_IN_PRODUCTION } from './hooks';
