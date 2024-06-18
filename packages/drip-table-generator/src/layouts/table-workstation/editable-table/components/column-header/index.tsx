@@ -7,20 +7,21 @@
  */
 import './index.less';
 
-import { ArrowLeftOutlined, ArrowRightOutlined, CaretDownOutlined, CaretUpOutlined, CopyOutlined, DeleteOutlined, EllipsisOutlined, FilterFilled, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
-import { Alert, Button, Checkbox, Col, Dropdown, MenuProps, message, Popconfirm, Popover, Row, Tooltip } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CaretDownOutlined, CaretUpOutlined, CopyOutlined, DeleteOutlined, EllipsisOutlined, QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
+import { Alert, Button, Dropdown, MenuProps, message, Popconfirm, Popover, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { DripTableExtraOptions } from 'drip-table';
 import React from 'react';
 import ClipboardButton from 'react-clipboard.js';
 
-import { formatNumber, get } from '@/utils';
+import { formatNumber } from '@/utils';
 import RichText from '@/components/RichText';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import ComponentsSelector from '../components-selector';
+import { FilterViewer } from './filter';
 
 export interface ColumnHeaderProps <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -36,15 +37,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
+  renderHeaderCellFilter: DripTableGeneratorProps<RecordType, ExtraOptions>['renderHeaderCellFilter'];
 }
 const ColumnHeader = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ColumnHeaderProps<RecordType, ExtraOptions>) => {
-  const tableContext = React.useContext(TableConfigsContext);
   const [selector, setSelector] = React.useState('');
-  const [filteredValue, setFilteredValue] = React.useState(props.column.defaultFilteredValue || []);
-  const [storedDataSource] = React.useState([...props.dataSource || []]);
   const columnTitle = React.useMemo(() => {
     let title = '';
     if (typeof props.column.title === 'string') {
@@ -332,45 +331,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   </Popover>
                   ) }
                   { props.column.filters && props.column.filters.length > 0 && (
-                    <Popconfirm
-                      title={(
-                        <Checkbox.Group
-                          defaultValue={props.column.defaultFilteredValue as string[]}
-                          onChange={checkedValues => setFilteredValue(checkedValues as React.Key[])}
-                        >
-                          { props.column.filters.map((item, index) => (
-                            <Row key={index}>
-                              <Col span={24}><Checkbox value={item.value}>{ item.text }</Checkbox></Col>
-                            </Row>
-                          )) }
-                        </Checkbox.Group>
-                      )}
-                      icon={null}
-                      cancelText="重置"
-                      okText="确认"
-                      onCancel={(e) => {
-                        e?.stopPropagation();
-                        if (props.tableConfig.tableId === tableContext.tableConfigs[0].tableId) {
-                          setFilteredValue([]);
-                          setState({ previewDataSource: storedDataSource });
-                        } else {
-                          message.warn('子表格暂不支持编辑状态下预览过滤器效果');
-                        }
-                      }}
-                      onConfirm={(e) => {
-                        e?.stopPropagation();
-                        if (props.tableConfig.tableId === tableContext.tableConfigs[0].tableId) {
-                          const newDataSource = filteredValue.length > 0 && filteredValue.length < (props.column.filters?.length || 0)
-                            ? storedDataSource.filter(item => filteredValue.includes(get(item, props.column.dataIndex)))
-                            : storedDataSource;
-                          setState({ previewDataSource: newDataSource });
-                        } else {
-                          message.warn('子表格暂不支持编辑状态下预览过滤器效果');
-                        }
-                      }}
-                    >
-                      <span style={{ marginLeft: 6, verticalAlign: 'top', color: '#b1b1b1', cursor: 'pointer' }}><FilterFilled /></span>
-                    </Popconfirm>
+                    <FilterViewer
+                      tableConfig={props.tableConfig}
+                      column={props.column}
+                      dataSource={props.dataSource}
+                      renderHeaderCellFilter={props.renderHeaderCellFilter}
+                    />
                   ) }
                 </div>
               </div>

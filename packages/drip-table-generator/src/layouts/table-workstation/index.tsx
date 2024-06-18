@@ -31,7 +31,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { mode === 'edit'
         ? (
           <React.Fragment>
-            <EditableTableHeader slots={props.slots} ext={props.ext} total={props.total} onPageChange={props.onPageChange} />
+            <EditableTableHeader
+              slots={props.slots}
+              ext={props.ext}
+              total={props.total}
+              renderPagination={props.renderPagination}
+              onPageChange={props.onPageChange}
+            />
             { tableConfigs.length >= 0 && (
             <EditableTable
               {...props}
@@ -41,7 +47,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               dataSource={previewDataSource as RecordType[]}
             />
             ) }
-            <EditableTableFooter slots={props.slots} ext={props.ext} total={props.total} onPageChange={props.onPageChange} />
+            <EditableTableFooter
+              slots={props.slots}
+              ext={props.ext}
+              total={props.total}
+              renderPagination={props.renderPagination}
+              onPageChange={props.onPageChange}
+            />
           </React.Fragment>
         )
         : <PreviewTable visible={mode === 'preview'} {...props} /> }

@@ -42,6 +42,14 @@
   justify-content: flex-end;
 }
 
+.@{prefixCls}--no-border {
+  .@{prefixCls}-next .@{prefixCls}-item-link,
+  .@{prefixCls}-prev .@{prefixCls}-item-link,
+  .@{prefixCls}-item {
+    border: none;
+  }
+}
+
 .@{prefixCls} ol,
 .@{prefixCls} ul {
   margin: 0;

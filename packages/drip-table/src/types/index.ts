@@ -252,6 +252,8 @@ export interface DripTableSchema<
    * 是否展示分页以及配置
    */
   pagination?: false | {
+    border?: boolean;
+    simple?: boolean;
     size?: 'small' | 'default';
     pageSize: number;
     position?: 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';

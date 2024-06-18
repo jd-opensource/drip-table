@@ -272,6 +272,8 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             {
               type: 'object',
               properties: {
+                border: { type: 'boolean' },
+                simple: { type: 'boolean' },
                 size: { enum: ['small', 'default'] },
                 pageSize: { type: 'number' },
                 position: { enum: ['topLeft', 'topCenter', 'topRight', 'bottomLeft', 'bottomCenter', 'bottomRight'] },

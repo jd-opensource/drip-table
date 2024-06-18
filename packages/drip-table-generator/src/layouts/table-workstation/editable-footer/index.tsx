@@ -31,6 +31,7 @@ interface EditableTableFooterProps<
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   total?: DripTableGeneratorProps<RecordType, ExtraOptions>['total'];
   onPageChange?: DripTableGeneratorProps<RecordType, ExtraOptions>['onPageChange'];
+  renderPagination?: DripTableGeneratorProps<RecordType, ExtraOptions>['renderPagination'];
 }
 
 const EditableTableFooter = <
@@ -178,20 +179,22 @@ const EditableTableFooter = <
         return (
           <div style={{ marginTop: '12px' }}>
             { paginationInFooter && typeof globalConfigs.pagination === 'object' && (
-              <PaginationComponent
-                style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
-                {...globalConfigs.pagination}
-                total={props.total || context.previewDataSource.length}
-                onShowSizeChange={(current, size) => {
-                  const configs = { ...globalConfigs };
-                  if (typeof configs.pagination === 'object') {
-                    configs.pagination.pageSize = size;
-                  }
-                  setTableConfigs(configs, 0);
-                  props.onPageChange?.(current, size, tableInfo);
-                }}
-                onChange={(page, pageSize) => props.onPageChange?.(page, pageSize, tableInfo)}
-              />
+            <PaginationComponent
+              style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
+              {...globalConfigs.pagination}
+              renderPagination={props.renderPagination}
+              ext={props.ext}
+              total={props.total || context.previewDataSource.length}
+              onShowSizeChange={(current, size) => {
+                const configs = { ...globalConfigs };
+                if (typeof configs.pagination === 'object') {
+                  configs.pagination.pageSize = size;
+                }
+                setTableConfigs(configs, 0);
+                props.onPageChange?.(current, size, tableInfo);
+              }}
+              onChange={(page, pageSize) => props.onPageChange?.(page, pageSize, tableInfo)}
+            />
             ) }
             <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0', overflowX: 'auto' }}>
               {

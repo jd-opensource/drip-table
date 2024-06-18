@@ -7,18 +7,30 @@
  */
 
 import { Pagination, PaginationProps } from 'antd';
-import { DripTableColumnSchema, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 
+import { safeExecute } from '@/utils/sandbox';
+import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+
+import { parseReactCSS } from './dom';
+
 export type PaginationComponentProps<
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
 CustomColumnSchema extends DripTableColumnSchema = never,
 SubtableDataSourceKey extends React.Key = never,
-> = DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>['pagination'] & Omit<PaginationProps, 'showTotal'>;
+> = DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>['pagination'] & Omit<PaginationProps, 'showTotal'> & {
+  renderPagination: DripTableGeneratorProps<RecordType, ExtraOptions>['renderPagination'];
+  ext?: DripTableExtraOptions['CustomComponentExtraData'];
+};
 
 const PaginationComponent = <
+RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+ExtraOptions extends Partial<DripTableExtraOptions> = never,
 CustomColumnSchema extends DripTableColumnSchema = never,
 SubtableDataSourceKey extends React.Key = never,
->(props: PaginationComponentProps<CustomColumnSchema, SubtableDataSourceKey>) => {
+>(props: PaginationComponentProps<RecordType, ExtraOptions, CustomColumnSchema, SubtableDataSourceKey>) => {
   if (!props) { return null; }
   const renderShowTotal = (showTotal?: string | boolean) => {
     if (typeof showTotal === 'boolean') {
@@ -40,10 +52,12 @@ SubtableDataSourceKey extends React.Key = never,
     bottomCenter: 'center',
     bottomRight: 'end',
   };
+  const PaginationRenderer = props.renderPagination ?? Pagination;
   return (
     <div style={{ display: 'flex', justifyContent: justifyContent[props.position || 'topLeft'] }}>
-      <Pagination
+      <PaginationRenderer
         {...props}
+        border={props.border}
         size={props.size}
         pageSize={props.pageSize}
         showTotal={props.showTotal ? renderShowTotal(props.showTotal) : void 0}
@@ -53,6 +67,26 @@ SubtableDataSourceKey extends React.Key = never,
         showSizeChanger={props.showSizeChanger}
         hideOnSinglePage={props.hideOnSinglePage}
         pageSizeOptions={props.pageSizeOptions}
+        style={parseReactCSS(
+          typeof props?.style === 'string'
+            ? safeExecute(props?.style, { props: { ext: props.ext } })
+            : props?.style,
+        )}
+        pageNumberStyle={parseReactCSS(
+          typeof props?.pageNumberStyle === 'string'
+            ? safeExecute(props.pageNumberStyle, { props: { ext: props.ext } })
+            : props?.pageNumberStyle,
+        )}
+        pageStepperStyle={parseReactCSS(
+          typeof props?.pageStepperStyle === 'string'
+            ? safeExecute(props.pageStepperStyle, { props: { ext: props.ext } })
+            : props?.pageStepperStyle,
+        )}
+        pageSelectorStyle={parseReactCSS(
+          typeof props?.pageSelectorStyle === 'string'
+            ? safeExecute(props.pageSelectorStyle, { props: { ext: props.ext } })
+            : props?.pageSelectorStyle,
+        )}
       />
     </div>
   );
