@@ -10,6 +10,8 @@ toc: content
 
   ```typescript
   type Pagination = false | {
+    border?: boolean;
+    simple?: boolean;
     size?: 'small' | 'default';
     pageSize?: number;
     position?: 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
@@ -26,6 +28,8 @@ toc: content
 
   ```javascript
   {
+    border: true,
+    simple: undefined,
     size: 'small',
     pageSize: 10,
     position: 'bottomRight',
@@ -49,6 +53,7 @@ import DripTable from "drip-table";
 
 const schema = {
   pagination: {
+    border: false,
     size: 'default',
     pageSize: 10,
     position: 'bottomCenter',
