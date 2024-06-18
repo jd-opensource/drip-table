@@ -269,6 +269,8 @@ const GlobalConfigForm = <
         : void 0,
       pagination: formData.pagination
         ? {
+          border: formData['pagination.border'] as boolean,
+          simple: formData['pagination.simple'] as boolean,
           size: formData['pagination.size'] as 'small' | 'default' || 'default',
           pageSize: formData['pagination.pageSize'] as number,
           position: formData['pagination.position'] as 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight',

@@ -24,6 +24,7 @@ const selectPrefixCls = 'jfe-drip-table-rc-select';
 export interface PaginationProps extends RcPaginationProps {
   align?: 'left' | 'center' | 'right';
   size?: 'small' | 'default';
+  border?: boolean;
   style?: React.CSSProperties;
   pageNumberStyle?: React.CSSProperties;
   pageStepperStyle?: React.CSSProperties;
@@ -47,6 +48,7 @@ const Pagination = React.memo((props: PaginationProps) => {
           [`${prefixCls}--left`]: props.align === 'left',
           [`${prefixCls}--center`]: props.align === 'center',
           [`${prefixCls}--right`]: props.align === void 0 || props.align === 'right',
+          [`${prefixCls}--no-border`]: props.border === false,
         })}
         prevIcon={(
           <button className={`${prefixCls}-item-link`} style={props.pageStepperStyle} type="button" tabIndex={-1}>

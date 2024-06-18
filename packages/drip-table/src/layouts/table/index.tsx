@@ -1568,6 +1568,8 @@ const TableLayout = <
   const renderPagination = tableInfo.schema.pagination
     ? (
       <PaginationComponent
+        border={tableInfo.schema.pagination?.border}
+        simple={tableInfo.schema.pagination?.simple}
         size={tableInfo.schema.pagination?.size === void 0 ? 'small' : tableInfo.schema.pagination.size}
         pageSize={tableState.pagination.pageSize}
         total={tableProps.total === void 0 ? tableInfo.dataSource.length : tableProps.total}

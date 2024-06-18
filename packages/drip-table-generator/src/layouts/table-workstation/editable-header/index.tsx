@@ -31,6 +31,7 @@ interface EditableTableHeaderProps<
   slots: DripTableGeneratorProps<RecordType, ExtraOptions>['slots'];
   total?: DripTableGeneratorProps<RecordType, ExtraOptions>['total'];
   onPageChange?: DripTableGeneratorProps<RecordType, ExtraOptions>['onPageChange'];
+  renderPagination?: DripTableGeneratorProps<RecordType, ExtraOptions>['renderPagination'];
 }
 
 const EditableTableHeader = <
@@ -181,6 +182,8 @@ const EditableTableHeader = <
               <PaginationComponent
                 style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
                 {...globalConfigs.pagination}
+                renderPagination={props.renderPagination}
+                ext={props.ext}
                 total={props.total || context.previewDataSource.length}
                 onShowSizeChange={(current, size) => {
                   const configs = { ...globalConfigs };

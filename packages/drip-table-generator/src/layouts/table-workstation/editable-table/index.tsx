@@ -84,7 +84,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
               ? (
-                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.total || props.dataSource.length} />
+                <PaginationComponent
+                  {...props.tableConfig.configs.pagination}
+                  total={props.total || props.dataSource.length}
+                  renderPagination={props.renderPagination}
+                />
               )
               : null }
             <div
@@ -110,6 +114,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     onScroll={(left) => { setScrollLeft(left); }}
                     onClick={props.onClick}
                     onColumnAdded={props.onColumnAdded}
+                    renderHeaderCellFilter={props.renderHeaderCellFilter}
                   />
                 )
                 : null }
@@ -130,6 +135,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   onScroll={(left) => { setScrollLeft(left); }}
                   onClick={props.onClick}
                   onColumnAdded={props.onColumnAdded}
+                  renderHeaderCellFilter={props.renderHeaderCellFilter}
                 />
                 ) }
                 { previewDataSource.map((wrapRecord, rowIndex) => {
@@ -217,7 +223,11 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             </div>
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter
               ? (
-                <PaginationComponent {...props.tableConfig.configs.pagination} total={props.total || props.dataSource.length} />
+                <PaginationComponent
+                  {...props.tableConfig.configs.pagination}
+                  total={props.total || props.dataSource.length}
+                  renderPagination={props.renderPagination}
+                />
               )
               : null }
             { props.parent?.record && (props.subtableFooter?.(props.parent.record, props.index || 0, subTableInfo) || '') }
