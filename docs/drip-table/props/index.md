@@ -57,6 +57,7 @@ toc: content
 | [onChange](/drip-table/props/on-change) | 过滤器、分页器 等配置变化 | × | [🔗 示例](/drip-table/props/on-change) |
 | [onDisplayColumnKeysChange](/drip-table/props/on-display-column-keys-change) | 用户修改展示的列时 | × | [🔗 示例](/drip-table/props/on-display-column-keys-change) |
 | [onEvent](/drip-table/props/on-event) | 通用事件机制 | × | [🔗 示例](/drip-table/props/on-event) |
+| [renderSelection](/drip-table/props/render-selection) | 自定义多选 | × | [🔗 示例](/drip-table/props/render-selection) |
 | [renderPagination](/drip-table/props/render-pagination) | 自定义分页器 | × | [🔗 示例](/drip-table/props/render-pagination) |
 | [renderHeaderCellFilter](/drip-table/props/render-header-cell-filter) | 自定义列头筛选器 | × | [🔗 示例](/drip-table/props/render-header-cell-filter) |
 

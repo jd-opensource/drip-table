@@ -1237,6 +1237,13 @@ const TableLayout = <
         .map(columnSchema => ({ schema: columnSchema, column: columnGenerator(tableInfo, columnSchema, extraProps) }));
       let flattenSchemaColumnsOffset = 0;
       if (rowSelectionColumnSchema) {
+        const SelectionComponent = tableProps.renderSelection ?? (scProps => (
+          <Checkbox
+            checked={scProps.checked}
+            disabled={scProps.disabled}
+            onChange={(e) => { scProps.onChange(indexValue(e.target, 'checked')); }}
+          />
+        ));
         flattenSchemaColumns.unshift({
           schema: rowSelectionColumnSchema,
           column: {
@@ -1245,10 +1252,10 @@ const TableLayout = <
             fixed: flattenSchemaColumns[0]?.column.fixed === 'left' || flattenSchemaColumns[0]?.column.fixed === true ? 'left' : void 0,
             title: (
               <div className={`${prefixCls}-column-title-selection`}>
-                <Checkbox
+                <SelectionComponent
                   checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
-                  onChange={(e) => {
-                    const selectedRowKeys = indexValue(e.target, 'checked')
+                  onChange={(checked) => {
+                    const selectedRowKeys = checked
                       ? rcTableDataSource
                         .filter(d => !tableProps.rowSelectable || tableProps.rowSelectable(d.record, d.index, tableInfo))
                         .map(d => d.record[rowKey] as React.Key)
@@ -1264,11 +1271,13 @@ const TableLayout = <
             ),
             render: (_, row) => (
               <div className={`${prefixCls}-column-selection`}>
-                <Checkbox
+                <SelectionComponent
+                  record={row.record}
+                  recordIndex={row.index}
                   checked={tableState.selectedRowKeys.includes(row.record[rowKey] as React.Key)}
-                  onChange={(e) => {
+                  onChange={(checked) => {
                     const selectedRowKeys = tableState.selectedRowKeys.filter(k => k !== row.record[rowKey]);
-                    if (indexValue(e.target, 'checked')) {
+                    if (checked) {
                       selectedRowKeys.push(row.record[rowKey] as React.Key);
                     }
                     const selectedRows = rcTableDataSource

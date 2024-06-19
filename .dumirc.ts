@@ -202,6 +202,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '变动触发 onChange', link: '/drip-table/props/on-change' },
           { title: '展示列触发 onDisplayColumnKeysChange', link: '/drip-table/props/on-display-column-keys-change' },
           { title: '通用事件机制 onEvent', link: '/drip-table/props/on-event' },
+          { title: '自定义多选 renderSelection', link: '/drip-table/props/render-selection' },
           { title: '自定义分页器 renderPagination', link: '/drip-table/props/render-pagination' },
           { title: '自定义列头筛选器 renderHeaderCellFilter', link: '/drip-table/props/render-header-cell-filter' },
         ],

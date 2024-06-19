@@ -851,6 +851,31 @@ export interface DripTableProps<
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
   ) => void;
   /**
+   * 自定义渲染列选择
+   */
+  renderSelection?: React.ComponentType<{
+    /**
+     * 选择所在行数据，全选则为 undefined
+     */
+    record?: RecordType;
+    /**
+     * 选择所在行下标，全选则为 undefined
+     */
+    recordIndex?: number;
+    /**
+     * 选择是否被禁用
+     */
+    disabled?: boolean;
+    /**
+     * 选择是否被选中
+     */
+    checked: boolean;
+    /**
+     * 选择发生改变事件
+     */
+    onChange: (checked: boolean) => void;
+  }>;
+  /**
    * 自定义渲染分页器
    */
   renderPagination?: React.ComponentType<PaginationProps>;
