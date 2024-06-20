@@ -193,6 +193,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         customComponentPanel={props.customComponentPanel}
                         mockDataSource={props.mockDataSource}
                         dataFields={props.dataFields}
+                        renderSelection={props.renderSelection}
                         ext={props.ext}
                         slots={props.slots}
                         icons={props.icons}

@@ -71,10 +71,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const [columnRightCount, columnTitleWidth] = React.useMemo(() => {
     let count = 0;
     let titleWidth = 'calc(100%';
-    if (props.column.description) {
-      count += 1;
-      titleWidth += ' - 24px';
-    }
     if (props.column.sorter) {
       count += 1;
       titleWidth += ' - 24px';
@@ -300,20 +296,21 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               ) }
             </TableConfigsContext.Consumer>
           ) }
-          <RichText
-            className="jfe-drip-table-generator-workstation-table-header-column-title"
-            style={{ width: columnRightCount > 0 ? columnTitleWidth : void 0 }}
-            html={columnTitle ?? ''}
-          />
+          <div style={{ width: columnRightCount > 0 ? columnTitleWidth : void 0, textAlign: props.column.align, display: 'inline-block' }}>
+            <RichText
+              className="jfe-drip-table-generator-workstation-table-header-column-title"
+              html={columnTitle ?? ''}
+            />
+            { props.column.description && (
+              <Tooltip placement="top" overlay={<RichText html={props.column.description ?? ''} />}>
+                <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
+              </Tooltip>
+            ) }
+          </div>
           {
             columnRightCount > 0 && (
               <div style={{ display: 'inline-block', verticalAlign: 'top', height: '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-                  { props.column.description && (
-                  <Tooltip placement="top" overlay={<RichText html={props.column.description ?? ''} />}>
-                    <span style={{ marginLeft: 6, verticalAlign: 'top' }}><QuestionCircleOutlined /></span>
-                  </Tooltip>
-                  ) }
                   { props.column.sorter && (
                   <Popover placement="top" content={(<Alert showIcon description="此处仅用于展示配置，如果您想要体验功能，请切换到预览模式，并配置事件onSorterChanged。" type="warning" />)}>
                     { props.column.sortDirections?.length === 1 && props.column.sortDirections[0] === 'ascend' && (

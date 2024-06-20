@@ -46,6 +46,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   onScroll: (scrollLeft: number) => void;
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   onColumnItemChanged: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
+  renderSelection: DripTableGeneratorProps<RecordType, ExtraOptions>['renderSelection'];
 }
 
 const VerticalAligns = {
@@ -59,7 +60,7 @@ const TableRowList = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableRowListProps<RecordType, ExtraOptions>) => {
-  const { currentTableID, currentColumnID, currentHoverColumnID } = React.useContext(GeneratorContext);
+  const { currentTableID, currentColumnID, currentHoverColumnID, previewDataSource } = React.useContext(GeneratorContext);
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
   const sortableColumns = filterArray(columnList, item => !item.column.fixed);
@@ -155,7 +156,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             bordered: !!props.tableConfig.configs.bordered,
           })}
         >
-          <Checkbox disabled />
+          {
+            props.renderSelection
+              ? (
+                <props.renderSelection
+                  record={previewDataSource[props.rowIndex] as RecordType}
+                  checked={false}
+                  disabled={false}
+                  onChange={() => false}
+                />
+              )
+              : <Checkbox disabled />
+          }
         </div>
         ) }
         { leftFixedColumns.length > 0
