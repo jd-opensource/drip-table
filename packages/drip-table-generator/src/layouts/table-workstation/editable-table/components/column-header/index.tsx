@@ -171,6 +171,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             bordered: !!props.tableConfig.configs.bordered,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
+            textAlign: props.column.align,
           })}
           style={{ ...columnStyle, width: formatNumber(props.column.width || 200) }}
           onClick={(e) => {
