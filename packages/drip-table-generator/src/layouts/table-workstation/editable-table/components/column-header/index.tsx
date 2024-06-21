@@ -171,9 +171,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             bordered: !!props.tableConfig.configs.bordered,
             'right-shadow': !!props.showRightShadow,
             'left-shadow': !!props.showLeftShadow,
-            textAlign: props.column.align,
           })}
-          style={{ ...columnStyle, width: formatNumber(props.column.width || 200) }}
+          style={{
+            ...columnStyle,
+            width: formatNumber(props.column.width || 200),
+            textAlign: props.column.align,
+          }}
           onClick={(e) => {
             e.stopPropagation();
             setState({
@@ -297,7 +300,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               ) }
             </TableConfigsContext.Consumer>
           ) }
-          <div style={{ width: columnRightCount > 0 ? columnTitleWidth : void 0, textAlign: props.column.align, display: 'inline-block' }}>
+          <div
+            style={{
+              width: columnRightCount > 0 ? columnTitleWidth : '100%',
+              textAlign: props.column.align,
+              display: 'inline-block',
+            }}
+          >
             <RichText
               className="jfe-drip-table-generator-workstation-table-header-column-title"
               html={columnTitle ?? ''}
