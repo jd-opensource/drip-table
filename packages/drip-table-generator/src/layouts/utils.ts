@@ -66,9 +66,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     columnConfig.attrSchema = columnConfig.attrSchema.filter(item => !(item.name.startsWith('titleStyle') || ['title', 'dataProcess', 'description'].includes(item.name)));
   }
   columnConfig?.attrSchema.forEach((schema) => {
-    const uiProps = schema['ui:props'];
+    let uiProps = schema['ui:props'];
     if (!uiProps) {
       return;
+    }
+    if (!Object.isExtensible(uiProps)) {
+      uiProps = { ...uiProps };
     }
     if (uiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
       uiProps.options = options.mockDataSource
@@ -80,9 +83,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     if (uiProps.items) {
       (uiProps.items as DTGComponentPropertySchema[])?.forEach((item, index) => {
-        const itemUiProps = item['ui:props'];
+        let itemUiProps = item['ui:props'];
         if (!itemUiProps) {
           return;
+        }
+        if (!Object.isExtensible(itemUiProps)) {
+          itemUiProps = { ...itemUiProps };
         }
         if (itemUiProps.optionsParam === '$$FIELD_KEY_OPTIONS$$') {
           itemUiProps.options = options.mockDataSource

@@ -28,6 +28,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   scrollTarget: string;
   scrollLeft: number;
   tableConfig: DTGTableConfig;
+  containerWidth: number;
   draggable: DripTableGeneratorProps<RecordType, ExtraOptions>['draggable'];
   dataSource?: DripTableGeneratorProps<RecordType, ExtraOptions>['dataSource'];
   columnTools?: DripTableGeneratorProps<RecordType, ExtraOptions>['columnTools'];
@@ -99,6 +100,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             dataSource={props.dataSource}
             onClick={props.onClick}
             renderHeaderCellFilter={props.renderHeaderCellFilter}
+            containerWidth={props.containerWidth}
           />
         ))
         : null }
@@ -133,6 +135,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               dataSource={props.dataSource}
               onClick={props.onClick}
               renderHeaderCellFilter={props.renderHeaderCellFilter}
+              containerWidth={props.containerWidth}
             />
           )) }
         </ReactSortable>
@@ -150,6 +153,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             dataSource={props.dataSource}
             onClick={props.onClick}
             renderHeaderCellFilter={props.renderHeaderCellFilter}
+            containerWidth={props.containerWidth}
           />
         ))
         : null }

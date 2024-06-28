@@ -29,6 +29,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >{
   tableConfig: DTGTableConfig;
   column: DTGTableConfig['columns'][number];
+  containerWidth: number;
   columnId?: string | number;
   showLeftShadow?: boolean;
   showRightShadow?: boolean;
@@ -82,6 +83,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     titleWidth += ')';
     return [count, titleWidth];
   }, [props.column]);
+
+  const columnWidth = React.useMemo(() => {
+    console.debug('header calc', props.containerWidth);
+    if (typeof props.column.width === 'string' && props.column.width.endsWith('%')) {
+      const rawColumnWidth = (Number(props.column.width.slice(0, -1)) * props.containerWidth) / 100;
+      return `${rawColumnWidth}px`;
+    }
+    return formatNumber(props.column.width || 200);
+  }, [props.column.width]);
 
   const menuItems: MenuProps['items'] = React.useMemo(() => [
     {
@@ -174,7 +184,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           })}
           style={{
             ...columnStyle,
-            width: formatNumber(props.column.width || 200),
+            width: columnWidth,
             textAlign: props.column.align,
           }}
           onClick={(e) => {
