@@ -19,7 +19,7 @@ import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import PaginationComponent from '../components/pagination';
-import TableContainer from '../components/table-container';
+import TableContainer, { TableContainerHandler } from '../components/table-container';
 import ColumnHeaderList from './components/header-list';
 import TableRowList from './components/row';
 
@@ -43,11 +43,16 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const [previewRecord, setPreviewRecord] = React.useState(void 0 as number | undefined);
   const [scrollLeft, setScrollLeft] = React.useState(0);
   const [scrollTarget, setScrollTarget] = React.useState('');
+  const containerRef = React.useRef<TableContainerHandler>(null);
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
       return props.tableConfig.configs.scroll?.y;
     }
     return '100%';
+  }, []);
+  const tableWidth = React.useMemo(() => {
+    const defaultWidth = props.tableConfig.columns.length * 200;
+    return containerRef.current?.getContainerWidth?.() || defaultWidth;
   }, []);
 
   const dataSourceToUse = React.useMemo(() => {
@@ -80,7 +85,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           dataSource: dataSourceToUse.map(item => item.record),
         };
         return (
-          <TableContainer tableTools={props.tableTools} tableConfig={props.tableConfig} onClick={props.onClick}>
+          <TableContainer tableTools={props.tableTools} tableConfig={props.tableConfig} onClick={props.onClick} ref={containerRef}>
             { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
             { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
               ? (
@@ -115,6 +120,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     onClick={props.onClick}
                     onColumnAdded={props.onColumnAdded}
                     renderHeaderCellFilter={props.renderHeaderCellFilter}
+                    containerWidth={tableWidth}
                   />
                 )
                 : null }
@@ -136,6 +142,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   onClick={props.onClick}
                   onColumnAdded={props.onColumnAdded}
                   renderHeaderCellFilter={props.renderHeaderCellFilter}
+                  containerWidth={tableWidth}
                 />
                 ) }
                 { previewDataSource.map((wrapRecord, rowIndex) => {
@@ -203,6 +210,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         onScroll={(left) => { setScrollLeft(left); }}
                         onClick={props.onClick}
                         onColumnItemChanged={props.onColumnItemChanged}
+                        containerWidth={tableWidth}
                       />
                       { (props.tableConfig.hasSubTable && hasSubTable)
                     && (

@@ -34,6 +34,10 @@ interface SubTableSettingProps {
   label: string;
 }
 
+export interface TableContainerHandler {
+  getContainerWidth?: () => number;
+}
+
 const SubTableSetting = (props: SubTableSettingProps) => {
   const context = React.useContext(GeneratorContext);
   const tableContext = React.useContext(TableConfigsContext);
@@ -102,96 +106,104 @@ const SubTableSetting = (props: SubTableSettingProps) => {
   );
 };
 
-const TableContainer = <
+const TableContainer = React.forwardRef(<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableContainerProps<RecordType, ExtraOptions>) => (
-  <GeneratorContext.Consumer>
-    { ({ currentTableID, drawerType, setState }) => (props.tableTools && props.tableTools.length === 0
-      ? (
-        <div className={classNames('jfe-drip-table-generator-table-container-wrapper', 'disabled')}>{ props.children }</div>
-      )
-      : (
-        <div
-          className={classNames('jfe-drip-table-generator-table-container-wrapper', {
-            checked: currentTableID === props.tableConfig.tableId,
-          })}
-          onClick={(e) => {
-            e.stopPropagation();
-            setState({
-              currentTableID: props.tableConfig.tableId,
-              currentColumnID: void 0,
-              currentComponentID: void 0,
-              currentComponentPath: [],
-              drawerType: drawerType === 'table' ? void 0 : 'table',
-            });
-            props.onClick?.('table', {
-              currentTableID: props.tableConfig.tableId,
-              tableConfig: props.tableConfig,
-            });
-          }}
-        >
-          { currentTableID === props.tableConfig.tableId && (
-          <div className="jfe-drip-table-generator-table-container-tools">
-            <span className="jfe-drip-table-generator-table-container-tool">
-              表格ID:
-              { ' ' }
-              { props.tableConfig.tableId }
-            </span>
-            <div className="jfe-drip-table-generator-table-container-tool" style={{ marginLeft: '2px', padding: '0 4px' }}>
-              { !props.tableTools || props.tableTools.includes('config')
-                ? (
-                  <Tooltip title="打开当前表格配置面板">
-                    <Button
-                      size="small"
-                      ghost
-                      className="jfe-drip-table-generator-table-container-inner-button"
-                      icon={<SettingOutlined />}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setState({
-                          currentTableID: props.tableConfig.tableId,
-                          drawerType: 'table',
-                        });
-                        props.onClick?.('table', {
-                          currentTableID: props.tableConfig.tableId,
-                          tableConfig: props.tableConfig,
-                        });
-                      }}
-                    >
-                      配置
-                    </Button>
-                  </Tooltip>
-                )
-                : null }
-              { !props.tableTools || props.tableTools.includes('subtable')
-                ? (
-                  <Dropdown
-                    placement="bottomRight"
-                    trigger={['click']}
-                    dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
-                  >
-                    <Tooltip title="添加字段用以配置子表格">
+>(props: TableContainerProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<TableContainerHandler>) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => ({
+    getContainerWidth: () => containerRef.current?.getBoundingClientRect().width ?? 0,
+  }));
+
+  return (
+    <GeneratorContext.Consumer>
+      { ({ currentTableID, drawerType, setState }) => (props.tableTools && props.tableTools.length === 0
+        ? (
+          <div ref={containerRef} className={classNames('jfe-drip-table-generator-table-container-wrapper', 'disabled')}>{ props.children }</div>
+        )
+        : (
+          <div
+            className={classNames('jfe-drip-table-generator-table-container-wrapper', {
+              checked: currentTableID === props.tableConfig.tableId,
+            })}
+            ref={containerRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              setState({
+                currentTableID: props.tableConfig.tableId,
+                currentColumnID: void 0,
+                currentComponentID: void 0,
+                currentComponentPath: [],
+                drawerType: drawerType === 'table' ? void 0 : 'table',
+              });
+              props.onClick?.('table', {
+                currentTableID: props.tableConfig.tableId,
+                tableConfig: props.tableConfig,
+              });
+            }}
+          >
+            { currentTableID === props.tableConfig.tableId && (
+            <div className="jfe-drip-table-generator-table-container-tools">
+              <span className="jfe-drip-table-generator-table-container-tool">
+                表格ID:
+                { ' ' }
+                { props.tableConfig.tableId }
+              </span>
+              <div className="jfe-drip-table-generator-table-container-tool" style={{ marginLeft: '2px', padding: '0 4px' }}>
+                { !props.tableTools || props.tableTools.includes('config')
+                  ? (
+                    <Tooltip title="打开当前表格配置面板">
                       <Button
                         size="small"
                         ghost
                         className="jfe-drip-table-generator-table-container-inner-button"
-                        icon={<PicLeftOutlined />}
-                        onClick={e => e.stopPropagation()}
+                        icon={<SettingOutlined />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setState({
+                            currentTableID: props.tableConfig.tableId,
+                            drawerType: 'table',
+                          });
+                          props.onClick?.('table', {
+                            currentTableID: props.tableConfig.tableId,
+                            tableConfig: props.tableConfig,
+                          });
+                        }}
                       >
-                        子表格
+                        配置
                       </Button>
                     </Tooltip>
-                  </Dropdown>
-                )
-                : null }
+                  )
+                  : null }
+                { !props.tableTools || props.tableTools.includes('subtable')
+                  ? (
+                    <Dropdown
+                      placement="bottomRight"
+                      trigger={['click']}
+                      dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
+                    >
+                      <Tooltip title="添加字段用以配置子表格">
+                        <Button
+                          size="small"
+                          ghost
+                          className="jfe-drip-table-generator-table-container-inner-button"
+                          icon={<PicLeftOutlined />}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          子表格
+                        </Button>
+                      </Tooltip>
+                    </Dropdown>
+                  )
+                  : null }
+              </div>
             </div>
+            ) }
+            { props.children }
           </div>
-          ) }
-          { props.children }
-        </div>
-      )) }
-  </GeneratorContext.Consumer>
+        )) }
+    </GeneratorContext.Consumer>
   );
+});
 
 export default TableContainer;

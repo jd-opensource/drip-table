@@ -31,6 +31,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   scrollLeft: number;
   tableConfig: DTGTableConfig;
   record: RecordType;
+  containerWidth: number;
   hasSubTable?: boolean;
   customComponents: DripTableProps<RecordType, ExtraOptions>['components'];
   customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
@@ -76,6 +77,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
   }, [props.scrollLeft, props.scrollTarget]);
 
+  const formatColumnWidth = (column: DripTableBuiltInColumnSchema) => {
+    if (typeof column.width === 'string' && column.width.endsWith('%')) {
+      const rawColumnWidth = (Number(column.width.slice(0, -1)) * props.containerWidth) / 100;
+      console.debug('row calc', props.containerWidth);
+      return `${rawColumnWidth}px`;
+    }
+    return formatNumber(column.width || 200);
+  };
+
   const renderTableCell = (column: DripTableBuiltInColumnSchema, index: number, extraOptions?: {
     showRightShadow?: boolean;
     showLeftShadow?: boolean;
@@ -96,7 +106,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         ...typeof column.style === 'object' ? column.style : {},
         justifyContent: column.align || 'center',
         alignItems: VerticalAligns[column.verticalAlign || 'middle'],
-        width: formatNumber(column.width || 200),
+        width: formatColumnWidth(column),
       }}
     >
       <TableCell
