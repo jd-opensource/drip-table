@@ -73,7 +73,13 @@ const HeaderCell = <
   return (
     <th
       {...wrapperProps}
-      className={classNames(wrapperProps?.className, { [`${prefixCls}-has-sorter`]: columnSchema.sorter })}
+      className={classNames(
+        wrapperProps?.className,
+        {
+          [`${prefixCls}-has-sorter`]: columnSchema.sorter,
+          [`${prefixCls}-sorted`]: tableState.sorter.key === columnSchema.key,
+        },
+      )}
       onClick={React.useCallback(() => {
         if (!columnSchema.sorter) {
           return;

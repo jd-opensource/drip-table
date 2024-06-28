@@ -168,7 +168,7 @@ const hookColumRender = <
     columnIndex: number,
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     rcTableInfo: RcTableInfo,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
+    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & Pick<IDripTableContext<RecordType, ExtraOptions>['state'], 'sorter'>,
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   const render = column.render;
   column.render = (d, row, index) => {
@@ -179,7 +179,7 @@ const hookColumRender = <
       <React.Fragment>
         { render?.(d, row, index) }
         {
-        columnSchema && (columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle)
+        columnSchema && ('sorter' in columnSchema || columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle)
           ? (
             <div
               style={{ display: 'none' }}
@@ -191,7 +191,13 @@ const hookColumRender = <
                   tdEl.dataset.tableUuid = tableInfo.uuid;
                   tdEl.dataset.columnKey = columnSchema.key;
                   tdEl.dataset.rowKey = row.key;
-                  tdEl.dataset.basicStyle = stringifyCSS(Object.assign({ 'text-align': columnSchema.align }, parseStyleSchema(columnSchema.style)));
+                  tdEl.dataset.basicStyle = stringifyCSS(Object.assign(
+                    {
+                      'text-align': columnSchema.align,
+                      background: extraProps.sorter?.key === columnSchema.key ? '#fafafa' : void 0,
+                    },
+                    parseStyleSchema(columnSchema.style),
+                  ));
                   tdEl.dataset.hoverStyle = stringifyCSS(parseStyleSchema(columnSchema.hoverStyle));
                   tdEl.dataset.rowHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.rowHoverStyle));
                   tdEl.dataset.columnHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.columnHoverStyle));
@@ -1227,6 +1233,7 @@ const TableLayout = <
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
+        sorter: tableState.sorter,
       };
       const visibleColumns = childrenLike.filterRecursive(
         tableProps.schema.columns,
@@ -1457,6 +1464,7 @@ const TableLayout = <
       tableInfo.schema.rowSlotKey,
       tableProps.schema.rowHeader,
       tableProps.schema.rowFooter,
+      tableState.sorter,
     ],
   );
 
