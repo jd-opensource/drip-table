@@ -126,12 +126,11 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
   }
   if (schemaItem.component === 'text' && schemaItem.options.parts) {
     const parts = (schemaItem.options.parts as Record<string, unknown>[] || []).map((partItem) => {
-      if (partItem.dataIndexMode) {
-        delete partItem.dataIndexMode;
+      const newPartItem = Object.assign({}, partItem);
+      if (newPartItem.dataIndexMode) {
+        delete newPartItem.dataIndexMode;
       }
-      return {
-        ...partItem,
-      };
+      return newPartItem;
     });
     schemaItem.options = { ...schemaItem.options, parts };
   }
@@ -140,13 +139,13 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
 
 export const getSchemaValue = <ExtraOptions extends Partial<DripTableExtraOptions> = never>(tableConfigs: DTGTableConfig[]) => {
   const globalConfigs = { ...filterAttributes(tableConfigs[0].configs, 'dataSourceKey') };
-  const globalColumns = getColumns(tableConfigs[0].columns);
+  const globalColumns = getColumns([...tableConfigs[0].columns]);
   let subtable;
   if (tableConfigs.length > 0) {
     for (let i = tableConfigs.length - 1; i > 0; i--) {
       subtable = {
         ...tableConfigs[i].configs,
-        columns: getColumns(tableConfigs[i].columns),
+        columns: getColumns([...tableConfigs[i].columns]),
         subtable,
         id: tableConfigs[i].tableId,
         dataSourceKey: tableConfigs[i].dataSourceKey,
