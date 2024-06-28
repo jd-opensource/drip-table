@@ -126,7 +126,9 @@ const getColumns = (columns: DTGTableConfig['columns']) => columns.map((item) =>
   }
   if (schemaItem.component === 'text' && schemaItem.options.parts) {
     const parts = (schemaItem.options.parts as Record<string, unknown>[] || []).map((partItem) => {
-      delete partItem.dataIndexMode;
+      if (partItem.dataIndexMode) {
+        delete partItem.dataIndexMode;
+      }
       return {
         ...partItem,
       };
