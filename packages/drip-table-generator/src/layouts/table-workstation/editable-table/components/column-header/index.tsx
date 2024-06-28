@@ -85,7 +85,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }, [props.column]);
 
   const columnWidth = React.useMemo(() => {
-    console.debug('header calc', props.containerWidth);
     if (typeof props.column.width === 'string' && props.column.width.endsWith('%')) {
       const rawColumnWidth = (Number(props.column.width.slice(0, -1)) * props.containerWidth) / 100;
       return `${rawColumnWidth}px`;

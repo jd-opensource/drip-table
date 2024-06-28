@@ -80,7 +80,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   const formatColumnWidth = (column: DripTableBuiltInColumnSchema) => {
     if (typeof column.width === 'string' && column.width.endsWith('%')) {
       const rawColumnWidth = (Number(column.width.slice(0, -1)) * props.containerWidth) / 100;
-      console.debug('row calc', props.containerWidth);
       return `${rawColumnWidth}px`;
     }
     return formatNumber(column.width || 200);
