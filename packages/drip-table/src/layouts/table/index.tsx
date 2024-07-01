@@ -194,7 +194,7 @@ const hookColumRender = <
                   tdEl.dataset.basicStyle = stringifyCSS(Object.assign(
                     {
                       'text-align': columnSchema.align,
-                      background: extraProps.sorter?.key === columnSchema.key ? '#fafafa' : void 0,
+                      background: extraProps.sorter?.key === columnSchema.key ? 'var(--drip-table-column-sorted-background-color, inherit)' : void 0,
                     },
                     parseStyleSchema(columnSchema.style),
                   ));

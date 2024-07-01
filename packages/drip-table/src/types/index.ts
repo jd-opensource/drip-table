@@ -211,6 +211,9 @@ export interface DripTableSchema<
     textColor?: string;
     borderColor?: string;
     backgroundColor?: string;
+    columnHeaderHoverBackgroundColor?: string;
+    columnHeaderSortedBackgroundColor?: string;
+    columnSortedBackgroundColor?: string;
   };
   /**
    * 自定义表格类名
