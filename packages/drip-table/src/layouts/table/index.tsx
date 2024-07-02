@@ -47,7 +47,7 @@ import DripTableWrapper from '@/wrapper';
 import { type TableLayoutComponentProps } from '../types';
 import HeaderCell, { type HeaderCellAdditionalProps } from './components/header-cell';
 import { type DripTableColumnRenderOptions } from './types';
-import { finalizeColumnTitle } from './utils';
+import { finalizeColumnTitle, finalizeColumnWidth } from './utils';
 
 const prefixCls = 'jfe-drip-table-layout-table';
 
@@ -1473,7 +1473,7 @@ const TableLayout = <
       // 树形结构转为拍平结构方便计算
       const flattenRcTableColumnsRAW = childrenLike.flattenRecursive(rcTableColumnsRAW);
       // 计算用户固定宽度列宽
-      const userColumnsWidth = flattenRcTableColumnsRAW.map(c => ('width' in c ? parseNumber(c.width, 0) : 0));
+      const userColumnsWidth = flattenRcTableColumnsRAW.map(c => ('width' in c ? finalizeColumnWidth(c.width, 0, rcTableWidth) : 0));
       const restWidth = Math.max(rcTableWidth - userColumnsWidth.reduce((v, w) => v + w, 0) - rowExpandColumnWidth, 0);
       const flexibleCount = userColumnsWidth.filter(w => w === 0).length;
       // 将剩余宽度分配给未固定列宽的列，全部固定列宽时将平均分配剩余宽度
