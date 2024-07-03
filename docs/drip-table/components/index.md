@@ -187,6 +187,20 @@ toc: false
       </div>
     </div>
   </a>
+  <a href="/drip-table/components/checkbox">
+    <div class="card-container">
+      <div class="card-head">
+        <div class="card-head-title">
+          <div class="components-overview-title">多选框 checkbox</div>
+        </div>
+      </div>
+      <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
+        <div class="components-overview-img">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/zNdJQMhfm/Checkbox.svg" alt="checkbox">
+        </div>
+      </div>
+    </div>
+  </a>
   <a href="/drip-table/components/icon">
     <div class="card-container">
       <div class="card-head">
