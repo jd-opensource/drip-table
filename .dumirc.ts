@@ -59,6 +59,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '网页 PopUpPage', link: '/drip-table/components/pop-up-page' },
           { title: '数字 InputNumber', link: '/drip-table/components/input-number' },
           { title: '开关 Switch', link: '/drip-table/components/switch' },
+          { title: '多选框 Checkbox', link: '/drip-table/components/checkbox' },
           { title: '图标 Icon', link: '/drip-table/components/icon' },
           { title: '组合 Group', link: '/drip-table/components/group' },
           { title: '浮窗 Popover', link: '/drip-table/components/popover' },

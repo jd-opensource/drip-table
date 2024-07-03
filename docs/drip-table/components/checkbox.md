@@ -1,11 +1,11 @@
 ---
-title: 开关组件 Switch
+title: 多选框组件 Checkbox
 toc: content
 ---
 
-## 开关组件 switch
+## 多选框组件 Checkbox
 
-开关组件
+多选框组件
 
 ## 代码演示
 
@@ -22,7 +22,7 @@ import DripTable from "drip-table";
 const dataSource = [
   {
     id: 1,
-    name: "商品一",
+    name: "未选中",
     price: 7999,
     soldOut: false,
     status: "onSale",
@@ -33,10 +33,11 @@ const dataSource = [
   },
   {
     id: 2,
-    name: "商品二",
+    name: "默认选中",
     price: 7999,
     soldOut: true,
     status: "offSale",
+    checked: true,
     description:
       "商品是为了出售而生产的劳动成果，是人类社会生产力发展到一定历史阶段的产物，是用于交换的劳动产品。",
     pictureUrl:
@@ -60,26 +61,27 @@ const Demo = () => {
       },
       {
         key: "mock_2",
-        title: "是否售罄",
+        title: "组件展示",
         align: "center",
         hidable: true,
         dataIndex: "soldOut",
-        component: "switch",
+        component: "checkbox",
         options: {
           event: "sold-out",
-          bindValue: false,
+          bindValue: true,
         },
       },
       {
         key: "mock_3",
-        title: "是否售罄（绑定数据）",
+        title: "组件disable状态",
         align: "center",
         hidable: true,
         dataIndex: "soldOut",
-        component: "switch",
+        component: "checkbox",
+        disable: true,
         options: {
+          defaultChecked: true,
           event: "sold-out",
-          bindValue: true,
         },
       },
     ],
@@ -94,7 +96,7 @@ const Demo = () => {
         dataSource={ds}
         onEvent={(event, tableInfo) => {
           const { record, recordIndex } = event;
-          if (event.type === "drip-switch-change") {
+          if (event.type === "drip-checkbox-change") {
             const name = event.payload.name;
             const value = event.payload.value;
             if (name == "sold-out") {
@@ -122,5 +124,5 @@ export default Demo;
 | 参数名      | 描述                                                                             | 类型                                                                          | 是否必填 | 默认值                    | 详情 |
 | ----------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------- | ------------------------- | ---- |
 | style       | 自定义样式                                                                       | React.CSSProperties                                                           | 否       | 无                        | --   |
-| bindValue   | 值回显强制与数据绑定，默认为 true                                                | boolean                                                                       | 否       | true                      | --   |
-| event       | 事件名，点击时触发，通过属性 `onEvent` 接收事件，事件类型为 `drip-switch-change` | string                                                                        | 否       | 无                        | --   |
+| checked   | 指定当前是否选中，默认为 false                                                | boolean                                                                       | 否       | true                      | --   |
+| defaultChecked       | 初始是否选中, 默认为 false | string                                                                        | 否       | 无                        | --   |
