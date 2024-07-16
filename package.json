@@ -47,8 +47,6 @@
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
-    "ajv": "^8.11.2",
-    "ajv-keywords": "^5.1.0",
     "antd": "4.24.8",
     "autoprefixer": "^10.4.13",
     "babel-plugin-import": "^1.13.5",
@@ -118,8 +116,10 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
+    "ajv": "8.11.2",
+    "ajv-keywords": "5.1.0",
     "rc-trigger": "5.3.4",
-    "react-compare-image": "^3.3.0",
-    "typewriter-effect": "^2.19.0"
+    "react-compare-image": "3.3.0",
+    "typewriter-effect": "2.19.0"
   }
 }
