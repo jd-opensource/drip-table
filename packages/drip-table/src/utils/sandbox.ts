@@ -33,8 +33,10 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
     ? executorCache.get(key)
     : void 0;
   if (!executor) {
-    executor = new Function(...contextKeys, script);
-    executorCache.set(key, executor);
+    // 包裹二阶函数，用于兼容微前端
+    script = `return function(${contextKeys.join(', ')}) { ${script} }`;
+    executor = new Function('window', script)(window);
+    if (executor) { executorCache.set(key, executor); }
   }
   resetExecutorGC();
   return executor;
@@ -48,7 +50,7 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
  * @returns 代码段返回结果
  * @throws Error 代码执行异常
  */
-export const execute = (script: string, context: Record<string, unknown> = {}) => createExecutor(script, Object.keys(context))(...Object.values(context));
+export const execute = (script: string, context: Record<string, unknown> = {}) => createExecutor(script, Object.keys(context))?.(...Object.values(context));
 
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误

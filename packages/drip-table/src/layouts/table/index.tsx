@@ -259,7 +259,7 @@ export const columnRenderGenerator = <
           const translate = createExecutor(translatorSchema, ['props']);
           return (v, c) => {
             try {
-              return translate(c);
+              return translate?.(c);
             } catch {}
             return void 0;
           };
@@ -1138,7 +1138,7 @@ const TableLayout = <
       for (const [rowIndex, record] of pageDataSource.entries()) {
         for (const [columnIndex, columnSchema] of flattenColumns.entries()) {
           const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
-          const cc = generator(context) as { rowSpan?: number; colSpan?: number } | undefined;
+          const cc = generator?.(context) as { rowSpan?: number; colSpan?: number } | undefined;
           if (cc && (cc.rowSpan !== void 0 || cc.colSpan !== void 0)) {
             setCellConfig(rti, rowIndex, columnIndex, {
               data: {
