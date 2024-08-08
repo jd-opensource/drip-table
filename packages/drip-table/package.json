@@ -10,7 +10,7 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./lib/index.js",
+      "import": "./es/index.js",
       "types": "./lib/index.d.ts"
     },
     "./dist/index.css": "./dist/index.min.css",
