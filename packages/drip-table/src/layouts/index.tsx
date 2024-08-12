@@ -26,10 +26,10 @@ import CalendarLayout from './calendar';
 import CardLayout from './card';
 import TableLayout from './table';
 
-const DripTableLayout = <
+function DripTableLayout<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(): JSX.Element => {
+>(): JSX.Element {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   React.useEffect(() => {
@@ -146,6 +146,6 @@ const DripTableLayout = <
       </Spin>
     </ErrorBoundary>
   );
-};
+}
 
 export default DripTableLayout;

@@ -272,7 +272,7 @@ export const columnRenderGenerator = <
     const disableTranslator = generatePropsTranslator(columnSchema.disable);
     const editableTranslator = generatePropsTranslator(columnSchema.editable);
     if (BuiltInComponent) {
-      return (_, row) => {
+      return function BuiltInComponentIns(_, row) {
         const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
         const record = row.record;
         const recordIndex = row.index;
@@ -317,7 +317,7 @@ export const columnRenderGenerator = <
     if (libName && componentName) {
       const ExtraComponent = extraProps.components?.[libName]?.[componentName];
       if (ExtraComponent) {
-        return (_, row) => {
+        return function ExtraComponentIns(_, row) {
           const rawValue = indexValue(row.record, columnSchema.dataIndex, columnSchema.defaultValue);
           const record = row.record;
           const recordIndex = row.index;
@@ -356,7 +356,9 @@ export const columnRenderGenerator = <
       }
     }
   }
-  return () => extraProps.unknownComponent ?? <div className="ajv-error">{ `Unknown column component: ${columnSchema.component}` }</div>;
+  return function UnknownComponentIns() {
+    return extraProps.unknownComponent ?? <div className="ajv-error">{ `Unknown column component: ${columnSchema.component}` }</div>;
+  };
 };
 
 /**
@@ -875,10 +877,18 @@ const removeCellConfigColumn = (rcTableInfo: RcTableInfo, targetColumnIndex: num
   }
 };
 
-const TableLayout = <
+function RcHeaderCell({ children, additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) {
+  return (
+    <HeaderCell wrapperProps={wrapperProps} additionalProps={additionalProps}>
+      { children }
+    </HeaderCell>
+  );
+}
+
+function TableLayout<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableLayoutComponentProps): JSX.Element => {
+>(props: TableLayoutComponentProps): JSX.Element {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const tableUUID = tableInfo.uuid;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
@@ -1642,11 +1652,7 @@ const TableLayout = <
 
   const rcTableComponents: React.ComponentProps<typeof RcTable>['components'] = React.useMemo(() => ({
     header: {
-      cell: ({ children, additionalProps, ...wrapperProps }: { children: React.ReactNode; additionalProps?: HeaderCellAdditionalProps }) => (
-        <HeaderCell wrapperProps={wrapperProps} additionalProps={additionalProps}>
-          { children }
-        </HeaderCell>
-      ),
+      cell: RcHeaderCell,
     },
     body: tableInfo.schema.virtual
       ? (rawData, { scrollbarSize, onScroll }) => (
@@ -1690,126 +1696,137 @@ const TableLayout = <
     tableState.filters,
   ]);
 
+  const RcExpandIcon = React.useCallback(({ expandable, expanded, record: row, onExpand }: Parameters<NonNullable<NonNullable<RcTableProps<RcTableRecordType<RecordType>>['expandable']>['expandIcon']>>[0]) => {
+    if (!expandable) {
+      return null;
+    }
+    return (
+      <div className={`${prefixCls}-row-expand-icon-wrapper`}>
+        <button
+          type="button"
+          className={classNames(
+            `${prefixCls}-row-expand-icon`,
+            expanded ? `${prefixCls}-row-expand-icon-expanded` : `${prefixCls}-row-expand-icon-collapsed`,
+          )}
+          aria-label={expanded ? '关闭行' : '展开行'}
+          onClick={(e) => {
+            if (expanded) {
+              tableProps.onRowCollapse?.(row.record, row.index, tableInfo);
+            } else {
+              tableProps.onRowExpand?.(row.record, row.index, tableInfo);
+            }
+            onExpand(row, e);
+          }}
+        />
+      </div>
+    );
+  }, [tableProps, tableInfo]);
+
+  const RcExpandRowRender = React.useCallback((row: Parameters<NonNullable<NonNullable<RcTableProps<RcTableRecordType<RecordType>>['expandable']>['expandedRowRender']>>[0]) => {
+    const parentTableInfo: typeof tableInfo = { ...tableInfo, record: row.record };
+    const subtable = tableProps.schema.subtable;
+    const expandedRowRender = tableProps.expandedRowRender;
+    let subtableEl: React.ReactNode = null;
+    if (subtable && Array.isArray(row.record[subtable.dataSourceKey])) {
+      const subtableProps = Object.assign(
+        {},
+        DEFAULT_SUBTABLE_PROPS,
+        tableProps.subtableProps
+          ? Object.assign(
+            {},
+            ...[
+              ...tableProps.subtableProps.filter(sp => sp.default) || [],
+              ...subtable ? tableProps.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
+              ...tableProps.subtableProps.filter(
+                sp => sp.recordKeys
+            && sp.recordKeys.length === 1
+            && sp.recordKeys[0] === row.record[rowKey],
+              ) || [],
+            ].map(sp => sp.properties),
+          )
+          : void 0,
+      );
+      const subtableSchema = Object.fromEntries(
+        Object.entries(subtable)
+          .filter(([key]) => key !== 'dataSourceKey'),
+      ) as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
+      if (tableProps.schema.theme) {
+        subtableSchema.theme = {
+          ...tableProps.schema.theme,
+          ...subtableSchema.theme,
+        };
+      }
+      subtableEl = (
+        <DripTableWrapper<RecordType, ExtraOptions>
+          {...tableProps}
+          {...subtableProps}
+          schema={subtableSchema}
+          dataSource={row.record[subtable.dataSourceKey] as RecordType[]}
+          title={
+            tableProps.subtableTitle
+              ? subtableData => tableProps.subtableTitle?.(
+                row.record,
+                row.index,
+                { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+              )
+              : void 0
+          }
+          footer={
+            tableProps.subtableFooter
+              ? subtableData => tableProps.subtableFooter?.(
+                row.record,
+                row.index,
+                { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
+              )
+              : void 0
+          }
+          subtableProps={
+            tableProps.subtableProps
+              ?.map((sp) => {
+                if (sp.recordKeys) {
+                  const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === row.record[rowKey]
+                    ? [...sp.recordKeys]
+                    : [];
+                  recordKeys.shift();
+                  return {
+                    ...sp,
+                    recordKeys,
+                  };
+                }
+                return sp;
+              })
+              .filter(sp => sp.recordKeys?.length !== 0)
+          }
+          __PARENT_INFO__={{
+            parent: tableProps.__PARENT_INFO__,
+            schema: tableProps.schema,
+            dataSource: tableProps.dataSource || [],
+          }}
+        />
+      );
+    }
+    return (
+      <React.Fragment>
+        { subtableEl }
+        { expandedRowRender?.(row.record, row.index, parentTableInfo) }
+      </React.Fragment>
+    );
+  }, [
+    tableProps,
+    tableInfo,
+    tableProps.schema.subtable,
+    tableProps.expandedRowRender,
+    tableProps.subtableProps,
+  ]);
+
   const rcTableExpandable: RcTableProps<RcTableRecordType<RecordType>>['expandable'] = React.useMemo(
     () => {
       const subtable = tableProps.schema.subtable;
-      const expandedRowRender = tableProps.expandedRowRender;
       const rowExpandable = tableProps.rowExpandable;
       if (rowExpandColumnVisible) {
         return {
-          expandIcon: ({ expandable, expanded, record: row, onExpand }) => {
-            if (!expandable) {
-              return null;
-            }
-            return (
-              <div className={`${prefixCls}-row-expand-icon-wrapper`}>
-                <button
-                  type="button"
-                  className={classNames(
-                    `${prefixCls}-row-expand-icon`,
-                    expanded ? `${prefixCls}-row-expand-icon-expanded` : `${prefixCls}-row-expand-icon-collapsed`,
-                  )}
-                  aria-label={expanded ? '关闭行' : '展开行'}
-                  onClick={(e) => {
-                    if (expanded) {
-                      tableProps.onRowCollapse?.(row.record, row.index, tableInfo);
-                    } else {
-                      tableProps.onRowExpand?.(row.record, row.index, tableInfo);
-                    }
-                    onExpand(row, e);
-                  }}
-                />
-              </div>
-            );
-          },
-          expandedRowRender: (row) => {
-            const parentTableInfo: typeof tableInfo = { ...tableInfo, record: row.record };
-            let subtableEl: React.ReactNode = null;
-            if (subtable && Array.isArray(row.record[subtable.dataSourceKey])) {
-              const subtableProps = Object.assign(
-                {},
-                DEFAULT_SUBTABLE_PROPS,
-                tableProps.subtableProps
-                  ? Object.assign(
-                    {},
-                    ...[
-                      ...tableProps.subtableProps.filter(sp => sp.default) || [],
-                      ...subtable ? tableProps.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
-                      ...tableProps.subtableProps.filter(
-                        sp => sp.recordKeys
-                    && sp.recordKeys.length === 1
-                    && sp.recordKeys[0] === row.record[rowKey],
-                      ) || [],
-                    ].map(sp => sp.properties),
-                  )
-                  : void 0,
-              );
-              const subtableSchema = Object.fromEntries(
-                Object.entries(subtable)
-                  .filter(([key]) => key !== 'dataSourceKey'),
-              ) as DripTableSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>;
-              if (tableProps.schema.theme) {
-                subtableSchema.theme = {
-                  ...tableProps.schema.theme,
-                  ...subtableSchema.theme,
-                };
-              }
-              subtableEl = (
-                <DripTableWrapper<RecordType, ExtraOptions>
-                  {...tableProps}
-                  {...subtableProps}
-                  schema={subtableSchema}
-                  dataSource={row.record[subtable.dataSourceKey] as RecordType[]}
-                  title={
-                    tableProps.subtableTitle
-                      ? subtableData => tableProps.subtableTitle?.(
-                        row.record,
-                        row.index,
-                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                      )
-                      : void 0
-                  }
-                  footer={
-                    tableProps.subtableFooter
-                      ? subtableData => tableProps.subtableFooter?.(
-                        row.record,
-                        row.index,
-                        { uuid: tableUUID, schema: subtableSchema, dataSource: subtableData, parent: parentTableInfo },
-                      )
-                      : void 0
-                  }
-                  subtableProps={
-                    tableProps.subtableProps
-                      ?.map((sp) => {
-                        if (sp.recordKeys) {
-                          const recordKeys = tableInfo.schema.rowKey && sp.recordKeys[0] === row.record[rowKey]
-                            ? [...sp.recordKeys]
-                            : [];
-                          recordKeys.shift();
-                          return {
-                            ...sp,
-                            recordKeys,
-                          };
-                        }
-                        return sp;
-                      })
-                      .filter(sp => sp.recordKeys?.length !== 0)
-                  }
-                  __PARENT_INFO__={{
-                    parent: tableProps.__PARENT_INFO__,
-                    schema: tableProps.schema,
-                    dataSource: tableProps.dataSource || [],
-                  }}
-                />
-              );
-            }
-            return (
-              <React.Fragment>
-                { subtableEl }
-                { expandedRowRender?.(row.record, row.index, parentTableInfo) }
-              </React.Fragment>
-            );
-          },
+          expandIcon: RcExpandIcon,
+          expandedRowRender: RcExpandRowRender,
           rowExpandable: (row) => {
             if (rowExpandable?.(row.record, row.index, { ...tableInfo, record: row.record })) {
               return true;
@@ -1826,7 +1843,22 @@ const TableLayout = <
       }
       return void 0;
     },
-    [tableProps.schema.subtable, tableProps.expandedRowRender, tableProps.rowExpandable],
+    [
+      tableProps.schema.subtable,
+      tableProps.rowExpandable,
+      RcExpandIcon,
+      RcExpandRowRender,
+    ],
+  );
+
+  const RcEmptyText = React.useCallback(
+    () => {
+      if (tableProps.emptyText) {
+        return tableProps.emptyText(tableInfo);
+      }
+      return <RichText style={{ textAlign: 'center' }} html={tableProps.schema.emptyText ?? 'No Data'} />;
+    },
+    [tableProps.emptyText, tableProps.schema.emptyText],
   );
 
   return (
@@ -1887,17 +1919,7 @@ const TableLayout = <
               )
             }
             expandable={rcTableExpandable}
-            emptyText={
-              React.useMemo(
-                () => {
-                  if (tableProps.emptyText) {
-                    return tableProps.emptyText(tableInfo);
-                  }
-                  return <RichText style={{ textAlign: 'center' }} html={tableProps.schema.emptyText ?? 'No Data'} />;
-                },
-                [tableProps.emptyText, tableProps.schema.emptyText],
-              )
-            }
+            emptyText={RcEmptyText}
             onRow={(row, index) => ({
               onClick: () => tableProps.onRowClick?.(row.record, row.index ?? index, tableInfo),
               onDoubleClick: () => tableProps.onRowDoubleClick?.(row.record, row.index ?? index, tableInfo),
@@ -1909,6 +1931,6 @@ const TableLayout = <
       { paginationPosition === 'bottom' ? renderPagination : void 0 }
     </React.Fragment>
   );
-};
+}
 
 export default TableLayout;

@@ -10,6 +10,7 @@ const importResolverExtensions = [
 ];
 
 const javascriptRules = {
+  'no-restricted-exports': 'off',
   'etc/no-internal': [
     'error',
     {

@@ -23,7 +23,7 @@ export interface HeaderCellSorterProps {
   setSorter: (sorter: Omit<IDripTableContext['state']['sorter'], 'comparer'>) => void;
 }
 
-const HeaderCellSorter = (props: HeaderCellSorterProps) => {
+function HeaderCellSorter(props: HeaderCellSorterProps) {
   const { sorter, columnSchema } = props;
   return (
     <span
@@ -91,6 +91,6 @@ const HeaderCellSorter = (props: HeaderCellSorterProps) => {
       </span>
     </span>
   );
-};
+}
 
 export default HeaderCellSorter;

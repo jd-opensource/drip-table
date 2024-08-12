@@ -100,7 +100,7 @@ export const preventEvent = (e: React.BaseSyntheticEvent) => {
  * @param dataProcess 数据处理的语句
  * @returns 值
  */
-export const dataProcessIndex = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess?: string) => {
+export const dataProcessIndex = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess: string | undefined = void 0) => {
   const value = indexValue(data, indexes, defaultValue);
   if (dataProcess) {
     try {

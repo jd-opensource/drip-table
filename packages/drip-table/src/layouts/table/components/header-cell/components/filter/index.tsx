@@ -25,7 +25,7 @@ export interface HeaderCellFilterProps {
   setFilter: (filter: IDripTableContext['state']['filters'][string]) => void;
 }
 
-const HeaderCellFilter = (props: HeaderCellFilterProps) => {
+function HeaderCellFilter(props: HeaderCellFilterProps) {
   const { filter, columnSchema } = props;
   const [filterDisplay, setFilterDisplay] = React.useState<NonNullable<HeaderCellFilterProps['filter']>>(props.filter || []);
   return (
@@ -100,6 +100,6 @@ const HeaderCellFilter = (props: HeaderCellFilterProps) => {
       </div>
     </Tooltip>
   );
-};
+}
 
 export default HeaderCellFilter;

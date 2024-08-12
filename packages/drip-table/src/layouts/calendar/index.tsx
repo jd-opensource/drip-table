@@ -19,10 +19,10 @@ import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_
 import { finalizeColumnTitle } from '../table/utils';
 import { TableLayoutComponentProps } from '../types';
 
-const CalendarLayout = <
+function CalendarLayout<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableLayoutComponentProps): JSX.Element => {
+>(props: TableLayoutComponentProps): JSX.Element {
   const { props: tableProps, info: tableInfo, state: tableState } = useTableContext<RecordType, ExtraOptions>();
   const dataSource = tableProps.dataSource;
 
@@ -68,6 +68,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       />
     </div>
   );
-};
+}
 
 export default CalendarLayout;

@@ -268,10 +268,10 @@ const renderPlusOutlined = () => (
   </span>
 );
 
-const SlotRender = <
+function SlotRender<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: SlotRenderProps<RecordType, ExtraOptions>) => {
+>(props: SlotRenderProps<RecordType, ExtraOptions>) {
   const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
 
   const [displayColumnVisible, setDisplayColumnVisible] = React.useState(false);
@@ -479,6 +479,6 @@ const SlotRender = <
     );
   }
   return null;
-};
+}
 
 export default SlotRender;

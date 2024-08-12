@@ -40,14 +40,14 @@ export interface HeaderCellProps<
   additionalProps?: HeaderCellAdditionalProps<ExtraOptions>;
 }
 
-const HeaderCell = <
+function HeaderCell<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: HeaderCellProps<ExtraOptions>) => {
+>(props: HeaderCellProps<ExtraOptions>) {
   const { props: tableProps, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
   const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
   const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
-  const children = <React.Fragment>{ props.children }</React.Fragment>;
+  const children = props.children;
   const wrapperProps = props.wrapperProps;
   const additionalProps = props.additionalProps;
   if (!additionalProps) {
@@ -198,6 +198,6 @@ const HeaderCell = <
       </div>
     </th>
   );
-};
+}
 
 export default HeaderCell;

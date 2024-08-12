@@ -19,18 +19,20 @@ export interface SpinProps {
 
 const prefixCls = 'jfe-drip-table-rc-spin';
 
-const Indicator = () => (
-  <div>
-    <div className={classNames(prefixCls, `${prefixCls}-spinning`)}>
-      <span className={classNames(`${prefixCls}-dot`, `${prefixCls}-dot-spin`)}>
-        <i className={`${prefixCls}-dot-item`} />
-        <i className={`${prefixCls}-dot-item`} />
-        <i className={`${prefixCls}-dot-item`} />
-        <i className={`${prefixCls}-dot-item`} />
-      </span>
+function Indicator() {
+  return (
+    <div>
+      <div className={classNames(prefixCls, `${prefixCls}-spinning`)}>
+        <span className={classNames(`${prefixCls}-dot`, `${prefixCls}-dot-spin`)}>
+          <i className={`${prefixCls}-dot-item`} />
+          <i className={`${prefixCls}-dot-item`} />
+          <i className={`${prefixCls}-dot-item`} />
+          <i className={`${prefixCls}-dot-item`} />
+        </span>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 const Spin = React.memo(({ ...props }: SpinProps) => (
   <div className={`${prefixCls}-nested-loading`}>

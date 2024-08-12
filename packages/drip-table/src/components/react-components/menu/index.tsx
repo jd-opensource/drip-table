@@ -22,14 +22,12 @@ export interface MenuItemProps extends React.ComponentProps<typeof RcMenu['Item'
 const MenuItem = React.memo((props: MenuItemProps) => {
   const context = React.useContext(MenuContext);
   return (
-    <React.Fragment>
-      <RcMenu.Item {...props}>
-        <span className={`${context.prefixCls}-item-icon`}>
-          { props.icon }
-        </span>
-        <span className={`${context.prefixCls}-title-content`}>{ props.children }</span>
-      </RcMenu.Item>
-    </React.Fragment>
+    <RcMenu.Item {...props}>
+      <span className={`${context.prefixCls}-item-icon`}>
+        { props.icon }
+      </span>
+      <span className={`${context.prefixCls}-title-content`}>{ props.children }</span>
+    </RcMenu.Item>
   );
 });
 

@@ -18,9 +18,9 @@ export interface OverrideContextValue {
 
 const OverrideContext = React.createContext<OverrideContextValue | null>(null);
 
-export const OverrideProvider: React.FC<OverrideContextValue & { children: React.ReactNode }> = (
-  props,
-) => {
+export function OverrideProvider(
+  props: Parameters<React.FC<OverrideContextValue & { children: React.ReactNode }>>[0],
+) {
   const { children, ...restProps } = props;
   const override = React.useContext(OverrideContext);
 
@@ -36,6 +36,6 @@ export const OverrideProvider: React.FC<OverrideContextValue & { children: React
   );
 
   return <OverrideContext.Provider value={context}>{ children }</OverrideContext.Provider>;
-};
+}
 
 export default OverrideContext;

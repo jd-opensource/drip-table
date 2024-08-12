@@ -19,7 +19,7 @@ export const finalizeColumnTitle = (columnSchema: DripTableBaseColumnSchema): st
   return columnSchema.title?.body?.content;
 };
 
-export const finalizeColumnWidth = (value: string | number | undefined, defaultValue: number = 0, tableWidth: number): number => {
+export const finalizeColumnWidth = (value: string | number | undefined, defaultValue: number, tableWidth: number): number => {
   if (typeof value === 'string' && value.endsWith('%')) {
     const columnWidthPercent = Number.parseFloat(value.slice(0, -1));
     const columnWidth = Number.isNaN(columnWidthPercent) ? defaultValue : (tableWidth * columnWidthPercent) / 100;
