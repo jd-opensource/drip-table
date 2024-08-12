@@ -48,10 +48,10 @@ interface TableCellProps<
   onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
 }
 
-const TableCell = <
+function TableCell<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableCellProps<RecordType, ExtraOptions>) => {
+>(props: TableCellProps<RecordType, ExtraOptions>) {
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
     <TableConfigsContext.Consumer>
@@ -127,6 +127,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default TableCell;

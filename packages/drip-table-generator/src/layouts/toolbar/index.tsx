@@ -39,7 +39,7 @@ function generateDropdownProps(props: {
   };
 }
 
-const ModeSwitch = (props: { style?: React.CSSProperties; disabled?: boolean }) => {
+function ModeSwitch(props: { style?: React.CSSProperties; disabled?: boolean }) {
   const { tableConfigs } = React.useContext(TableConfigsContext);
   const hasNullItem = (configs: DTGTableConfig[]) => {
     const hasNullColumn = (columns: (DripTableColumnSchema | null)[]): boolean => {
@@ -79,12 +79,12 @@ const ModeSwitch = (props: { style?: React.CSSProperties; disabled?: boolean }) 
       ) }
     </GeneratorContext.Consumer>
   );
-};
+}
 
-const Toolbar = <
+function Toolbar<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const { drawerType, setState } = React.useContext(GeneratorContext);
   const [operateMenu, setOperateMenu] = React.useState(void 0 as string | undefined);
   const onOpen = (isOpen: boolean, key: string) => {
@@ -231,6 +231,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ) }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default Toolbar;

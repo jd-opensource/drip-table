@@ -64,10 +64,10 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
   return columnSchema;
 };
 
-const ComponentsSelector = <
+function ComponentsSelector<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: ComponentsSelectorProps<RecordType, ExtraOptions>) => {
+>(props: ComponentsSelectorProps<RecordType, ExtraOptions>) {
   const [groups, setGroups] = React.useState(getGroups(props.customComponentPanel));
   const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel));
   const [title, setTitle] = React.useState('');
@@ -227,6 +227,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     </TableConfigsContext.Consumer>
 
   );
-};
+}
 
 export default ComponentsSelector;

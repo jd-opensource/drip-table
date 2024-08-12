@@ -28,10 +28,10 @@ interface RowHeaderProps<
   configs: DTGTableConfigsContext['tableConfigs'][number]['configs']['rowHeader'];
   tableConfig: DTGTableConfig;
 }
-const RowHeader = <
+function RowHeader<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: RowHeaderProps<RecordType, ExtraOptions>) => {
+>(props: RowHeaderProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
   const tableConfigsContext = React.useContext(TableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
@@ -178,6 +178,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     </TableConfigsContext.Consumer>
 
   );
-};
+}
 
 export default RowHeader;

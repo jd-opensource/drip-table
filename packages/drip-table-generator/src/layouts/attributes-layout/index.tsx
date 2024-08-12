@@ -24,10 +24,10 @@ import ComponentItemConfigForm from './component-item-config';
 import GlobalConfigForm from './global-configs';
 import { getColumnItemByPath } from './utils';
 
-const AttributesLayout = <
+function AttributesLayout<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const body = React.useRef<HTMLDivElement>(null);
   const { tableConfigs } = React.useContext(TableConfigsContext);
   const drawerTitleMapper = {
@@ -139,6 +139,6 @@ const AttributesLayout = <
       } }
     </GeneratorContext.Consumer>
   );
-};
+}
 
 export default AttributesLayout;

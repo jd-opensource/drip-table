@@ -20,10 +20,10 @@ import EditableTableHeader from './editable-header';
 import EditableTable from './editable-table';
 import PreviewTable from './table-preview';
 
-const TableWorkStation = <
+function TableWorkStation<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const { mode, previewDataSource } = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
@@ -59,6 +59,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         : <PreviewTable visible={mode === 'preview'} {...props} /> }
     </div>
   );
-};
+}
 
 export default TableWorkStation;

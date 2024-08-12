@@ -25,10 +25,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   dataSource?: DripTableGeneratorProps<RecordType, ExtraOptions>['dataSource'];
 }
 
-export const FilterViewer = <
+export function FilterViewer<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: ColumnHeaderProps<RecordType, ExtraOptions>) => {
+>(props: ColumnHeaderProps<RecordType, ExtraOptions>) {
   const tableContext = React.useContext(TableConfigsContext);
   const [filteredValue, setFilteredValue] = React.useState(props.column.defaultFilteredValue || []);
   const [storedDataSource] = React.useState([...props.dataSource || []]);
@@ -90,4 +90,4 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ) }
     </GeneratorContext.Consumer>
   );
-};
+}

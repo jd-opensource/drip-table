@@ -10,7 +10,9 @@ const importResolverExtensions = [
 ];
 
 const javascriptRules = {
+  'no-restricted-exports': 'off',
   'react/jsx-no-bind': 'off',
+  'react/no-unused-class-component-methods': 'warn',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',
   'unicorn/no-array-callback-reference': 'off',

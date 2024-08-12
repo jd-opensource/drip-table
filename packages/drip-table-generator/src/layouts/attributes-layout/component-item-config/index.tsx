@@ -42,10 +42,10 @@ const errorBoundary = (message?: string) => (
   />
 );
 
-const ComponentItemConfigForm = <
+function ComponentItemConfigForm<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: ComponentItemConfigFormProps<RecordType, ExtraOptions>) => {
+>(props: ComponentItemConfigFormProps<RecordType, ExtraOptions>) {
   const { currentColumnID, currentComponentPath, currentTableID, previewDataSource } = React.useContext(GeneratorContext);
 
   const allComponentsConfigs = React.useMemo(() => getComponentsConfigs('', props.customComponentPanel), [props.customComponentPanel]);
@@ -248,6 +248,6 @@ const ComponentItemConfigForm = <
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default ComponentItemConfigForm;

@@ -41,10 +41,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   renderHeaderCellFilter: DripTableGeneratorProps<RecordType, ExtraOptions>['renderHeaderCellFilter'];
 }
 
-const ColumnHeaderList = <
+function ColumnHeaderList<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: ColumnHeaderListProps<RecordType, ExtraOptions>) => {
+>(props: ColumnHeaderListProps<RecordType, ExtraOptions>) {
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
@@ -60,6 +60,26 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       scrollableRow.current.scrollLeft = props.scrollLeft;
     }
   }, [props.scrollLeft, props.scrollTarget]);
+
+  const DropdownRender = React.useCallback(() => (
+    <ComponentsSelector
+      open={dropdownOpen}
+      tableId={props.tableConfig.tableId}
+      showTitle
+      showFilter
+      customComponentPanel={props.customComponentPanel}
+      customColumnAddPanel={props.customColumnAddPanel}
+      onClose={() => setDropdownOpen(false)}
+      onColumnAdded={props.onColumnAdded}
+    />
+  ), [
+    dropdownOpen,
+    props.tableConfig.tableId,
+    props.customComponentPanel,
+    props.customColumnAddPanel,
+    setDropdownOpen,
+    props.onColumnAdded,
+  ]);
 
   return (
     <div className={classNames('jfe-drip-table-generator-workstation-table-header-wrapper', {
@@ -167,18 +187,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           trigger={['click']}
           open={dropdownOpen}
           onOpenChange={(open) => { if (!open) { setDropdownOpen(false); } }}
-          dropdownRender={() => (
-            <ComponentsSelector
-              open={dropdownOpen}
-              tableId={props.tableConfig.tableId}
-              showTitle
-              showFilter
-              customComponentPanel={props.customComponentPanel}
-              customColumnAddPanel={props.customColumnAddPanel}
-              onClose={() => setDropdownOpen(false)}
-              onColumnAdded={props.onColumnAdded}
-            />
-          )}
+          dropdownRender={DropdownRender}
         >
           <Button
             icon={<PlusOutlined />}
@@ -192,6 +201,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       </div>
     </div>
   );
-};
+}
 
 export default ColumnHeaderList;

@@ -19,11 +19,30 @@ import AttributesLayout from './attributes-layout';
 import TableWorkStation from './table-workstation';
 import Toolbar from './toolbar';
 
-const GeneratorLayout = <
+function GeneratorLayout<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const { drawerType } = React.useContext(GeneratorContext);
+  const ModalRender = React.useCallback(() => (
+    <div
+      className="jfe-drip-table-generator-layouts-model-container"
+      style={{ ...props.style, width: props.width ?? props.style?.width ?? 1000, height: props.height ?? props.style?.height ?? 640 }}
+    >
+      { props.showToolbar !== false && <Toolbar {...props} /> }
+      <div className={classNames('jfe-drip-table-generator-layouts-wrapper', { full: props.showToolbar === false })}>
+        <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
+          fixed: (drawerType === 'column' || drawerType === 'column-item') && props.showAttributeLayout !== false,
+        })}
+        >
+          <TableWorkStation {...props} />
+        </div>
+        { props.showAttributeLayout !== false && <AttributesLayout {...props} /> }
+      </div>
+    </div>
+  ), [
+    props,
+  ]);
   return props.mode === 'page' || !props.mode
     ? (
       <div
@@ -46,25 +65,9 @@ const GeneratorLayout = <
       <Modal
         width={props.width ?? 1000}
         open
-        modalRender={() => (
-          <div
-            className="jfe-drip-table-generator-layouts-model-container"
-            style={{ ...props.style, width: props.width ?? props.style?.width ?? 1000, height: props.height ?? props.style?.height ?? 640 }}
-          >
-            { props.showToolbar !== false && <Toolbar {...props} /> }
-            <div className={classNames('jfe-drip-table-generator-layouts-wrapper', { full: props.showToolbar === false })}>
-              <div className={classNames('jfe-drip-table-generator-layouts-table-workstation', {
-                fixed: (drawerType === 'column' || drawerType === 'column-item') && props.showAttributeLayout !== false,
-              })}
-              >
-                <TableWorkStation {...props} />
-              </div>
-              { props.showAttributeLayout !== false && <AttributesLayout {...props} /> }
-            </div>
-          </div>
-        )}
+        modalRender={ModalRender}
       />
     );
-};
+}
 
 export default GeneratorLayout;

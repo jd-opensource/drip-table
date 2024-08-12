@@ -76,10 +76,10 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
   return columnSchema;
 };
 
-const TemplatesManager = <
+function TemplatesManager<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TemplatesManagerProps<RecordType, ExtraOptions>) => {
+>(props: TemplatesManagerProps<RecordType, ExtraOptions>) {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [currentTemplate, setCurrentTemplate] = React.useState('');
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -299,6 +299,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ) }
     </div>
   );
-};
+}
 
 export default TemplatesManager;

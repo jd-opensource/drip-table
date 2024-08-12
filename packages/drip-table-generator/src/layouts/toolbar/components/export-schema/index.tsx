@@ -17,7 +17,7 @@ export interface ExportSchemaProps {
   height?: number | string;
   mode?: 'page' | 'modal';
 }
-const ExportSchema = (props: ExportSchemaProps) => {
+function ExportSchema(props: ExportSchemaProps) {
   const context = React.useContext(TableConfigsContext);
   const [code, setCode] = React.useState(JSON.stringify(getSchemaValue(context.tableConfigs), null, 4));
   const handleCode = (value: string, updateTableConfigs: DTGTableConfigsContext['updateTableConfigs']) => {
@@ -83,6 +83,6 @@ const ExportSchema = (props: ExportSchemaProps) => {
       ) }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default ExportSchema;

@@ -23,10 +23,10 @@ export type TableCellProps<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > = PopoverCellProps<RecordType, ExtraOptions> | GroupCellProps<RecordType, ExtraOptions> | CommonCellProps<RecordType, ExtraOptions>
-const CellComponent = <
+function CellComponent<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableCellProps<RecordType, ExtraOptions>) => {
+>(props: TableCellProps<RecordType, ExtraOptions>) {
   if (props.column?.component === 'group') {
     return <GroupCell {...props as GroupCellProps<RecordType, ExtraOptions>} />;
   }
@@ -44,6 +44,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       showIcon
     />
   );
-};
+}
 
 export default CellComponent;

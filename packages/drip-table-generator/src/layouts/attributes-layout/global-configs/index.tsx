@@ -27,10 +27,10 @@ interface GlobalConfigFormProps<
   slotsSchema: DripTableGeneratorProps<RecordType, ExtraOptions>['slotsSchema'];
 }
 
-const GlobalConfigForm = <
+function GlobalConfigForm<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: GlobalConfigFormProps<RecordType, ExtraOptions>) => {
+>(props: GlobalConfigFormProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
   const configContext = React.useContext(TableConfigsContext);
   const form = React.useRef<CustomForm<DTGTableConfig['configs']>>(null);
@@ -395,6 +395,6 @@ const GlobalConfigForm = <
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default GlobalConfigForm;

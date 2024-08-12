@@ -34,10 +34,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
-const EditableTable = <
+function EditableTable<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: EditableTableProps<RecordType, ExtraOptions>) => {
+>(props: EditableTableProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
   const [checkedRecord, setCheckedRecord] = React.useState(void 0 as number | undefined);
   const [previewRecord, setPreviewRecord] = React.useState(void 0 as number | undefined);
@@ -245,6 +245,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default EditableTable;

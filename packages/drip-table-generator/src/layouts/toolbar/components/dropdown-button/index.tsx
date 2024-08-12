@@ -26,7 +26,7 @@ export interface DropDownButtonProps {
   disabled?: boolean;
   onOpen?: (open: boolean, key: string) => void;
 }
-const DropDownButton = (props: DropDownButtonProps) => {
+function DropDownButton(props: DropDownButtonProps) {
   const rootButton = React.useRef<HTMLButtonElement>(null);
   const [openState, setOpenState] = React.useState(false);
   const isOpen = typeof props.open === 'boolean' ? !!props.open : openState;
@@ -75,6 +75,6 @@ const DropDownButton = (props: DropDownButtonProps) => {
       ) }
     </div>
   );
-};
+}
 
 export default DropDownButton;

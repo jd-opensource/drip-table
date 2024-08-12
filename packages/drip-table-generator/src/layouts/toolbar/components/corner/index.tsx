@@ -15,16 +15,18 @@ export interface CornerProps {
   style?: React.CSSProperties;
   position: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 }
-const Corner = (props: CornerProps) => (
-  <div
-    className="jfe-drip-table-generator-corner-background"
-    style={{ ...props.style, width: props.size || 10, height: props.size || 10 }}
-  >
+function Corner(props: CornerProps) {
+  return (
     <div
-      className={classNames('jfe-drip-table-generator-corner-front', props.position)}
-      style={{ width: 2 * (props.size || 10), height: 2 * (props.size || 10) }}
-    />
-  </div>
-);
+      className="jfe-drip-table-generator-corner-background"
+      style={{ ...props.style, width: props.size || 10, height: props.size || 10 }}
+    >
+      <div
+        className={classNames('jfe-drip-table-generator-corner-front', props.position)}
+        style={{ width: 2 * (props.size || 10), height: 2 * (props.size || 10) }}
+      />
+    </div>
+  );
+}
 
 export default Corner;

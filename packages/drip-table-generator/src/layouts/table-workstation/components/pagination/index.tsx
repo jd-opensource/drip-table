@@ -25,12 +25,12 @@ SubtableDataSourceKey extends React.Key = never,
   ext?: DripTableExtraOptions['CustomComponentExtraData'];
 };
 
-const PaginationComponent = <
+function PaginationComponent<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 CustomColumnSchema extends DripTableColumnSchema = never,
 SubtableDataSourceKey extends React.Key = never,
->(props: PaginationComponentProps<RecordType, ExtraOptions, CustomColumnSchema, SubtableDataSourceKey>) => {
+>(props: PaginationComponentProps<RecordType, ExtraOptions, CustomColumnSchema, SubtableDataSourceKey>) {
   if (!props) { return null; }
   const renderShowTotal = (showTotal?: string | boolean) => {
     if (typeof showTotal === 'boolean') {
@@ -90,6 +90,6 @@ SubtableDataSourceKey extends React.Key = never,
       />
     </div>
   );
-};
+}
 
 export default PaginationComponent;

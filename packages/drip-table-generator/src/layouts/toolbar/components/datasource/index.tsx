@@ -27,10 +27,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   className?: string;
 }
 
-const DataSourceEditor = <
+function DataSourceEditor<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DataSourceEditorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DataSourceHandler>) => {
+>(props: DataSourceEditorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DataSourceHandler>) {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
   const [code, setCode] = React.useState(JSON.stringify(previewDataSource, null, 4));
@@ -80,6 +80,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     </GeneratorContext.Consumer>
 
   );
-};
+}
 
 export default React.forwardRef(DataSourceEditor);

@@ -26,7 +26,7 @@ export interface SelectorProps<ValueType> {
   groups: string[];
   onChange: (value: ValueType) => void;
 }
-const Selector = <ValueType,>(props: SelectorProps<ValueType>) => {
+function Selector<ValueType,>(props: SelectorProps<ValueType>) {
   const [keyword, setKeyWord] = React.useState('');
   const [optionPanelHide, setOptionPanelHide] = React.useState(!props.openPanel);
   const [groups, setGroups] = React.useState(props.groups ?? []);
@@ -94,6 +94,6 @@ const Selector = <ValueType,>(props: SelectorProps<ValueType>) => {
       </div>
     </div>
   );
-};
+}
 
 export default Selector;

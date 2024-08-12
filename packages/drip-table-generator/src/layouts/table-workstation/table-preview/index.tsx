@@ -16,10 +16,10 @@ import { TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
-const PreviewTable = <
+function PreviewTable<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) => {
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) {
   const context = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
 
@@ -87,6 +87,6 @@ const PreviewTable = <
       />
     </div>
   );
-};
+}
 
 export default PreviewTable;

@@ -17,7 +17,7 @@ import { TableConfigsContext } from '@/context/table-configs';
 export interface ImportSchemaProps {
   height?: number | string;
 }
-const ImportSchema = (props: ImportSchemaProps) => {
+function ImportSchema(props: ImportSchemaProps) {
   const { currentTableID } = React.useContext(GeneratorContext);
   const [code, setCode] = React.useState('');
   return (
@@ -83,6 +83,6 @@ const ImportSchema = (props: ImportSchemaProps) => {
       ) }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default ImportSchema;

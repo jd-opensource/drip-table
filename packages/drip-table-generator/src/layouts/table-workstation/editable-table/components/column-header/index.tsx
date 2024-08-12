@@ -40,10 +40,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   renderHeaderCellFilter: DripTableGeneratorProps<RecordType, ExtraOptions>['renderHeaderCellFilter'];
 }
-const ColumnHeader = <
+function ColumnHeader<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: ColumnHeaderProps<RecordType, ExtraOptions>) => {
+>(props: ColumnHeaderProps<RecordType, ExtraOptions>) {
   const [selector, setSelector] = React.useState('');
   const columnTitle = React.useMemo(() => {
     let title = '';
@@ -92,6 +92,60 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     return formatNumber(props.column.width || 200);
   }, [props.column.width]);
 
+  const DropdownRender1 = React.useCallback(() => (
+    <ComponentsSelector
+      tableId={props.tableConfig.tableId}
+      showTitle
+      showFilter
+      customComponentPanel={props.customComponentPanel}
+      customColumnAddPanel={props.customColumnAddPanel}
+      onClose={() => setSelector('')}
+      customColumns={(columns, column) => {
+        const index = columns.findIndex(item => item.key === props.column.key);
+        const newColumns = [...columns];
+        newColumns.splice(index < 0 ? 0 : index, 0, column);
+        props.onClick?.('column-insert-left', {
+          columns: newColumns,
+          currentTableID: props.tableConfig.tableId,
+          tableConfig: props.tableConfig,
+        });
+        return newColumns;
+      }}
+    />
+  ), [
+    props.tableConfig.tableId,
+    props.customComponentPanel,
+    props.customColumnAddPanel,
+    setSelector,
+    props.onClick,
+  ]);
+  const DropdownRender2 = React.useCallback(() => (
+    <ComponentsSelector
+      tableId={props.tableConfig.tableId}
+      showTitle
+      showFilter
+      customComponentPanel={props.customComponentPanel}
+      customColumnAddPanel={props.customColumnAddPanel}
+      onClose={() => setSelector('')}
+      customColumns={(columns, column) => {
+        const index = columns.findIndex(item => item.key === props.column.key);
+        const newColumns = [...columns];
+        newColumns.splice(index > columns.length - 1 ? columns.length - 1 : index + 1, 0, column);
+        props.onClick?.('column-insert-right', {
+          columns: newColumns,
+          currentTableID: props.tableConfig.tableId,
+          tableConfig: props.tableConfig,
+        });
+        return newColumns;
+      }}
+    />
+  ), [
+    props.tableConfig.tableId,
+    props.customComponentPanel,
+    props.customColumnAddPanel,
+    setSelector,
+    props.onClick,
+  ]);
   const menuItems: MenuProps['items'] = React.useMemo(() => [
     {
       key: '1',
@@ -101,27 +155,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           trigger={['click']}
           open={selector === 'left'}
           onOpenChange={(open) => { if (!open) { setSelector(''); } }}
-          dropdownRender={() => (
-            <ComponentsSelector
-              tableId={props.tableConfig.tableId}
-              showTitle
-              showFilter
-              customComponentPanel={props.customComponentPanel}
-              customColumnAddPanel={props.customColumnAddPanel}
-              onClose={() => setSelector('')}
-              customColumns={(columns, column) => {
-                const index = columns.findIndex(item => item.key === props.column.key);
-                const newColumns = [...columns];
-                newColumns.splice(index < 0 ? 0 : index, 0, column);
-                props.onClick?.('column-insert-left', {
-                  columns: newColumns,
-                  currentTableID: props.tableConfig.tableId,
-                  tableConfig: props.tableConfig,
-                });
-                return newColumns;
-              }}
-            />
-          )}
+          dropdownRender={DropdownRender1}
         >
           <div onClick={(e) => { e.stopPropagation(); setSelector('left'); }}>
             <ArrowLeftOutlined />
@@ -138,27 +172,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           trigger={['click']}
           open={selector === 'right'}
           onOpenChange={(open) => { if (!open) { setSelector(''); } }}
-          dropdownRender={() => (
-            <ComponentsSelector
-              tableId={props.tableConfig.tableId}
-              showTitle
-              showFilter
-              customComponentPanel={props.customComponentPanel}
-              customColumnAddPanel={props.customColumnAddPanel}
-              onClose={() => setSelector('')}
-              customColumns={(columns, column) => {
-                const index = columns.findIndex(item => item.key === props.column.key);
-                const newColumns = [...columns];
-                newColumns.splice(index > columns.length - 1 ? columns.length - 1 : index + 1, 0, column);
-                props.onClick?.('column-insert-right', {
-                  columns: newColumns,
-                  currentTableID: props.tableConfig.tableId,
-                  tableConfig: props.tableConfig,
-                });
-                return newColumns;
-              }}
-            />
-          )}
+          dropdownRender={DropdownRender2}
         >
           <div onClick={(e) => { e.stopPropagation(); setSelector('right'); }}>
             <ArrowRightOutlined />
@@ -267,7 +281,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       });
                       const tableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
                       const columnIndex = tableConfigs[tableIndex]?.columns.findIndex(item => item.key === props.column.key) ?? 0;
-                      const columns = [...tableConfigs[tableIndex]?.columns];
+                      const columns = [...tableConfigs[tableIndex]?.columns || []];
                       columns.splice(columnIndex, 1);
                       setTableColumns(columns, tableIndex);
                       props.onClick?.('column-delete', {
@@ -363,6 +377,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ) }
     </GeneratorContext.Consumer>
   );
-};
+}
 
 export default ColumnHeader;

@@ -44,13 +44,53 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCell
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
 }
 
-const PopoverCell = <
+function PopoverCell<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCellProps<RecordType, ExtraOptions>) => {
+ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCellProps<RecordType, ExtraOptions>) {
   const [dropDown, setDropDown] = React.useState(false);
   const [popoverDropDown, setPopoverDropDown] = React.useState(false);
   const { currentComponentID } = React.useContext(GeneratorContext);
 
+  const DropdownRender1 = React.useCallback(() => (
+    <ComponentsSelector
+      open={popoverDropDown}
+      tableId={props.tableConfig.tableId}
+      showFilter
+      customComponentPanel={props.customComponentPanel}
+      customColumnAddPanel={props.customColumnAddPanel}
+      onClose={() => setPopoverDropDown(false)}
+      onConfirm={(column, tableIndex) => {
+        props.onChangeColumnItem(['popover'], column as DripTableBuiltInColumnSchema, tableIndex);
+      }}
+    />
+  ), [
+    popoverDropDown,
+    props.tableConfig.tableId,
+    props.customComponentPanel,
+    props.customColumnAddPanel,
+    setPopoverDropDown,
+    props.onChangeColumnItem,
+  ]);
+  const DropdownRender2 = React.useCallback(() => (
+    <ComponentsSelector
+      open={dropDown}
+      tableId={props.tableConfig.tableId}
+      showFilter
+      customComponentPanel={props.customComponentPanel}
+      customColumnAddPanel={props.customColumnAddPanel}
+      onClose={() => setDropDown(false)}
+      onConfirm={(column, tableIndex) => {
+        props.onChangeColumnItem(['content'], column as DripTableBuiltInColumnSchema, tableIndex);
+      }}
+    />
+  ), [
+    popoverDropDown,
+    props.tableConfig.tableId,
+    props.customComponentPanel,
+    props.customColumnAddPanel,
+    setDropDown,
+    props.onChangeColumnItem,
+  ]);
   if (props.column.component === 'popover') {
     const options = props.column.options;
     return (
@@ -79,19 +119,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
               trigger={['click']}
               open={popoverDropDown}
               onOpenChange={(open) => { if (!open) { setPopoverDropDown(false); } }}
-              dropdownRender={() => (
-                <ComponentsSelector
-                  open={popoverDropDown}
-                  tableId={props.tableConfig.tableId}
-                  showFilter
-                  customComponentPanel={props.customComponentPanel}
-                  customColumnAddPanel={props.customColumnAddPanel}
-                  onClose={() => setPopoverDropDown(false)}
-                  onConfirm={(column, tableIndex) => {
-                    props.onChangeColumnItem(['popover'], column as DripTableBuiltInColumnSchema, tableIndex);
-                  }}
-                />
-              )}
+              dropdownRender={DropdownRender1}
             >
               <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
                 <Tooltip title="点击更换组件">
@@ -151,19 +179,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
             trigger={['click']}
             open={dropDown}
             onOpenChange={(open) => { if (!open) { setDropDown(false); } }}
-            dropdownRender={() => (
-              <ComponentsSelector
-                open={dropDown}
-                tableId={props.tableConfig.tableId}
-                showFilter
-                customComponentPanel={props.customComponentPanel}
-                customColumnAddPanel={props.customColumnAddPanel}
-                onClose={() => setDropDown(false)}
-                onConfirm={(column, tableIndex) => {
-                  props.onChangeColumnItem(['content'], column as DripTableBuiltInColumnSchema, tableIndex);
-                }}
-              />
-            )}
+            dropdownRender={DropdownRender2}
           >
             <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
               <Tooltip title="点击更换组件">
@@ -202,6 +218,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
     );
   }
   return null;
-};
+}
 
 export default PopoverCell;

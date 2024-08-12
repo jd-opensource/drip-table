@@ -38,7 +38,7 @@ export interface TableContainerHandler {
   getContainerWidth?: () => number;
 }
 
-const SubTableSetting = (props: SubTableSettingProps) => {
+function SubTableSetting(props: SubTableSettingProps) {
   const context = React.useContext(GeneratorContext);
   const tableContext = React.useContext(TableConfigsContext);
   const dataFields = React.useMemo(() => {
@@ -104,7 +104,7 @@ const SubTableSetting = (props: SubTableSettingProps) => {
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 const TableContainer = React.forwardRef(<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
@@ -114,6 +114,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   React.useImperativeHandle(ref, () => ({
     getContainerWidth: () => containerRef.current?.getBoundingClientRect().width ?? 0,
   }));
+
+  const DropdownRender = React.useCallback(() => (<SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />), [
+    props.tableConfig,
+  ]);
 
   return (
     <GeneratorContext.Consumer>
@@ -180,7 +184,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     <Dropdown
                       placement="bottomRight"
                       trigger={['click']}
-                      dropdownRender={() => <SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />}
+                      dropdownRender={DropdownRender}
                     >
                       <Tooltip title="添加字段用以配置子表格">
                         <Button

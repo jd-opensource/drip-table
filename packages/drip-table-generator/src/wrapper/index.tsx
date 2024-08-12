@@ -49,7 +49,7 @@ const DripTableGenerator = React.forwardRef(<
   const [generatorStates, setGeneratorStates] = React.useState(generateStates(props));
   const [tableConfigs, setDripTableConfigs] = React.useState(generateTableConfigsBySchema(props.schema));
 
-  const tableConfigsContext: DTGTableConfigsContext = {
+  const tableConfigsContext: DTGTableConfigsContext = React.useMemo(() => ({
     tableConfigs,
     updateTableConfig(config, index, callback) {
       const newTableConfigs = [...tableConfigs];
@@ -84,9 +84,12 @@ const DripTableGenerator = React.forwardRef(<
       setDripTableConfigs(newTableConfigs);
       callback?.(newTableConfigs);
     },
-  };
+  }), [
+    tableConfigs,
+    setDripTableConfigs,
+  ]);
 
-  const dripTableGeneratorContext: DripTableGeneratorContext = {
+  const dripTableGeneratorContext: DripTableGeneratorContext = React.useMemo(() => ({
     ...generatorStates,
     setState(states, callback) {
       if (!states) { return; }
@@ -97,7 +100,11 @@ const DripTableGenerator = React.forwardRef(<
       setGeneratorStates(newStates);
       callback?.(newStates);
     },
-  };
+  }), [
+    generatorStates,
+    cloneDeep,
+    setGeneratorStates,
+  ]);
 
   React.useImperativeHandle(ref, () => ({
     getState: () => generatorStates,

@@ -34,10 +34,10 @@ interface EditableTableFooterProps<
   renderPagination?: DripTableGeneratorProps<RecordType, ExtraOptions>['renderPagination'];
 }
 
-const EditableTableFooter = <
+function EditableTableFooter<
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: EditableTableFooterProps<RecordType, ExtraOptions>) => {
+>(props: EditableTableFooterProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
   const tableConfigsContext = React.useContext(TableConfigsContext);
   const [currentCellIndex, setCurrentCellIndex] = React.useState(-1);
@@ -227,6 +227,6 @@ const EditableTableFooter = <
       } }
     </TableConfigsContext.Consumer>
   );
-};
+}
 
 export default EditableTableFooter;

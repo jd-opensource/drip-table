@@ -57,10 +57,10 @@ const VerticalAligns = {
   stretch: 'stretch',
 };
 
-const TableRowList = <
+function TableRowList<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: TableRowListProps<RecordType, ExtraOptions>) => {
+>(props: TableRowListProps<RecordType, ExtraOptions>) {
   const { currentTableID, currentColumnID, currentHoverColumnID, previewDataSource } = React.useContext(GeneratorContext);
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
@@ -212,6 +212,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     </React.Fragment>
 
   );
-};
+}
 
 export default TableRowList;

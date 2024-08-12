@@ -47,10 +47,10 @@ const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>
     : column
 );
 
-const CommonCell = <
+function CommonCell<
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: CommonCellProps<RecordType, ExtraOptions>) => {
+>(props: CommonCellProps<RecordType, ExtraOptions>) {
   if (props.column?.component === 'group' || props.column?.component === 'popover') {
     return null;
   }
@@ -80,6 +80,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       { renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: props.rowIndex }, props.rowIndex) }
     </React.Fragment>
   );
-};
+}
 
 export default CommonCell;
