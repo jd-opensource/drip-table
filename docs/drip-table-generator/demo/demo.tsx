@@ -24,8 +24,8 @@ const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ..
 
 console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
-const Demo = () => (
-  <React.Fragment>
+function Demo() {
+  return (
     <DripTableGenerator<SampleRecordType, {
       CustomColumnSchema: TextColumnSchema;
       CustomComponentEvent: never;
@@ -85,7 +85,7 @@ const Demo = () => (
       rowExpandable={(record, index, parent) => parent.schema.id === 'sample-table' && record.id === 5}
       expandedRowRender={(record, index, parent) => (<div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>)}
     />
-  </React.Fragment>
-);
+  );
+}
 
 export default Demo;

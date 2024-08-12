@@ -19,7 +19,7 @@ const schema = {
 
 const simpleData = mockData.filter(item => item.id < 10);
 
-const Demo = () => {
+function Demo() {
   const [allSelected, setAllSelected] = useState(false);
   const dripTable: React.MutableRefObject<DripTableInstance | null> = useRef(null);
 
@@ -92,6 +92,6 @@ const Demo = () => {
       />
     </React.Fragment>
   );
-};
+}
 
 export default Demo;

@@ -21,7 +21,7 @@ const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ..
 
 console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
-const Demo = () => {
+function Demo() {
   const [loading, setLoading] = React.useState(false);
   const [filters, setFilters] = React.useState<{ key: string; values: unknown[] }[] | undefined>(void 0);
   const [pageNum, setPageNum] = React.useState(1);
@@ -131,11 +131,11 @@ const Demo = () => {
           }),
           default: props => <div>{ `未知插槽类型：${props.slotType}` }</div>,
         }), [])}
-        subtableTitle={React.useMemo(() => (record, index, tableInfo) => (
-          <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${tableInfo.parent?.record?.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>
-        ), [])}
-        subtableFooter={React.useMemo(() => (record, index, tableInfo) => (
-          tableInfo.schema.id === 'sample-table-sub-level-1'
+        subtableTitle={React.useMemo(() => function SubtableTitle(record, index, tableInfo) {
+          return <div style={{ textAlign: 'center' }}>{ `“表格(id:${tableInfo.parent?.schema.id})”行“${tableInfo.parent?.record?.name}”的子表 （${tableInfo.dataSource.length} 条）` }</div>;
+        }, [])}
+        subtableFooter={React.useMemo(() => function SubtableFooter(record, index, tableInfo) {
+          return tableInfo.schema.id === 'sample-table-sub-level-1'
             ? (
               <div
                 style={{ cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}
@@ -148,12 +148,12 @@ const Demo = () => {
                 <span style={{ marginLeft: '5px' }}>加载更多</span>
               </div>
             )
-            : void 0
-        ), [])}
+            : void 0;
+        }, [])}
         rowExpandable={React.useMemo(() => (record, index, parent) => parent.schema.id === 'sample-table' && record.id === 5, [])}
-        expandedRowRender={React.useMemo(() => (record, index, parent) => (
-          <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>
-        ), [])}
+        expandedRowRender={React.useMemo(() => function ExpandedRowRender(record, index, parent) {
+          return <div style={{ textAlign: 'center', margin: '20px 0' }}>{ `“表格(id:${parent.schema.id})”行“${record.name}”的展开自定义渲染` }</div>;
+        }, [])}
         rowSelectable={React.useMemo(() => record => record.id !== 1, [])}
         onEvent={React.useMemo(() => (event, tableInfo) => {
           const { record, recordIndex, columnIndex } = event;
@@ -224,6 +224,6 @@ const Demo = () => {
       </div>
     </React.Fragment>
   );
-};
+}
 
 export default Demo;

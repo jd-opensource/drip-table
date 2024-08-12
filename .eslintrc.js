@@ -12,6 +12,8 @@ const importResolverExtensions = [
 const javascriptRules = {
   'no-console': 'off',
   'react/jsx-no-bind': 'off',
+  'react/no-unstable-nested-components': 'off',
+  'react/no-unused-class-component-methods': 'off',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',
   'unicorn/no-array-callback-reference': 'off',

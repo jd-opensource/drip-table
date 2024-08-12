@@ -18,7 +18,7 @@ const initialSchema: DripTableSchema = {
   ],
 };
 
-const Demo = () => {
+function Demo() {
   const generator: React.MutableRefObject<DripTableGeneratorHandler | null> = React.useRef(null);
 
   return (
@@ -36,6 +36,6 @@ const Demo = () => {
       />
     </React.Fragment>
   );
-};
+}
 
 export default Demo;
