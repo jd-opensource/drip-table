@@ -1260,7 +1260,7 @@ const TableLayout = <
             title: (
               <div className={`${prefixCls}-column-title-selection`}>
                 <SelectionComponent
-                  checked={!rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
+                  checked={rcTableDataSource.length > 0 && !rcTableDataSource.some(d => d.type === 'body' && !tableState.selectedRowKeys.includes(d.record[rowKey] as React.Key))}
                   onChange={(checked) => {
                     const selectedRowKeys = checked
                       ? rcTableDataSource
