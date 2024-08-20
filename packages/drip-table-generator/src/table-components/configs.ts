@@ -303,7 +303,7 @@ const align: DTGComponentPropertySchema = {
     ],
   },
   type: 'string',
-  default: 'center',
+  default: 'left',
 };
 
 const verticalAlign: DTGComponentPropertySchema = {
