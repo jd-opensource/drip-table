@@ -13,25 +13,82 @@ export default {
   attrSchema: generateColumnAttrComponentsByNames([
     titleConfig('复选框'),
     ...dataIndexColumnAttrComponents('checkbox', {
+      modeDiffFn: (_1, formData) => true,
       layout: { labelCol: 8, wrapperCol: 16 },
     }),
+    {
+      name: 'options.mode',
+      group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:title': '模式',
+      'ui:type': 'radio',
+      'ui:props': {
+        mode: 'button',
+        buttonStyle: 'solid',
+        size: 'small',
+        options: [
+          { label: '单独', value: 'single' },
+          { label: '复选框组', value: 'group' },
+        ],
+      },
+      type: 'string',
+      default: 'single',
+    },
+    {
+      name: 'options.options',
+      group: '属性',
+      'ui:title': '选项配置',
+      'ui:type': 'array-list',
+      'ui:layout': { labelCol: 8, wrapperCol: 24 },
+      'ui:props': {
+        mode: 'narrow',
+        items: [
+          {
+            name: 'label',
+            'ui:title': '选项文案',
+            'ui:type': 'input',
+            default: '',
+            type: 'string',
+          },
+          {
+            name: 'value',
+            'ui:title': '选项值',
+            'ui:type': 'input',
+            default: '',
+            type: 'string',
+          },
+          {
+            name: 'disabled',
+            'ui:title': '禁用条件',
+            'ui:type': 'input',
+            default: '',
+            type: 'string',
+          },
+        ],
+      },
+      default: [{ label: '', value: '' }],
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] === 'group',
+      type: 'array',
+
+    },
     {
       name: 'options.bindValue',
       group: '属性',
       'ui:layout': { labelCol: 6, wrapperCol: 18 },
-      'ui:title': '选中',
+      'ui:title': '绑定数据',
       'ui:description': {
         type: 'icon',
         trigger: 'hover',
         title: '指定当前是否选中，默认为 false',
       },
-      'ui:type': 'checkbox',
+      'ui:type': 'switch',
       'ui:props': {
         uncheckedChildren: '否',
         checkedChildren: '是',
       },
       default: false,
       type: 'boolean',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] !== 'group',
     },
     {
       name: 'options.defaultChecked',
@@ -43,13 +100,24 @@ export default {
         trigger: 'hover',
         title: '初始是否选中，默认为 false',
       },
-      'ui:type': 'checkbox',
+      'ui:type': 'switch',
       'ui:props': {
         uncheckedChildren: '否',
         checkedChildren: '是',
       },
       default: false,
       type: 'boolean',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] !== 'group',
+    },
+    {
+      name: 'options.label',
+      group: '属性',
+      'ui:layout': { labelCol: 6, wrapperCol: 18 },
+      'ui:title': '标签文本',
+      'ui:type': 'text',
+      default: '',
+      type: 'string',
+      visible: (_1: unknown, formData?: Record<string, unknown>) => formData?.['options.mode'] !== 'group',
     },
     {
       name: 'options.event',
@@ -82,5 +150,5 @@ export default {
     'verticalAlign',
     ...styleAttributesSchema,
   ]),
-  icon: '<svg t="1710732314730" class="icon" viewBox="0 0 1643 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4371" width="64" height="64"><path d="M1131.861333 0H512a512 512 0 0 0 0 1024h619.861333a512 512 0 0 0 0-1024z m0 887.466667H512a375.466667 375.466667 0 0 1 0-750.933334h619.861333a375.466667 375.466667 0 0 1 0 750.933334z" fill="#4F4A4A" p-id="4372"></path><path d="M1104.554667 278.528a247.125333 247.125333 0 1 0 245.76 245.76 247.125333 247.125333 0 0 0-245.76-245.76z" fill="#4F4A4A" p-id="4373"></path></svg>',
+  icon: '<svg t="1724252055758" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5034"><path d="M768 128a128 128 0 0 1 127.786667 120.490667L896 256v512a128 128 0 0 1-120.490667 127.786667L768 896H256a128 128 0 0 1-127.786667-120.490667L128 768V256a128 128 0 0 1 120.490667-127.786667L256 128h512z m0 64H256A64 64 0 0 0 192 256v512A64 64 0 0 0 256 832h512a64 64 0 0 0 64-64V256A64 64 0 0 0 768 192z" fill="#000000" p-id="5035"></path><path d="M705.28 406.613333l-225.834667 225.834667a74.666667 74.666667 0 0 1-105.557333 0L297.386667 555.946667a32 32 0 0 1 45.226666-45.226667l76.501334 76.501333a10.666667 10.666667 0 0 0 15.104 0L660.053333 361.386667a32 32 0 0 1 45.226667 45.226666z" fill="#000000" p-id="5036"></path></svg>',
 } as DripTableComponentAttrConfig;

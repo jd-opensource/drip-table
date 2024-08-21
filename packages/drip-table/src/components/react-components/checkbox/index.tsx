@@ -12,16 +12,19 @@ import classNames from 'classnames';
 import RcCheckbox, { Props as RcCheckboxProps } from 'rc-checkbox';
 import React from 'react';
 
-export interface SelectProps extends RcCheckboxProps {}
+export interface CheckboxProps extends RcCheckboxProps {
+  label?: string;
+}
 
 const prefixCls = 'jfe-drip-table-rc-checkbox';
 
-const Checkbox = React.memo(({ ...props }: SelectProps) => (
+const Checkbox = React.memo(({ ...props }: CheckboxProps) => (
   <label className={classNames(`${prefixCls}-wrapper`, `${prefixCls}-wrapper-checked`)}>
     <RcCheckbox
       {...props}
       prefixCls={prefixCls}
     />
+    { props.label && <span className={classNames(`${prefixCls}-label`)}>{ props.label }</span> }
   </label>
 ));
 

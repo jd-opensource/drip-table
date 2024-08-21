@@ -7,14 +7,20 @@
  */
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
+import {
+  DripTableColumnSchema,
+  DripTableRecordTypeBase,
+  SchemaObject,
+} from '@/types';
 import { safeExecute } from '@/utils/sandbox';
 import Checkbox from '@/components/react-components/checkbox';
 
 import { DripTableComponentProps } from '../component';
+import { finalizeString } from '../utils';
 
 export type DTCCheckboxColumnSchema = DripTableColumnSchema<'checkbox', {
   style?: React.CSSProperties;
+  mode: 'single' | 'group';
   /**
    * 指定当前是否选中，默认为false
    */
@@ -27,22 +33,36 @@ export type DTCCheckboxColumnSchema = DripTableColumnSchema<'checkbox', {
    * 事件名，给用户区分事件用
    */
   event?: string;
+  // 标签
+  label?: string;
+  // 选项
+  options?: {
+    label: string;
+    value: string | number | boolean;
+    disabled?: boolean | string;
+  }[];
 }>;
 
 export interface DTCCheckboxOnChange {
   type: 'drip-checkbox-change';
   payload: {
     name: string;
-    value: boolean;
+    value: boolean | (string | number | boolean)[];
   };
 }
 
-interface DTCCheckboxProps<RecordType extends DripTableRecordTypeBase> extends DripTableComponentProps<RecordType, DTCCheckboxColumnSchema> { }
+interface DTCCheckboxProps<RecordType extends DripTableRecordTypeBase>
+  extends DripTableComponentProps<RecordType, DTCCheckboxColumnSchema> { }
 
-interface DTCCheckboxState {}
+interface DTCCheckboxState {
+  checkedValues: (string | number | boolean)[] | undefined;
+}
 
-export default class DTCCheckbox<RecordType extends DripTableRecordTypeBase> extends React.PureComponent<DTCCheckboxProps<RecordType>, DTCCheckboxState> {
+export default class DTCCheckbox<
+  RecordType extends DripTableRecordTypeBase
+> extends React.PureComponent<DTCCheckboxProps<RecordType>, DTCCheckboxState> {
   public static componentName: DTCCheckboxColumnSchema['component'] = 'checkbox';
+
   public static schema: SchemaObject = {
     type: 'object',
     properties: {
@@ -50,10 +70,7 @@ export default class DTCCheckbox<RecordType extends DripTableRecordTypeBase> ext
         type: 'object',
         patternProperties: {
           '^.*$': {
-            anyOf: [
-              { type: 'string' },
-              { type: 'number' },
-            ],
+            anyOf: [{ type: 'string' }, { type: 'number' }],
           },
         },
       },
@@ -62,36 +79,135 @@ export default class DTCCheckbox<RecordType extends DripTableRecordTypeBase> ext
       defaultChecked: { type: 'boolean' },
       onchange: { type: 'string' },
       event: { type: 'string' },
+      label: { type: 'string' },
+      mode: { enum: ['single', 'group'] },
+      options: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: { type: 'string' },
+            value: {
+              anyOf: [
+                { type: 'string' },
+                { type: 'number' },
+                { type: 'boolean' },
+              ],
+            },
+            disabled: {
+              anyOf: [{ type: 'string' }, { type: 'boolean' }],
+            },
+          },
+        },
+      },
     },
+  };
+
+  public state: DTCCheckboxState = {
+    checkedValues: [],
   };
 
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return safeExecute(`return ${disable}`, {
-        props: {
-          value: this.props.value,
-          record: this.props.record,
-          ext: this.props.ext,
+      return safeExecute(
+        `return ${disable}`,
+        {
+          props: {
+            value: this.props.value,
+            record: this.props.record,
+            ext: this.props.ext,
+          },
+          rec: this.props.record,
         },
-        rec: this.props.record,
-      }, false);
+        false,
+      );
     }
     return !!disable;
   }
 
   private get value() {
+    const options = this.props.schema.options ?? {};
+    if (options.mode === 'group') {
+      return this.props.value as string | number | boolean;
+    }
     return !!this.props.value;
   }
 
+  public componentDidMount(): void {
+    const options = this.props.schema.options ?? {};
+    if (options.mode === 'group') {
+      this.setState({
+        checkedValues: this.props.value as (string | number | boolean)[],
+      });
+    }
+  }
+
   public render() {
-    const options = this.props.schema.options;
+    const { record, recordIndex, ext } = this.props;
+    const options = this.props.schema.options ?? {};
+    if (options.mode === 'group') {
+      return (options.options || []).map((option, index) => (
+        <Checkbox
+          key={index}
+          label={finalizeString(
+            'pattern',
+            option.label ?? '',
+            record,
+            recordIndex,
+            ext,
+          )}
+          checked={this.state.checkedValues?.includes(option.value)}
+          disabled={
+            typeof option.disabled === 'string'
+              ? safeExecute(option.disabled, {
+                props: { record, recordIndex, ext },
+              })
+              : option.disabled
+          }
+          onChange={(e) => {
+            if (this.props.preview) {
+              return;
+            }
+            const checked = (e.target as HTMLInputElement)?.checked;
+            this.setState((preState) => {
+              const checkedValues = [...preState.checkedValues ?? []];
+              if (checked) {
+                checkedValues.push(option.value);
+              } else {
+                const valueIndex = checkedValues.indexOf(option.value);
+                checkedValues.splice(valueIndex, 1);
+              }
+              if (options.event) {
+                this.props.fireEvent({
+                  type: 'drip-checkbox-change',
+                  payload: {
+                    name: options.event,
+                    value: checkedValues,
+                  },
+                });
+              }
+              return {
+                checkedValues,
+              };
+            });
+          }}
+        />
+      ));
+    }
     return (
       <Checkbox
         style={options.style}
         disabled={this.disabled}
-        defaultChecked={this.value}
-        checked={options.bindValue === false ? void 0 : this.value}
+        defaultChecked={this.value as boolean}
+        checked={options.bindValue === false ? void 0 : (this.value as boolean)}
+        label={finalizeString(
+          'pattern',
+          options.label ?? '',
+          record,
+          recordIndex,
+          ext,
+        )}
         onChange={(e) => {
           if (this.props.preview) {
             return;
