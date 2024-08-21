@@ -98,7 +98,7 @@ toc: false
       </div>
       <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
         <div class="components-overview-img">
-          <img src="https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg" alt="status">
+          <img src="https://storage.360buyimg.com/interaction/babel/Status.svg" alt="status">
         </div>
       </div>
     </div>
@@ -196,7 +196,7 @@ toc: false
       </div>
       <div class="card-body" style="background-repeat: no-repeat; background-position: right bottom;">
         <div class="components-overview-img">
-          <img src="https://gw.alipayobjects.com/zos/alicdn/zNdJQMhfm/Checkbox.svg" alt="checkbox">
+          <img src="https://gw.alipayobjects.com/zos/alicdn/8nbVbHEm_/CheckBox.svg" alt="checkbox">
         </div>
       </div>
     </div>
