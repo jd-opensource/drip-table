@@ -9,7 +9,7 @@
 import { DripTableDataColumnSchema } from '@/types';
 
 import DTCButton, { DTCButtonColumnSchema, DTCButtonEvent } from './button';
-import DTCCheckbox, { DTCCheckboxColumnSchema, DTCCheckboxOnChange } from './checkbox';
+import DTCCheckbox, { DTCCheckboxColumnSchema, DTCCheckboxEvent } from './checkbox';
 import DTCDatePicker, { DTCDateColumnSchema as DTCDatePickerColumnSchema } from './date-picker';
 import DTCGroup, { DTCGroupColumnSchema } from './group';
 import DTCIcon, { DTCIconColumnSchema, DTCIconEvent } from './icon';
@@ -34,7 +34,7 @@ export type DripTableBuiltInComponentEvent =
   | DTCIconEvent
   | DTCLinkEvent
   | DTCSelectEvent
-  | DTCCheckboxOnChange
+  | DTCCheckboxEvent
   | DTCSwitchEvent
   | DTCTextEvent;
 

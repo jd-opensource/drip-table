@@ -43,13 +43,15 @@ export type DTCCheckboxColumnSchema = DripTableColumnSchema<'checkbox', {
   }[];
 }>;
 
-export interface DTCCheckboxOnChange {
+interface DTCCheckboxOnChange {
   type: 'drip-checkbox-change';
   payload: {
     name: string;
     value: boolean | (string | number | boolean)[];
   };
 }
+
+export type DTCCheckboxEvent = DTCCheckboxOnChange;
 
 interface DTCCheckboxProps<RecordType extends DripTableRecordTypeBase>
   extends DripTableComponentProps<RecordType, DTCCheckboxColumnSchema> { }
