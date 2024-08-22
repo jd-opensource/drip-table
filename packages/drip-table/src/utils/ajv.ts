@@ -511,8 +511,6 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         renderPagination: {},
         renderHeaderCellFilter: {},
         createExecutor: {},
-        execute: {},
-        safeExecute: {},
         __PARENT_INFO__: {},
       },
       required: [

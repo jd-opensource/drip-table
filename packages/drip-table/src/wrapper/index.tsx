@@ -8,6 +8,7 @@
 
 import './index.less';
 
+import get from 'lodash/get';
 import React, { CSSProperties } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,9 +21,10 @@ import {
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import { useState } from '@/utils/hooks';
-import { safeExecute } from '@/utils/sandbox';
+import { type SandboxCreateExecutor, type SandboxExecute, type SandboxSafeExecute, createExecutor as defaultCreateExecutor } from '@/utils/sandbox';
 import DripTableBuiltInComponents from '@/components/cell-components';
 import { createTableComponentState, DripTableComponentContext, IDripTableComponentContext } from '@/components/cell-components/hooks';
+import { type FinalizeString, stringify } from '@/components/cell-components/utils';
 import { type IDripTableContext, createTableState, DripTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableTableInformation, type ExtractDripTableExtraOption, indexValue } from '@/index';
 import DripTableLayout from '@/layouts';
@@ -196,14 +198,80 @@ const DripTableWrapper = React.forwardRef(<
     parent: props.__PARENT_INFO__,
   }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
 
+  const createExecutor: SandboxCreateExecutor = props.createExecutor ?? defaultCreateExecutor;
+  const execute: SandboxExecute = (script, ctx = {}) => createExecutor(script, Object.keys(ctx))?.(...Object.values(ctx));
+  const safeExecute: SandboxSafeExecute = (script, ctx = {}, defaultValue = void 0) => {
+    try {
+      return execute(script, ctx);
+    } catch (error) {
+      console.warn(error);
+    }
+    return defaultValue;
+  };
+  const finalizeString: FinalizeString = (mode, text, record, recordIndex, ext) => {
+    let value = '';
+    if (!mode || mode === 'plain') {
+      value = stringify(text);
+    } else if (mode === 'key') {
+      value = stringify(get(record, text, ''));
+    } else if (mode === 'pattern') {
+      value = stringify(text)
+        .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
+          try {
+            return execute(`return ${s1}`, {
+              props: {
+                record,
+                recordIndex,
+                ext,
+              },
+              rec: record,
+            });
+          } catch (error) {
+            return error instanceof Error
+              ? `{{Render Error: ${error.message}}}`
+              : '{{Unknown Render Error}}';
+          }
+        });
+    } else if (mode === 'script') {
+      try {
+        value = stringify(execute(text, {
+          props: {
+            record,
+            recordIndex,
+            ext,
+          },
+          rec: record,
+        }));
+      } catch (error) {
+        value = error instanceof Error
+          ? `Render Error: ${error.message}`
+          : 'Unknown Render Error';
+      }
+    }
+    return value;
+  };
+
   const context = React.useMemo(
     (): IDripTableContext<RecordType, ExtraOptions> => ({
       props: tableProps,
       info: tableInfo,
       state,
       setState,
+      createExecutor,
+      execute,
+      safeExecute,
+      finalizeString,
     }),
-    [props, tableInfo, state, setState],
+    [
+      props,
+      tableInfo,
+      state,
+      setState,
+      createExecutor,
+      execute,
+      safeExecute,
+      finalizeString,
+    ],
   );
 
   const componentContext = React.useMemo(
@@ -239,16 +307,22 @@ const DripTableWrapper = React.forwardRef(<
             sorter: {
               key: sorter.key,
               direction: sorter.direction,
-              comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
-                props: {
-                  column: columnSchema,
-                  leftRecord: a,
-                  rightRecord: b,
-                  leftValue: indexValue(a, columnSchema.dataIndex),
-                  rightValue: indexValue(b, columnSchema.dataIndex),
-                  ext: tableProps.ext,
-                },
-              }, 0),
+              comparer: (a, b) => {
+                let multiply = context.safeExecute<number>(columnSchema.sorter || '', {
+                  props: {
+                    column: columnSchema,
+                    leftRecord: a,
+                    rightRecord: b,
+                    leftValue: indexValue(a, columnSchema.dataIndex),
+                    rightValue: indexValue(b, columnSchema.dataIndex),
+                    ext: tableProps.ext,
+                  },
+                }, 1);
+                if (typeof multiply !== 'number') {
+                  multiply = 1;
+                }
+                return (sorter.direction === 'ascend' ? 1 : -1) * multiply;
+              },
             },
             sorterChanged: true,
           });
@@ -262,8 +336,8 @@ const DripTableWrapper = React.forwardRef(<
     }),
     [
       setState,
-      safeExecute,
       indexValue,
+      context.safeExecute,
       context.state.selectedRowKeys,
       context.state.displayColumnKeys,
       context.state.sorter,
@@ -301,16 +375,22 @@ const DripTableWrapper = React.forwardRef(<
         sorter: {
           key: sorter.key,
           direction: sorter.direction,
-          comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
-            props: {
-              column: columnSchema,
-              leftRecord: a,
-              rightRecord: b,
-              leftValue: indexValue(a, columnSchema.dataIndex),
-              rightValue: indexValue(b, columnSchema.dataIndex),
-              ext: tableProps.ext,
-            },
-          }, 0),
+          comparer: (a, b) => {
+            let multiply = context.safeExecute<number>(columnSchema.sorter || '', {
+              props: {
+                column: columnSchema,
+                leftRecord: a,
+                rightRecord: b,
+                leftValue: indexValue(a, columnSchema.dataIndex),
+                rightValue: indexValue(b, columnSchema.dataIndex),
+                ext: tableProps.ext,
+              },
+            }, 1);
+            if (typeof multiply !== 'number') {
+              multiply = 1;
+            }
+            return (sorter.direction === 'ascend' ? 1 : -1) * multiply;
+          },
         },
         sorterChanged: true,
       });

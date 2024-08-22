@@ -9,11 +9,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { execute, safeExecute } from '@/utils/sandbox';
 import Select from '@/components/react-components/select';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
 
 type LabeledOptions = {
   label: string;
@@ -208,7 +206,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const options = this.props.schema.options;
     if (typeof options.disabled === 'string') {
-      return safeExecute(`return ${options.disabled}`, {
+      return !!this.props.safeExecute(`return ${options.disabled}`, {
         props: {
           value: this.props.value,
           record: this.props.record,
@@ -234,13 +232,13 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     return [];
   }
 
-  private get value() {
-    return this.props.value;
+  private get value(): string | number | (string | number)[] {
+    return this.props.value as string | number | (string | number)[]; // 类型不明啊
   }
 
   private finalizeOptionDisabled(disabled?: boolean | string, value?: unknown): boolean {
     if (typeof disabled === 'string') {
-      return safeExecute(`return ${disabled}`, {
+      return !!this.props.safeExecute(`return ${disabled}`, {
         props: {
           value,
           record: this.props.record,
@@ -258,7 +256,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     if (typeof body === 'string') {
       let finalBodyString: string | undefined = void 0;
       try {
-        finalBodyString = execute(`return ${body}`, {
+        finalBodyString = this.props.execute(`return ${body}`, {
           props: {
             record: this.props.record,
             recordIndex: this.props.recordIndex,
@@ -294,7 +292,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return response;
     }
     if (options.response?.mapper) {
-      return safeExecute(`return ${options.response?.mapper || 'response'}`, {
+      return this.props.safeExecute(`return ${options.response?.mapper || 'response'}`, {
         props: {
           response,
           ext: this.props.ext,
@@ -309,7 +307,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     const options = this.props.schema.options;
     if (options.url && !options.options) {
       this.setState({ loading: true });
-      fetch(finalizeString('pattern', options.url, this.props.record, this.props.recordIndex, this.props.ext), options.request
+      fetch(this.props.finalizeString('pattern', options.url, this.props.record, this.props.recordIndex, this.props.ext), options.request
         ? {
           method: options.request.method,
           headers: options.request.headers,
@@ -318,7 +316,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
         }
         : void 0).then(res => res.json())
         .then((json) => {
-          this.setState({ loading: false, options: this.finalizeOptionsResponse(json) });
+          this.setState({ loading: false, options: this.finalizeOptionsResponse(json) as undefined }); // 类型一塌糊涂，不懂
           return json;
         })
         .catch((error: unknown) => {

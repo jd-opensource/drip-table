@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { execute } from '@/utils/sandbox';
 import Alert from '@/components/react-components/alert';
 import RichText from '@/components/react-components/rich-text';
 import Spin from '@/components/react-components/spin';
@@ -82,7 +81,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       return <Spin tip="Loading" />;
     }
     try {
-      const html = execute(this.state.render, {
+      const html = this.props.execute(this.state.render, {
         props: {
           value: this.props.value,
           record: this.props.record,
@@ -98,7 +97,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       if (typeof html === 'number') {
         return <div>{ html }</div>;
       }
-      return <RichText html={html || ''} style={{ wordBreak: 'break-all' }} />;
+      return <RichText html={Object.prototype.toString.call(html || '')} style={{ wordBreak: 'break-all' }} />;
     } catch (error) {
       console.error(error);
     }

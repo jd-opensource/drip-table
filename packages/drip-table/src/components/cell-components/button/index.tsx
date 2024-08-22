@@ -10,13 +10,12 @@ import React from 'react';
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
 import { DRIP_TABLE_GENERIC_CSS_SCHEMA } from '@/utils/ajv';
 import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
-import { safeExecute } from '@/utils/sandbox';
 import { DripTableComponentContext } from '@/components/cell-components/hooks';
 import Button from '@/components/react-components/button';
 import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
-import { dataProcessValue, finalizeString } from '../utils';
+import { dataProcessValue } from '../utils';
 
 export type DTCButtonColumnSchema = DripTableColumnSchema<'button', {
   /**
@@ -251,7 +250,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex, this.props.ext);
+    return this.props.finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex, this.props.ext);
   }
 
   private getIcon(iconName: string) {
@@ -271,7 +270,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     if (!visibleFunc) {
       return true;
     }
-    return dataProcessValue(record, dataIndex, visibleFunc);
+    return !!dataProcessValue(this.props.execute, record, dataIndex, visibleFunc);
   }
 
   private getDisabled(disableFunc?: string): boolean {
@@ -280,13 +279,13 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     if (!disableFunc) {
       return this.props.disable ?? false;
     }
-    return dataProcessValue(record, dataIndex, disableFunc);
+    return !!dataProcessValue(this.props.execute, record, dataIndex, disableFunc);
   }
 
   private parseReactCSS(style?: string | Record<string, string>) {
     const { record, recordIndex, ext } = this.props;
     const styleObject = typeof style === 'string'
-      ? safeExecute(style, { props: { record, recordIndex, ext } })
+      ? this.props.safeExecute(style, { props: { record, recordIndex, ext } })
       : style;
     return parseReactCSS(styleObject);
   }
@@ -350,14 +349,14 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
                   title={(
                     <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '22px' }}>
                       { TitleIcon ? <TitleIcon style={this.parseReactCSS(popconfirm.titleIconStyle)} /> : null }
-                      { finalizeString('pattern', popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
+                      { this.props.finalizeString('pattern', popconfirm.title, this.props.record, this.props.recordIndex, this.props.ext) }
                     </div>
                   )}
                   overlay={(
                     <div>
                       <div style={{ fontSize: '14px', fontWeight: '400', lineHeight: '22px', marginTop: '4px' }}>
                         { ContentIcon ? <ContentIcon style={this.parseReactCSS(popconfirm.contentIconStyle)} /> : null }
-                        { finalizeString('pattern', popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
+                        { this.props.finalizeString('pattern', popconfirm.content, this.props.record, this.props.recordIndex, this.props.ext) }
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
                         {
@@ -429,7 +428,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
             }
           }}
         >
-          { finalizeString('pattern', config.label || '', this.props.record, this.props.recordIndex, this.props.ext) }
+          { this.props.finalizeString('pattern', config.label || '', this.props.record, this.props.recordIndex, this.props.ext) }
         </Button>
       ));
     }

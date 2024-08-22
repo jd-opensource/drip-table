@@ -33,7 +33,6 @@ import * as childrenLike from '@/utils/children-like';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
-import { createExecutor, execute, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
 import { preventEvent } from '@/components/cell-components/utils';
 import Checkbox from '@/components/react-components/checkbox';
@@ -168,8 +167,9 @@ const hookColumRender = <
     columnIndex: number,
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     rcTableInfo: RcTableInfo,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'> & Pick<IDripTableContext<RecordType, ExtraOptions>['state'], 'sorter'>,
+    extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): TableColumnType<RcTableRecordType<RecordType>> => {
+  const { safeExecute, state: { sorter } } = useTableContext<RecordType, ExtraOptions>();
   const render = column.render;
   column.render = (d, row, index) => {
     if (rcTableInfo.cellConfigConflictIDs[rcTableInfo.cellConfigs[index]?.[columnIndex]?.spanGroupID ?? '']) {
@@ -194,7 +194,7 @@ const hookColumRender = <
                   tdEl.dataset.basicStyle = stringifyCSS(Object.assign(
                     {
                       'text-align': columnSchema.align,
-                      background: extraProps.sorter?.key === columnSchema.key ? 'var(--drip-table-column-sorted-background-color, inherit)' : void 0,
+                      background: sorter?.key === columnSchema.key ? 'var(--drip-table-column-sorted-background-color, inherit)' : void 0,
                     },
                     parseStyleSchema(columnSchema.style),
                   ));
@@ -237,7 +237,6 @@ export const columnRenderGenerator = <
     columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
-  const context = useTableContext();
   if ('component' in (columnSchema as DripTableBuiltInColumnSchema)) {
     const BuiltInComponent = extraProps.defaultComponentLib
       ? null
@@ -257,7 +256,7 @@ export const columnRenderGenerator = <
       }
       if (typeof translatorSchema === 'string') {
         try {
-          const translate = (context.props.createExecutor ?? createExecutor)(translatorSchema, ['props']);
+          const translate = extraProps.createExecutor(translatorSchema, ['props']);
           return (v, c) => {
             try {
               return translate?.(c);
@@ -297,9 +296,10 @@ export const columnRenderGenerator = <
               const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
               return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
             }}
-            createExecutor={context.props.createExecutor ?? createExecutor}
-            execute={context.props.execute ?? execute}
-            safeExecute={context.props.safeExecute ?? safeExecute}
+            createExecutor={extraProps.createExecutor}
+            execute={extraProps.execute}
+            safeExecute={extraProps.safeExecute}
+            finalizeString={extraProps.finalizeString}
             preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
@@ -345,9 +345,10 @@ export const columnRenderGenerator = <
                 const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
                 return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
               }}
-              createExecutor={context.props.createExecutor ?? createExecutor}
-              execute={context.props.execute ?? execute}
-              safeExecute={context.props.safeExecute ?? safeExecute}
+              createExecutor={extraProps.createExecutor}
+              execute={extraProps.execute}
+              safeExecute={extraProps.safeExecute}
+              finalizeString={extraProps.finalizeString}
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
@@ -381,7 +382,7 @@ export const columnGenerator = <
 >(
     tableInfo: DripTableTableInformation<RecordType, ExtraOptions>,
     columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
-    extraProps: Pick<DripTableProps<RecordType, ExtraOptions>, 'components' | 'ext' | 'onEvent' | 'onDataSourceChange'>,
+    extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): TableColumnType<RcTableRecordType<RecordType>> => {
   let width = String(columnSchema.width).trim();
   if ((/^[0-9]+$/uig).test(width)) {
@@ -453,6 +454,7 @@ interface VirtualCellItemData {
 }
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
+  const { safeExecute } = useTableContext();
   const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys, ext } = data;
   const columnBaseSchema = childrenLike.findRecursive(columnsBaseSchema, (_, i) => i === columnIndex) as DripTableBaseColumnSchema;
   const column = childrenLike.findRecursive(columns, (_, i) => i === columnIndex) as TableColumnType<unknown>;
@@ -896,7 +898,7 @@ function TableLayout<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps): JSX.Element {
-  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState, createExecutor, execute, safeExecute, finalizeString } = useTableContext<RecordType, ExtraOptions>();
   const tableUUID = tableInfo.uuid;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
@@ -1151,7 +1153,7 @@ function TableLayout<
     }
     // 动态合并单元格
     if (spanSchema.generator) {
-      const generator = (tableProps.createExecutor ?? createExecutor)(spanSchema.generator, ['props']);
+      const generator = createExecutor(spanSchema.generator, ['props']);
       for (const [rowIndex, record] of pageDataSource.entries()) {
         for (const [columnIndex, columnSchema] of flattenColumns.entries()) {
           const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
@@ -1243,14 +1245,17 @@ function TableLayout<
 
   const rcTableColumnsRAW = React.useMemo(
     (): TableColumnsType<RcTableRecordType<RecordType>> => {
-      const extraProps = {
+      const extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'] = {
         components: tableProps.components,
         defaultComponentLib: tableProps.defaultComponentLib,
         icons: tableProps.icons,
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
-        sorter: tableState.sorter,
+        createExecutor,
+        execute,
+        safeExecute,
+        finalizeString,
       };
       const visibleColumns = childrenLike.filterRecursive(
         tableProps.schema.columns,

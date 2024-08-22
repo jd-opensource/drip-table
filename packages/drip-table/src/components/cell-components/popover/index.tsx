@@ -16,7 +16,6 @@ import {
   type SchemaObject,
 } from '@/types';
 import { parseReactCSS, parseThemeCSS } from '@/utils/dom';
-import { safeExecute } from '@/utils/sandbox';
 import { DripTableComponentContext } from '@/components/cell-components/hooks';
 import Tooltip from '@/components/react-components/tooltip';
 import { type ExtractDripTableExtraOption } from '@/index';
@@ -136,7 +135,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   private parseReactCSS(style?: string | Record<string, string>) {
     const { record, recordIndex, ext } = this.props;
     const styleObject = typeof style === 'string'
-      ? safeExecute(style, { props: { record, recordIndex, ext } })
+      ? this.props.safeExecute(style, { props: { record, recordIndex, ext } })
       : style;
     return parseReactCSS(styleObject);
   }

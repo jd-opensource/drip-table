@@ -17,7 +17,6 @@ import RichText from '@/components/react-components/rich-text';
 import Tooltip from '@/components/react-components/tooltip';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
 
 const prefixCls = 'jfe-drip-table-cc-rich-text';
 
@@ -55,7 +54,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     if (tooltip) {
       return (
         <div style={{ marginLeft: 8 }}>
-          <Tooltip title={finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex, this.props.ext)}>
+          <Tooltip title={this.props.finalizeString('pattern', tooltip, this.props.record, this.props.recordIndex, this.props.ext)}>
             { this.renderInfoCircle() }
           </Tooltip>
         </div>
@@ -70,7 +69,7 @@ export default class DTCRichText<RecordType extends DripTableRecordTypeBase> ext
     try {
       const html = options.render.replace(
         /\{\{(.+?)\}\}/guis, (s, s1) =>
-          finalizeString('script', `return ${s1}`, record, recordIndex, this.props.ext),
+          this.props.finalizeString('script', `return ${s1}`, record, recordIndex, this.props.ext),
       );
       return (
         <div className={`${prefixCls}-container`}>

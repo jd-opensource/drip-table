@@ -12,11 +12,9 @@ import {
   DripTableRecordTypeBase,
   SchemaObject,
 } from '@/types';
-import { safeExecute } from '@/utils/sandbox';
 import Checkbox from '@/components/react-components/checkbox';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
 
 export type DTCCheckboxColumnSchema = DripTableColumnSchema<'checkbox', {
   style?: React.CSSProperties;
@@ -112,7 +110,7 @@ export default class DTCCheckbox<
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return safeExecute(
+      return !!this.props.safeExecute(
         `return ${disable}`,
         {
           props: {
@@ -152,7 +150,7 @@ export default class DTCCheckbox<
       return (options.options || []).map((option, index) => (
         <Checkbox
           key={index}
-          label={finalizeString(
+          label={this.props.finalizeString(
             'pattern',
             option.label ?? '',
             record,
@@ -162,7 +160,7 @@ export default class DTCCheckbox<
           checked={this.state.checkedValues?.includes(option.value)}
           disabled={
             typeof option.disabled === 'string'
-              ? safeExecute(option.disabled, {
+              ? this.props.safeExecute(option.disabled, {
                 props: { record, recordIndex, ext },
               })
               : option.disabled
@@ -203,7 +201,7 @@ export default class DTCCheckbox<
         disabled={this.disabled}
         defaultChecked={this.value as boolean}
         checked={options.bindValue === false ? void 0 : (this.value as boolean)}
-        label={finalizeString(
+        label={this.props.finalizeString(
           'pattern',
           options.label ?? '',
           record,

@@ -12,6 +12,7 @@ import type { SandboxCreateExecutor, SandboxExecute, SandboxSafeExecute } from '
 import type { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
 
 import type { DripTableBuiltInComponentEvent } from '.';
+import type { FinalizeString } from './utils';
 
 export interface DripTableComponentProps<
   RecordType extends DripTableRecordTypeBase,
@@ -60,6 +61,10 @@ export interface DripTableComponentProps<
    * 安全沙箱执行器
    */
   safeExecute: SandboxSafeExecute;
+  /**
+   * 格式化模板字符串
+   */
+  finalizeString: FinalizeString;
   /**
    * 是否处于禁用状态
    */

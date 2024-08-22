@@ -8,7 +8,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { safeExecute } from '@/utils/sandbox';
 import Switch from '@/components/react-components/switch';
 
 import { DripTableComponentProps } from '../component';
@@ -66,7 +65,7 @@ export default class DTCSwitch<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return safeExecute(`return ${disable}`, {
+      return !!this.props.safeExecute(`return ${disable}`, {
         props: {
           value: this.props.value,
           record: this.props.record,

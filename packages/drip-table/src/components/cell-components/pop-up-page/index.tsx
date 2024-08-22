@@ -14,7 +14,6 @@ import Button from '@/components/react-components/button';
 import Modal from '@/components/react-components/modal';
 
 import { DripTableComponentProps } from '../component';
-import { finalizeString } from '../utils';
 
 const prefixCls = 'jfe-drip-table-cc-pop-up-page';
 
@@ -65,7 +64,7 @@ export default class DTCPopUpPage<RecordType extends DripTableRecordTypeBase> ex
 
   private get label() {
     const options = this.props.schema.options;
-    return finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex, this.props.ext);
+    return this.props.finalizeString('pattern', options.label || '', this.props.record, this.props.recordIndex, this.props.ext);
   }
 
   private handlePopUpVisible = () => {

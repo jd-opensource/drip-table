@@ -12,7 +12,6 @@ import classNames from 'classnames';
 import type { ColumnType as TableColumnType } from 'rc-table/lib/interface';
 import React from 'react';
 
-import { safeExecute } from '@/utils/sandbox';
 import SlotRender from '@/components/react-components/slot-render';
 import { useTableContext } from '@/hooks';
 import { type DripTableBuiltInColumnSchema, type DripTableExtraOptions, type DripTableRecordTypeBase, type DripTableRecordTypeWithSubtable, type ExtractDripTableExtraOption, indexValue } from '@/index';
@@ -44,7 +43,7 @@ function HeaderCell<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<ExtraOptions>) {
-  const { props: tableProps, state: tableState, setState: setTableState } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, state: tableState, setState: setTableState, safeExecute } = useTableContext<RecordType, ExtraOptions>();
   const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
   const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
   const children = props.children;
@@ -95,21 +94,27 @@ function HeaderCell<
             sorter: {
               key: columnSchema.key,
               direction,
-              comparer: (a, b) => (direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
-                props: {
-                  column: columnSchema,
-                  leftRecord: a,
-                  rightRecord: b,
-                  leftValue: indexValue(a, columnSchema.dataIndex),
-                  rightValue: indexValue(b, columnSchema.dataIndex),
-                  ext: tableProps.ext,
-                },
-              }, 0),
+              comparer: (a, b) => {
+                let multiply = safeExecute(columnSchema.sorter || '', {
+                  props: {
+                    column: columnSchema,
+                    leftRecord: a,
+                    rightRecord: b,
+                    leftValue: indexValue(a, columnSchema.dataIndex),
+                    rightValue: indexValue(b, columnSchema.dataIndex),
+                    ext: tableProps.ext,
+                  },
+                }, 1);
+                if (typeof multiply !== 'number') {
+                  multiply = 1;
+                }
+                return (direction === 'ascend' ? 1 : -1) * multiply;
+              },
             },
             sorterChanged: true,
           });
         }
-      }, [columnSchema.key, tableState.sorter])}
+      }, [columnSchema.key, tableState.sorter, safeExecute])}
     >
       <div className={prefixCls} ref={props.onRef}>
         <div className={`${prefixCls}-content`} style={{ justifyContent }}>
@@ -156,16 +161,22 @@ function HeaderCell<
                         sorter: {
                           key: sorter.key,
                           direction: sorter.direction,
-                          comparer: (a, b) => (sorter.direction === 'ascend' ? 1 : -1) * safeExecute(columnSchema.sorter || '', {
-                            props: {
-                              column: columnSchema,
-                              leftRecord: a,
-                              rightRecord: b,
-                              leftValue: indexValue(a, columnSchema.dataIndex),
-                              rightValue: indexValue(b, columnSchema.dataIndex),
-                              ext: tableProps.ext,
-                            },
-                          }, 0),
+                          comparer: (a, b) => {
+                            let multiply = safeExecute(columnSchema.sorter || '', {
+                              props: {
+                                column: columnSchema,
+                                leftRecord: a,
+                                rightRecord: b,
+                                leftValue: indexValue(a, columnSchema.dataIndex),
+                                rightValue: indexValue(b, columnSchema.dataIndex),
+                                ext: tableProps.ext,
+                              },
+                            }, 1);
+                            if (typeof multiply !== 'number') {
+                              multiply = 1;
+                            }
+                            return (sorter.direction === 'ascend' ? 1 : -1) * multiply;
+                          },
                         },
                         sorterChanged: true,
                       });

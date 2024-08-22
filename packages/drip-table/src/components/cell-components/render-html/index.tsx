@@ -9,7 +9,6 @@
 import React from 'react';
 
 import { DripTableColumnSchema, DripTableRecordTypeBase, SchemaObject } from '@/types';
-import { execute } from '@/utils/sandbox';
 import Alert from '@/components/react-components/alert';
 import ErrorBoundary from '@/components/react-components/error-boundary';
 import RichText from '@/components/react-components/rich-text';
@@ -37,7 +36,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
   public render(): JSX.Element {
     const { record, recordIndex, schema: { options }, ext } = this.props;
     try {
-      const html = execute(options.render, {
+      const html = this.props.execute(options.render, {
         props: {
           value: this.props.value,
           record,
@@ -54,7 +53,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
       if (typeof html === 'number') {
         return <div>{ html }</div>;
       }
-      return <ErrorBoundary><RichText html={html || ''} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>;
+      return <ErrorBoundary><RichText html={Object.prototype.toString.call(html || '')} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>;
     } catch (error) {
       console.error(error);
     }

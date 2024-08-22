@@ -43,17 +43,19 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
 };
 export type SandboxCreateExecutor = typeof createExecutor;
 
+export type SandboxExecute =
 /**
  * 指定上下文，执行 JavaScript 代码段
  *
+ * @param creator 通过 JavaScript 代码字符串创建函数
  * @param script JavaScript 代码段
  * @param context 上下文变量键值对
  * @returns 代码段返回结果
  * @throws Error 代码执行异常
  */
-export const execute = (script: string, context: Record<string, unknown> = {}) => createExecutor(script, Object.keys(context))?.(...Object.values(context));
-export type SandboxExecute = typeof execute;
+<T = unknown>(script: string, context: Record<string, unknown>) => T;
 
+export type SandboxSafeExecute =
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误
  *
@@ -62,12 +64,4 @@ export type SandboxExecute = typeof execute;
  * @param defaultValue 异常时的默认返回值
  * @returns 代码段返回结果，异常时返回默认结果
  */
-export const safeExecute = (script: string, context: Record<string, unknown> = {}, defaultValue: unknown = void 0) => {
-  try {
-    return execute(script, context);
-  } catch (error) {
-    console.warn(error);
-  }
-  return defaultValue;
-};
-export type SandboxSafeExecute = typeof safeExecute;
+<T = unknown>(script: string, context: Record<string, unknown>, defaultValue?: T) => T | undefined;

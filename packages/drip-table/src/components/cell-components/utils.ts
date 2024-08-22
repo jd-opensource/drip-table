@@ -6,11 +6,9 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
-import get from 'lodash/get';
-
 import { DripTableRecordTypeBase } from '@/types';
 import { indexValue } from '@/utils/operator';
-import { execute } from '@/utils/sandbox';
+import { SandboxExecute } from '@/utils/sandbox';
 
 /**
  * 格式化变量用于提供给渲染函数
@@ -29,6 +27,7 @@ export const stringify = (v: unknown) => {
   return String(v);
 };
 
+export type FinalizeString =
 /**
  * 格式化模板字符串，填充变量值
  * @param mode 格式化模式
@@ -38,48 +37,7 @@ export const stringify = (v: unknown) => {
  * @param ext 透传自定义额外数据
  * @returns 最终字符串
  */
-export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex: number, ext: unknown) => {
-  let value = '';
-  if (!mode || mode === 'plain') {
-    value = stringify(text);
-  } else if (mode === 'key') {
-    value = stringify(get(record, text, ''));
-  } else if (mode === 'pattern') {
-    value = stringify(text)
-      .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
-        try {
-          return execute(`return ${s1}`, {
-            props: {
-              record,
-              recordIndex,
-              ext,
-            },
-            rec: record,
-          });
-        } catch (error) {
-          return error instanceof Error
-            ? `{{Render Error: ${error.message}}}`
-            : '{{Unknown Render Error}}';
-        }
-      });
-  } else if (mode === 'script') {
-    try {
-      value = stringify(execute(text, {
-        props: {
-          record,
-          recordIndex,
-          ext,
-        },
-        rec: record,
-      }));
-    } catch (error) {
-      value = error instanceof Error
-        ? `Render Error: ${error.message}`
-        : 'Unknown Render Error';
-    }
-  }
-  return value;
-};
+(mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex: number, ext: unknown) => string;
 
 /**
  * 抑制事件处理函数默认行为
@@ -94,13 +52,20 @@ export const preventEvent = (e: React.BaseSyntheticEvent) => {
 
 /**
  * 获取对象的经过数据处理后的最终值 WHAT THE HELL IS THIS??
+ * @param execute 执行器
  * @param data 基础对象
  * @param indexes 下标或下标数组
  * @param defaultValue 默认值
  * @param dataProcess 数据处理的语句
  * @returns 值
  */
-export const dataProcessIndex = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, defaultValue: unknown = void 0, dataProcess: string | undefined = void 0) => {
+export const dataProcessIndex = (
+  execute: SandboxExecute,
+  data: unknown,
+  indexes: string | number | readonly (string | number)[] | undefined,
+  defaultValue: unknown = void 0,
+  dataProcess: string | undefined = void 0,
+) => {
   const value = indexValue(data, indexes, defaultValue);
   if (dataProcess) {
     try {
@@ -116,12 +81,18 @@ export const dataProcessIndex = (data: unknown, indexes: string | number | reado
 
 /**
  * 获取数据处理的运行结果 WHAT THE HELL IS THIS??
+ * @param execute 执行器
  * @param data 基础对象
  * @param indexes 下标或下标数组
  * @param funcText 数据处理的语句
  * @returns 值
  */
-export const dataProcessValue = (data: unknown, indexes: string | number | readonly (string | number)[] | undefined, funcText?: string) => {
+export const dataProcessValue = (
+  execute: SandboxExecute,
+  data: unknown,
+  indexes: string | number | readonly (string | number)[] | undefined,
+  funcText?: string,
+) => {
   const value = indexValue(data, indexes, '');
   if (funcText) {
     try {

@@ -6,6 +6,9 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import { DripTableRecordTypeBase } from 'drip-table';
+import get from 'lodash/get';
+
 /**
  * 执行器缓存，优化性能
  */
@@ -65,4 +68,73 @@ export const safeExecute = (script: string, context: Record<string, unknown> = {
     console.warn(error);
   }
   return defaultValue;
+};
+
+/**
+ * 格式化变量用于提供给渲染函数
+ * @param v 任意数据
+ * @returns 渲染字符串
+ */
+export const stringify = (v: unknown) => {
+  if (typeof v === 'object' && v !== null) {
+    try {
+      v = JSON.stringify(v);
+    } catch {}
+  }
+  if (v === void 0) {
+    return '';
+  }
+  return String(v);
+};
+
+/**
+ * 格式化模板字符串，填充变量值
+ * @param mode 格式化模式
+ * @param text 模板字符串
+ * @param record 填充数据源对象
+ * @param recordIndex 填充数据源下标
+ * @param ext 透传自定义额外数据
+ * @returns 最终字符串
+ */
+export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', text: string, record: DripTableRecordTypeBase, recordIndex: number, ext: unknown): string => {
+  let value = '';
+  if (!mode || mode === 'plain') {
+    value = stringify(text);
+  } else if (mode === 'key') {
+    value = stringify(get(record, text, ''));
+  } else if (mode === 'pattern') {
+    value = stringify(text)
+      .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
+        try {
+          return execute(`return ${s1}`, {
+            props: {
+              record,
+              recordIndex,
+              ext,
+            },
+            rec: record,
+          });
+        } catch (error) {
+          return error instanceof Error
+            ? `{{Render Error: ${error.message}}}`
+            : '{{Unknown Render Error}}';
+        }
+      });
+  } else if (mode === 'script') {
+    try {
+      value = stringify(execute(text, {
+        props: {
+          record,
+          recordIndex,
+          ext,
+        },
+        rec: record,
+      }));
+    } catch (error) {
+      value = error instanceof Error
+        ? `Render Error: ${error.message}`
+        : 'Unknown Render Error';
+    }
+  }
+  return value;
 };

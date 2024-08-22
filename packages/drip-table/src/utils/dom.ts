@@ -14,7 +14,7 @@ import React from 'react';
  * @param style target style: can be css object, react style object, css string
  * @returns React CSS Properties Object
  */
-export const parseReactCSS = (style: string | Record<string, string>): React.CSSProperties => {
+export const parseReactCSS = (style: string | Record<string, string> | unknown): React.CSSProperties => {
   if (typeof style === 'string') {
     style = Object.fromEntries(
       style
@@ -40,7 +40,7 @@ export const parseReactCSS = (style: string | Record<string, string>): React.CSS
  * @param style target style: can be css object, react style object, css string
  * @returns CSS Properties Object
  */
-export const parseCSS = (style: string | Record<string, string>): Record<string, string> => {
+export const parseCSS = (style: string | Record<string, string> | unknown): Record<string, string> => {
   if (typeof style === 'string') {
     style = Object.fromEntries(
       style

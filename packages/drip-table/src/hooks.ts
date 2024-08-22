@@ -11,6 +11,9 @@ import React from 'react';
 import type { SetStateAction } from '@/utils/hooks';
 import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from '@/types';
 
+import { FinalizeString } from './components/cell-components/utils';
+import type { SandboxCreateExecutor, SandboxExecute, SandboxSafeExecute } from './utils/sandbox';
+
 export interface IDripTableContext<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
@@ -56,6 +59,22 @@ export interface IDripTableContext<
    * 设置表格状态
    */
   setState: (state: SetStateAction<IDripTableContext['state']>) => void;
+  /**
+   * 创建沙箱函数
+   */
+  createExecutor: SandboxCreateExecutor;
+  /**
+   * 沙箱函数执行器
+   */
+  execute: SandboxExecute;
+  /**
+   * 安全的沙箱函数执行器
+   */
+  safeExecute: SandboxSafeExecute;
+  /**
+   * 格式化模板字符串
+   */
+  finalizeString: FinalizeString;
 }
 
 export const createTableState = (): IDripTableContext['state'] => ({
@@ -97,6 +116,10 @@ export const DripTableContext = React.createContext<IDripTableContext>({
   },
   state: createTableState(),
   setState: () => void 0,
+  createExecutor: () => void 0,
+  execute: <T = unknown>() => void 0 as T,
+  safeExecute: () => void 0,
+  finalizeString: () => '',
 });
 
 export const useTableContext = <

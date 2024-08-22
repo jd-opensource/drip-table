@@ -16,6 +16,7 @@ import DatePicker from '@/components/react-components/date-picker';
 import { useTableContext } from '@/hooks';
 import { type ExtractDripTableExtraOption, TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator } from '@/index';
 
+import { DripTableColumnRenderOptions } from '../table/types';
 import { finalizeColumnTitle } from '../table/utils';
 import { TableLayoutComponentProps } from '../types';
 
@@ -23,16 +24,20 @@ function CalendarLayout<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps): JSX.Element {
-  const { props: tableProps, info: tableInfo, state: tableState } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, info: tableInfo, state: tableState, createExecutor, execute, safeExecute, finalizeString } = useTableContext<RecordType, ExtraOptions>();
   const dataSource = tableProps.dataSource;
 
   const dateRender = (date: Moment, today: Moment, dataSources: RecordType[]) => {
     const record = dataSources.find(o => moment(o.startDate as string).isSame(date, 'date'));
-    const extraProps = {
+    const extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'] = {
       components: tableProps.components,
       ext: tableProps.ext,
       onEvent: tableProps.onEvent,
       onDataSourceChange: tableProps.onDataSourceChange,
+      createExecutor,
+      execute,
+      safeExecute,
+      finalizeString,
     };
 
     return (
