@@ -15,6 +15,7 @@ import ViewerJS from 'viewerjs';
 
 import { createExecutor } from '@/utils/sandbox';
 import Highlight, { HighlightProps } from '@/components/react-components/highlight';
+import { DripTableContext } from '@/hooks';
 
 type UppercaseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
 type HTMLTagName = string;
@@ -400,6 +401,9 @@ interface ReducerRenderValue {
  * 高亮文本
  */
 export default class RichText extends React.PureComponent<RichTextProps> {
+  public static contextType = DripTableContext;
+  declare public context: React.ContextType<typeof DripTableContext>;
+
   private viewer!: ViewerJS;
 
   /**
@@ -468,7 +472,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
           Object.entries(attribs)
             .map(([k, v]) => [domEvents[k.toLowerCase()], v])
             .filter(([k, v]) => k)
-            .map(([k, v]) => [k, createExecutor(v)]),
+            .map(([k, v]) => [k, (this.context?.props.createExecutor ?? createExecutor)(v)]),
         ),
         // static props 静态属性
         key,

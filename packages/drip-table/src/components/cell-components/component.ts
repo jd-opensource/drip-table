@@ -8,9 +8,10 @@
 
 import React from 'react';
 
-import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
+import type { SandboxCreateExecutor, SandboxExecute, SandboxSafeExecute } from '@/utils/sandbox';
+import type { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
 
-import { DripTableBuiltInComponentEvent } from '.';
+import type { DripTableBuiltInComponentEvent } from '.';
 
 export interface DripTableComponentProps<
   RecordType extends DripTableRecordTypeBase,
@@ -47,6 +48,18 @@ export interface DripTableComponentProps<
    * 手动渲染组件 Schema
    */
   renderSchema: (schema: DripTableColumnSchema, record: RecordType, recordIndex: number) => React.ReactNode;
+  /**
+   * 沙箱生成器
+   */
+  createExecutor: SandboxCreateExecutor;
+  /**
+   * 沙箱执行器
+   */
+  execute: SandboxExecute;
+  /**
+   * 安全沙箱执行器
+   */
+  safeExecute: SandboxSafeExecute;
   /**
    * 是否处于禁用状态
    */

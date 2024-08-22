@@ -41,6 +41,7 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
   resetExecutorGC();
   return executor;
 };
+export type SandboxCreateExecutor = typeof createExecutor;
 
 /**
  * 指定上下文，执行 JavaScript 代码段
@@ -51,6 +52,7 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
  * @throws Error 代码执行异常
  */
 export const execute = (script: string, context: Record<string, unknown> = {}) => createExecutor(script, Object.keys(context))?.(...Object.values(context));
+export type SandboxExecute = typeof execute;
 
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误
@@ -68,3 +70,4 @@ export const safeExecute = (script: string, context: Record<string, unknown> = {
   }
   return defaultValue;
 };
+export type SandboxSafeExecute = typeof safeExecute;

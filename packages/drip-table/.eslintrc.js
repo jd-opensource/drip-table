@@ -22,6 +22,7 @@ const javascriptRules = {
   'react/jsx-no-bind': 'off',
   'react/prop-types': 'off',
   'react/sort-comp': 'off',
+  'react/static-property-placement': 'off',
   'unicorn/no-array-callback-reference': 'off',
   'unicorn/no-array-for-each': 'off',
   'unicorn/no-array-reduce': 'off',

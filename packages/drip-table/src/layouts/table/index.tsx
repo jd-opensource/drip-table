@@ -33,7 +33,7 @@ import * as childrenLike from '@/utils/children-like';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
-import { createExecutor, safeExecute } from '@/utils/sandbox';
+import { createExecutor, execute, safeExecute } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
 import { preventEvent } from '@/components/cell-components/utils';
 import Checkbox from '@/components/react-components/checkbox';
@@ -237,6 +237,7 @@ export const columnRenderGenerator = <
     columnSchema: DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>,
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): NonNullable<TableColumnType<RcTableRecordType<RecordType>>['render']> => {
+  const context = useTableContext();
   if ('component' in (columnSchema as DripTableBuiltInColumnSchema)) {
     const BuiltInComponent = extraProps.defaultComponentLib
       ? null
@@ -256,7 +257,7 @@ export const columnRenderGenerator = <
       }
       if (typeof translatorSchema === 'string') {
         try {
-          const translate = createExecutor(translatorSchema, ['props']);
+          const translate = (context.props.createExecutor ?? createExecutor)(translatorSchema, ['props']);
           return (v, c) => {
             try {
               return translate?.(c);
@@ -296,6 +297,9 @@ export const columnRenderGenerator = <
               const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
               return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
             }}
+            createExecutor={context.props.createExecutor ?? createExecutor}
+            execute={context.props.execute ?? execute}
+            safeExecute={context.props.safeExecute ?? safeExecute}
             preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
@@ -341,6 +345,9 @@ export const columnRenderGenerator = <
                 const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
                 return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
               }}
+              createExecutor={context.props.createExecutor ?? createExecutor}
+              execute={context.props.execute ?? execute}
+              safeExecute={context.props.safeExecute ?? safeExecute}
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
@@ -1144,7 +1151,7 @@ function TableLayout<
     }
     // 动态合并单元格
     if (spanSchema.generator) {
-      const generator = createExecutor(spanSchema.generator, ['props']);
+      const generator = (tableProps.createExecutor ?? createExecutor)(spanSchema.generator, ['props']);
       for (const [rowIndex, record] of pageDataSource.entries()) {
         for (const [columnIndex, columnSchema] of flattenColumns.entries()) {
           const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
