@@ -45,6 +45,11 @@ export const getComponentsConfigs = <
   if (customComponentPanel) {
     const customComponents = customComponentPanel.configs;
     componentsToUse = customComponentPanel.mode === 'add' ? [...tableComponents, ...customComponents] : [...customComponents];
+    if (customComponentPanel.exclude) {
+      componentsToUse = componentsToUse.filter(item => !customComponentPanel.exclude?.includes(item['ui:type']));
+    } else if (customComponentPanel.filter) {
+      componentsToUse = componentsToUse.filter(customComponentPanel.filter);
+    }
   }
   return groupName ? [...componentsToUse].filter(item => item.group === groupName) : [...componentsToUse];
 };

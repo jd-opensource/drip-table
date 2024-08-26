@@ -13,6 +13,8 @@ type DripTableGeneratorPanel = {
   mode: "add" | "replace";
   configs: DripTableComponentAttrConfig[];
   orders?: string[];
+  exclude?: string[];
+  filter?: (item: DripTableComponentAttrConfig) => boolean;
 };
 ```
 

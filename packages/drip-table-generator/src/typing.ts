@@ -129,6 +129,8 @@ export interface DripTableGeneratorPanel<T> {
   mode: 'add' | 'replace';
   configs: T[];
   orders?: string[];
+  exclude?: string[];
+  filter?: (item: DripTableComponentAttrConfig) => boolean;
 }
 
 export interface DTGCustomThemeOptions<
