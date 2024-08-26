@@ -40,7 +40,11 @@ export const getGroups = <
 export const getComponentsConfigs = <
   RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(groupName?: string, customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
+>(
+    groupName?: string,
+    customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'],
+    filterType?: string,
+  ) => {
   let componentsToUse = cloneDeep(tableComponents);
   if (customComponentPanel) {
     const customComponents = customComponentPanel.configs;
@@ -48,7 +52,7 @@ export const getComponentsConfigs = <
     if (customComponentPanel.exclude) {
       componentsToUse = componentsToUse.filter(item => !customComponentPanel.exclude?.includes(item['ui:type']));
     } else if (customComponentPanel.filter) {
-      componentsToUse = componentsToUse.filter(customComponentPanel.filter);
+      componentsToUse = componentsToUse.filter(item => customComponentPanel.filter?.(item, filterType));
     }
   }
   return groupName ? [...componentsToUse].filter(item => item.group === groupName) : [...componentsToUse];

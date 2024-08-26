@@ -69,7 +69,7 @@ RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSour
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentsSelectorProps<RecordType, ExtraOptions>) {
   const [groups, setGroups] = React.useState(getGroups(props.customComponentPanel));
-  const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel));
+  const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel, 'ComponentsSelector'));
   const [title, setTitle] = React.useState('');
   const [componentConfig, setComponentConfig] = React.useState(void 0 as DripTableComponentAttrConfig | undefined);
   const [popoverConfig, setPopoverConfig] = React.useState(void 0 as DripTableComponentAttrConfig | undefined);
@@ -79,7 +79,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     setTitle('');
     setComponentConfig(void 0);
     setGroups(getGroups(props.customComponentPanel));
-    setComponents(getComponentsConfigs('', props.customComponentPanel));
+    setComponents(getComponentsConfigs('', props.customComponentPanel, 'ComponentsSelector'));
   }, []);
 
   React.useEffect(() => {

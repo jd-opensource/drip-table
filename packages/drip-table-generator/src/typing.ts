@@ -130,7 +130,7 @@ export interface DripTableGeneratorPanel<T> {
   configs: T[];
   orders?: string[];
   exclude?: string[];
-  filter?: (item: DripTableComponentAttrConfig) => boolean;
+  filter?: (item: DripTableComponentAttrConfig, filterType?: string) => boolean;
 }
 
 export interface DTGCustomThemeOptions<
