@@ -61,6 +61,7 @@ toc: content
 | [renderSelection](/drip-table/props/render-selection) | 自定义多选 | × | [🔗 示例](/drip-table/props/render-selection) |
 | [renderPagination](/drip-table/props/render-pagination) | 自定义分页器 | × | [🔗 示例](/drip-table/props/render-pagination) |
 | [renderHeaderCellFilter](/drip-table/props/render-header-cell-filter) | 自定义列头筛选器 | × | [🔗 示例](/drip-table/props/render-header-cell-filter) |
+| [createEvaluator](/drip-table/props/create-evaluator) | 自定义沙箱 | × | [🔗 示例](/drip-table/props/create-evaluator) |
 
 ### 示例
 

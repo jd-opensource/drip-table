@@ -207,6 +207,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '自定义多选 renderSelection', link: '/drip-table/props/render-selection' },
           { title: '自定义分页器 renderPagination', link: '/drip-table/props/render-pagination' },
           { title: '自定义列头筛选器 renderHeaderCellFilter', link: '/drip-table/props/render-header-cell-filter' },
+          { title: '自定义沙箱 createEvaluator', link: '/drip-table/props/create-evaluator' },
         ],
       },
       {
