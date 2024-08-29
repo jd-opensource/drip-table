@@ -12,7 +12,7 @@ import type { SetStateAction } from '@/utils/hooks';
 import type { DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from '@/types';
 
 import { FinalizeString } from './components/cell-components/utils';
-import type { SandboxCreateExecutor, SandboxExecute, SandboxSafeExecute } from './utils/sandbox';
+import type { SandboxCreateEvaluator, SandboxEvaluate, SandboxSafeEvaluate } from './utils/sandbox';
 
 export interface IDripTableContext<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>,
@@ -62,15 +62,15 @@ export interface IDripTableContext<
   /**
    * 创建沙箱函数
    */
-  createExecutor: SandboxCreateExecutor;
+  createEvaluator: SandboxCreateEvaluator;
   /**
    * 沙箱函数执行器
    */
-  execute: SandboxExecute;
+  evaluate: SandboxEvaluate;
   /**
    * 安全的沙箱函数执行器
    */
-  safeExecute: SandboxSafeExecute;
+  safeEvaluate: SandboxSafeEvaluate;
   /**
    * 格式化模板字符串
    */
@@ -116,9 +116,9 @@ export const DripTableContext = React.createContext<IDripTableContext>({
   },
   state: createTableState(),
   setState: () => void 0,
-  createExecutor: () => void 0,
-  execute: <T = unknown>() => void 0 as T,
-  safeExecute: () => void 0,
+  createEvaluator: () => void 0,
+  evaluate: <T = unknown>() => void 0 as T,
+  safeEvaluate: () => void 0,
   finalizeString: () => '',
 });
 

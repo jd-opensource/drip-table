@@ -21,7 +21,7 @@ import {
 } from '@/types';
 import { getDripTableValidatePropsKeys, validateDripTableColumnSchema, validateDripTableProp, validateDripTableRequiredProps } from '@/utils/ajv';
 import { useState } from '@/utils/hooks';
-import { type SandboxCreateExecutor, type SandboxExecute, type SandboxSafeExecute, createExecutor as defaultCreateExecutor } from '@/utils/sandbox';
+import { type SandboxCreateEvaluator, type SandboxEvaluate, type SandboxSafeEvaluate, createEvaluator as defaultCreateExecutor } from '@/utils/sandbox';
 import DripTableBuiltInComponents from '@/components/cell-components';
 import { createTableComponentState, DripTableComponentContext, IDripTableComponentContext } from '@/components/cell-components/hooks';
 import { type FinalizeString, stringify } from '@/components/cell-components/utils';
@@ -198,9 +198,9 @@ const DripTableWrapper = React.forwardRef(<
     parent: props.__PARENT_INFO__,
   }), [props.schema, props.dataSource, props.__PARENT_INFO__]);
 
-  const createExecutor: SandboxCreateExecutor = props.createExecutor ?? defaultCreateExecutor;
-  const execute: SandboxExecute = (script, ctx = {}) => createExecutor(script, Object.keys(ctx))?.(...Object.values(ctx));
-  const safeExecute: SandboxSafeExecute = (script, ctx = {}, defaultValue = void 0) => {
+  const createEvaluator: SandboxCreateEvaluator = props.createEvaluator ?? defaultCreateExecutor;
+  const execute: SandboxEvaluate = (script, ctx = {}) => createEvaluator(script, Object.keys(ctx))?.(...Object.values(ctx));
+  const safeExecute: SandboxSafeEvaluate = (script, ctx = {}, defaultValue = void 0) => {
     try {
       return execute(script, ctx);
     } catch (error) {
@@ -257,9 +257,9 @@ const DripTableWrapper = React.forwardRef(<
       info: tableInfo,
       state,
       setState,
-      createExecutor,
-      execute,
-      safeExecute,
+      createEvaluator,
+      evaluate: execute,
+      safeEvaluate: safeExecute,
       finalizeString,
     }),
     [
@@ -267,7 +267,7 @@ const DripTableWrapper = React.forwardRef(<
       tableInfo,
       state,
       setState,
-      createExecutor,
+      createEvaluator,
       execute,
       safeExecute,
       finalizeString,
@@ -308,7 +308,7 @@ const DripTableWrapper = React.forwardRef(<
               key: sorter.key,
               direction: sorter.direction,
               comparer: (a, b) => {
-                let multiply = context.safeExecute<number>(columnSchema.sorter || '', {
+                let multiply = context.safeEvaluate<number>(columnSchema.sorter || '', {
                   props: {
                     column: columnSchema,
                     leftRecord: a,
@@ -337,7 +337,7 @@ const DripTableWrapper = React.forwardRef(<
     [
       setState,
       indexValue,
-      context.safeExecute,
+      context.safeEvaluate,
       context.state.selectedRowKeys,
       context.state.displayColumnKeys,
       context.state.sorter,
@@ -376,7 +376,7 @@ const DripTableWrapper = React.forwardRef(<
           key: sorter.key,
           direction: sorter.direction,
           comparer: (a, b) => {
-            let multiply = context.safeExecute<number>(columnSchema.sorter || '', {
+            let multiply = context.safeEvaluate<number>(columnSchema.sorter || '', {
               props: {
                 column: columnSchema,
                 leftRecord: a,

@@ -471,7 +471,7 @@ export default class RichText extends React.PureComponent<RichTextProps> {
           Object.entries(attribs)
             .map(([k, v]) => [domEvents[k.toLowerCase()], v])
             .filter(([k, v]) => k)
-            .map(([k, v]) => [k, this.context.createExecutor(v)]),
+            .map(([k, v]) => [k, this.context.createEvaluator(v)]),
         ),
         // static props 静态属性
         key,

@@ -18,7 +18,7 @@ import {
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
-import { createExecutor, execute, finalizeString, safeExecute } from '@/utils/sandbox';
+import { createEvaluator, evaluate, finalizeString, safeEvaluate } from '@/utils/sandbox';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 export interface CommonCellProps<
@@ -73,9 +73,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         icons: props.icons,
         defaultComponentLib: props.defaultComponentLib,
         onEvent: props.preview === false ? props.onEvent : void 0,
-        createExecutor,
-        execute,
-        safeExecute,
+        createEvaluator,
+        evaluate,
+        safeEvaluate,
         finalizeString,
         schemaFunctionPreprocessor: void 0,
       },

@@ -9,14 +9,14 @@
 /**
  * 执行器缓存，优化性能
  */
-const executorCache = new Map<string, ReturnType<FunctionConstructor>>();
-let timerExecutorGC = 0;
-const executorGC = () => { executorCache.clear(); };
-const resetExecutorGC = () => {
-  if (timerExecutorGC) {
-    window.clearTimeout(timerExecutorGC);
+const evaluatorCache = new Map<string, ReturnType<FunctionConstructor>>();
+let timerEvaluatorGC = 0;
+const evaluatorGC = () => { evaluatorCache.clear(); };
+const resetEvaluatorGC = () => {
+  if (timerEvaluatorGC) {
+    window.clearTimeout(timerEvaluatorGC);
   }
-  timerExecutorGC = window.setTimeout(executorGC, 2000);
+  timerEvaluatorGC = window.setTimeout(evaluatorGC, 2000);
 };
 
 /**
@@ -27,23 +27,23 @@ const resetExecutorGC = () => {
  * @returns 创建的函数
  * @throws Error 创建异常
  */
-export const createExecutor = (script: string, contextKeys: string[] = []) => {
+export const createEvaluator = (script: string, contextKeys: string[] = []) => {
   const key = script + JSON.stringify(contextKeys);
-  let executor = executorCache.has(key)
-    ? executorCache.get(key)
+  let evaluator = evaluatorCache.has(key)
+    ? evaluatorCache.get(key)
     : void 0;
-  if (!executor) {
+  if (!evaluator) {
     // 包裹二阶函数，用于兼容微前端
     script = `return function(${contextKeys.join(', ')}) { ${script} }`;
-    executor = new Function('window', script)(window);
-    if (executor) { executorCache.set(key, executor); }
+    evaluator = new Function('window', script)(window);
+    if (evaluator) { evaluatorCache.set(key, evaluator); }
   }
-  resetExecutorGC();
-  return executor;
+  resetEvaluatorGC();
+  return evaluator;
 };
-export type SandboxCreateExecutor = typeof createExecutor;
+export type SandboxCreateEvaluator = typeof createEvaluator;
 
-export type SandboxExecute =
+export type SandboxEvaluate =
 /**
  * 指定上下文，执行 JavaScript 代码段
  *
@@ -55,7 +55,7 @@ export type SandboxExecute =
  */
 <T = unknown>(script: string, context: Record<string, unknown>) => T;
 
-export type SandboxSafeExecute =
+export type SandboxSafeEvaluate =
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误
  *

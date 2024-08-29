@@ -110,7 +110,7 @@ export default class DTCCheckbox<
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return !!this.props.safeExecute(
+      return !!this.props.safeEvaluate(
         `return ${disable}`,
         {
           props: {
@@ -160,7 +160,7 @@ export default class DTCCheckbox<
           checked={this.state.checkedValues?.includes(option.value)}
           disabled={
             typeof option.disabled === 'string'
-              ? this.props.safeExecute(option.disabled, {
+              ? this.props.safeEvaluate(option.disabled, {
                 props: { record, recordIndex, ext },
               })
               : option.disabled

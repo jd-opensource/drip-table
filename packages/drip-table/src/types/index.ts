@@ -10,7 +10,7 @@ import type { SchemaObject } from 'ajv';
 import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
-import type { SandboxCreateExecutor, SandboxFunctionPreprocess } from '@/utils/sandbox';
+import type { SandboxCreateEvaluator, SandboxFunctionPreprocess } from '@/utils/sandbox';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/cell-components';
 import type { PaginationProps } from '@/components/react-components/pagination';
 import type { DripTableSlotSchema } from '@/components/react-components/slot-render';
@@ -888,9 +888,9 @@ export interface DripTableProps<
    */
   renderHeaderCellFilter?: React.ComponentType<HeaderCellFilterProps>;
   /**
-   * 自定义沙箱生成器
+   * 自定义沙箱函数生成器
    */
-  createExecutor?: SandboxCreateExecutor;
+  createEvaluator?: SandboxCreateEvaluator;
   /**
    * 新版事件还原器
    */

@@ -75,7 +75,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return !!this.props.safeExecute(`return ${disable}`, {
+      return !!this.props.safeEvaluate(`return ${disable}`, {
         props: {
           value: this.value,
           record: this.props.record,
@@ -127,7 +127,7 @@ export default class DTCIcon<RecordType extends DripTableRecordTypeBase> extends
       return <RichText html={options.icon.html || ''} />;
     }
     if (options.icon.render) {
-      const html = this.props.safeExecute(options.icon.render, {
+      const html = this.props.safeEvaluate(options.icon.render, {
         props: {
           value: this.value,
           record: this.props.record,

@@ -24,7 +24,7 @@ function CalendarLayout<
 RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps): JSX.Element {
-  const { props: tableProps, info: tableInfo, state: tableState, createExecutor, execute, safeExecute, finalizeString } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, info: tableInfo, state: tableState, createEvaluator, evaluate, safeEvaluate, finalizeString } = useTableContext<RecordType, ExtraOptions>();
   const dataSource = tableProps.dataSource;
 
   const dateRender = (date: Moment, today: Moment, dataSources: RecordType[]) => {
@@ -34,9 +34,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       ext: tableProps.ext,
       onEvent: tableProps.onEvent,
       onDataSourceChange: tableProps.onDataSourceChange,
-      createExecutor,
-      execute,
-      safeExecute,
+      createEvaluator,
+      evaluate,
+      safeEvaluate,
       finalizeString,
       schemaFunctionPreprocessor: tableProps.schemaFunctionPreprocessor,
     };

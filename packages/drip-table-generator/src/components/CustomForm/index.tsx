@@ -15,7 +15,7 @@ import { TabsPosition, TabsProps } from 'antd/lib/tabs';
 import { DripTableProps, DripTableRecordTypeBase } from 'drip-table';
 import React, { Component } from 'react';
 
-import { safeExecute } from '@/utils/sandbox';
+import { safeEvaluate } from '@/utils/sandbox';
 import RichText from '@/components/RichText';
 import { DTGComponentPropertySchema } from '@/typing';
 
@@ -139,7 +139,7 @@ export default class CustomForm<T> extends Component<Props<T>, State> {
     if (typeof config.visible === 'function') {
       return config.visible(formValues[config.name], formValues);
     } if (typeof config.visible === 'string') {
-      return safeExecute(config.visible, { formData: formValues }, false);
+      return safeEvaluate(config.visible, { formData: formValues }, false);
     } if (typeof config.visible === 'boolean') {
       return config.visible;
     }

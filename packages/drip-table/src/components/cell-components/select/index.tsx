@@ -206,7 +206,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const options = this.props.schema.options;
     if (typeof options.disabled === 'string') {
-      return !!this.props.safeExecute(`return ${options.disabled}`, {
+      return !!this.props.safeEvaluate(`return ${options.disabled}`, {
         props: {
           value: this.props.value,
           record: this.props.record,
@@ -238,7 +238,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
 
   private finalizeOptionDisabled(disabled?: boolean | string, value?: unknown): boolean {
     if (typeof disabled === 'string') {
-      return !!this.props.safeExecute(`return ${disabled}`, {
+      return !!this.props.safeEvaluate(`return ${disabled}`, {
         props: {
           value,
           record: this.props.record,
@@ -256,7 +256,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
     if (typeof body === 'string') {
       let finalBodyString: string | undefined = void 0;
       try {
-        finalBodyString = this.props.execute(`return ${body}`, {
+        finalBodyString = this.props.evaluate(`return ${body}`, {
           props: {
             record: this.props.record,
             recordIndex: this.props.recordIndex,
@@ -292,7 +292,7 @@ export default class DTCSelect<RecordType extends DripTableRecordTypeBase> exten
       return response;
     }
     if (options.response?.mapper) {
-      return this.props.safeExecute(`return ${options.response?.mapper || 'response'}`, {
+      return this.props.safeEvaluate(`return ${options.response?.mapper || 'response'}`, {
         props: {
           response,
           ext: this.props.ext,

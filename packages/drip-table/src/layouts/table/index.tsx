@@ -170,7 +170,7 @@ const hookColumRender = <
     rcTableInfo: RcTableInfo,
     extraProps: DripTableColumnRenderOptions<RecordType, ExtraOptions>['extraProps'],
   ): TableColumnType<RcTableRecordType<RecordType>> => {
-  const { safeExecute, state: { sorter } } = useTableContext<RecordType, ExtraOptions>();
+  const { safeEvaluate: safeExecute, state: { sorter } } = useTableContext<RecordType, ExtraOptions>();
   const render = column.render;
   column.render = (d, row, index) => {
     if (rcTableInfo.cellConfigConflictIDs[rcTableInfo.cellConfigs[index]?.[columnIndex]?.spanGroupID ?? '']) {
@@ -267,7 +267,7 @@ export const columnRenderGenerator = <
       }
       if (typeof translatorSchema === 'string') {
         try {
-          const translate = extraProps.createExecutor(translatorSchema, ['props']);
+          const translate = extraProps.createEvaluator(translatorSchema, ['props']);
           return (v, c) => {
             try {
               return translate?.(c);
@@ -310,9 +310,9 @@ export const columnRenderGenerator = <
               const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
               return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
             }}
-            createExecutor={extraProps.createExecutor}
-            execute={extraProps.execute}
-            safeExecute={extraProps.safeExecute}
+            createEvaluator={extraProps.createEvaluator}
+            evaluate={extraProps.evaluate}
+            safeEvaluate={extraProps.safeEvaluate}
             finalizeString={extraProps.finalizeString}
             preview={extraProps.preview as DripTableComponentProps<RecordType, DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>>['preview']}
             disable={Boolean(disableTranslator(false, translatorContext))}
@@ -362,9 +362,9 @@ export const columnRenderGenerator = <
                 const render = columnRenderGenerator(tableInfo, sc as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>> | ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>, extraProps);
                 return render(null, { type: 'body', key: sc.key, index: ri, record: r }, 0);
               }}
-              createExecutor={extraProps.createExecutor}
-              execute={extraProps.execute}
-              safeExecute={extraProps.safeExecute}
+              createEvaluator={extraProps.createEvaluator}
+              evaluate={extraProps.evaluate}
+              safeEvaluate={extraProps.safeEvaluate}
               finalizeString={extraProps.finalizeString}
               preview={extraProps.preview}
               disable={Boolean(disableTranslator(false, translatorContext))}
@@ -471,7 +471,7 @@ interface VirtualCellItemData {
 }
 
 const VirtualCell = React.memo(({ data, columnIndex, rowIndex, style: vcStyle }: GridChildComponentProps<VirtualCellItemData>) => {
-  const { safeExecute } = useTableContext();
+  const { safeEvaluate: safeExecute } = useTableContext();
   const { tableUUID, columns, columnsBaseSchema, dataSource, rowKey, selectedRowKeys, ext } = data;
   const columnBaseSchema = childrenLike.findRecursive(columnsBaseSchema, (_, i) => i === columnIndex) as DripTableBaseColumnSchema;
   const column = childrenLike.findRecursive(columns, (_, i) => i === columnIndex) as TableColumnType<unknown>;
@@ -915,7 +915,7 @@ function TableLayout<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableLayoutComponentProps): JSX.Element {
-  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState, createExecutor, execute, safeExecute, finalizeString } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, info: tableInfo, state: tableState, setState: setTableState, createEvaluator, evaluate, safeEvaluate, finalizeString } = useTableContext<RecordType, ExtraOptions>();
   const tableUUID = tableInfo.uuid;
   const rowKey = tableProps.schema.rowKey ?? '$$row-key$$';
 
@@ -1170,7 +1170,7 @@ function TableLayout<
     }
     // 动态合并单元格
     if (spanSchema.generator) {
-      const generator = createExecutor(spanSchema.generator, ['props']);
+      const generator = createEvaluator(spanSchema.generator, ['props']);
       for (const [rowIndex, record] of pageDataSource.entries()) {
         for (const [columnIndex, columnSchema] of flattenColumns.entries()) {
           const context = { record, recordIndex: rowIndex + pageDataSourceOffset, column: columnSchema };
@@ -1269,9 +1269,9 @@ function TableLayout<
         ext: tableProps.ext,
         onEvent: tableProps.onEvent,
         onDataSourceChange: tableProps.onDataSourceChange,
-        createExecutor,
-        execute,
-        safeExecute,
+        createEvaluator,
+        evaluate,
+        safeEvaluate,
         finalizeString,
         schemaFunctionPreprocessor: tableProps.schemaFunctionPreprocessor,
       };
@@ -1640,22 +1640,22 @@ function TableLayout<
         hideOnSinglePage={tableInfo.schema.pagination?.hideOnSinglePage}
         style={parseReactCSS(
           typeof tableInfo.schema.pagination?.style === 'string'
-            ? safeExecute(tableInfo.schema.pagination.style, { props: { ext: tableProps.ext } })
+            ? safeEvaluate(tableInfo.schema.pagination.style, { props: { ext: tableProps.ext } })
             : tableInfo.schema.pagination?.style,
         )}
         pageNumberStyle={parseReactCSS(
           typeof tableInfo.schema.pagination?.pageNumberStyle === 'string'
-            ? safeExecute(tableInfo.schema.pagination.pageNumberStyle, { props: { ext: tableProps.ext } })
+            ? safeEvaluate(tableInfo.schema.pagination.pageNumberStyle, { props: { ext: tableProps.ext } })
             : tableInfo.schema.pagination?.pageNumberStyle,
         )}
         pageStepperStyle={parseReactCSS(
           typeof tableInfo.schema.pagination?.pageStepperStyle === 'string'
-            ? safeExecute(tableInfo.schema.pagination.pageStepperStyle, { props: { ext: tableProps.ext } })
+            ? safeEvaluate(tableInfo.schema.pagination.pageStepperStyle, { props: { ext: tableProps.ext } })
             : tableInfo.schema.pagination?.pageStepperStyle,
         )}
         pageSelectorStyle={parseReactCSS(
           typeof tableInfo.schema.pagination?.pageSelectorStyle === 'string'
-            ? safeExecute(tableInfo.schema.pagination.pageSelectorStyle, { props: { ext: tableProps.ext } })
+            ? safeEvaluate(tableInfo.schema.pagination.pageSelectorStyle, { props: { ext: tableProps.ext } })
             : tableInfo.schema.pagination?.pageSelectorStyle,
         )}
         onChange={(page, pageSize) => {

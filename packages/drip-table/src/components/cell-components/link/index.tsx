@@ -162,7 +162,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
 
   private finalizeDisabled(disabled?: boolean | string): boolean {
     if (typeof disabled === 'string') {
-      return !!this.props.safeExecute(`return ${disabled}`, {
+      return !!this.props.safeEvaluate(`return ${disabled}`, {
         props: {
           value: this.props.value,
           record: this.props.record,
@@ -179,7 +179,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
     const { dataIndex, options } = schema;
     const { mode, visibleFunc } = options;
     if (mode === 'single' && visibleFunc) {
-      return !!dataProcessValue(this.props.execute, record, dataIndex, visibleFunc);
+      return !!dataProcessValue(this.props.evaluate, record, dataIndex, visibleFunc);
     }
     return true;
   }
@@ -314,7 +314,7 @@ export default class DTCLink<RecordType extends DripTableRecordTypeBase> extends
               );
             }
             return (
-              <div key={index} style={{ display: dataProcessValue(this.props.execute, this.props.record, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
+              <div key={index} style={{ display: dataProcessValue(this.props.evaluate, this.props.record, this.props.schema.dataIndex, config.visibleFunc) || !config.visibleFunc ? 'inline' : 'none' }}>
                 <a
                   className={classNames(`${prefixCls}-link`, `${prefixCls}-link-break`, {
                     [`${prefixCls}-link-disabled`]: disabled,

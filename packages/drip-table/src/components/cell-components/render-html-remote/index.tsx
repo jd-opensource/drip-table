@@ -81,7 +81,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       return <Spin tip="Loading" />;
     }
     try {
-      const html = this.props.execute(this.state.render, {
+      const html = this.props.evaluate(this.state.render, {
         props: {
           value: this.props.value,
           record: this.props.record,

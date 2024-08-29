@@ -10,7 +10,7 @@ import { Pagination, PaginationProps } from 'antd';
 import { DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
 import React from 'react';
 
-import { safeExecute } from '@/utils/sandbox';
+import { safeEvaluate } from '@/utils/sandbox';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 import { parseReactCSS } from './dom';
@@ -69,22 +69,22 @@ SubtableDataSourceKey extends React.Key = never,
         pageSizeOptions={props.pageSizeOptions}
         style={parseReactCSS(
           typeof props?.style === 'string'
-            ? safeExecute(props?.style, { props: { ext: props.ext } })
+            ? safeEvaluate(props?.style, { props: { ext: props.ext } })
             : props?.style,
         )}
         pageNumberStyle={parseReactCSS(
           typeof props?.pageNumberStyle === 'string'
-            ? safeExecute(props.pageNumberStyle, { props: { ext: props.ext } })
+            ? safeEvaluate(props.pageNumberStyle, { props: { ext: props.ext } })
             : props?.pageNumberStyle,
         )}
         pageStepperStyle={parseReactCSS(
           typeof props?.pageStepperStyle === 'string'
-            ? safeExecute(props.pageStepperStyle, { props: { ext: props.ext } })
+            ? safeEvaluate(props.pageStepperStyle, { props: { ext: props.ext } })
             : props?.pageStepperStyle,
         )}
         pageSelectorStyle={parseReactCSS(
           typeof props?.pageSelectorStyle === 'string'
-            ? safeExecute(props.pageSelectorStyle, { props: { ext: props.ext } })
+            ? safeEvaluate(props.pageSelectorStyle, { props: { ext: props.ext } })
             : props?.pageSelectorStyle,
         )}
       />

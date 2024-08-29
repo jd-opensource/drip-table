@@ -128,7 +128,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   private parseReactCSS(style?: string | Record<string, string>) {
     const { record, recordIndex, ext } = this.props;
     const styleObject = typeof style === 'string'
-      ? this.props.safeExecute(style, { props: { record, recordIndex, ext } })
+      ? this.props.safeEvaluate(style, { props: { record, recordIndex, ext } })
       : style;
     return parseReactCSS(styleObject);
   }

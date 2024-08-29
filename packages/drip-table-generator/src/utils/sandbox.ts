@@ -12,14 +12,14 @@ import get from 'lodash/get';
 /**
  * 执行器缓存，优化性能
  */
-const executorCache = new Map<string, ReturnType<FunctionConstructor>>();
-let timerExecutorGC = 0;
-const executorGC = () => { executorCache.clear(); };
-const resetExecutorGC = () => {
-  if (timerExecutorGC) {
-    window.clearTimeout(timerExecutorGC);
+const evaluatorCache = new Map<string, ReturnType<FunctionConstructor>>();
+let timerEvaluatorGC = 0;
+const executorGC = () => { evaluatorCache.clear(); };
+const resetEvaluatorGC = () => {
+  if (timerEvaluatorGC) {
+    window.clearTimeout(timerEvaluatorGC);
   }
-  timerExecutorGC = window.setTimeout(executorGC, 2000);
+  timerEvaluatorGC = window.setTimeout(executorGC, 2000);
 };
 
 /**
@@ -30,16 +30,16 @@ const resetExecutorGC = () => {
  * @returns 创建的函数
  * @throws Error 创建异常
  */
-export const createExecutor = (script: string, contextKeys: string[] = []) => {
+export const createEvaluator = (script: string, contextKeys: string[] = []) => {
   const key = script + JSON.stringify(contextKeys);
-  let executor = executorCache.has(key)
-    ? executorCache.get(key)
+  let executor = evaluatorCache.has(key)
+    ? evaluatorCache.get(key)
     : void 0;
   if (!executor) {
     executor = new Function(...contextKeys, script);
-    executorCache.set(key, executor);
+    evaluatorCache.set(key, executor);
   }
-  resetExecutorGC();
+  resetEvaluatorGC();
   return executor;
 };
 
@@ -51,7 +51,7 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
  * @returns 代码段返回结果
  * @throws Error 代码执行异常
  */
-export const execute = (script: string, context: Record<string, unknown> = {}) => createExecutor(script, Object.keys(context))(...Object.values(context));
+export const evaluate = (script: string, context: Record<string, unknown> = {}) => createEvaluator(script, Object.keys(context))(...Object.values(context));
 
 /**
  * 指定上下文，执行 JavaScript 代码段，抑制错误
@@ -61,9 +61,9 @@ export const execute = (script: string, context: Record<string, unknown> = {}) =
  * @param defaultValue 异常时的默认返回值
  * @returns 代码段返回结果，异常时返回默认结果
  */
-export const safeExecute = (script: string, context: Record<string, unknown> = {}, defaultValue: unknown = void 0) => {
+export const safeEvaluate = (script: string, context: Record<string, unknown> = {}, defaultValue: unknown = void 0) => {
   try {
-    return execute(script, context);
+    return evaluate(script, context);
   } catch (error) {
     console.warn(error);
   }
@@ -106,7 +106,7 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
     value = stringify(text)
       .replace(/\{\{(.+?)\}\}/guis, (s, s1) => {
         try {
-          return execute(`return ${s1}`, {
+          return evaluate(`return ${s1}`, {
             props: {
               record,
               recordIndex,
@@ -122,7 +122,7 @@ export const finalizeString = (mode: 'plain' | 'key' | 'pattern' | 'script', tex
       });
   } else if (mode === 'script') {
     try {
-      value = stringify(execute(text, {
+      value = stringify(evaluate(text, {
         props: {
           record,
           recordIndex,

@@ -8,7 +8,7 @@
 
 import { DripTableRecordTypeBase } from '@/types';
 import { indexValue } from '@/utils/operator';
-import { SandboxExecute } from '@/utils/sandbox';
+import { SandboxEvaluate } from '@/utils/sandbox';
 
 /**
  * 格式化变量用于提供给渲染函数
@@ -60,7 +60,7 @@ export const preventEvent = (e: React.BaseSyntheticEvent) => {
  * @returns 值
  */
 export const dataProcessIndex = (
-  execute: SandboxExecute,
+  execute: SandboxEvaluate,
   data: unknown,
   indexes: string | number | readonly (string | number)[] | undefined,
   defaultValue: unknown = void 0,
@@ -88,7 +88,7 @@ export const dataProcessIndex = (
  * @returns 值
  */
 export const dataProcessValue = (
-  execute: SandboxExecute,
+  execute: SandboxEvaluate,
   data: unknown,
   indexes: string | number | readonly (string | number)[] | undefined,
   funcText?: string,

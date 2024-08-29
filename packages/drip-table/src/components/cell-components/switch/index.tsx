@@ -65,7 +65,7 @@ export default class DTCSwitch<RecordType extends DripTableRecordTypeBase> exten
   private get disabled(): boolean {
     const disable = this.props.schema.disable;
     if (typeof disable === 'string') {
-      return !!this.props.safeExecute(`return ${disable}`, {
+      return !!this.props.safeEvaluate(`return ${disable}`, {
         props: {
           value: this.props.value,
           record: this.props.record,

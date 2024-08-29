@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import type { SandboxCreateExecutor, SandboxExecute, SandboxSafeExecute } from '@/utils/sandbox';
+import type { SandboxCreateEvaluator, SandboxEvaluate, SandboxSafeEvaluate } from '@/utils/sandbox';
 import type { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, EventLike } from '@/types';
 
 import type { DripTableBuiltInComponentEvent } from '.';
@@ -52,15 +52,15 @@ export interface DripTableComponentProps<
   /**
    * 沙箱生成器
    */
-  createExecutor: SandboxCreateExecutor;
+  createEvaluator: SandboxCreateEvaluator;
   /**
    * 沙箱执行器
    */
-  execute: SandboxExecute;
+  evaluate: SandboxEvaluate;
   /**
    * 安全沙箱执行器
    */
-  safeExecute: SandboxSafeExecute;
+  safeEvaluate: SandboxSafeEvaluate;
   /**
    * 格式化模板字符串
    */

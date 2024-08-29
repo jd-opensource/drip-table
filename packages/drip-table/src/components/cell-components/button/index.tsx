@@ -270,7 +270,7 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     if (!visibleFunc) {
       return true;
     }
-    return !!dataProcessValue(this.props.execute, record, dataIndex, visibleFunc);
+    return !!dataProcessValue(this.props.evaluate, record, dataIndex, visibleFunc);
   }
 
   private getDisabled(disableFunc?: string): boolean {
@@ -279,13 +279,13 @@ export default class DTCButton<RecordType extends DripTableRecordTypeBase> exten
     if (!disableFunc) {
       return this.props.disable ?? false;
     }
-    return !!dataProcessValue(this.props.execute, record, dataIndex, disableFunc);
+    return !!dataProcessValue(this.props.evaluate, record, dataIndex, disableFunc);
   }
 
   private parseReactCSS(style?: string | Record<string, string>) {
     const { record, recordIndex, ext } = this.props;
     const styleObject = typeof style === 'string'
-      ? this.props.safeExecute(style, { props: { record, recordIndex, ext } })
+      ? this.props.safeEvaluate(style, { props: { record, recordIndex, ext } })
       : style;
     return parseReactCSS(styleObject);
   }

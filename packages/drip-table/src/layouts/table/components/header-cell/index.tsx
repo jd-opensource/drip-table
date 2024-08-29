@@ -43,7 +43,7 @@ function HeaderCell<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: HeaderCellProps<ExtraOptions>) {
-  const { props: tableProps, state: tableState, setState: setTableState, safeExecute } = useTableContext<RecordType, ExtraOptions>();
+  const { props: tableProps, state: tableState, setState: setTableState, safeEvaluate: safeExecute } = useTableContext<RecordType, ExtraOptions>();
   const dataIndex = props.additionalProps?.columnSchema?.dataIndex;
   const filter = React.useMemo(() => (typeof dataIndex === 'string' && tableState.filters[dataIndex]) || [], [dataIndex, tableState.filters]);
   const children = props.children;
