@@ -33,6 +33,7 @@ import * as childrenLike from '@/utils/children-like';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
+import { type SandboxEventPreprocess } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
 import { preventEvent } from '@/components/cell-components/utils';
 import Checkbox from '@/components/react-components/checkbox';
@@ -222,6 +223,16 @@ const hookColumRender = <
   return column;
 };
 
+function hookSchemaEventRaiser<T>(schema: T, eventPreprocessor: SandboxEventPreprocess, props: Record<string, unknown>): T {
+  if (schema && typeof schema === 'object') {
+    return Object.fromEntries(
+      Object.entries(schema)
+        .map(([k, v]) => [k, typeof v === 'function' ? eventPreprocessor(v, props) : hookSchemaEventRaiser(v, eventPreprocessor, props)]),
+    ) as T;
+  }
+  return schema;
+}
+
 /**
  * 根据列 Schema，生成表格单元格渲染函数
  * @param tableInfo 表格信息
@@ -282,6 +293,9 @@ export const columnRenderGenerator = <
         if (hiddenTranslator(false, translatorContext)) {
           return null;
         }
+        const finalColumnSchema = extraProps.eventPreprocessor
+          ? hookSchemaEventRaiser(columnSchema, extraProps.eventPreprocessor, { value, record, recordIndex, ext })
+          : columnSchema;
         return (
           <BuiltInComponent
             data={record}
@@ -304,7 +318,7 @@ export const columnRenderGenerator = <
             disable={Boolean(disableTranslator(false, translatorContext))}
             editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
             onChange={v => onChange(record, recordIndex, v)}
-            schema={columnSchema as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>}
+            schema={finalColumnSchema as unknown as DripTableBuiltInColumnSchema<ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>>}
             ext={extraProps.ext}
             components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
             icons={extraProps.icons}
@@ -331,6 +345,9 @@ export const columnRenderGenerator = <
           if (hiddenTranslator(false, translatorContext)) {
             return null;
           }
+          const finalColumnSchema = extraProps.eventPreprocessor
+            ? hookSchemaEventRaiser(columnSchema, extraProps.eventPreprocessor, { value, record, recordIndex, ext })
+            : columnSchema;
           return (
             <ExtraComponent
               data={record}
@@ -353,7 +370,7 @@ export const columnRenderGenerator = <
               disable={Boolean(disableTranslator(false, translatorContext))}
               editable={Boolean(editableTranslator(tableInfo.schema.editable, translatorContext))}
               onChange={v => onChange(record, recordIndex, v)}
-              schema={columnSchema as ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>}
+              schema={finalColumnSchema as ExtractDripTableExtraOption<ExtraOptions, 'CustomColumnSchema'>}
               ext={extraProps.ext}
               components={extraProps.components as DripTableProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, NonNullable<React.Key>>, DripTableExtraOptions>['components']}
               icons={extraProps.icons}
@@ -1256,6 +1273,7 @@ function TableLayout<
         execute,
         safeExecute,
         finalizeString,
+        eventPreprocessor: tableProps.eventPreprocessor,
       };
       const visibleColumns = childrenLike.filterRecursive(
         tableProps.schema.columns,

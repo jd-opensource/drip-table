@@ -484,6 +484,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
         emptyText: { instanceof: 'Function' },
         subtableTitle: { instanceof: 'Function' },
         subtableFooter: { instanceof: 'Function' },
+        eventPreprocessor: { instanceof: 'Function' },
         rowExpandable: { instanceof: 'Function' },
         expandedRowRender: { instanceof: 'Function' },
         rowHeaderVisible: { instanceof: 'Function' },

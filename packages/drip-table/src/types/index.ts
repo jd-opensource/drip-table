@@ -10,7 +10,7 @@ import type { SchemaObject } from 'ajv';
 import type React from 'react';
 
 import type { AjvOptions } from '@/utils/ajv';
-import type { SandboxCreateExecutor } from '@/utils/sandbox';
+import type { SandboxCreateExecutor, SandboxEventPreprocess } from '@/utils/sandbox';
 import type { DripTableBuiltInColumnSchema, DripTableBuiltInComponentEvent, DripTableComponentProps } from '@/components/cell-components';
 import type { PaginationProps } from '@/components/react-components/pagination';
 import type { DripTableSlotSchema } from '@/components/react-components/slot-render';
@@ -891,6 +891,10 @@ export interface DripTableProps<
    * 自定义沙箱生成器
    */
   createExecutor?: SandboxCreateExecutor;
+  /**
+   * 新版事件还原器
+   */
+  eventPreprocessor?: SandboxEventPreprocess;
   /**
    * 渲染子表时用于透传父级信息，仅限内部使用
    * @internal

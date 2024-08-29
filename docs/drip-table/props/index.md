@@ -35,6 +35,7 @@ toc: content
 | [emptyText](/drip-table/props/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/props/empty-text) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
 | [subtableFooter](/drip-table/props/subtable-footer) | 子表底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-footer) |
+| [eventPreprocessor](/drip-table/props/event-preprocessor) | Schema 函数预处理 | × | [🔗 示例](/drip-table/props/event-preprocessor) |
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
 | [expandedRowRender](/drip-table/props/expanded-row-render) | 行展开自定义渲染函数 | × | [🔗 示例](/drip-table/props/expanded-row-render) |
 | [rowSelectable](/drip-table/props/row-selectable) | 获取指定行是否可选择 | × | [🔗 示例](/drip-table/props/row-selectable) |

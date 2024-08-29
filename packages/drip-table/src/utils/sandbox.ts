@@ -65,3 +65,9 @@ export type SandboxSafeExecute =
  * @returns 代码段返回结果，异常时返回默认结果
  */
 <T = unknown>(script: string, context: Record<string, unknown>, defaultValue?: T) => T | undefined;
+
+export type SandboxEventPreprocess =
+/**
+ * Schema 中函数通用预处理
+ */
+(event: (...args: unknown[]) => void, props: Record<string, unknown>) => (() => void);

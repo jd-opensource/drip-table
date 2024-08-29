@@ -180,6 +180,7 @@ const DRIP_TABLE_SIDEBAR = [
           { title: '默认组件库名 defaultComponentLib', link: '/drip-table/props/default-component-lib' },
           { title: '组件插槽 slots', link: '/drip-table/props/slots' },
           { title: '附加透传数据 ext', link: '/drip-table/props/ext' },
+          { title: '事件预处理 eventPreprocessor', link: '/drip-table/props/event-preprocessor' },
           { title: '指定行可展开 rowExpandable', link: '/drip-table/props/row-expandable' },
           { title: '行展开渲染函数 expandedRowRender', link: '/drip-table/props/expanded-row-render' },
           { title: '子表默认展开项 defaultExpandedRowKeys', link: '/drip-table/props/default-expanded-row-keys' },

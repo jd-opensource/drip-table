@@ -23,5 +23,6 @@ export interface DripTableColumnRenderOptions<
     execute: SandboxExecute;
     safeExecute: SandboxSafeExecute;
     finalizeString: FinalizeString;
+    eventPreprocessor: DripTableProps<RecordType, ExtraOptions>['eventPreprocessor'];
   };
 }
