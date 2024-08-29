@@ -38,7 +38,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       execute,
       safeExecute,
       finalizeString,
-      eventPreprocessor: tableProps.eventPreprocessor,
+      schemaFunctionPreprocessor: tableProps.schemaFunctionPreprocessor,
     };
 
     return (

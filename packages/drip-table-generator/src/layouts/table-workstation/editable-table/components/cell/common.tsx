@@ -77,7 +77,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         execute,
         safeExecute,
         finalizeString,
-        eventPreprocessor: void 0,
+        schemaFunctionPreprocessor: void 0,
       },
     )
     : () => <div />;

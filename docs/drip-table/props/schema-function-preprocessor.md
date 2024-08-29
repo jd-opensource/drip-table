@@ -1,11 +1,11 @@
 ---
-title: 事件预处理 eventPreprocessor
+title: 函数预处理 schemaFunctionPreprocessor
 toc: content
 ---
 
-## 表格事件预处理 eventPreprocessor
+## 表格 Schema 函数预处理 schemaFunctionPreprocessor
 
-- 描述：表格 Schema 中事件函数预处理
+- 描述：表格 Schema 中的函数预处理
 - 类型：
 
   ```typescript
@@ -113,7 +113,7 @@ const Demo = () => {
       schema={schema}
       dataSource={dataSource}
       components={{ custom: customComponents }}
-      eventPreprocessor={(event, props) => {
+      schemaFunctionPreprocessor={(event, props) => {
         if (event.bTwiceEvent) {
           return event(props);
         }

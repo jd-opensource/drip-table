@@ -66,7 +66,7 @@ export type SandboxSafeExecute =
  */
 <T = unknown>(script: string, context: Record<string, unknown>, defaultValue?: T) => T | undefined;
 
-export type SandboxEventPreprocess =
+export type SandboxFunctionPreprocess =
 /**
  * Schema 中函数通用预处理
  */

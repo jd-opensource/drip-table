@@ -35,12 +35,12 @@ toc: content
 | [emptyText](/drip-table/props/empty-text) | 表格无数据时提示语 | × | [🔗 示例](/drip-table/props/empty-text) |
 | [subtableTitle](/drip-table/props/subtable-title) | 子表顶部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-title) |
 | [subtableFooter](/drip-table/props/subtable-footer) | 子表底部自定义渲染函数 | × | [🔗 示例](/drip-table/props/subtable-footer) |
-| [eventPreprocessor](/drip-table/props/event-preprocessor) | Schema 函数预处理 | × | [🔗 示例](/drip-table/props/event-preprocessor) |
 | [rowExpandable](/drip-table/props/row-expandable) | 获取指定行是否可展开 | × | [🔗 示例](/drip-table/props/row-expandable) |
 | [expandedRowRender](/drip-table/props/expanded-row-render) | 行展开自定义渲染函数 | × | [🔗 示例](/drip-table/props/expanded-row-render) |
 | [rowSelectable](/drip-table/props/row-selectable) | 获取指定行是否可选择 | × | [🔗 示例](/drip-table/props/row-selectable) |
 | [rowHeaderVisible](/drip-table/schema/row-header-visible) | 行头部插槽是否可见 | × | [🔗 示例](/drip-table/schema/row-header-visible) |
 | [rowFooterVisible](/drip-table/schema/row-footer-visible) | 行尾部插槽是否可见 | × | [🔗 示例](/drip-table/schema/row-footer-visible) |
+| [schemaFunctionPreprocessor](/drip-table/props/schema-function-preprocessor) | Schema 函数预处理 | × | [🔗 示例](/drip-table/props/schema-function-preprocessor) |
 | [componentDidMount](/drip-table/props/component-did-mount) | 生命周期：组件加载完成 | × | [🔗 示例](/drip-table/props/component-did-mount) |
 | [componentDidUpdate](/drip-table/props/component-did-update) | 生命周期：组件更新完成 | × | [🔗 示例](/drip-table/props/component-did-update) |
 | [componentWillUnmount](/drip-table/props/component-will-unmount) | 生命周期：组件即将卸载 | × | [🔗 示例](/drip-table/props/component-will-unmount) |

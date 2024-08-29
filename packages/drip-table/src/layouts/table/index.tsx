@@ -33,7 +33,7 @@ import * as childrenLike from '@/utils/children-like';
 import { parseCSS, parseReactCSS, setElementCSS, stringifyCSS } from '@/utils/dom';
 import { encodeJSON } from '@/utils/json';
 import { indexValue, parseNumber, setValue } from '@/utils/operator';
-import { type SandboxEventPreprocess } from '@/utils/sandbox';
+import { type SandboxFunctionPreprocess } from '@/utils/sandbox';
 import DripTableBuiltInComponents, { type DripTableBuiltInColumnSchema, type DripTableComponentProps } from '@/components/cell-components';
 import { preventEvent } from '@/components/cell-components/utils';
 import Checkbox from '@/components/react-components/checkbox';
@@ -223,11 +223,11 @@ const hookColumRender = <
   return column;
 };
 
-function hookSchemaEventRaiser<T>(schema: T, eventPreprocessor: SandboxEventPreprocess, props: Record<string, unknown>): T {
+function hookSchemaEventRaiser<T>(schema: T, schemaFunctionPreprocessor: SandboxFunctionPreprocess, props: Record<string, unknown>): T {
   if (schema && typeof schema === 'object') {
     return Object.fromEntries(
       Object.entries(schema)
-        .map(([k, v]) => [k, typeof v === 'function' ? eventPreprocessor(v, props) : hookSchemaEventRaiser(v, eventPreprocessor, props)]),
+        .map(([k, v]) => [k, typeof v === 'function' ? schemaFunctionPreprocessor(v, props) : hookSchemaEventRaiser(v, schemaFunctionPreprocessor, props)]),
     ) as T;
   }
   return schema;
@@ -293,8 +293,8 @@ export const columnRenderGenerator = <
         if (hiddenTranslator(false, translatorContext)) {
           return null;
         }
-        const finalColumnSchema = extraProps.eventPreprocessor
-          ? hookSchemaEventRaiser(columnSchema, extraProps.eventPreprocessor, { value, record, recordIndex, ext })
+        const finalColumnSchema = extraProps.schemaFunctionPreprocessor
+          ? hookSchemaEventRaiser(columnSchema, extraProps.schemaFunctionPreprocessor, { value, record, recordIndex, ext })
           : columnSchema;
         return (
           <BuiltInComponent
@@ -345,8 +345,8 @@ export const columnRenderGenerator = <
           if (hiddenTranslator(false, translatorContext)) {
             return null;
           }
-          const finalColumnSchema = extraProps.eventPreprocessor
-            ? hookSchemaEventRaiser(columnSchema, extraProps.eventPreprocessor, { value, record, recordIndex, ext })
+          const finalColumnSchema = extraProps.schemaFunctionPreprocessor
+            ? hookSchemaEventRaiser(columnSchema, extraProps.schemaFunctionPreprocessor, { value, record, recordIndex, ext })
             : columnSchema;
           return (
             <ExtraComponent
@@ -1273,7 +1273,7 @@ function TableLayout<
         execute,
         safeExecute,
         finalizeString,
-        eventPreprocessor: tableProps.eventPreprocessor,
+        schemaFunctionPreprocessor: tableProps.schemaFunctionPreprocessor,
       };
       const visibleColumns = childrenLike.filterRecursive(
         tableProps.schema.columns,
