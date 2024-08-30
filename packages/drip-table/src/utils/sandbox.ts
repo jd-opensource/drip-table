@@ -34,7 +34,7 @@ export const createEvaluator = (script: string, contextKeys: string[] = []) => {
     : void 0;
   if (!evaluator) {
     // 包裹二阶函数，用于兼容微前端
-    script = `return function(${contextKeys.join(', ')}) { ${script} }`;
+    script = `return function(${contextKeys.join(', ')}) { ${script}\n}`;
     evaluator = new Function('window', script)(window);
     if (evaluator) { evaluatorCache.set(key, evaluator); }
   }
