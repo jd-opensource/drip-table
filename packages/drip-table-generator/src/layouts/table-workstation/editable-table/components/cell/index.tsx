@@ -46,6 +46,7 @@ interface TableCellProps<
   defaultComponentLib?: DripTableGeneratorProps<RecordType, ExtraOptions>['defaultComponentLib'];
   onClick?: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   onColumnItemChanged?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
+  schemaFunctionPreprocessor?: DripTableGeneratorProps<RecordType, ExtraOptions>['schemaFunctionPreprocessor'];
 }
 
 function TableCell<

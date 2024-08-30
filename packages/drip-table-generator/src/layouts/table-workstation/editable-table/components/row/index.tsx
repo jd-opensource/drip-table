@@ -48,6 +48,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   onColumnItemChanged: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnItemChanged'];
   renderSelection: DripTableGeneratorProps<RecordType, ExtraOptions>['renderSelection'];
+  schemaFunctionPreprocessor?: DripTableGeneratorProps<RecordType, ExtraOptions>['schemaFunctionPreprocessor'];
 }
 
 const VerticalAligns = {
@@ -127,6 +128,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         onEvent={props.onEvent}
         onClick={props.onClick}
         onColumnItemChanged={props.onColumnItemChanged}
+        schemaFunctionPreprocessor={props.schemaFunctionPreprocessor}
       />
     </div>
   );

@@ -211,6 +211,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                         onClick={props.onClick}
                         onColumnItemChanged={props.onColumnItemChanged}
                         containerWidth={tableWidth}
+                        schemaFunctionPreprocessor={props.schemaFunctionPreprocessor}
                       />
                       { (props.tableConfig.hasSubTable && hasSubTable)
                     && (
