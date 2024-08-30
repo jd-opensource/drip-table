@@ -22,8 +22,8 @@ import { createEvaluator, evaluate, finalizeString, safeEvaluate } from '@/utils
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
 export interface CommonCellProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   column: DripTableBuiltInColumnSchema;
   schema: DripTableProps<RecordType, ExtraOptions>['schema'];
@@ -35,6 +35,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   preview?: DripTableGeneratorProps<RecordType, ExtraOptions>['preview'];
   onEvent?: DripTableGeneratorProps<RecordType, ExtraOptions>['onEvent'];
   defaultComponentLib?: DripTableGeneratorProps<RecordType, ExtraOptions>['defaultComponentLib'];
+  schemaFunctionPreprocessor?: DripTableGeneratorProps<RecordType, ExtraOptions>['schemaFunctionPreprocessor'];
 }
 
 const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>(column: T): T => (
@@ -49,8 +50,8 @@ const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>
 );
 
 function CommonCell<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: CommonCellProps<RecordType, ExtraOptions>) {
   if (props.column?.component === 'group' || props.column?.component === 'popover') {
     return null;
@@ -77,7 +78,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         evaluate,
         safeEvaluate,
         finalizeString,
-        schemaFunctionPreprocessor: void 0,
+        schemaFunctionPreprocessor: props.schemaFunctionPreprocessor,
       },
     )
     : () => <div />;
