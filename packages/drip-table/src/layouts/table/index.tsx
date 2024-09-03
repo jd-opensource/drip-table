@@ -224,6 +224,9 @@ const hookColumRender = <
 };
 
 function hookSchemaEventRaiser<T>(schema: T, schemaFunctionPreprocessor: SandboxFunctionPreprocess, props: Record<string, unknown>): T {
+  if (Array.isArray(schema)) {
+    return schema.map(v => schemaFunctionPreprocessor(v, props)) as T;
+  }
   if (schema && typeof schema === 'object') {
     return Object.fromEntries(
       Object.entries(schema)
