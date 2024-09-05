@@ -128,7 +128,11 @@ const DripTableWrapper = React.forwardRef(<
               errorMessage = `Built-in component must contains a valid options ajv schema! (component: ${column.component})`;
             }
           } else {
-            const [libName, componentName] = column?.component?.split('::') || [];
+            let [libName, componentName] = column?.component?.split('::') || [];
+            if (!componentName && tableProps.defaultComponentLib) {
+              componentName = libName;
+              libName = tableProps.defaultComponentLib;
+            }
             if (libName && componentName) {
               schema = rtp.components?.[libName]?.[componentName]?.schema;
             }
