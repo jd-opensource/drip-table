@@ -121,7 +121,9 @@ const DripTableWrapper = React.forwardRef(<
         const validateColumnSchema = (column: (typeof rtp.schema.columns)[number], path: string = 'column'): string | null => {
           let errorMessage: string | null = null;
           let schema: SchemaObject | undefined;
-          const BuiltInComponent = DripTableBuiltInComponents[column?.component];
+          const BuiltInComponent = rtp.defaultComponentLib
+            ? null
+            : DripTableBuiltInComponents[column?.component];
           if (BuiltInComponent) {
             schema = BuiltInComponent.schema;
             if (!schema) {
