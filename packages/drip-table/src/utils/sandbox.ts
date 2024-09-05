@@ -34,7 +34,7 @@ export const createExecutor = (script: string, contextKeys: string[] = []) => {
     : void 0;
   if (!executor) {
     // 包裹二阶函数，用于兼容微前端
-    script = `return function(${contextKeys.join(', ')}) { ${script} }`;
+    script = `return function(${contextKeys.join(', ')}) { ${script}\n}`;
     executor = new Function('window', script)(window);
     if (executor) { executorCache.set(key, executor); }
   }
