@@ -131,9 +131,9 @@ const DripTableWrapper = React.forwardRef(<
             }
           } else {
             let [libName, componentName] = column?.component?.split('::') || [];
-            if (!componentName && tableProps.defaultComponentLib) {
+            if (!componentName && rtp.defaultComponentLib) {
               componentName = libName;
-              libName = tableProps.defaultComponentLib;
+              libName = rtp.defaultComponentLib;
             }
             if (libName && componentName) {
               schema = rtp.components?.[libName]?.[componentName]?.schema;
