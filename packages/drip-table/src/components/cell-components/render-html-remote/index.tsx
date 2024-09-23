@@ -97,7 +97,7 @@ export default class DTCRenderHTMLRemote<RecordType extends DripTableRecordTypeB
       if (typeof html === 'number') {
         return <div>{ html }</div>;
       }
-      return <RichText html={Object.prototype.toString.call(html || '')} style={{ wordBreak: 'break-all' }} />;
+      return <RichText html={`${html || ''}`} style={{ wordBreak: 'break-all' }} />;
     } catch (error) {
       console.error(error);
     }

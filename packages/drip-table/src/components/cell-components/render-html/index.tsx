@@ -53,7 +53,7 @@ export default class DTCRenderHTML<RecordType extends DripTableRecordTypeBase> e
       if (typeof html === 'number') {
         return <div>{ html }</div>;
       }
-      return <ErrorBoundary><RichText html={Object.prototype.toString.call(html || '')} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>;
+      return <ErrorBoundary><RichText html={`${html || ''}`} style={{ wordBreak: 'break-all' }} /></ErrorBoundary>;
     } catch (error) {
       console.error(error);
     }
