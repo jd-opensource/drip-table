@@ -16,7 +16,7 @@ import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { updateColumnItemByPath } from '@/layouts/attributes-layout/utils';
+import { getColumnItemByPath, updateColumnItemByPath } from '@/layouts/attributes-layout/utils';
 import { getSchemaValue } from '@/layouts/utils';
 import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
 
@@ -111,7 +111,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onAddColumnItem={onAddColumnItem}
                 onRemoveColumnItem={onRemoveColumnItem}
                 onClick={(type, payload) => {
-                  if (type !== 'column-item') {
+                  const colPath = payload.currentComponentPath as (number | 'popover' | 'content')[] ?? [];
+                  const containerComponent = getColumnItemByPath(props.column, colPath);
+                  if (!(type === 'column-item' && containerComponent.component === 'group')) {
                     setState({
                       ...payload,
                       currentColumnID: props.column.key,

@@ -38,8 +38,11 @@ export const updateColumnItemByPath = (
 
 export const getColumnItemByPath = (column: DTGTableConfig['columns'][number], path: (number | 'popover' | 'content')[]) => {
   const [key, ...rest] = path;
-  if (!column || path.length <= 0) {
+  if (!column) {
     return null;
+  }
+  if (column && path.length <= 0) {
+    return column;
   }
   const newColumn = cloneDeep(column && 'schema' in column ? column.schema : column) as DTGTableConfig['columns'][number];
   if (newColumn.component === 'group') {
