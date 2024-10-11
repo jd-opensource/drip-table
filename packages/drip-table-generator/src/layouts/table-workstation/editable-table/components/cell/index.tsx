@@ -111,11 +111,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 onAddColumnItem={onAddColumnItem}
                 onRemoveColumnItem={onRemoveColumnItem}
                 onClick={(type, payload) => {
-                  setState({
-                    ...payload,
-                    currentColumnID: props.column.key,
-                    drawerType: type as 'table' | 'column' | 'column-item' | undefined,
-                  });
+                  if (type !== 'column-item') {
+                    setState({
+                      ...payload,
+                      currentColumnID: props.column.key,
+                      drawerType: type as 'table' | 'column' | 'column-item' | undefined,
+                    });
+                  }
                   props.onClick?.(type, {
                     ...payload,
                     currentColumnID: props.column.key,

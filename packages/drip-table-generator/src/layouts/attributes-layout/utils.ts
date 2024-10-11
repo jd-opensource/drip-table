@@ -24,17 +24,7 @@ export const updateColumnItemByPath = (
       columnSchema.options.items = [];
     }
     const items = columnSchema.options.items as DTGTableConfig['columns'][number];
-    if (rest.length === 0) {
-      const newSchema = cloneDeep(schema);
-      items[key] = items[key] && 'schema' in items[key]
-        ? {
-          ...items[key],
-          schema: newSchema,
-        }
-        : newSchema;
-    } else {
-      items[key] = updateColumnItemByPath(items[key], rest, schema);
-    }
+    items[key] = rest.length === 0 ? cloneDeep(schema) : updateColumnItemByPath(items[key], rest, schema);
   } else if (columnSchema.component === 'popover' && typeof key === 'string') {
     columnSchema.options[key] = rest.length === 0
       ? cloneDeep(schema)
@@ -54,7 +44,7 @@ export const getColumnItemByPath = (column: DTGTableConfig['columns'][number], p
   const newColumn = cloneDeep(column && 'schema' in column ? column.schema : column) as DTGTableConfig['columns'][number];
   if (newColumn.component === 'group') {
     const items = newColumn.options.items as DTGTableConfig['columns'] || [];
-    const columnItem = items[key] && 'schema' in items[key] ? items[key].schema : items[key] ?? null;
+    const columnItem = items[key] && 'schema' in items[key] ? { ...items[key].schema, style: items[key].style } : items[key] ?? null;
     if (rest.length > 0) {
       return getColumnItemByPath(columnItem, rest);
     }

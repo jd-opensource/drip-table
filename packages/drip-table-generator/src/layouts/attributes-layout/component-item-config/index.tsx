@@ -235,8 +235,14 @@ function ComponentItemConfigForm<
             icons={props.icons}
             onChange={(data) => {
               const columns = [...tableConfigs[tableIndex].columns];
-              const columnSchema = Object.assign({}, currentColumnItem, data);
+              let columnSchema = Object.assign({}, currentColumnItem, data);
               const index = columns.findIndex(item => item.key === currentColumn.key);
+              if (props.containerType === 'group' && 'style' in columnSchema) {
+                columnSchema = {
+                  schema: { ...columnSchema, style: void 0 },
+                  style: columnSchema.style,
+                };
+              }
               if (props.containerType === 'group' || props.containerType === 'popover') {
                 const newColumn = updateColumnItemByPath(columns[index], currentComponentPath || [], columnSchema);
                 columns[index] = newColumn;
