@@ -8,8 +8,8 @@
 
 import './index.less';
 
-import { CloseOutlined } from '@ant-design/icons';
-import { Col, Dropdown, Row, Tooltip } from 'antd';
+import { DeleteOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Col, Dropdown, Popconfirm, Row, Tooltip } from 'antd';
 import classNames from 'classnames';
 import {
   DripTableBuiltInColumnSchema,
@@ -52,7 +52,7 @@ function GroupCell<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GroupCellProps<RecordType, ExtraOptions>) {
   const [dropDownIndex, setDropDownIndex] = React.useState([] as (number | 'content' | 'popover')[]);
-  const { currentComponentID } = React.useContext(GeneratorContext);
+  const { currentComponentID, setState } = React.useContext(GeneratorContext);
   const columnToRender = 'schema' in props.column ? props.column.schema as DripTableBuiltInColumnSchema : props.column;
   const DropdownRender = React.useCallback((colLength: number, componentIndex: number) => (
     <ComponentsSelector
@@ -115,25 +115,51 @@ function GroupCell<
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      props.onClick?.('column-item', {
+                      setState({
                         currentComponentPath: colChecked ? [] : [componentIndex],
                         currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
                         currentColumnID: rootColumn.key,
                         currentTableID: props.tableConfig.tableId,
-                        tableConfig: props.tableConfig,
                       });
                     }}
                   >
                     { itemColumnSchema && itemColumnSchema.key === currentComponentID && (
-                      <div className="jfe-drip-table-generator-workstation-table-cell-group-close danger">
-                        <Tooltip title="点击删除子组件">
-                          <CloseOutlined
+                      <div className="jfe-drip-table-generator-workstation-table-cell-group-tools">
+                        <Tooltip title="打开当前组件配置面板">
+                          <Button
+                            size="small"
+                            className="jfe-drip-table-generator-workstation-table-header-tool"
+                            ghost
+                            icon={<SettingOutlined />}
                             onClick={(e) => {
                               e.stopPropagation();
-                              props.onRemoveColumnItem([componentIndex], props.columnIndex, props.tableConfig.tableId);
+                              setState({
+                                drawerType: 'column-item',
+                              });
+                              props.onClick?.('column-item', {
+                                currentComponentPath: colChecked ? [] : [componentIndex],
+                                currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
+                                currentColumnID: rootColumn.key,
+                                currentTableID: props.tableConfig.tableId,
+                              });
                             }}
                           />
                         </Tooltip>
+                        <Popconfirm
+                          title="点击删除该子组件?"
+                          onConfirm={(e) => {
+                            e?.stopPropagation();
+                            props.onRemoveColumnItem([componentIndex], props.columnIndex, props.tableConfig.tableId);
+                          }}
+                        >
+                          <Button
+                            size="small"
+                            className="jfe-drip-table-generator-workstation-table-header-tool danger"
+                            ghost
+                            icon={<DeleteOutlined />}
+                            onClick={(e) => { e.stopPropagation(); }}
+                          />
+                        </Popconfirm>
                       </div>
                     ) }
                     { itemColumnSchema

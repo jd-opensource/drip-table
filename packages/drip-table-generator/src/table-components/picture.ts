@@ -14,6 +14,7 @@ export default {
     titleConfig('图片'),
     ...dataIndexColumnAttrComponents('pictureUrl', {
       layout: { labelCol: 8, wrapperCol: 16 },
+      modeDiffFn: (_1, formData) => true,
     }),
     {
       name: 'options.preview',
