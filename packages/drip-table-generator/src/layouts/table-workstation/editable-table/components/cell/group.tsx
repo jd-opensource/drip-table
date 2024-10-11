@@ -116,7 +116,7 @@ function GroupCell<
                     onClick={(e) => {
                       e.stopPropagation();
                       setState({
-                        currentComponentPath: colChecked ? [] : [componentIndex],
+                        currentComponentPath: colChecked ? [] : [...props.path, componentIndex],
                         currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
                         currentColumnID: rootColumn.key,
                         currentTableID: props.tableConfig.tableId,
@@ -137,10 +137,11 @@ function GroupCell<
                                 drawerType: 'column-item',
                               });
                               props.onClick?.('column-item', {
-                                currentComponentPath: colChecked ? [] : [componentIndex],
-                                currentComponentID: colChecked ? void 0 : itemColumnSchema?.key,
+                                currentComponentPath: [componentIndex],
+                                currentComponentID: itemColumnSchema?.key,
                                 currentColumnID: rootColumn.key,
                                 currentTableID: props.tableConfig.tableId,
+                                tableConfig: props.tableConfig,
                               });
                             }}
                           />
