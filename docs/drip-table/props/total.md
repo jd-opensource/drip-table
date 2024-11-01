@@ -43,6 +43,9 @@ const schema = {
       },
     },
   ],
+  pagination: {
+    pageSize: 20,
+  },
 };
 
 const dataSource = [

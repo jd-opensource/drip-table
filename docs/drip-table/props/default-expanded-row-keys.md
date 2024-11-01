@@ -122,22 +122,22 @@ const dataSource = [
     subtable: [
       {
         id: '1-1',
-        name: '苹果',
+        name: '苹果A',
         description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素',
         status: 'onSale',
         price: 799,
         subtableLevel2: [
-          { id: '1-1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+          { id: '1-1-1', name: '苹果A1', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
         ],
       },
       {
         id: '1-2',
-        name: '梨',
+        name: '梨A',
         description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族',
         status: 'onSale',
         price: 799,
         subtableLevel2: [
-          { id: '1-2-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+          { id: '1-2-1', name: '梨A1', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
         ],
       },
     ],
@@ -151,22 +151,22 @@ const dataSource = [
     subtable: [
       {
         id: '2-1',
-        name: '苹果',
+        name: '苹果B',
         description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素',
         status: 'onSale',
         price: 799,
         subtableLevel2: [
-          { id: '2-1-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+          { id: '2-1-1', name: '苹果B1', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
         ],
       },
       {
         id: '2-2',
-        name: '梨',
+        name: '梨B',
         description: '通常是一种落叶乔木或灌木，极少数品种为常绿，属于蔷薇目蔷薇科苹果族',
         status: 'onSale',
         price: 799,
         subtableLevel2: [
-          { id: '2-2-1', name: '苹果', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
+          { id: '2-2-1', name: '梨B1', description: '是苹果树的果实，一般呈紅色，但需視品種而定，富含矿物质和维生素', status: 'onSale', price: 799 },
         ],
       },
     ],
