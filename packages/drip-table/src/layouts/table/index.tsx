@@ -1857,6 +1857,9 @@ function TableLayout<
       const subtable = tableProps.schema.subtable;
       const rowExpandable = tableProps.rowExpandable;
       if (rowExpandColumnVisible) {
+        const defaultExpandedRowKeys = rowKey && tableProps.defaultExpandedRowKeys
+          ? tableProps.defaultExpandedRowKeys?.map(k => rcTableDataSource.find(v => v.record[rowKey] === k)?.key).filter(Boolean)
+          : void 0;
         return {
           expandIcon: RcExpandIcon,
           expandedRowRender: RcExpandRowRender,
@@ -1871,7 +1874,7 @@ function TableLayout<
             return false;
           },
           defaultExpandAllRows: tableProps.defaultExpandAllRows,
-          defaultExpandedRowKeys: tableProps.defaultExpandedRowKeys,
+          defaultExpandedRowKeys: defaultExpandedRowKeys as typeof tableProps.defaultExpandedRowKeys,
         };
       }
       return void 0;
@@ -1879,6 +1882,10 @@ function TableLayout<
     [
       tableProps.schema.subtable,
       tableProps.rowExpandable,
+      tableProps.defaultExpandAllRows,
+      tableProps.defaultExpandedRowKeys,
+      rowKey,
+      rcTableDataSource,
       RcExpandIcon,
       RcExpandRowRender,
     ],
