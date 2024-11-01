@@ -1,6 +1,6 @@
 {
   "name": "drip-table",
-  "version": "3.2.1-alpha.10",
+  "version": "3.2.1-alpha.11",
   "description": "A tiny and powerful enterprise-class solution for building tables.",
   "main": "dist/index.min.js",
   "module": "lib/index.js",
