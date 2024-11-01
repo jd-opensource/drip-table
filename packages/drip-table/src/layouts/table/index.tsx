@@ -1857,7 +1857,7 @@ function TableLayout<
       const subtable = tableProps.schema.subtable;
       const rowExpandable = tableProps.rowExpandable;
       if (rowExpandColumnVisible) {
-        const defaultExpandedRowKeys = rowKey && tableProps.defaultExpandedRowKeys
+        const defaultExpandedRowKeys = rowKey && Array.isArray(tableProps.defaultExpandedRowKeys)
           ? tableProps.defaultExpandedRowKeys?.map(k => rcTableDataSource.find(v => v.record[rowKey] === k)?.key).filter(Boolean)
           : void 0;
         return {
