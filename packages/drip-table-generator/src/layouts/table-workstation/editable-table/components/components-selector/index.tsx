@@ -128,7 +128,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   showFilter={props.showFilter}
                   floatPanel
                   value={popoverConfig?.['ui:type']}
-                  options={components.map(item => ({
+                  options={components.filter(item => item['ui:type'] !== 'popover').map(item => ({
                     label: item.title,
                     value: item['ui:type'],
                     group: item.group,
@@ -149,7 +149,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   showFilter={props.showFilter}
                   floatPanel
                   value={contentConfig?.['ui:type']}
-                  options={components.map(item => ({
+                  options={components.filter(item => item['ui:type'] !== 'popover').map(item => ({
                     label: item.title,
                     value: item['ui:type'],
                     group: item.group,
