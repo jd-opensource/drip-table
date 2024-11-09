@@ -109,7 +109,7 @@ function GroupCell<
                       empty: !itemColumnSchema,
                     })}
                     style={{
-                      ...itemColumn && 'style' in itemColumn && 'schema' in itemColumn ? itemColumn.style : {},
+                      ...itemColumn && 'style' in itemColumn && 'schema' in itemColumn && typeof itemColumn.style === 'object' ? itemColumn.style : {},
                       minWidth: `${100 / colLength}%`,
                       justifyContent: options.horizontalAlign,
                     }}
