@@ -285,6 +285,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                       columns.splice(columnIndex, 1);
                       setTableColumns(columns, tableIndex);
                       props.onClick?.('column-delete', {
+                        columnIndex,
                         columns,
                         currentTableID: props.tableConfig.tableId,
                         tableConfig: props.tableConfig,
