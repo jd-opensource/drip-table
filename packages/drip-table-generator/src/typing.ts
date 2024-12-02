@@ -277,7 +277,7 @@ export interface DripTableGeneratorProps<
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
-  onColumnAdded?: (column: DripTableSchema<DripTableColumnSchema>['columns'][number], schema: DripTableSchema<DripTableColumnSchema>) => void;
+  onColumnAdded?: (column: DripTableSchema<DripTableColumnSchema>['columns'][number], schema: DripTableSchema<DripTableColumnSchema>, columnIndex: number) => void;
   onClose?: (schema?: DripTableSchema<DripTableColumnSchema>) => void;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   /**

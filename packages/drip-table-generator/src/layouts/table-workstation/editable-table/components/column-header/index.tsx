@@ -108,6 +108,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           columns: newColumns,
           currentTableID: props.tableConfig.tableId,
           tableConfig: props.tableConfig,
+          columnIndex: index,
         });
         return newColumns;
       }}
@@ -135,6 +136,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           columns: newColumns,
           currentTableID: props.tableConfig.tableId,
           tableConfig: props.tableConfig,
+          columnIndex: index,
         });
         return newColumns;
       }}
