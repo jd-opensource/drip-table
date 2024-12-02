@@ -203,15 +203,19 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     } else {
                       const lastSortableColumnIndex = tableConfigs[tableIndex].columns.map(item => !!item.fixed).lastIndexOf(false);
                       let columns = [...tableConfigs[tableIndex].columns];
+                      let columnIndex = columns.length - 1;
                       if (props.customColumns) {
                         columns = props.customColumns(tableConfigs[tableIndex].columns, column);
+                        columnIndex = columns.findIndex(item => item.key === column.key);
                       } else if (lastSortableColumnIndex < columns.length - 1) {
                         columns.splice(lastSortableColumnIndex + 1, 0, column);
+                        columnIndex = lastSortableColumnIndex + 1;
                       } else {
                         columns = [...tableConfigs[tableIndex].columns, column];
+                        columnIndex += 1;
                       }
                       setTableColumns(columns, tableIndex, (configs) => {
-                        props.onColumnAdded?.(column, getSchemaValue(configs));
+                        props.onColumnAdded?.(column, getSchemaValue(configs), columnIndex);
                       });
                     }
                     initStates();
