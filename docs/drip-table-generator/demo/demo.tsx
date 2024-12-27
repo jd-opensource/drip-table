@@ -25,6 +25,7 @@ const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ..
 console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
 function Demo() {
+  const generatorRef = React.useRef<DripTableGeneratorHandler>();
   return (
     <DripTableGenerator<SampleRecordType, {
       CustomColumnSchema: TextColumnSchema;
@@ -32,6 +33,7 @@ function Demo() {
       CustomComponentExtraData: never;
       SubtableDataSourceKey: SubtableDataSourceKey;
     }>
+      ref={generatorRef}
       mockDataSource
       mode="page"
       icons={Icons}
