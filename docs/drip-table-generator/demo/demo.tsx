@@ -10,7 +10,7 @@ import './demo.module.less';
 import * as AntIcons from '@ant-design/icons';
 import { CloudSyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
-import DripTableGenerator from 'drip-table-generator';
+import DripTableGenerator, { DripTableGeneratorHandler } from 'drip-table-generator';
 import React from 'react';
 
 import { DripTableSchema } from '@/packages/drip-table/lib';
@@ -25,7 +25,7 @@ const { createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor, ..
 console.log(createFromIconfontCN, IconProvider, setTwoToneColor, getTwoToneColor);
 
 function Demo() {
-  const generatorRef = React.useRef<DripTableGeneratorHandler>();
+  const generatorRef = React.useRef<DripTableGeneratorHandler>(null);
   return (
     <DripTableGenerator<SampleRecordType, {
       CustomColumnSchema: TextColumnSchema;
