@@ -117,6 +117,9 @@ const DripTableGenerator = React.forwardRef(<
       setTableConfigs: tableConfigsContext.setTableConfigs,
       setTableColumns: tableConfigsContext.setTableColumns,
     },
+    checkColumn: (tableId: string, columnId: string) => {
+      setGeneratorStates({ ...generatorStates, currentTableID: tableId, currentColumnID: columnId });
+    },
   }));
 
   React.useEffect(() => {
