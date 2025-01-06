@@ -256,6 +256,8 @@ export interface DripTableGeneratorProps<
    */
   tableTools?: ('config' | 'subtable')[];
   columnTools?: ('config' | 'copy' | 'more' | 'delete')[];
+  checkedTableId?: string;
+  checkedColumnId?: string;
   /**
    * 自定义列添加面板
    */
