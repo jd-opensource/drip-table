@@ -37,7 +37,8 @@ const generateStates = <
 RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>): DripTableGeneratorStates => ({
-    currentTableID: void 0,
+    currentTableID: props.checkedTableId,
+    currentColumnID: props.checkedColumnId,
     previewDataSource: [...props.dataSource || []],
     mode: props.defaultMode ?? 'edit',
   });
