@@ -16,14 +16,18 @@
   width: max-content;
   position: relative;
   min-width: 500px;
-  max-width: 100%;
   display: flex;
   flex-direction: column;
   overflow-x: auto;
   overflow: visible;
+  background-color: #ffffff;
 
   &:hover {
     border: 1px dashed var(--drip-table-border-color, @border-color);
+  }
+
+  &.bordered {
+    border: 1px dashed #efefef;
   }
 
   &.disabled {
@@ -32,7 +36,6 @@
 
   &.checked {
     border: 1px solid var(--drip-table-border-color, @border-color);
-    margin-top: 32px;
   }
 }
 

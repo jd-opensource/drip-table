@@ -7,14 +7,15 @@
  */
 import './index.less';
 
+import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
-import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import { DripTableGeneratorProps } from '@/typing';
 
 import ColumnHeader from '../column-header';
+import RowHeader from '../row/row-header';
 import TableSection from '../table-section';
 
 export interface ScrollableColumnsProps<
@@ -27,10 +28,12 @@ export interface ScrollableColumnsProps<
   rowHeight: number | undefined;
   columnList: { id: number; column: DTGTableConfig['columns'][number] }[];
   ref?: React.RefObject<ScrollableColumnsHandler>;
+  subTableHeights?: number[];
 }
 
 export interface ScrollableColumnsHandler {
   getRowHeight: () => number;
+  getRowHeaderHeights: () => number[];
 }
 
 function ScrollableColumnsInner<
@@ -40,15 +43,47 @@ function ScrollableColumnsInner<
   props: ScrollableColumnsProps<RecordType, ExtraOptions>,
   ref: React.ForwardedRef<ScrollableColumnsHandler>,
 ) {
-  const context = React.useContext(GeneratorContext);
-  console.debug(context);
   const rowRef = React.createRef<HTMLDivElement>();
+  const containerRef = React.createRef<HTMLDivElement>();
   React.useImperativeHandle(ref, () => ({
-    getRowHeight: () => rowRef.current?.offsetHeight ?? 0,
+    getRowHeight: () => {
+      let maxCellHeight = 0;
+      for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
+        if (element.children[0]) {
+          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight;
+          if (trueCellHeight > maxCellHeight) {
+            maxCellHeight = trueCellHeight;
+          }
+        }
+      }
+      return maxCellHeight;
+    },
+    getRowHeaderHeights: () => {
+      const rows = (containerRef.current?.children || []) as HTMLDivElement[];
+      const start = props.tableConfig.configs.showHeader ? 1 : 0;
+      const rowHeaderHeights: number[] = [];
+      for (let i = start; i < rows.length; i++) {
+        if (rows[i].className === 'jfe-drip-table-generator-workstation-table-row') {
+          if (rows[i - 1]?.className === 'rowHeader') {
+            rowHeaderHeights.push(rows[i - 1].offsetHeight);
+          } else {
+            rowHeaderHeights.push(0);
+          }
+        }
+      }
+      return rowHeaderHeights;
+    },
   }));
   return (
-    <div className="jfe-drip-table-generator-workstation-table-scrollable-columns">
-      <div className="jfe-drip-table-generator-workstation-table-row jfe-drip-table-generator-workstation-table-header">
+    <div className="jfe-drip-table-generator-workstation-table-scrollable-columns" ref={containerRef}>
+      <div className={classNames(
+        'jfe-drip-table-generator-workstation-table-row jfe-drip-table-generator-workstation-table-header',
+        {
+          sticky: props.tableConfig.configs.sticky,
+          invisible: props.tableConfig.configs.showHeader === false,
+        },
+      )}
+      >
         {props.columnList.map(columnWrapper => (
           <ColumnHeader
             tableConfig={props.tableConfig}
@@ -65,17 +100,30 @@ function ScrollableColumnsInner<
         ))}
       </div>
       {props.previewDataSource.map((record, rowIndex) => (
-        <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
-          <TableSection
-            {...props}
-            record={record}
-            rowIndex={rowIndex}
-            columnList={props.columnList}
-            tableConfig={props.tableConfig}
-            containerWidth={props.containerWidth}
-            isLastRow={rowIndex === props.previewDataSource.length - 1}
-          />
-        </div>
+        <React.Fragment>
+          {props.tableConfig.configs.rowHeader && (
+            <RowHeader
+              ext={props.ext}
+              slots={props.slots}
+              tableConfig={props.tableConfig}
+              configs={props.tableConfig.configs.rowHeader}
+            />
+          )}
+          <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
+            <TableSection
+              {...props}
+              record={record}
+              rowIndex={rowIndex}
+              columnList={props.columnList}
+              tableConfig={props.tableConfig}
+              containerWidth={props.containerWidth}
+              isLastRow={rowIndex === props.previewDataSource.length - 1}
+            />
+          </div>
+          {(props.subTableHeights?.length || 0) > 0 && (props.subTableHeights?.[rowIndex] || 0) > 0 && (
+            <div style={{ padding: '32px 0 12px 0', width: '100%', height: props.subTableHeights?.[rowIndex] || 0 }} />
+          )}
+        </React.Fragment>
       ))}
     </div>
   );

@@ -7,10 +7,10 @@
  */
 import './index.less';
 
+import classNames from 'classnames';
 import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
-import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import { DripTableGeneratorProps } from '@/typing';
 
@@ -27,6 +27,8 @@ export interface RightFixedColumnsProps<
   rowHeight: number | undefined;
   columnList: { id: number; column: DTGTableConfig['columns'][number] }[];
   ref?: React.RefObject<RightFixedColumnsHandler>;
+  subTableHeights?: number[];
+  rowHeaderHeights?: number[];
 }
 
 export interface RightFixedColumnsHandler {
@@ -40,15 +42,35 @@ function RightFixedColumnsInner<
   props: RightFixedColumnsProps<RecordType, ExtraOptions>,
   ref: React.ForwardedRef<RightFixedColumnsHandler>,
 ) {
-  const context = React.useContext(GeneratorContext);
-  console.debug(context);
   const rowRef = React.createRef<HTMLDivElement>();
   React.useImperativeHandle(ref, () => ({
-    getRowHeight: () => rowRef.current?.offsetHeight ?? 0,
+    getRowHeight: () => {
+      let maxCellHeight = 0;
+      for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
+        if (element.children[0]) {
+          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight;
+          if (trueCellHeight > maxCellHeight) {
+            maxCellHeight = trueCellHeight;
+          }
+        }
+      }
+      return maxCellHeight;
+    },
   }));
   return (
-    <div className="jfe-drip-table-generator-workstation-table-fixed-column right">
-      <div className="jfe-drip-table-generator-workstation-table-row jfe-drip-table-generator-workstation-table-header">
+    <div
+      className={classNames('jfe-drip-table-generator-workstation-table-fixed-column right', {
+        bordered: props.columnList.length > 0 || props.tableConfig.hasSubTable || props.tableConfig.configs.rowSelection,
+      })}
+    >
+      <div className={classNames(
+        'jfe-drip-table-generator-workstation-table-row jfe-drip-table-generator-workstation-table-header',
+        {
+          sticky: props.tableConfig.configs.sticky,
+          invisible: props.tableConfig.configs.showHeader === false,
+        },
+      )}
+      >
         {props.columnList.map(columnWrapper => (
           <ColumnHeader
             tableConfig={props.tableConfig}
@@ -65,17 +87,25 @@ function RightFixedColumnsInner<
         ))}
       </div>
       {props.previewDataSource.map((record, rowIndex) => (
-        <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
-          <TableSection
-            {...props}
-            record={record}
-            rowIndex={rowIndex}
-            columnList={props.columnList}
-            tableConfig={props.tableConfig}
-            containerWidth={props.containerWidth}
-            isLastRow={rowIndex === props.previewDataSource.length - 1}
-          />
-        </div>
+        <React.Fragment>
+          {props.tableConfig.configs.rowHeader && (
+            <div style={{ width: '100%', height: props.rowHeaderHeights?.[rowIndex] || 0 }} />
+          )}
+          <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
+            <TableSection
+              {...props}
+              record={record}
+              rowIndex={rowIndex}
+              columnList={props.columnList}
+              tableConfig={props.tableConfig}
+              containerWidth={props.containerWidth}
+              isLastRow={rowIndex === props.previewDataSource.length - 1}
+            />
+          </div>
+          {(props.subTableHeights?.length || 0) > 0 && (props.subTableHeights?.[rowIndex] || 0) > 0 && (
+            <div style={{ padding: '32px 0 12px 0', width: '100%', height: props.subTableHeights?.[rowIndex] || 0 }} />
+          )}
+        </React.Fragment>
       ))}
     </div>
   );

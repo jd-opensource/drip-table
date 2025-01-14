@@ -17,6 +17,7 @@ import { DripTableGeneratorProps } from '@/typing';
 
 import PaginationComponent from '../components/pagination';
 import TableContainer, { TableContainerHandler } from '../components/table-container';
+import AddColumnComponent from './components/add-column';
 import LeftFixedColumns, { LeftFixedColumnsHandler } from './components/left-columns';
 import RightFixedColumns, { RightFixedColumnsHandler } from './components/right-columns';
 import ScrollableColumns, { ScrollableColumnsHandler } from './components/scroll-columns';
@@ -35,23 +36,38 @@ function EditableTable<
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableProps<RecordType, ExtraOptions>) {
+  const context = React.useContext(TableConfigsContext);
   const [previewRecord] = React.useState(void 0 as number | undefined);
   const [rowHeight, setRowHeight] = React.useState(void 0 as number | undefined);
+  const [subTableHeights, setSubTableHeights] = React.useState([] as number[]);
+  const [rowHeaderHeights, setRowHeaderHeights] = React.useState([] as number[]);
   const containerRef = React.useRef<TableContainerHandler>(null);
   const leftColumnsRef = React.useRef<LeftFixedColumnsHandler>(null);
   const scrollColumnsRef = React.useRef<ScrollableColumnsHandler>(null);
   const rightColumnsRef = React.useRef<RightFixedColumnsHandler>(null);
 
   React.useEffect(() => {
-    console.debug('rowHeight');
     const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
     const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
     const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
-    console.debug(leftHeight, scrollHeight, rightHeight);
     if (leftHeight !== scrollHeight || rightHeight !== scrollHeight || leftHeight !== rightHeight) {
       setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
     }
   }, [props.dataSource, props.schema, props.tableConfig]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const leftHeights = leftColumnsRef.current?.getSubTableHeight() ?? [];
+      setSubTableHeights(leftHeights);
+    }, 200);
+  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const rowHeights = scrollColumnsRef.current?.getRowHeaderHeights() ?? [];
+      setRowHeaderHeights(rowHeights);
+    }, 200);
+  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
 
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
@@ -75,6 +91,7 @@ function EditableTable<
     }
     return props.dataSource.map((rec, idx) => ({ id: idx, record: rec }));
   }, [props.dataSource, props.tableConfig.configs.pagination, previewRecord]);
+
   const previewDataSource = typeof previewRecord === 'number' ? [dataSourceToUse[previewRecord]] : dataSourceToUse;
   const paginationInHeader = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('top');
   const paginationInFooter = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('bottom');
@@ -115,39 +132,53 @@ function EditableTable<
             className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
               bordered: props.tableConfig.configs.bordered,
             })}
-            style={{
-              display: 'flex',
-              overflow: 'auto',
-              height: tableHeight,
-              width: props.tableConfig.configs.scroll?.x ? Number(props.tableConfig.configs.scroll?.x) : void 0,
-            }}
+            style={{ display: 'flex' }}
           >
-            <LeftFixedColumns<RecordType, ExtraOptions>
-              {...props}
-              ref={leftColumnsRef}
+            <div
+              style={{
+                display: 'flex',
+                overflow: 'auto',
+                height: tableHeight,
+                width: props.tableConfig.configs.scroll?.x ? Number(props.tableConfig.configs.scroll?.x) : void 0,
+              }}
+            >
+              <LeftFixedColumns<RecordType, ExtraOptions>
+                {...props}
+                ref={leftColumnsRef}
+                tableConfig={props.tableConfig}
+                columnList={leftFixedColumns}
+                previewDataSource={previewDataSource as ({ id: number; record: RecordType })[]}
+                containerWidth={tableWidth}
+                rowHeight={rowHeight}
+                rowHeaderHeights={rowHeaderHeights}
+              />
+              <ScrollableColumns<RecordType, ExtraOptions>
+                {...props}
+                ref={scrollColumnsRef}
+                tableConfig={props.tableConfig}
+                columnList={sortableColumns}
+                previewDataSource={previewDataSource}
+                containerWidth={tableWidth}
+                rowHeight={rowHeight}
+                subTableHeights={subTableHeights}
+              />
+              <RightFixedColumns<RecordType, ExtraOptions>
+                {...props}
+                ref={rightColumnsRef}
+                tableConfig={props.tableConfig}
+                columnList={rightFixedColumns}
+                previewDataSource={previewDataSource}
+                containerWidth={tableWidth}
+                rowHeight={rowHeight}
+                subTableHeights={subTableHeights}
+                rowHeaderHeights={rowHeaderHeights}
+              />
+            </div>
+            <AddColumnComponent
               tableConfig={props.tableConfig}
-              columnList={leftFixedColumns}
-              previewDataSource={previewDataSource as ({ id: number; record: RecordType })[]}
-              containerWidth={tableWidth}
-              rowHeight={rowHeight}
-            />
-            <ScrollableColumns<RecordType, ExtraOptions>
-              {...props}
-              ref={scrollColumnsRef}
-              tableConfig={props.tableConfig}
-              columnList={sortableColumns}
-              previewDataSource={previewDataSource}
-              containerWidth={tableWidth}
-              rowHeight={rowHeight}
-            />
-            <RightFixedColumns<RecordType, ExtraOptions>
-              {...props}
-              ref={rightColumnsRef}
-              tableConfig={props.tableConfig}
-              columnList={rightFixedColumns}
-              previewDataSource={previewDataSource}
-              containerWidth={tableWidth}
-              rowHeight={rowHeight}
+              customComponentPanel={props.customComponentPanel}
+              customColumnAddPanel={props.customColumnAddPanel}
+              onColumnAdded={props.onColumnAdded}
             />
           </div>
           {props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter

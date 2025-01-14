@@ -1,0 +1,48 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+@import url("../../../../../styles/index.less");
+
+@prefixCls: jfe-drip-table-generator-workstation-table-header;
+
+.@{prefixCls}-add-item {
+  color: #000000d9;
+  font-weight: 500;
+  background: #f5f5f5;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid #e0e0e0;
+  transition: all .3s ease;
+  height: 48px;
+  padding: 0 12px;
+  min-width: 120px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.small {
+    height: 35px;
+    padding: 0 8px;
+  }
+
+  &.middle,
+  &.default {
+    height: 48px;
+    padding: 0 12px;
+  }
+
+  &.large {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  &.sticky {
+    position: sticky;
+    top: 0;
+  }
+}

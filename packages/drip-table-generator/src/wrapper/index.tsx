@@ -37,10 +37,10 @@ const generateStates = <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>): DripTableGeneratorStates => {
-  console.debug(props);
+  const { checkedTableId, checkedColumnId } = props;
   return {
-    currentTableID: props.checkedTableId,
-    currentColumnID: props.checkedColumnId,
+    currentTableID: checkedTableId,
+    currentColumnID: checkedColumnId,
     previewDataSource: [...props.dataSource || []],
     mode: props.defaultMode ?? 'edit',
   };
