@@ -7,17 +7,17 @@
  */
 import './index.less';
 
-import DripTable, { DripTableExtraOptions } from 'drip-table';
+import DripTable, { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 function PreviewTable<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions> & { visible: boolean }) {
   const context = React.useContext(GeneratorContext);

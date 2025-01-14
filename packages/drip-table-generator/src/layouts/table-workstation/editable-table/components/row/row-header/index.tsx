@@ -9,7 +9,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSlotElementSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -17,10 +17,10 @@ import RichText from '@/components/RichText';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 interface RowHeaderProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   ext: DripTableGeneratorProps<RecordType, ExtraOptions>['ext'];
@@ -29,8 +29,8 @@ interface RowHeaderProps<
   tableConfig: DTGTableConfig;
 }
 function RowHeader<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: RowHeaderProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
   const tableConfigsContext = React.useContext(TableConfigsContext);
@@ -43,7 +43,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
 
     if (config.type === 'text') {
-      return <h3 className="jfe-drip-table-generator-workstation-editable-footer-generic-render-text-element">{ config.text }</h3>;
+      return <h3 className="jfe-drip-table-generator-workstation-editable-footer-generic-render-text-element">{config.text}</h3>;
     }
 
     if (config.type === 'html') {
@@ -53,14 +53,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     if (config.type === 'search') {
       return (
         <div style={config.wrapperStyle} className={classNames('jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element', config.wrapperClassName)}>
-          { config.searchKeys && (
+          {config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
               className="jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element__select"
             >
-              { config.searchKeys.map((item, i) => <Select.Option key={i} value={item.value}>{ item.label }</Select.Option>) }
+              {config.searchKeys.map((item, i) => <Select.Option key={i} value={item.value}>{item.label}</Select.Option>)}
             </Select>
-          ) }
+          )}
           <Input.Search
             allowClear={config.allowClear}
             placeholder={config.placeholder}
@@ -88,7 +88,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           />
         );
       }
-      return <span className="jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element__error">{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className="jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element__error">{`自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在`}</span>;
     }
 
     if (config.type === 'insert-button') {
@@ -99,7 +99,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
         >
-          { config.insertButtonText }
+          {config.insertButtonText}
         </Button>
       );
     }
@@ -107,7 +107,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     if (config.type === 'display-column-selector') {
       return (
         <Button style={{ margin: '6px 0' }} type={config.selectorButtonType}>
-          { config.selectorButtonText || '展示列' }
+          {config.selectorButtonText || '展示列'}
           <DownOutlined />
         </Button>
       );
@@ -133,11 +133,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         newColumns.splice(cellIndex, 1, currentCell);
         setCurrentCellIndex(-1);
         setCurrentCell(void 0);
-        const configs = cloneDeep({ ...props.tableConfig.configs,
+        const configs = cloneDeep({
+          ...props.tableConfig.configs,
           rowHeader: {
             ...props.tableConfig.configs.rowHeader,
             elements: newColumns,
-          } });
+          },
+        });
         setTableConfigs(configs, tableIndex);
       }
     }
@@ -145,7 +147,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ setTableConfigs }) => (
+      {({ setTableConfigs }) => (
         <div style={{ ...props.configs?.style, display: 'flex' }}>
           {
             props.configs?.elements?.map((element, index) => (
@@ -161,20 +163,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   dropHeaderCell(element, index, setTableConfigs);
                 }}
                 key={index}
-                className={classNames(
-                  'jfe-drip-table-generator-workstation-editable-header-draggable-cell', {
-                    'jfe-drip-table-generator-workstation-editable-header-text-cell': element.type === 'text',
-                    'jfe-drip-table-generator-workstation-editable-header-spacer-cell': element.type === 'spacer',
-                  },
-                )}
+                className={classNames('jfe-drip-table-generator-workstation-editable-header-draggable-cell', {
+                  'jfe-drip-table-generator-workstation-editable-header-text-cell': element.type === 'text',
+                  'jfe-drip-table-generator-workstation-editable-header-spacer-cell': element.type === 'spacer',
+                })}
                 style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
               >
-                { renderColumnContent(element) }
+                {renderColumnContent(element)}
               </div>
             ))
           }
         </div>
-      ) }
+      )}
     </TableConfigsContext.Consumer>
 
   );

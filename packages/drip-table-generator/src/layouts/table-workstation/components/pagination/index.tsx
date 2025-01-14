@@ -7,29 +7,29 @@
  */
 
 import { Pagination, PaginationProps } from 'antd';
-import { DripTableColumnSchema, DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { safeEvaluate } from '@/utils/sandbox';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import { parseReactCSS } from './dom';
 
 export type PaginationComponentProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
-CustomColumnSchema extends DripTableColumnSchema = never,
-SubtableDataSourceKey extends React.Key = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  CustomColumnSchema extends DripTableColumnSchema = never,
+  SubtableDataSourceKey extends React.Key = never,
 > = DripTableSchema<CustomColumnSchema, SubtableDataSourceKey>['pagination'] & Omit<PaginationProps, 'showTotal'> & {
   renderPagination: DripTableGeneratorProps<RecordType, ExtraOptions>['renderPagination'];
   ext?: DripTableExtraOptions['CustomComponentExtraData'];
 };
 
 function PaginationComponent<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
-CustomColumnSchema extends DripTableColumnSchema = never,
-SubtableDataSourceKey extends React.Key = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  CustomColumnSchema extends DripTableColumnSchema = never,
+  SubtableDataSourceKey extends React.Key = never,
 >(props: PaginationComponentProps<RecordType, ExtraOptions, CustomColumnSchema, SubtableDataSourceKey>) {
   if (!props) { return null; }
   const renderShowTotal = (showTotal?: string | boolean) => {

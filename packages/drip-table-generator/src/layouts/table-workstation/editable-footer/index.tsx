@@ -11,7 +11,7 @@ import './index.less';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSlotElementSchema, DripTableTableInformation } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSlotElementSchema, DripTableTableInformation, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -19,12 +19,12 @@ import RichText from '@/components/RichText';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, DTGTableConfigsContext, TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import PaginationComponent from '../components/pagination';
 
 interface EditableTableFooterProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   ext: ExtraOptions['CustomComponentExtraData'];
@@ -35,7 +35,8 @@ interface EditableTableFooterProps<
 }
 
 function EditableTableFooter<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableFooterProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
@@ -56,7 +57,7 @@ function EditableTableFooter<
     }
 
     if (config.type === 'text') {
-      return <h3 className="jfe-drip-table-generator-workstation-editable-footer-generic-render-text-element">{ config.text }</h3>;
+      return <h3 className="jfe-drip-table-generator-workstation-editable-footer-generic-render-text-element">{config.text}</h3>;
     }
 
     if (config.type === 'html') {
@@ -66,14 +67,14 @@ function EditableTableFooter<
     if (config.type === 'search') {
       return (
         <div style={config.wrapperStyle} className={classNames('jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element', config.wrapperClassName)}>
-          { config.searchKeys && (
+          {config.searchKeys && (
             <Select
               defaultValue={config.searchKeyDefaultValue}
               className="jfe-drip-table-generator-workstation-editable-footer-generic-render-search-element__select"
             >
-              { config.searchKeys.map((item, i) => <Select.Option key={i} value={item.value}>{ item.label }</Select.Option>) }
+              {config.searchKeys.map((item, i) => <Select.Option key={i} value={item.value}>{item.label}</Select.Option>)}
             </Select>
-          ) }
+          )}
           <Input.Search
             allowClear={config.allowClear}
             placeholder={config.placeholder}
@@ -101,7 +102,7 @@ function EditableTableFooter<
           />
         );
       }
-      return <span className="jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element__error">{ `自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在` }</span>;
+      return <span className="jfe-drip-table-generator-workstation-editable-footer-generic-render-slot-element__error">{`自定义插槽组件渲染函数 tableProps.slots['${config.slot}'] 不存在`}</span>;
     }
 
     if (config.type === 'insert-button') {
@@ -112,7 +113,7 @@ function EditableTableFooter<
           icon={config.showIcon && <PlusOutlined />}
           style={config.insertButtonStyle}
         >
-          { config.insertButtonText }
+          {config.insertButtonText}
         </Button>
       );
     }
@@ -120,7 +121,7 @@ function EditableTableFooter<
     if (config.type === 'display-column-selector') {
       return (
         <Button style={{ margin: '6px 0' }} type={config.selectorButtonType}>
-          { config.selectorButtonText || '展示列' }
+          {config.selectorButtonText || '展示列'}
           <DownOutlined />
         </Button>
       );
@@ -150,11 +151,13 @@ function EditableTableFooter<
         newColumns.splice(index, 1, currentCell);
         setCurrentCellIndex(-1);
         setCurrentCell(void 0);
-        const configs = cloneDeep({ ...globalConfigs,
+        const configs = cloneDeep({
+          ...globalConfigs,
           footer: {
             ...globalConfigs.footer,
             elements: newColumns,
-          } });
+          },
+        });
         setTableConfigs(configs, 0);
       }
     }
@@ -162,7 +165,7 @@ function EditableTableFooter<
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableConfigs }) => {
+      {({ tableConfigs, setTableConfigs }) => {
         const globalConfigs = tableConfigs[0].configs;
         const paginationInFooter = typeof globalConfigs.pagination === 'object' && globalConfigs.pagination.position?.startsWith('bottom');
         const tableInfo = {
@@ -178,24 +181,24 @@ function EditableTableFooter<
         };
         return (
           <div style={{ marginTop: '12px' }}>
-            { paginationInFooter && typeof globalConfigs.pagination === 'object' && (
-            <PaginationComponent
-              style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
-              {...globalConfigs.pagination}
-              renderPagination={props.renderPagination}
-              ext={props.ext}
-              total={props.total || context.previewDataSource.length}
-              onShowSizeChange={(current, size) => {
-                const configs = { ...globalConfigs };
-                if (typeof configs.pagination === 'object') {
-                  configs.pagination.pageSize = size;
-                }
-                setTableConfigs(configs, 0);
-                props.onPageChange?.(current, size, tableInfo);
-              }}
-              onChange={(page, pageSize) => props.onPageChange?.(page, pageSize, tableInfo)}
-            />
-            ) }
+            {paginationInFooter && typeof globalConfigs.pagination === 'object' && (
+              <PaginationComponent
+                style={{ textAlign: textAlignMapper[globalConfigs.pagination?.position || ''] }}
+                {...globalConfigs.pagination}
+                renderPagination={props.renderPagination}
+                ext={props.ext}
+                total={props.total || context.previewDataSource.length}
+                onShowSizeChange={(current, size) => {
+                  const configs = { ...globalConfigs };
+                  if (typeof configs.pagination === 'object') {
+                    configs.pagination.pageSize = size;
+                  }
+                  setTableConfigs(configs, 0);
+                  props.onPageChange?.(current, size, tableInfo);
+                }}
+                onChange={(page, pageSize) => props.onPageChange?.(page, pageSize, tableInfo)}
+              />
+            )}
             <div className="jfe-drip-table-generator-workstation-editable-footer-draggable-container" style={{ padding: '8px 0 0', overflowX: 'auto' }}>
               {
                 typeof globalConfigs.footer === 'object'
@@ -217,14 +220,14 @@ function EditableTableFooter<
                     })}
                     style={{ width: Number(element.span) ? `${(Number(element.span) * 100) / 24}%` : void 0, ...element.style }}
                   >
-                    { renderColumnContent(element) }
+                    {renderColumnContent(element)}
                   </div>
                 ))
               }
             </div>
           </div>
         );
-      } }
+      }}
     </TableConfigsContext.Consumer>
   );
 }

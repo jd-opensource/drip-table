@@ -7,7 +7,7 @@
  */
 import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import { Result } from 'antd';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -16,10 +16,10 @@ import CustomForm from '@/components/CustomForm';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getColumnItemConfigs, getComponentsConfigs } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 interface ComponentConfigFormProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
@@ -32,12 +32,12 @@ interface ComponentConfigFormProps<
 const errorBoundary = (message?: string) => (
   <Result
     icon={<ExclamationCircleTwoTone />}
-    title={<div style={{ color: '#999' }}>{ message }</div>}
+    title={<div style={{ color: '#999' }}>{message}</div>}
   />
 );
 
 function ComponentConfigForm<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentConfigFormProps<RecordType, ExtraOptions>) {
   const { currentColumnID, currentTableID, previewDataSource } = React.useContext(GeneratorContext);
@@ -220,7 +220,7 @@ function ComponentConfigForm<
   };
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableColumns }) => {
+      {({ tableConfigs, setTableColumns }) => {
         const tableIndex = tableConfigs.findIndex(item => item.tableId === currentTableID);
         const currentColumn = tableConfigs[tableIndex]?.columns.find(item => item.key === currentColumnID);
         if (!currentColumn) {
@@ -248,7 +248,7 @@ function ComponentConfigForm<
             }}
           />
         );
-      } }
+      }}
     </TableConfigsContext.Consumer>
   );
 }

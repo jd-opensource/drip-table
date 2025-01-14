@@ -11,7 +11,7 @@ import './index.less';
 import { CheckOutlined, ExclamationCircleFilled, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { AutoComplete, Button, Col, Image, Input, Modal, Row, Select } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes, mockId } from '@/utils';
@@ -20,13 +20,13 @@ import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { defaultComponentIcon } from '@/layouts/table-workstation/editable-table/components/components-selector/configs';
 import { generateTableConfigsBySchema, getComponentsConfigs } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
+import { DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
 import { DTGBuiltInTemplates } from '../../templates';
 
 export interface TemplatesManagerProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customComponentPanel: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel'];
   mockDataSource: DripTableGeneratorProps<RecordType, ExtraOptions>['mockDataSource'];
@@ -77,8 +77,8 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
 };
 
 function TemplatesManager<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TemplatesManagerProps<RecordType, ExtraOptions>) {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [currentTemplate, setCurrentTemplate] = React.useState('');
@@ -144,9 +144,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <div className="jfe-drip-table-generator-templates-manager">
-      { currentStep === 0 && (
+      {currentStep === 0 && (
         <div className="jfe-drip-table-generator-templates-container">
-          { templates.map((iTemplate, key) => (
+          {templates.map((iTemplate, key) => (
             <div
               className={classNames('jfe-drip-table-generator-templates-wrapper', { checked: iTemplate.key === currentTemplate })}
               key={key}
@@ -155,18 +155,18 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 setSchemaToAdd(iTemplate.schema as DripTableSchema);
               }}
             >
-              { iTemplate.key === currentTemplate && (
-              <div className="jfe-drip-table-generator-templates-wrapper-corner">
-                <CheckOutlined style={{ color: '#ffffff', marginRight: '2px' }} />
-              </div>
-              ) }
+              {iTemplate.key === currentTemplate && (
+                <div className="jfe-drip-table-generator-templates-wrapper-corner">
+                  <CheckOutlined style={{ color: '#ffffff', marginRight: '2px' }} />
+                </div>
+              )}
               <div><Image width={112} height={112} src={iTemplate.previewImg} preview={false} /></div>
-              <div><span>{ iTemplate.label }</span></div>
+              <div><span>{iTemplate.label}</span></div>
             </div>
-          )) }
+          ))}
         </div>
-      ) }
-      { currentStep === 1 && (
+      )}
+      {currentStep === 1 && (
         <div>
           <Row>
             <Col className="jfe-drip-table-generator-templates-table-header" span={2}>序号</Col>
@@ -175,9 +175,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             <Col className="jfe-drip-table-generator-templates-table-header" span={5}>字段选择</Col>
             <Col className="jfe-drip-table-generator-templates-table-header">操作</Col>
           </Row>
-          { schemaToAdd?.columns.map((iColumn, key) => (
+          {schemaToAdd?.columns.map((iColumn, key) => (
             <Row key={key}>
-              <Col span={2} className="jfe-drip-table-generator-templates-cell-index"><span>{ key + 1 }</span></Col>
+              <Col span={2} className="jfe-drip-table-generator-templates-cell-index"><span>{key + 1}</span></Col>
               <Col span={6} className="jfe-drip-table-generator-templates-cell">
                 <Input value={getTitleOfColumn(iColumn)} onChange={e => updateColumnTitle(e.target.value, key)} />
               </Col>
@@ -193,12 +193,12 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     }
                   }}
                 >
-                  { components.map((component, componentKey) => (
+                  {components.map((component, componentKey) => (
                     <Select.Option key={componentKey} value={component['ui:type']}>
                       <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={component.icon || defaultComponentIcon} />
-                      <span className="jfe-drip-table-generator-components-bar-component-text">{ component.title }</span>
+                      <span className="jfe-drip-table-generator-components-bar-component-text">{component.title}</span>
                     </Select.Option>
-                  )) }
+                  ))}
                 </Select>
               </Col>
               <Col span={5} className="jfe-drip-table-generator-templates-cell">
@@ -228,8 +228,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 />
               </Col>
             </Row>
-          )) }
-          { (schemaToAdd && (schemaToAdd?.columns?.length || 0) <= 0) && (
+          ))}
+          {(schemaToAdd && (schemaToAdd?.columns?.length || 0) <= 0) && (
             <Button
               icon={<PlusCircleOutlined />}
               onClick={() => {
@@ -244,59 +244,59 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             >
               添加一列
             </Button>
-          ) }
+          )}
         </div>
-      ) }
-      { currentTemplate && (
+      )}
+      {currentTemplate && (
         <div className="jfe-drip-table-generator-templates-tools">
-          { currentStep === 0 && <Button onClick={() => setCurrentStep(1)}>下一步</Button> }
-          { currentStep === 1 && (
-          <Button
-            style={{ marginRight: 5 }}
-            onClick={() => { setCurrentStep(0); initStep2State(); }}
-          >
-            上一步
-          </Button>
-          ) }
-          { currentStep === 1 && (
-          <TableConfigsContext.Consumer>
-            { ({ tableConfigs, updateTableConfigs }) => (
-              <Button
-                type="primary"
-                onClick={() => {
-                  if (tableConfigs.length > 0 && tableConfigs[0].columns.length > 0) {
-                    Modal.confirm({
-                      title: '此操作会覆盖当前正在编辑的表格，确定要这么做吗?',
-                      icon: <ExclamationCircleFilled />,
-                      okText: '确定',
-                      okType: 'danger',
-                      cancelText: '我再想想',
-                      onOk() {
-                        if (schemaToAdd) {
-                          const newTableConfigs = generateTableConfigsBySchema(schemaToAdd);
-                          updateTableConfigs(newTableConfigs);
-                        }
-                        initStep2State();
-                        props.onOk();
-                      },
-                    });
-                  } else {
-                    if (schemaToAdd) {
-                      const newTableConfigs = generateTableConfigsBySchema(schemaToAdd);
-                      updateTableConfigs(newTableConfigs);
+          {currentStep === 0 && <Button onClick={() => setCurrentStep(1)}>下一步</Button>}
+          {currentStep === 1 && (
+            <Button
+              style={{ marginRight: 5 }}
+              onClick={() => { setCurrentStep(0); initStep2State(); }}
+            >
+              上一步
+            </Button>
+          )}
+          {currentStep === 1 && (
+            <TableConfigsContext.Consumer>
+              {({ tableConfigs, updateTableConfigs }) => (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    if (tableConfigs.length > 0 && tableConfigs[0].columns.length > 0) {
+                      Modal.confirm({
+                        title: '此操作会覆盖当前正在编辑的表格，确定要这么做吗?',
+                        icon: <ExclamationCircleFilled />,
+                        okText: '确定',
+                        okType: 'danger',
+                        cancelText: '我再想想',
+                        onOk() {
+                          if (schemaToAdd) {
+                            const newTableConfigs = generateTableConfigsBySchema(schemaToAdd);
+                            updateTableConfigs(newTableConfigs);
+                          }
+                          initStep2State();
+                          props.onOk();
+                        },
+                      });
+                    } else {
+                      if (schemaToAdd) {
+                        const newTableConfigs = generateTableConfigsBySchema(schemaToAdd);
+                        updateTableConfigs(newTableConfigs);
+                      }
+                      initStep2State();
+                      props.onOk();
                     }
-                    initStep2State();
-                    props.onOk();
-                  }
-                }}
-              >
-                确认设置
-              </Button>
-            ) }
-          </TableConfigsContext.Consumer>
-          ) }
+                  }}
+                >
+                  确认设置
+                </Button>
+              )}
+            </TableConfigsContext.Consumer>
+          )}
         </div>
-      ) }
+      )}
     </div>
   );
 }

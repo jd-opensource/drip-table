@@ -18,7 +18,7 @@ import { DTGTableConfig, DTGTableConfigsContext, TableConfigsContext } from '@/c
 import GeneratorLayout from '@/layouts';
 import { generateTableConfigsBySchema, getSchemaValue } from '@/layouts/utils';
 
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '../typing';
+import { DripTableGeneratorProps } from '../typing';
 
 export type GeneratorWrapperHandler = {
   getState: () => void;
@@ -34,17 +34,20 @@ export type GeneratorWrapperHandler = {
 }
 
 const generateStates = <
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
->(props: DripTableGeneratorProps<RecordType, ExtraOptions>): DripTableGeneratorStates => ({
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+>(props: DripTableGeneratorProps<RecordType, ExtraOptions>): DripTableGeneratorStates => {
+  console.debug(props);
+  return {
     currentTableID: props.checkedTableId,
     currentColumnID: props.checkedColumnId,
     previewDataSource: [...props.dataSource || []],
     mode: props.defaultMode ?? 'edit',
-  });
+  };
+};
 
 const DripTableGenerator = React.forwardRef(<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<GeneratorWrapperHandler>) => {
   const [generatorStates, setGeneratorStates] = React.useState(generateStates(props));
@@ -151,7 +154,6 @@ const DripTableGenerator = React.forwardRef(<
 }) as <
   RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> (props: React.PropsWithoutRef<DripTableGeneratorProps<RecordType, ExtraOptions>> & React.RefAttributes<GeneratorWrapperHandler>) =>
-(React.ReactElement | null);
+> (props: React.PropsWithoutRef<DripTableGeneratorProps<RecordType, ExtraOptions>> & React.RefAttributes<GeneratorWrapperHandler>) => (React.ReactElement | null);
 
 export default DripTableGenerator;

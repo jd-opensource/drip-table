@@ -8,20 +8,20 @@
 import './index.less';
 
 import { Button, Input, message } from 'antd';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes, mockId } from '@/utils';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getComponentsConfigs, getGroups, getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
+import { DripTableComponentAttrConfig, DripTableGeneratorProps } from '@/typing';
 
 import Selector from './selector';
 
 interface ComponentsSelectorProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
->{
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   tableId: string;
   showTitle?: boolean;
   showFilter?: boolean;
@@ -65,8 +65,8 @@ const getColumnSchemaByComponent = (component: DripTableComponentAttrConfig, tit
 };
 
 function ComponentsSelector<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ComponentsSelectorProps<RecordType, ExtraOptions>) {
   const [groups, setGroups] = React.useState(getGroups(props.customComponentPanel));
   const [components, setComponents] = React.useState(getComponentsConfigs('', props.customComponentPanel, 'ComponentsSelector'));
@@ -88,23 +88,23 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableColumns }) => (props.customColumnAddPanel
+      {({ tableConfigs, setTableColumns }) => (props.customColumnAddPanel
         ? props.customColumnAddPanel({
           tableConfig: tableConfigs.find(c => c.tableId === props.tableId),
           components,
         })
         : (
           <div className="jfe-drip-table-generator-components-bar-wrapper" onClick={e => e.stopPropagation()}>
-            { props.showTitle && (
-            <div className="jfe-drip-table-generator-components-bar-navigation">
-              <Input
-                className="jfe-drip-table-generator-components-bar-no-border"
-                placeholder="输入列名"
-                value={title}
-                onChange={(e) => { setTitle(e.target.value); }}
-              />
-            </div>
-            ) }
+            {props.showTitle && (
+              <div className="jfe-drip-table-generator-components-bar-navigation">
+                <Input
+                  className="jfe-drip-table-generator-components-bar-no-border"
+                  placeholder="输入列名"
+                  value={title}
+                  onChange={(e) => { setTitle(e.target.value); }}
+                />
+              </div>
+            )}
             <Selector
               showFilter={props.showFilter}
               openPanel
@@ -121,7 +121,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 setComponentConfig(component);
               }}
             />
-            { componentConfig?.['ui:type'] === 'popover' && (
+            {componentConfig?.['ui:type'] === 'popover' && (
               <React.Fragment>
                 <div className="jfe-drip-table-generator-components-bar-sub-component-title">浮窗组件</div>
                 <Selector
@@ -141,8 +141,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   }}
                 />
               </React.Fragment>
-            ) }
-            { componentConfig?.['ui:type'] === 'popover' && (
+            )}
+            {componentConfig?.['ui:type'] === 'popover' && (
               <React.Fragment>
                 <div className="jfe-drip-table-generator-components-bar-sub-component-title">单元格内组件</div>
                 <Selector
@@ -163,7 +163,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 />
               </React.Fragment>
 
-            ) }
+            )}
             <div className="jfe-drip-table-generator-components-bar-actions">
               <Button
                 style={{ marginRight: 12 }}
@@ -227,7 +227,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               </Button>
             </div>
           </div>
-        )) }
+        ))}
     </TableConfigsContext.Consumer>
 
   );

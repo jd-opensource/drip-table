@@ -1,0 +1,76 @@
+/**
+ * This file is part of the drip-table project.
+ * @link     : https://drip-table.jd.com/
+ * @author   : helloqian12138 (johnhello12138@163.com)
+ * @modifier : helloqian12138 (johnhello12138@163.com)
+ * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
+ */
+
+@import url("../../../../../styles/index.less");
+
+@prefixCls: jfe-drip-table-generator-workstation-table;
+
+.@{prefixCls}-tr-td {
+  min-width: 120px;
+  display: flex;
+  padding: 12px 8px;
+  border-left: 1px solid transparent;
+  word-break: break-word;
+
+  &.cell {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    border-bottom: 1px solid #efefef;
+  }
+
+  &.small {
+    padding: 8px;
+  }
+
+  &.middle {
+    padding: 12px 8px;
+  }
+
+  &.large {
+    padding: 16px 12px;
+  }
+
+  &.bordered {
+    border-right: 1px solid #efefef;
+  }
+
+  &.hovered {
+    border-left: 1px dashed var(--drip-table-border-color, @border-color);
+    border-right: 1px dashed var(--drip-table-border-color, @border-color);
+  }
+
+  &.last-row.hovered {
+    border-bottom: 1px dashed var(--drip-table-border-color, @border-color);
+  }
+
+  &.checked {
+    border-left: 1px solid var(--drip-table-border-color, @border-color);
+    border-right: 1px solid var(--drip-table-border-color, @border-color);
+  }
+
+  &.last-row.checked {
+    border-bottom: 1px solid var(--drip-table-border-color, @border-color);
+  }
+
+  &.right-shadow {
+    box-shadow: 0 4px 4px -1px #ffffff, 2px 0 4px -2px rgb(0 0 0 / 85%);
+    margin-right: 4px;
+  }
+
+  &.left-shadow {
+    box-shadow: 0 0 4px -1px #ffffff, -2px 0 4px -2px rgb(0 0 0 / 85%);
+    margin-left: 4px;
+  }
+
+  &.operation-col {
+    width: 48px;
+    min-width: 48px;
+    justify-content: center;
+    align-items: center;
+  }
+}

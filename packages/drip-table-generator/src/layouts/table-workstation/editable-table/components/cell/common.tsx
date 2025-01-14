@@ -13,16 +13,19 @@ import {
   DripTableBuiltInColumnSchema,
   DripTableExtraOptions,
   DripTableProps,
+  DripTableRecordTypeBase,
+  DripTableRecordTypeWithSubtable,
+  ExtractDripTableExtraOption,
   TABLE_LAYOUT_COLUMN_RENDER_GENERATOR_DO_NOT_USE_IN_PRODUCTION as columnRenderGenerator,
 } from 'drip-table';
 import React from 'react';
 
 import { filterAttributes } from '@/utils';
 import { createEvaluator, evaluate, finalizeString, safeEvaluate } from '@/utils/sandbox';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 export interface CommonCellProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   column: DripTableBuiltInColumnSchema;
@@ -50,7 +53,7 @@ const generatorComponentSchema = <T extends DripTableBuiltInColumnSchema | null>
 );
 
 function CommonCell<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: CommonCellProps<RecordType, ExtraOptions>) {
   if (props.column?.component === 'group' || props.column?.component === 'popover') {
@@ -84,7 +87,7 @@ function CommonCell<
     : () => <div />;
   return (
     <React.Fragment>
-      { renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: props.rowIndex }, props.rowIndex) }
+      {renderCommonCell(null, { type: 'body', key: '$$KEY$$', record: props.record, index: props.rowIndex }, props.rowIndex)}
     </React.Fragment>
   );
 }

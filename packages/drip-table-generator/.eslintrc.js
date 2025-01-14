@@ -20,6 +20,13 @@ const javascriptRules = {
   'unicorn/no-array-reduce': 'off',
   'unicorn/prefer-switch': 'off',
   'unicorn/explicit-length-check': 'off',
+  'react/jsx-curly-spacing': [
+    'error',
+    {
+      when: 'always',
+      attributes: { when: 'never' },
+    },
+  ],
 };
 
 const typescriptRules = {

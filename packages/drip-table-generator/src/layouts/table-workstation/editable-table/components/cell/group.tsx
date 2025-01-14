@@ -14,19 +14,22 @@ import classNames from 'classnames';
 import {
   DripTableBuiltInColumnSchema,
   DripTableExtraOptions,
+  DripTableRecordTypeBase,
+  DripTableRecordTypeWithSubtable,
+  ExtractDripTableExtraOption,
 } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import ComponentsSelector from '../components-selector';
 import CellComponent from './cell';
 import { CommonCellProps } from './common';
 
 export interface GroupCellProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends CommonCellProps<RecordType, ExtraOptions> {
   column: DripTableBuiltInColumnSchema;
@@ -48,7 +51,8 @@ export interface GroupCellProps<
 const getIndex = (layout: number[], rowIndex: number, colIndex: number) => layout.slice(0, rowIndex).reduce((prev, curr) => prev + curr, 0) + colIndex;
 
 function GroupCell<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GroupCellProps<RecordType, ExtraOptions>) {
   const [dropDownIndex, setDropDownIndex] = React.useState([] as (number | 'content' | 'popover')[]);
@@ -88,7 +92,7 @@ function GroupCell<
         onClick={e => e.stopPropagation()}
       >
         <div className="jfe-drip-table-generator-workstation-table-cell-group-inner-border">
-          { options.layout.map((colLength, rowIndex) => (
+          {options.layout.map((colLength, rowIndex) => (
             <Row
               key={rowIndex}
               justify={options.horizontalAlign}
@@ -96,7 +100,7 @@ function GroupCell<
               className="jfe-drip-table-generator-workstation-table-cell-group-row"
               style={{ minHeight: 40 / options.layout.length }}
             >
-              { Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
+              {Array.from({ length: colLength }, (v, i) => i).map((col, colIndex) => {
                 const componentIndex = getIndex(options.layout, rowIndex, colIndex);
                 const itemColumn = options.items[componentIndex] ?? null;
                 const itemColumnSchema = itemColumn && 'component' in itemColumn ? itemColumn : itemColumn?.schema;
@@ -123,7 +127,7 @@ function GroupCell<
                       });
                     }}
                   >
-                    { itemColumnSchema && itemColumnSchema.key === currentComponentID && (
+                    {itemColumnSchema && itemColumnSchema.key === currentComponentID && (
                       <div className="jfe-drip-table-generator-workstation-table-cell-group-tools">
                         <Tooltip title="打开当前组件配置面板">
                           <Button
@@ -162,8 +166,8 @@ function GroupCell<
                           />
                         </Popconfirm>
                       </div>
-                    ) }
-                    { itemColumnSchema
+                    )}
+                    {itemColumnSchema
                       ? (
                         <CellComponent
                           {...props}
@@ -205,12 +209,12 @@ function GroupCell<
                             <span>点击添加子组件</span>
                           </div>
                         </Dropdown>
-                      ) }
+                      )}
                   </Col>
                 );
-              }) }
+              })}
             </Row>
-          )) }
+          ))}
         </div>
 
       </div>

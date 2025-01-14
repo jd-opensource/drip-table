@@ -11,12 +11,12 @@ import './index.less';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import { getComponentsConfigs } from '../utils';
 import ComponentConfigForm from './component-configs';
@@ -25,7 +25,7 @@ import GlobalConfigForm from './global-configs';
 import { getColumnItemByPath } from './utils';
 
 function AttributesLayout<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const body = React.useRef<HTMLDivElement>(null);
@@ -44,7 +44,7 @@ function AttributesLayout<
 
   return (
     <GeneratorContext.Consumer>
-      { ({ currentTableID, currentColumnID, currentComponentPath, drawerType, setState }) => {
+      {({ currentTableID, currentColumnID, currentComponentPath, drawerType, setState }) => {
         const currentTable = tableConfigs.find(item => item.tableId === currentTableID);
         const currentColumn = currentTable?.columns.find(item => item.key === currentColumnID);
         const isContainerColumn = currentColumn && (currentColumn.component === 'group' || currentColumn.component === 'popover');
@@ -73,31 +73,31 @@ function AttributesLayout<
                   currentComponentID: void 0,
                 })}
               />
-              <span className="jfe-drip-table-generator-attributes-layout-title">{ drawerType ? drawerTitleMapper[drawerType] : '' }</span>
-              { drawerType === 'column'
+              <span className="jfe-drip-table-generator-attributes-layout-title">{drawerType ? drawerTitleMapper[drawerType] : ''}</span>
+              {drawerType === 'column'
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
                     组件 &gt;
-                    { ' ' }
-                    { getComponentName(currentColumn?.component || '') }
+                    {' '}
+                    {getComponentName(currentColumn?.component || '')}
                   </span>
                 )
-                : null }
-              { drawerType === 'column-item'
+                : null}
+              {drawerType === 'column-item'
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
-                    { currentColumnItem ? `子组件 > ${getComponentName(currentColumnItem?.component)}` : '' }
+                    {currentColumnItem ? `子组件 > ${getComponentName(currentColumnItem?.component)}` : ''}
                   </span>
                 )
-                : null }
-              { drawerType === 'table'
+                : null}
+              {drawerType === 'table'
                 ? (
                   <span className="jfe-drip-table-generator-attributes-layout-component-title">
                     表格ID：
-                    { currentTableID }
+                    {currentTableID}
                   </span>
                 )
-                : null }
+                : null}
             </div>
             <div className="jfe-drip-table-generator-attributes-layout-attributes-drawer-body" ref={body}>
               {
@@ -136,7 +136,7 @@ function AttributesLayout<
             </div>
           </div>
         );
-      } }
+      }}
     </GeneratorContext.Consumer>
   );
 }

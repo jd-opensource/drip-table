@@ -15,7 +15,12 @@
   padding: 0 12px 8px;
   width: max-content;
   position: relative;
-  min-width: 300px;
+  min-width: 500px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow: visible;
 
   &:hover {
     border: 1px dashed var(--drip-table-border-color, @border-color);
