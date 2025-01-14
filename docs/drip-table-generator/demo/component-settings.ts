@@ -1,6 +1,7 @@
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from 'drip-table-generator';
+import { DripTableRecordTypeBase, DripTableRecordTypeWithSubtable } from 'drip-table';
+import { DripTableGeneratorProps } from 'drip-table-generator';
 
-const CustomGeneratorComponentPanel: DripTableGeneratorProps<DataSourceTypeAbbr<never>>['customComponentPanel'] = {
+const CustomGeneratorComponentPanel: DripTableGeneratorProps<DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, never>>['customComponentPanel'] = {
   mode: 'add',
   configs: [
     {
