@@ -18,8 +18,11 @@
 
   &.right {
     right: 0;
-    border-left: 1px solid rgb(120 120 120);
-    box-shadow: 0 4px 4px -1px #ffffff, 2px 0 4px -2px rgb(0 0 0 / 85%);
+  }
+
+  &.bordered {
+    border-right: 1px solid rgb(196 196 196);
+    box-shadow: 0 0 4px -1px #ffffff, -2px 0 4px -2px rgb(0 0 0 / 85%);
   }
 
   & > .@{prefixCls}-row {
@@ -30,7 +33,41 @@
   & > .@{prefixCls}-header {
     background: #dddddd;
     font-weight: bold;
-    position: sticky;
-    top: 0;
+
+    &.sticky {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    &.invisible {
+      .@{prefixCls}-header-item {
+        opacity: .7;
+        background:
+          linear-gradient(
+            45deg,
+            var(--drip-table-background-color, @background-color) 0,
+            var(--drip-table-background-color, @background-color) 10%,
+            transparent 10%,
+            transparent 20%,
+            var(--drip-table-background-color, @background-color) 20%,
+            var(--drip-table-background-color, @background-color) 30%,
+            transparent 30%,
+            transparent 40%,
+            var(--drip-table-background-color, @background-color) 40%,
+            var(--drip-table-background-color, @background-color) 50%,
+            transparent 50%,
+            transparent 60%,
+            var(--drip-table-background-color, @background-color) 60%,
+            var(--drip-table-background-color, @background-color) 70%,
+            transparent 70%,
+            transparent 80%,
+            var(--drip-table-background-color, @background-color) 80%,
+            var(--drip-table-background-color, @background-color) 90%,
+            transparent 90%,
+            transparent 100%
+          );
+      }
+    }
   }
 }

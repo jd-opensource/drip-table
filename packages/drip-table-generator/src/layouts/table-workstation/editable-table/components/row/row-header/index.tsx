@@ -148,7 +148,7 @@ function RowHeader<
   return (
     <TableConfigsContext.Consumer>
       {({ setTableConfigs }) => (
-        <div style={{ ...props.configs?.style, display: 'flex' }}>
+        <div className="rowHeader" style={{ ...props.configs?.style, display: 'flex' }}>
           {
             props.configs?.elements?.map((element, index) => (
               <div

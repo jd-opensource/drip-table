@@ -113,6 +113,7 @@ const TableContainer = React.forwardRef(<
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableContainerProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<TableContainerHandler>) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const tableContext = React.useContext(TableConfigsContext);
   React.useImperativeHandle(ref, () => ({
     getContainerWidth: () => containerRef.current?.getBoundingClientRect().width ?? 0,
   }));
@@ -120,6 +121,8 @@ const TableContainer = React.forwardRef(<
   const DropdownRender = React.useCallback(() => (<SubTableSetting label="子表格字段" tableConfig={props.tableConfig} />), [
     props.tableConfig,
   ]);
+
+  const tableIndex = tableContext.tableConfigs.findIndex(table => table.tableId === props.tableConfig.tableId);
 
   return (
     <GeneratorContext.Consumer>
@@ -131,7 +134,9 @@ const TableContainer = React.forwardRef(<
           <div
             className={classNames('jfe-drip-table-generator-table-container-wrapper', {
               checked: currentTableID === props.tableConfig.tableId,
+              bordered: tableIndex > 0,
             })}
+            style={{ marginTop: currentTableID === props.tableConfig.tableId && tableIndex === 0 ? 32 : void 0 }}
             ref={containerRef}
             onClick={(e) => {
               e.stopPropagation();
