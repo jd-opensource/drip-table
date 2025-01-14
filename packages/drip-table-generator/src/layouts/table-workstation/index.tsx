@@ -8,12 +8,12 @@
 import './index.less';
 
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { TableConfigsContext } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import EditableTableFooter from './editable-footer';
 import EditableTableHeader from './editable-header';
@@ -21,14 +21,14 @@ import EditableTable from './editable-table';
 import PreviewTable from './table-preview';
 
 function TableWorkStation<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const { mode, previewDataSource } = React.useContext(GeneratorContext);
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
     <div className={classNames('jfe-drip-table-generator-workstation-wrapper', { edit: mode === 'edit' })}>
-      { mode === 'edit'
+      {mode === 'edit'
         ? (
           <React.Fragment>
             <EditableTableHeader
@@ -38,15 +38,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               renderPagination={props.renderPagination}
               onPageChange={props.onPageChange}
             />
-            { tableConfigs.length >= 0 && (
-            <EditableTable
-              {...props}
-              index={0}
-              tableConfig={tableConfigs[0]}
-              originDataSource={props.dataSource}
-              dataSource={previewDataSource as RecordType[]}
-            />
-            ) }
+            {tableConfigs.length >= 0 && (
+              <EditableTable
+                {...props}
+                index={0}
+                tableConfig={tableConfigs[0]}
+                originDataSource={props.dataSource}
+                dataSource={previewDataSource as RecordType[]}
+              />
+            )}
             <EditableTableFooter
               slots={props.slots}
               ext={props.ext}
@@ -56,7 +56,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             />
           </React.Fragment>
         )
-        : <PreviewTable visible={mode === 'preview'} {...props} /> }
+        : <PreviewTable visible={mode === 'preview'} {...props} />}
     </div>
   );
 }

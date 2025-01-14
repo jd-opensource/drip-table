@@ -1,4 +1,4 @@
-import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableProps, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, ExtractDripTableExtraOption } from 'drip-table';
 import React, { CSSProperties, ReactNode } from 'react';
 
 import { CustomComponentProps } from './components/CustomForm/components';
@@ -134,7 +134,7 @@ export interface DripTableGeneratorPanel<T> {
 }
 
 export interface DTGCustomThemeOptions<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   /**
@@ -166,11 +166,14 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
 export type NonColumnsPartialDTSchemaTypeAbbr<ExtraOptions extends Partial<DripTableExtraOptions> = never> = Partial<Omit<DripTableSchema<NonNullable<ExtraOptions['CustomColumnSchema']>>, 'columns'>>
 
-export type DataSourceTypeAbbr<SubtableDataSourceKey extends React.Key> = DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, SubtableDataSourceKey>;
 export interface DripTableGeneratorProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
-> extends DripTableProps<RecordType, ExtraOptions> {
+> extends Omit<DripTableProps<RecordType, ExtraOptions>, 'onDataSourceChange'> {
+  /**
+   * 数据源
+   */
+  dataSource: RecordType[];
   /**
    * 是否允许列拖拽
    */
@@ -278,7 +281,7 @@ export interface DripTableGeneratorProps<
   preview?: boolean;
   onExportSchema?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
   onSchemaChange?: (schema: DripTableSchema<DripTableColumnSchema>) => void;
-  onDataSourceChange?: (dataSource: DripTableProps<RecordType, ExtraOptions>['dataSource']) => void;
+  onDataSourceChange?: (data: RecordType[]) => void;
   onColumnAdded?: (column: DripTableSchema<DripTableColumnSchema>['columns'][number], schema: DripTableSchema<DripTableColumnSchema>, columnIndex: number) => void;
   onClose?: (schema?: DripTableSchema<DripTableColumnSchema>) => void;
   onSave?: (schema: DripTableSchema<DripTableColumnSchema>) => void;

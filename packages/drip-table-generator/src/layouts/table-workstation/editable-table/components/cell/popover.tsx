@@ -15,20 +15,23 @@ import {
   DripTableBuiltInColumnSchema,
   DripTableExtraOptions,
   DripTableProps,
+  DripTableRecordTypeBase,
+  DripTableRecordTypeWithSubtable,
+  ExtractDripTableExtraOption,
 } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import ComponentsSelector from '../components-selector';
 import CellComponent from './cell';
 import { CommonCellProps } from './common';
 
 export interface PopoverCellProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCellProps<RecordType, ExtraOptions> {
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCellProps<RecordType, ExtraOptions> {
   column: DripTableBuiltInColumnSchema;
   path: (number | 'popover' | 'content')[];
   onChangeColumnItem: (path: (number | 'popover' | 'content')[], schema: DripTableBuiltInColumnSchema, tableIndex: number) => void;
@@ -45,8 +48,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,> extends CommonCell
 }
 
 function PopoverCell<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCellProps<RecordType, ExtraOptions>) {
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCellProps<RecordType, ExtraOptions>) {
   const [dropDown, setDropDown] = React.useState(false);
   const [popoverDropDown, setPopoverDropDown] = React.useState(false);
   const { currentComponentID } = React.useContext(GeneratorContext);
@@ -113,25 +116,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
               });
             }}
           >
-            { options.popover.key === currentComponentID && (
-            <Dropdown
-              placement="bottomRight"
-              trigger={['click']}
-              open={popoverDropDown}
-              onOpenChange={(open) => { if (!open) { setPopoverDropDown(false); } }}
-              dropdownRender={DropdownRender1}
-            >
-              <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
-                <Tooltip title="点击更换组件">
-                  <SwitcherOutlined onClick={(e) => {
-                    e.stopPropagation();
-                    setPopoverDropDown(true);
-                  }}
-                  />
-                </Tooltip>
-              </div>
-            </Dropdown>
-            ) }
+            {options.popover.key === currentComponentID && (
+              <Dropdown
+                placement="bottomRight"
+                trigger={['click']}
+                open={popoverDropDown}
+                onOpenChange={(open) => { if (!open) { setPopoverDropDown(false); } }}
+                dropdownRender={DropdownRender1}
+              >
+                <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
+                  <Tooltip title="点击更换组件">
+                    <SwitcherOutlined onClick={(e) => {
+                      e.stopPropagation();
+                      setPopoverDropDown(true);
+                    }}
+                    />
+                  </Tooltip>
+                </div>
+              </Dropdown>
+            )}
             <CellComponent
               {...props}
               column={options.popover}
@@ -173,25 +176,25 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,>(props: PopoverCell
             });
           }}
         >
-          { options.content.key === currentComponentID && (
-          <Dropdown
-            placement="bottomRight"
-            trigger={['click']}
-            open={dropDown}
-            onOpenChange={(open) => { if (!open) { setDropDown(false); } }}
-            dropdownRender={DropdownRender2}
-          >
-            <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
-              <Tooltip title="点击更换组件">
-                <SwitcherOutlined onClick={(e) => {
-                  e.stopPropagation();
-                  setDropDown(true);
-                }}
-                />
-              </Tooltip>
-            </div>
-          </Dropdown>
-          ) }
+          {options.content.key === currentComponentID && (
+            <Dropdown
+              placement="bottomRight"
+              trigger={['click']}
+              open={dropDown}
+              onOpenChange={(open) => { if (!open) { setDropDown(false); } }}
+              dropdownRender={DropdownRender2}
+            >
+              <div className="jfe-drip-table-generator-workstation-table-cell-group-close primary">
+                <Tooltip title="点击更换组件">
+                  <SwitcherOutlined onClick={(e) => {
+                    e.stopPropagation();
+                    setDropDown(true);
+                  }}
+                  />
+                </Tooltip>
+              </div>
+            </Dropdown>
+          )}
           <CellComponent
             {...props}
             column={options.content}

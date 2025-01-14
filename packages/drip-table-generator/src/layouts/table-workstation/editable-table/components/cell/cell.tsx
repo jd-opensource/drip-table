@@ -9,23 +9,21 @@ import './index.less';
 
 import { Alert } from 'antd';
 import {
-  DripTableExtraOptions,
+  DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption,
 } from 'drip-table';
 import React from 'react';
-
-import { DataSourceTypeAbbr } from '@/typing';
 
 import CommonCell, { CommonCellProps } from './common';
 import GroupCell, { GroupCellProps } from './group';
 import PopoverCell, { PopoverCellProps } from './popover';
 
 export type TableCellProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > = PopoverCellProps<RecordType, ExtraOptions> | GroupCellProps<RecordType, ExtraOptions> | CommonCellProps<RecordType, ExtraOptions>
 function CellComponent<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableCellProps<RecordType, ExtraOptions>) {
   if (props.column?.component === 'group') {
     return <GroupCell {...props as GroupCellProps<RecordType, ExtraOptions>} />;

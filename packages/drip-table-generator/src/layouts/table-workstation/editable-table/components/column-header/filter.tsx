@@ -7,18 +7,18 @@
  */
 import { FilterFilled } from '@ant-design/icons';
 import { Checkbox, Col, message, Popconfirm, Row } from 'antd';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { get } from '@/utils';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
-export interface ColumnHeaderProps <
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
->{
+export interface ColumnHeaderProps<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   tableConfig: DTGTableConfig;
   renderHeaderCellFilter: DripTableGeneratorProps<RecordType, ExtraOptions>['renderHeaderCellFilter'];
   column: DTGTableConfig['columns'][number];
@@ -26,8 +26,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 }
 
 export function FilterViewer<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ColumnHeaderProps<RecordType, ExtraOptions>) {
   const tableContext = React.useContext(TableConfigsContext);
   const [filteredValue, setFilteredValue] = React.useState(props.column.defaultFilteredValue || []);
@@ -47,20 +47,20 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   }
   return (
     <GeneratorContext.Consumer>
-      { ({ setState }) => (
+      {({ setState }) => (
         <Popconfirm
           title={(
             <Checkbox.Group
               defaultValue={props.column.defaultFilteredValue as string[]}
               onChange={checkedValues => setFilteredValue(checkedValues as React.Key[])}
             >
-              { props.column.filters?.map((item, index) => (
+              {props.column.filters?.map((item, index) => (
                 <Row key={index}>
-                  <Col span={24}><Checkbox value={item.value}>{ item.text }</Checkbox></Col>
+                  <Col span={24}><Checkbox value={item.value}>{item.text}</Checkbox></Col>
                 </Row>
-              )) }
+              ))}
             </Checkbox.Group>
-                        )}
+          )}
           icon={null}
           cancelText="重置"
           okText="确认"
@@ -87,7 +87,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         >
           <span style={{ marginLeft: 6, verticalAlign: 'top', color: '#b1b1b1', cursor: 'pointer' }}><FilterFilled /></span>
         </Popconfirm>
-      ) }
+      )}
     </GeneratorContext.Consumer>
   );
 }

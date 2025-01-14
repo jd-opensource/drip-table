@@ -5,10 +5,8 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import { createContext } from 'react';
-
-import { DataSourceTypeAbbr } from '../typing';
 
 export type DripTableGeneratorStates = Omit<DripTableGeneratorContext, 'setState'>;
 
@@ -27,7 +25,7 @@ export interface DripTableGeneratorContext {
   /**
    * 表格数据，generator 不解析具体数据结构，仅仅透传给 drip-table
    */
-  previewDataSource: DataSourceTypeAbbr<NonNullable<DripTableExtraOptions['SubtableDataSourceKey']>>[];
+  previewDataSource: DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<Partial<DripTableExtraOptions>, 'SubtableDataSourceKey'>>[];
   /**
    * 属性栏类型，根据类型展示不同的抽屉
    */

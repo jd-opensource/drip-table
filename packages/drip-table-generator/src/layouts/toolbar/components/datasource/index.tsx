@@ -6,21 +6,21 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 import { Alert } from 'antd';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 
 import { GeneratorContext } from '@/context';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 export type DataSourceHandler = {
   formatDataSource: () => void;
 }
 
-interface DataSourceEditorProps <
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
->{
+interface DataSourceEditorProps<
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
+> {
   width?: number;
   height?: number;
   onDataSourceChange: DripTableGeneratorProps<RecordType, ExtraOptions>['onDataSourceChange'];
@@ -28,8 +28,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 }
 
 function DataSourceEditor<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DataSourceEditorProps<RecordType, ExtraOptions>, ref: React.ForwardedRef<DataSourceHandler>) {
   const { previewDataSource } = React.useContext(GeneratorContext);
   const [codeErrorMessage, setCodeErrorMessage] = React.useState('');
@@ -50,7 +50,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <GeneratorContext.Consumer>
-      { ({ setState }) => (
+      {({ setState }) => (
         <div style={{ position: 'relative' }}>
           <MonacoEditor
             className={props.className}
@@ -74,9 +74,9 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               }
             }}
           />
-          { codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon /> }
+          {codeErrorMessage && <Alert style={{ margin: '8px 0' }} message={codeErrorMessage} type="error" showIcon />}
         </div>
-      ) }
+      )}
     </GeneratorContext.Consumer>
 
   );

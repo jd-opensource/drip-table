@@ -6,7 +6,7 @@
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
 
-import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableSchema, ExtractDripTableColumnSchema, ExtractDripTableExtraOption } from 'drip-table';
+import { DripTableBuiltInColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSchema, ExtractDripTableColumnSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { filterAttributes, mockId } from '@/utils';
@@ -14,10 +14,10 @@ import { DripTableGeneratorContext } from '@/context';
 import { DTGTableConfig } from '@/context/table-configs';
 import tableComponents from '@/table-components';
 
-import { DataSourceTypeAbbr, DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '../typing';
+import { DripTableComponentAttrConfig, DripTableGeneratorProps, DTGComponentPropertySchema } from '../typing';
 
 export const getGroups = <
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(customComponentPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customComponentPanel']) => {
   let groups = [
@@ -38,7 +38,7 @@ export const getGroups = <
 };
 
 export const getComponentsConfigs = <
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(
     groupName?: string,
@@ -59,7 +59,7 @@ export const getComponentsConfigs = <
 };
 
 export const getColumnItemConfigs = <
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
 ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(componentType: string, options: {
     componentsConfigs: DripTableComponentAttrConfig[];

@@ -5,7 +5,7 @@
  * @modifier : helloqian12138 (johnhello12138@163.com)
  * @copyright: Copyright (c) 2020 JD Network Technology Co., Ltd.
  */
-import { DripTableExtraOptions, DripTableSlotElementSchema } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableSlotElementSchema, ExtractDripTableExtraOption } from 'drip-table';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 
@@ -13,12 +13,12 @@ import { filterAttributes, filterAttributesByRegExp } from '@/utils';
 import CustomForm from '@/components/CustomForm';
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
+import { DripTableGeneratorProps, DTGComponentPropertySchema } from '@/typing';
 
 import { GlobalAttrFormConfigs } from './configs';
 
 interface GlobalConfigFormProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   customAttributeComponents: DripTableGeneratorProps<RecordType, ExtraOptions>['customAttributeComponents'];
@@ -28,7 +28,8 @@ interface GlobalConfigFormProps<
 }
 
 function GlobalConfigForm<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: GlobalConfigFormProps<RecordType, ExtraOptions>) {
   const context = React.useContext(GeneratorContext);
@@ -373,7 +374,7 @@ function GlobalConfigForm<
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableConfigs }) => {
+      {({ tableConfigs, setTableConfigs }) => {
         const currentTableIndex = tableConfigs.findIndex(item => item.tableId === context.currentTableID);
         return (
           <CustomForm
@@ -392,7 +393,7 @@ function GlobalConfigForm<
             }}
           />
         );
-      } }
+      }}
     </TableConfigsContext.Consumer>
   );
 }

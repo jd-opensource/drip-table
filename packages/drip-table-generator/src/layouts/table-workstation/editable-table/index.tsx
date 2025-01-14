@@ -7,43 +7,52 @@
  */
 import './index.less';
 
-import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Empty } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions, DripTableTableInformation } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, DripTableTableInformation, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { filterArray, mockId } from '@/utils';
-import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import PaginationComponent from '../components/pagination';
 import TableContainer, { TableContainerHandler } from '../components/table-container';
-import ColumnHeaderList from './components/header-list';
-import TableRowList from './components/row';
+import LeftFixedColumns, { LeftFixedColumnsHandler } from './components/left-columns';
+import RightFixedColumns, { RightFixedColumnsHandler } from './components/right-columns';
+import ScrollableColumns, { ScrollableColumnsHandler } from './components/scroll-columns';
 
 export interface EditableTableProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > extends DripTableGeneratorProps<RecordType, ExtraOptions> {
   index: number;
   tableConfig: DTGTableConfig;
-  dataSource: RecordType[];
   originDataSource?: RecordType[];
   parent?: DripTableTableInformation<RecordType, ExtraOptions>;
 }
 
 function EditableTable<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: EditableTableProps<RecordType, ExtraOptions>) {
-  const context = React.useContext(GeneratorContext);
-  const [checkedRecord, setCheckedRecord] = React.useState(void 0 as number | undefined);
-  const [previewRecord, setPreviewRecord] = React.useState(void 0 as number | undefined);
-  const [scrollLeft, setScrollLeft] = React.useState(0);
-  const [scrollTarget, setScrollTarget] = React.useState('');
+  const [previewRecord] = React.useState(void 0 as number | undefined);
+  const [rowHeight, setRowHeight] = React.useState(void 0 as number | undefined);
   const containerRef = React.useRef<TableContainerHandler>(null);
+  const leftColumnsRef = React.useRef<LeftFixedColumnsHandler>(null);
+  const scrollColumnsRef = React.useRef<ScrollableColumnsHandler>(null);
+  const rightColumnsRef = React.useRef<RightFixedColumnsHandler>(null);
+
+  React.useEffect(() => {
+    console.debug('rowHeight');
+    const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
+    const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
+    const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
+    console.debug(leftHeight, scrollHeight, rightHeight);
+    if (leftHeight !== scrollHeight || rightHeight !== scrollHeight || leftHeight !== rightHeight) {
+      setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
+    }
+  }, [props.dataSource, props.schema, props.tableConfig]);
+
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
       return props.tableConfig.configs.scroll?.y;
@@ -66,184 +75,93 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     }
     return props.dataSource.map((rec, idx) => ({ id: idx, record: rec }));
   }, [props.dataSource, props.tableConfig.configs.pagination, previewRecord]);
-
+  const previewDataSource = typeof previewRecord === 'number' ? [dataSourceToUse[previewRecord]] : dataSourceToUse;
+  const paginationInHeader = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('top');
+  const paginationInFooter = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('bottom');
+  const subTableInfo = {
+    uuid: props.tableConfig?.tableId,
+    schema: {
+      ...props.tableConfig?.configs,
+      id: props.tableConfig.tableId ?? mockId(),
+      columns: props.tableConfig?.columns,
+      dataSourceKey: props.tableConfig?.dataSourceKey,
+    } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
+    parent: props.parent,
+    dataSource: dataSourceToUse.map(item => item.record),
+  };
+  const columnList = React.useMemo(() => props.tableConfig.columns.map((item, index) => ({ id: index, column: item })), [props.tableConfig.columns]);
+  const sortableColumns = filterArray(columnList, item => !item.column.fixed);
+  let leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left');
+  let rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right');
+  if (sortableColumns.length > 0) {
+    leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
+    rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
+  }
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, setTableColumns }) => {
-        const previewDataSource = typeof previewRecord === 'number' ? [dataSourceToUse[previewRecord]] : dataSourceToUse;
-        const paginationInHeader = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('top');
-        const paginationInFooter = props.tableConfig.configs.pagination && props.tableConfig.configs.pagination.position?.startsWith('bottom');
-        const subTableInfo = {
-          uuid: props.tableConfig?.tableId,
-          schema: {
-            ...props.tableConfig?.configs,
-            id: props.tableConfig.tableId ?? mockId(),
-            columns: props.tableConfig?.columns,
-            dataSourceKey: props.tableConfig?.dataSourceKey,
-          } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
-          parent: props.parent,
-          dataSource: dataSourceToUse.map(item => item.record),
-        };
-        return (
-          <TableContainer tableTools={props.tableTools} tableConfig={props.tableConfig} onClick={props.onClick} ref={containerRef}>
-            { props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '') }
-            { props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
-              ? (
-                <PaginationComponent
-                  {...props.tableConfig.configs.pagination}
-                  total={props.total || props.dataSource.length}
-                  renderPagination={props.renderPagination}
-                />
-              )
-              : null }
-            <div
-              className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
-                bordered: props.tableConfig.configs.bordered,
-              })}
-              style={{
-                height: tableHeight,
-              }}
-            >
-              { props.tableConfig.configs.sticky
-                ? (
-                  <ColumnHeaderList
-                    draggable={props.draggable}
-                    scrollTarget={scrollTarget}
-                    scrollLeft={scrollLeft}
-                    customComponentPanel={props.customComponentPanel}
-                    customColumnAddPanel={props.customColumnAddPanel}
-                    columnTools={props.columnTools}
-                    tableConfig={props.tableConfig}
-                    dataSource={props.originDataSource}
-                    onResort={newColumns => setTableColumns([...newColumns], props.index)}
-                    onScroll={(left) => { setScrollLeft(left); }}
-                    onClick={props.onClick}
-                    onColumnAdded={props.onColumnAdded}
-                    renderHeaderCellFilter={props.renderHeaderCellFilter}
-                    containerWidth={tableWidth}
-                  />
-                )
-                : null }
-              <div
-                style={props.tableConfig.configs.sticky ? { height: 420, overflow: 'auto', boxShadow: 'inset 0 0 8px -4px #00000063' } : void 0}
-              >
-                { !props.tableConfig.configs.sticky && (
-                <ColumnHeaderList
-                  draggable={props.draggable}
-                  scrollTarget={scrollTarget}
-                  scrollLeft={scrollLeft}
-                  customComponentPanel={props.customComponentPanel}
-                  customColumnAddPanel={props.customColumnAddPanel}
-                  tableConfig={props.tableConfig}
-                  columnTools={props.columnTools}
-                  dataSource={props.originDataSource}
-                  onResort={newColumns => setTableColumns([...newColumns], props.index)}
-                  onScroll={(left) => { setScrollLeft(left); }}
-                  onClick={props.onClick}
-                  onColumnAdded={props.onColumnAdded}
-                  renderHeaderCellFilter={props.renderHeaderCellFilter}
-                  containerWidth={tableWidth}
-                />
-                ) }
-                { previewDataSource.map((wrapRecord, rowIndex) => {
-                  const hasSubTable = tableConfigs[props.index + 1] && Object.keys(wrapRecord.record || {}).includes(tableConfigs[props.index + 1]?.dataSourceKey);
-                  const tableInfo: DripTableTableInformation<RecordType, ExtraOptions> = {
-                    uuid: props.tableConfig?.tableId,
-                    schema: {
-                      ...props.tableConfig?.configs,
-                      id: props.tableConfig.tableId ?? mockId(),
-                      columns: props.tableConfig?.columns,
-                      dataSourceKey: props.tableConfig?.dataSourceKey,
-                    } as DripTableTableInformation<RecordType, ExtraOptions>['schema'],
-                    dataSource: wrapRecord?.[tableConfigs[props.index + 1]?.dataSourceKey || ''] as RecordType[] || [],
-                    record: wrapRecord.record,
-                  };
-                  return (
-                    <div
-                      key={wrapRecord.id}
-                      className={classNames('jfe-drip-table-generator-workstation-table-row', {
-                        checked: checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID,
-                        stripe: props.tableConfig.configs.stripe && wrapRecord.id % 2 === 0,
-                        disabled: props.generatorRowSelectable === false,
-                      })}
-                      onMouseEnter={(e) => { e.stopPropagation(); setScrollTarget(`__row_${rowIndex}`); }}
-                      onMouseLeave={(e) => { e.stopPropagation(); setScrollTarget(''); }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (props.generatorRowSelectable === false) { return; }
-                        setCheckedRecord(checkedRecord === wrapRecord.id ? void 0 : wrapRecord.id);
-                      }}
-                    >
-                      { checkedRecord === wrapRecord.id && props.tableConfig.tableId === context.currentTableID && (
-                      <div className="jfe-drip-table-generator-workstation-table-row-tools">
-                        <Button
-                          title={previewRecord === wrapRecord.id ? '取消关注当前列' : '只关注当前列'}
-                          size="small"
-                          type="primary"
-                          icon={previewRecord === wrapRecord.id ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setPreviewRecord(previewRecord === wrapRecord.id ? void 0 : wrapRecord.id);
-                          }}
-                        />
-                      </div>
-                      ) }
-                      <TableRowList
-                        rowIndex={rowIndex}
-                        isLastRow={rowIndex === previewDataSource.length - 1}
-                        scrollTarget={scrollTarget}
-                        scrollLeft={scrollLeft}
-                        tableConfig={props.tableConfig}
-                        record={wrapRecord.record}
-                        customComponents={props.customComponents}
-                        defaultComponentLib={props.defaultComponentLib}
-                        customComponentPanel={props.customComponentPanel}
-                        mockDataSource={props.mockDataSource}
-                        dataFields={props.dataFields}
-                        renderSelection={props.renderSelection}
-                        ext={props.ext}
-                        slots={props.slots}
-                        icons={props.icons}
-                        preview={props.preview}
-                        onEvent={props.onEvent}
-                        hasSubTable={hasSubTable}
-                        onScroll={(left) => { setScrollLeft(left); }}
-                        onClick={props.onClick}
-                        onColumnItemChanged={props.onColumnItemChanged}
-                        containerWidth={tableWidth}
-                        schemaFunctionPreprocessor={props.schemaFunctionPreprocessor}
-                      />
-                      { (props.tableConfig.hasSubTable && hasSubTable)
-                    && (
-                    <div className="subtable">
-                      <EditableTable
-                        {...props}
-                        index={props.index + 1}
-                        tableConfig={tableConfigs[props.index + 1]}
-                        dataSource={wrapRecord.record[tableConfigs[props.index + 1].dataSourceKey] as RecordType[] || []}
-                        parent={tableInfo}
-                      />
-                    </div>
-                    ) }
-                    </div>
-                  );
-                }) }
-                { previewDataSource.length <= 0 && (props.emptyText ? props.emptyText?.(subTableInfo) : <Empty className="jfe-drip-table-generator-workstation-editable-table-empty-body" image={Empty.PRESENTED_IMAGE_SIMPLE} />) }
-              </div>
-            </div>
-            { props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter
-              ? (
-                <PaginationComponent
-                  {...props.tableConfig.configs.pagination}
-                  total={props.total || props.dataSource.length}
-                  renderPagination={props.renderPagination}
-                />
-              )
-              : null }
-            { props.parent?.record && (props.subtableFooter?.(props.parent.record, props.index || 0, subTableInfo) || '') }
-          </TableContainer>
-        );
-      } }
+      {({ tableConfigs, setTableColumns }) => (
+        <TableContainer tableTools={props.tableTools} tableConfig={props.tableConfig} onClick={props.onClick} ref={containerRef}>
+          {props.parent?.record && (props.subtableTitle?.(props.parent.record, props.index || 0, subTableInfo) || '')}
+          {props.parent?.record && props.tableConfig.configs.pagination && paginationInHeader
+            ? (
+              <PaginationComponent
+                {...props.tableConfig.configs.pagination}
+                total={props.total || props.dataSource.length}
+                renderPagination={props.renderPagination}
+              />
+            )
+            : null}
+          <div
+            className={classNames('jfe-drip-table-generator-workstation-table-wrapper', {
+              bordered: props.tableConfig.configs.bordered,
+            })}
+            style={{
+              display: 'flex',
+              overflow: 'auto',
+              height: tableHeight,
+              width: props.tableConfig.configs.scroll?.x ? Number(props.tableConfig.configs.scroll?.x) : void 0,
+            }}
+          >
+            <LeftFixedColumns<RecordType, ExtraOptions>
+              {...props}
+              ref={leftColumnsRef}
+              tableConfig={props.tableConfig}
+              columnList={leftFixedColumns}
+              previewDataSource={previewDataSource as ({ id: number; record: RecordType })[]}
+              containerWidth={tableWidth}
+              rowHeight={rowHeight}
+            />
+            <ScrollableColumns<RecordType, ExtraOptions>
+              {...props}
+              ref={scrollColumnsRef}
+              tableConfig={props.tableConfig}
+              columnList={sortableColumns}
+              previewDataSource={previewDataSource}
+              containerWidth={tableWidth}
+              rowHeight={rowHeight}
+            />
+            <RightFixedColumns<RecordType, ExtraOptions>
+              {...props}
+              ref={rightColumnsRef}
+              tableConfig={props.tableConfig}
+              columnList={rightFixedColumns}
+              previewDataSource={previewDataSource}
+              containerWidth={tableWidth}
+              rowHeight={rowHeight}
+            />
+          </div>
+          {props.parent?.record && props.tableConfig.configs.pagination && paginationInFooter
+            ? (
+              <PaginationComponent
+                {...props.tableConfig.configs.pagination}
+                total={props.total || props.dataSource.length}
+                renderPagination={props.renderPagination}
+              />
+            )
+            : null}
+          {props.parent?.record && (props.subtableFooter?.(props.parent.record, props.index || 0, subTableInfo) || '')}
+        </TableContainer>
+      )}
     </TableConfigsContext.Consumer>
   );
 }

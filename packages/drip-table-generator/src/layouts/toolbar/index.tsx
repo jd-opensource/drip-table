@@ -9,13 +9,13 @@ import './index.less';
 
 import { ArrowLeftOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, message, Tooltip } from 'antd';
-import { DripTableColumnSchema, DripTableExtraOptions } from 'drip-table';
+import { DripTableColumnSchema, DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 
 import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import DataSourceEditor from './components/datasource';
 import DropDownButton, { DropDownButtonProps } from './components/dropdown-button';
@@ -62,7 +62,7 @@ function ModeSwitch(props: { style?: React.CSSProperties; disabled?: boolean }) 
   };
   return (
     <GeneratorContext.Consumer>
-      { ({ mode, setState }) => (
+      {({ mode, setState }) => (
         <Button
           style={{ marginLeft: 24, borderRadius: '6px', ...props.style }}
           onClick={() => {
@@ -74,16 +74,16 @@ function ModeSwitch(props: { style?: React.CSSProperties; disabled?: boolean }) 
           }}
           disabled={props.disabled}
         >
-          { mode === 'edit' ? '预览' : '编辑' }
+          {mode === 'edit' ? '预览' : '编辑'}
         </Button>
-      ) }
+      )}
     </GeneratorContext.Consumer>
   );
 }
 
 function Toolbar<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: DripTableGeneratorProps<RecordType, ExtraOptions>) {
   const { drawerType, setState } = React.useContext(GeneratorContext);
   const [operateMenu, setOperateMenu] = React.useState(void 0 as string | undefined);
@@ -101,7 +101,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
 
   return (
     <TableConfigsContext.Consumer>
-      { ({ tableConfigs, updateTableConfigs }) => (
+      {({ tableConfigs, updateTableConfigs }) => (
         <div className="jfe-drip-table-generator-templates-toolbar wrapper">
           <div
             className="jfe-drip-table-generator-templates-toolbar left"
@@ -110,7 +110,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               if (operateMenu) { setOperateMenu(void 0); }
             }}
           >
-            { props.save && props.savePosition !== 'right' && !operateMenu && (
+            {props.save && props.savePosition !== 'right' && !operateMenu && (
               <Tooltip title="保存表格" placement="bottom">
                 <Button
                   type="primary"
@@ -123,15 +123,15 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   disabled={!!operateMenu && operateMenu !== 'export'}
                 />
               </Tooltip>
-            ) }
-            { operateMenu
+            )}
+            {operateMenu
               ? (
                 <Tooltip title="退出当前操作" placement="bottom">
                   <Button icon={<ArrowLeftOutlined />} shape="circle" onClick={() => setOperateMenu(void 0)} />
                 </Tooltip>
               )
-              : (<div style={props.save && props.savePosition !== 'right' ? void 0 : { width: 32, height: 32 }} />) }
-            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('template')
+              : (<div style={props.save && props.savePosition !== 'right' ? void 0 : { width: 32, height: 32 }} />)}
+            {Array.isArray(props.showToolbar) && !props.showToolbar.includes('template')
               ? null
               : (
                 <DropDownButton
@@ -148,8 +148,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     onOk={() => setOperateMenu(void 0)}
                   />
                 </DropDownButton>
-              ) }
-            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('datasource')
+              )}
+            {Array.isArray(props.showToolbar) && !props.showToolbar.includes('datasource')
               ? null
               : (
                 <DropDownButton
@@ -165,8 +165,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     onDataSourceChange={dataSource => props.onDataSourceChange?.(dataSource as RecordType[])}
                   />
                 </DropDownButton>
-              ) }
-            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('import')
+              )}
+            {Array.isArray(props.showToolbar) && !props.showToolbar.includes('import')
               ? null
               : (
                 <DropDownButton
@@ -178,8 +178,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 >
                   <ImportSchema height={bodyHeight - 8 - 40} />
                 </DropDownButton>
-              ) }
-            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('export')
+              )}
+            {Array.isArray(props.showToolbar) && !props.showToolbar.includes('export')
               ? null
               : (
                 <DropDownButton
@@ -194,28 +194,28 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                     mode={props.mode}
                   />
                 </DropDownButton>
-              ) }
-            { Array.isArray(props.showToolbar) && !props.showToolbar.includes('preview')
+              )}
+            {Array.isArray(props.showToolbar) && !props.showToolbar.includes('preview')
               ? null
-              : (<ModeSwitch disabled={operateMenu ? true : void 0} />) }
+              : (<ModeSwitch disabled={operateMenu ? true : void 0} />)}
           </div>
           <div
             className="jfe-drip-table-generator-templates-toolbar right"
             style={{ width: props.save && props.savePosition === 'right' && props.mode === 'modal' ? 64 : 32 }}
           >
-            { props.save && props.savePosition === 'right' && (
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                props.onSave?.(getSchemaValue(tableConfigs));
-              }}
-              type="text"
-              shape="default"
-              icon={<SaveOutlined />}
-              disabled={!!operateMenu && operateMenu !== 'export'}
-            />
-            ) }
-            { props.mode === 'modal' && (
+            {props.save && props.savePosition === 'right' && (
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  props.onSave?.(getSchemaValue(tableConfigs));
+                }}
+                type="text"
+                shape="default"
+                icon={<SaveOutlined />}
+                disabled={!!operateMenu && operateMenu !== 'export'}
+              />
+            )}
+            {props.mode === 'modal' && (
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -225,10 +225,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                 type="text"
                 icon={<CloseOutlined />}
               />
-            ) }
+            )}
           </div>
         </div>
-      ) }
+      )}
     </TableConfigsContext.Consumer>
   );
 }

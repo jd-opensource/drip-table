@@ -11,6 +11,9 @@ import {
   DripTableBuiltInColumnSchema,
   DripTableExtraOptions,
   DripTableProps,
+  DripTableRecordTypeBase,
+  DripTableRecordTypeWithSubtable,
+  ExtractDripTableExtraOption,
 } from 'drip-table';
 import React from 'react';
 
@@ -18,14 +21,14 @@ import { GeneratorContext } from '@/context';
 import { DTGTableConfig, TableConfigsContext } from '@/context/table-configs';
 import { getColumnItemByPath, updateColumnItemByPath } from '@/layouts/attributes-layout/utils';
 import { getSchemaValue } from '@/layouts/utils';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import CellComponent from './cell';
 import { GroupCellProps } from './group';
 import { PopoverCellProps } from './popover';
 
 interface TableCellProps<
-  RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
   ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
   column: DripTableBuiltInColumnSchema;
@@ -50,13 +53,13 @@ interface TableCellProps<
 }
 
 function TableCell<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: TableCellProps<RecordType, ExtraOptions>) {
   const { tableConfigs } = React.useContext(TableConfigsContext);
   return (
     <TableConfigsContext.Consumer>
-      { ({ setTableColumns }) => {
+      {({ setTableColumns }) => {
         const onChangeColumnItem: PopoverCellProps<RecordType, ExtraOptions>['onChangeColumnItem'] = (path, schema, tableIndex) => {
           const newColumns = [...props.tableConfig.columns];
           const newColumn = updateColumnItemByPath(newColumns[props.columnIndex], path, schema);
@@ -102,7 +105,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         };
         return (
           <GeneratorContext.Consumer>
-            { ({ setState }) => (
+            {({ setState }) => (
               <CellComponent
                 {...props}
                 icons={props.icons}
@@ -126,10 +129,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
                   });
                 }}
               />
-            ) }
+            )}
           </GeneratorContext.Consumer>
         );
-      } }
+      }}
     </TableConfigsContext.Consumer>
   );
 }

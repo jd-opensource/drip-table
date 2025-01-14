@@ -10,23 +10,21 @@ import './index.less';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Dropdown } from 'antd';
 import classNames from 'classnames';
-import { DripTableExtraOptions } from 'drip-table';
+import { DripTableExtraOptions, DripTableRecordTypeBase, DripTableRecordTypeWithSubtable, ExtractDripTableExtraOption } from 'drip-table';
 import React from 'react';
 import { ReactSortable } from 'react-sortablejs';
 
 import { filterArray } from '@/utils';
 import { DTGTableConfig } from '@/context/table-configs';
-import { DataSourceTypeAbbr, DripTableGeneratorProps } from '@/typing';
+import { DripTableGeneratorProps } from '@/typing';
 
 import ColumnHeader from '../column-header';
 import ComponentsSelector from '../components-selector';
 
 interface ColumnHeaderListProps<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 > {
-  scrollTarget: string;
-  scrollLeft: number;
   tableConfig: DTGTableConfig;
   containerWidth: number;
   draggable: DripTableGeneratorProps<RecordType, ExtraOptions>['draggable'];
@@ -36,14 +34,13 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
   customColumnAddPanel?: DripTableGeneratorProps<RecordType, ExtraOptions>['customColumnAddPanel'];
   onColumnAdded?: DripTableGeneratorProps<RecordType, ExtraOptions>['onColumnAdded'];
   onResort: (column: DTGTableConfig['columns']) => void;
-  onScroll: (scrollLeft: number) => void;
   onClick: DripTableGeneratorProps<RecordType, ExtraOptions>['onClick'];
   renderHeaderCellFilter: DripTableGeneratorProps<RecordType, ExtraOptions>['renderHeaderCellFilter'];
 }
 
 function ColumnHeaderList<
-RecordType extends DataSourceTypeAbbr<NonNullable<ExtraOptions['SubtableDataSourceKey']>>,
-ExtraOptions extends Partial<DripTableExtraOptions> = never,
+  RecordType extends DripTableRecordTypeWithSubtable<DripTableRecordTypeBase, ExtractDripTableExtraOption<ExtraOptions, 'SubtableDataSourceKey'>>,
+  ExtraOptions extends Partial<DripTableExtraOptions> = never,
 >(props: ColumnHeaderListProps<RecordType, ExtraOptions>) {
   const scrollableRow = React.useRef<HTMLDivElement>(null);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -55,11 +52,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
     leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
     rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
   }
-  React.useEffect(() => {
-    if (scrollableRow.current && props.scrollTarget !== '') {
-      scrollableRow.current.scrollLeft = props.scrollLeft;
-    }
-  }, [props.scrollLeft, props.scrollTarget]);
 
   const DropdownRender = React.useCallback(() => (
     <ComponentsSelector
@@ -87,7 +79,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
       [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
     })}
     >
-      { props.tableConfig.hasSubTable && (
+      {props.tableConfig.hasSubTable && (
         <div
           className={classNames('jfe-drip-table-generator-workstation-table-header-item disabled', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
@@ -95,8 +87,8 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           })}
           style={{ width: 48, minWidth: 48 }}
         />
-      ) }
-      { props.tableConfig.configs.rowSelection && (
+      )}
+      {props.tableConfig.configs.rowSelection && (
         <div
           className={classNames('jfe-drip-table-generator-workstation-table-header-item disabled', {
             [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
@@ -106,24 +98,28 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
         >
           <Checkbox disabled />
         </div>
-      ) }
-      { leftFixedColumns.length > 0
-        ? leftFixedColumns.map((columnWrapper, index) => (
-          <ColumnHeader
-            showRightShadow={index === leftFixedColumns.length - 1}
-            tableConfig={props.tableConfig}
-            column={columnWrapper.column}
-            columnId={columnWrapper.id}
-            customColumnAddPanel={props.customColumnAddPanel}
-            customComponentPanel={props.customComponentPanel}
-            columnTools={props.columnTools}
-            dataSource={props.dataSource}
-            onClick={props.onClick}
-            renderHeaderCellFilter={props.renderHeaderCellFilter}
-            containerWidth={props.containerWidth}
-          />
-        ))
-        : null }
+      )}
+      {leftFixedColumns.length > 0
+        ? (
+          <div className="jfe-drip-table-generator-workstation-table-header-left-fixed-part">
+            {leftFixedColumns.map((columnWrapper, index) => (
+              <ColumnHeader
+                // showRightShadow={index === leftFixedColumns.length - 1}
+                tableConfig={props.tableConfig}
+                column={columnWrapper.column}
+                columnId={columnWrapper.id}
+                customColumnAddPanel={props.customColumnAddPanel}
+                customComponentPanel={props.customComponentPanel}
+                columnTools={props.columnTools}
+                dataSource={props.dataSource}
+                onClick={props.onClick}
+                renderHeaderCellFilter={props.renderHeaderCellFilter}
+                containerWidth={props.containerWidth}
+              />
+            ))}
+          </div>
+        )
+        : null}
       <div
         ref={scrollableRow}
         className="jfe-drip-table-generator-workstation-table-header-scrollbar"
@@ -132,7 +128,6 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           overflowX: props.tableConfig.configs.scroll?.x ? 'auto' : void 0,
           overflowY: 'hidden',
         }}
-        onScroll={(e) => { if (!props.scrollTarget) { props.onScroll((e.target as HTMLDivElement).scrollLeft); } }}
       >
         <ReactSortable
           animation={250}
@@ -144,7 +139,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
           }}
           style={{ display: 'flex' }}
         >
-          { sortableColumns.map(columnWrapper => (
+          {sortableColumns.map(columnWrapper => (
             <ColumnHeader
               tableConfig={props.tableConfig}
               column={columnWrapper.column}
@@ -157,10 +152,10 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
               renderHeaderCellFilter={props.renderHeaderCellFilter}
               containerWidth={props.containerWidth}
             />
-          )) }
+          ))}
         </ReactSortable>
       </div>
-      { rightFixedColumns.length > 0
+      {rightFixedColumns.length > 0
         ? rightFixedColumns.map((columnWrapper, index) => (
           <ColumnHeader
             showLeftShadow={!index}
@@ -176,7 +171,7 @@ ExtraOptions extends Partial<DripTableExtraOptions> = never,
             containerWidth={props.containerWidth}
           />
         ))
-        : null }
+        : null}
       <div
         className={classNames('jfe-drip-table-generator-workstation-table-header-add-item', {
           [props.tableConfig.configs.size || 'default']: props.tableConfig.configs.size,
