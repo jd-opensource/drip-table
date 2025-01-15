@@ -50,7 +50,9 @@ function EditableTable<
     const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
     const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
     const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
-    if (leftHeight !== scrollHeight || rightHeight !== scrollHeight || leftHeight !== rightHeight) {
+    if ((leftHeight !== scrollHeight || rightHeight !== scrollHeight || leftHeight !== rightHeight) && (
+      Math.abs(scrollHeight - leftHeight) > 1 && Math.abs(scrollHeight - rightHeight) > 1
+    )) {
       setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
     }
   }, [props.dataSource, props.schema, props.tableConfig]);
