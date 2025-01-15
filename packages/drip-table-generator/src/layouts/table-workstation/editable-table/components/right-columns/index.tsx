@@ -45,7 +45,6 @@ function RightFixedColumnsInner<
   const rowRef = React.createRef<HTMLDivElement>();
   React.useImperativeHandle(ref, () => ({
     getRowHeight: () => {
-      const rowHeight = rowRef.current?.offsetHeight ?? 0;
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
@@ -55,7 +54,7 @@ function RightFixedColumnsInner<
           }
         }
       }
-      return (rowRef.current?.children.length || 0) <= 0 ? rowHeight : maxCellHeight;
+      return maxCellHeight;
     },
   }));
   return (

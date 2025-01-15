@@ -53,20 +53,23 @@ function LeftFixedColumnsInner<
   const leftMargins = React.useMemo(() => {
     let margin = 0;
     if (props.tableConfig.hasSubTable) {
-      margin += props.tableConfig.configs.bordered ? 49 : 48;
+      margin += props.tableConfig.configs.bordered ? 50 : 48;
     }
     if (props.tableConfig.configs.rowSelection) {
       margin += props.tableConfig.configs.bordered ? 49 : 48;
     }
-    props.columnList.forEach((columnWrapper, index) => {
-      const column = columnWrapper.column;
-      margin += column.width ? formatNumber(String(column.width).replace('px', '').replace('%', '') || 200) as number : 200;
-    });
+    for (let i = 0; i < props.columnList.length; i++) {
+      const column = props.columnList[i].column;
+      const width = column.width ? formatNumber(String(column.width).replace('px', '').replace('%', '') || 200) as number : 200;
+      margin += Math.max(width, 120);
+    }
+    if (props.columnList.length > 0 && !props.tableConfig.configs.bordered) {
+      margin += 3;
+    }
     return margin;
   }, [props.tableConfig.hasSubTable, props.tableConfig.configs, props.columnList]);
   React.useImperativeHandle(ref, () => ({
     getRowHeight: () => {
-      const rowHeight = rowRef.current?.offsetHeight ?? 0;
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
@@ -76,7 +79,7 @@ function LeftFixedColumnsInner<
           }
         }
       }
-      return (rowRef.current?.children.length || 0) <= 0 ? rowHeight : maxCellHeight;
+      return maxCellHeight;
     },
     getSubTableHeight: () => {
       const rows = (containerRef.current?.children || []) as HTMLDivElement[];
@@ -102,7 +105,7 @@ function LeftFixedColumnsInner<
         bordered: props.columnList.length > 0 || props.tableConfig.hasSubTable || props.tableConfig.configs.rowSelection,
       })}
       ref={containerRef}
-      style={{ width: leftMargins }}
+      style={{ width: props.tableConfig.hasSubTable ? leftMargins : void 0 }}
     >
       <div className={classNames(
         'jfe-drip-table-generator-workstation-table-row jfe-drip-table-generator-workstation-table-header',
