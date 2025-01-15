@@ -35,7 +35,7 @@ export interface LeftFixedColumnsProps<
 }
 
 export interface LeftFixedColumnsHandler {
-  getRowHeight: () => number;
+  getRowHeight: () => number[];
   getSubTableHeight: () => number[];
 }
 
@@ -71,6 +71,7 @@ function LeftFixedColumnsInner<
   React.useImperativeHandle(ref, () => ({
     getRowHeight: () => {
       let maxCellHeight = 0;
+      const rowHeight = rowRef.current?.offsetHeight ?? 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
           const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
@@ -79,7 +80,7 @@ function LeftFixedColumnsInner<
           }
         }
       }
-      return maxCellHeight;
+      return [rowHeight, maxCellHeight];
     },
     getSubTableHeight: () => {
       const rows = (containerRef.current?.children || []) as HTMLDivElement[];

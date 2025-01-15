@@ -45,6 +45,7 @@ function EditableTable<
   const leftColumnsRef = React.useRef<LeftFixedColumnsHandler>(null);
   const scrollColumnsRef = React.useRef<ScrollableColumnsHandler>(null);
   const rightColumnsRef = React.useRef<RightFixedColumnsHandler>(null);
+  const lastRowHeights = React.useRef<number[]>([]);
 
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
@@ -93,20 +94,22 @@ function EditableTable<
   }
 
   React.useEffect(() => {
-    const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
-    const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
-    const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
-    if (leftFixedColumns.length > 0 && sortableColumns.length > 0 && rightFixedColumns.length > 0
-      && (
-        Math.abs(scrollHeight - leftHeight) > 1 && Math.abs(scrollHeight - rightHeight) > 1
-      )) {
-      setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
-    } else if (sortableColumns.length > 0 && rightFixedColumns.length <= 0 && Math.abs(scrollHeight - leftHeight) > 1) {
-      setRowHeight(Math.max(leftHeight, scrollHeight));
-    } else if (sortableColumns.length > 0 && leftFixedColumns.length <= 0 && Math.abs(scrollHeight - rightHeight) > 1) {
-      setRowHeight(Math.max(rightHeight, scrollHeight));
+    const [leftRowHeight, leftCellHeight] = leftColumnsRef.current?.getRowHeight() ?? [0, 0];
+    const [scrollRowHeight, scrollCellHeight] = scrollColumnsRef.current?.getRowHeight() ?? [0, 0];
+    const [rightRowHeight, rightCellHeight] = rightColumnsRef.current?.getRowHeight() ?? [0, 0];
+    if (lastRowHeights.current.length <= 0) {
+      if (leftRowHeight !== scrollRowHeight || rightRowHeight !== scrollCellHeight || leftRowHeight !== rightRowHeight) {
+        setRowHeight(Math.max(leftCellHeight, scrollCellHeight, rightCellHeight) + 1);
+        lastRowHeights.current = [leftCellHeight, scrollCellHeight, rightCellHeight];
+      }
+    } else {
+      const [lastLeftHeight, lastScrollHeight, lastRightHeight] = lastRowHeights.current ?? [];
+      if (lastLeftHeight !== leftCellHeight || lastScrollHeight !== scrollCellHeight || lastRightHeight !== rightCellHeight) {
+        setRowHeight(Math.max(leftCellHeight, scrollCellHeight, rightCellHeight) + 1);
+        lastRowHeights.current = [leftCellHeight, scrollCellHeight, rightCellHeight];
+      }
     }
-  }, [props.dataSource, props.schema, props.tableConfig, leftFixedColumns, rightFixedColumns, sortableColumns]);
+  }, [props.dataSource, props.schema, props.tableConfig]);
 
   React.useEffect(() => {
     setTimeout(() => {
