@@ -63,7 +63,9 @@ function ScrollableColumnsInner<
       const start = props.tableConfig.configs.showHeader ? 1 : 0;
       const rowHeaderHeights: number[] = [];
       for (let i = start; i < rows.length; i++) {
-        if (rows[i].className === 'jfe-drip-table-generator-workstation-table-row') {
+        if (rows[i].className === 'jfe-drip-table-generator-workstation-table-row'
+          || rows[i].className === 'jfe-drip-table-generator-workstation-table-row stripe'
+        ) {
           if (rows[i - 1]?.className === 'rowHeader') {
             rowHeaderHeights.push(rows[i - 1].offsetHeight);
           } else {
@@ -109,7 +111,13 @@ function ScrollableColumnsInner<
               configs={props.tableConfig.configs.rowHeader}
             />
           )}
-          <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
+          <div
+            className={classNames('jfe-drip-table-generator-workstation-table-row', {
+              stripe: props.tableConfig.configs.stripe && rowIndex % 2 === 1,
+            })}
+            ref={rowRef}
+            style={{ height: props.rowHeight }}
+          >
             <TableSection
               {...props}
               record={record}

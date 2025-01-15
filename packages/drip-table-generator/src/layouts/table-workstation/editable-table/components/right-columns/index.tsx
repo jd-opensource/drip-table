@@ -48,7 +48,7 @@ function RightFixedColumnsInner<
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
-          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight;
+          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
           if (trueCellHeight > maxCellHeight) {
             maxCellHeight = trueCellHeight;
           }
@@ -91,7 +91,13 @@ function RightFixedColumnsInner<
           {props.tableConfig.configs.rowHeader && (
             <div style={{ width: '100%', height: props.rowHeaderHeights?.[rowIndex] || 0 }} />
           )}
-          <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
+          <div
+            className={classNames('jfe-drip-table-generator-workstation-table-row', {
+              stripe: props.tableConfig.configs.stripe && rowIndex % 2 === 1,
+            })}
+            ref={rowRef}
+            style={{ height: props.rowHeight }}
+          >
             <TableSection
               {...props}
               record={record}

@@ -69,7 +69,7 @@ function LeftFixedColumnsInner<
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
-          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight;
+          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
           if (trueCellHeight > maxCellHeight) {
             maxCellHeight = trueCellHeight;
           }
@@ -82,7 +82,9 @@ function LeftFixedColumnsInner<
       const start = props.tableConfig.configs.showHeader ? 1 : 0;
       const subTableHeights: number[] = [];
       for (let i = start; i < rows.length; i++) {
-        if (rows[i].className === 'jfe-drip-table-generator-workstation-table-row') {
+        if (rows[i].className === 'jfe-drip-table-generator-workstation-table-row'
+          || rows[i].className === 'jfe-drip-table-generator-workstation-table-row stripe'
+        ) {
           if (rows[i + 1]?.className === 'subtable') {
             subTableHeights.push(rows[i + 1].offsetHeight);
           } else {
@@ -162,8 +164,13 @@ function LeftFixedColumnsInner<
             {props.tableConfig.configs.rowHeader && (
               <div style={{ width: '100%', height: props.rowHeaderHeights?.[rowIndex] || 0 }} />
             )}
-            <div className="jfe-drip-table-generator-workstation-table-row" ref={rowRef} style={{ height: props.rowHeight }}>
-
+            <div
+              className={classNames('jfe-drip-table-generator-workstation-table-row', {
+                stripe: props.tableConfig.configs.stripe && rowIndex % 2 === 1,
+              })}
+              ref={rowRef}
+              style={{ height: props.rowHeight }}
+            >
               {props.tableConfig.hasSubTable && (
                 <div
                   className={classNames('jfe-drip-table-generator-workstation-table-tr-td operation-col', {
