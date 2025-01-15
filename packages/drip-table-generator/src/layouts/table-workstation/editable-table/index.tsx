@@ -46,31 +46,6 @@ function EditableTable<
   const scrollColumnsRef = React.useRef<ScrollableColumnsHandler>(null);
   const rightColumnsRef = React.useRef<RightFixedColumnsHandler>(null);
 
-  React.useEffect(() => {
-    const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
-    const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
-    const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
-    if ((leftHeight !== scrollHeight || rightHeight !== scrollHeight || leftHeight !== rightHeight) && (
-      Math.abs(scrollHeight - leftHeight) > 1 && Math.abs(scrollHeight - rightHeight) > 1
-    )) {
-      setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
-    }
-  }, [props.dataSource, props.schema, props.tableConfig]);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      const leftHeights = leftColumnsRef.current?.getSubTableHeight() ?? [];
-      setSubTableHeights(leftHeights);
-    }, 200);
-  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      const rowHeights = scrollColumnsRef.current?.getRowHeaderHeights() ?? [];
-      setRowHeaderHeights(rowHeights);
-    }, 200);
-  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
-
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
       return props.tableConfig.configs.scroll?.y;
@@ -116,6 +91,37 @@ function EditableTable<
     leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
     rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
   }
+
+  React.useEffect(() => {
+    const leftHeight = leftColumnsRef.current?.getRowHeight() ?? 0;
+    const scrollHeight = scrollColumnsRef.current?.getRowHeight() ?? 0;
+    const rightHeight = rightColumnsRef.current?.getRowHeight() ?? 0;
+    if (leftFixedColumns.length > 0 && sortableColumns.length > 0 && rightFixedColumns.length > 0
+      && (
+        Math.abs(scrollHeight - leftHeight) > 1 && Math.abs(scrollHeight - rightHeight) > 1
+      )) {
+      setRowHeight(Math.max(leftHeight, scrollHeight, rightHeight));
+    } else if (sortableColumns.length > 0 && rightFixedColumns.length <= 0 && Math.abs(scrollHeight - leftHeight) > 1) {
+      setRowHeight(Math.max(leftHeight, scrollHeight));
+    } else if (sortableColumns.length > 0 && leftFixedColumns.length <= 0 && Math.abs(scrollHeight - rightHeight) > 1) {
+      setRowHeight(Math.max(rightHeight, scrollHeight));
+    }
+  }, [props.dataSource, props.schema, props.tableConfig, leftFixedColumns, rightFixedColumns, sortableColumns]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const leftHeights = leftColumnsRef.current?.getSubTableHeight() ?? [];
+      setSubTableHeights(leftHeights);
+    }, 200);
+  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const rowHeights = scrollColumnsRef.current?.getRowHeaderHeights() ?? [];
+      setRowHeaderHeights(rowHeights);
+    }, 200);
+  }, [props.dataSource, props.schema, props.tableConfig, context.tableConfigs]);
+
   return (
     <TableConfigsContext.Consumer>
       {({ tableConfigs, setTableColumns }) => (
