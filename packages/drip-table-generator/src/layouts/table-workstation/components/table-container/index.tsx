@@ -136,7 +136,9 @@ const TableContainer = React.forwardRef(<
               checked: currentTableID === props.tableConfig.tableId,
               bordered: tableIndex > 0,
             })}
-            style={{ marginTop: currentTableID === props.tableConfig.tableId && tableIndex === 0 ? 32 : void 0 }}
+            style={{
+              marginTop: currentTableID === props.tableConfig.tableId && tableIndex === 0 ? 32 : void 0,
+            }}
             ref={containerRef}
             onClick={(e) => {
               e.stopPropagation();
