@@ -32,7 +32,7 @@ export interface RightFixedColumnsProps<
 }
 
 export interface RightFixedColumnsHandler {
-  getRowHeight: () => number;
+  getRowHeight: () => number[];
 }
 
 function RightFixedColumnsInner<
@@ -46,6 +46,7 @@ function RightFixedColumnsInner<
   React.useImperativeHandle(ref, () => ({
     getRowHeight: () => {
       let maxCellHeight = 0;
+      const rowHeight = rowRef.current?.offsetHeight ?? 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
           const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
@@ -54,7 +55,7 @@ function RightFixedColumnsInner<
           }
         }
       }
-      return maxCellHeight;
+      return [rowHeight, maxCellHeight];
     },
   }));
   return (
