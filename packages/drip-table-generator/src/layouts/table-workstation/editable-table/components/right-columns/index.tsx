@@ -55,7 +55,7 @@ function RightFixedColumnsInner<
           }
         }
       }
-      return Math.max(rowHeight, maxCellHeight);
+      return (rowRef.current?.children.length || 0) <= 0 ? rowHeight : maxCellHeight;
     },
   }));
   return (
