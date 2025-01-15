@@ -1,6 +1,6 @@
 {
   "name": "drip-table-generator",
-  "version": "3.2.2-alpha.0",
+  "version": "3.2.2-alpha.1",
   "description": "A visualization tool for generating schema of drip-table.",
   "main": "dist/index.min.js",
   "module": "lib/index.js",
