@@ -104,7 +104,7 @@ function EditableTable<
       }
     } else {
       const [lastLeftHeight, lastScrollHeight, lastRightHeight] = lastRowHeights.current ?? [];
-      if (lastLeftHeight !== leftCellHeight || lastScrollHeight !== scrollCellHeight || lastRightHeight !== rightCellHeight) {
+      if (lastLeftHeight !== leftCellHeight || Math.abs(lastScrollHeight - scrollCellHeight) > 1 || lastRightHeight !== rightCellHeight) {
         setRowHeight(Math.max(leftCellHeight, scrollCellHeight, rightCellHeight) + 1);
         lastRowHeights.current = [leftCellHeight, scrollCellHeight, rightCellHeight];
       }
