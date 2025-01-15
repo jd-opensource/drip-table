@@ -50,7 +50,7 @@ function ScrollableColumnsInner<
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
-          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight;
+          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
           if (trueCellHeight > maxCellHeight) {
             maxCellHeight = trueCellHeight;
           }
