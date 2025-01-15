@@ -47,7 +47,6 @@ function ScrollableColumnsInner<
   const containerRef = React.createRef<HTMLDivElement>();
   React.useImperativeHandle(ref, () => ({
     getRowHeight: () => {
-      const rowHeight = rowRef.current?.offsetHeight ?? 0;
       let maxCellHeight = 0;
       for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
         if (element.children[0]) {
@@ -57,7 +56,7 @@ function ScrollableColumnsInner<
           }
         }
       }
-      return Math.max(rowHeight, maxCellHeight);
+      return maxCellHeight;
     },
     getRowHeaderHeights: () => {
       const rows = (containerRef.current?.children || []) as HTMLDivElement[];

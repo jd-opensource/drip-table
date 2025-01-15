@@ -76,7 +76,7 @@ function LeftFixedColumnsInner<
           }
         }
       }
-      return Math.max(rowHeight, maxCellHeight);
+      return (rowRef.current?.children.length || 0) <= 0 ? rowHeight : maxCellHeight;
     },
     getSubTableHeight: () => {
       const rows = (containerRef.current?.children || []) as HTMLDivElement[];
