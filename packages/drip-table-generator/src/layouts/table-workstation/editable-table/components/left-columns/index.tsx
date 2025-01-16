@@ -19,6 +19,8 @@ import { DripTableGeneratorProps } from '@/typing';
 
 import EditableTable from '../..';
 import ColumnHeader from '../column-header';
+import { RightFixedColumnsHandler } from '../right-columns';
+import { ScrollableColumnsHandler } from '../scroll-columns';
 import TableSection from '../table-section';
 
 export interface LeftFixedColumnsProps<
@@ -28,14 +30,14 @@ export interface LeftFixedColumnsProps<
   tableConfig: DTGTableConfig;
   previewDataSource: ({ id: number; record: RecordType })[];
   containerWidth: number;
-  rowHeight: number | undefined;
+  siblings: [React.RefObject<ScrollableColumnsHandler>, React.RefObject<RightFixedColumnsHandler>];
   columnList: { id: number; column: DTGTableConfig['columns'][number] }[];
   ref?: React.RefObject<LeftFixedColumnsHandler>;
   rowHeaderHeights?: number[];
 }
 
 export interface LeftFixedColumnsHandler {
-  getRowHeight: () => number[];
+  getRowHeight: () => number;
   getSubTableHeight: () => number[];
 }
 
@@ -48,8 +50,10 @@ function LeftFixedColumnsInner<
 ) {
   const { tableConfigs } = React.useContext(TableConfigsContext);
   const currentTableIndex = tableConfigs.findIndex(c => c.tableId === props.tableConfig.tableId);
+  const [rowHeight, setRowHeight] = React.useState(void 0 as number | undefined);
   const rowRef = React.createRef<HTMLDivElement>();
   const containerRef = React.createRef<HTMLDivElement>();
+
   const leftMargins = React.useMemo(() => {
     let margin = 0;
     if (props.tableConfig.hasSubTable) {
@@ -68,20 +72,34 @@ function LeftFixedColumnsInner<
     }
     return margin;
   }, [props.tableConfig.hasSubTable, props.tableConfig.configs, props.columnList]);
-  React.useImperativeHandle(ref, () => ({
-    getRowHeight: () => {
-      let maxCellHeight = 0;
-      const rowHeight = rowRef.current?.offsetHeight ?? 0;
-      for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
-        if (element.children[0]) {
-          const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
-          if (trueCellHeight > maxCellHeight) {
-            maxCellHeight = trueCellHeight;
-          }
+
+  const getCurrentRowHeight = () => {
+    let maxCellHeight = 0;
+    const currentRowHeight = rowRef.current?.offsetHeight ?? 0;
+    for (const element of (rowRef.current?.children || []) as HTMLDivElement[]) {
+      if (element.children[0]) {
+        const trueCellHeight = (element.children[0] as HTMLDivElement).offsetHeight + 28;
+        if (trueCellHeight > maxCellHeight) {
+          maxCellHeight = trueCellHeight;
         }
       }
-      return [rowHeight, maxCellHeight];
-    },
+    }
+    return currentRowHeight - maxCellHeight === 1 ? currentRowHeight : maxCellHeight;
+  };
+
+  React.useEffect(() => {
+    const currentRowHeight = getCurrentRowHeight();
+    const [scrollRef, rightRef] = props.siblings;
+    const scrollColumnsHeight = scrollRef.current?.getRowHeight() || 0;
+    const rightFixedColumnsHeight = rightRef.current?.getRowHeight() || 0;
+    const maxSiblingsHeight = Math.max(scrollColumnsHeight, rightFixedColumnsHeight);
+    if (maxSiblingsHeight > currentRowHeight) {
+      setRowHeight(maxSiblingsHeight);
+    }
+  }, [props.columnList, props.tableConfig, props.dataSource]);
+
+  React.useImperativeHandle(ref, () => ({
+    getRowHeight: getCurrentRowHeight,
     getSubTableHeight: () => {
       const rows = (containerRef.current?.children || []) as HTMLDivElement[];
       const start = props.tableConfig.configs.showHeader ? 1 : 0;
@@ -174,7 +192,7 @@ function LeftFixedColumnsInner<
                 stripe: props.tableConfig.configs.stripe && rowIndex % 2 === 1,
               })}
               ref={rowRef}
-              style={{ height: props.rowHeight }}
+              style={{ height: rowHeight }}
             >
               {props.tableConfig.hasSubTable && (
                 <div
