@@ -38,14 +38,12 @@ function EditableTable<
 >(props: EditableTableProps<RecordType, ExtraOptions>) {
   const context = React.useContext(TableConfigsContext);
   const [previewRecord] = React.useState(void 0 as number | undefined);
-  const [rowHeight, setRowHeight] = React.useState(void 0 as number | undefined);
   const [subTableHeights, setSubTableHeights] = React.useState([] as number[]);
   const [rowHeaderHeights, setRowHeaderHeights] = React.useState([] as number[]);
   const containerRef = React.useRef<TableContainerHandler>(null);
   const leftColumnsRef = React.useRef<LeftFixedColumnsHandler>(null);
   const scrollColumnsRef = React.useRef<ScrollableColumnsHandler>(null);
   const rightColumnsRef = React.useRef<RightFixedColumnsHandler>(null);
-  const lastRowHeights = React.useRef<number[]>([]);
 
   const tableHeight = React.useMemo(() => {
     if (props.tableConfig.configs.scroll?.y && typeof props.tableConfig.configs.scroll?.y !== 'boolean') {
@@ -92,24 +90,6 @@ function EditableTable<
     leftFixedColumns = filterArray(columnList, item => item.column.fixed === 'left' || (item.column.fixed && item.id < sortableColumns[0].id));
     rightFixedColumns = filterArray(columnList, item => item.column.fixed === 'right' || (item.column.fixed && item.id > sortableColumns[0].id));
   }
-
-  React.useEffect(() => {
-    const [leftRowHeight, leftCellHeight] = leftColumnsRef.current?.getRowHeight() ?? [0, 0];
-    const [scrollRowHeight, scrollCellHeight] = scrollColumnsRef.current?.getRowHeight() ?? [0, 0];
-    const [rightRowHeight, rightCellHeight] = rightColumnsRef.current?.getRowHeight() ?? [0, 0];
-    if (lastRowHeights.current.length <= 0) {
-      if (leftRowHeight !== scrollRowHeight || rightRowHeight !== scrollCellHeight || leftRowHeight !== rightRowHeight) {
-        setRowHeight(Math.max(leftCellHeight, scrollCellHeight, rightCellHeight) + 1);
-        lastRowHeights.current = [leftCellHeight, scrollCellHeight, rightCellHeight];
-      }
-    } else {
-      const [lastLeftHeight, lastScrollHeight, lastRightHeight] = lastRowHeights.current ?? [];
-      if (lastLeftHeight !== leftCellHeight || Math.abs(lastScrollHeight - scrollCellHeight) > 1 || lastRightHeight !== rightCellHeight) {
-        setRowHeight(Math.max(leftCellHeight, scrollCellHeight, rightCellHeight) + 1);
-        lastRowHeights.current = [leftCellHeight, scrollCellHeight, rightCellHeight];
-      }
-    }
-  }, [props.dataSource, props.schema, props.tableConfig]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -160,8 +140,8 @@ function EditableTable<
                 columnList={leftFixedColumns}
                 previewDataSource={previewDataSource as ({ id: number; record: RecordType })[]}
                 containerWidth={tableWidth}
-                rowHeight={rowHeight}
                 rowHeaderHeights={rowHeaderHeights}
+                siblings={[scrollColumnsRef, rightColumnsRef]}
               />
               <ScrollableColumns<RecordType, ExtraOptions>
                 {...props}
@@ -170,8 +150,8 @@ function EditableTable<
                 columnList={sortableColumns}
                 previewDataSource={previewDataSource}
                 containerWidth={tableWidth}
-                rowHeight={rowHeight}
                 subTableHeights={subTableHeights}
+                siblings={[leftColumnsRef, rightColumnsRef]}
               />
               <RightFixedColumns<RecordType, ExtraOptions>
                 {...props}
@@ -180,9 +160,9 @@ function EditableTable<
                 columnList={rightFixedColumns}
                 previewDataSource={previewDataSource}
                 containerWidth={tableWidth}
-                rowHeight={rowHeight}
                 subTableHeights={subTableHeights}
                 rowHeaderHeights={rowHeaderHeights}
+                siblings={[leftColumnsRef, scrollColumnsRef]}
               />
             </div>
             <AddColumnComponent
