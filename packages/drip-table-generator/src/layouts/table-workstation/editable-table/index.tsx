@@ -130,7 +130,7 @@ function EditableTable<
                 display: 'flex',
                 overflow: 'auto',
                 height: tableHeight,
-                width: props.tableConfig.configs.scroll?.x ? Number(props.tableConfig.configs.scroll?.x) : void 0,
+                width: props.tableConfig.configs.scroll?.x ? Number(props.tableConfig.configs.scroll?.x) - 120 : void 0,
               }}
             >
               <LeftFixedColumns<RecordType, ExtraOptions>
