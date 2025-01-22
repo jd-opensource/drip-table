@@ -53,7 +53,7 @@ function EditableTable<
   }, [props.tableConfig.configs.scroll?.y]);
   const tableWidth = React.useMemo(() => {
     const defaultWidth = props.tableConfig.columns.length * 200;
-    return containerRef.current?.getContainerWidth?.() || defaultWidth;
+    return (containerRef.current?.getContainerWidth?.() || defaultWidth) - 120;
   }, []);
 
   const dataSourceToUse = React.useMemo(() => {
