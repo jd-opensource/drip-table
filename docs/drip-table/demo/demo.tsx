@@ -12,7 +12,7 @@ import DripTable, { DripTableFilters, DripTableInstance } from 'drip-table';
 import { JsonEditor } from 'jsoneditor-react';
 import React from 'react';
 
-import { initSchema, mockData, SampleRecordType, SubtableDataSourceKey } from '../../demo-data';
+import { initSchema, mockData, SampleRecordType } from '../../demo-data';
 import { CustomColumnSchema, CustomComponentEvent, CustomComponents } from './custom-components';
 
 import styles from './demo.module.less';
@@ -110,7 +110,6 @@ function Demo() {
         CustomColumnSchema: CustomColumnSchema;
         CustomComponentEvent: CustomComponentEvent;
         CustomComponentExtraData: never;
-        SubtableDataSourceKey: SubtableDataSourceKey;
       }>
         ref={dripTable}
         schema={schema}
