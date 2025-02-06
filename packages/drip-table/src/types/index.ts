@@ -256,6 +256,7 @@ export interface DripTableSchema<
    * 是否展示分页以及配置
    */
   pagination?: false | {
+    sticky?: boolean;
     border?: boolean;
     simple?: boolean;
     size?: 'small' | 'default';
@@ -561,6 +562,8 @@ export interface DripTableProps<
    * 自定义样式表
    */
   style?: React.CSSProperties;
+  spinClassName?: string;
+  spinInnerClassName?: string;
   /**
    * 表单 Schema
    */

@@ -275,6 +275,7 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
             {
               type: 'object',
               properties: {
+                sticky: { type: 'boolean' },
                 border: { type: 'boolean' },
                 simple: { type: 'boolean' },
                 size: { enum: ['small', 'default'] },
@@ -435,6 +436,8 @@ const getDripTablePropsAjvSchema = (options?: AjvOptions) => {
           items: {},
         },
         className: { type: 'string' },
+        spinClassName: { type: 'string' },
+        spinInnerClassName: { type: 'string' },
         style: DRIP_TABLE_CSS_SCHEMA,
         selectedRowKeys: {},
         displayColumnKeys: {},

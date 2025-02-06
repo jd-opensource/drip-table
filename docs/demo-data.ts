@@ -63,6 +63,7 @@ export const initSchema: DripTableSchema<CustomColumnSchema, SubtableDataSourceK
     ],
   },
   pagination: {
+    sticky: true,
     border: true,
     simple: false,
     pageSize: 20,

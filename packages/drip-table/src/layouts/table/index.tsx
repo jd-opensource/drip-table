@@ -180,37 +180,37 @@ const hookColumRender = <
       <React.Fragment>
         { render?.(d, row, index) }
         {
-        columnSchema && ('sorter' in columnSchema || columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle)
-          ? (
-            <div
-              style={{ display: 'none' }}
-              ref={(el) => {
-                const tdEl = el?.parentElement;
-                if (tdEl) {
-                  const context = { props: { record: row.record, recordIndex: row.index, ext: extraProps.ext } };
-                  const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
-                  tdEl.dataset.tableUuid = tableInfo.uuid;
-                  tdEl.dataset.columnKey = columnSchema.key;
-                  tdEl.dataset.rowKey = row.key;
-                  tdEl.dataset.basicStyle = stringifyCSS(Object.assign(
-                    {
-                      'text-align': columnSchema.align,
-                      background: sorter?.key === columnSchema.key ? 'var(--drip-table-column-sorted-background-color, inherit)' : void 0,
-                    },
-                    parseStyleSchema(columnSchema.style),
-                  ));
-                  tdEl.dataset.hoverStyle = stringifyCSS(parseStyleSchema(columnSchema.hoverStyle));
-                  tdEl.dataset.rowHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.rowHoverStyle));
-                  tdEl.dataset.columnHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.columnHoverStyle));
-                  tdEl.addEventListener('mouseenter', onCellMouseEnter);
-                  tdEl.addEventListener('mouseleave', onCellMouseLeave);
-                  updateCellElementStyle(tdEl, void 0, void 0);
-                }
-              }}
-            />
-          )
-          : null
-      }
+          columnSchema && ('sorter' in columnSchema || columnSchema.style || columnSchema.hoverStyle || columnSchema.rowHoverStyle || columnSchema.columnHoverStyle)
+            ? (
+              <div
+                style={{ display: 'none' }}
+                ref={(el) => {
+                  const tdEl = el?.parentElement;
+                  if (tdEl) {
+                    const context = { props: { record: row.record, recordIndex: row.index, ext: extraProps.ext } };
+                    const parseStyleSchema = (style: string | Record<string, string> | undefined) => parseCSS(typeof style === 'string' ? safeExecute(style, context) : style);
+                    tdEl.dataset.tableUuid = tableInfo.uuid;
+                    tdEl.dataset.columnKey = columnSchema.key;
+                    tdEl.dataset.rowKey = row.key;
+                    tdEl.dataset.basicStyle = stringifyCSS(Object.assign(
+                      {
+                        'text-align': columnSchema.align,
+                        background: sorter?.key === columnSchema.key ? 'var(--drip-table-column-sorted-background-color, inherit)' : void 0,
+                      },
+                      parseStyleSchema(columnSchema.style),
+                    ));
+                    tdEl.dataset.hoverStyle = stringifyCSS(parseStyleSchema(columnSchema.hoverStyle));
+                    tdEl.dataset.rowHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.rowHoverStyle));
+                    tdEl.dataset.columnHoverStyle = stringifyCSS(parseStyleSchema(columnSchema.columnHoverStyle));
+                    tdEl.addEventListener('mouseenter', onCellMouseEnter);
+                    tdEl.addEventListener('mouseleave', onCellMouseLeave);
+                    updateCellElementStyle(tdEl, void 0, void 0);
+                  }
+                }}
+              />
+            )
+            : null
+        }
       </React.Fragment>
     );
   };
@@ -1422,7 +1422,9 @@ function TableLayout<
                   </Slot>
                 )
                 : (
-                  <span className={`${prefixCls}-row-slot__error`}>{ `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }</span>
+                  <span className={`${prefixCls}-row-slot__error`}>
+                    { `自定义插槽组件渲染函数 tableProps.slots['${slotType}'] 不存在` }
+                  </span>
                 );
             }
             return render?.(o, row, index);
@@ -1772,8 +1774,8 @@ function TableLayout<
               ...subtable ? tableProps.subtableProps.filter(sp => sp.subtableID === subtable.id) || [] : [],
               ...tableProps.subtableProps.filter(
                 sp => sp.recordKeys
-            && sp.recordKeys.length === 1
-            && sp.recordKeys[0] === row.record[rowKey],
+                  && sp.recordKeys.length === 1
+                  && sp.recordKeys[0] === row.record[rowKey],
               ) || [],
             ].map(sp => sp.properties),
           )
@@ -1901,9 +1903,8 @@ function TableLayout<
     [tableProps.emptyText, tableProps.schema.emptyText],
   );
 
-  return (
+  const renderTableLayout = (
     <React.Fragment>
-      { paginationPosition === 'top' ? renderPagination : void 0 }
       { props.header }
       <ResizeObserver onResize={rcTableOnResize}>
         <div className={`${prefixCls}-resize-observer`}>
@@ -1968,9 +1969,24 @@ function TableLayout<
         </div>
       </ResizeObserver>
       { props.footer }
-      { paginationPosition === 'bottom' ? renderPagination : void 0 }
     </React.Fragment>
   );
+
+  return tableProps.schema.pagination && tableProps.schema.pagination?.sticky
+    ? (
+      <React.Fragment>
+        { paginationPosition === 'top' ? renderPagination : void 0 }
+        <div>{ renderTableLayout }</div>
+        { paginationPosition === 'bottom' ? renderPagination : void 0 }
+      </React.Fragment>
+    )
+    : (
+      <React.Fragment>
+        { paginationPosition === 'top' ? renderPagination : void 0 }
+        { renderTableLayout }
+        { paginationPosition === 'bottom' ? renderPagination : void 0 }
+      </React.Fragment>
+    );
 }
 
 export default TableLayout;

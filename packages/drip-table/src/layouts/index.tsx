@@ -6,6 +6,8 @@
  * @copyright: Copyright (c) 2021 JD Network Technology Co., Ltd.
  */
 
+import './index.less';
+
 import classnames from 'classnames';
 import React, { useEffect } from 'react';
 
@@ -136,9 +138,11 @@ function DripTableLayout<
 
   return (
     <ErrorBoundary>
-      <Spin spinning={tableProps.loading}>
+      <Spin spinning={tableProps.loading} className={tableProps.spinClassName} innerClassName={tableProps.spinInnerClassName}>
         <div
-          className={classnames(tableProps.className, tableProps.schema.className)}
+          className={classnames(tableProps.className, tableProps.schema.className, {
+            'jfe-drip-table-layout-table-sticky-container': tableProps.schema.pagination && tableProps.schema.pagination.sticky,
+          })}
           style={Object.assign({}, tableProps.style, tableProps.schema.style, themeStyle)}
         >
           { layoutNode }

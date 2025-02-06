@@ -15,6 +15,8 @@ export interface SpinProps {
   children?: React.ReactNode;
   spinning?: boolean;
   tip?: string;
+  className?: string;
+  innerClassName?: string;
 }
 
 const prefixCls = 'jfe-drip-table-rc-spin';
@@ -35,9 +37,9 @@ function Indicator() {
 }
 
 const Spin = React.memo(({ ...props }: SpinProps) => (
-  <div className={`${prefixCls}-nested-loading`}>
+  <div className={classNames(`${prefixCls}-nested-loading`, props.className)}>
     { props.spinning && <Indicator /> }
-    <div className={classNames(`${prefixCls}-container`, { [`${prefixCls}-blur`]: props.spinning })}>
+    <div className={classNames(`${prefixCls}-container`, props.innerClassName, { [`${prefixCls}-blur`]: props.spinning })}>
       { props.tip }
       { props.children }
     </div>
