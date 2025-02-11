@@ -37,6 +37,7 @@ export interface CommonCellProps<
   icons?: DripTableGeneratorProps<RecordType, ExtraOptions>['icons'];
   preview?: DripTableGeneratorProps<RecordType, ExtraOptions>['preview'];
   onEvent?: DripTableGeneratorProps<RecordType, ExtraOptions>['onEvent'];
+  createEvaluator?: DripTableGeneratorProps<RecordType, ExtraOptions>['createEvaluator'];
   defaultComponentLib?: DripTableGeneratorProps<RecordType, ExtraOptions>['defaultComponentLib'];
   schemaFunctionPreprocessor?: DripTableGeneratorProps<RecordType, ExtraOptions>['schemaFunctionPreprocessor'];
 }
@@ -77,7 +78,7 @@ function CommonCell<
         icons: props.icons,
         defaultComponentLib: props.defaultComponentLib,
         onEvent: props.preview === false ? props.onEvent : void 0,
-        createEvaluator,
+        createEvaluator: props.createEvaluator ?? createEvaluator,
         evaluate,
         safeEvaluate,
         finalizeString,
