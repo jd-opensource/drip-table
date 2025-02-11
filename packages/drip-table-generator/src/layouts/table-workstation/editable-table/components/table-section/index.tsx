@@ -80,6 +80,7 @@ function TableSection<
             onClick={props.onClick}
             onColumnItemChanged={props.onColumnItemChanged}
             schemaFunctionPreprocessor={props.schemaFunctionPreprocessor}
+            createEvaluator={props.createEvaluator}
           />
         </div>
       ))}
