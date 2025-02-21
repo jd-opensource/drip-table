@@ -9,13 +9,34 @@
 import '../index.less';
 
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Select } from 'antd';
+import { Button, Image, Input, Select } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 
 import Icon from '@/components/Icon';
 
 import { defaultComponentIcon } from '../configs';
+
+function checkStringType(str: string | React.ReactSVG | undefined) {
+  if (typeof str !== 'string') {
+    return 'NULL';
+  }
+  const trimmed = str.trim();
+
+  // 检查是否是 SVG 标签
+  const svgPattern = /^\s*<svg[^>]*>[\s\S]*<\/svg>\s*$/iu;
+  if (svgPattern.test(trimmed)) {
+    return 'SVG';
+  }
+
+  // 检查是否是 URL
+  const urlPattern = /^https?:\/\/\S+$/iu;
+  if (urlPattern.test(trimmed)) {
+    return 'URL';
+  }
+
+  return 'INVALID';
+}
 
 export interface SelectorProps<ValueType> {
   openPanel?: boolean;
@@ -84,7 +105,16 @@ function Selector<ValueType,>(props: SelectorProps<ValueType>) {
                     props.onChange(option.value);
                   }}
                 >
-                  <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={option.icon || defaultComponentIcon} />
+                  {
+                    ['SVG', 'NULL'].includes(checkStringType(option.icon)) && (
+                      <Icon className="jfe-drip-table-generator-components-bar-component-icon" svg={option.icon || defaultComponentIcon} />
+                    )
+                  }
+                  {
+                    checkStringType(option.icon) === 'URL' && (
+                      <Image src={option.icon as string} width={18} height={18} wrapperStyle={{ height: 24, margin: '0 3px' }} preview={false} />
+                    )
+                  }
                   <span className="jfe-drip-table-generator-components-bar-component-text">{ option.label }</span>
                 </Button>
               ))
